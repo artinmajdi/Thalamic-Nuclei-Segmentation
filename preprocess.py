@@ -13,8 +13,6 @@ from normalizeInput import normalizeMain
 from numpy.lib.recfunctions import append_fields
 
 
-
-print('ll')
 params = terminalEntries(params)
 Input  = readinginput.mainloadingImage(params)
 
