@@ -26,6 +26,9 @@ for ind in range(len(Input)):
     Input[ind] , CropCordinates = cropping.mainCropping( params , Input[ind] )
 
 
+
+
+
 print('finished')
 # params.Directory_Experiment
 # params.Directory_input
