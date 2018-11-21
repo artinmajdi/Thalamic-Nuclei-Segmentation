@@ -36,9 +36,11 @@ directories = funcExpDirectories( inputImageParams.Experiment_Number , inputImag
 
 # default path ; user can change them via terminal by giving other paths
 if 1:
-    user_output = '/array/ssd/msmajdi/experiments/Keras/vimp2_test' # directories.Results  # should specify by user
-    directories.Output = checkOutputDirectory(user_output , inputImageParams.subExperiment_Number)
-    del user_output
+    class user:
+        output = '/array/ssd/msmajdi/experiments/Keras/vimp2_test' # directories.Results  # should specify by user
+        thalamus = '/array/ssd/msmajdi/experiments/Keras/vimp2_test/1-THALAMUS_pred.nii.gz'
+    directories.Output = checkOutputDirectory(user , inputImageParams.subExperiment_Number)
+    del user
 
 if 1:
     user_Input = '/array/ssd/msmajdi/experiments/Keras/vimp2_test' # directories.Train     # should specify by user

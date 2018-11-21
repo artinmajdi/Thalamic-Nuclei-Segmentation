@@ -12,9 +12,9 @@ from smallCodes import mkDir , listSubFolders , choosingSubject , NucleiSelectio
 from normalizeInput import normalizeMain
 
 
-dir = '/array/ssd/msmajdi/experiments/Keras/vimp2_test'
+Dir = '/array/ssd/msmajdi/experiments/Keras/vimp2_test'
 import os
-os.stat(dir + '/WMnMPRAGE.nii.gz')
+os.stat(Dir + '/WMnMPRAGE.nii.gz')
 
 ### reading from text file
 params = terminalEntries(params)
@@ -23,9 +23,9 @@ BiasCorrection(params.directories.Input.Address , params.directories.Input.Files
 # RigidRegistration(params)
 
 #### check image format and convert to nifti
-
+params
 ### fix the reading Image function
-Input  = mainloadingImage(params)
+Input  = mainloadingImage(params.directories.Input.Address , params.directories.Input.Files)
 
 print('---')
 # for ind in range(len(Input)):
@@ -48,3 +48,6 @@ print('---')
 print('finished')
 # params.Directory_Experiment
 # params.Directory_input
+params.directories.Input.Files.BiasCorrected
+params.directories.Input.Files.Crop
+params.directories.Output.Result.

@@ -54,12 +54,12 @@ def listSubFolders(Dir_Prior):
 
     return subFolders
 
-def mkDir(dir):
+def mkDir(Dir):
     try:
-        os.stat(dir)
+        os.stat(Dir)
     except:
-        os.makedirs(dir)
-    return dir
+        os.makedirs(Dir)
+    return Dir
 
 def choosingSubject(Input):
     return Input.Image.get_data() , Input.CropMask.get_data() , Input.ThalamusMask.get_data() , Input.TestAddress
@@ -114,18 +114,18 @@ def terminalEntries(params):
 
     return params
 
-def checkInputDirectory(dir):
+def checkInputDirectory(Dir):
 
-    if '.nii.gz' in dir:
-        dd = dir.split('/')
-        dir = ''
+    if '.nii.gz' in Dir:
+        dd = Dir.split('/')
+        Dir = ''
         for d in range(len(dd)-1):
-            dir = dir + dd[d] + '/'
+            Dir = Dir + dd[d] + '/'
 
-        files = InputNames(dir)
+        files = InputNames(Dir)
         multipleTest = 'False'
     else:
-        subfiles = os.listdir(dir)
+        subfiles = os.listdir(Dir)
 
         flag = 0
         for ss in subfiles:
@@ -135,24 +135,25 @@ def checkInputDirectory(dir):
 
         if flag == 1:
             multipleTest = 'False'
-            files = InputNames(dir)
+            files = InputNames(Dir)
         else:
             files = subfiles
             multipleTest = 'True'
 
     class Input:
-        Address = fixDirectoryLastDashSign(dir)
+        Address = fixDirectoryLastDashSign(Dir)
         Files = files
         MultipleTest = multipleTest
 
     return Input
 
-def checkOutputDirectory(dir , subExperiment_Number):
+def checkOutputDirectory(user , subExperiment_Number):
 
     class Output:
-        Address = dir
-        Result  = mkDir( dir + '/' + 'Results' + '/subExperiment' + str(subExperiment_Number) )
-        Model   = mkDir( dir + '/' + 'models'  + '/subExperiment' + str(subExperiment_Number) )
+        Address  = user.output
+        Result   = mkDir( user.output + '/' + 'Results' + '/subExperiment' + str(subExperiment_Number) )
+        Model    = mkDir( user.output + '/' + 'models'  + '/subExperiment' + str(subExperiment_Number) )
+        Thalamus = user.Thalamus
 
     return Output
 
@@ -170,9 +171,13 @@ def funcExpDirectories(Experiment_Number , subExperiment_Number):
         Image = '/array/ssd/msmajdi/code/RigidRegistration' + '/origtemplate.nii.gz'
         Mask = '/array/ssd/msmajdi/code/RigidRegistration' + '/MyCrop_Template2_Gap20.nii.gz'
 
+    class Inf:
+        output = AllExperiments
+        Thalamus = AllExperiments + '/' + 'Results' + '/subExperiment' + str(subExperiment_Number) + '/1-THALAMUS.nii.gz' 
+
     class Directories:
         Experiment
-        Output = checkOutputDirectory(AllExperiments , subExperiment_Number)
+        Output = checkOutputDirectory(Inf , subExperiment_Number)
         Input  = checkInputDirectory( Experiment.Train )
         Template
 
@@ -183,11 +188,11 @@ def whichCropMode(NucleusName, mode):
         mode = 1
     return mode
 
-def fixDirectoryLastDashSign(dir):
-    if dir[len(dir)-1] == '/':
-        dir = dir[:len(dir)-2]
+def fixDirectoryLastDashSign(Dir):
+    if Dir[len(Dir)-1] == '/':
+        Dir = Dir[:len(Dir)-2]
 
-    return dir
+    return Dir
 
 def augmentLengthChecker(augment):
     if not augment.mode:
@@ -195,14 +200,14 @@ def augmentLengthChecker(augment):
 
     return augment
 
-def InputNames(dir):
+def InputNames(Dir):
 
     class Files:
         Crop = ''
         BiasCorrected = ''
         origImage = ''
 
-    for d in os.listdir(dir):
+    for d in os.listdir(Dir):
         if '.nii.gz' in d:
             if '_Crop.nii.gz' in d:
                 Files.Crop = d.split('.nii.gz')[0]
