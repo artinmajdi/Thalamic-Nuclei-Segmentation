@@ -5,29 +5,45 @@ import nibabel as nib
 import numpy as np
 import params
 import cropping
-import augment
-import readinginput
-from smallCodes import mkDir , listSubFolders , choosingSubject , NucleiSelection , terminalEntries
-from paramsFunctions import checkTestDirectory
+from augment import augmentMain
+from BashCallingFunctions import RigidRegistration, Cropping, BiasCorrection
+from readinginput import mainloadingImage
+from smallCodes import mkDir , listSubFolders , choosingSubject , NucleiSelection , terminalEntries , checkInputDirectory
 from normalizeInput import normalizeMain
-from numpy.lib.recfunctions import append_fields
 
 
+dir = '/array/ssd/msmajdi/experiments/Keras/vimp2_test'
+import os
+os.stat(dir + '/WMnMPRAGE.nii.gz')
+
+### reading from text file
 params = terminalEntries(params)
-Input  = readinginput.mainloadingImage(params)
 
+BiasCorrection(params.directories.Input.Address , params.directories.Input.Files.origImage)
+# RigidRegistration(params)
 
-for ind in range(len(Input)):
+#### check image format and convert to nifti
 
-    Input[ind] = normalizeMain(params , Input[ind])
+### fix the reading Image function
+Input  = mainloadingImage(params)
 
-    params , Input[ind] = augment.mainAugment(params , Input[ind])
+print('---')
+# for ind in range(len(Input)):
 
-    Input[ind] , CropCordinates = cropping.mainCropping( params , Input[ind] )
+    ###  check 3T 7T dimension and interpolation
+#     RigidRegistration(params)
+    # Cropping(params)
 
+    # Input[ind] = normalizeMain(params , Input[ind])
 
+    ### finish augmenting
+    # if params.augment.mode and (params.augment.Rotation or params.augment.Shift):
+    #     params , Input[ind] = augmentMain(params , Input[ind])
 
+    # Input[ind] , CropCordinates = cropping.mainCropping( params , Input[ind] )
 
+    # if params.augment.mode and params.augment.NonRigidWarp:
+    #     params , Input[ind] = augmentMain(params , Input[ind])
 
 print('finished')
 # params.Directory_Experiment

@@ -11,8 +11,7 @@ def Augment(params , Input):
     
     return params , Input
 
-
-def mainAugment(params , Input):
+def augmentMain(params , Input):
 
     if params.augment:
         params , Input = Augment(params , Input)

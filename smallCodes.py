@@ -1,9 +1,8 @@
 import os
 import nibabel as nib
-from paramsFunctions import checkTestDirectory , fixDirectoryLastDashSign , funcExpDirectories
 import numpy as np
 import sys
-
+from collections import namedtuple
 
 # a = funcExpDirectories(1,1)
 # b = a()
@@ -87,19 +86,19 @@ def terminalEntries(params):
     for en in range(len(sys.argv)):
         entry = sys.argv[en]
 
-        if entry.lower() == '-g':
+        if entry.lower() == '-g':  # gpu num
             params.gpuNum = sys.argv[en+1]
 
-        elif entry.lower() == '-i':
-            params.directories.Input , params.MultipleTest = checkTestDirectory( sys.argv[en+1] )
+        elif entry.lower() == '-i': # input image or directory
+            params.directories.Input = checkInputDirectory( sys.argv[en+1] )
 
-        elif entry.lower() == '-o':
+        elif entry.lower() == '-o':  # output directory
             params.directories.Output = sys.argv[en+1]
 
-        elif entry.lower() == '-m':
+        elif entry.lower() == '-m':  # which machine; server localPC local Laptop
             params.whichMachine = sys.argv[en+1]
 
-        elif entry.lower() == '-n':
+        elif entry.lower() == '-n':  # nuclei index
             if sys.argv[en+1].lower() == 'all':
                 params.IxNuclei = np.append([1,2,4567],range(4,14))
 
@@ -110,4 +109,106 @@ def terminalEntries(params):
             else:
                 params.IxNuclei = [int(sys.argv[en+1])]
 
+        elif entry.lower() == '-TemplateMask':  # template Mask
+            params.directories.TemplateMask = sys.argv[en+1]
+
     return params
+
+def checkInputDirectory(dir):
+
+    if '.nii.gz' in dir:
+        dd = dir.split('/')
+        dir = ''
+        for d in range(len(dd)-1):
+            dir = dir + dd[d] + '/'
+
+        files = InputNames(dir)
+        multipleTest = 'False'
+    else:
+        subfiles = os.listdir(dir)
+
+        flag = 0
+        for ss in subfiles:
+            if '.nii.gz' in ss:
+                flag = 1
+                break
+
+        if flag == 1:
+            multipleTest = 'False'
+            files = InputNames(dir)
+        else:
+            files = subfiles
+            multipleTest = 'True'
+
+    class Input:
+        Address = fixDirectoryLastDashSign(dir)
+        Files = files
+        MultipleTest = multipleTest
+
+    return Input
+
+def checkOutputDirectory(dir , subExperiment_Number):
+
+    class Output:
+        Address = dir
+        Result  = mkDir( dir + '/' + 'Results' + '/subExperiment' + str(subExperiment_Number) )
+        Model   = mkDir( dir + '/' + 'models'  + '/subExperiment' + str(subExperiment_Number) )
+
+    return Output
+
+def funcExpDirectories(Experiment_Number , subExperiment_Number):
+
+    # struct2 = namedtuple('struct' , 'AllExperiments Train Test Results models ThalamusPrediction Input Output')
+
+    AllExperiments = '/array/ssd/msmajdi/experiments/Keras'
+
+    class Experiment:
+        Train = AllExperiments + '/Experiment' + str(Experiment_Number) + '/' + 'Train'
+        Test  = AllExperiments + '/Experiment' + str(Experiment_Number) + '/' + 'Test'
+
+    class Template:
+        Image = '/array/ssd/msmajdi/code/RigidRegistration' + '/origtemplate.nii.gz'
+        Mask = '/array/ssd/msmajdi/code/RigidRegistration' + '/MyCrop_Template2_Gap20.nii.gz'
+
+    class Directories:
+        Experiment
+        Output = checkOutputDirectory(AllExperiments , subExperiment_Number)
+        Input  = checkInputDirectory( Experiment.Train )
+        Template
+
+    return Directories
+
+def whichCropMode(NucleusName, mode):
+    if '1-THALAMUS' in NucleusName:
+        mode = 1
+    return mode
+
+def fixDirectoryLastDashSign(dir):
+    if dir[len(dir)-1] == '/':
+        dir = dir[:len(dir)-2]
+
+    return dir
+
+def augmentLengthChecker(augment):
+    if not augment.mode:
+        augment.augmentLength = 0
+
+    return augment
+
+def InputNames(dir):
+
+    class Files:
+        Crop = ''
+        BiasCorrected = ''
+        origImage = ''
+
+    for d in os.listdir(dir):
+        if '.nii.gz' in d:
+            if '_Crop.nii.gz' in d:
+                Files.Crop = d.split('.nii.gz')[0]
+            elif '_bias_corr.nii.gz' in d:
+                Files.BiasCorrected = d.split('.nii.gz')[0]
+            else:
+                Files.origImage = d.split('.nii.gz')[0]
+
+    return Files

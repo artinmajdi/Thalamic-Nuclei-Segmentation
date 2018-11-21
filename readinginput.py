@@ -31,13 +31,13 @@ def loadingImage(NucleusName , dir):
 def mainloadingImage(params):
 
     FullData = list()
-    if  not params.MultipleTest:
-        structList = loadingImage(params.NucleusName , params.directories.Input )
+    if  not params.directories.Input.MultipleTest:
+        structList = loadingImage(params.TrainParams.NucleusName , params.directories.Input )
         FullData.append(structList)
     else:
-        subFolders = listSubFolders(params.directories.Input)
-        for sFi in range(5): # len(subFolders)):
-            structList = loadingImage(params.NucleusName , params.directories.Input + '/' + subFolders[sFi])
+        subFolders = listSubFolders(params.directories.Input.Address)
+        for sFi in range(len(subFolders)):
+            structList = loadingImage(params.TrainParams.NucleusName , params.directories.Input + '/' + subFolders[sFi])
             FullData.append(structList)
 
     return FullData
