@@ -11,23 +11,18 @@ from readinginput import mainloadingImage
 from smallCodes import mkDir , listSubFolders , choosingSubject , NucleiSelection , terminalEntries , checkInputDirectory
 from normalizeInput import normalizeMain
 
-
-Dir = '/array/ssd/msmajdi/experiments/Keras/vimp2_test'
-import os
-os.stat(Dir + '/WMnMPRAGE.nii.gz')
-
 ### reading from text file
 params = terminalEntries(params)
 
-BiasCorrection(params.directories.Input.Address , params.directories.Input.Files.origImage)
-# RigidRegistration(params)
-
 #### check image format and convert to nifti
-params
-### fix the reading Image function
-Input  = mainloadingImage(params.directories.Input.Address , params.directories.Input.Files)
 
-print('---')
+BiasCorrection( params.directories.Input.Address , params.directories.Input.Files.origImage )
+
+RigidRegistration( params.directories.Input , params.directories.Template )
+
+params.directories.Input = checkInputDirectory( params.directories.Input.Address )
+Input  = mainloadingImage(params.directories.Input.Address , params.directories.Input.Files , params.TrainParams.NucleusName)
+
 # for ind in range(len(Input)):
 
     ###  check 3T 7T dimension and interpolation
@@ -48,6 +43,3 @@ print('---')
 print('finished')
 # params.Directory_Experiment
 # params.Directory_input
-params.directories.Input.Files.BiasCorrected
-params.directories.Input.Files.Crop
-params.directories.Output.Result.

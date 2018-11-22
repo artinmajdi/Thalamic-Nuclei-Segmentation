@@ -4,19 +4,19 @@ from smallCodes import listSubFolders
 
 struct = collections.namedtuple('struct' , 'Image CropMask ThalamusMask Header Affine InputAddress')
 
-def loadingImage(Dir, Files):
+def loadingImage(Dir, Files, NucleusName):
     
-    im = nib.load(Dir + '/' + Files.Image + '.nii.gz')
-    CropMsk = nib.load(Dir + '/' + Files.Image + '.nii.gz').get_data() 
+    im = nib.load(Dir + '/' + Files.BiasCorrected + '.nii.gz')
+    CropMsk = nib.load(Dir + '/' + Files.Crop + '.nii.gz').get_data() 
 
-    TEMP = 1
-    if TEMP == 1:
+    # TEMP = 1
+    # if TEMP == 1:
+    #     ThalamusMsk = CropMsk.copy()
+
+    if '1-THALAMUS' not in NucleusName:
+        ThalamusMsk = nib.load( Dir + '/' + NucleusName + '.nii.gz' )
+    else:
         ThalamusMsk = CropMsk.copy()
-
-    # if '1-THALAMUS' not in NucleusName:
-    #     ThalamusMsk = nib.load(Dir + '/MyCrop2_Gap20.nii.gz')
-    # else:
-    #     ThalamusMsk = nib.load(Dir + '/Thalamus.nii.gz')
 
     class Input:
         Image = im.get_data()
@@ -28,9 +28,9 @@ def loadingImage(Dir, Files):
 
     return Input
 
-def mainloadingImage(Dir, Files):
+def mainloadingImage(Dir, Files, NucleusName):
 
-    structList = loadingImage( Dir, Files)
+    structList = loadingImage( Dir, Files, NucleusName)
 
     # FullData = list()
     # if  not params.directories.Input.MultipleTest:

@@ -32,15 +32,13 @@ class inputImageParams:
 inputImageParams.SlicingDirection = inputImageParams.SlicingDirection.lower()
 inputImageParams.saveMode = inputImageParams.saveMode.lower()
 
-directories = funcExpDirectories( inputImageParams.Experiment_Number , inputImageParams.subExperiment_Number)
+directories = funcExpDirectories( inputImageParams.Experiment_Number , inputImageParams.subExperiment_Number , TrainParams.NucleusName)
 
 # default path ; user can change them via terminal by giving other paths
 if 1:
-    class user:
-        output = '/array/ssd/msmajdi/experiments/Keras/vimp2_test' # directories.Results  # should specify by user
-        thalamus = '/array/ssd/msmajdi/experiments/Keras/vimp2_test/1-THALAMUS_pred.nii.gz'
-    directories.Output = checkOutputDirectory(user , inputImageParams.subExperiment_Number)
-    del user
+    output = '/array/ssd/msmajdi/experiments/Keras/vimp2_test' # directories.Results  # should specify by user
+    directories.Output = checkOutputDirectory(output , inputImageParams.subExperiment_Number)
+    del output
 
 if 1:
     user_Input = '/array/ssd/msmajdi/experiments/Keras/vimp2_test' # directories.Train     # should specify by user

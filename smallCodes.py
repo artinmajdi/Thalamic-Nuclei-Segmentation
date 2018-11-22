@@ -4,9 +4,6 @@ import numpy as np
 import sys
 from collections import namedtuple
 
-# a = funcExpDirectories(1,1)
-# b = a()
-
 def NucleiSelection(ind):
 
     if ind == 1:
@@ -90,7 +87,7 @@ def terminalEntries(params):
             params.gpuNum = sys.argv[en+1]
 
         elif entry.lower() == '-i': # input image or directory
-            params.directories.Input = checkInputDirectory( sys.argv[en+1] )
+            params.directories.Input = checkInputDirectory( sys.argv[en+1])
 
         elif entry.lower() == '-o':  # output directory
             params.directories.Output = sys.argv[en+1]
@@ -145,41 +142,41 @@ def checkInputDirectory(Dir):
         Files = files
         MultipleTest = multipleTest
 
+
     return Input
 
-def checkOutputDirectory(user , subExperiment_Number):
+def checkOutputDirectory(AllExperiments , subExperiment_Number):
 
     class Output:
-        Address  = user.output
-        Result   = mkDir( user.output + '/' + 'Results' + '/subExperiment' + str(subExperiment_Number) )
-        Model    = mkDir( user.output + '/' + 'models'  + '/subExperiment' + str(subExperiment_Number) )
-        Thalamus = user.Thalamus
+        Address  = AllExperiments
+        # Result   = mkDir( AllExperiments + '/' + 'Results' + '/subExperiment' + str(subExperiment_Number) )
+        Result   = AllExperiments + '/' + 'Results' + '/subExperiment' + str(subExperiment_Number)
+        # Model    = mkDir( AllExperiments + '/' + 'models'  + '/subExperiment' + str(subExperiment_Number) )
+        Model    = AllExperiments + '/' + 'models'  + '/subExperiment' + str(subExperiment_Number)
 
     return Output
 
-def funcExpDirectories(Experiment_Number , subExperiment_Number):
+def funcExpDirectories(Experiment_Number , subExperiment_Number , NucleusName):
 
     # struct2 = namedtuple('struct' , 'AllExperiments Train Test Results models ThalamusPrediction Input Output')
 
     AllExperiments = '/array/ssd/msmajdi/experiments/Keras'
 
-    class Experiment:
+    class experiment:
         Train = AllExperiments + '/Experiment' + str(Experiment_Number) + '/' + 'Train'
         Test  = AllExperiments + '/Experiment' + str(Experiment_Number) + '/' + 'Test'
+        Experiment    = Experiment_Number
+        subExperiment = subExperiment_Number
 
-    class Template:
+    class template:
         Image = '/array/ssd/msmajdi/code/RigidRegistration' + '/origtemplate.nii.gz'
         Mask = '/array/ssd/msmajdi/code/RigidRegistration' + '/MyCrop_Template2_Gap20.nii.gz'
 
-    class Inf:
-        output = AllExperiments
-        Thalamus = AllExperiments + '/' + 'Results' + '/subExperiment' + str(subExperiment_Number) + '/1-THALAMUS.nii.gz' 
-
     class Directories:
-        Experiment
-        Output = checkOutputDirectory(Inf , subExperiment_Number)
-        Input  = checkInputDirectory( Experiment.Train )
-        Template
+        Experiment = experiment
+        Output = checkOutputDirectory(AllExperiments , subExperiment_Number)
+        Input  = checkInputDirectory( experiment.Train)
+        Template = template
 
     return Directories
 
@@ -209,7 +206,7 @@ def InputNames(Dir):
 
     for d in os.listdir(Dir):
         if '.nii.gz' in d:
-            if '_Crop.nii.gz' in d:
+            if 'Crop.nii.gz' in d:
                 Files.Crop = d.split('.nii.gz')[0]
             elif '_bias_corr.nii.gz' in d:
                 Files.BiasCorrected = d.split('.nii.gz')[0]
