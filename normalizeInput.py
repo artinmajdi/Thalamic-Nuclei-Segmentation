@@ -1,17 +1,17 @@
 import numpy as np
 
-def funcNormalize(params , im):
+def funcNormalize(params , Image):
 
-    if params.normalizeMethod == 'MinMax':
-        im = np.float32(im)
-        im = ( im-im.min() )/( im.max() - im.min() )
-    return im
+    if params.normalize.Method == 'MinMax':
+        Image = np.float32(Image)
+        Image = ( Image-Image.min() )/( Image.max() - Image.min() )
+    return Image
 
-def normalizeMain(params , Input):
+def normalizeMain(params , Image):
 
     if params.normalize:
-        Input.Image = funcNormalize(params , Input.Image)
+        Image = funcNormalize(params , Image)
 
-    return Input
+    return Image
 
 

@@ -2,64 +2,83 @@ import os
 from smallCodes import NucleiSelection , whichCropMode , fixDirectoryLastDashSign , funcExpDirectories , augmentLengthChecker , InputNames , checkInputDirectory , checkOutputDirectory
 
 #  ---------------------- model Params ----------------------
-class TrainParams:
+
+
+
+class ImageModelParams:
+    SlicingDirection = 'axial'.lower()
+    SaveMode = 'nifti'.lower()
     ArchitectureType = 'U-Net'
     NumberOfLayers = 3
     Optimizer = 'Adam'
-    NucleusName = NucleiSelection(1)
 
-class augment:
-    mode = False
-    augmentLength = 5
+Experiment_Number = 1
+SubExperiment_Number = 1
+class Experiment:
+    Experiment = 'Experiment' + str(Experiment_Number) + ''
+    SubExperiment = 'SubExperiment' + str(SubExperiment_Number) + ''
+    AllExperiments = '/array/ssd/msmajdi/experiments/Keras'
+
+class Nucleus:
+    Index = [1]
+    Name = NucleiSelection( Index[0] )
+
+class TrainParams:
+    Experiment = Experiment
+    WhichMachine = 'server'
+    GPU_Index = '1'
+    ImageModelParams = ImageModelParams
+    Nucleus = Nucleus
+
+del ImageModelParams, Nucleus, Experiment, Experiment_Number, SubExperiment_Number
+
+
+class Reference:
+    Name = ''
+    Address = ''
+
+class Augment:
+    Mode = False
+    AugmentLength = 5
     Rotation = False
     Shift = False
     NonRigidWarp = True
+    Reference = Reference
 
-augment = augmentLengthChecker(augment)
+del Reference
 
-class normalize:
-    mode = True
-    method = 'MinMax'
+Augment = augmentLengthChecker(Augment)
 
-normalize.method = normalize.method.lower()
+class Normalize:
+    Mode = True
+    Method = 'MinMax'.lower()
 
-class inputImageParams:
-    SlicingDirection = 'axial'
-    saveMode = 'nifti'
-    Experiment_Number = 1
-    subExperiment_Number = 1
-
-inputImageParams.SlicingDirection = inputImageParams.SlicingDirection.lower()
-inputImageParams.saveMode = inputImageParams.saveMode.lower()
-
-directories = funcExpDirectories( inputImageParams.Experiment_Number , inputImageParams.subExperiment_Number , TrainParams.NucleusName)
+directories = funcExpDirectories( TrainParams.Experiment , TrainParams.Nucleus.Name)
 
 # default path ; user can change them via terminal by giving other paths
 if 1:
-    output = '/array/ssd/msmajdi/experiments/Keras/vimp2_test' # directories.Results  # should specify by user
-    directories.Output = checkOutputDirectory(output , inputImageParams.subExperiment_Number)
-    del output
-
-if 1:
     user_Input = '/array/ssd/msmajdi/experiments/Keras/vimp2_test' # directories.Train     # should specify by user
-    directories.Input = checkInputDirectory( user_Input )
-    del user_Input
+    user_Output = '/array/ssd/msmajdi/experiments/Keras/vimp2_test' # directories.Results  # should specify by user
+
+    directories.Input = checkInputDirectory( user_Input ,TrainParams.Nucleus.Name)
+    directories.Output = checkOutputDirectory(user_Output , InputImageParams.SubExperiment_Number)
+    del user_Input , user_Output
 
 # --cropping mode
 # 1 or mask:     cropping using the cropped mask acquired from rigid transformation
 # 2 or thalamus: cropping using the cropped mask for plain size and Thalamus Prediction for slice numbers
 # 3 or both:     cropping using the Thalamus prediction
-method = 2
-class cropping:
-    mode = True
-    method = whichCropMode(TrainParams.NucleusName, method)  # it changes the mode to 1 if we're analyzing the Thalamus
+Method = 2
+class Cropping:
+    Mode = True
+    Method = whichCropMode(TrainParams.NucleusName, Method)  # it changes the mode to 1 if we're analyzing the Thalamus
 
-del method
+del Method
 
 
 class preprocess:
-    augment = augment
-    cropping = cropping
-    normalize = normalize
+    Augment = Augment
+    Cropping = Cropping
+    Normalize = Normalize
 
-del augment, cropping, normalize
+del Augment, Cropping, Normalize

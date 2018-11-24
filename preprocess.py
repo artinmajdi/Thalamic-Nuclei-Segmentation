@@ -8,38 +8,42 @@ import cropping
 from augment import augmentMain
 from BashCallingFunctions import RigidRegistration, Cropping, BiasCorrection
 from readinginput import mainloadingImage
-from smallCodes import mkDir , listSubFolders , choosingSubject , NucleiSelection , terminalEntries , checkInputDirectory
+from smallCodes import mkDir , listSubFolders , choosingSubject , NucleiSelection , terminalEntries , checkInputDirectory, checkingSubFolders
 from normalizeInput import normalizeMain
 
-### reading from text file
-params = terminalEntries(params)
-
+###  check 3T 7T dimension and interpolation
 #### check image format and convert to nifti
 
-BiasCorrection( params.directories.Input.Address , params.directories.Input.Files.origImage )
 
-RigidRegistration( params.directories.Input , params.directories.Template )
 
-params.directories.Input = checkInputDirectory( params.directories.Input.Address )
-Input  = mainloadingImage(params.directories.Input.Address , params.directories.Input.Files , params.TrainParams.NucleusName)
+params = terminalEntries(params)
 
-# for ind in range(len(Input)):
 
-    ###  check 3T 7T dimension and interpolation
-#     RigidRegistration(params)
-    # Cropping(params)
+params = checkingSubFolders(params)
+for add in params.directories.Input.Address:
 
-    # Input[ind] = normalizeMain(params , Input[ind])
 
-    ### finish augmenting
-    # if params.augment.mode and (params.augment.Rotation or params.augment.Shift):
-    #     params , Input[ind] = augmentMain(params , Input[ind])
+    params.directories.Input = checkInputDirectory( add , params.TrainParams.Nucleus.Name )
+    BiasCorrection( params.directories.Input )
+    augmentMain(params , 'Linear')
 
-    # Input[ind] , CropCordinates = cropping.mainCropping( params , Input[ind] )
 
-    # if params.augment.mode and params.augment.NonRigidWarp:
-    #     params , Input[ind] = augmentMain(params , Input[ind])
+params = checkingSubFolders(params)
+for add in params.directories.Input.Address:
+
+    params.directories.Input = checkInputDirectory( add , params.TrainParams.Nucleus.Name )
+    RigidRegistration( params.directories.Input , params.directories.Template )
+    Cropping( params.directories.Input)
+    augmentMain(params , 'NonLinear')
+
+
+subDirectories = os.listdir(params.directories.Input.Address)
+# for ind in range(len(subDirectories)):
+
+#     params.directories.Input = checkInputDirectory( subDirectories[ind] , params.TrainParams.NucleusName )
+#     Input  = mainloadingImage(params.directories.Input)
+
+
+
 
 print('finished')
-# params.Directory_Experiment
-# params.Directory_input

@@ -76,42 +76,38 @@ def saveMain(Input):
 
 def terminalEntries(params):
 
-    params.gpuNum =  '4'  # 'nan'  #
-    params.IxNuclei = [1]
-    params.whichMachine = 'server'
-
     for en in range(len(sys.argv)):
         entry = sys.argv[en]
 
         if entry.lower() == '-g':  # gpu num
-            params.gpuNum = sys.argv[en+1]
-
-        elif entry.lower() == '-i': # input image or directory
-            params.directories.Input = checkInputDirectory( sys.argv[en+1])
+            params.TrainParams.gpuNum = sys.argv[en+1]
 
         elif entry.lower() == '-o':  # output directory
             params.directories.Output = sys.argv[en+1]
 
         elif entry.lower() == '-m':  # which machine; server localPC local Laptop
-            params.whichMachine = sys.argv[en+1]
+            params.TrainParams.whichMachine = sys.argv[en+1]
 
         elif entry.lower() == '-n':  # nuclei index
             if sys.argv[en+1].lower() == 'all':
-                params.IxNuclei = np.append([1,2,4567],range(4,14))
+                params.TrainParams.NucleiIndex = np.append([1,2,4567],range(4,14))
 
             elif sys.argv[en+1][0] == '[':
                 B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
-                params.IxNuclei = [int(k) for k in B]
+                params.TrainParams.NucleiIndex = [int(k) for k in B]
 
             else:
-                params.IxNuclei = [int(sys.argv[en+1])]
+                params.TrainParams.NucleiIndex = [int(sys.argv[en+1])]
+
+        elif entry.lower() == '-i': # input image or directory
+            params.directories.Input = checkInputDirectory( sys.argv[en+1] ,params.TrainParams.NucleiIndex[0])                
 
         elif entry.lower() == '-TemplateMask':  # template Mask
             params.directories.TemplateMask = sys.argv[en+1]
 
     return params
 
-def checkInputDirectory(Dir):
+def checkInputDirectory(Dir,NucleusName):
 
     if '.nii.gz' in Dir:
         dd = Dir.split('/')
@@ -119,7 +115,7 @@ def checkInputDirectory(Dir):
         for d in range(len(dd)-1):
             Dir = Dir + dd[d] + '/'
 
-        files = InputNames(Dir)
+        files = InputNames(Dir ,NucleusName)
         multipleTest = 'False'
     else:
         subfiles = os.listdir(Dir)
@@ -132,7 +128,7 @@ def checkInputDirectory(Dir):
 
         if flag == 1:
             multipleTest = 'False'
-            files = InputNames(Dir)
+            files = InputNames(Dir,NucleusName)
         else:
             files = subfiles
             multipleTest = 'True'
@@ -145,37 +141,28 @@ def checkInputDirectory(Dir):
 
     return Input
 
-def checkOutputDirectory(AllExperiments , subExperiment_Number):
+def checkOutputDirectory(Dir , Experiment):
 
     class Output:
-        Address  = AllExperiments
-        # Result   = mkDir( AllExperiments + '/' + 'Results' + '/subExperiment' + str(subExperiment_Number) )
-        Result   = AllExperiments + '/' + 'Results' + '/subExperiment' + str(subExperiment_Number)
-        # Model    = mkDir( AllExperiments + '/' + 'models'  + '/subExperiment' + str(subExperiment_Number) )
-        Model    = AllExperiments + '/' + 'models'  + '/subExperiment' + str(subExperiment_Number)
+        Address  = Dir
+        Result   = Dir + '/' + 'Results' + '/' + Experiment.SubExperiment
+        Model    = Dir + '/' + 'models'  + '/' + Experiment.SubExperiment
 
     return Output
 
-def funcExpDirectories(Experiment_Number , subExperiment_Number , NucleusName):
+def funcExpDirectories(Experiment , NucleusName):
 
-    # struct2 = namedtuple('struct' , 'AllExperiments Train Test Results models ThalamusPrediction Input Output')
-
-    AllExperiments = '/array/ssd/msmajdi/experiments/Keras'
-
-    class experiment:
-        Train = AllExperiments + '/Experiment' + str(Experiment_Number) + '/' + 'Train'
-        Test  = AllExperiments + '/Experiment' + str(Experiment_Number) + '/' + 'Test'
-        Experiment    = Experiment_Number
-        subExperiment = subExperiment_Number
+    Experiment.Train = Experiment.AllExperiments + '/' + Experiment.Experiment + '/' + 'Train'
+    Experiment.Test  = Experiment.AllExperiments + '/' + Experiment.Experiment + '/' + 'Test'
 
     class template:
         Image = '/array/ssd/msmajdi/code/RigidRegistration' + '/origtemplate.nii.gz'
         Mask = '/array/ssd/msmajdi/code/RigidRegistration' + '/MyCrop_Template2_Gap20.nii.gz'
 
     class Directories:
-        Experiment = experiment
-        Output = checkOutputDirectory(AllExperiments , subExperiment_Number)
-        Input  = checkInputDirectory( experiment.Train)
+        Experiment = Experiment
+        Output = checkOutputDirectory(Experiment.AllExperiments , Experiment)
+        Input  = checkInputDirectory( Experiment.Train ,NucleusName)
         Template = template
 
     return Directories
@@ -192,25 +179,62 @@ def fixDirectoryLastDashSign(Dir):
     return Dir
 
 def augmentLengthChecker(augment):
-    if not augment.mode:
-        augment.augmentLength = 0
+    if not augment.Mode:
+        augment.AugmentLength = 0
 
     return augment
 
-def InputNames(Dir):
+def InputNames(Dir , NucleusName):
 
     class Files:
-        Crop = ''
+        CropMask = ''
+        Cropped = ''
         BiasCorrected = ''
         origImage = ''
+        Nucleus = ''
 
     for d in os.listdir(Dir):
         if '.nii.gz' in d:
-            if 'Crop.nii.gz' in d:
-                Files.Crop = d.split('.nii.gz')[0]
+            if 'CropMask.nii.gz' in d:
+                Files.CropMask = d.split('.nii.gz')[0]
             elif '_bias_corr.nii.gz' in d:
                 Files.BiasCorrected = d.split('.nii.gz')[0]
+            elif '_bias_corr_Cropped.nii.gz' in d:
+                Files.Cropped = d.split('.nii.gz')[0]                
             else:
                 Files.origImage = d.split('.nii.gz')[0]
+        else:
+            Dir2 = Dir + '/' + d 
+
+    # Dir2 = Dir + '/Manual_Delineation_Sanitized'
+    class nucleus:
+        Cropped = ''
+        Full = ''
+        Address = Dir2
+
+    for d in os.listdir(Dir2):
+        if '.nii.gz' in d:
+            if NucleusName + '_Cropped.nii.gz' in d:
+                nucleus.Cropped = d.split('.nii.gz')[0]                
+            elif NucleusName + '.nii.gz' in d:
+                nucleus.Full = d.split('.nii.gz')[0]
+
+
+    Files.Nucleus = nucleus
 
     return Files
+
+
+def checkingSubFolders(params):
+
+    params.directories.Input = checkInputDirectory( params.directories.Input.Address , params.TrainParams.Nucleus.Name )
+    if params.directories.Input.MultipleTest:
+        Address = [ params.directories.Input.Address + '/' + params.directories.Input.Files[0] ]
+        for d in range(len(params.directories.Input.Files)-1):
+            Address.append( params.directories.Input.Address + '/' + params.directories.Input.Files[d+1] )
+    else:
+        Address = [params.directories.Input.Address]
+
+    params.directories.Input.Address = Address
+    
+    return params
