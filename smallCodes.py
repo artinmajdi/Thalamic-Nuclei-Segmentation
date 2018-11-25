@@ -52,9 +52,7 @@ def listSubFolders(Dir_Prior):
     return subFolders
 
 def mkDir(Dir):
-    try:
-        os.stat(Dir)
-    except:
+    if not os.path.isdir(Dir):
         os.makedirs(Dir)
     return Dir
 
@@ -109,6 +107,31 @@ def terminalEntries(params):
 
 def checkInputDirectory(Dir,NucleusName):
 
+    multipleTest , files , subfolders = checkMultipleTestOrNot(Dir,NucleusName)
+
+
+    subjects = {}
+    if multipleTest:     
+        for sf in subfolders:
+            files = InputNames(Dir + '/' + sf ,NucleusName)
+            subjects[sf] = files
+
+    else:
+        subjects['subject'] = files
+
+
+    class Input:
+        Address = fixDirectoryLastDashSign(Dir)
+        Subjects = subjects
+        MultipleTest = multipleTest
+
+    return Input
+
+def checkMultipleTestOrNot(Dir,NucleusName):
+
+    subjects = ''
+    files = ''
+
     if '.nii.gz' in Dir:
         dd = Dir.split('/')
         Dir = ''
@@ -118,10 +141,10 @@ def checkInputDirectory(Dir,NucleusName):
         files = InputNames(Dir ,NucleusName)
         multipleTest = 'False'
     else:
-        subfiles = os.listdir(Dir)
+        subjects = os.listdir(Dir)
 
         flag = 0
-        for ss in subfiles:
+        for ss in subjects:
             if '.nii.gz' in ss:
                 flag = 1
                 break
@@ -130,41 +153,27 @@ def checkInputDirectory(Dir,NucleusName):
             multipleTest = 'False'
             files = InputNames(Dir,NucleusName)
         else:
-            files = subfiles
             multipleTest = 'True'
 
-    class Input:
-        Address = fixDirectoryLastDashSign(Dir)
-        Files = files
-        MultipleTest = multipleTest
+    return multipleTest , files , subjects
 
+def funcExpDirectories(experiment):
 
-    return Input
+    class train:
+        Address = experiment.Address + '/Experiment' + str(experiment.Experiment_Index) + '/Train'
+        Model   = mkDir(experiment.Address + '/Experiment' + str(experiment.Experiment_Index) + '/models'  + '/SubExperiment' + str(experiment.SubExperiment_Index) + '_' + experiment.Tag)
+        Input   = checkInputDirectory( Address ,experiment.Nucleus.Name)
 
-def checkOutputDirectory(Dir , Experiment):
-
-    class Output:
-        Address  = Dir
-        Result   = Dir + '/' + 'Results' + '/' + Experiment.SubExperiment
-        Model    = Dir + '/' + 'models'  + '/' + Experiment.SubExperiment
-
-    return Output
-
-def funcExpDirectories(Experiment , NucleusName):
-
-    Experiment.Train = Experiment.AllExperiments + '/' + Experiment.Experiment + '/' + 'Train'
-    Experiment.Test  = Experiment.AllExperiments + '/' + Experiment.Experiment + '/' + 'Test'
-
-    class template:
-        Image = '/array/ssd/msmajdi/code/RigidRegistration' + '/origtemplate.nii.gz'
-        Mask = '/array/ssd/msmajdi/code/RigidRegistration' + '/MyCrop_Template2_Gap20.nii.gz'
+    class test:
+        Address = experiment.Address + '/Experiment' + str(experiment.Experiment_Index) + '/Test'
+        Result  = mkDir(experiment.Address + '/Experiment' + str(experiment.Experiment_Index) + '/Results' + '/SubExperiment' + str(experiment.SubExperiment_Index) + '_' + experiment.Tag)
+        Input   = checkInputDirectory( Address ,experiment.Nucleus.Name)
 
     class Directories:
-        Experiment = Experiment
-        Output = checkOutputDirectory(Experiment.AllExperiments , Experiment)
-        Input  = checkInputDirectory( Experiment.Train ,NucleusName)
-        Template = template
-
+        Experiment = experiment
+        Train = train
+        Test  = test
+        
     return Directories
 
 def whichCropMode(NucleusName, mode):
@@ -192,7 +201,9 @@ def InputNames(Dir , NucleusName):
         BiasCorrected = ''
         origImage = ''
         Nucleus = ''
+        Address = Dir
 
+    Dir2 = Dir
     for d in os.listdir(Dir):
         if '.nii.gz' in d:
             if 'CropMask.nii.gz' in d:
@@ -203,10 +214,10 @@ def InputNames(Dir , NucleusName):
                 Files.Cropped = d.split('.nii.gz')[0]                
             else:
                 Files.origImage = d.split('.nii.gz')[0]
-        else:
+        else:  # this represent the manual labels folder
             Dir2 = Dir + '/' + d 
 
-    # Dir2 = Dir + '/Manual_Delineation_Sanitized'
+    # Dir2 = Dir + '/Manual_Delineation_Sanitized'  # in case we want to have a fixed name for manual label , we should uncomment this
     class nucleus:
         Cropped = ''
         Full = ''
@@ -224,17 +235,3 @@ def InputNames(Dir , NucleusName):
 
     return Files
 
-
-def checkingSubFolders(params):
-
-    params.directories.Input = checkInputDirectory( params.directories.Input.Address , params.TrainParams.Nucleus.Name )
-    if params.directories.Input.MultipleTest:
-        Address = [ params.directories.Input.Address + '/' + params.directories.Input.Files[0] ]
-        for d in range(len(params.directories.Input.Files)-1):
-            Address.append( params.directories.Input.Address + '/' + params.directories.Input.Files[d+1] )
-    else:
-        Address = [params.directories.Input.Address]
-
-    params.directories.Input.Address = Address
-    
-    return params
