@@ -8,8 +8,6 @@ if AugNum > L:
     AugNum = L-1
 
 b = list(permutations(range(L),AugNum))
-C = B[L]
-C
 
 ind = 1
 b = np.delete(C,C.index(ind))
