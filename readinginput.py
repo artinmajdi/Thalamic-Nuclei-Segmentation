@@ -1,6 +1,6 @@
 import nibabel as nib
 import collections
-from smallCodes import listSubFolders
+from smallFuncs import listSubFolders
 from normalizeInput import normalizeMain
 
 struct = collections.namedtuple('struct' , 'Image CropMask ThalamusMask Header Affine InputAddress')

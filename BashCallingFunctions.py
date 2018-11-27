@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from smallFuncs import mkDir
 
 def RigidRegistration(subject , Template):
 
@@ -18,7 +19,7 @@ def BiasCorrection(subject):
     if ( not os.path.isfile(outP) ) and ( '_bias_corr_Cropped' not in subject.Cropped ):
         os.system("N4BiasFieldCorrection -d 3 -i %s -o %s -b [200] -s 3 -c [50x50x30x20,1e-6]"%( inP, outP )  )
 
-def Cropping(subject):
+def Bash_Cropping(subject):
 
     inP  = subject.Address + '/' + subject.origImage + '_bias_corr.nii.gz'
     outP = subject.Address + '/' + subject.origImage + '_bias_corr_Cropped.nii.gz'
@@ -35,28 +36,17 @@ def Cropping(subject):
     if ( not os.path.isfile( outP ) ) and ( '_bias_corr_Cropped' not in subject.Cropped ):
         os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
 
-# def NonLinearFunc(Subjects,AugLen):
+def Bash_AugmentNonLinear(Image , Mask , Reference , output):
 
-#     SubjectNames = list(Subjects.keys())
-#     L = len(SubjectNames)
+    OutputImage = output.Address + '/' + output.Image + '.nii.gz' 
+    OutputMask  = output.Address + '/Manual_Delineation_Sanitized/' + output.Mask + '.nii.gz' 
+    mkDir(output.Address + '/deformation')
+    mkDir(output.Address + '/Manual_Delineation_Sanitized')            
+    
 
-#     for imInd in range(L):
-#         nameSubject = SubjectNames[imInd]
-#         subject  = Subjects[nameSubject]
+    if not os.path.isfile(OutputImage):
+        os.system("ANTS 3 -m CC[%s, %s,1,5] -t SyN[0.25] -r Gauss[3,0] -o %s -i 30x90x20 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000"%(Image , Reference , output.Address + '/deformation/test') )
+        os.system("antsApplyTransforms -d 3 -i %s -o %s -r %s -t %s"%(Image , OutputImage , Image , output.Address + '/deformation/testWarp.nii.gz') )
 
-#         lst = indexFunc(L,AugLen, imInd)
-
-#         for augInd in lst:
-#             nameSubjectRef = SubjectNames[augInd]
-#             subjectRef = Subjects[nameSubjectRef]
-
-#             Image     = subject.Address    + '/' + subject.origImage    + '_bias_corr_Cropped.nii.gz'           
-#             Reference = subjectRef.Address + '/' + subjectRef.origImage + '_bias_corr_Cropped.nii.gz'
-#             Output    = subject.Address    + '/' + subject.origImage    + '_bias_corr_Cropped_Aug' + str(augInd) + '.nii.gz'
-
-        
-#         #     Image = 'crop_LIFUP004_MPRAGE_WMn.nii.gz'
-#         #     Reference = '../case3/crop_LIFUP003_MPRAGE_WMn.nii.gz'
-#         #     Output = 'aug1.nii.gz'
-#             os.system("ANTS 3 -m CC[%s, %s,1,5] -t SyN[0.25] -r Gauss[3,0] -o test -i 30x90x20 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000"%(Image , Reference) )
-#             os.system("antsApplyTransforms -d 3 -i %s -o %s -r %s -t testWarp.nii.gz"%(Image , Output , Image) )
+    if not os.path.isfile(OutputMask):
+        os.system("antsApplyTransforms -d 3 -i %s -o %s -r %s -t %s"%(Mask , OutputMask , Mask , output.Address + '/deformation/testWarp.nii.gz' ) )

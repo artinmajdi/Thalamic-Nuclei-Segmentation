@@ -1,5 +1,5 @@
 import os
-from smallCodes import NucleiSelection , whichCropMode , fixDirectoryLastDashSign , augmentLengthChecker , InputNames , checkInputDirectory , funcExpDirectories
+from smallFuncs import NucleiSelection , whichCropMode , fixDirectoryLastDashSign , augmentLengthChecker , InputNames , checkInputDirectory , funcExpDirectories
 
 #  ---------------------- model Params ----------------------
 
@@ -49,11 +49,11 @@ class reference:
 
 class Augment:
     Mode = True
-    LinearAugmentLength = 3
+    LinearAugmentLength = 2
     NonLinearAugmentLength = 3
-    Rotation = False
-    Shift = False
-    NonRigidWarp = True
+    Rotation = True
+    Shift = True
+    NonRigidWarp = False
 
 
 Augment = augmentLengthChecker(Augment)

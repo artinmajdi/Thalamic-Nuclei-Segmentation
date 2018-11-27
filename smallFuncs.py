@@ -64,44 +64,43 @@ def saveImage(Image , Affine , Header , outDirectory):
     out.get_header = Header
     nib.save(out , outDirectory)
 
-def saveMain(Input):
-
-    outDirectory = ''
-    for AugIx in Input.Image.shape[3]:
-        saveImage(Input.Image[...,AugIx] , Input.Affine , Input.Header , outDirectory)
-        saveImage(Input.CropMask[...,AugIx] , Input.Affine , Input.Header , outDirectory)
-        saveImage(Input.ThalamusMask[...,AugIx] , Input.Affine , Input.Header , outDirectory)
-
 def terminalEntries(params):
 
     for en in range(len(sys.argv)):
         entry = sys.argv[en]
 
         if entry.lower() == '-g':  # gpu num
-            params.TrainParams.gpuNum = sys.argv[en+1]
+            params.directories.Experiment.HardParams.Machine.GPU_Index = sys.argv[en+1] 
 
         elif entry.lower() == '-o':  # output directory
-            params.directories.Output = sys.argv[en+1]
+            params.directories.Train.Model = mkDir(sys.argv[en+1] + '/Experiment' + str(params.directories.Experiment.Experiment_Index) + '/models'  + '/SubExperiment' + str(params.directories.Experiment.SubExperiment_Index) + '_' + params.directories.Experiment.Tag) 
+            params.directories.Test.Result = mkDir(sys.argv[en+1] + '/Experiment' + str(params.directories.Experiment.Experiment_Index) + '/Results' + '/SubExperiment' + str(params.directories.Experiment.SubExperiment_Index) + '_' + params.directories.Experiment.Tag) 
 
         elif entry.lower() == '-m':  # which machine; server localPC local Laptop
-            params.TrainParams.whichMachine = sys.argv[en+1]
+            params.directories.Experiment.HardParams.Machine.WhichMachine = sys.argv[en+1] 
 
         elif entry.lower() == '-n':  # nuclei index
             if sys.argv[en+1].lower() == 'all':
-                params.TrainParams.NucleiIndex = np.append([1,2,4567],range(4,14))
+                params.directories.Experiment.Nucleus.Index = np.append([1,2,4567],range(4,14))
 
             elif sys.argv[en+1][0] == '[':
                 B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
-                params.TrainParams.NucleiIndex = [int(k) for k in B]
+                params.directories.Experiment.Nucleus.Index = [int(k) for k in B]
 
             else:
-                params.TrainParams.NucleiIndex = [int(sys.argv[en+1])]
+                params.directories.Experiment.Nucleus.Index = [int(sys.argv[en+1])]
+
+            params.directories.Experiment.Nucleus.Name = "check the indexes entered by user!"
 
         elif entry.lower() == '-i': # input image or directory
-            params.directories.Input = checkInputDirectory( sys.argv[en+1] ,params.TrainParams.NucleiIndex[0])                
+            params.directories.Experiment.Address = sys.argv[en+1] 
+            params.directories.Train.Address =  sys.argv[en+1] + '/Experiment' + str(params.directories.Experiment.Experiment_Index) + '/Train'
+            params.directories.Train.Input   = checkInputDirectory( params.directories.Train.Address ,params.directories.Experiment.Nucleus.Name)
+            params.directories.Test.Address  =  sys.argv[en+1] + '/Experiment' + str(params.directories.Experiment.Experiment_Index) + '/Test'
+            params.directories.Test.Input    = checkInputDirectory( params.directories.Test.Address ,params.directories.Experiment.Nucleus.Name)
 
         elif entry.lower() == '-TemplateMask':  # template Mask
-            params.directories.TemplateMask = sys.argv[en+1]
+            params.directories.Experiment.HardParams.Template.Mask = sys.argv[en+1] 
 
     return params
 

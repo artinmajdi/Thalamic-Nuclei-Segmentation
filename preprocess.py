@@ -6,9 +6,9 @@ import numpy as np
 import params
 import cropping
 from augment import augmentMain
-from BashCallingFunctions import RigidRegistration, Cropping, BiasCorrection
+from BashCallingFunctions import RigidRegistration, Bash_Cropping, BiasCorrection
 from readinginput import mainloadingImage
-from smallCodes import mkDir , listSubFolders , choosingSubject , NucleiSelection , terminalEntries , checkInputDirectory, funcExpDirectories# , checkingSubFolders
+from smallFuncs import mkDir , listSubFolders , choosingSubject , NucleiSelection , terminalEntries , checkInputDirectory, funcExpDirectories# , checkingSubFolders
 from normalizeInput import normalizeMain
 
 ###  check 3T 7T dimension and interpolation
@@ -38,7 +38,7 @@ for mode in ['Train','Test']:
         RigidRegistration( subject , params.directories.Experiment.HardParams.Template)
 
         print(mode, 'Cropping: ',sj)
-        Cropping( subject )
+        Bash_Cropping( subject )
 
 augmentMain( params , 'NonLinear')
 
