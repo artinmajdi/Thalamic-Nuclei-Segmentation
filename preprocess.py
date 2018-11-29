@@ -14,8 +14,6 @@ from normalizeInput import normalizeMain
 ###  check 3T 7T dimension and interpolation
 #### check image format and convert to nifti
 
-subj = params.directories.Train.Input.Subjects
-
 params = terminalEntries(params)
 
 for mode in ['Train','Test']:

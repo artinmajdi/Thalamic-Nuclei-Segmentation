@@ -49,12 +49,11 @@ class reference:
 
 class Augment:
     Mode = True
-    LinearAugmentLength = 2
+    LinearAugmentLength = 2  # number
     NonLinearAugmentLength = 3
     Rotation = True
     Shift = True
     NonRigidWarp = False
-
 
 Augment = augmentLengthChecker(Augment)
 
