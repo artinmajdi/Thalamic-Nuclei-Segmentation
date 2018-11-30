@@ -72,11 +72,19 @@ class Cropping:
     Mode = True
     Method = whichCropMode(directories.Experiment.Nucleus.Name, method)  # it changes the mode to 1 if we're analyzing the Thalamus
 
+class BiasCorrection:
+    Mode = True
+
+class Debug:
+    Mode = True
 
 class preprocess:
+    Mode = True
+    Debug = Debug
     Augment = Augment
     Cropping = Cropping
     Normalize = Normalize
+    BiasCorrection = BiasCorrection
 
 del Augment, Cropping, Normalize, template, reference, nucleus, experiment, machine, model, image, hardParams, method
 

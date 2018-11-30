@@ -8,7 +8,7 @@ import cropping
 from augment import augmentMain
 from BashCallingFunctions import RigidRegistration, Bash_Cropping, BiasCorrection
 from readinginput import mainloadingImage
-from smallFuncs import mkDir , listSubFolders , choosingSubject , NucleiSelection , terminalEntries , checkInputDirectory, funcExpDirectories# , checkingSubFolders
+from smallFuncs import mkDir , listSubFolders , choosingSubject , NucleiSelection , terminalEntries , checkInputDirectory, funcExpDirectories , inputNamesCheck
 from normalizeInput import normalizeMain
 
 ###  check 3T 7T dimension and interpolation
@@ -16,27 +16,29 @@ from normalizeInput import normalizeMain
 
 params = terminalEntries(params)
 
+# params.directories.
 for mode in ['Train','Test']:
-
-    dirr = params.directories.Train if mode == 'Train' else params.directories.Test
+ 
+    params = inputNamesCheck(params,mode)     
+    dirr = params.directories.Train if mode == 'Train' else params.directories.Test     
     for sj in dirr.Input.Subjects :
         subject = dirr.Input.Subjects[sj]
         print(mode, 'BiasCorrection: ',sj)
-        BiasCorrection( subject)
+        BiasCorrection( subject , params.preprocess)
 
-augmentMain( params , 'Linear')
+augmentMain( params , 'Linear' )
 for mode in ['Train','Test']:
 
-    params.directories = funcExpDirectories(params.directories.Experiment)
+    params = inputNamesCheck(params,mode) 
     dirr = params.directories.Train if mode == 'Train' else params.directories.Test
     for sj in dirr.Input.Subjects :
         subject = dirr.Input.Subjects[sj]
 
         print(mode, 'RigidRegistration: ',sj)
-        RigidRegistration( subject , params.directories.Experiment.HardParams.Template)
+        RigidRegistration( subject , params.directories.Experiment.HardParams.Template , params.preprocess)
 
         print(mode, 'Cropping: ',sj)
-        Bash_Cropping( subject )
+        Bash_Cropping( subject , params.preprocess)
 
 augmentMain( params , 'NonLinear')
 

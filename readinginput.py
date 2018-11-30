@@ -7,11 +7,11 @@ struct = collections.namedtuple('struct' , 'Image CropMask ThalamusMask Header A
 
 def mainloadingImage(params , Input):
     
-    im = nib.load(Input.Address + '/' + Input.Files.Cropped + '.nii.gz')
+    im = nib.load(Input.Address + '/' + Input.Files.ImageProcessed + '.nii.gz')
 
     class InputImages:
         Image   = normalizeMain( params , im.get_data() )
-        Label   = nib.load(Input.Files.Nucleus.Address + '/' + Input.Files.Nucleus.Cropped + '.nii.gz').get_data()
+        Label   = nib.load(Input.Files.label.Address + '/' + Input.Files.label.LabelProcessed + '.nii.gz').get_data()
         Header  = im.header 
         Affine  = im.affine 
         Address = Input.Address

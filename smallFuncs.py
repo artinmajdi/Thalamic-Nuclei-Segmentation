@@ -3,6 +3,7 @@ import nibabel as nib
 import numpy as np
 import sys
 from collections import namedtuple
+from shutil import copyfile
 
 def NucleiSelection(ind):
 
@@ -112,9 +113,7 @@ def checkInputDirectory(Dir,NucleusName):
     subjects = {}
     if multipleTest:     
         for sf in subfolders:
-            files = InputNames(Dir + '/' + sf ,NucleusName)
-            subjects[sf] = files
-
+            subjects[sf] = InputNames(Dir + '/' + sf ,NucleusName)
     else:
         subjects['subject'] = files
 
@@ -194,43 +193,123 @@ def augmentLengthChecker(augment):
 
 def InputNames(Dir , NucleusName):
 
-    class Files:
+    class deformation:
+        Address = ''
+        testWarp = ''
+        testInverseWarp = ''
+        testAffine = ''
+
+    class temp:
         CropMask = ''
         Cropped = ''
         BiasCorrected = ''
-        origImage = ''
-        Nucleus = ''
+        Deformation = deformation
+        Address = ''
+
+    class tempLabel:
+        Address = ''
+        
+    class label:
+        LabelProcessed = ''
+        LabelOriginal = ''
+        Temp = tempLabel
+        Address = ''
+        
+    class Files:
+        ImageOriginal = ''
+        ImageProcessed = ''
+        Label = label
+        Temp = temp
         Address = Dir
 
-    Dir2 = Dir
+
+    Files.Temp.Address = Dir + '/Temp'
+    Files.Label.Address =  ''
     for d in os.listdir(Dir):
         if '.nii.gz' in d:
-            if 'CropMask.nii.gz' in d:
-                Files.CropMask = d.split('.nii.gz')[0]
-            elif '_bias_corr.nii.gz' in d:
-                Files.BiasCorrected = d.split('.nii.gz')[0]
-            elif '_bias_corr_Cropped.nii.gz' in d:
-                Files.Cropped = d.split('.nii.gz')[0]                
+            if '_PP.nii.gz' in d:
+                Files.ImageProcessed = d.split('.nii.gz')[0]           
             else:
-                Files.origImage = d.split('.nii.gz')[0]
-        else:  # this represent the manual labels folder
-            Dir2 = Dir + '/' + d 
+                Files.ImageOriginal = d.split('.nii.gz')[0]
+        else:
+            if 'Temp' in os.listdir(Dir):
+                Files.Temp.Address = Dir + '/' + d
+            else:                
+                Files.Label.Address = Dir + '/' + d 
 
-    # Dir2 = Dir + '/Manual_Delineation_Sanitized'  # in case we want to have a fixed name for manual label , we should uncomment this
-    class nucleus:
-        Cropped = ''
-        Full = ''
-        Address = Dir2
 
-    for d in os.listdir(Dir2):
+    if os.path.exists(Files.Label.Address):
+
+        for d in os.listdir(Files.Label.Address):
+            if '.nii.gz' in d:
+                if '_PP.nii.gz' in d:
+                    Files.Label.LabelProcessed = d.split('.nii.gz')[0]           
+                else:
+                    Files.Label.LabelOriginal = d.split('.nii.gz')[0]
+            elif 'temp' in d:
+                Files.Label.Temp.Address = Files.Label.Address + '/temp'
+
+    if not os.path.exists(Files.Temp.Address):
+        mkDir(Files.Temp.Address)
+
+
+    for d in os.listdir(Files.Temp.Address):
+
         if '.nii.gz' in d:
-            if NucleusName + '_Cropped.nii.gz' in d:
-                nucleus.Cropped = d.split('.nii.gz')[0]                
-            elif NucleusName + '.nii.gz' in d:
-                nucleus.Full = d.split('.nii.gz')[0]
+            if 'CropMask.nii.gz' in d:
+                Files.Temp.CropMask = d.split('.nii.gz')[0]
+            elif '_bias_corr.nii.gz' in d:
+                Files.Temp.BiasCorrected = d.split('.nii.gz')[0]
+            elif '_bias_corr_Cropped.nii.gz' in d:
+                Files.Temp.Cropped = d.split('.nii.gz')[0]                
+            else:
+                Files.Temp.origImage = d.split('.nii.gz')[0]
 
+        elif 'deformation' in d:
+            Files.Temp.Deformation.Address = Files.Temp.Address + '/' + d
 
-    Files.Nucleus = nucleus
+            for d in os.listdir( Files.Temp.Deformation.Address ):                
+                if 'testWarp.nii.gz' in d:
+                    Files.Temp.Deformation.testWarp = d.split('.nii.gz')[0]
+                elif 'testInverseWarp.nii.gz' in d:
+                    Files.Temp.Deformation.testInverseWarp = d.split('.nii.gz')[0]
+                elif 'testAffine.txt' in d:
+                    Files.Temp.Deformation.testAffine = d.split('.nii.gz')[0]   
+
 
     return Files
 
+def inputNamesCheck(params,mode):
+
+    dirr = params.directories.Train if mode == 'Train' else params.directories.Test
+    for sj in dirr.Input.Subjects:
+        subject = dirr.Input.Subjects[sj]
+
+        imOrig = subject.Address + '/' + subject.Files.ImageOriginal + '.nii.gz'
+        mskOrig = subject.Address + '/' + subject.Files.Label.LabelOriginal + '.nii.gz'
+
+        if not subject.Files.ImageProcessed:
+            imProc = subject.Address + '/' + subject.Files.ImageProcessed + '.nii.gz'
+            mskProc = subject.Address + '/' + subject.Files.Label.LabelProcessed + '.nii.gz'
+        else:
+            imProc = subject.Address + '/' + subject.Files.ImageOriginal + '_PP.nii.gz'
+            mskProc = subject.Address + '/' + subject.Files.Label.LabelOriginal + '_PP.nii.gz'
+
+            
+        if params.preprocess.Mode:
+            copyfile( imOrig , imProc)
+            copyfile( mskOrig , mskProc)
+
+        elif (os.path.isfile(imOrig)) and (not os.path.isfile(imProc)):
+            copyfile(imOrig , imProc)            
+            copyfile( mskOrig , mskProc)
+
+
+        if params.preprocess.Debug.Mode or params.preprocess.Cropping.Mode or params.preprocess.Augment.NonRigidWarp:
+            mkDir(subject.Label.Address + '/Temp')
+            mkDir(subject.Address + '/Temp')
+
+
+    params.directories = funcExpDirectories(params.directories.Experiment)
+    return params
+    
