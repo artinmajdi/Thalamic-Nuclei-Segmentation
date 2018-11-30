@@ -107,16 +107,16 @@ def terminalEntries(params):
 
 def checkInputDirectory(Dir,NucleusName):
 
-    multipleTest , files , subfolders = checkMultipleTestOrNot(Dir,NucleusName)
-
+    # multipleTest , files , subfolders = checkMultipleTestOrNot(Dir,NucleusName)
 
     subjects = {}
-    if multipleTest:     
-        for sf in subfolders:
-            subjects[sf] = InputNames(Dir + '/' + sf ,NucleusName)
-    else:
-        subjects['subject'] = files
+    for sf in os.listdir(Dir):
+        subjects[sf] = InputNames(Dir + '/' + sf ,NucleusName)
 
+    if len(subjects) == 1:
+        multipleTest = False
+    else:
+        multipleTest = True
 
     class Input:
         Address = fixDirectoryLastDashSign(Dir)
@@ -140,14 +140,14 @@ def checkMultipleTestOrNot(Dir,NucleusName):
         multipleTest = 'False'
     else:
         subjects = os.listdir(Dir)
-
-        flag = 0
+        
+        flag = False
         for ss in subjects:
             if '.nii.gz' in ss:
-                flag = 1
+                flag = True
                 break
 
-        if flag == 1:
+        if flag or len(subjects) == 1:
             multipleTest = 'False'
             files = InputNames(Dir,NucleusName)
         else:
@@ -223,34 +223,33 @@ def InputNames(Dir , NucleusName):
         Address = Dir
 
 
-    Files.Temp.Address = Dir + '/Temp'
+    
     Files.Label.Address =  ''
+    flagTemp = False
     for d in os.listdir(Dir):
         if '.nii.gz' in d:
+            flagTemp = True
             if '_PP.nii.gz' in d:
                 Files.ImageProcessed = d.split('.nii.gz')[0]           
             else:
                 Files.ImageOriginal = d.split('.nii.gz')[0]
-        else:
-            if 'Temp' in os.listdir(Dir):
-                Files.Temp.Address = Dir + '/' + d
-            else:                
+        elif 'temp' not in d:             
                 Files.Label.Address = Dir + '/' + d 
 
+    if flagTemp:
+        Files.Temp.Address = mkDir(Dir + '/temp')
 
     if os.path.exists(Files.Label.Address):
 
+        Files.Label.Temp.Address =  mkDir(Files.Label.Address + '/temp')
         for d in os.listdir(Files.Label.Address):
-            if '.nii.gz' in d:
-                if '_PP.nii.gz' in d:
-                    Files.Label.LabelProcessed = d.split('.nii.gz')[0]           
-                else:
-                    Files.Label.LabelOriginal = d.split('.nii.gz')[0]
+            if NucleusName + '.nii.gz' in d:
+                Files.Label.LabelOriginal = d.split('.nii.gz')[0]
+            elif NucleusName + '_PP.nii.gz' in d:
+                Files.Label.LabelProcessed = d.split('.nii.gz')[0]           
+                    
             elif 'temp' in d:
-                Files.Label.Temp.Address = Files.Label.Address + '/temp'
-
-    if not os.path.exists(Files.Temp.Address):
-        mkDir(Files.Temp.Address)
+                Files.Label.Temp.Address = Files.Label.Address + '/' + d
 
 
     for d in os.listdir(Files.Temp.Address):
@@ -285,15 +284,15 @@ def inputNamesCheck(params,mode):
     for sj in dirr.Input.Subjects:
         subject = dirr.Input.Subjects[sj]
 
-        imOrig = subject.Address + '/' + subject.Files.ImageOriginal + '.nii.gz'
-        mskOrig = subject.Address + '/' + subject.Files.Label.LabelOriginal + '.nii.gz'
+        imOrig = subject.Address + '/' + subject.ImageOriginal + '.nii.gz'
+        mskOrig = subject.Label.Address + '/' + subject.Label.LabelOriginal + '.nii.gz'
 
-        if not subject.Files.ImageProcessed:
-            imProc = subject.Address + '/' + subject.Files.ImageProcessed + '.nii.gz'
-            mskProc = subject.Address + '/' + subject.Files.Label.LabelProcessed + '.nii.gz'
+        if subject.ImageProcessed:
+            imProc = subject.Address + '/' + subject.ImageProcessed + '.nii.gz'
+            mskProc = subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz'
         else:
-            imProc = subject.Address + '/' + subject.Files.ImageOriginal + '_PP.nii.gz'
-            mskProc = subject.Address + '/' + subject.Files.Label.LabelOriginal + '_PP.nii.gz'
+            imProc = subject.Address + '/' + subject.ImageOriginal + '_PP.nii.gz'
+            mskProc = subject.Label.Address + '/' + subject.Label.LabelOriginal + '_PP.nii.gz'
 
             
         if params.preprocess.Mode:
@@ -303,11 +302,6 @@ def inputNamesCheck(params,mode):
         elif (os.path.isfile(imOrig)) and (not os.path.isfile(imProc)):
             copyfile(imOrig , imProc)            
             copyfile( mskOrig , mskProc)
-
-
-        if params.preprocess.Debug.Mode or params.preprocess.Cropping.Mode or params.preprocess.Augment.NonRigidWarp:
-            mkDir(subject.Label.Address + '/Temp')
-            mkDir(subject.Address + '/Temp')
 
 
     params.directories = funcExpDirectories(params.directories.Experiment)
