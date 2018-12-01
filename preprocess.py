@@ -19,7 +19,7 @@ params = terminalEntries(params)
 # params.directories.
 for mode in ['Train','Test']:
  
-    params = inputNamesCheck(params,mode) 
+#     params = inputNamesCheck(params,mode) 
     dirr = params.directories.Train if mode == 'Train' else params.directories.Test     
     for sj in dirr.Input.Subjects :
         subject = dirr.Input.Subjects[sj]
@@ -27,9 +27,10 @@ for mode in ['Train','Test']:
         BiasCorrection( subject , params.preprocess)
 
 augmentMain( params , 'Linear' )
+params.directories = funcExpDirectories(params.directories.Experiment)
 for mode in ['Train','Test']:
 
-    params = inputNamesCheck(params,mode) 
+    
     dirr = params.directories.Train if mode == 'Train' else params.directories.Test
     for sj in dirr.Input.Subjects :
         subject = dirr.Input.Subjects[sj]
@@ -41,6 +42,7 @@ for mode in ['Train','Test']:
         Bash_Cropping( subject , params.preprocess)
 
 augmentMain( params , 'NonLinear')
+params.directories = funcExpDirectories(params.directories.Experiment)
 
 
 

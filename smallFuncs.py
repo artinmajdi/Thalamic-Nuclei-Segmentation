@@ -216,7 +216,7 @@ def InputNames(Dir , NucleusName):
         Address = ''
         
     class Files:
-        ImageOriginal = ''
+        ImageOriginal = '' # WMn_MPRAGE'
         ImageProcessed = ''
         Label = label
         Temp = temp
@@ -294,14 +294,14 @@ def inputNamesCheck(params,mode):
             imProc = subject.Address + '/' + subject.ImageOriginal + '_PP.nii.gz'
             mskProc = subject.Label.Address + '/' + subject.Label.LabelOriginal + '_PP.nii.gz'
 
-            
-        if params.preprocess.Mode:
-            copyfile( imOrig , imProc)
-            copyfile( mskOrig , mskProc)
+        if '_Aug' not in sj:
+            if params.preprocess.Mode:
+                copyfile( imOrig , imProc)
+                copyfile( mskOrig , mskProc)
 
-        elif (os.path.isfile(imOrig)) and (not os.path.isfile(imProc)):
-            copyfile(imOrig , imProc)            
-            copyfile( mskOrig , mskProc)
+            elif (os.path.isfile(imOrig)) and (not os.path.isfile(imProc)):
+                copyfile(imOrig , imProc)            
+                copyfile( mskOrig , mskProc)
 
 
     params.directories = funcExpDirectories(params.directories.Experiment)

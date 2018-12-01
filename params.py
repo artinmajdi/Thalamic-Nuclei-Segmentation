@@ -48,7 +48,7 @@ class reference:
     Address = ''
 
 class Augment:
-    Mode = True
+    Mode = False
     LinearAugmentLength = 2  # number
     NonLinearAugmentLength = 3
     Rotation = True
@@ -73,7 +73,7 @@ class Cropping:
     Method = whichCropMode(directories.Experiment.Nucleus.Name, method)  # it changes the mode to 1 if we're analyzing the Thalamus
 
 class BiasCorrection:
-    Mode = True
+    Mode = False
 
 class Debug:
     Mode = True

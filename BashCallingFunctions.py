@@ -42,7 +42,7 @@ def Bash_Cropping(subject , preprocess):
         crop = subject.Temp.Address + '/CropMask.nii.gz'
         os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
 
-        if preprocess.Debug.mode:           
+        if preprocess.Debug.Mode:           
             copyfile(outP , subject.Label.Temp.Address + '/' + subject.Label.LabelOriginal + '_Cropped.nii.gz')        
 
 def Bash_AugmentNonLinear(subject , subjectRef , outputAddress): # Image , Mask , Reference , output):
