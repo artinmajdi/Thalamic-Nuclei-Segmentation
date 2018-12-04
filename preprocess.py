@@ -15,16 +15,19 @@ from normalizeInput import normalizeMain
 #### check image format and convert to nifti
 
 params = terminalEntries(params)
+params = inputNamesCheck(params)
 
-# params.directories.
+
 for mode in ['Train','Test']:
  
-#     params = inputNamesCheck(params,mode) 
+    if params.preprocess.TestOnly and 'Train' in mode:
+        continue
+
     dirr = params.directories.Train if mode == 'Train' else params.directories.Test     
     for sj in dirr.Input.Subjects :
         subject = dirr.Input.Subjects[sj]
         print(mode, 'BiasCorrection: ',sj)
-        BiasCorrection( subject , params.preprocess)
+        BiasCorrection( subject , params)
 
 augmentMain( params , 'Linear' )
 params.directories = funcExpDirectories(params.directories.Experiment)
@@ -39,7 +42,7 @@ for mode in ['Train','Test']:
         RigidRegistration( subject , params.directories.Experiment.HardParams.Template , params.preprocess)
 
         print(mode, 'Cropping: ',sj)
-        Bash_Cropping( subject , params.preprocess)
+        Bash_Cropping( subject , params)
 
 augmentMain( params , 'NonLinear')
 params.directories = funcExpDirectories(params.directories.Experiment)

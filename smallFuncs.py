@@ -5,38 +5,40 @@ import sys
 from collections import namedtuple
 from shutil import copyfile
 
-def NucleiSelection(ind):
+def NucleiSelection(ind = 1,organ = 'THALAMUS'):
 
-    if ind == 1:
-        NucleusName = '1-THALAMUS'
-    elif ind == 2:
-        NucleusName = '2-AV'
-    elif ind == 4567:
-        NucleusName = '4567-VL'
-    elif ind == 4:
-        NucleusName = '4-VA'
-    elif ind == 5:
-        NucleusName = '5-VLa'
-    elif ind == 6:
-        NucleusName = '6-VLP'
-    elif ind == 7:
-        NucleusName = '7-VPL'
-    elif ind == 8:
-        NucleusName = '8-Pul'
-    elif ind == 9:
-        NucleusName = '9-LGN'
-    elif ind == 10:
-        NucleusName = '10-MGN'
-    elif ind == 11:
-        NucleusName = '11-CM'
-    elif ind == 12:
-        NucleusName = '12-MD-Pf'
-    elif ind == 13:
-        NucleusName = '13-Hb'
-    elif ind == 14:
-        NucleusName = '14-MTT'
+    if 'THALAMUS' in organ:
+        if ind == 1:
+            NucleusName = '1-THALAMUS'
+        elif ind == 2:
+            NucleusName = '2-AV'
+        elif ind == 4567:
+            NucleusName = '4567-VL'
+        elif ind == 4:
+            NucleusName = '4-VA'
+        elif ind == 5:
+            NucleusName = '5-VLa'
+        elif ind == 6:
+            NucleusName = '6-VLP'
+        elif ind == 7:
+            NucleusName = '7-VPL'
+        elif ind == 8:
+            NucleusName = '8-Pul'
+        elif ind == 9:
+            NucleusName = '9-LGN'
+        elif ind == 10:
+            NucleusName = '10-MGN'
+        elif ind == 11:
+            NucleusName = '11-CM'
+        elif ind == 12:
+            NucleusName = '12-MD-Pf'
+        elif ind == 13:
+            NucleusName = '13-Hb'
+        elif ind == 14:
+            NucleusName = '14-MTT'
 
-    return NucleusName
+        FullIndexes = [1,2,4567,4,5,6,7,8,9,10,11,12,13,14]
+    return NucleusName, FullIndexes
 
 def listSubFolders(Dir_Prior):
 
@@ -208,6 +210,7 @@ def InputNames(Dir , NucleusName):
 
     class tempLabel:
         Address = ''
+        Cropped = ''
         
     class label:
         LabelProcessed = ''
@@ -229,7 +232,7 @@ def InputNames(Dir , NucleusName):
     for d in os.listdir(Dir):
         if '.nii.gz' in d:
             flagTemp = True
-            if '_PP.nii.gz' in d:
+            if '_PProcessed.nii.gz' in d:
                 Files.ImageProcessed = d.split('.nii.gz')[0]           
             else:
                 Files.ImageOriginal = d.split('.nii.gz')[0]
@@ -245,12 +248,15 @@ def InputNames(Dir , NucleusName):
         for d in os.listdir(Files.Label.Address):
             if NucleusName + '.nii.gz' in d:
                 Files.Label.LabelOriginal = d.split('.nii.gz')[0]
-            elif NucleusName + '_PP.nii.gz' in d:
+            elif NucleusName + '_PProcessed.nii.gz' in d:
                 Files.Label.LabelProcessed = d.split('.nii.gz')[0]           
                     
             elif 'temp' in d:
                 Files.Label.Temp.Address = Files.Label.Address + '/' + d
 
+                for d in os.listdir(Files.Label.Temp.Address):
+                    if '_Cropped.nii.gz' in d:
+                        Files.Label.Temp.Cropped = d.split('.nii.gz')[0]
 
     for d in os.listdir(Files.Temp.Address):
 
@@ -278,31 +284,43 @@ def InputNames(Dir , NucleusName):
 
     return Files
 
-def inputNamesCheck(params,mode):
+def inputNamesCheck(params):
+   
+    for mode in ['Train' , 'Test']:
 
-    dirr = params.directories.Train if mode == 'Train' else params.directories.Test
-    for sj in dirr.Input.Subjects:
-        subject = dirr.Input.Subjects[sj]
+        if params.preprocess.TestOnly and 'Train' in mode:
+            continue
+            
+        dirr = params.directories.Train if 'Train' in mode else params.directories.Test
 
-        imOrig = subject.Address + '/' + subject.ImageOriginal + '.nii.gz'
-        mskOrig = subject.Label.Address + '/' + subject.Label.LabelOriginal + '.nii.gz'
+        for sj in dirr.Input.Subjects:
+            subject = dirr.Input.Subjects[sj]
 
-        if subject.ImageProcessed:
-            imProc = subject.Address + '/' + subject.ImageProcessed + '.nii.gz'
-            mskProc = subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz'
-        else:
-            imProc = subject.Address + '/' + subject.ImageOriginal + '_PP.nii.gz'
-            mskProc = subject.Label.Address + '/' + subject.Label.LabelOriginal + '_PP.nii.gz'
+            if params.preprocess.Debug.debugExist:
+                
+                files = os.listdir(subject.Address)
 
-        if '_Aug' not in sj:
-            if params.preprocess.Mode:
-                copyfile( imOrig , imProc)
-                copyfile( mskOrig , mskProc)
+                flagPPExist = False                
+                for si in files:
+                    if '_PProcessed' in si:
+                        flagPPExist = True
+                        break
 
-            elif (os.path.isfile(imOrig)) and (not os.path.isfile(imProc)):
-                copyfile(imOrig , imProc)            
-                copyfile( mskOrig , mskProc)
+                if not flagPPExist: 
+                    sys.exit('preprocess files doesn\'t exist ' + 'Subject: ' + sj + ' Dir: ' + subject.Address)
 
+            else:
+
+                imOrig = subject.Address + '/' + subject.ImageOriginal + '.nii.gz'                
+                imProc = subject.Address + '/' + subject.ImageOriginal + '_PProcessed.nii.gz'
+                copyfile( imOrig  , imProc )
+
+                for ind in params.directories.Experiment.Nucleus.FullIndexes:                    
+                    NucleusName, _ = NucleiSelection(ind , params.directories.Experiment.Nucleus.Organ)
+
+                    mskOrig = subject.Label.Address + '/' + NucleusName + '.nii.gz'
+                    mskProc = subject.Label.Address + '/' + NucleusName + '_PProcessed.nii.gz'                                        
+                    copyfile( mskOrig , mskProc)
 
     params.directories = funcExpDirectories(params.directories.Experiment)
     return params

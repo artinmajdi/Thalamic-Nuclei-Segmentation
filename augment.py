@@ -1,33 +1,24 @@
 import numpy as np
 import os 
 from random import shuffle
-from smallFuncs import mkDir, saveImage
+from smallFuncs import mkDir, saveImage , NucleiSelection
 from scipy.misc import imrotate
 import nibabel as nib
 from BashCallingFunctions import Bash_AugmentNonLinear
 
-def funcRotating(files):
+def funcRotating(Image , angle):
+ 
+    for i in range(Image.shape[2]):
+        Image[...,i] = imrotate(Image[...,i],angle)
 
-    angle = np.random.random_integers(10)
+    return Image
 
-    for i in range(files.Image.shape[2]):
-        files.Image[...,i] = imrotate(files.Image[...,i],angle)
-        files.Mask[...,i] = imrotate(files.Mask[...,i],angle)
+def funcShifting(Image , shift):
 
-    return files, angle
+    Image = np.roll(Image,shift[0],axis=0)
+    Image = np.roll(Image,shift[1],axis=1)
 
-def funcShifting(files):
-
-    shftX = np.random.random_integers(10)
-    shftY = np.random.random_integers(10)
-
-    files.Image = np.roll(files.Image,shftX,axis=0)
-    files.Image = np.roll(files.Image,shftY,axis=1)
-
-    files.Mask = np.roll(files.Mask,shftX,axis=0)
-    files.Mask = np.roll(files.Mask,shftY,axis=1)
-
-    return files, [shftX, shftY]
+    return Image
 
 def indexFunc(L,AugmentLength, ind):
 
@@ -40,15 +31,9 @@ def indexFunc(L,AugmentLength, ind):
     rang = rang[:AugmentLength]
     return rang
 
-def LinearFunc(Input, Augment):
+def LinearFunc(params):
 
-    angle = 0
-    shift = [0,0]
-    class files:
-        Image = ''
-        Mask = ''
-
-    Subjects = Input.Subjects
+    Subjects = params.directories.Train.Input.Subjects
     SubjectNames = list(Subjects.keys())
     L = len(SubjectNames)
 
@@ -57,29 +42,42 @@ def LinearFunc(Input, Augment):
         subject  = Subjects[nameSubject]
 
         # lst = indexFunc(L, AugLen, imInd)
-
-
-        for AugIx in range(Augment.LinearAugmentLength):
-            print('image',imInd,'/',L,'augment',AugIx,'/',Augment.LinearAugmentLength)
+        for AugIx in range(params.preprocess.Augment.LinearAugmentLength):
+            print('image',imInd,'/',L,'augment',AugIx,'/',params.preprocess.Augment.LinearAugmentLength)
 
             im = nib.load(subject.Address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image
-            files.Image  = im.get_data()
-            files.Header = im.header
-            files.Affine = im.affine
-            files.Mask   = nib.load(subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data() # 'Cropped' for cropped image
+            Image  = im.get_data()
+            Header = im.header
+            Affine = im.affine
 
-            if Augment.Rotation:
-                files, angle = funcRotating(files)
-            if Augment.Shift:
-                files, shift = funcShifting(files)
-
-            outDirectoryImage = mkDir( Input.Address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Rot_' + str(angle) + '_shift_' + str(shift[0]) + '-' + str(shift[1]) )
-            outDirectoryImage = outDirectoryImage + '/' + subject.ImageProcessed + '.nii.gz'
-            outDirectoryMask = mkDir( Input.Address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Rot_' + str(angle) + '_shift_' + str(shift[0]) + '-' + str(shift[1]) + '/Manual_Delineation_Sanitized')
-            outDirectoryMask = outDirectoryMask + '/' + subject.Label.LabelProcessed + '.nii.gz'
+            angle = np.random.random_integers(10)
+            shift = [ np.random.random_integers(10) , np.random.random_integers(10)]
             
-            saveImage(files.Image , files.Affine , files.Header , outDirectoryImage)
-            saveImage( np.float32(files.Mask > 0.5) , files.Affine , files.Header , outDirectoryMask)
+            outDirectoryImage = mkDir( params.directories.Train.Input.Address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Rot_' + str(angle) + '_shift_' + str(shift[0]) + '-' + str(shift[1]) )
+            outDirectoryMask = mkDir( params.directories.Train.Input.Address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Rot_' + str(angle) + '_shift_' + str(shift[0]) + '-' + str(shift[1]) + '/Labels')
+
+            if params.preprocess.Augment.Rotation:                
+                Image = funcRotating(Image , angle)
+            if params.preprocess.Augment.Shift:
+                Image = funcShifting(Image , shift)
+
+            outDirectoryImage = outDirectoryImage + '/' + subject.ImageProcessed + '.nii.gz'  
+            saveImage(Image , Affine , Header , outDirectoryImage)
+
+
+            for ind in params.directories.Experiment.Nucleus.FullIndexes:
+                NucleusName, _ = NucleiSelection(ind , params.directories.Experiment.Nucleus.Organ)
+
+                Mask   = nib.load(subject.Label.Address + '/' + NucleusName + '_PProcessed.nii.gz').get_data() # 'Cropped' for cropped image
+
+                if params.preprocess.Augment.Rotation:                
+                    Mask = funcRotating(Mask , angle)
+                if params.preprocess.Augment.Shift:
+                    Mask = funcShifting(Mask , shift)
+                                  
+                outDirectoryMask  = outDirectoryMask  + '/' + NucleusName + '_PProcessed.nii.gz'
+                saveImage( np.float32(Mask > 0.5) , Affine , Header , outDirectoryMask)
+
 
 def NonLinearFunc(Input, Augment):
 
@@ -114,7 +112,7 @@ def NonLinearFunc(Input, Augment):
 def augmentMain(params , Flag):
 
     if params.preprocess.Mode and params.preprocess.Augment.Mode and (params.preprocess.Augment.Rotation or params.preprocess.Augment.Shift) and (Flag == 'Linear'):
-        LinearFunc(params.directories.Train.Input , params.preprocess.Augment)
+        LinearFunc(params)
         
     elif params.preprocess.Mode and params.preprocess.Augment.Mode and params.preprocess.Augment.NonRigidWarp and (Flag == 'NonLinear'):
         NonLinearFunc(params.directories.Train.Input , params.preprocess.Augment)

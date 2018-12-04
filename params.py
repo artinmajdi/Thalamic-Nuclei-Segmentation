@@ -22,7 +22,8 @@ class image:
 
 class nucleus:
     Index = [1]
-    Name = NucleiSelection( Index[0] )
+    Organ = 'THALAMUS'
+    Name , FullIndexes = NucleiSelection( Index[0] , Organ)
 
 class hardParams:
     Model    = model
@@ -48,11 +49,11 @@ class reference:
     Address = ''
 
 class Augment:
-    Mode = False
-    LinearAugmentLength = 2  # number
-    NonLinearAugmentLength = 3
+    Mode = True
+    LinearAugmentLength = 1  # number
+    NonLinearAugmentLength = 1
     Rotation = True
-    Shift = True
+    Shift = False
     NonRigidWarp = False
 
 Augment = augmentLengthChecker(Augment)
@@ -76,15 +77,18 @@ class BiasCorrection:
     Mode = False
 
 class Debug:
-    Mode = True
+    doDebug = True
+    debugExist = False
+    justForNow = True # it checks the intermediate steps and if it existed don't reproduce it
 
 class preprocess:
     Mode = True
+    TestOnly = False
     Debug = Debug
     Augment = Augment
     Cropping = Cropping
     Normalize = Normalize
     BiasCorrection = BiasCorrection
 
-del Augment, Cropping, Normalize, template, reference, nucleus, experiment, machine, model, image, hardParams, method
+del Augment, Cropping, Normalize, template, reference, nucleus, experiment, machine, model, image, hardParams, method , Debug , BiasCorrection
 
