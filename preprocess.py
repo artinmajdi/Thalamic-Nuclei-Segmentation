@@ -29,11 +29,11 @@ for mode in ['Train','Test']:
         print(mode, 'BiasCorrection: ',sj)
         BiasCorrection( subject , params)
 
+params.directories = funcExpDirectories(params.directories.Experiment)
 augmentMain( params , 'Linear' )
 params.directories = funcExpDirectories(params.directories.Experiment)
 for mode in ['Train','Test']:
 
-    
     dirr = params.directories.Train if mode == 'Train' else params.directories.Test
     for sj in dirr.Input.Subjects :
         subject = dirr.Input.Subjects[sj]

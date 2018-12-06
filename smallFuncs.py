@@ -38,6 +38,7 @@ def NucleiSelection(ind = 1,organ = 'THALAMUS'):
             NucleusName = '14-MTT'
 
         FullIndexes = [1,2,4567,4,5,6,7,8,9,10,11,12,13,14]
+
     return NucleusName, FullIndexes
 
 def listSubFolders(Dir_Prior):
@@ -241,6 +242,7 @@ def InputNames(Dir , NucleusName):
 
     if flagTemp:
         Files.Temp.Address = mkDir(Dir + '/temp')
+        Files.Temp.Deformation.Address = mkDir(Dir + '/temp/deformation')
 
     if os.path.exists(Files.Label.Address):
 
@@ -296,7 +298,7 @@ def inputNamesCheck(params):
         for sj in dirr.Input.Subjects:
             subject = dirr.Input.Subjects[sj]
 
-            if params.preprocess.Debug.debugExist:
+            if params.preprocess.Debug.PProcessExist:
                 
                 files = os.listdir(subject.Address)
 

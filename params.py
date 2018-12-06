@@ -74,11 +74,11 @@ class Cropping:
     Method = whichCropMode(directories.Experiment.Nucleus.Name, method)  # it changes the mode to 1 if we're analyzing the Thalamus
 
 class BiasCorrection:
-    Mode = False
+    Mode = True
 
 class Debug:
     doDebug = True
-    debugExist = False
+    PProcessExist = False  # rename it to preprocess exist
     justForNow = True # it checks the intermediate steps and if it existed don't reproduce it
 
 class preprocess:

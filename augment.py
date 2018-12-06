@@ -1,7 +1,7 @@
 import numpy as np
 import os 
 from random import shuffle
-from smallFuncs import mkDir, saveImage , NucleiSelection
+from smallFuncs import mkDir, saveImage , NucleiSelection , copyfile
 from scipy.misc import imrotate
 import nibabel as nib
 from BashCallingFunctions import Bash_AugmentNonLinear
@@ -61,9 +61,9 @@ def LinearFunc(params):
             if params.preprocess.Augment.Shift:
                 Image = funcShifting(Image , shift)
 
-            outDirectoryImage = outDirectoryImage + '/' + subject.ImageProcessed + '.nii.gz'  
-            saveImage(Image , Affine , Header , outDirectoryImage)
-
+            outDirectoryImage2 = outDirectoryImage + '/' + subject.ImageProcessed + '.nii.gz'  
+            saveImage(Image , Affine , Header , outDirectoryImage2)
+            copyfile(outDirectoryImage2 , outDirectoryImage  + '/' + subject.ImageProcessed.split('_PProcessed')[0] + '.nii.gz') 
 
             for ind in params.directories.Experiment.Nucleus.FullIndexes:
                 NucleusName, _ = NucleiSelection(ind , params.directories.Experiment.Nucleus.Organ)
@@ -75,8 +75,9 @@ def LinearFunc(params):
                 if params.preprocess.Augment.Shift:
                     Mask = funcShifting(Mask , shift)
                                   
-                outDirectoryMask  = outDirectoryMask  + '/' + NucleusName + '_PProcessed.nii.gz'
-                saveImage( np.float32(Mask > 0.5) , Affine , Header , outDirectoryMask)
+                outDirectoryMask2  = outDirectoryMask  + '/' + NucleusName + '_PProcessed.nii.gz'
+                saveImage( np.float32(Mask > 0.5) , Affine , Header , outDirectoryMask2)
+                copyfile(outDirectoryMask2 , outDirectoryMask  + '/' + NucleusName + '.nii.gz') 
 
 
 def NonLinearFunc(Input, Augment):
