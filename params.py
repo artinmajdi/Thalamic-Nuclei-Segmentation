@@ -1,11 +1,11 @@
 import os
-from smallFuncs import NucleiSelection , whichCropMode , fixDirectoryLastDashSign , augmentLengthChecker , InputNames , checkInputDirectory , funcExpDirectories
+from otherFuncs.smallFuncs import NucleiSelection , whichCropMode , fixDirectoryLastDashSign , augmentLengthChecker , InputNames , checkInputDirectory , funcExpDirectories
 
 #  ---------------------- model Params ----------------------
 
 class template:
     Image = '/array/ssd/msmajdi/code/RigidRegistration' + '/origtemplate.nii.gz'
-    Mask = '/array/ssd/msmajdi/code/RigidRegistration' + '/MyCrop_Template2_Gap20.nii.gz'   
+    Mask = '/array/ssd/msmajdi/code/RigidRegistration' + '/MyCrop_Template2_Gap20.nii.gz'
 
 class model:
     ArchitectureType = 'U-Net'
@@ -40,7 +40,7 @@ class experiment:
     HardParams = hardParams
 
 if 0: # user defined address
-    experiment.Address =  '/array/ssd/msmajdi/experiments/Keras/Experiment1/'
+    experiment.Address =  '/array/ssd/msmajdi/experiments/Keras/Experiment1'
 
 directories = funcExpDirectories(experiment)
 
@@ -49,7 +49,7 @@ class reference:
     Address = ''
 
 class Augment:
-    Mode = True
+    Mode = False
     LinearAugmentLength = 1  # number
     NonLinearAugmentLength = 1
     Rotation = True
@@ -91,4 +91,3 @@ class preprocess:
     BiasCorrection = BiasCorrection
 
 del Augment, Cropping, Normalize, template, reference, nucleus, experiment, machine, model, image, hardParams, method , Debug , BiasCorrection
-

@@ -9,5 +9,7 @@
     "python.unitTest.pyTestEnabled": false,
     "python.unitTest.nosetestsEnabled": false,
     "python.unitTest.unittestEnabled": false,
-    "python.unitTest.promptToConfigure": false
+    "python.unitTest.promptToConfigure": false,
+    "python.pythonPath": "/array/ssd/msmajdi/anaconda3/envs/myKeras2/bin/python",
+    "python.linting.pylintEnabled": true
 }

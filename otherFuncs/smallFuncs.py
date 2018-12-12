@@ -133,11 +133,12 @@ def checkMultipleTestOrNot(Dir,NucleusName):
     subjects = ''
     files = ''
 
-    if '.nii.gz' in Dir:
-        dd = Dir.split('/')
-        Dir = ''
-        for d in range(len(dd)-1):
-            Dir = Dir + dd[d] + '/'
+    if '.nii.gz' in os.path.basename(Dir):
+        # dd = Dir.split('/')
+        # Dir = ''
+        # for d in range(len(dd)-1):
+        #     Dir = Dir + dd[d] + '/'
+        Dir = Dir.split(os.path.basename(Dir))[0]
 
         files = InputNames(Dir ,NucleusName)
         multipleTest = 'False'
@@ -183,8 +184,9 @@ def whichCropMode(NucleusName, mode):
     return mode
 
 def fixDirectoryLastDashSign(Dir):
-    if Dir[len(Dir)-1] == '/':
-        Dir = Dir[:len(Dir)-2]
+    Dir = os.path.abspath(Dir)
+    # if Dir[len(Dir)-1] == '/':
+    #     Dir = Dir[:len(Dir)-2]
 
     return Dir
 

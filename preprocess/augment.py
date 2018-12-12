@@ -1,13 +1,13 @@
 import numpy as np
-import os 
+import os
 from random import shuffle
-from smallFuncs import mkDir, saveImage , NucleiSelection , copyfile
+from otherFuncs.smallFuncs import mkDir, saveImage , NucleiSelection , copyfile
 from scipy.misc import imrotate
 import nibabel as nib
-from BashCallingFunctions import Bash_AugmentNonLinear
+from preprocess.BashCallingFunctions import Bash_AugmentNonLinear
 
 def funcRotating(Image , angle):
- 
+
     for i in range(Image.shape[2]):
         Image[...,i] = imrotate(Image[...,i],angle)
 
@@ -52,32 +52,32 @@ def LinearFunc(params):
 
             angle = np.random.random_integers(10)
             shift = [ np.random.random_integers(10) , np.random.random_integers(10)]
-            
+
             outDirectoryImage = mkDir( params.directories.Train.Input.Address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Rot_' + str(angle) + '_shift_' + str(shift[0]) + '-' + str(shift[1]) )
             outDirectoryMask = mkDir( params.directories.Train.Input.Address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Rot_' + str(angle) + '_shift_' + str(shift[0]) + '-' + str(shift[1]) + '/Labels')
 
-            if params.preprocess.Augment.Rotation:                
+            if params.preprocess.Augment.Rotation:
                 Image = funcRotating(Image , angle)
             if params.preprocess.Augment.Shift:
                 Image = funcShifting(Image , shift)
 
-            outDirectoryImage2 = outDirectoryImage + '/' + subject.ImageProcessed + '.nii.gz'  
+            outDirectoryImage2 = outDirectoryImage + '/' + subject.ImageProcessed + '.nii.gz'
             saveImage(Image , Affine , Header , outDirectoryImage2)
-            copyfile(outDirectoryImage2 , outDirectoryImage  + '/' + subject.ImageProcessed.split('_PProcessed')[0] + '.nii.gz') 
+            copyfile(outDirectoryImage2 , outDirectoryImage  + '/' + subject.ImageProcessed.split('_PProcessed')[0] + '.nii.gz')
 
             for ind in params.directories.Experiment.Nucleus.FullIndexes:
                 NucleusName, _ = NucleiSelection(ind , params.directories.Experiment.Nucleus.Organ)
 
                 Mask   = nib.load(subject.Label.Address + '/' + NucleusName + '_PProcessed.nii.gz').get_data() # 'Cropped' for cropped image
 
-                if params.preprocess.Augment.Rotation:                
+                if params.preprocess.Augment.Rotation:
                     Mask = funcRotating(Mask , angle)
                 if params.preprocess.Augment.Shift:
                     Mask = funcShifting(Mask , shift)
-                                  
+
                 outDirectoryMask2  = outDirectoryMask  + '/' + NucleusName + '_PProcessed.nii.gz'
                 saveImage( np.float32(Mask > 0.5) , Affine , Header , outDirectoryMask2)
-                copyfile(outDirectoryMask2 , outDirectoryMask  + '/' + NucleusName + '.nii.gz') 
+                copyfile(outDirectoryMask2 , outDirectoryMask  + '/' + NucleusName + '.nii.gz')
 
 
 def NonLinearFunc(Input, Augment):
@@ -100,13 +100,13 @@ def NonLinearFunc(Input, Augment):
             nameSubjectRef = SubjectNames[augInd]
             subjectRef = Subjects[nameSubjectRef]
 
-            # Image     = subject.Address    + '/' + subject.ImageProcessed + '.nii.gz'           
-            # Reference = subjectRef.Address + '/' + subjectRef.ImageProcessed + '.nii.gz' 
+            # Image     = subject.Address    + '/' + subject.ImageProcessed + '.nii.gz'
+            # Reference = subjectRef.Address + '/' + subjectRef.ImageProcessed + '.nii.gz'
 
-            # Mask      = subject.Label.Address    + '/' + subject.Label.LabelProcessed + '.nii.gz'           
-            # Reference = subjectRef.Label.Address + '/' + subjectRef.Label.LabelProcessed + '.nii.gz' 
+            # Mask      = subject.Label.Address    + '/' + subject.Label.LabelProcessed + '.nii.gz'
+            # Reference = subjectRef.Label.Address + '/' + subjectRef.Label.LabelProcessed + '.nii.gz'
 
-            outputAddress = mkDir( Input.Address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Ref_' + nameSubjectRef ) 
+            outputAddress = mkDir( Input.Address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Ref_' + nameSubjectRef )
 
             Bash_AugmentNonLinear(subject , subjectRef , outputAddress)
 
@@ -114,8 +114,6 @@ def augmentMain(params , Flag):
 
     if params.preprocess.Mode and params.preprocess.Augment.Mode and (params.preprocess.Augment.Rotation or params.preprocess.Augment.Shift) and (Flag == 'Linear'):
         LinearFunc(params)
-        
+
     elif params.preprocess.Mode and params.preprocess.Augment.Mode and params.preprocess.Augment.NonRigidWarp and (Flag == 'NonLinear'):
         NonLinearFunc(params.directories.Train.Input , params.preprocess.Augment)
-        
-        

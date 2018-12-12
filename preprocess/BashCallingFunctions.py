@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from smallFuncs import mkDir , NucleiSelection
+from otherFuncs.smallFuncs import mkDir , NucleiSelection
 from shutil import copyfile
 
 def RigidRegistration(subject , Template , preprocess):
@@ -8,11 +8,11 @@ def RigidRegistration(subject , Template , preprocess):
 #     processed = subject.Address + '/' + subject.origImage + '_bias_corr.nii.gz'
     processed = subject.Address + '/' + subject.ImageProcessed + '.nii.gz'
     outP = subject.Temp.Address + '/CropMask.nii.gz'
-    
+
     if preprocess.Mode and preprocess.Cropping.Mode and not os.path.isfile(outP):
         os.system("ANTS 3 -m CC[%s, %s ,1,5] -o %s -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false" %(processed , Template.Image , subject.Temp.Deformation.Address + '/linear') )
         os.system("WarpImageMultiTransform 3 %s %s -R %s %s"%(Template.Mask , outP , processed , subject.Temp.Deformation.Address + '/linearAffine.txt') )
-        
+
 def BiasCorrection(subject , params):
 
     inP  = subject.Address + '/' + subject.ImageProcessed + '.nii.gz'
@@ -37,10 +37,10 @@ def Bash_Cropping(subject , params):
         outDebug = subject.Temp.Address + '/' + subject.ImageOriginal + '_bias_corr_Cropped.nii.gz'
 
         if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
-            copyfile(outDebug , outP)            
+            copyfile(outDebug , outP)
         else:
             os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
-            if params.preprocess.Debug.doDebug: 
+            if params.preprocess.Debug.doDebug:
                 copyfile(outP , outDebug)
 
         # Cropping the Label
@@ -53,23 +53,23 @@ def Bash_Cropping(subject , params):
             outDebug = subject.Label.Temp.Address + '/' + NucleusName + '_Cropped.nii.gz'
 
             if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
-                copyfile(outDebug , outP)            
+                copyfile(outDebug , outP)
             else:
                 os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
-                if params.preprocess.Debug.doDebug:           
-                    copyfile(outP , outDebug)        
+                if params.preprocess.Debug.doDebug:
+                    copyfile(outP , outDebug)
 
 def Bash_AugmentNonLinear(subject , subjectRef , outputAddress): # Image , Mask , Reference , output):
 
-    ImageOrig = subject.Address       + '/' + subject.ImageProcessed + '.nii.gz' 
-    MaskOrig  = subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz'   
-    ImageRef  = subjectRef.Address    + '/' + subjectRef.ImageProcessed + '.nii.gz' 
+    ImageOrig = subject.Address       + '/' + subject.ImageProcessed + '.nii.gz'
+    MaskOrig  = subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz'
+    ImageRef  = subjectRef.Address    + '/' + subjectRef.ImageProcessed + '.nii.gz'
 
-    OutputImage = outputAddress  + '/' + subject.ImageProcessed + '.nii.gz' 
-    labelAdd    = mkDir(outputAddress + '/Label') 
-    OutputMask  = labelAdd + '/' + subject.Label.LabelProcessed + '.nii.gz' 
-    deformationAddr = mkDir(outputAddress + '/Temp/deformation')           
-    
+    OutputImage = outputAddress  + '/' + subject.ImageProcessed + '.nii.gz'
+    labelAdd    = mkDir(outputAddress + '/Label')
+    OutputMask  = labelAdd + '/' + subject.Label.LabelProcessed + '.nii.gz'
+    deformationAddr = mkDir(outputAddress + '/Temp/deformation')
+
 
     if not os.path.isfile(OutputImage):
         os.system("ANTS 3 -m CC[%s, %s,1,5] -t SyN[0.25] -r Gauss[3,0] -o %s -i 30x90x20 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000"%(ImageOrig , ImageRef , deformationAddr + '/test') )
