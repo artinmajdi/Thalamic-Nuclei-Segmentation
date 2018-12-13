@@ -5,6 +5,8 @@ import sys
 from collections import namedtuple
 from shutil import copyfile
 
+# TODO: Replace folder searching with "next(os.walk(directory))"
+
 def NucleiSelection(ind = 1,organ = 'THALAMUS'):
 
     if 'THALAMUS' in organ:
