@@ -14,6 +14,8 @@ from preprocess.normalizeInput import normalizeMain
 ###  check 3T 7T dimension and interpolation
 #### check image format and convert to nifti
 
+
+
 params = terminalEntries(params)
 params = inputNamesCheck(params)
 

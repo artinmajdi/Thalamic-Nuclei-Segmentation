@@ -1,22 +1,23 @@
-# #%%
+# %%
 import keras
-# import numpy as np
-# from keras.models import Sequential
-# from keras.datasets import mnist , fashion_mnist
-import os
+from keras import optimizers
+import params
+import architectures
 import numpy as np
-input1 = keras.layers.Input(shape=(10,30))
-x1 = keras.layers.Dense(12, activation='relu')(input1)
-input2 = keras.layers.Input(shape=(10,30))
-x2 = keras.layers.Dense(12, activation='relu')(input2)
+from datasets import loadDataset
 
-added = keras.layers.concatenate([x1,x2])
-added2 = keras.backend.stack(added)
-print(x1)
-print(added)
-print(added2)
+ModelParam = params.directories.Experiment.HardParams.Model
 
-class A():x=1
+Train, Test = loadDataset(ModelParam.dataset)
 
-a = A()
-a
+if 'U-Net' in ModelParam.ArchitectureType:
+    model = architectures.UNet( ModelParam )
+
+elif 'MLP' in ModelParam.ArchitectureType:
+    ModelParam.NumClasses = len(np.unique(Train.Label))
+    model = architectures.MLP( ModelParam )
+
+model.compile(optimizer=ModelParam.Optimizer,loss=ModelParam.loss,metrics=ModelParam.metrics)
+model.fit(x=Train.Data,y=Train.Label,batch_size=ModelParam.batch_size,epochs=ModelParam.epochs)
+
+print('---')
