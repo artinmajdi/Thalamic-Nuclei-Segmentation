@@ -8,17 +8,18 @@ class template:
     Mask = '/array/ssd/msmajdi/code/RigidRegistration' + '/MyCrop_Template2_Gap20.nii.gz'
 
 class model:
-    ArchitectureType = 'MLP' # 'U-Net'
-    Optimizer = 'Adam'
-    Activitation = 'relu'
-    Num_Layers = 3
-    kernel_size = (5,5)
-    padding = 'valid'
+    architectureType = 'MLP' # 'U-Net'
+    optimizer = 'adam'
+    activitation = 'relu'
+    num_Layers = 3
+    kernel_size = (3,3)
+    padding = 'SAME' # valid
     epochs = 10
-    batch_size = 10
+    batch_size = 100
     loss = 'binary_crossentropy'
     metrics = ['mae' , 'acc']
     dataset = 'fashion_mnist'
+    dropout = 0.2
 
 class machine:
     WhichMachine = 'server'
