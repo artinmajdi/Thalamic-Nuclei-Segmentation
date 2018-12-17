@@ -216,13 +216,13 @@ def InputNames(Dir , NucleusName):
     class tempLabel:
         Address = ''
         Cropped = ''
-        
+
     class label:
         LabelProcessed = ''
         LabelOriginal = ''
         Temp = tempLabel
         Address = ''
-        
+
     class Files:
         ImageOriginal = '' # WMn_MPRAGE'
         ImageProcessed = ''
@@ -231,18 +231,18 @@ def InputNames(Dir , NucleusName):
         Address = Dir
 
 
-    
+
     Files.Label.Address =  ''
     flagTemp = False
     for d in os.listdir(Dir):
         if '.nii.gz' in d:
             flagTemp = True
             if '_PProcessed.nii.gz' in d:
-                Files.ImageProcessed = d.split('.nii.gz')[0]           
+                Files.ImageProcessed = d.split('.nii.gz')[0]
             else:
                 Files.ImageOriginal = d.split('.nii.gz')[0]
-        elif 'temp' not in d:             
-                Files.Label.Address = Dir + '/' + d 
+        elif 'temp' not in d:
+                Files.Label.Address = Dir + '/' + d
 
     if flagTemp:
         Files.Temp.Address = mkDir(Dir + '/temp')
@@ -255,8 +255,8 @@ def InputNames(Dir , NucleusName):
             if NucleusName + '.nii.gz' in d:
                 Files.Label.LabelOriginal = d.split('.nii.gz')[0]
             elif NucleusName + '_PProcessed.nii.gz' in d:
-                Files.Label.LabelProcessed = d.split('.nii.gz')[0]           
-                    
+                Files.Label.LabelProcessed = d.split('.nii.gz')[0]
+
             elif 'temp' in d:
                 Files.Label.Temp.Address = Files.Label.Address + '/' + d
 
@@ -272,62 +272,62 @@ def InputNames(Dir , NucleusName):
             elif '_bias_corr.nii.gz' in d:
                 Files.Temp.BiasCorrected = d.split('.nii.gz')[0]
             elif '_bias_corr_Cropped.nii.gz' in d:
-                Files.Temp.Cropped = d.split('.nii.gz')[0]                
+                Files.Temp.Cropped = d.split('.nii.gz')[0]
             else:
                 Files.Temp.origImage = d.split('.nii.gz')[0]
 
         elif 'deformation' in d:
             Files.Temp.Deformation.Address = Files.Temp.Address + '/' + d
 
-            for d in os.listdir( Files.Temp.Deformation.Address ):                
+            for d in os.listdir( Files.Temp.Deformation.Address ):
                 if 'testWarp.nii.gz' in d:
                     Files.Temp.Deformation.testWarp = d.split('.nii.gz')[0]
                 elif 'testInverseWarp.nii.gz' in d:
                     Files.Temp.Deformation.testInverseWarp = d.split('.nii.gz')[0]
                 elif 'testAffine.txt' in d:
-                    Files.Temp.Deformation.testAffine = d.split('.nii.gz')[0]   
+                    Files.Temp.Deformation.testAffine = d.split('.nii.gz')[0]
 
 
     return Files
 
 def inputNamesCheck(params):
-   
+
     for mode in ['Train' , 'Test']:
 
         if params.preprocess.TestOnly and 'Train' in mode:
             continue
-            
+
         dirr = params.directories.Train if 'Train' in mode else params.directories.Test
 
         for sj in dirr.Input.Subjects:
             subject = dirr.Input.Subjects[sj]
 
             if params.preprocess.Debug.PProcessExist:
-                
+
                 files = os.listdir(subject.Address)
 
-                flagPPExist = False                
+                flagPPExist = False
                 for si in files:
                     if '_PProcessed' in si:
                         flagPPExist = True
                         break
 
-                if not flagPPExist: 
+                if not flagPPExist:
                     sys.exit('preprocess files doesn\'t exist ' + 'Subject: ' + sj + ' Dir: ' + subject.Address)
 
             else:
 
-                imOrig = subject.Address + '/' + subject.ImageOriginal + '.nii.gz'                
+                imOrig = subject.Address + '/' + subject.ImageOriginal + '.nii.gz'
                 imProc = subject.Address + '/' + subject.ImageOriginal + '_PProcessed.nii.gz'
                 copyfile( imOrig  , imProc )
 
-                for ind in params.directories.Experiment.Nucleus.FullIndexes:                    
+                for ind in params.directories.Experiment.Nucleus.FullIndexes:
                     NucleusName, _ = NucleiSelection(ind , params.directories.Experiment.Nucleus.Organ)
 
                     mskOrig = subject.Label.Address + '/' + NucleusName + '.nii.gz'
-                    mskProc = subject.Label.Address + '/' + NucleusName + '_PProcessed.nii.gz'                                        
+                    mskProc = subject.Label.Address + '/' + NucleusName + '_PProcessed.nii.gz'
                     copyfile( mskOrig , mskProc)
 
     params.directories = funcExpDirectories(params.directories.Experiment)
     return params
-    
+

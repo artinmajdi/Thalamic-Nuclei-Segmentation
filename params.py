@@ -7,19 +7,43 @@ class template:
     Image = '/array/ssd/msmajdi/code/RigidRegistration' + '/origtemplate.nii.gz'
     Mask = '/array/ssd/msmajdi/code/RigidRegistration' + '/MyCrop_Template2_Gap20.nii.gz'
 
-class model:
-    architectureType = 'MLP' # 'U-Net'
-    optimizer = 'adam'
-    activitation = 'relu'
-    num_Layers = 3
-    kernel_size = (3,3)
+class dropout:
+    Mode = True
+    Value = 0.2
+
+class kernel_size:
+    conv = (3,3)
+    convTranspose = (2,2)
+    output = (1,1)
+
+class activation:
+    layers = 'relu'
+    output = 'sigmoid'
+
+class convLayer:
+    # strides = (1,1)
+    Kernel_size = kernel_size
     padding = 'SAME' # valid
+
+
+class maxPooling:
+    strides = (2,2)
+    pool_size = (2,2)
+
+class model:
+    architectureType = 'U-Net' # 'MLP' #
     epochs = 10
-    batch_size = 100
+    batch_size = 400
     loss = 'binary_crossentropy'
-    metrics = ['mae' , 'acc']
-    dataset = 'fashion_mnist'
-    dropout = 0.2
+    metrics = ['acc']
+    optimizer = 'adam'
+    num_Layers = 5
+    dataset = 'kaggleCompetition' # 'fashionMnist'
+    batchNormalization = True
+    ConvLayer = convLayer
+    MaxPooling = maxPooling
+    Dropout = dropout
+    Activitation = activation
 
 class machine:
     WhichMachine = 'server'
