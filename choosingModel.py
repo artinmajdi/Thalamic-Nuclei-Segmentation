@@ -4,17 +4,10 @@ from keras.layers.merge import concatenate
 from keras.callbacks import ModelCheckpoint
 from otherFuncs.smallFuncs import mkDir
 
+
 # ! main Function
-def architecturesMain(params, Data):
+def modelTrain(Data, params, model):
     ModelParam = params.directories.Experiment.HardParams.Model
-    ModelParam.imageInfo = Data.Info
-    if 'U-Net' in ModelParam.architectureType:
-        model = UNet(ModelParam)
-
-    elif 'MLP' in ModelParam.architectureType:
-        ModelParam.numClasses = Data.Train.Label.shape[1] # len(np.unique(Train.Label))
-        model = CNN(ModelParam)
-
     model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss, metrics=ModelParam.metrics)
 
     # if the shuffle argument in model.fit is set to True (which is the default), the training data will be randomly shuffled at each epoch.
@@ -27,7 +20,22 @@ def architecturesMain(params, Data):
     model.save(params.directories.Train.Model + '/model.h5', overwrite=True, include_optimizer=True )
 
     if ModelParam.showHistory: print(hist.history)
+
     return model
+
+
+def architecture(Data, params):
+    params.directories.Experiment.HardParams.Model.imageInfo = Data.Info
+    ModelParam = params.directories.Experiment.HardParams.Model
+    if 'U-Net' in ModelParam.architectureType:
+        model = UNet(ModelParam)
+
+    elif 'MLP' in ModelParam.architectureType:
+        ModelParam.numClasses = Data.Train.Label.shape[1] # len(np.unique(Train.Label))
+        model = CNN(ModelParam)
+
+    model.summary()
+    return model, params
 
 
 def Unet_sublayer_Contracting(inputs, nL, Modelparam):
@@ -72,7 +80,6 @@ def UNet(Modelparam):
     final = Conv2D(2, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(WeightBiases)
     model = Model(inputs=[inputs], outputs=[final])
 
-    model.summary()
     return model
 
 # U-Net without for loop
@@ -203,5 +210,4 @@ def CNN(Modelparam):
     model.add(Dropout(Modelparam.Dropout.Value))
     model.add(Dense(Modelparam.numClasses , activation=Modelparam.Activitation.output))
 
-    model.summary()
     return model

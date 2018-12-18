@@ -2,7 +2,7 @@ import os
 # os.environ["CUDA_VISIBLE_DEVICES"] = '4'
 # from keras_tqdm import TQDMCallback
 import params
-from architectures import architecturesMain
+from choosingModel import architecture, modelTrain
 import numpy as np
 from datasets import loadDataset
 from keras.models import load_model, Model
@@ -18,13 +18,14 @@ import matplotlib.pyplot as plt
 
 
 Data = loadDataset( params.directories.Experiment.HardParams.Model )
-model = architecturesMain( params , Data )
 
+model, params = architecture(Data, params)
+model = modelTrain(Data, params, model)
 
 # model = load_model(params.directories.Train.Model + '/model.h5')
 
 pred = model.predict(Data.Test.Image)
-pred.shape
+
 ind = 3
 fig, axes = plt.subplots(1,2)
 axes[0].imshow(np.squeeze(pred[ind,:,:,0]),cmap='gray')

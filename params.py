@@ -36,7 +36,7 @@ class validation:
 
 class model:
     architectureType = 'U-Net' # 'MLP' #
-    epochs = 6
+    epochs = 1
     batch_size = 40
     loss = 'binary_crossentropy'
     metrics = ['acc']
