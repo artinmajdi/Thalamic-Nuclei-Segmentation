@@ -2,20 +2,33 @@ from keras.models import Sequential, Model
 from keras.layers import Dense, Conv2D, Dropout, MaxPooling2D, Reshape, Flatten, BatchNormalization, Input, Conv2DTranspose
 from keras.layers.merge import concatenate
 from keras.callbacks import ModelCheckpoint
-
+from otherFuncs.smallFuncs import mkDir
 
 # ! main Function
-def architecturesMain(ModelParam, Train, Test):
+def architecturesMain(params, Data):
+    ModelParam = params.directories.Experiment.HardParams.Model
+    ModelParam.imageInfo = Data.Info
     if 'U-Net' in ModelParam.architectureType:
         model = UNet(ModelParam)
 
     elif 'MLP' in ModelParam.architectureType:
-        ModelParam.numClasses = Train.Label.shape[1] # len(np.unique(Train.Label))
+        ModelParam.numClasses = Data.Train.Label.shape[1] # len(np.unique(Train.Label))
         model = CNN(ModelParam)
 
     model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss, metrics=ModelParam.metrics)
-    model.fit(x=Train.Data, y=Train.Label, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs)
+
+    # if the shuffle argument in model.fit is set to True (which is the default), the training data will be randomly shuffled at each epoch.
+    if ModelParam.Validation.fromKeras:
+        hist = model.fit(x=Data.Train.Image, y=Data.Train.Label, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=ModelParam.Validation.Percentage)
+    else:
+        hist = model.fit(x=Data.Train.Image, y=Data.Train.Label, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label))
+
+    mkDir(params.directories.Train.Model)
+    model.save(params.directories.Train.Model + '/model.h5', overwrite=True, include_optimizer=True )
+
+    if ModelParam.showHistory: print(hist.history)
     return model
+
 
 def Unet_sublayer_Contracting(inputs, nL, Modelparam):
     conv = Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(inputs)
@@ -57,7 +70,7 @@ def UNet(Modelparam):
 
     # ! final outputing the data
     final = Conv2D(2, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(WeightBiases)
-    model = Model(inputs=[WeightBiases], outputs=[final])
+    model = Model(inputs=[inputs], outputs=[final])
 
     model.summary()
     return model
@@ -129,49 +142,49 @@ def UNet(Modelparam):
     # final = Conv2D(2, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(conv1u)
 
 # def get_unet():
-#     height,width = 512, 512
-#     inputs = Input((height,width, 1))
-#     conv1 = Conv2D(32, (3, 3), activation='relu', padding='same')(inputs)
-#     conv1 = Conv2D(32, (3, 3), activation='relu', padding='same')(conv1)
-#     pool1 = MaxPooling2D(pool_size=(2, 2))(conv1)
-#
-#     conv2 = Conv2D(64, (3, 3), activation='relu', padding='same')(pool1)
-#     conv2 = Conv2D(64, (3, 3), activation='relu', padding='same')(conv2)
-#     pool2 = MaxPooling2D(pool_size=(2, 2))(conv2)
-#
-#     conv3 = Conv2D(128, (3, 3), activation='relu', padding='same')(pool2)
-#     conv3 = Conv2D(128, (3, 3), activation='relu', padding='same')(conv3)
-#     pool3 = MaxPooling2D(pool_size=(2, 2))(conv3)
-#
-#     conv4 = Conv2D(256, (3, 3), activation='relu', padding='same')(pool3)
-#     conv4 = Conv2D(256, (3, 3), activation='relu', padding='same')(conv4)
-#     pool4 = MaxPooling2D(pool_size=(2, 2))(conv4)
-#
-#     conv5 = Conv2D(512, (3, 3), activation='relu', padding='same')(pool4)
-#     conv5 = Conv2D(512, (3, 3), activation='relu', padding='same')(conv5)
-#
-#     up6 = concatenate([Conv2DTranspose(256, (2, 2), strides=(2, 2), padding='same')(conv5), conv4], axis=3)
-#     conv6 = Conv2D(256, (3, 3), activation='relu', padding='same')(up6)
-#     conv6 = Conv2D(256, (3, 3), activation='relu', padding='same')(conv6)
-#
-#     up7 = concatenate([Conv2DTranspose(128, (2, 2), strides=(2, 2), padding='same')(conv6), conv3], axis=3)
-#     conv7 = Conv2D(128, (3, 3), activation='relu', padding='same')(up7)
-#     conv7 = Conv2D(128, (3, 3), activation='relu', padding='same')(conv7)
-#
-#     up8 = concatenate([Conv2DTranspose(64, (2, 2), strides=(2, 2), padding='same')(conv7), conv2], axis=3)
-#     conv8 = Conv2D(64, (3, 3), activation='relu', padding='same')(up8)
-#     conv8 = Conv2D(64, (3, 3), activation='relu', padding='same')(conv8)
-#
-#     up9 = concatenate([Conv2DTranspose(32, (2, 2), strides=(2, 2), padding='same')(conv8), conv1], axis=3)
-#     conv9 = Conv2D(32, (3, 3), activation='relu', padding='same')(up9)
-#     conv9 = Conv2D(32, (3, 3), activation='relu', padding='same')(conv9)
-#
-#     conv10 = Conv2D(1, (1, 1), activation='sigmoid')(conv9)
-#
-#     model = Model(inputs=[inputs], outputs=[conv10])
-#     model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss, metrics=ModelParam.metrics)
-#
-#     return model
+    # height,width = 512, 512
+    # inputs = Input((height,width, 1))
+    # conv1 = Conv2D(32, (3, 3), activation='relu', padding='same')(inputs)
+    # conv1 = Conv2D(32, (3, 3), activation='relu', padding='same')(conv1)
+    # pool1 = MaxPooling2D(pool_size=(2, 2))(conv1)
+
+    # conv2 = Conv2D(64, (3, 3), activation='relu', padding='same')(pool1)
+    # conv2 = Conv2D(64, (3, 3), activation='relu', padding='same')(conv2)
+    # pool2 = MaxPooling2D(pool_size=(2, 2))(conv2)
+
+    # conv3 = Conv2D(128, (3, 3), activation='relu', padding='same')(pool2)
+    # conv3 = Conv2D(128, (3, 3), activation='relu', padding='same')(conv3)
+    # pool3 = MaxPooling2D(pool_size=(2, 2))(conv3)
+
+    # conv4 = Conv2D(256, (3, 3), activation='relu', padding='same')(pool3)
+    # conv4 = Conv2D(256, (3, 3), activation='relu', padding='same')(conv4)
+    # pool4 = MaxPooling2D(pool_size=(2, 2))(conv4)
+
+    # conv5 = Conv2D(512, (3, 3), activation='relu', padding='same')(pool4)
+    # conv5 = Conv2D(512, (3, 3), activation='relu', padding='same')(conv5)
+
+    # up6 = concatenate([Conv2DTranspose(256, (2, 2), strides=(2, 2), padding='same')(conv5), conv4], axis=3)
+    # conv6 = Conv2D(256, (3, 3), activation='relu', padding='same')(up6)
+    # conv6 = Conv2D(256, (3, 3), activation='relu', padding='same')(conv6)
+
+    # up7 = concatenate([Conv2DTranspose(128, (2, 2), strides=(2, 2), padding='same')(conv6), conv3], axis=3)
+    # conv7 = Conv2D(128, (3, 3), activation='relu', padding='same')(up7)
+    # conv7 = Conv2D(128, (3, 3), activation='relu', padding='same')(conv7)
+
+    # up8 = concatenate([Conv2DTranspose(64, (2, 2), strides=(2, 2), padding='same')(conv7), conv2], axis=3)
+    # conv8 = Conv2D(64, (3, 3), activation='relu', padding='same')(up8)
+    # conv8 = Conv2D(64, (3, 3), activation='relu', padding='same')(conv8)
+
+    # up9 = concatenate([Conv2DTranspose(32, (2, 2), strides=(2, 2), padding='same')(conv8), conv1], axis=3)
+    # conv9 = Conv2D(32, (3, 3), activation='relu', padding='same')(up9)
+    # conv9 = Conv2D(32, (3, 3), activation='relu', padding='same')(conv9)
+
+    # conv10 = Conv2D(1, (1, 1), activation='sigmoid')(conv9)
+
+    # model = Model(inputs=[inputs], outputs=[conv10])
+    # model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss, metrics=ModelParam.metrics)
+
+    # return model
 
 
 # ! CNN Architecture

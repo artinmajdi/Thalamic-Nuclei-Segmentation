@@ -30,10 +30,14 @@ class maxPooling:
     strides = (2,2)
     pool_size = (2,2)
 
+class validation:
+    percentage = 0.1
+    fromKeras = False
+
 class model:
     architectureType = 'U-Net' # 'MLP' #
-    epochs = 10
-    batch_size = 400
+    epochs = 6
+    batch_size = 40
     loss = 'binary_crossentropy'
     metrics = ['acc']
     optimizer = 'adam'
@@ -44,6 +48,9 @@ class model:
     MaxPooling = maxPooling
     Dropout = dropout
     Activitation = activation
+    Validation = validation
+    showHistory = True
+
 
 class machine:
     WhichMachine = 'server'
@@ -123,4 +130,4 @@ class preprocess:
     Normalize = Normalize
     BiasCorrection = BiasCorrection
 
-del Augment, Cropping, Normalize, template, reference, nucleus, experiment, machine, model, image, hardParams, method , Debug , BiasCorrection
+del Augment, Cropping, Normalize, template, reference, nucleus, experiment, machine, model, image, hardParams, method , Debug , BiasCorrection , validation, activation, maxPooling, dropout, convLayer , kernel_size , os

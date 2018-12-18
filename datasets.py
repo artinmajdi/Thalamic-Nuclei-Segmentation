@@ -1,53 +1,61 @@
-
 from keras.datasets import fashion_mnist, mnist
 import numpy as np
 import os
 from imageio import imread
+import params
+from random import shuffle
 
 def one_hot(a, num_classes):
   return np.eye(num_classes)[a]
 
-class Train:
-    Data = ''
+class ImageLabel:
+    Image = np.zeros(3)
     Label = ''
 
-class Test:
-    Data = ''
-    Label = ''
-
-class Info:
+class info:
     Height = ''
     Width = ''
 
-def loadDataset(dataset):
+class Data:
+    Train = ImageLabel()
+    Test = ImageLabel()
+    Validation = ImageLabel()
+    Info = info
 
-    if 'fashionMnist' in dataset:
-        Train, Test, Info = fashionMnist()
+def loadDataset(ModelParam):
 
-    elif 'kaggleCompetition' in dataset:
-        Train, Test, Info = kaggleCompetition()
+    if 'fashionMnist' in ModelParam.dataset:
+        Data = fashionMnist(ModelParam)
 
-
-    _, Info.Height, Info.Width = Train.Data.shape
-
-    return Train, Test, Info
+    elif 'kaggleCompetition' in ModelParam.dataset:
+        Data = kaggleCompetition(ModelParam)
 
 
+    _, Data.Info.Height, Data.Info.Width, _ = Data.Train.Image.shape
 
-def fashionMnist():
-    data = fashion_mnist.load_data()
-    Train.Data  = (np.expand_dims(data[0][0],axis=3)).astype('float32') / 255
-    Train.Label = one_hot(data[0][1],10)
+    return Data
 
-    Test.Data  = (np.expand_dims(data[1][0],axis=3)).astype('float32') / 255
-    Test.Label = one_hot(data[1][1],10)
-    return Train, Test
+def fashionMnist(ModelParam):
+    data  = fashion_mnist.load_data()
 
-def kaggleCompetition():
+    images = (np.expand_dims(data[0][0],axis=3)).astype('float32') / 255
+    masks  = one_hot(data[0][1],10)
+
+    if ModelParam.Validation.fromKeras:
+        Data.Train.Image = images
+        Data.Train.Label = masks
+    else:
+        Data.Train, Data.Validation = TrainValSeperate(ModelParam, images, masks)
+
+    Data.Test.Image = (np.expand_dims(data[1][0],axis=3)).astype('float32') / 255
+    Data.Test.Label = one_hot(data[1][1],10)
+    return Data
+
+def kaggleCompetition(ModelParam):
     dir = '/array/ssd/msmajdi/data/KaggleCompetition/train'
     subF = next(os.walk(dir))
 
-    for ind in range(min(len(subF[1]),20)):
+    for ind in range(min(len(subF[1]),30)):
 
         imDir = subF[0] + '/' + subF[1][ind] + '/images'
         imMsk = subF[0] + '/' + subF[1][ind] + '/masks'
@@ -58,6 +66,7 @@ def kaggleCompetition():
         # im = ndimage.zoom(im,(1,1,2),order=3)
 
         im = np.expand_dims(im,axis=0)
+        im = (np.expand_dims(im,axis=3)).astype('float32') / 255
         images = im if ind == 0 else np.concatenate((images,im),axis=0)
 
         msk = imread(imMsk + '/' + a[2][0]) if len(a[2]) > 0 else np.zeros(im.shape)
@@ -65,10 +74,32 @@ def kaggleCompetition():
             for sF in range(1,len(a[2])):
                 msk = msk + imread(imMsk + '/' + a[2][sF])
 
-        msk = np.expand_dims(msk,axis=0)
-        masks = msk if ind == 0 else np.concatenate((masks,msk),axis=0)
+        msk = np.expand_dims(msk[:256,:256],axis=0)
+        msk = (np.expand_dims(msk,axis=3)).astype('float32') / 255
+        masks = msk>0.5 if ind == 0 else np.concatenate((masks,msk>0.5 ),axis=0)
 
+    masks = np.concatenate((masks,1-masks),axis=3)
 
-    Train.Data, Train.Label  = images, masks
-    Test = Train
-    return Train, Test
+    if ModelParam.Validation.fromKeras:
+        Data.Train.Image = images
+        Data.Train.Label = masks
+    else:
+        Data.Train, Data.Validation = TrainValSeperate(ModelParam ,images, masks)
+
+    Data.Test = Data.Train
+    return Data
+
+def TrainValSeperate(ModelParam, images, masks):
+    indexes = np.array(range(images.shape[0]))
+    shuffle(indexes)
+    per = int( ModelParam.Validation.percentage * images.shape[0] )
+
+    Validation = ImageLabel()
+    Validation.Image = images[indexes[:per],...]
+    Validation.Label = masks[indexes[:per],...]
+
+    Train = ImageLabel()
+    Train.Image = images[indexes[per:],...]
+    Train.Label = masks[indexes[per:],...]
+
+    return Train, Validation
