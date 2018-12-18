@@ -30,15 +30,19 @@ def architecture(Data, params):
     if 'U-Net' in ModelParam.architectureType:
         model = UNet(ModelParam)
 
-    elif 'MLP' in ModelParam.architectureType:
+    elif 'CNN_Segmetnation' in ModelParam.architectureType:
+        model = CNN_Segmetnation(ModelParam)
+
+    elif 'CNN_Classifier' in ModelParam.architectureType:
         ModelParam.numClasses = Data.Train.Label.shape[1] # len(np.unique(Train.Label))
-        model = CNN(ModelParam)
+        model = CNN_Segmetnation(ModelParam)
 
     model.summary()
     return model, params
 
 
 def Unet_sublayer_Contracting(inputs, nL, Modelparam):
+    if Modelparam.batchNormalization:  inputs = BatchNormalization()(inputs)
     conv = Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(inputs)
     conv = Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
     pool = MaxPooling2D( pool_size=Modelparam.MaxPooling.pool_size)(conv)
@@ -46,6 +50,7 @@ def Unet_sublayer_Contracting(inputs, nL, Modelparam):
     return pool, conv
 
 def Unet_sublayer_Expanding(inputs, nL, Modelparam, contractingInfo):
+    if Modelparam.batchNormalization:  inputs = BatchNormalization()(inputs)
     UP = Conv2DTranspose(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.convTranspose, strides=(2,2), padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(inputs)
     UP = concatenate([UP,contractingInfo[nL+1]],axis=3)
     conv = Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(UP)
@@ -58,8 +63,6 @@ def Unet_sublayer_Expanding(inputs, nL, Modelparam, contractingInfo):
 def UNet(Modelparam):
     inputs = Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1) )
     WeightBiases = inputs
-    # TODO do I need to have BatchNormalization in each layer?
-    if Modelparam.batchNormalization:  WeightBiases = BatchNormalization()(WeightBiases)
 
     # ! contracting layer
     ConvOutputs = {}
@@ -154,48 +157,52 @@ def UNet(Modelparam):
     # conv1 = Conv2D(32, (3, 3), activation='relu', padding='same')(inputs)
     # conv1 = Conv2D(32, (3, 3), activation='relu', padding='same')(conv1)
     # pool1 = MaxPooling2D(pool_size=(2, 2))(conv1)
-
     # conv2 = Conv2D(64, (3, 3), activation='relu', padding='same')(pool1)
     # conv2 = Conv2D(64, (3, 3), activation='relu', padding='same')(conv2)
     # pool2 = MaxPooling2D(pool_size=(2, 2))(conv2)
-
     # conv3 = Conv2D(128, (3, 3), activation='relu', padding='same')(pool2)
     # conv3 = Conv2D(128, (3, 3), activation='relu', padding='same')(conv3)
     # pool3 = MaxPooling2D(pool_size=(2, 2))(conv3)
-
     # conv4 = Conv2D(256, (3, 3), activation='relu', padding='same')(pool3)
     # conv4 = Conv2D(256, (3, 3), activation='relu', padding='same')(conv4)
     # pool4 = MaxPooling2D(pool_size=(2, 2))(conv4)
-
     # conv5 = Conv2D(512, (3, 3), activation='relu', padding='same')(pool4)
     # conv5 = Conv2D(512, (3, 3), activation='relu', padding='same')(conv5)
-
     # up6 = concatenate([Conv2DTranspose(256, (2, 2), strides=(2, 2), padding='same')(conv5), conv4], axis=3)
     # conv6 = Conv2D(256, (3, 3), activation='relu', padding='same')(up6)
     # conv6 = Conv2D(256, (3, 3), activation='relu', padding='same')(conv6)
-
     # up7 = concatenate([Conv2DTranspose(128, (2, 2), strides=(2, 2), padding='same')(conv6), conv3], axis=3)
     # conv7 = Conv2D(128, (3, 3), activation='relu', padding='same')(up7)
     # conv7 = Conv2D(128, (3, 3), activation='relu', padding='same')(conv7)
-
     # up8 = concatenate([Conv2DTranspose(64, (2, 2), strides=(2, 2), padding='same')(conv7), conv2], axis=3)
     # conv8 = Conv2D(64, (3, 3), activation='relu', padding='same')(up8)
     # conv8 = Conv2D(64, (3, 3), activation='relu', padding='same')(conv8)
-
     # up9 = concatenate([Conv2DTranspose(32, (2, 2), strides=(2, 2), padding='same')(conv8), conv1], axis=3)
     # conv9 = Conv2D(32, (3, 3), activation='relu', padding='same')(up9)
     # conv9 = Conv2D(32, (3, 3), activation='relu', padding='same')(conv9)
-
     # conv10 = Conv2D(1, (1, 1), activation='sigmoid')(conv9)
-
     # model = Model(inputs=[inputs], outputs=[conv10])
     # model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss, metrics=ModelParam.metrics)
-
     # return model
+
+# ! CNN Architecture
+def CNN_Segmetnation(Modelparam):
+    inputs = Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1) )
+    conv = inputs
+
+    for nL in range(Modelparam.num_Layers -1):
+        conv = Conv2D(filters=64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
+        conv = Dropout(Modelparam.Dropout.Value)(conv)
+
+    final  = Conv2D(filters=2, kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
+
+    model = Model(inputs=[inputs], outputs=[final])
+
+    return model
 
 
 # ! CNN Architecture
-def CNN(Modelparam):
+def CNN_Classifier(Modelparam):
     model = Sequential()
     model.add(Conv2D(filters=16, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=(Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1)))
     model.add(MaxPooling2D(pool_size=Modelparam.MaxPooling.pool_size))

@@ -35,7 +35,7 @@ class validation:
     fromKeras = False
 
 class model:
-    architectureType = 'U-Net' # 'MLP' #
+    architectureType = 'CNN_Segmetnation' # 'U-Net' # 'MLP' #
     epochs = 1
     batch_size = 40
     loss = 'binary_crossentropy'
@@ -43,7 +43,7 @@ class model:
     optimizer = 'adam'
     num_Layers = 5
     dataset = 'kaggleCompetition' # 'fashionMnist'
-    batchNormalization = True
+    batchNormalization = False # True
     ConvLayer = convLayer
     MaxPooling = maxPooling
     Dropout = dropout
