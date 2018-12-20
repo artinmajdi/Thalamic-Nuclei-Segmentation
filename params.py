@@ -35,14 +35,14 @@ class validation:
     fromKeras = False
 
 class model:
-    architectureType = 'CNN_Segmetnation' # 'U-Net' # 'MLP' #
-    epochs = 1
+    architectureType = 'CNN_Classifier' # 'U-Net' # 'MLP' #
+    epochs = 10
     batch_size = 40
     loss = 'binary_crossentropy'
     metrics = ['acc']
     optimizer = 'adam'
-    num_Layers = 5
-    dataset = 'kaggleCompetition' # 'fashionMnist'
+    num_Layers = 2
+    dataset = 'kaggleCompetition' #  'fashionMnist' # 
     batchNormalization = False # True
     ConvLayer = convLayer
     MaxPooling = maxPooling

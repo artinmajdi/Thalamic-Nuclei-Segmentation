@@ -10,6 +10,6 @@
     "python.unitTest.nosetestsEnabled": false,
     "python.unitTest.unittestEnabled": false,
     "python.unitTest.promptToConfigure": false,
-    "python.pythonPath": "/array/ssd/msmajdi/anaconda3/envs/myKeras2/bin/python",
+    "python.pythonPath": "/array/ssd/msmajdi/anaconda3/envs/tf-gpu2/bin/python",
     "python.linting.pylintEnabled": true
 }

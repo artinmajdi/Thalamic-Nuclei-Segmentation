@@ -55,7 +55,7 @@ def kaggleCompetition(ModelParam):
     dir = '/array/ssd/msmajdi/data/KaggleCompetition/train'
     subF = next(os.walk(dir))
 
-    for ind in range(min(len(subF[1]),15)):
+    for ind in range(min(len(subF[1]),1e20)):
 
         imDir = subF[0] + '/' + subF[1][ind] + '/images'
         imMsk = subF[0] + '/' + subF[1][ind] + '/masks'
