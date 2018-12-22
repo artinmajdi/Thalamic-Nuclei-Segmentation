@@ -4,6 +4,7 @@ import os
 from imageio import imread
 import params
 from random import shuffle
+from tqdm import tqdm, trange
 
 def one_hot(a, num_classes):
   return np.eye(num_classes)[a]
@@ -55,7 +56,7 @@ def kaggleCompetition(ModelParam):
     dir = '/array/ssd/msmajdi/data/KaggleCompetition/train'
     subF = next(os.walk(dir))
 
-    for ind in range(min(len(subF[1]),1e20)):
+    for ind in trange(min(len(subF[1]),50),desc='Loading Dataset'):
 
         imDir = subF[0] + '/' + subF[1][ind] + '/images'
         imMsk = subF[0] + '/' + subF[1][ind] + '/masks'
@@ -89,6 +90,8 @@ def kaggleCompetition(ModelParam):
     Data.Test = Data.Train
     return Data
 
+def ThreeTesla(ModelParam):
+    return True
 def TrainValSeperate(ModelParam, images, masks):
     indexes = np.array(range(images.shape[0]))
     shuffle(indexes)

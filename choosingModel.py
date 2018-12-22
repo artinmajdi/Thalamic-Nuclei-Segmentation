@@ -3,6 +3,7 @@ from keras.layers import Dense, Conv2D, Dropout, MaxPooling2D, Reshape, Flatten,
 from keras.layers.merge import concatenate
 from keras.callbacks import ModelCheckpoint
 from otherFuncs.smallFuncs import mkDir
+from keras_tqdm import TQDMCallback # , TQDMNotebookCallback
 
 
 # ! main Function
@@ -12,16 +13,16 @@ def modelTrain(Data, params, model):
 
     # if the shuffle argument in model.fit is set to True (which is the default), the training data will be randomly shuffled at each epoch.
     if ModelParam.Validation.fromKeras:
-        hist = model.fit(x=Data.Train.Image, y=Data.Train.Label, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=ModelParam.Validation.Percentage)
+        hist = model.fit(x=Data.Train.Image, y=Data.Train.Label, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=ModelParam.Validation.Percentage, verbose=0, callbacks=[TQDMCallback()])
     else:
-        hist = model.fit(x=Data.Train.Image, y=Data.Train.Label, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label))
+        hist = model.fit(x=Data.Train.Image, y=Data.Train.Label, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label), verbose=0, callbacks=[TQDMCallback()])
 
     mkDir(params.directories.Train.Model)
     model.save(params.directories.Train.Model + '/model.h5', overwrite=True, include_optimizer=True )
 
     if ModelParam.showHistory: print(hist.history)
 
-    return model
+    return model, hist
 
 
 def architecture(Data, params):

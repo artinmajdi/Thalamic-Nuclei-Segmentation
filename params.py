@@ -42,7 +42,7 @@ class model:
     metrics = ['acc']
     optimizer = 'adam'
     num_Layers = 2
-    dataset = 'kaggleCompetition' #  'fashionMnist' # 
+    dataset = 'kaggleCompetition' #  'fashionMnist' #
     batchNormalization = False # True
     ConvLayer = convLayer
     MaxPooling = maxPooling
@@ -54,7 +54,7 @@ class model:
 
 class machine:
     WhichMachine = 'server'
-    GPU_Index = '1'
+    GPU_Index = '7'
 
 class image:
     SlicingDirection = 'axial'.lower()
