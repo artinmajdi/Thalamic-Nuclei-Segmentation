@@ -8,12 +8,12 @@ from preprocess import cropping
 from preprocess.augment import augmentMain
 from preprocess.BashCallingFunctions import RigidRegistration, Bash_Cropping, BiasCorrection
 from preprocess.readinginput import mainloadingImage
-from otherFuncs.smallFuncs import mkDir , listSubFolders , choosingSubject , NucleiSelection , terminalEntries , checkInputDirectory, funcExpDirectories , inputNamesCheck
+import imageio
+from otherFuncs.smallFuncs import mkDir, listSubFolders, choosingSubject, NucleiSelection, terminalEntries, checkInputDirectory, funcExpDirectories, inputNamesCheck
 from preprocess.normalizeInput import normalizeMain
 
 ###  check 3T 7T dimension and interpolation
 #### check image format and convert to nifti
-
 
 
 params = terminalEntries(params)
@@ -47,17 +47,3 @@ for mode in ['Train','Test']:
         Bash_Cropping( subject , params)
 
 augmentMain( params , 'NonLinear')
-params.directories = funcExpDirectories(params.directories.Experiment)
-
-
-
-    # params.directories = funcExpDirectories(params.directories.Experiment)
-    # for ind in range(len(subDirectories)):
-
-    #     params.directories.Input = checkInputDirectory( subDirectories[ind] , params.TrainParams.NucleusName )
-    #     Input  = mainloadingImage(params.directories.Input)
-
-
-
-
-print('finished')

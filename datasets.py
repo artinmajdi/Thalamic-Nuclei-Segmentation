@@ -5,6 +5,8 @@ from imageio import imread
 import params
 from random import shuffle
 from tqdm import tqdm, trange
+import nibabel as nib
+import collections
 
 def one_hot(a, num_classes):
   return np.eye(num_classes)[a]
@@ -23,14 +25,17 @@ class Data:
     Validation = ImageLabel()
     Info = info
 
-def loadDataset(ModelParam):
+def loadDataset(params):
 
+    ModelParam = params.directories.Experiment.HardParams.Model
     if 'fashionMnist' in ModelParam.dataset:
         Data = fashionMnist(ModelParam)
 
     elif 'kaggleCompetition' in ModelParam.dataset:
         Data = kaggleCompetition(ModelParam)
 
+    elif 'SRI_3T' in ModelParam.dataset:
+        Data = SRI_3T(params)
 
     _, Data.Info.Height, Data.Info.Width, _ = Data.Train.Image.shape
 
@@ -56,7 +61,7 @@ def kaggleCompetition(ModelParam):
     dir = '/array/ssd/msmajdi/data/KaggleCompetition/train'
     subF = next(os.walk(dir))
 
-    for ind in trange(min(len(subF[1]),50),desc='Loading Dataset'):
+    for ind in trange(min(len(subF[1]),10),desc='Loading Dataset'):
 
         imDir = subF[0] + '/' + subF[1][ind] + '/images'
         imMsk = subF[0] + '/' + subF[1][ind] + '/masks'
@@ -90,8 +95,27 @@ def kaggleCompetition(ModelParam):
     Data.Test = Data.Train
     return Data
 
-def ThreeTesla(ModelParam):
-    return True
+struct = collections.namedtuple('struct' , 'Image Label Header Affine Subject')
+
+class InputImages:
+    Image   = ""
+    Label   = ""
+    Header  = ""
+    Affine  = ""
+    Address = ""
+
+def SRI_3T(params):
+
+    Subjects = params.directories.Train.Input.Subjects
+    for sj in Subjects:
+        subject = Subjects[sj]
+        im = nib.load(subject.Address + '/' + subject.ImageProcessed + '.nii.gz')
+        mask = nib.load(subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz')
+
+
+    return im
+
+
 def TrainValSeperate(ModelParam, images, masks):
     indexes = np.array(range(images.shape[0]))
     shuffle(indexes)

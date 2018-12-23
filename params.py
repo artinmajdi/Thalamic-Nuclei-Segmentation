@@ -35,14 +35,14 @@ class validation:
     fromKeras = False
 
 class model:
-    architectureType = 'CNN_Classifier' # 'U-Net' # 'MLP' #
+    architectureType = 'U-Net' # 'U-Net' # 'MLP' #
     epochs = 10
     batch_size = 40
     loss = 'binary_crossentropy'
     metrics = ['acc']
     optimizer = 'adam'
-    num_Layers = 2
-    dataset = 'kaggleCompetition' #  'fashionMnist' #
+    num_Layers = 3
+    dataset = 'SRI_3T' #  'fashionMnist' #
     batchNormalization = False # True
     ConvLayer = convLayer
     MaxPooling = maxPooling
@@ -114,7 +114,7 @@ class Cropping:
     Method = whichCropMode(directories.Experiment.Nucleus.Name, method)  # it changes the mode to 1 if we're analyzing the Thalamus
 
 class BiasCorrection:
-    Mode = True
+    Mode = False
 
 class Debug:
     doDebug = True

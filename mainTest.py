@@ -15,10 +15,20 @@ params = inputNamesCheck(params)
 os.environ["CUDA_VISIBLE_DEVICES"] = params.directories.Experiment.HardParams.Machine.GPU_Index
 
 
+Subjects = params.directories.Train.Input.Subjects
+for sj in Subjects:
+    subject = Subjects[sj]
+    im = nib.load(subject.Address + '/' subject.ImageProcessed + '.nii.gz')
+    mask = nib.load(subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz')
+    break
+
+subject = Subjects[sj]
+
+subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz'
 
 session = tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   )
 K.set_session(session)
-Data = loadDataset( params.directories.Experiment.HardParams.Model )
+Data = loadDataset( params )
 
 pred = {}
 for params.directories.Experiment.HardParams.Model.architectureType in tqdm(['U-Net']): # , 'CNN_Segmetnation']):
