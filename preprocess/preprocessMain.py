@@ -8,7 +8,7 @@ from preprocess import cropping
 from preprocess.augment import augmentMain
 from preprocess.BashCallingFunctions import RigidRegistration, Bash_Cropping, BiasCorrection
 from otherFuncs.smallFuncs import terminalEntries, funcExpDirectories, inputNamesCheck
-from preprocess.normalizeInput import normalizeMain
+from preprocess.funcNormalize import normalizeMain
 
 ###  check 3T 7T dimension and interpolation
 #### check image format and convert to nifti
