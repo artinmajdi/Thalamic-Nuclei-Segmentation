@@ -1,10 +1,9 @@
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import nibabel as nib
 import collections
 from otherFuncs.smallFuncs import listSubFolders
 from preprocess.normalizeInput import normalizeMain
-
-# import os
-# os.path.dirname('/array/ssd/msmajdi/experiments')
 
 struct = collections.namedtuple('struct' , 'Image CropMask ThalamusMask Header Affine InputAddress')
 

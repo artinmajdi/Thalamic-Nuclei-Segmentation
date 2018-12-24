@@ -1,14 +1,29 @@
+import os, sys
+__file__ = '/array/ssd/msmajdi/code/Thalamus_Keras/mainTest.py'  #! only if I'm using Hydrogen Atom
+sys.path.append(os.path.dirname(__file__))
 import numpy as np
-from random import shuffle
-
-a = np.random.random(10)
-print(a)
-a = np.array(range(10))
-a
-shuffle(a)
-print(a)
-a = np.random.random((10,20))
-a = np.expand_dims(np.expand_dims(a,axis=0),axis=3)
+from otherFuncs import params
+import math
+import nibabel as nib
+from otherFuncs.smallFuncs import correctNumLayers, imageSizesAfterPadding
+import numpy as np
 
 
-np.concatenate((a,1-a),axis=3).shape
+Subjects = params.directories.Train.Input.Subjects
+HardParams = params.directories.Experiment.HardParams
+
+#! checking the number of layers compare to the input image size & fix it if needed
+HardParams = correctNumLayers(Subjects, HardParams)
+
+#! Finding the final image sizes after padding & amount of padding
+Subjects, HardParams = imageSizesAfterPadding(Subjects, HardParams)
+
+
+subject = Subjects[list(Subjects)[0]]
+im = nib.load(subject.Address + '/' + subject.ImageProcessed + '.nii.gz').get_data()
+label = nib.load(subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
+
+im = np.pad(im,subject.Padding, 'constant')
+
+
+# readingImages()

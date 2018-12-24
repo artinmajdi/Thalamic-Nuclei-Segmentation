@@ -1,8 +1,10 @@
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from keras.datasets import fashion_mnist, mnist
 import numpy as np
-import os
 from imageio import imread
-import params
+from otherFuncs import params
 from random import shuffle
 from tqdm import tqdm, trange
 import nibabel as nib
@@ -106,14 +108,15 @@ class InputImages:
 
 def SRI_3T(params):
 
+
     Subjects = params.directories.Train.Input.Subjects
     for sj in Subjects:
         subject = Subjects[sj]
-        im = nib.load(subject.Address + '/' + subject.ImageProcessed + '.nii.gz')
-        mask = nib.load(subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz')
+        im = nib.load(subject.Address + '/' + subject.ImageProcessed + '.nii.gz').get_data()
+        mask = nib.load(subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
 
 
-    return im
+    return im, mask
 
 
 def TrainValSeperate(ModelParam, images, masks):

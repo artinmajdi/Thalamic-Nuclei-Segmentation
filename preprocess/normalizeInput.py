@@ -1,3 +1,6 @@
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
 
 def funcNormalize(params , Image):
@@ -8,8 +11,7 @@ def funcNormalize(params , Image):
 
     elif params.normalize.Method == '1Std0Mean':
         Image = np.float32(Image)
-        Image = ( Image-Image.mean() )/( Image.std() )    
-            
+        Image = ( Image-Image.mean() )/( Image.std() )
     return Image
 
 def normalizeMain(params , Image):

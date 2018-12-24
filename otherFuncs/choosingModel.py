@@ -1,3 +1,6 @@
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from keras.models import Sequential, Model
 from keras.layers import Dense, Conv2D, Dropout, MaxPooling2D, Reshape, Flatten, BatchNormalization, Input, Conv2DTranspose
 from keras.layers.merge import concatenate

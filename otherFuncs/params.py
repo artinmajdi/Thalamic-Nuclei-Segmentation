@@ -1,4 +1,5 @@
-import os
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from otherFuncs.smallFuncs import NucleiSelection , whichCropMode , fixDirectoryLastDashSign , augmentLengthChecker , InputNames , checkInputDirectory , funcExpDirectories
 
 #  ---------------------- model Params ----------------------
@@ -36,13 +37,14 @@ class validation:
 
 class model:
     architectureType = 'U-Net' # 'U-Net' # 'MLP' #
-    epochs = 10
+    epochs = 3
     batch_size = 40
     loss = 'binary_crossentropy'
     metrics = ['acc']
     optimizer = 'adam'
-    num_Layers = 3
-    dataset = 'SRI_3T' #  'fashionMnist' #
+    num_Layers = 50
+    InputDimensions = ''
+    dataset = 'SRI_3T' # 'kaggleCompetition' #  'fashionMnist' #
     batchNormalization = False # True
     ConvLayer = convLayer
     MaxPooling = maxPooling
@@ -54,7 +56,7 @@ class model:
 
 class machine:
     WhichMachine = 'server'
-    GPU_Index = '7'
+    GPU_Index = str(5)
 
 class image:
     SlicingDirection = 'axial'.lower()
