@@ -2,8 +2,8 @@ import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 import nibabel as nib
 import numpy as np
-from collections import namedtuple
 from shutil import copyfile
+import matplotlib.pyplot as plt
 
 # TODO: Replace folder searching with "next(os.walk(directory))"
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
@@ -315,7 +315,7 @@ def inputNamesCheck(params):
                 if not flagPPExist:
                     sys.exit('preprocess files doesn\'t exist ' + 'Subject: ' + sj + ' Dir: ' + subject.Address)
 
-            else:
+            else: # if not params.preprocess.Debug.PProcessExist and
 
                 imOrig = subject.Address + '/' + subject.ImageOriginal + '.nii.gz'
                 imProc = subject.Address + '/' + subject.ImageOriginal + '_PProcessed.nii.gz'
@@ -376,26 +376,23 @@ def imageSizesAfterPadding(Subjects, HardParams):
         padding = [np.zeros(2)]*3
         for dim in range(2):
             if md[sn,dim] == 0:
-                padding[dim] = [fullpadding[sn,dim]/2]*2
+                padding[dim] = tuple([int(fullpadding[sn,dim]/2)]*2)
             else:
-                padding[dim] = [np.floor(fullpadding[sn,dim]/2) + 1 , np.floor(fullpadding[sn,dim]/2)]
+                padding[dim] = tuple([int(np.floor(fullpadding[sn,dim]/2) + 1) , int(np.floor(fullpadding[sn,dim]/2))])
 
-        Subjects[name].Padding = padding
+        padding[2] = tuple([0,0])
+        Subjects[name].Padding = tuple(padding)
 
 
     HardParams.Model.InputDimensions = new_inputSize
     return Subjects, HardParams
 
-def imShow(image, label, predictions, ind):
+def imShow(*args):
 
-    import matplotlib.pyplot as plt
-
-    Figs = [  np.squeeze(image[ind,...])  ,  np.squeeze(label[ind,...]) ]
-    for nm in list(predictions):
-        Figs.append(np.squeeze(predictions[nm][ind,:,:,1]))
-
-    _, axes = plt.subplots(1,len(Figs))
-    for sh in range(len(Figs)):
-        axes[sh].imshow(Figs[sh],cmap='gray')
+    _, axes = plt.subplots(1,len(args))
+    for sh in range(len(args)):
+        axes[sh].imshow(np.squeeze(args[sh]),cmap='gray')
 
     plt.show()
+
+    return True

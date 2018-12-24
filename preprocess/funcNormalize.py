@@ -1,23 +1,23 @@
-import os
-import sys
+import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from otherFuncs import params
 import numpy as np
 
-def funcNormalize(params , Image):
+def funcNormalize(Method , Image):
 
-    if params.normalize.Method == 'MinMax':
+    if Method == 'MinMax':
         Image = np.float32(Image)
         Image = ( Image-Image.min() )/( Image.max() - Image.min() )
 
-    elif params.normalize.Method == '1Std0Mean':
+    elif Method == '1Std0Mean':
         Image = np.float32(Image)
         Image = ( Image-Image.mean() )/( Image.std() )
     return Image
 
-def normalizeMain(params , Image):
+def normalizeMain(Normalize , Image):
 
-    if params.normalize:
-        Image = funcNormalize(params , Image)
+    if Normalize.Mode:
+        Image = funcNormalize(Normalize.Method , Image)
 
     return Image
 

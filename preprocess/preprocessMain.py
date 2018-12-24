@@ -1,15 +1,13 @@
-import os
-import sys
+import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import nibabel as nib
 import numpy as np
 from otherFuncs import params
+params.preprocess.Mode = True
 from preprocess import cropping
 from preprocess.augment import augmentMain
 from preprocess.BashCallingFunctions import RigidRegistration, Bash_Cropping, BiasCorrection
-from preprocess.readinginput import mainloadingImage
-import imageio
-from otherFuncs.smallFuncs import mkDir, listSubFolders, choosingSubject, NucleiSelection, terminalEntries, checkInputDirectory, funcExpDirectories, inputNamesCheck
+from otherFuncs.smallFuncs import terminalEntries, funcExpDirectories, inputNamesCheck
 from preprocess.normalizeInput import normalizeMain
 
 ###  check 3T 7T dimension and interpolation

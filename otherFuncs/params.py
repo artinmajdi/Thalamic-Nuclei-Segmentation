@@ -37,14 +37,14 @@ class validation:
 
 class model:
     architectureType = 'U-Net' # 'U-Net' # 'MLP' #
-    epochs = 3
+    epochs = 2
     batch_size = 40
     loss = 'binary_crossentropy'
     metrics = ['acc']
     optimizer = 'adam'
-    num_Layers = 50
+    num_Layers = 4
     InputDimensions = ''
-    dataset = 'SRI_3T' # 'kaggleCompetition' #  'fashionMnist' #
+    dataset = 'SRI_3T' #  'kaggleCompetition' # 'fashionMnist' #
     batchNormalization = False # True
     ConvLayer = convLayer
     MaxPooling = maxPooling
@@ -52,6 +52,7 @@ class model:
     Activitation = activation
     Validation = validation
     showHistory = True
+    LabelMaxValue = 1
 
 
 class machine:
@@ -102,7 +103,7 @@ Augment = augmentLengthChecker(Augment)
 
 class Normalize:
     Mode = True
-    Method = 'MinMax'.lower()
+    Method = 'MinMax'
 
 
 
@@ -124,7 +125,7 @@ class Debug:
     justForNow = True # it checks the intermediate steps and if it existed don't reproduce it
 
 class preprocess:
-    Mode = True
+    Mode = ''
     TestOnly = False
     Debug = Debug
     Augment = Augment

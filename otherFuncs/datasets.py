@@ -9,6 +9,8 @@ from random import shuffle
 from tqdm import tqdm, trange
 import nibabel as nib
 import collections
+from preprocess.funcNormalize import normalizeMain
+from otherFuncs.smallFuncs import correctNumLayers, imageSizesAfterPadding
 
 def one_hot(a, num_classes):
   return np.eye(num_classes)[a]
@@ -37,11 +39,13 @@ def loadDataset(params):
         Data = kaggleCompetition(ModelParam)
 
     elif 'SRI_3T' in ModelParam.dataset:
-        Data = SRI_3T(params)
+        Data, params = SRI_3T(params)
+        Data.Train.Image = normalizeMain(params.preprocess.Normalize , Data.Train.Image)
+        Data.Test.Image  = normalizeMain(params.preprocess.Normalize , Data.Test.Image)
 
     _, Data.Info.Height, Data.Info.Width, _ = Data.Train.Image.shape
 
-    return Data
+    return Data, params
 
 def fashionMnist(ModelParam):
     data  = fashion_mnist.load_data()
@@ -63,7 +67,7 @@ def kaggleCompetition(ModelParam):
     dir = '/array/ssd/msmajdi/data/KaggleCompetition/train'
     subF = next(os.walk(dir))
 
-    for ind in trange(min(len(subF[1]),10),desc='Loading Dataset'):
+    for ind in trange(min(len(subF[1]),20), desc='Loading Dataset'):
 
         imDir = subF[0] + '/' + subF[1][ind] + '/images'
         imMsk = subF[0] + '/' + subF[1][ind] + '/masks'
@@ -97,29 +101,61 @@ def kaggleCompetition(ModelParam):
     Data.Test = Data.Train
     return Data
 
-struct = collections.namedtuple('struct' , 'Image Label Header Affine Subject')
-
-class InputImages:
-    Image   = ""
-    Label   = ""
-    Header  = ""
-    Affine  = ""
-    Address = ""
-
+# TODO: I need to add the ability for test files to read the padding size from training instead of measuring it again
+# TODO: also I need to finish this function
+# TODO: add the saving images with the format mahesh said
+# TODO: check why the label & image has different crop sizes; maybe if i rerun it it will fix it
 def SRI_3T(params):
 
+    # for mode in ['Train','Test']:
+
+        # if params.preprocess.TestOnly and 'Train' in mode:
+        #     continue
 
     Subjects = params.directories.Train.Input.Subjects
-    for sj in Subjects:
-        subject = Subjects[sj]
+    HardParams = params.directories.Experiment.HardParams
+
+    #! Finding the final image sizes after padding & amount of padding
+    Subjects, HardParams = imageSizesAfterPadding(Subjects, HardParams)
+
+
+    #! reading all images and concatenating them into one array
+    Th = 0.5*HardParams.Model.LabelMaxValue
+    for ind, name in tqdm(enumerate(Subjects), desc='Loading Dataset'):
+        subject = Subjects[name]
         im = nib.load(subject.Address + '/' + subject.ImageProcessed + '.nii.gz').get_data()
-        mask = nib.load(subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
+        im = np.pad(im, subject.Padding, 'constant')
+        im = np.transpose(im,[2,0,1])
+
+        if os.path.exists(subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz'):
+            msk = nib.load(subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
+            msk = np.pad(msk, subject.Padding, 'constant')
+            msk = np.transpose(msk,[2,0,1])
+        else:
+            msk = np.zeros(im.shape)
+
+        images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
+        masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
+
+    images = np.expand_dims(images,         axis=3).astype('float32')
+    masks  = np.concatenate((masks,1-masks),axis=3).astype('float32')
+
+    if HardParams.Model.Validation.fromKeras:
+        Data.Train.Image = images
+        Data.Train.Label = masks
+    else:
+        Data.Train, Data.Validation = TrainValSeperate(HardParams.Model ,images, masks)
 
 
-    return im, mask
+    params.directories.Train.Input.Subjects = Subjects
+    params.directories.Experiment.HardParams = HardParams
+
+
+    return Data, params
 
 
 def TrainValSeperate(ModelParam, images, masks):
+
     indexes = np.array(range(images.shape[0]))
     shuffle(indexes)
     per = int( ModelParam.Validation.percentage * images.shape[0] )
