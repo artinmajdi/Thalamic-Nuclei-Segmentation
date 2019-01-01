@@ -1,5 +1,5 @@
 import os, sys
-# __file__ = '/array/ssd/msmajdi/code/Thalamus_Keras/mainTest.py'  #! only if I'm using Hydrogen Atom
+__file__ = '/array/ssd/msmajdi/code/Thalamus_Keras/mainTest.py'  #! only if I'm using Hydrogen Atom
 sys.path.append(os.path.dirname(__file__))
 from otherFuncs.choosingModel import architecture, modelTrain
 import numpy as np
@@ -14,7 +14,7 @@ params.preprocess.Mode = False
 import tensorflow as tf
 from otherFuncs.smallFuncs import terminalEntries, inputNamesCheck, imShow, correctNumLayers
 params = terminalEntries(params)
-os.environ["CUDA_VISIBLE_DEVICES"] = params.directories.Experiment.HardParams.Machine.GPU_Index
+os.environ["CUDA_VISIBLE_DEVICES"] = params.directories.WhichExperiment.HardParams.Machine.GPU_Index
 
 
 #! configing the GPU
@@ -23,28 +23,32 @@ K.set_session(session)
 
 
 #! correcting the number of layers
-params.directories.Experiment.HardParams = correctNumLayers(params.directories.Train.Input.Subjects, params.directories.Experiment.HardParams)
+params.directories.WhichExperiment.HardParams = correctNumLayers(params.directories.Train.Input.Subjects, params.directories.WhichExperiment.HardParams)
 
 #! loading the dataset
-Data = loadDataset( params )
+Data, params = loadDataset( params )
 
 
 
 #! Actual architecture
 pred = {}
-for params.directories.Experiment.HardParams.Model.architectureType in tqdm(['U-Net' , 'CNN_Segmetnation']): #]):
+for params.directories.WhichExperiment.HardParams.Model.architectureType in tqdm(['U-Net']):# , 'CNN_Segmetnation']):
     t = time()
     model, params = architecture(Data, params)
     model, hist   = modelTrain(Data, params, model)
     # model = load_model(params.directories.Train.Model + '/model.h5')
-    pred[params.directories.Experiment.HardParams.Model.architectureType] = model.predict(Data.Test.Image)
+    pred[params.directories.WhichExperiment.HardParams.Model.architectureType] = model.predict(Data.Test.Image)
     print(time() - t)
 
 
 
 #! showing the outputs
-ind = 7
-imShow( Data.Test.Image[ind,:,:,0] ,  Data.Test.Label[ind,:,:,0]  ,  pred[list(pred)[0]][ind,:,:,1]  ,  pred[list(pred)[1]][ind,:,:,1] )
+ind = 2
+L = len(list(pred))
+if L == 1:
+    imShow( Data.Test.Image[ind,:,:,0] ,  Data.Test.Label[ind,:,:,0]  ,  pred[list(pred)[0]][ind,:,:,1] )
+elif L == 2:
+    imShow( Data.Test.Image[ind,:,:,0] ,  Data.Test.Label[ind,:,:,0]  ,  pred[list(pred)[0]][ind,:,:,1]  ,  pred[list(pred)[1]][ind,:,:,1] )
+
+
 K.clear_session()
-
-

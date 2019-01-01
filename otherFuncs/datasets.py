@@ -1,16 +1,17 @@
-import os
-import sys
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from keras.datasets import fashion_mnist, mnist
 import numpy as np
 from imageio import imread
-from otherFuncs import params
 from random import shuffle
 from tqdm import tqdm, trange
 import nibabel as nib
 import collections
-from preprocess.funcNormalize import normalizeMain
-from otherFuncs.smallFuncs import correctNumLayers, imageSizesAfterPadding
+import os, sys, collections
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from keras.datasets import fashion_mnist, mnist
+
+from otherFuncs import params
+
+from preprocess.normalizeMine import normalizeMain
+from otherFuncs.smallFuncs import imageSizesAfterPadding
 
 def one_hot(a, num_classes):
   return np.eye(num_classes)[a]
@@ -31,15 +32,15 @@ class Data:
 
 def loadDataset(params):
 
-    ModelParam = params.directories.Experiment.HardParams.Model
+    ModelParam = params.directories.WhichExperiment.HardParams.Model
     if 'fashionMnist' in ModelParam.dataset:
-        Data = fashionMnist(ModelParam)
+        Data, _ = fashionMnist(ModelParam)
 
     elif 'kaggleCompetition' in ModelParam.dataset:
-        Data = kaggleCompetition(ModelParam)
+        Data, _ = kaggleCompetition(ModelParam)
 
     elif 'SRI_3T' in ModelParam.dataset:
-        Data, params = SRI_3T(params)
+        Data, params = readingFromExperiments(params)
         Data.Train.Image = normalizeMain(params.preprocess.Normalize , Data.Train.Image)
         Data.Test.Image  = normalizeMain(params.preprocess.Normalize , Data.Test.Image)
 
@@ -61,13 +62,14 @@ def fashionMnist(ModelParam):
 
     Data.Test.Image = (np.expand_dims(data[1][0],axis=3)).astype('float32') / 255
     Data.Test.Label = one_hot(data[1][1],10)
-    return Data
+    return Data, '_'
 
 def kaggleCompetition(ModelParam):
-    dir = '/array/ssd/msmajdi/data/KaggleCompetition/train'
+
+    dir = '/array/ssd/msmajdi/data/original/KaggleCompetition/train'
     subF = next(os.walk(dir))
 
-    for ind in trange(min(len(subF[1]),20), desc='Loading Dataset'):
+    for ind in trange(min(len(subF[1]),5), desc='Loading Dataset'):
 
         imDir = subF[0] + '/' + subF[1][ind] + '/images'
         imMsk = subF[0] + '/' + subF[1][ind] + '/masks'
@@ -99,13 +101,13 @@ def kaggleCompetition(ModelParam):
         Data.Train, Data.Validation = TrainValSeperate(ModelParam ,images, masks)
 
     Data.Test = Data.Train
-    return Data
+    return Data, '_'
 
 # TODO: I need to add the ability for test files to read the padding size from training instead of measuring it again
 # TODO: also I need to finish this function
 # TODO: add the saving images with the format mahesh said
 # TODO: check why the label & image has different crop sizes; maybe if i rerun it it will fix it
-def SRI_3T(params):
+def readingFromExperiments(params):
 
     # for mode in ['Train','Test']:
 
@@ -113,7 +115,7 @@ def SRI_3T(params):
         #     continue
 
     Subjects = params.directories.Train.Input.Subjects
-    HardParams = params.directories.Experiment.HardParams
+    HardParams = params.directories.WhichExperiment.HardParams
 
     #! Finding the final image sizes after padding & amount of padding
     Subjects, HardParams = imageSizesAfterPadding(Subjects, HardParams)
@@ -123,12 +125,12 @@ def SRI_3T(params):
     Th = 0.5*HardParams.Model.LabelMaxValue
     for ind, name in tqdm(enumerate(Subjects), desc='Loading Dataset'):
         subject = Subjects[name]
-        im = nib.load(subject.Address + '/' + subject.ImageProcessed + '.nii.gz').get_data()
+        im = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').get_data()
         im = np.pad(im, subject.Padding, 'constant')
         im = np.transpose(im,[2,0,1])
 
-        if os.path.exists(subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz'):
-            msk = nib.load(subject.Label.Address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
+        if os.path.exists(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz'):
+            msk = nib.load(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
             msk = np.pad(msk, subject.Padding, 'constant')
             msk = np.transpose(msk,[2,0,1])
         else:
@@ -148,18 +150,17 @@ def SRI_3T(params):
 
 
     params.directories.Train.Input.Subjects = Subjects
-    params.directories.Experiment.HardParams = HardParams
+    params.directories.WhichExperiment.HardParams = HardParams
 
 
     return Data, params
-
 
 def TrainValSeperate(ModelParam, images, masks):
 
     indexes = np.array(range(images.shape[0]))
     shuffle(indexes)
     per = int( ModelParam.Validation.percentage * images.shape[0] )
-
+    if per == 0 and images.shape[0] > 1: per = 1
     Validation = ImageLabel()
     Validation.Image = images[indexes[:per],...]
     Validation.Label = masks[indexes[:per],...]
@@ -169,3 +170,6 @@ def TrainValSeperate(ModelParam, images, masks):
     Train.Label = masks[indexes[per:],...]
 
     return Train, Validation
+
+def movingFromDatasetToExperiments(params):
+    return True

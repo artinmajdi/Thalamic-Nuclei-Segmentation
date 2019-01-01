@@ -1,9 +1,10 @@
-import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 import nibabel as nib
 import numpy as np
 from shutil import copyfile
 import matplotlib.pyplot as plt
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+
 
 # TODO: Replace folder searching with "next(os.walk(directory))"
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
@@ -76,46 +77,47 @@ def terminalEntries(params):
         entry = sys.argv[en]
 
         if entry.lower() == '-g':  # gpu num
-            params.directories.Experiment.HardParams.Machine.GPU_Index = sys.argv[en+1]
+            params.directories.WhichExperiment.HardParams.Machine.GPU_Index = sys.argv[en+1]
 
         elif entry.lower() == '-o':  # output directory
-            params.directories.Train.Model = mkDir(sys.argv[en+1] + '/Experiment' + str(params.directories.Experiment.Experiment_Index) + '/models'  + '/SubExperiment' + str(params.directories.Experiment.SubExperiment_Index) + '_' + params.directories.Experiment.Tag)
-            params.directories.Test.Result = mkDir(sys.argv[en+1] + '/Experiment' + str(params.directories.Experiment.Experiment_Index) + '/Results' + '/SubExperiment' + str(params.directories.Experiment.SubExperiment_Index) + '_' + params.directories.Experiment.Tag)
+            params.directories.Train.Model = mkDir(sys.argv[en+1] + '/' + params.directories.WhichExperiment.Experiment.name + '/models/' + params.directories.WhichExperiment.SubExperiment.name)
+            params.directories.Test.Result = mkDir(sys.argv[en+1] + '/' + params.directories.WhichExperiment.Experiment.name + '/results/' + params.directories.WhichExperiment.SubExperiment.name)
 
         elif entry.lower() == '-m':  # which machine; server localPC local Laptop
-            params.directories.Experiment.HardParams.Machine.WhichMachine = sys.argv[en+1]
+            params.directories.WhichExperiment.HardParams.Machine.WhichMachine = sys.argv[en+1]
 
         elif entry.lower() == '-n':  # nuclei index
             if sys.argv[en+1].lower() == 'all':
-                params.directories.Experiment.Nucleus.Index = np.append([1,2,4567],range(4,14))
+                params.directories.WhichExperiment.Nucleus.Index = np.append([1,2,4567],range(4,14))
 
             elif sys.argv[en+1][0] == '[':
                 B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
-                params.directories.Experiment.Nucleus.Index = [int(k) for k in B]
+                params.directories.WhichExperiment.Nucleus.Index = [int(k) for k in B]
 
             else:
-                params.directories.Experiment.Nucleus.Index = [int(sys.argv[en+1])]
+                params.directories.WhichExperiment.Nucleus.Index = [int(sys.argv[en+1])]
 
-            params.directories.Experiment.Nucleus.Name = "check the indexes entered by user!"
+            params.directories.WhichExperiment.Nucleus.name = "check the indexes entered by user!"
 
         elif entry.lower() == '-i': # input image or directory
-            params.directories.Experiment.Address = sys.argv[en+1]
-            params.directories.Train.Address =  sys.argv[en+1] + '/Experiment' + str(params.directories.Experiment.Experiment_Index) + '/Train'
-            params.directories.Train.Input   = checkInputDirectory( params.directories.Train.Address ,params.directories.Experiment.Nucleus.Name)
-            params.directories.Test.Address  =  sys.argv[en+1] + '/Experiment' + str(params.directories.Experiment.Experiment_Index) + '/Test'
-            params.directories.Test.Input    = checkInputDirectory( params.directories.Test.Address ,params.directories.Experiment.Nucleus.Name)
+            params.directories.WhichExperiment.address = sys.argv[en+1]
+            params.directories.Train.address =  sys.argv[en+1] + '/' + params.directories.WhichExperiment.Experiment.name + '/Train'
+            params.directories.Train.Input   = checkInputDirectory(params.directories.Train.address, params.directories.WhichExperiment.Nucleus.name)
+            params.directories.Test.address  =  sys.argv[en+1] + '/' + params.directories.WhichExperiment.Experiment.name + '/Test'
+            params.directories.Test.Input    = checkInputDirectory(params.directories.Test.address, params.directories.WhichExperiment.Nucleus.name)
 
         elif entry.lower() == '-TemplateMask':  # template Mask
-            params.directories.Experiment.HardParams.Template.Mask = sys.argv[en+1]
+            params.directories.WhichExperiment.HardParams.Template.Mask = sys.argv[en+1]
 
     return params
 
-def checkInputDirectory(Dir,NucleusName):
+def checkInputDirectory(Dir, NucleusName):
 
     # multipleTest , files , subfolders = checkMultipleTestOrNot(Dir,NucleusName)
 
     subjects = {}
-    for sf in os.listdir(Dir):
+
+    for sf in listSubFolders(Dir): # os.listdir(Dir):
         subjects[sf] = InputNames(Dir + '/' + sf ,NucleusName)
 
     if len(subjects) == 1:
@@ -124,13 +126,13 @@ def checkInputDirectory(Dir,NucleusName):
         multipleTest = True
 
     class Input:
-        Address = fixDirectoryLastDashSign(Dir)
+        address = fixDirectoryLastDashSign(Dir)
         Subjects = subjects
         MultipleTest = multipleTest
 
     return Input
 
-def checkMultipleTestOrNot(Dir,NucleusName):
+def checkMultipleTestOrNot(Dir, NucleusName):
 
     subjects = ''
     files = ''
@@ -161,20 +163,20 @@ def checkMultipleTestOrNot(Dir,NucleusName):
 
     return multipleTest , files , subjects
 
-def funcExpDirectories(experiment):
+def funcExpDirectories(whichExperiment):
 
     class train:
-        Address = experiment.Address + '/Experiment' + str(experiment.Experiment_Index) + '/Train'
-        Model   = mkDir(experiment.Address + '/Experiment' + str(experiment.Experiment_Index) + '/models'  + '/SubExperiment' + str(experiment.SubExperiment_Index) + '_' + experiment.Tag)
-        Input   = checkInputDirectory( Address ,experiment.Nucleus.Name)
+        address = mkDir(whichExperiment.Experiment.address + '/Train')
+        Model   = mkDir(whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name)
+        Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
 
     class test:
-        Address = experiment.Address + '/Experiment' + str(experiment.Experiment_Index) + '/Test'
-        Result  = mkDir(experiment.Address + '/Experiment' + str(experiment.Experiment_Index) + '/Results' + '/SubExperiment' + str(experiment.SubExperiment_Index) + '_' + experiment.Tag)
-        Input   = checkInputDirectory( Address ,experiment.Nucleus.Name)
+        address = mkDir(whichExperiment.Experiment.address + '/Test')
+        Result  = mkDir(whichExperiment.Experiment.address + '/Results/' + whichExperiment.SubExperiment.name)
+        Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
 
     class Directories:
-        Experiment = experiment
+        WhichExperiment = whichExperiment
         Train = train
         Test  = test
 
@@ -201,7 +203,7 @@ def augmentLengthChecker(augment):
 def InputNames(Dir , NucleusName):
 
     class deformation:
-        Address = ''
+        address = ''
         testWarp = ''
         testInverseWarp = ''
         testAffine = ''
@@ -211,28 +213,28 @@ def InputNames(Dir , NucleusName):
         Cropped = ''
         BiasCorrected = ''
         Deformation = deformation
-        Address = ''
+        address = ''
 
     class tempLabel:
-        Address = ''
+        address = ''
         Cropped = ''
 
     class label:
         LabelProcessed = ''
         LabelOriginal = ''
         Temp = tempLabel
-        Address = ''
+        address = ''
 
     class Files:
         ImageOriginal = '' # WMn_MPRAGE'
         ImageProcessed = ''
         Label = label
         Temp = temp
-        Address = Dir
+        address = Dir
 
 
 
-    Files.Label.Address =  ''
+    Files.Label.address = ''
     flagTemp = False
     for d in os.listdir(Dir):
         if '.nii.gz' in d:
@@ -242,29 +244,29 @@ def InputNames(Dir , NucleusName):
             else:
                 Files.ImageOriginal = d.split('.nii.gz')[0]
         elif 'temp' not in d:
-                Files.Label.Address = Dir + '/' + d
+            Files.Label.address = Dir + '/' + d
 
     if flagTemp:
-        Files.Temp.Address = mkDir(Dir + '/temp')
-        Files.Temp.Deformation.Address = mkDir(Dir + '/temp/deformation')
+        Files.Temp.address = mkDir(Dir + '/temp')
+        Files.Temp.Deformation.address = mkDir(Dir + '/temp/deformation')
 
-    if os.path.exists(Files.Label.Address):
+    if os.path.exists(Files.Label.address):
 
-        Files.Label.Temp.Address =  mkDir(Files.Label.Address + '/temp')
-        for d in os.listdir(Files.Label.Address):
+        Files.Label.Temp.address =  mkDir(Files.Label.address + '/temp')
+        for d in os.listdir(Files.Label.address):
             if NucleusName + '.nii.gz' in d:
                 Files.Label.LabelOriginal = d.split('.nii.gz')[0]
             elif NucleusName + '_PProcessed.nii.gz' in d:
                 Files.Label.LabelProcessed = d.split('.nii.gz')[0]
 
             elif 'temp' in d:
-                Files.Label.Temp.Address = Files.Label.Address + '/' + d
+                Files.Label.Temp.address = Files.Label.address + '/' + d
 
-                for d in os.listdir(Files.Label.Temp.Address):
+                for d in os.listdir(Files.Label.Temp.address):
                     if '_Cropped.nii.gz' in d:
                         Files.Label.Temp.Cropped = d.split('.nii.gz')[0]
 
-    for d in os.listdir(Files.Temp.Address):
+    for d in os.listdir(Files.Temp.address):
 
         if '.nii.gz' in d:
             if 'CropMask.nii.gz' in d:
@@ -277,9 +279,9 @@ def InputNames(Dir , NucleusName):
                 Files.Temp.origImage = d.split('.nii.gz')[0]
 
         elif 'deformation' in d:
-            Files.Temp.Deformation.Address = Files.Temp.Address + '/' + d
+            Files.Temp.Deformation.address = Files.Temp.address + '/' + d
 
-            for d in os.listdir( Files.Temp.Deformation.Address ):
+            for d in os.listdir(Files.Temp.Deformation.address):
                 if 'testWarp.nii.gz' in d:
                     Files.Temp.Deformation.testWarp = d.split('.nii.gz')[0]
                 elif 'testInverseWarp.nii.gz' in d:
@@ -304,7 +306,7 @@ def inputNamesCheck(params):
 
             if params.preprocess.Debug.PProcessExist:
 
-                files = os.listdir(subject.Address)
+                files = os.listdir(subject.address)
 
                 flagPPExist = False
                 for si in files:
@@ -313,28 +315,28 @@ def inputNamesCheck(params):
                         break
 
                 if not flagPPExist:
-                    sys.exit('preprocess files doesn\'t exist ' + 'Subject: ' + sj + ' Dir: ' + subject.Address)
+                    sys.exit('preprocess files doesn\'t exist ' + 'Subject: ' + sj + ' Dir: ' + subject.address)
 
             else: # if not params.preprocess.Debug.PProcessExist and
 
-                imOrig = subject.Address + '/' + subject.ImageOriginal + '.nii.gz'
-                imProc = subject.Address + '/' + subject.ImageOriginal + '_PProcessed.nii.gz'
-                copyfile( imOrig  , imProc )
+                imOrig = subject.address + '/' + subject.ImageOriginal + '.nii.gz'
+                imProc = subject.address + '/' + subject.ImageOriginal + '_PProcessed.nii.gz'
+                copyfile(imOrig  , imProc)
 
-                for ind in params.directories.Experiment.Nucleus.FullIndexes:
-                    NucleusName, _ = NucleiSelection(ind , params.directories.Experiment.Nucleus.Organ)
+                for ind in params.directories.WhichExperiment.Nucleus.FullIndexes:
+                    NucleusName, _ = NucleiSelection(ind, params.directories.WhichExperiment.Nucleus.Organ)
 
-                    mskOrig = subject.Label.Address + '/' + NucleusName + '.nii.gz'
-                    mskProc = subject.Label.Address + '/' + NucleusName + '_PProcessed.nii.gz'
-                    copyfile( mskOrig , mskProc)
+                    mskOrig = subject.Label.address + '/' + NucleusName + '.nii.gz'
+                    mskProc = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
+                    copyfile(mskOrig, mskProc)
 
-    params.directories = funcExpDirectories(params.directories.Experiment)
+    params.directories = funcExpDirectories(params.directories.WhichExperiment)
     return params
 
 def inputSizes(Subjects):
     inputSize = []
     for sj in Subjects:
-        inputSize.append( nib.load(Subjects[sj].Address + '/' + Subjects[sj].ImageProcessed + '.nii.gz').shape )
+        inputSize.append( nib.load(Subjects[sj].address + '/' + Subjects[sj].ImageProcessed + '.nii.gz').shape)
 
     return np.array(inputSize)
 
@@ -346,9 +348,9 @@ def correctNumLayers(Subjects, HardParams):
     kernel_size = HardParams.Model.ConvLayer.Kernel_size.conv
     num_Layers  = HardParams.Model.num_Layers
 
-    if np.min(  MinInputSize[:2] - np.multiply( kernel_size,(2**(num_Layers - 1)) )  ) < 0:  # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size
+    if np.min(MinInputSize[:2] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0:  # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size
         print('WARNING: INPUT IMAGE SIZE IS TOO SMALL FOR THE NUMBER OF LAYERS')
-        num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:2],kernel_size) )) + 1 ))
+        num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:2],kernel_size) )) + 1))
         print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
 
     HardParams.Model.num_Layers = num_Layers
@@ -375,7 +377,7 @@ def imageSizesAfterPadding(Subjects, HardParams):
     for sn, name in enumerate(list(Subjects)):
         padding = [np.zeros(2)]*3
         for dim in range(2):
-            if md[sn,dim] == 0:
+            if md[sn, dim] == 0:
                 padding[dim] = tuple([int(fullpadding[sn,dim]/2)]*2)
             else:
                 padding[dim] = tuple([int(np.floor(fullpadding[sn,dim]/2) + 1) , int(np.floor(fullpadding[sn,dim]/2))])

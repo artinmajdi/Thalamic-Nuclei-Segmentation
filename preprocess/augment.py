@@ -47,7 +47,7 @@ def LinearFunc(params):
         for AugIx in range(params.preprocess.Augment.LinearAugmentLength):
             print('image',imInd,'/',L,'augment',AugIx,'/',params.preprocess.Augment.LinearAugmentLength)
 
-            im = nib.load(subject.Address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image
+            im = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image
             Image  = im.get_data()
             Header = im.header
             Affine = im.affine
@@ -55,8 +55,8 @@ def LinearFunc(params):
             angle = np.random.random_integers(10)
             shift = [ np.random.random_integers(10) , np.random.random_integers(10)]
 
-            outDirectoryImage = mkDir( params.directories.Train.Input.Address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Rot_' + str(angle) + '_shift_' + str(shift[0]) + '-' + str(shift[1]) )
-            outDirectoryMask = mkDir( params.directories.Train.Input.Address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Rot_' + str(angle) + '_shift_' + str(shift[0]) + '-' + str(shift[1]) + '/Labels')
+            outDirectoryImage = mkDir( params.directories.Train.Input.address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Rot_' + str(angle) + '_shift_' + str(shift[0]) + '-' + str(shift[1]) )
+            outDirectoryMask = mkDir( params.directories.Train.Input.address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Rot_' + str(angle) + '_shift_' + str(shift[0]) + '-' + str(shift[1]) + '/Labels')
 
             if params.preprocess.Augment.Rotation:
                 Image = funcRotating(Image , angle)
@@ -67,10 +67,10 @@ def LinearFunc(params):
             saveImage(Image , Affine , Header , outDirectoryImage2)
             copyfile(outDirectoryImage2 , outDirectoryImage  + '/' + subject.ImageProcessed.split('_PProcessed')[0] + '.nii.gz')
 
-            for ind in params.directories.Experiment.Nucleus.FullIndexes:
-                NucleusName, _ = NucleiSelection(ind , params.directories.Experiment.Nucleus.Organ)
+            for ind in params.directories.WhichExperiment.Nucleus.FullIndexes:
+                NucleusName, _ = NucleiSelection(ind , params.directories.WhichExperiment.Nucleus.Organ)
 
-                Mask   = nib.load(subject.Label.Address + '/' + NucleusName + '_PProcessed.nii.gz').get_data() # 'Cropped' for cropped image
+                Mask   = nib.load(subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz').get_data() # 'Cropped' for cropped image
 
                 if params.preprocess.Augment.Rotation:
                     Mask = funcRotating(Mask , angle)
@@ -102,13 +102,13 @@ def NonLinearFunc(Input, Augment):
             nameSubjectRef = SubjectNames[augInd]
             subjectRef = Subjects[nameSubjectRef]
 
-            # Image     = subject.Address    + '/' + subject.ImageProcessed + '.nii.gz'
-            # Reference = subjectRef.Address + '/' + subjectRef.ImageProcessed + '.nii.gz'
+            # Image     = subject.address    + '/' + subject.ImageProcessed + '.nii.gz'
+            # Reference = subjectRef.address + '/' + subjectRef.ImageProcessed + '.nii.gz'
 
-            # Mask      = subject.Label.Address    + '/' + subject.Label.LabelProcessed + '.nii.gz'
-            # Reference = subjectRef.Label.Address + '/' + subjectRef.Label.LabelProcessed + '.nii.gz'
+            # Mask      = subject.Label.address    + '/' + subject.Label.LabelProcessed + '.nii.gz'
+            # Reference = subjectRef.Label.address + '/' + subjectRef.Label.LabelProcessed + '.nii.gz'
 
-            outputAddress = mkDir( Input.Address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Ref_' + nameSubjectRef )
+            outputAddress = mkDir( Input.address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Ref_' + nameSubjectRef )
 
             Bash_AugmentNonLinear(subject , subjectRef , outputAddress)
 

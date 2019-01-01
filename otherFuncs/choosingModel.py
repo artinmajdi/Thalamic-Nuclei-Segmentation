@@ -11,7 +11,7 @@ from keras_tqdm import TQDMCallback # , TQDMNotebookCallback
 
 # ! main Function
 def modelTrain(Data, params, model):
-    ModelParam = params.directories.Experiment.HardParams.Model
+    ModelParam = params.directories.WhichExperiment.HardParams.Model
     model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss, metrics=ModelParam.metrics)
 
     # if the shuffle argument in model.fit is set to True (which is the default), the training data will be randomly shuffled at each epoch.
@@ -29,8 +29,8 @@ def modelTrain(Data, params, model):
 
 
 def architecture(Data, params):
-    params.directories.Experiment.HardParams.Model.imageInfo = Data.Info
-    ModelParam = params.directories.Experiment.HardParams.Model
+    params.directories.WhichExperiment.HardParams.Model.imageInfo = Data.Info
+    ModelParam = params.directories.WhichExperiment.HardParams.Model
     if 'U-Net' in ModelParam.architectureType:
         model = UNet(ModelParam)
 

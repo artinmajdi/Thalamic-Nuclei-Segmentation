@@ -1,12 +1,12 @@
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from otherFuncs.smallFuncs import NucleiSelection , whichCropMode , fixDirectoryLastDashSign , augmentLengthChecker , InputNames , checkInputDirectory , funcExpDirectories
+from otherFuncs.smallFuncs import NucleiSelection , whichCropMode , fixDirectoryLastDashSign , augmentLengthChecker , InputNames , checkInputDirectory , funcExpDirectories, mkDir
 
 #  ---------------------- model Params ----------------------
 
 class template:
-    Image = '/array/ssd/msmajdi/code/RigidRegistration' + '/origtemplate.nii.gz'
-    Mask = '/array/ssd/msmajdi/code/RigidRegistration' + '/MyCrop_Template2_Gap20.nii.gz'
+    Image = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/origtemplate.nii.gz'
+    Mask = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/MyCrop_Template2_Gap20.nii.gz'
 
 class dropout:
     Mode = True
@@ -44,7 +44,6 @@ class model:
     optimizer = 'adam'
     num_Layers = 4
     InputDimensions = ''
-    dataset = 'SRI_3T' #  'kaggleCompetition' # 'fashionMnist' #
     batchNormalization = False # True
     ConvLayer = convLayer
     MaxPooling = maxPooling
@@ -66,7 +65,7 @@ class image:
 class nucleus:
     Index = [1]
     Organ = 'THALAMUS'
-    Name , FullIndexes = NucleiSelection( Index[0] , Organ)
+    name , FullIndexes = NucleiSelection( Index[0] , Organ)
 
 class hardParams:
     Model    = model
@@ -75,21 +74,41 @@ class hardParams:
     Image    = image
 
 class experiment:
-    Tag = 'firstExperiment'
-    Experiment_Index    = 1
-    SubExperiment_Index = 1
-    Address = '/array/ssd/msmajdi/experiments/Keras'
+    index = 1
+    tag = 'tmp'
+    name = ''
+    address = ''
+experiment.name = 'exp' + str(experiment.index) + '_' + experiment.tag if experiment.tag else 'subExp' + str(experiment.index)
+
+class subExperiment:
+    index = 1
+    tag = 'LR00'
+    name = ''
+subExperiment.name = 'subExp' + str(subExperiment.index) + '_' + subExperiment.tag if subExperiment.tag else 'subExp' + str(subExperiment.index)
+
+class dataset:
+    name = 'SRI_3T' # 'kaggleCompetition' #  'fashionMnist' #
+    address = ''
+
+if 'SRI_3T' in dataset.name:
+    dataset.address = '/array/ssd/msmajdi/data/preProcessed/SRI_3T'
+elif 'kaggleCompetition' in dataset.name:
+    dataset.address = '/array/ssd/msmajdi/data/original/KaggleCompetition/train'
+
+class WhichExperiment:
+    Experiment    = experiment
+    SubExperiment = subExperiment
+    address = mkDir('/array/ssd/msmajdi/experiments/keras')
     Nucleus = nucleus
     HardParams = hardParams
+    Dataset = dataset
+WhichExperiment.Experiment.address = mkDir(WhichExperiment.address + '/' + WhichExperiment.Experiment.name)
 
-if 0: # user defined address
-    experiment.Address =  '/array/ssd/msmajdi/experiments/Keras/Experiment1'
-
-directories = funcExpDirectories(experiment)
+directories = funcExpDirectories(WhichExperiment)
 
 class reference:
-    Name = ''
-    Address = ''
+    name = ''
+    address = ''
 
 class Augment:
     Mode = False
@@ -114,7 +133,7 @@ class Normalize:
 method = 2
 class Cropping:
     Mode = True
-    Method = whichCropMode(directories.Experiment.Nucleus.Name, method)  # it changes the mode to 1 if we're analyzing the Thalamus
+    Method = whichCropMode(directories.WhichExperiment.Nucleus.name, method)  # it changes the mode to 1 if we're analyzing the Thalamus
 
 class BiasCorrection:
     Mode = False
