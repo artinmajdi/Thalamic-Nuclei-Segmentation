@@ -26,7 +26,6 @@ class convLayer:
     Kernel_size = kernel_size
     padding = 'SAME' # valid
 
-
 class maxPooling:
     strides = (2,2)
     pool_size = (2,2)
@@ -34,6 +33,16 @@ class maxPooling:
 class validation:
     percentage = 0.1
     fromKeras = False
+
+class test:
+    mode = 'names' # 'percentage'
+    percentage = 0.3
+    subjects = ''
+
+# TODO import names of test num_classes
+if 'names' in test.mode:
+    # import test.subjects
+    print('')
 
 class model:
     architectureType = 'U-Net' # 'U-Net' # 'MLP' #

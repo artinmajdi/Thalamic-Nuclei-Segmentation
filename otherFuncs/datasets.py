@@ -58,7 +58,7 @@ def fashionMnist(ModelParam):
         Data.Train.Image = images
         Data.Train.Label = masks
     else:
-        Data.Train, Data.Validation = TrainValSeperate(ModelParam, images, masks)
+        Data.Train, Data.Validation = TrainValSeperate(ModelParam.Validation.percentage, images, masks)
 
     Data.Test.Image = (np.expand_dims(data[1][0],axis=3)).astype('float32') / 255
     Data.Test.Label = one_hot(data[1][1],10)
@@ -98,7 +98,7 @@ def kaggleCompetition(ModelParam):
         Data.Train.Image = images
         Data.Train.Label = masks
     else:
-        Data.Train, Data.Validation = TrainValSeperate(ModelParam ,images, masks)
+        Data.Train, Data.Validation = TrainValSeperate(ModelParam.Validation.percentage ,images, masks)
 
     Data.Test = Data.Train
     return Data, '_'
@@ -146,30 +146,53 @@ def readingFromExperiments(params):
         Data.Train.Image = images
         Data.Train.Label = masks
     else:
-        Data.Train, Data.Validation = TrainValSeperate(HardParams.Model ,images, masks)
+        Data.Train, Data.Validation = TrainValSeperate(HardParams.Model.Validation.percentage, images, masks)
 
 
     params.directories.Train.Input.Subjects = Subjects
     params.directories.WhichExperiment.HardParams = HardParams
 
-
     return Data, params
 
-def TrainValSeperate(ModelParam, images, masks):
+def TrainValSeperate(percentage, images, masks):
 
-    indexes = np.array(range(images.shape[0]))
-    shuffle(indexes)
-    per = int( ModelParam.Validation.percentage * images.shape[0] )
-    if per == 0 and images.shape[0] > 1: per = 1
+    subjectsList = list(range(images.shape[0]))
+    TrainList, ValList = percentageRandomDivide(percentage, subjectsList)
+
+
     Validation = ImageLabel()
-    Validation.Image = images[indexes[:per],...]
-    Validation.Label = masks[indexes[:per],...]
+    Validation.Image = images[ValList, ...]
+    Validation.Label = masks[ValList, ...]
 
     Train = ImageLabel()
-    Train.Image = images[indexes[per:],...]
-    Train.Label = masks[indexes[per:],...]
+    Train.Image = images[TrainList, ...]
+    Train.Label = masks[TrainList, ...]
 
     return Train, Validation
 
+def percentageRandomDivide(percentage, subjectsList):
+
+    L = len(subjectsList)
+    indexes = np.array(range(L))
+    shuffle(indexes)
+    per = int( percentage * L )
+    if per == 0 and L > 1: per = 1
+
+    TestValList = subjectsList[:per]
+    TrainList = subjectsList[per:]
+
+    return TrainList, TestValList
+
 def movingFromDatasetToExperiments(params):
+    Dir = params.directories.WhichExperiment.Dataset.address
+
+
+
+
+
+
+
+
+
+
     return True
