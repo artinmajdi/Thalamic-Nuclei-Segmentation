@@ -17,10 +17,12 @@ def one_hot(a, num_classes):
 class ImageLabel:
     Image = np.zeros(3)
     Label = ''
+
 class info:
     Height = ''
     Width = ''
-class Data:
+
+class data:
     Train = ImageLabel()
     Test = ImageLabel()
     Validation = ImageLabel()
@@ -30,18 +32,16 @@ def loadDataset(params):
 
     if 'fashionMnist' in params.directories.WhichExperiment.Dataset.name:
         Data, _ = fashionMnist(params.directories.WhichExperiment.HardParams.Model)
-
     elif 'kaggleCompetition' in params.directories.WhichExperiment.Dataset.name:
         Data, _ = kaggleCompetition(params.directories.WhichExperiment.HardParams.Model)
-
     elif 'SRI_3T' in params.directories.WhichExperiment.Dataset.name:
-        Data, params = readingFromExperiments(params)
+        Data = readingFromExperiments(params)
         Data.Train.Image = normalizeA.main_normalize(params.preprocess.Normalize , Data.Train.Image)
         Data.Test.Image  = normalizeA.main_normalize(params.preprocess.Normalize , Data.Test.Image)
 
     _, Data.Info.Height, Data.Info.Width, _ = Data.Train.Image.shape
 
-    return Data, params
+    return Data
 
 def fashionMnist(ModelParam):
     data  = fashion_mnist.load_data()
@@ -50,14 +50,14 @@ def fashionMnist(ModelParam):
     masks  = one_hot(data[0][1],10)
 
     if ModelParam.Validation.fromKeras:
-        Data.Train.Image = images
-        Data.Train.Label = masks
+        data.Train.Image = images
+        data.Train.Label = masks
     else:
-        Data.Train, Data.Validation = TrainValSeperate(ModelParam.Validation.percentage, images, masks)
+        data.Train, data.Validation = TrainValSeperate(ModelParam.Validation.percentage, images, masks)
 
-    Data.Test.Image = (np.expand_dims(data[1][0],axis=3)).astype('float32') / 255
-    Data.Test.Label = one_hot(data[1][1],10)
-    return Data, '_'
+    data.Test.Image = (np.expand_dims(data[1][0],axis=3)).astype('float32') / 255
+    data.Test.Label = one_hot(data[1][1],10)
+    return data, '_'
 
 def kaggleCompetition(ModelParam):
 
@@ -90,16 +90,17 @@ def kaggleCompetition(ModelParam):
     masks = np.concatenate((masks,1-masks),axis=3)
 
     if ModelParam.Validation.fromKeras:
-        Data.Train.Image = images
-        Data.Train.Label = masks
+        data.Train.Image = images
+        data.Train.Label = masks
     else:
-        Data.Train, Data.Validation = TrainValSeperate(ModelParam.Validation.percentage ,images, masks)
+        data.Train, data.Validation = TrainValSeperate(ModelParam.Validation.percentage ,images, masks)
 
-    Data.Test = Data.Train
-    return Data, '_'
+    data.Test = data.Train
+    return data, '_'
 
 # TODO: also I need to finish this function
 # TODO: add the saving images with the format mahesh said
+# TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments(params):
 
     for mode in ['train','test']:
@@ -113,6 +114,11 @@ def readingFromExperiments(params):
         Th = 0.5*params.directories.WhichExperiment.HardParams.Model.LabelMaxValue
         for ind, name in tqdm(enumerate(Subjects), desc='Loading Dataset'):
             subject = Subjects[name]
+
+            if np.min(subject.Padding) < 0:
+                print('WARNING: subject: ',name,' size is out of the training network input dimensions')
+                continue
+
             im = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').get_data()
             im = np.pad(im, subject.Padding, 'constant')
             im = np.transpose(im,[2,0,1])
@@ -132,15 +138,15 @@ def readingFromExperiments(params):
 
         if 'train' in mode:
             if params.directories.WhichExperiment.Dataset.Validation.fromKeras:
-                Data.Train.Image = images
-                Data.Train.Label = masks
+                data.Train.Image = images
+                data.Train.Label = masks
             else:
-                Data.Train, Data.Validation = TrainValSeperate(params.directories.WhichExperiment.Dataset.Validation.percentage, images, masks)
+                data.Train, data.Validation = TrainValSeperate(params.directories.WhichExperiment.Dataset.Validation.percentage, images, masks)
         else:
-            Data.Test.Image = images
-            Data.Test.Label = masks
+            data.Test.Image = images
+            data.Test.Label = masks
 
-    return Data
+    return data
 
 def TrainValSeperate(percentage, images, masks):
 

@@ -45,22 +45,6 @@ def NucleiSelection(ind = 1,organ = 'THALAMUS'):
 
     return NucleusName, FullIndexes
 
-# def listSubFolders_OldVersion(Dir):
-
-#     Dir_Prior = next(os.walk(Dir))[1]
-
-#     subFolders = []
-#     if len(Dir_Prior) > 0:
-#         oldStandard = True
-#         if oldStandard:
-#             subFlds = os.listdir(Dir_Prior)
-#             for i in range(len(subFlds)):
-#                 if 'vimp' in subFlds[i]: subFolders.append(subFlds[i])
-#         else:
-#             subFolders = os.listdir(Dir_Prior)
-
-#     return subFolders
-
 def listSubFolders(Dir):
 
     oldStandard = True
@@ -382,38 +366,53 @@ def correctNumLayers(params):
     params.directories.WhichExperiment.HardParams.Model.num_Layers = num_Layers
     return params
 
-def imageSizesAfterPadding(params):
+def imageSizesAfterPadding(params, mode):
 
-    Subjects = params.directories.Train.Input.Subjects
-    inputSize = inputSizes(Subjects)
+    if 'experiment' in mode:
+        for wFolder in ['Train' , 'Test']:
 
-    #! Finding the final image sizes after padding
-    MaxInputSize = np.max(inputSize, axis=0)
-    new_inputSize = MaxInputSize.copy()
-    a = 2**(params.directories.WhichExperiment.HardParams.Model.num_Layers - 1)
-    for dim in range(2):
-        # checking how much we need to padd the input image to make sure the we don't lose any information because of odd dimension sizes
-        if MaxInputSize[dim] % a != 0:
-            new_inputSize[dim] = a * np.ceil(MaxInputSize[dim] / a)
+            if params.preprocess.TestOnly and 'Train' in wFolder:
+                continue
 
+            Subjects = params.directories.Train.Input.Subjects if 'Train' in wFolder else params.directories.Test.Input.Subjects
+            inputSize = inputSizes(Subjects)
 
-    # ! finding the amount of padding for each subject in each direction
-    fullpadding = new_inputSize[:2] - inputSize[:,:2]
-    md = np.mod(fullpadding,2)
+            #! Finding the final image sizes after padding
+            if 'Train' in wFolder:
+                MaxInputSize = np.max(inputSize, axis=0)
+                new_inputSize = MaxInputSize
 
-    for sn, name in enumerate(list(Subjects)):
-        padding = [np.zeros(2)]*3
-        for dim in range(2):
-            if md[sn, dim] == 0:
-                padding[dim] = tuple([int(fullpadding[sn,dim]/2)]*2)
+                a = 2**(params.directories.WhichExperiment.HardParams.Model.num_Layers - 1)
+                for dim in range(2):
+                    # checking how much we need to pad the input image to make sure the we don't lose any information because of odd dimension sizes
+                    if MaxInputSize[dim] % a != 0:
+                        new_inputSize[dim] = a * np.ceil(MaxInputSize[dim] / a)
+
+                params.directories.WhichExperiment.HardParams.Model.InputDimensions = new_inputSize
             else:
-                padding[dim] = tuple([int(np.floor(fullpadding[sn,dim]/2) + 1) , int(np.floor(fullpadding[sn,dim]/2))])
-
-        padding[2] = tuple([0,0])
-        Subjects[name].Padding = tuple(padding)
+                new_inputSize = params.directories.WhichExperiment.HardParams.Model.InputDimensions
 
 
-    params.directories.WhichExperiment.HardParams.Model.InputDimensions = new_inputSize
+            #! finding the amount of padding for each subject in each direction
+            fullpadding = new_inputSize[:2] - inputSize[:,:2]
+            md = np.mod(fullpadding,2)
+
+            for sn, name in enumerate(list(Subjects)):
+                padding = [np.zeros(2)]*3
+                for dim in range(2):
+                    if md[sn, dim] == 0:
+                        padding[dim] = tuple([int(fullpadding[sn,dim]/2)]*2)
+                    else:
+                        padding[dim] = tuple([int(np.floor(fullpadding[sn,dim]/2) + 1) , int(np.floor(fullpadding[sn,dim]/2))])
+
+                padding[2] = tuple([0,0])
+                Subjects[name].Padding = tuple(padding)
+
+            if 'Train' in wFolder:
+                params.directories.Train.Input.Subjects = Subjects
+            else:
+                params.directories.Test.Input.Subjects = Subjects
+
     return params
 
 def imShow(*args):

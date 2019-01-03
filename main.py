@@ -14,7 +14,7 @@ from otherFuncs import params, smallFuncs, datasets, choosingModel
 from preprocess.preprocessA import main_preprocess
 params.preprocess.Mode = False
 params.preprocess.CreatingTheExperiment = False
-
+mode = 'experiment'
 
 # TODO: saving the param variable as a pickle file in the model output
 params = smallFuncs.terminalEntries(params)
@@ -25,7 +25,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = params.directories.WhichExperiment.HardPara
 if params.preprocess.CreatingTheExperiment: datasets.movingFromDatasetToExperiments(params)
 
 #! preprocessing the data
-if params.preprocess.Mode: main_preprocess(params, 'experiment')
+if params.preprocess.Mode: main_preprocess(params, mode)
 params.directories = smallFuncs.funcExpDirectories(params.directories.WhichExperiment)
 
 
@@ -39,10 +39,10 @@ params = smallFuncs.correctNumLayers(params)
 
 
 #! Finding the final image sizes after padding & amount of padding
-params = smallFuncs.imageSizesAfterPadding(params)
+params = smallFuncs.imageSizesAfterPadding(params, mode)
 
 #! loading the dataset
-Data, params = datasets.loadDataset(params)
+Data = datasets.loadDataset(params)
 
 
 
