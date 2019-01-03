@@ -8,6 +8,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 # TODO: Replace folder searching with "next(os.walk(directory))"
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
+# TODO: sort the input images so that it is system independent
 def NucleiSelection(ind = 1,organ = 'THALAMUS'):
 
     if 'THALAMUS' in organ:
@@ -44,23 +45,40 @@ def NucleiSelection(ind = 1,organ = 'THALAMUS'):
 
     return NucleusName, FullIndexes
 
-def listSubFolders(Dir_Prior):
+# def listSubFolders_OldVersion(Dir):
 
-    oldStandard = 1
-    if oldStandard == 1:
-        subFolders = []
-        subFlds = os.listdir(Dir_Prior)
-        for i in range(len(subFlds)):
-            if subFlds[i][:5] == 'vimp2':
-                subFolders.append(subFlds[i])
-    else:
-        subFolders = os.listdir(Dir_Prior)
+#     Dir_Prior = next(os.walk(Dir))[1]
+
+#     subFolders = []
+#     if len(Dir_Prior) > 0:
+#         oldStandard = True
+#         if oldStandard:
+#             subFlds = os.listdir(Dir_Prior)
+#             for i in range(len(subFlds)):
+#                 if 'vimp' in subFlds[i]: subFolders.append(subFlds[i])
+#         else:
+#             subFolders = os.listdir(Dir_Prior)
+
+#     return subFolders
+
+def listSubFolders(Dir):
+
+    oldStandard = True
+
+    Dir_Prior = next(os.walk(Dir))[1]
+    subFolders = []
+    if len(Dir_Prior) > 0:
+        
+        if oldStandard:
+            for subFlds in Dir_Prior:
+                if 'vimp' in subFlds: subFolders.append(subFlds)
+        else:
+            subFolders = Dir_Prior
 
     return subFolders
 
 def mkDir(Dir):
-    if not os.path.isdir(Dir):
-        os.makedirs(Dir)
+    if not os.path.isdir(Dir): os.makedirs(Dir)
     return Dir
 
 def choosingSubject(Input):
@@ -101,9 +119,9 @@ def terminalEntries(params):
 
         elif entry.lower() == '-i': # input image or directory
             params.directories.WhichExperiment.address = sys.argv[en+1]
-            params.directories.Train.address =  sys.argv[en+1] + '/' + params.directories.WhichExperiment.Experiment.name + '/Train'
+            params.directories.Train.address =  sys.argv[en+1] + '/' + params.directories.WhichExperiment.Experiment.name + '/train'
             params.directories.Train.Input   = checkInputDirectory(params.directories.Train.address, params.directories.WhichExperiment.Nucleus.name)
-            params.directories.Test.address  =  sys.argv[en+1] + '/' + params.directories.WhichExperiment.Experiment.name + '/Test'
+            params.directories.Test.address  =  sys.argv[en+1] + '/' + params.directories.WhichExperiment.Experiment.name + '/test'
             params.directories.Test.Input    = checkInputDirectory(params.directories.Test.address, params.directories.WhichExperiment.Nucleus.name)
 
         elif entry.lower() == '-TemplateMask':  # template Mask
@@ -166,13 +184,13 @@ def checkMultipleTestOrNot(Dir, NucleusName):
 def funcExpDirectories(whichExperiment):
 
     class train:
-        address = mkDir(whichExperiment.Experiment.address + '/Train')
+        address = mkDir(whichExperiment.Experiment.address + '/train')
         Model   = mkDir(whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name)
         Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
 
     class test:
-        address = mkDir(whichExperiment.Experiment.address + '/Test')
-        Result  = mkDir(whichExperiment.Experiment.address + '/Results/' + whichExperiment.SubExperiment.name)
+        address = mkDir(whichExperiment.Experiment.address + '/test')
+        Result  = mkDir(whichExperiment.Experiment.address + '/results/' + whichExperiment.SubExperiment.name)
         Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
 
     class Directories:
@@ -292,45 +310,51 @@ def InputNames(Dir , NucleusName):
 
     return Files
 
-def inputNamesCheck(params):
+# TODO fix "inputNamesCheck" function to count for situations when we only want to apply the function on one case
+def inputNamesCheck(params, mode):
 
-    for mode in ['Train' , 'Test']:
+    if 'experiment' in mode:
+        for wFolder in ['Train' , 'Test']:
 
-        if params.preprocess.TestOnly and 'Train' in mode:
-            continue
+            if params.preprocess.TestOnly and 'Train' in wFolder:
+                continue
 
-        dirr = params.directories.Train if 'Train' in mode else params.directories.Test
+            dirr = params.directories.Train if 'Train' in wFolder else params.directories.Test
 
-        for sj in dirr.Input.Subjects:
-            subject = dirr.Input.Subjects[sj]
+            for sj in dirr.Input.Subjects:
+                subject = dirr.Input.Subjects[sj]
 
-            if params.preprocess.Debug.PProcessExist:
+                if params.preprocess.Debug.PProcessExist:
 
-                files = os.listdir(subject.address)
+                    files = os.listdir(subject.address)
 
-                flagPPExist = False
-                for si in files:
-                    if '_PProcessed' in si:
-                        flagPPExist = True
-                        break
+                    flagPPExist = False
+                    for si in files:
+                        if '_PProcessed' in si:
+                            flagPPExist = True
+                            break
 
-                if not flagPPExist:
-                    sys.exit('preprocess files doesn\'t exist ' + 'Subject: ' + sj + ' Dir: ' + subject.address)
+                    if not flagPPExist:
+                        sys.exit('preprocess files doesn\'t exist ' + 'Subject: ' + sj + ' Dir: ' + subject.address)
 
-            else: # if not params.preprocess.Debug.PProcessExist and
+                else: # if not params.preprocess.Debug.PProcessExist and
 
-                imOrig = subject.address + '/' + subject.ImageOriginal + '.nii.gz'
-                imProc = subject.address + '/' + subject.ImageOriginal + '_PProcessed.nii.gz'
-                copyfile(imOrig  , imProc)
+                    imOrig = subject.address + '/' + subject.ImageOriginal + '.nii.gz'
+                    imProc = subject.address + '/' + subject.ImageOriginal + '_PProcessed.nii.gz'
+                    copyfile(imOrig  , imProc)
 
-                for ind in params.directories.WhichExperiment.Nucleus.FullIndexes:
-                    NucleusName, _ = NucleiSelection(ind, params.directories.WhichExperiment.Nucleus.Organ)
+                    for ind in params.directories.WhichExperiment.Nucleus.FullIndexes:
+                        NucleusName, _ = NucleiSelection(ind, params.directories.WhichExperiment.Nucleus.Organ)
 
-                    mskOrig = subject.Label.address + '/' + NucleusName + '.nii.gz'
-                    mskProc = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
-                    copyfile(mskOrig, mskProc)
+                        mskOrig = subject.Label.address + '/' + NucleusName + '.nii.gz'
+                        mskProc = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
+                        copyfile(mskOrig, mskProc)
 
-    params.directories = funcExpDirectories(params.directories.WhichExperiment)
+        params.directories = funcExpDirectories(params.directories.WhichExperiment)
+
+    else:
+        print('')
+
     return params
 
 def inputSizes(Subjects):
@@ -340,9 +364,11 @@ def inputSizes(Subjects):
 
     return np.array(inputSize)
 
-def correctNumLayers(Subjects, HardParams):
+def correctNumLayers(params):
 
-    inputSize = inputSizes(Subjects)
+    HardParams = params.directories.WhichExperiment.HardParams
+
+    inputSize = inputSizes(params.directories.Train.Input.Subjects)
 
     MinInputSize = np.min(inputSize, axis=0)
     kernel_size = HardParams.Model.ConvLayer.Kernel_size.conv
@@ -353,17 +379,18 @@ def correctNumLayers(Subjects, HardParams):
         num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:2],kernel_size) )) + 1))
         print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
 
-    HardParams.Model.num_Layers = num_Layers
-    return HardParams
+    params.directories.WhichExperiment.HardParams.Model.num_Layers = num_Layers
+    return params
 
-def imageSizesAfterPadding(Subjects, HardParams):
+def imageSizesAfterPadding(params):
 
+    Subjects = params.directories.Train.Input.Subjects
     inputSize = inputSizes(Subjects)
 
     #! Finding the final image sizes after padding
     MaxInputSize = np.max(inputSize, axis=0)
     new_inputSize = MaxInputSize.copy()
-    a = 2**(HardParams.Model.num_Layers - 1)
+    a = 2**(params.directories.WhichExperiment.HardParams.Model.num_Layers - 1)
     for dim in range(2):
         # checking how much we need to padd the input image to make sure the we don't lose any information because of odd dimension sizes
         if MaxInputSize[dim] % a != 0:
@@ -386,8 +413,8 @@ def imageSizesAfterPadding(Subjects, HardParams):
         Subjects[name].Padding = tuple(padding)
 
 
-    HardParams.Model.InputDimensions = new_inputSize
-    return Subjects, HardParams
+    params.directories.WhichExperiment.HardParams.Model.InputDimensions = new_inputSize
+    return params
 
 def imShow(*args):
 

@@ -20,7 +20,7 @@ def BiasCorrection(subject , params):
     inP  = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
     outP = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
     outDebug = subject.Temp.address + '/' + subject.ImageOriginal + '_bias_corr.nii.gz'
-    if params.preprocess.Mode and params.preprocess.BiasCorrection.Mode:
+    if params.preprocess.BiasCorrection.Mode:
 
         if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
             copyfile(outDebug , outP)
@@ -31,7 +31,7 @@ def BiasCorrection(subject , params):
 
 def Bash_Cropping(subject , params):
 
-    if params.preprocess.Mode and params.preprocess.Cropping.Mode:
+    if params.preprocess.Cropping.Mode:
 
         inP  = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
         outP = subject.address + '/' + subject.ImageProcessed + '.nii.gz'

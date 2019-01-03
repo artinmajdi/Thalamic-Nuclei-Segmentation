@@ -14,7 +14,7 @@ def funcNormalize(Method , Image):
         Image = ( Image-Image.mean() )/( Image.std() )
     return Image
 
-def normalizeMain(Normalize , Image):
+def main_normalize(Normalize , Image):
 
     if Normalize.Mode:
         Image = funcNormalize(Normalize.Method , Image)

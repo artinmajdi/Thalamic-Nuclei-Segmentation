@@ -7,8 +7,9 @@ from keras.layers.merge import concatenate
 from keras.callbacks import ModelCheckpoint
 from otherFuncs.smallFuncs import mkDir
 from keras_tqdm import TQDMCallback # , TQDMNotebookCallback
+import pickle
 
-
+# TODO: check if the params includes the padding size for training and whether it saves it via pickle beside the model
 # ! main Function
 def modelTrain(Data, params, model):
     ModelParam = params.directories.WhichExperiment.HardParams.Model
@@ -24,6 +25,11 @@ def modelTrain(Data, params, model):
     model.save(params.directories.Train.Model + '/model.h5', overwrite=True, include_optimizer=True )
 
     if ModelParam.showHistory: print(hist.history)
+
+    #! saving the params in the model folder
+    f = open(params.directories.Train.Model + '/params.pckl', 'wb')
+    pickle.dump(params, f)
+    f.close()
 
     return model, hist
 

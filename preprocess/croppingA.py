@@ -7,7 +7,7 @@ import numpy as np
 def chooseAugmented(Input , AugIx):
     return Input.Image[...,AugIx], Input.CropMask[...,AugIx], Input.ThalamusMask[...,AugIx]
 
-def mainCropping(params , Input):
+def main_cropping(params , Input):
 
     if params.cropping:
         CropCordinatesAll = np.zeros((Input.Image.shape[3]))
@@ -30,7 +30,6 @@ def mainCropping(params , Input):
             Input.Image[...,AugIx] = Image
             CropCordinatesAll[AugIx] = CropCordinates
 
-        
     return Input , CropCordinatesAll
 
 

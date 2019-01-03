@@ -3,15 +3,13 @@ from imageio import imread
 from random import shuffle
 from tqdm import tqdm, trange
 import nibabel as nib
-import collections
-import os, sys, collections
+from shutil import copytree
+import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from keras.datasets import fashion_mnist, mnist
+from keras.datasets import fashion_mnist
+from otherFuncs import smallFuncs
+from preprocess import normalizeA
 
-from otherFuncs import params
-
-from preprocess.normalizeMine import normalizeMain
-from otherFuncs.smallFuncs import imageSizesAfterPadding
 
 def one_hot(a, num_classes):
   return np.eye(num_classes)[a]
@@ -19,11 +17,9 @@ def one_hot(a, num_classes):
 class ImageLabel:
     Image = np.zeros(3)
     Label = ''
-
 class info:
     Height = ''
     Width = ''
-
 class Data:
     Train = ImageLabel()
     Test = ImageLabel()
@@ -32,17 +28,16 @@ class Data:
 
 def loadDataset(params):
 
-    ModelParam = params.directories.WhichExperiment.HardParams.Model
-    if 'fashionMnist' in ModelParam.dataset:
-        Data, _ = fashionMnist(ModelParam)
+    if 'fashionMnist' in params.directories.WhichExperiment.Dataset.name:
+        Data, _ = fashionMnist(params.directories.WhichExperiment.HardParams.Model)
 
-    elif 'kaggleCompetition' in ModelParam.dataset:
-        Data, _ = kaggleCompetition(ModelParam)
+    elif 'kaggleCompetition' in params.directories.WhichExperiment.Dataset.name:
+        Data, _ = kaggleCompetition(params.directories.WhichExperiment.HardParams.Model)
 
-    elif 'SRI_3T' in ModelParam.dataset:
+    elif 'SRI_3T' in params.directories.WhichExperiment.Dataset.name:
         Data, params = readingFromExperiments(params)
-        Data.Train.Image = normalizeMain(params.preprocess.Normalize , Data.Train.Image)
-        Data.Test.Image  = normalizeMain(params.preprocess.Normalize , Data.Test.Image)
+        Data.Train.Image = normalizeA.main_normalize(params.preprocess.Normalize , Data.Train.Image)
+        Data.Test.Image  = normalizeA.main_normalize(params.preprocess.Normalize , Data.Test.Image)
 
     _, Data.Info.Height, Data.Info.Width, _ = Data.Train.Image.shape
 
@@ -103,56 +98,49 @@ def kaggleCompetition(ModelParam):
     Data.Test = Data.Train
     return Data, '_'
 
-# TODO: I need to add the ability for test files to read the padding size from training instead of measuring it again
 # TODO: also I need to finish this function
 # TODO: add the saving images with the format mahesh said
-# TODO: check why the label & image has different crop sizes; maybe if i rerun it it will fix it
 def readingFromExperiments(params):
 
-    # for mode in ['Train','Test']:
+    for mode in ['train','test']:
 
-        # if params.preprocess.TestOnly and 'Train' in mode:
-        #     continue
+        if params.preprocess.TestOnly and 'train' in mode:
+            continue
 
-    Subjects = params.directories.Train.Input.Subjects
-    HardParams = params.directories.WhichExperiment.HardParams
+        Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
 
-    #! Finding the final image sizes after padding & amount of padding
-    Subjects, HardParams = imageSizesAfterPadding(Subjects, HardParams)
+        #! reading all images and concatenating them into one array
+        Th = 0.5*params.directories.WhichExperiment.HardParams.Model.LabelMaxValue
+        for ind, name in tqdm(enumerate(Subjects), desc='Loading Dataset'):
+            subject = Subjects[name]
+            im = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').get_data()
+            im = np.pad(im, subject.Padding, 'constant')
+            im = np.transpose(im,[2,0,1])
 
+            if os.path.exists(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz'):
+                msk = nib.load(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
+                msk = np.pad(msk, subject.Padding, 'constant')
+                msk = np.transpose(msk,[2,0,1])
+            else:
+                msk = np.zeros(im.shape)
 
-    #! reading all images and concatenating them into one array
-    Th = 0.5*HardParams.Model.LabelMaxValue
-    for ind, name in tqdm(enumerate(Subjects), desc='Loading Dataset'):
-        subject = Subjects[name]
-        im = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').get_data()
-        im = np.pad(im, subject.Padding, 'constant')
-        im = np.transpose(im,[2,0,1])
+            images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
+            masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
+        masks  = np.expand_dims(masks,axis=3)
+        images = np.expand_dims(images,         axis=3).astype('float32')
+        masks  = np.concatenate((masks,1-masks),axis=3).astype('float32')
 
-        if os.path.exists(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz'):
-            msk = nib.load(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
-            msk = np.pad(msk, subject.Padding, 'constant')
-            msk = np.transpose(msk,[2,0,1])
+        if 'train' in mode:
+            if params.directories.WhichExperiment.Dataset.Validation.fromKeras:
+                Data.Train.Image = images
+                Data.Train.Label = masks
+            else:
+                Data.Train, Data.Validation = TrainValSeperate(params.directories.WhichExperiment.Dataset.Validation.percentage, images, masks)
         else:
-            msk = np.zeros(im.shape)
+            Data.Test.Image = images
+            Data.Test.Label = masks
 
-        images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
-        masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
-
-    images = np.expand_dims(images,         axis=3).astype('float32')
-    masks  = np.concatenate((masks,1-masks),axis=3).astype('float32')
-
-    if HardParams.Model.Validation.fromKeras:
-        Data.Train.Image = images
-        Data.Train.Label = masks
-    else:
-        Data.Train, Data.Validation = TrainValSeperate(HardParams.Model.Validation.percentage, images, masks)
-
-
-    params.directories.Train.Input.Subjects = Subjects
-    params.directories.WhichExperiment.HardParams = HardParams
-
-    return Data, params
+    return Data
 
 def TrainValSeperate(percentage, images, masks):
 
@@ -184,15 +172,13 @@ def percentageRandomDivide(percentage, subjectsList):
     return TrainList, TestValList
 
 def movingFromDatasetToExperiments(params):
-    Dir = params.directories.WhichExperiment.Dataset.address
 
-
-
-
-
-
-
-
-
+    List = smallFuncs.listSubFolders(params.directories.WhichExperiment.Dataset.address)
+    TestParams = params.directories.WhichExperiment.Dataset.Test
+    _, TestList = percentageRandomDivide(TestParams.percentage, List) if 'percentage' in TestParams.mode else TestParams.subjects
+    for subjects in List:
+        DirOut = params.directories.Test.address if subjects in TestList else params.directories.Train.address
+        if not os.path.exists(DirOut + '/' + subjects):
+            copytree(params.directories.WhichExperiment.Dataset.address + '/' + subjects  ,  DirOut + '/' + subjects)
 
     return True

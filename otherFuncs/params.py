@@ -1,6 +1,6 @@
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from otherFuncs.smallFuncs import NucleiSelection , whichCropMode , fixDirectoryLastDashSign , augmentLengthChecker , InputNames , checkInputDirectory , funcExpDirectories, mkDir
+from otherFuncs.smallFuncs import NucleiSelection, whichCropMode, fixDirectoryLastDashSign, augmentLengthChecker, InputNames, checkInputDirectory, funcExpDirectories, mkDir
 
 #  ---------------------- model Params ----------------------
 
@@ -30,20 +30,6 @@ class maxPooling:
     strides = (2,2)
     pool_size = (2,2)
 
-class validation:
-    percentage = 0.1
-    fromKeras = False
-
-class test:
-    mode = 'names' # 'percentage'
-    percentage = 0.3
-    subjects = ''
-
-# TODO import names of test num_classes
-if 'names' in test.mode:
-    # import test.subjects
-    print('')
-
 class model:
     architectureType = 'U-Net' # 'U-Net' # 'MLP' #
     epochs = 2
@@ -51,14 +37,13 @@ class model:
     loss = 'binary_crossentropy'
     metrics = ['acc']
     optimizer = 'adam'
-    num_Layers = 4
+    num_Layers = 100
     InputDimensions = ''
     batchNormalization = False # True
     ConvLayer = convLayer
     MaxPooling = maxPooling
     Dropout = dropout
     Activitation = activation
-    Validation = validation
     showHistory = True
     LabelMaxValue = 1
 
@@ -95,9 +80,25 @@ class subExperiment:
     name = ''
 subExperiment.name = 'subExp' + str(subExperiment.index) + '_' + subExperiment.tag if subExperiment.tag else 'subExp' + str(subExperiment.index)
 
+class validation:
+    percentage = 0.1
+    fromKeras = False
+
+class test:
+    mode = 'percentage' # 'names'
+    percentage = 0.3
+    subjects = ''
+
+# TODO IMPORT TEST SUBJECTS NAMES AS A LIST
+if 'names' in test.mode: # import test.subjects
+    test.subjects = list([''])
+
 class dataset:
     name = 'SRI_3T' # 'kaggleCompetition' #  'fashionMnist' #
     address = ''
+    Validation = validation
+    Test = test
+    onlySubjectsWvimp = True
 
 if 'SRI_3T' in dataset.name:
     dataset.address = '/array/ssd/msmajdi/data/preProcessed/SRI_3T'
@@ -134,7 +135,6 @@ class Normalize:
     Method = 'MinMax'
 
 
-
 # --cropping mode
 # 1 or mask:     cropping using the cropped mask acquired from rigid transformation
 # 2 or thalamus: cropping using the cropped mask for plain size and Thalamus Prediction for slice numbers
@@ -147,6 +147,7 @@ class Cropping:
 class BiasCorrection:
     Mode = False
 
+# TODO fix the justfornow
 class Debug:
     doDebug = True
     PProcessExist = False  # rename it to preprocess exist
@@ -154,6 +155,7 @@ class Debug:
 
 class preprocess:
     Mode = ''
+    CreatingTheExperiment = ''
     TestOnly = False
     Debug = Debug
     Augment = Augment
@@ -161,4 +163,4 @@ class preprocess:
     Normalize = Normalize
     BiasCorrection = BiasCorrection
 
-del Augment, Cropping, Normalize, template, reference, nucleus, experiment, machine, model, image, hardParams, method , Debug , BiasCorrection , validation, activation, maxPooling, dropout, convLayer , kernel_size , os
+del subExperiment, test, WhichExperiment, sys, Augment, Cropping, Normalize, template, reference, nucleus, experiment, machine, model, image, hardParams, method , Debug , BiasCorrection , validation, activation, maxPooling, dropout, convLayer , kernel_size , os
