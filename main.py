@@ -57,7 +57,7 @@ for params.WhichExperiment.HardParams.Model.architectureType in tqdm(['U-Net']):
     pred[params.WhichExperiment.HardParams.Model.architectureType] = model.predict(Data.Test.Image)
     print(time() - t)
 
-
+Data.Test.Image.shape
 
 
 # TODO check the matlab imshow3D see if i can use it in python
@@ -65,9 +65,9 @@ for params.WhichExperiment.HardParams.Model.architectureType in tqdm(['U-Net']):
 ind = 2
 L = len(list(pred))
 if L == 1:
-    smallFuncs.imShow( Data.Test.Image[ind,:,:,0] ,  Data.Test.Label[ind,:,:,0]  ,  pred[list(pred)[0]][ind,:,:,1] )
+    smallFuncs.imShow( Data.Test.Image[ind,:,:,0] ,  Data.Test.Label[ind,:,:,0]  ,  pred[list(pred)[0]][ind,:,:,0] )
 elif L == 2:
-    smallFuncs.imShow( Data.Test.Image[ind,:,:,0] ,  Data.Test.Label[ind,:,:,0]  ,  pred[list(pred)[0]][ind,:,:,1]  ,  pred[list(pred)[1]][ind,:,:,1] )
+    smallFuncs.imShow( Data.Test.Image[ind,:,:,0] ,  Data.Test.Label[ind,:,:,0]  ,  pred[list(pred)[0]][ind,:,:,0]  ,  pred[list(pred)[1]][ind,:,:,0] )
 
 
 K.clear_session()

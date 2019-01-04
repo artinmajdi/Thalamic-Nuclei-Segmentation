@@ -61,10 +61,9 @@ def fashionMnist(params):
 
 def kaggleCompetition(params):
 
-    dir = '/array/ssd/msmajdi/data/original/KaggleCompetition/train'
-    subF = next(os.walk(dir))
+    subF = next(os.walk(params.WhichExperiment.Dataset.address))
 
-    for ind in trange(min(len(subF[1]),5), desc='Loading Dataset'):
+    for ind in trange(min(len(subF[1]),50), desc='Loading Dataset'):
 
         imDir = subF[0] + '/' + subF[1][ind] + '/images'
         imMsk = subF[0] + '/' + subF[1][ind] + '/masks'

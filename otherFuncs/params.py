@@ -82,7 +82,7 @@ subExperiment.name = 'subExp' + str(subExperiment.index) + '_' + subExperiment.t
 
 class validation:
     percentage = 0.1
-    fromKeras = False
+    fromKeras = True
 
 class test:
     mode = 'percentage' # 'names'
@@ -94,7 +94,7 @@ if 'names' in test.mode: # import test.subjects
     test.subjects = list([''])
 
 class dataset:
-    name = 'SRI_3T' # 'fashionMnist' #'kaggleCompetition' #
+    name = 'SRI_3T' #'kaggleCompetition' #  'fashionMnist' #
     address = ''
     Validation = validation
     Test = test
@@ -103,7 +103,7 @@ class dataset:
 if 'SRI_3T' in dataset.name:
     dataset.address = '/array/ssd/msmajdi/data/preProcessed/SRI_3T'
 elif 'kaggleCompetition' in dataset.name:
-    dataset.address = '/array/ssd/msmajdi/data/original/KaggleCompetition/train'
+    dataset.address = '/array/ssd/msmajdi/data/originals/KaggleCompetition/train'
 elif 'fashionMnist' in dataset.name:
     dataset.address = 'intrinsic'
 
