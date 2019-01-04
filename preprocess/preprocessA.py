@@ -1,9 +1,6 @@
-import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-import nibabel as nib
-import numpy as np
-from otherFuncs import params, smallFuncs
-params.preprocess.Mode = True
+# import os, sys
+# sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from otherFuncs import smallFuncs
 from preprocess import augmentA, BashCallingFunctionsA, normalizeA
 
 # TODO  check 3T 7T dimension and interpolation
@@ -26,7 +23,7 @@ def main_preprocess(params, mode):
 def apply_On_Individual(params,subject):
 
     BashCallingFunctionsA.BiasCorrection( subject , params)
-    BashCallingFunctionsA.RigidRegistration( subject , params.directories.WhichExperiment.HardParams.Template , params.preprocess)
+    BashCallingFunctionsA.RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
     BashCallingFunctionsA.Bash_Cropping( subject , params)
 
     return params
@@ -35,7 +32,7 @@ def apply_On_Individual(params,subject):
 def apply_On_Experiment(params):
     # params = smallFuncs.terminalEntries(params)
 
-    params.directories = smallFuncs.funcExpDirectories(params.directories.WhichExperiment)
+    params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
 
     for mode in ['train','test']:
 
@@ -48,9 +45,9 @@ def apply_On_Experiment(params):
             print(mode.upper(), 'BiasCorrection:' , sj , str(ind) + '/' + str(len(dirr.Input.Subjects)))
             BashCallingFunctionsA.BiasCorrection( subject , params)
 
-    params.directories = smallFuncs.funcExpDirectories(params.directories.WhichExperiment)
+    params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
     augmentA.main_augment( params , 'Linear' , 'experiment')
-    params.directories = smallFuncs.funcExpDirectories(params.directories.WhichExperiment)
+    params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
     for mode in ['train','test']:
 
         dirr = params.directories.Train if mode == 'train' else params.directories.Test
@@ -59,7 +56,7 @@ def apply_On_Experiment(params):
 
             print('\n',mode.upper(), sj , str(ind) + '/' + str(len(dirr.Input.Subjects)),'------------')
             print('    - RigidRegistration: ')
-            BashCallingFunctionsA.RigidRegistration( subject , params.directories.WhichExperiment.HardParams.Template , params.preprocess)
+            BashCallingFunctionsA.RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
 
             print('    - Cropping: ')
             BashCallingFunctionsA.Bash_Cropping( subject , params)

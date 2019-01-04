@@ -1,6 +1,5 @@
-import os
-import sys
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+# import os, sys
+# sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
 from random import shuffle
 from scipy.misc import imrotate
@@ -67,8 +66,8 @@ def LinearFunc(params, mode):
             smallFuncs.saveImage(Image , Affine , Header , outDirectoryImage2)
             smallFuncs.copyfile(outDirectoryImage2 , outDirectoryImage  + '/' + subject.ImageProcessed.split('_PProcessed')[0] + '.nii.gz')
 
-            for ind in params.directories.WhichExperiment.Nucleus.FullIndexes:
-                NucleusName, _ = smallFuncs.NucleiSelection(ind , params.directories.WhichExperiment.Nucleus.Organ)
+            for ind in params.WhichExperiment.Nucleus.FullIndexes:
+                NucleusName, _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
 
                 Mask   = nib.load(subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz').get_data() # 'Cropped' for cropped image
 

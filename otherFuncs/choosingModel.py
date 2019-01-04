@@ -10,14 +10,15 @@ from keras_tqdm import TQDMCallback # , TQDMNotebookCallback
 import pickle
 
 # TODO: check if the params includes the padding size for training and whether it saves it via pickle beside the model
+# TODO save the params in the model folder
 # ! main Function
 def modelTrain(Data, params, model):
-    ModelParam = params.directories.WhichExperiment.HardParams.Model
+    ModelParam = params.WhichExperiment.HardParams.Model
     model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss, metrics=ModelParam.metrics)
 
     # if the shuffle argument in model.fit is set to True (which is the default), the training data will be randomly shuffled at each epoch.
-    if ModelParam.Validation.fromKeras:
-        hist = model.fit(x=Data.Train.Image, y=Data.Train.Label, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=ModelParam.Validation.Percentage, verbose=0, callbacks=[TQDMCallback()])
+    if params.WhichExperiment.Dataset.Validation.fromKeras:
+        hist = model.fit(x=Data.Train.Image, y=Data.Train.Label, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.Percentage, verbose=0, callbacks=[TQDMCallback()])
     else:
         hist = model.fit(x=Data.Train.Image, y=Data.Train.Label, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label), verbose=0, callbacks=[TQDMCallback()])
 
@@ -27,16 +28,16 @@ def modelTrain(Data, params, model):
     if ModelParam.showHistory: print(hist.history)
 
     #! saving the params in the model folder
-    f = open(params.directories.Train.Model + '/params.pckl', 'wb')
-    pickle.dump(params, f)
-    f.close()
+    # f = open(params.directories.Train.Model + '/params.pckl', 'wb')
+    # pickle.dump(params, f)
+    # f.close()
 
     return model, hist
 
 
 def architecture(Data, params):
-    params.directories.WhichExperiment.HardParams.Model.imageInfo = Data.Info
-    ModelParam = params.directories.WhichExperiment.HardParams.Model
+    params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
+    ModelParam = params.WhichExperiment.HardParams.Model
     if 'U-Net' in ModelParam.architectureType:
         model = UNet(ModelParam)
 

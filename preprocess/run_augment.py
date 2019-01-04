@@ -8,5 +8,5 @@ params.preprocess.Mode = True
 #! mode: 2: on individual image
 params = smallFuncs.terminalEntries(params)
 main_augment( params , 'Linear', 'experiment')
-params.directories = smallFuncs.funcExpDirectories(params.directories.WhichExperiment)
+params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
 main_augment( params , 'NonLinear' , 'experiment')

@@ -46,8 +46,8 @@ def Bash_Cropping(subject , params):
                 copyfile(outP , outDebug)
 
         # Cropping the Label
-        for ind in params.directories.WhichExperiment.Nucleus.FullIndexes:
-            NucleusName, _ = NucleiSelection(ind , params.directories.WhichExperiment.Nucleus.Organ)
+        for ind in params.WhichExperiment.Nucleus.FullIndexes:
+            NucleusName, _ = NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
 
             inP  = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
             outP = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'

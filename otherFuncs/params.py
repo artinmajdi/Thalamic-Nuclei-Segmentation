@@ -32,7 +32,7 @@ class maxPooling:
 
 class model:
     architectureType = 'U-Net' # 'U-Net' # 'MLP' #
-    epochs = 2
+    epochs = 1
     batch_size = 40
     loss = 'binary_crossentropy'
     metrics = ['acc']
@@ -94,7 +94,7 @@ if 'names' in test.mode: # import test.subjects
     test.subjects = list([''])
 
 class dataset:
-    name = 'SRI_3T' # 'kaggleCompetition' #  'fashionMnist' #
+    name = 'SRI_3T' # 'fashionMnist' #'kaggleCompetition' #
     address = ''
     Validation = validation
     Test = test
@@ -104,6 +104,8 @@ if 'SRI_3T' in dataset.name:
     dataset.address = '/array/ssd/msmajdi/data/preProcessed/SRI_3T'
 elif 'kaggleCompetition' in dataset.name:
     dataset.address = '/array/ssd/msmajdi/data/original/KaggleCompetition/train'
+elif 'fashionMnist' in dataset.name:
+    dataset.address = 'intrinsic'
 
 class WhichExperiment:
     Experiment    = experiment
@@ -142,7 +144,7 @@ class Normalize:
 method = 2
 class Cropping:
     Mode = True
-    Method = whichCropMode(directories.WhichExperiment.Nucleus.name, method)  # it changes the mode to 1 if we're analyzing the Thalamus
+    Method = whichCropMode(WhichExperiment.Nucleus.name, method)  # it changes the mode to 1 if we're analyzing the Thalamus
 
 class BiasCorrection:
     Mode = False
@@ -163,4 +165,4 @@ class preprocess:
     Normalize = Normalize
     BiasCorrection = BiasCorrection
 
-del subExperiment, test, WhichExperiment, sys, Augment, Cropping, Normalize, template, reference, nucleus, experiment, machine, model, image, hardParams, method , Debug , BiasCorrection , validation, activation, maxPooling, dropout, convLayer , kernel_size , os
+del subExperiment, test, dataset, sys, Augment, Cropping, Normalize, template, reference, nucleus, experiment, machine, model, image, hardParams, method , Debug , BiasCorrection , validation, activation, maxPooling, dropout, convLayer , kernel_size , os

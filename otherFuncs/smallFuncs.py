@@ -3,7 +3,7 @@ import numpy as np
 from shutil import copyfile
 import matplotlib.pyplot as plt
 import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 
 # TODO: Replace folder searching with "next(os.walk(directory))"
@@ -79,37 +79,37 @@ def terminalEntries(params):
         entry = sys.argv[en]
 
         if entry.lower() == '-g':  # gpu num
-            params.directories.WhichExperiment.HardParams.Machine.GPU_Index = sys.argv[en+1]
+            params.WhichExperiment.HardParams.Machine.GPU_Index = sys.argv[en+1]
 
         elif entry.lower() == '-o':  # output directory
-            params.directories.Train.Model = mkDir(sys.argv[en+1] + '/' + params.directories.WhichExperiment.Experiment.name + '/models/' + params.directories.WhichExperiment.SubExperiment.name)
-            params.directories.Test.Result = mkDir(sys.argv[en+1] + '/' + params.directories.WhichExperiment.Experiment.name + '/results/' + params.directories.WhichExperiment.SubExperiment.name)
+            params.directories.Train.Model = mkDir(sys.argv[en+1] + '/' + params.WhichExperiment.Experiment.name + '/models/' + params.WhichExperiment.SubExperiment.name)
+            params.directories.Test.Result = mkDir(sys.argv[en+1] + '/' + params.WhichExperiment.Experiment.name + '/results/' + params.WhichExperiment.SubExperiment.name)
 
         elif entry.lower() == '-m':  # which machine; server localPC local Laptop
-            params.directories.WhichExperiment.HardParams.Machine.WhichMachine = sys.argv[en+1]
+            params.WhichExperiment.HardParams.Machine.WhichMachine = sys.argv[en+1]
 
         elif entry.lower() == '-n':  # nuclei index
             if sys.argv[en+1].lower() == 'all':
-                params.directories.WhichExperiment.Nucleus.Index = np.append([1,2,4567],range(4,14))
+                params.WhichExperiment.Nucleus.Index = np.append([1,2,4567],range(4,14))
 
             elif sys.argv[en+1][0] == '[':
                 B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
-                params.directories.WhichExperiment.Nucleus.Index = [int(k) for k in B]
+                params.WhichExperiment.Nucleus.Index = [int(k) for k in B]
 
             else:
-                params.directories.WhichExperiment.Nucleus.Index = [int(sys.argv[en+1])]
+                params.WhichExperiment.Nucleus.Index = [int(sys.argv[en+1])]
 
-            params.directories.WhichExperiment.Nucleus.name = "check the indexes entered by user!"
+            params.WhichExperiment.Nucleus.name = "check the indexes entered by user!"
 
         elif entry.lower() == '-i': # input image or directory
-            params.directories.WhichExperiment.address = sys.argv[en+1]
-            params.directories.Train.address =  sys.argv[en+1] + '/' + params.directories.WhichExperiment.Experiment.name + '/train'
-            params.directories.Train.Input   = checkInputDirectory(params.directories.Train.address, params.directories.WhichExperiment.Nucleus.name)
-            params.directories.Test.address  =  sys.argv[en+1] + '/' + params.directories.WhichExperiment.Experiment.name + '/test'
-            params.directories.Test.Input    = checkInputDirectory(params.directories.Test.address, params.directories.WhichExperiment.Nucleus.name)
+            params.WhichExperiment.address = sys.argv[en+1]
+            params.directories.Train.address =  sys.argv[en+1] + '/' + params.WhichExperiment.Experiment.name + '/train'
+            params.directories.Train.Input   = checkInputDirectory(params.directories.Train.address, params.WhichExperiment.Nucleus.name)
+            params.directories.Test.address  =  sys.argv[en+1] + '/' + params.WhichExperiment.Experiment.name + '/test'
+            params.directories.Test.Input    = checkInputDirectory(params.directories.Test.address, params.WhichExperiment.Nucleus.name)
 
         elif entry.lower() == '-TemplateMask':  # template Mask
-            params.directories.WhichExperiment.HardParams.Template.Mask = sys.argv[en+1]
+            params.WhichExperiment.HardParams.Template.Mask = sys.argv[en+1]
 
     return params
 
@@ -178,7 +178,7 @@ def funcExpDirectories(whichExperiment):
         Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
 
     class Directories:
-        WhichExperiment = whichExperiment
+        # WhichExperiment = whichExperiment
         Train = train
         Test  = test
 
@@ -327,14 +327,14 @@ def inputNamesCheck(params, mode):
                     imProc = subject.address + '/' + subject.ImageOriginal + '_PProcessed.nii.gz'
                     copyfile(imOrig  , imProc)
 
-                    for ind in params.directories.WhichExperiment.Nucleus.FullIndexes:
-                        NucleusName, _ = NucleiSelection(ind, params.directories.WhichExperiment.Nucleus.Organ)
+                    for ind in params.WhichExperiment.Nucleus.FullIndexes:
+                        NucleusName, _ = NucleiSelection(ind, params.WhichExperiment.Nucleus.Organ)
 
                         mskOrig = subject.Label.address + '/' + NucleusName + '.nii.gz'
                         mskProc = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
                         copyfile(mskOrig, mskProc)
 
-        params.directories = funcExpDirectories(params.directories.WhichExperiment)
+        params.directories = funcExpDirectories(params.WhichExperiment)
 
     else:
         print('')
@@ -350,7 +350,7 @@ def inputSizes(Subjects):
 
 def correctNumLayers(params):
 
-    HardParams = params.directories.WhichExperiment.HardParams
+    HardParams = params.WhichExperiment.HardParams
 
     inputSize = inputSizes(params.directories.Train.Input.Subjects)
 
@@ -363,7 +363,7 @@ def correctNumLayers(params):
         num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:2],kernel_size) )) + 1))
         print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
 
-    params.directories.WhichExperiment.HardParams.Model.num_Layers = num_Layers
+    params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
     return params
 
 def imageSizesAfterPadding(params, mode):
@@ -382,15 +382,15 @@ def imageSizesAfterPadding(params, mode):
                 MaxInputSize = np.max(inputSize, axis=0)
                 new_inputSize = MaxInputSize
 
-                a = 2**(params.directories.WhichExperiment.HardParams.Model.num_Layers - 1)
+                a = 2**(params.WhichExperiment.HardParams.Model.num_Layers - 1)
                 for dim in range(2):
                     # checking how much we need to pad the input image to make sure the we don't lose any information because of odd dimension sizes
                     if MaxInputSize[dim] % a != 0:
                         new_inputSize[dim] = a * np.ceil(MaxInputSize[dim] / a)
 
-                params.directories.WhichExperiment.HardParams.Model.InputDimensions = new_inputSize
+                params.WhichExperiment.HardParams.Model.InputDimensions = new_inputSize
             else:
-                new_inputSize = params.directories.WhichExperiment.HardParams.Model.InputDimensions
+                new_inputSize = params.WhichExperiment.HardParams.Model.InputDimensions
 
 
             #! finding the amount of padding for each subject in each direction

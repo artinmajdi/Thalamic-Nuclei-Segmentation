@@ -30,11 +30,11 @@ class data:
 
 def loadDataset(params):
 
-    if 'fashionMnist' in params.directories.WhichExperiment.Dataset.name:
-        Data, _ = fashionMnist(params.directories.WhichExperiment.HardParams.Model)
-    elif 'kaggleCompetition' in params.directories.WhichExperiment.Dataset.name:
-        Data, _ = kaggleCompetition(params.directories.WhichExperiment.HardParams.Model)
-    elif 'SRI_3T' in params.directories.WhichExperiment.Dataset.name:
+    if 'fashionMnist' in params.WhichExperiment.Dataset.name:
+        Data, _ = fashionMnist(params)
+    elif 'kaggleCompetition' in params.WhichExperiment.Dataset.name:
+        Data, _ = kaggleCompetition(params)
+    elif 'SRI_3T' in params.WhichExperiment.Dataset.name:
         Data = readingFromExperiments(params)
         Data.Train.Image = normalizeA.main_normalize(params.preprocess.Normalize , Data.Train.Image)
         Data.Test.Image  = normalizeA.main_normalize(params.preprocess.Normalize , Data.Test.Image)
@@ -43,23 +43,23 @@ def loadDataset(params):
 
     return Data
 
-def fashionMnist(ModelParam):
-    data  = fashion_mnist.load_data()
+def fashionMnist(params):
+    fullData  = fashion_mnist.load_data()
 
-    images = (np.expand_dims(data[0][0],axis=3)).astype('float32') / 255
-    masks  = one_hot(data[0][1],10)
+    images = (np.expand_dims(fullData[0][0],axis=3)).astype('float32') / 255
+    masks  = one_hot(fullData[0][1],10)
 
-    if ModelParam.Validation.fromKeras:
+    if params.WhichExperiment.Dataset.Validation.fromKeras:
         data.Train.Image = images
         data.Train.Label = masks
     else:
-        data.Train, data.Validation = TrainValSeperate(ModelParam.Validation.percentage, images, masks)
+        data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
 
-    data.Test.Image = (np.expand_dims(data[1][0],axis=3)).astype('float32') / 255
-    data.Test.Label = one_hot(data[1][1],10)
+    data.Test.Image = (np.expand_dims(fullData[1][0],axis=3)).astype('float32') / 255
+    data.Test.Label = one_hot(fullData[1][1],10)
     return data, '_'
 
-def kaggleCompetition(ModelParam):
+def kaggleCompetition(params):
 
     dir = '/array/ssd/msmajdi/data/original/KaggleCompetition/train'
     subF = next(os.walk(dir))
@@ -89,11 +89,11 @@ def kaggleCompetition(ModelParam):
 
     masks = np.concatenate((masks,1-masks),axis=3)
 
-    if ModelParam.Validation.fromKeras:
+    if params.WhichExperiment.Dataset.Validation.fromKeras:
         data.Train.Image = images
         data.Train.Label = masks
     else:
-        data.Train, data.Validation = TrainValSeperate(ModelParam.Validation.percentage ,images, masks)
+        data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage ,images, masks)
 
     data.Test = data.Train
     return data, '_'
@@ -111,7 +111,7 @@ def readingFromExperiments(params):
         Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
 
         #! reading all images and concatenating them into one array
-        Th = 0.5*params.directories.WhichExperiment.HardParams.Model.LabelMaxValue
+        Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
         for ind, name in tqdm(enumerate(Subjects), desc='Loading Dataset'):
             subject = Subjects[name]
 
@@ -137,11 +137,11 @@ def readingFromExperiments(params):
         masks  = np.concatenate((masks,1-masks),axis=3).astype('float32')
 
         if 'train' in mode:
-            if params.directories.WhichExperiment.Dataset.Validation.fromKeras:
+            if params.WhichExperiment.Dataset.Validation.fromKeras:
                 data.Train.Image = images
                 data.Train.Label = masks
             else:
-                data.Train, data.Validation = TrainValSeperate(params.directories.WhichExperiment.Dataset.Validation.percentage, images, masks)
+                data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
         else:
             data.Test.Image = images
             data.Test.Label = masks
@@ -179,12 +179,12 @@ def percentageRandomDivide(percentage, subjectsList):
 
 def movingFromDatasetToExperiments(params):
 
-    List = smallFuncs.listSubFolders(params.directories.WhichExperiment.Dataset.address)
-    TestParams = params.directories.WhichExperiment.Dataset.Test
+    List = smallFuncs.listSubFolders(params.WhichExperiment.Dataset.address)
+    TestParams = params.WhichExperiment.Dataset.Test
     _, TestList = percentageRandomDivide(TestParams.percentage, List) if 'percentage' in TestParams.mode else TestParams.subjects
     for subjects in List:
         DirOut = params.directories.Test.address if subjects in TestList else params.directories.Train.address
         if not os.path.exists(DirOut + '/' + subjects):
-            copytree(params.directories.WhichExperiment.Dataset.address + '/' + subjects  ,  DirOut + '/' + subjects)
+            copytree(params.WhichExperiment.Dataset.address + '/' + subjects  ,  DirOut + '/' + subjects)
 
     return True

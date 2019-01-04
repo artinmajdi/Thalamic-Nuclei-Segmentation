@@ -18,15 +18,16 @@ mode = 'experiment'
 
 # TODO: saving the param variable as a pickle file in the model output
 params = smallFuncs.terminalEntries(params)
-os.environ["CUDA_VISIBLE_DEVICES"] = params.directories.WhichExperiment.HardParams.Machine.GPU_Index
+os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
 
 
 #! copying the dataset into the experiment folder
 if params.preprocess.CreatingTheExperiment: datasets.movingFromDatasetToExperiments(params)
 
 #! preprocessing the data
-if params.preprocess.Mode: main_preprocess(params, mode)
-params.directories = smallFuncs.funcExpDirectories(params.directories.WhichExperiment)
+if params.preprocess.Mode:
+    main_preprocess(params, mode)
+    params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
 
 
 #! configing the GPU
@@ -48,12 +49,12 @@ Data = datasets.loadDataset(params)
 
 #! Actual architecture
 pred = {}
-for params.directories.WhichExperiment.HardParams.Model.architectureType in tqdm(['U-Net']):# , 'CNN_Segmetnation']):
+for params.WhichExperiment.HardParams.Model.architectureType in tqdm(['U-Net']):# , 'CNN_Segmetnation']):
     t = time()
     model, params = choosingModel.architecture(Data, params)
     model, hist   = choosingModel.modelTrain(Data, params, model)
     # model = load_model(params.directories.Train.Model + '/model.h5')
-    pred[params.directories.WhichExperiment.HardParams.Model.architectureType] = model.predict(Data.Test.Image)
+    pred[params.WhichExperiment.HardParams.Model.architectureType] = model.predict(Data.Test.Image)
     print(time() - t)
 
 
