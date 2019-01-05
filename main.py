@@ -17,8 +17,10 @@ params.preprocess.Mode = False
 params.preprocess.CreatingTheExperiment = False
 mode = 'experiment'
 
+# TODO: check the new conda environement with skimage to make sure it works
 # TODO: saving the param variable as a pickle file in the model output
 params = smallFuncs.terminalEntries(params)
+print(params.WhichExperiment.HardParams.Model.epochs)
 os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
 
 
@@ -47,21 +49,28 @@ params = smallFuncs.imageSizesAfterPadding(params, mode)
 #! loading the dataset
 Data, params = datasets.loadDataset(params)
 
-
-if 0:
-    #! Training
+print(params.WhichExperiment.HardParams.Model.epochs)
+if 1:
+    #! Training the model
     model = choosingModel.architecture(Data, params)
     model, hist = choosingModel.modelTrain(Data, params, model)
 else:
-    #! Testing
+    #! loading the model
     model = load_model(params.directories.Train.Model + '/model.h5')
 
+
+#! Testing
 pred, Dice = {}, {}
 for ind, name in tqdm(enumerate(Data.Test)):
     Dice[name], pred[name] = choosingModel.applyTestImageOnModel(model, Data.Test[name], params, name)
+
+
+#! showing the outputs
+if 0:
+    ind, name = 10, 'vimp2_1278_02062015'
+    smallFuncs.imShow( Data.Test[name].Image[ind,:,:,0] ,  Data.Test[name].OrigMask[...,ind]  ,  pred[name][...,ind] )
     print(ind, name, Dice[name])
-    #! showing the outputs
-    ind = 2
-    if 0: smallFuncs.imShow( Data.Test[name].Image[ind,:,:,0] ,  Data.Test[name].OrigMask[...,ind]  ,  pred[name][...,ind] )
 
 K.clear_session()
+
+

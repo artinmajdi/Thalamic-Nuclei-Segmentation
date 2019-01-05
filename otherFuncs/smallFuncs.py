@@ -112,6 +112,9 @@ def terminalEntries(params):
         elif entry.lower() == '-TemplateMask':  # template Mask
             params.WhichExperiment.HardParams.Template.Mask = sys.argv[en+1]
 
+        elif entry.lower() == '-e':
+            params.WhichExperiment.HardParams.Model.epochs = int(sys.argv[en+1])
+
     return params
 
 def checkInputDirectory(Dir, NucleusName):

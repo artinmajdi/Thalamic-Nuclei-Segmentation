@@ -21,9 +21,9 @@ def modelTrain(Data, params, model):
 
     # if the shuffle argument in model.fit is set to True (which is the default), the training data will be randomly shuffled at each epoch.
     if params.WhichExperiment.Dataset.Validation.fromKeras:
-        hist = model.fit(x=Data.Train.Image, y=Data.Train.Label, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=0, callbacks=[TQDMCallback()])
+        hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=0, callbacks=[TQDMCallback()])
     else:
-        hist = model.fit(x=Data.Train.Image, y=Data.Train.Label, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label), verbose=0, callbacks=[TQDMCallback()])
+        hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label), verbose=0, callbacks=[TQDMCallback()])
 
     smallFuncs.mkDir(params.directories.Train.Model)
     model.save(params.directories.Train.Model + '/model.h5', overwrite=True, include_optimizer=True )
@@ -47,7 +47,7 @@ def architecture(Data, params):
         model = CNN_Segmetnation(ModelParam)
 
     elif 'CNN_Classifier' in ModelParam.architectureType:
-        ModelParam.numClasses = Data.Train.Label.shape[1] # len(np.unique(Train.Label))
+        ModelParam.numClasses = Data.Train.Mask.shape[1] # len(np.unique(Train.Label))
         model = CNN_Segmetnation(ModelParam)
 
     model.summary()

@@ -9,7 +9,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from keras.datasets import fashion_mnist
 from otherFuncs import smallFuncs
 from preprocess import normalizeA
-
+# import h5py
 
 def one_hot(a, num_classes):
   return np.eye(num_classes)[a]
@@ -162,6 +162,7 @@ def readingFromExperiments3D(params):
                 data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
         else:
             data.Test = TestData
+
 
     return data
 
