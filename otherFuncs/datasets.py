@@ -35,13 +35,11 @@ def loadDataset(params):
     elif 'kaggleCompetition' in params.WhichExperiment.Dataset.name:
         Data, _ = kaggleCompetition(params)
     elif 'SRI_3T' in params.WhichExperiment.Dataset.name:
-        Data = readingFromExperiments(params)
-        Data.Train.Image = normalizeA.main_normalize(params.preprocess.Normalize , Data.Train.Image)
-        Data.Test.Image  = normalizeA.main_normalize(params.preprocess.Normalize , Data.Test.Image)
+        Data = readingFromExperiments3D(params)
 
     _, Data.Info.Height, Data.Info.Width, _ = Data.Train.Image.shape
-
-    return Data
+    params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
+    return Data, params
 
 def fashionMnist(params):
     fullData  = fashion_mnist.load_data()
@@ -51,7 +49,7 @@ def fashionMnist(params):
 
     if params.WhichExperiment.Dataset.Validation.fromKeras:
         data.Train.Image = images
-        data.Train.Label = masks
+        data.Train.Mask = masks
     else:
         data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
 
@@ -90,7 +88,7 @@ def kaggleCompetition(params):
 
     if params.WhichExperiment.Dataset.Validation.fromKeras:
         data.Train.Image = images
-        data.Train.Label = masks
+        data.Train.Mask = masks
     else:
         data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage ,images, masks)
 
@@ -100,11 +98,25 @@ def kaggleCompetition(params):
 # TODO: also I need to finish this function
 # TODO: add the saving images with the format mahesh said
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
-def readingFromExperiments(params):
+def readingFromExperiments3D(params):
 
+    class trainCase:
+        def __init__(self, Image, Mask):
+            self.Image = Image
+            self.Mask  = Mask
+
+    class testCase:
+        def __init__(self, Image, OrigMask, Affine, Header, original_Shape):
+            self.Image = Image
+            self.OrigMask  = OrigMask
+            self.Affine = Affine
+            self.Header = Header
+            self.original_Shape = original_Shape
+
+    TestData = {}
     for mode in ['train','test']:
 
-        if params.preprocess.TestOnly and 'train' in mode:
+        if 'train' in mode and params.preprocess.TestOnly:
             continue
 
         Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
@@ -114,36 +126,42 @@ def readingFromExperiments(params):
         for ind, name in tqdm(enumerate(Subjects), desc='Loading Dataset'):
             subject = Subjects[name]
 
+            # TODO: replace this with cropping if the negative number is low e.g. less than 5
             if np.min(subject.Padding) < 0:
                 print('WARNING: subject: ',name,' size is out of the training network input dimensions')
                 continue
 
-            im = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').get_data()
-            im = np.pad(im, subject.Padding, 'constant')
+            imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+            im = np.pad(imF.get_data(), subject.Padding, 'constant')
             im = np.transpose(im,[2,0,1])
+            im = np.expand_dims(im ,axis=3).astype('float32')
+            im = normalizeA.main_normalize(params.preprocess.Normalize , im)
 
             if os.path.exists(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz'):
                 msk = nib.load(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
+            else:
+                msk = np.zeros(imF.shape)
+
+            if 'train' in mode:
+
                 msk = np.pad(msk, subject.Padding, 'constant')
                 msk = np.transpose(msk,[2,0,1])
-            else:
-                msk = np.zeros(im.shape)
+                msk = np.expand_dims(msk,axis=3)
+                msk = np.concatenate((msk,1-msk),axis=3).astype('float32')
 
-            images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
-            masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
-        masks  = np.expand_dims(masks,axis=3)
-        images = np.expand_dims(images,         axis=3).astype('float32')
-        masks  = np.concatenate((masks,1-masks),axis=3).astype('float32')
+                images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
+                masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
+            elif 'test' in mode:
+                TestData[name] = testCase(Image=im, OrigMask=msk>Th, Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+
 
         if 'train' in mode:
             if params.WhichExperiment.Dataset.Validation.fromKeras:
-                data.Train.Image = images
-                data.Train.Label = masks
+                data.Train = trainCase(Image=images, Mask=masks)
             else:
                 data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
         else:
-            data.Test.Image = images
-            data.Test.Label = masks
+            data.Test = TestData
 
     return data
 

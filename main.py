@@ -1,5 +1,5 @@
 import os, sys
-__file__ = '/array/ssd/msmajdi/code/Thalamus_Keras/mainTest.py'  #! only if I'm using Hydrogen Atom
+__file__ = '/array/ssd/msmajdi/code/thalamus/keras/'  #! only if I'm using Hydrogen Atom
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
 from keras.models import load_model, Model
@@ -9,6 +9,7 @@ from tqdm import tqdm
 from keras import backend as K
 import tensorflow as tf
 import pickle
+import nibabel as nib
 
 from otherFuncs import params, smallFuncs, datasets, choosingModel
 from preprocess.preprocessA import main_preprocess
@@ -42,32 +43,25 @@ params = smallFuncs.correctNumLayers(params)
 #! Finding the final image sizes after padding & amount of padding
 params = smallFuncs.imageSizesAfterPadding(params, mode)
 
+
 #! loading the dataset
-Data = datasets.loadDataset(params)
+Data, params = datasets.loadDataset(params)
 
 
+if 0:
+    #! Training
+    model = choosingModel.architecture(Data, params)
+    model, hist = choosingModel.modelTrain(Data, params, model)
+else:
+    #! Testing
+    model = load_model(params.directories.Train.Model + '/model.h5')
 
-#! Actual architecture
-pred = {}
-for params.WhichExperiment.HardParams.Model.architectureType in tqdm(['U-Net']):# , 'CNN_Segmetnation']):
-    t = time()
-    model, params = choosingModel.architecture(Data, params)
-    model, hist   = choosingModel.modelTrain(Data, params, model)
-    # model = load_model(params.directories.Train.Model + '/model.h5')
-    pred[params.WhichExperiment.HardParams.Model.architectureType] = model.predict(Data.Test.Image)
-    print(time() - t)
-
-Data.Test.Image.shape
-
-
-# TODO check the matlab imshow3D see if i can use it in python
-#! showing the outputs
-ind = 2
-L = len(list(pred))
-if L == 1:
-    smallFuncs.imShow( Data.Test.Image[ind,:,:,0] ,  Data.Test.Label[ind,:,:,0]  ,  pred[list(pred)[0]][ind,:,:,0] )
-elif L == 2:
-    smallFuncs.imShow( Data.Test.Image[ind,:,:,0] ,  Data.Test.Label[ind,:,:,0]  ,  pred[list(pred)[0]][ind,:,:,0]  ,  pred[list(pred)[1]][ind,:,:,0] )
-
+pred, Dice = {}, {}
+for ind, name in tqdm(enumerate(Data.Test)):
+    Dice[name], pred[name] = choosingModel.applyTestImageOnModel(model, Data.Test[name], params, name)
+    print(ind, name, Dice[name])
+    #! showing the outputs
+    ind = 2
+    if 0: smallFuncs.imShow( Data.Test[name].Image[ind,:,:,0] ,  Data.Test[name].OrigMask[...,ind]  ,  pred[name][...,ind] )
 
 K.clear_session()

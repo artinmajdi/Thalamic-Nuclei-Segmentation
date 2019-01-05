@@ -3,6 +3,7 @@ import numpy as np
 from shutil import copyfile
 import matplotlib.pyplot as plt
 import os, sys
+
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 
@@ -69,7 +70,7 @@ def choosingSubject(Input):
     return Input.Image.get_data() , Input.CropMask.get_data() , Input.ThalamusMask.get_data() , Input.TestAddress
 
 def saveImage(Image , Affine , Header , outDirectory):
-    out = nib.Nifti1Image(Image,Affine)
+    out = nib.Nifti1Image((Image).astype('float32'),Affine)
     out.get_header = Header
     nib.save(out , outDirectory)
 
@@ -415,6 +416,7 @@ def imageSizesAfterPadding(params, mode):
 
     return params
 
+# TODO check the matlab imshow3D see if i can use it in python
 def imShow(*args):
 
     _, axes = plt.subplots(1,len(args))
@@ -424,3 +426,11 @@ def imShow(*args):
     plt.show()
 
     return True
+
+def unPadding(im , pad):
+    sz = im.shape
+    return im[pad[0][0]:sz[0]-pad[0][1] , pad[1][0]:sz[1]-pad[1][1] , pad[2][0]:sz[2]-pad[2][1] , 0]
+
+def Dice_Calculator(msk1,msk2):
+    intersection = msk1*msk2
+    return intersection.sum()*2/(msk1.sum()+msk2.sum() + np.finfo(float).eps)
