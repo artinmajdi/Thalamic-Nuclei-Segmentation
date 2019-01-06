@@ -10,7 +10,6 @@ from keras_tqdm import TQDMCallback # , TQDMNotebookCallback
 import pickle
 from tqdm import tqdm
 import numpy as np
-# from skimage import filters
 
 # TODO: check if the params includes the padding size for training and whether it saves it via pickle beside the model
 # TODO save the params in the model folder
@@ -143,9 +142,11 @@ def trainingMultipleMethod(params, Data):
 def applyTestImageOnModel(model, Data, params, name):
     pred = model.predict(Data.Image)
     pred = np.transpose(pred,[1,2,0,3])
-    # Thresh = max( filters.threshold_otsu(pred[...,1]) ,0.2)
+
+    # Thresh = max( filters.threshold_otsu(pred[...,1]) ,0.2)  if len(np.unique(pred[...,1])) != 1 else 0
     Thresh = 0.2
-    pred = smallFuncs.unPadding(pred, params.directories.Test.Input.Subjects[name].Padding) > Thresh
+
+    pred = smallFuncs.unPadding(pred, params.directories.Test.Input.Subjects[name].Padding) # > Thresh
     smallFuncs.saveImage(pred, Data.Affine, Data.Header, params.directories.Test.Result + '/' + name + '.nii.gz')
     Dice = smallFuncs.Dice_Calculator(pred, Data.OrigMask)
     np.savetxt(params.directories.Test.Result + '/' + name + '_Dice.txt',[Dice])

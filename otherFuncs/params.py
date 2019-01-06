@@ -32,12 +32,12 @@ class maxPooling:
 
 class model:
     architectureType = 'U-Net' # 'U-Net' # 'MLP' #
-    epochs = 1
+    epochs = 5
     batch_size = 40
     loss = 'binary_crossentropy'
     metrics = ['acc']
     optimizer = 'adam'
-    num_Layers = 100
+    num_Layers = 3
     InputDimensions = ''
     batchNormalization = False # True
     ConvLayer = convLayer
@@ -57,8 +57,8 @@ class image:
     SaveMode = 'nifti'.lower()
 
 class nucleus:
-    Index = [1]
-    Organ = 'THALAMUS'
+    Index = [8]
+    Organ = 'THALAMUS' # 'Hippocampus
     name , FullIndexes = NucleiSelection( Index[0] , Organ)
 
 class hardParams:
@@ -76,7 +76,7 @@ experiment.name = 'exp' + str(experiment.index) + '_' + experiment.tag if experi
 
 class subExperiment:
     index = 1
-    tag = 'LR00'
+    tag = 'LR00_' + nucleus.name
     name = ''
 subExperiment.name = 'subExp' + str(subExperiment.index) + '_' + subExperiment.tag if subExperiment.tag else 'subExp' + str(subExperiment.index)
 

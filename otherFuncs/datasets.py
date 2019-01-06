@@ -37,7 +37,7 @@ def loadDataset(params):
     elif 'SRI_3T' in params.WhichExperiment.Dataset.name:
         Data = readingFromExperiments3D(params)
 
-    _, Data.Info.Height, Data.Info.Width, _ = Data.Train.Image.shape
+    _, Data.Info.Height, Data.Info.Width, _ = Data.Test[list(Data.Test)[0]].Image.shape if params.preprocess.TestOnly else Data.Train.Image.shape
     params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
     return Data, params
 

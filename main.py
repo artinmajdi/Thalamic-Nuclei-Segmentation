@@ -27,6 +27,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.G
 #! copying the dataset into the experiment folder
 if params.preprocess.CreatingTheExperiment: datasets.movingFromDatasetToExperiments(params)
 
+
 #! preprocessing the data
 if params.preprocess.Mode:
     main_preprocess(params, mode)
@@ -45,12 +46,13 @@ params = smallFuncs.correctNumLayers(params)
 #! Finding the final image sizes after padding & amount of padding
 params = smallFuncs.imageSizesAfterPadding(params, mode)
 
-
+params.preprocess.TestOnly = True
 #! loading the dataset
 Data, params = datasets.loadDataset(params)
 
-print(params.WhichExperiment.HardParams.Model.epochs)
-if 1:
+
+
+if not params.preprocess.TestOnly:
     #! Training the model
     model = choosingModel.architecture(Data, params)
     model, hist = choosingModel.modelTrain(Data, params, model)
@@ -66,10 +68,11 @@ for ind, name in tqdm(enumerate(Data.Test)):
 
 
 #! showing the outputs
-if 0:
-    ind, name = 10, 'vimp2_1278_02062015'
-    smallFuncs.imShow( Data.Test[name].Image[ind,:,:,0] ,  Data.Test[name].OrigMask[...,ind]  ,  pred[name][...,ind] )
-    print(ind, name, Dice[name])
+if 1:
+    for ind in [10,13,17]:
+        _, name = 10, 'vimp2_1278_02062015'
+        smallFuncs.imShow( Data.Test[name].Image[ind,:,:,0] ,  Data.Test[name].OrigMask[...,ind]  ,  pred[name][...,ind] )
+        print(ind, name, Dice[name])
 
 K.clear_session()
 
