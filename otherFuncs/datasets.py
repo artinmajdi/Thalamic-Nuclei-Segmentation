@@ -24,7 +24,8 @@ class info:
 
 class data:
     Train = ImageLabel()
-    Test = ImageLabel()
+    Train_ForTest = ""
+    Test = ""
     Validation = ImageLabel()
     Info = info
 
@@ -106,14 +107,16 @@ def readingFromExperiments3D(params):
             self.Mask  = Mask
 
     class testCase:
-        def __init__(self, Image, OrigMask, Affine, Header, original_Shape):
+        def __init__(self, Image, Mask, OrigMask, Affine, Header, original_Shape):
             self.Image = Image
+            self.Mask = Mask
             self.OrigMask  = OrigMask
             self.Affine = Affine
             self.Header = Header
             self.original_Shape = original_Shape
 
     TestData = {}
+    TrainData = {}
     for mode in ['train','test']:
 
         if 'train' in mode and params.preprocess.TestOnly:
@@ -138,24 +141,28 @@ def readingFromExperiments3D(params):
             im = normalizeA.main_normalize(params.preprocess.Normalize , im)
 
             if os.path.exists(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz'):
-                msk = nib.load(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
+                OrigMsk = nib.load(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
             else:
-                msk = np.zeros(imF.shape)
+                OrigMsk = np.zeros(imF.shape)
+
+            msk = np.pad(OrigMsk, subject.Padding, 'constant')
+            msk = np.transpose(msk,[2,0,1])
+            msk = np.expand_dims(msk,axis=3) # .astype('float32')
+            msk = np.concatenate((msk,1-msk),axis=3) # .astype('float32')
 
             if 'train' in mode:
-
-                msk = np.pad(msk, subject.Padding, 'constant')
-                msk = np.transpose(msk,[2,0,1])
-                msk = np.expand_dims(msk,axis=3)
-                msk = np.concatenate((msk,1-msk),axis=3).astype('float32')
-
                 images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
                 masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
+
+                TrainData[name] = testCase(Image=im, Mask=msk ,OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+
             elif 'test' in mode:
-                TestData[name] = testCase(Image=im, OrigMask=msk>Th, Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                TestData[name] = testCase(Image=im, Mask=msk , OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
 
 
         if 'train' in mode:
+            data.Train_ForTest = TrainData
+
             if params.WhichExperiment.Dataset.Validation.fromKeras:
                 data.Train = trainCase(Image=images, Mask=masks)
             else:

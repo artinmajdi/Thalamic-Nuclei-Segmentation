@@ -5,18 +5,25 @@ from keras.models import Sequential, Model
 from keras.layers import Dense, Conv2D, Dropout, MaxPooling2D, Reshape, Flatten, BatchNormalization, Input, Conv2DTranspose
 from keras.layers.merge import concatenate
 from keras.callbacks import ModelCheckpoint
+from keras import losses
 from otherFuncs import smallFuncs
 from keras_tqdm import TQDMCallback # , TQDMNotebookCallback
 import pickle
 from tqdm import tqdm
 import numpy as np
+import matplotlib.pyplot as plt
+
+def Dice_Calculator(msk1,msk2):
+    return tf.reduce_sum(tf.multiply(msk1,msk2))*2/( tf.reduce_sum(msk1) + tf.reduce_sum(msk2) + tf.keras.backend.epsilon())
+
+
 
 # TODO: check if the params includes the padding size for training and whether it saves it via pickle beside the model
 # TODO save the params in the model folder
 # ! main Function
 def modelTrain(Data, params, model):
     ModelParam = params.WhichExperiment.HardParams.Model
-    model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss, metrics=ModelParam.metrics)
+    model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
 
     # if the shuffle argument in model.fit is set to True (which is the default), the training data will be randomly shuffled at each epoch.
     if params.WhichExperiment.Dataset.Validation.fromKeras:
@@ -91,6 +98,7 @@ def UNet(Modelparam):
 
     # ! final outputing the data
     final = Conv2D(2, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(WeightBiases)
+    # final = Conv2D(1, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(WeightBiases)
     model = Model(inputs=[inputs], outputs=[final])
 
     return model
@@ -139,16 +147,17 @@ def trainingMultipleMethod(params, Data):
     return Models, Hist
 
 #! applying the trained model on test data
-def applyTestImageOnModel(model, Data, params, name):
+def applyTestImageOnModel(model, Data, params, name, padding, ResultDir):
     pred = model.predict(Data.Image)
+    score = model.evaluate(Data.Image, Data.Mask)
     pred = np.transpose(pred,[1,2,0,3])
 
     # Thresh = max( filters.threshold_otsu(pred[...,1]) ,0.2)  if len(np.unique(pred[...,1])) != 1 else 0
     Thresh = 0.2
 
-    pred = smallFuncs.unPadding(pred, params.directories.Test.Input.Subjects[name].Padding) # > Thresh
-    smallFuncs.saveImage(pred, Data.Affine, Data.Header, params.directories.Test.Result + '/' + name + '.nii.gz')
-    Dice = smallFuncs.Dice_Calculator(pred, Data.OrigMask)
-    np.savetxt(params.directories.Test.Result + '/' + name + '_Dice.txt',[Dice])
+    pred = smallFuncs.unPadding(pred, padding) #  > Thresh
+    smallFuncs.saveImage(pred, Data.Affine, Data.Header, ResultDir + '/' + name + '.nii.gz')
+    Dice = smallFuncs.Dice_Calculator(pred , Data.OrigMask)
+    np.savetxt(ResultDir + '/' + name + '_Dice.txt',[Dice])
 
-    return Dice, pred
+    return Dice, pred, score

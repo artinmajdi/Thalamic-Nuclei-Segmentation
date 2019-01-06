@@ -1,8 +1,13 @@
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from otherFuncs.smallFuncs import NucleiSelection, whichCropMode, fixDirectoryLastDashSign, augmentLengthChecker, InputNames, checkInputDirectory, funcExpDirectories, mkDir
-
+from keras import losses, optimizers, metrics
+import tensorflow as tf
+import numpy as np
 #  ---------------------- model Params ----------------------
+
+def Dice_Calculator(msk1,msk2):
+    return tf.reduce_sum(tf.multiply(msk1,msk2))*2/( tf.reduce_sum(msk1) + tf.reduce_sum(msk2) + tf.keras.backend.epsilon())
 
 class template:
     Image = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/origtemplate.nii.gz'
@@ -32,11 +37,11 @@ class maxPooling:
 
 class model:
     architectureType = 'U-Net' # 'U-Net' # 'MLP' #
-    epochs = 5
-    batch_size = 40
-    loss = 'binary_crossentropy'
-    metrics = ['acc']
-    optimizer = 'adam'
+    epochs = 2
+    batch_size = 50
+    loss = losses.categorical_crossentropy   # binary_crossentropy  sparse_categorical_crossentropy  cosine_proximity
+    metrics = ['acc',Dice_Calculator]
+    optimizer = optimizers.adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False) # adamax Nadam Adadelta Adagrad
     num_Layers = 3
     InputDimensions = ''
     batchNormalization = False # True
@@ -57,7 +62,7 @@ class image:
     SaveMode = 'nifti'.lower()
 
 class nucleus:
-    Index = [8]
+    Index = [1]
     Organ = 'THALAMUS' # 'Hippocampus
     name , FullIndexes = NucleiSelection( Index[0] , Organ)
 
