@@ -10,6 +10,8 @@ from keras.datasets import fashion_mnist
 from otherFuncs import smallFuncs
 from preprocess import normalizeA
 # import h5py
+import matplotlib.pyplot as plt
+
 
 def one_hot(a, num_classes):
   return np.eye(num_classes)[a]
@@ -135,20 +137,34 @@ def readingFromExperiments3D(params):
                 continue
 
             imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-            im = np.pad(imF.get_data(), subject.Padding, 'constant')
-            im = np.transpose(im,[2,0,1])
-            im = np.expand_dims(im ,axis=3).astype('float32')
-            im = normalizeA.main_normalize(params.preprocess.Normalize , im)
+
 
             if os.path.exists(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz'):
                 OrigMsk = nib.load(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
             else:
                 OrigMsk = np.zeros(imF.shape)
 
-            msk = np.pad(OrigMsk, subject.Padding, 'constant')
+            a = np.mean(np.mean(OrigMsk,axis=1),axis=0)
+            b = np.where(a != 0)[0]
+
+            if 0:
+                msk = OrigMsk[:,:,b]
+                im = imF.get_data()[:,:,b]
+            else:
+                msk = OrigMsk
+                im = imF.get_data()
+
+
+            im = np.pad(im, subject.Padding, 'constant')
+            im = np.transpose(im,[2,0,1])
+            im = np.expand_dims(im ,axis=3).astype('float32')
+            im = normalizeA.main_normalize(params.preprocess.Normalize , im)
+
+
+            msk = np.pad(msk, subject.Padding, 'constant')
             msk = np.transpose(msk,[2,0,1])
             msk = np.expand_dims(msk,axis=3) # .astype('float32')
-            msk = np.concatenate((msk,1-msk),axis=3) # .astype('float32')
+            msk = np.concatenate((msk,1-msk),axis=3).astype('float32')
 
             if 'train' in mode:
                 images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
@@ -164,7 +180,7 @@ def readingFromExperiments3D(params):
             data.Train_ForTest = TrainData
 
             if params.WhichExperiment.Dataset.Validation.fromKeras:
-                data.Train = trainCase(Image=images, Mask=masks)
+                data.Train = trainCase(Image=images, Mask=masks.astype('float32'))
             else:
                 data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
         else:

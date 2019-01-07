@@ -4,10 +4,31 @@ from otherFuncs.smallFuncs import NucleiSelection, whichCropMode, fixDirectoryLa
 from keras import losses, optimizers, metrics
 import tensorflow as tf
 import numpy as np
+import math
 #  ---------------------- model Params ----------------------
 
-def Dice_Calculator(msk1,msk2):
-    return tf.reduce_sum(tf.multiply(msk1,msk2))*2/( tf.reduce_sum(msk1) + tf.reduce_sum(msk2) + tf.keras.backend.epsilon())
+def Dice_Calculator(y_true,y_pred):
+    y_true2 = y_true[...,0]
+    y_pred2 = y_pred[...,0]
+    Dice = tf.reduce_sum(tf.multiply(y_true2,y_pred2))*2/( tf.reduce_sum(y_true2) + tf.reduce_sum(y_pred2) + 1e-5)
+
+    #! WORKED without below
+    # if Dice is None:
+    #     Dice = tf.constant(0,dtype=tf.float32)
+    return Dice
+
+def myCross_entropy(y_true,y_pred):
+    n_class = 2
+    y_true = tf.reshape(y_true, [-1, n_class])
+    y_pred = tf.reshape(y_pred, [-1, n_class])
+    return -tf.reduce_mean(y_true*tf.log(tf.clip_by_value(y_pred,1e-10,1.0)), name="cross_entropy")
+
+def myLoss(y_true,y_pred):
+    y_true2 = y_true[...,0]
+    y_pred2 = y_pred[...,0]
+    # return myCross_entropy(y_true2,y_pred2) # + 1 - Dice_Calculator(y_true,y_pred) # categorical_crossentropy
+    #! WORKS:
+    return losses.binary_crossentropy(y_true2,y_pred2) + 1 - Dice_Calculator(y_true,y_pred) # categorical_crossentropy
 
 class template:
     Image = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/origtemplate.nii.gz'
@@ -37,12 +58,13 @@ class maxPooling:
 
 class model:
     architectureType = 'U-Net' # 'U-Net' # 'MLP' #
-    epochs = 2
-    batch_size = 50
-    loss = losses.categorical_crossentropy   # binary_crossentropy  sparse_categorical_crossentropy  cosine_proximity
+    epochs = 3
+    batch_size = 40
+    loss = myLoss # losses.categorical_crossentropy   # binary_crossentropy  sparse_categorical_crossentropy  cosine_proximity
     metrics = ['acc',Dice_Calculator]
-    optimizer = optimizers.adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False) # adamax Nadam Adadelta Adagrad
-    num_Layers = 3
+    # optimizer = optimizers.adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False) # adamax Nadam Adadelta Adagrad
+    optimizer = optimizers.adam()
+    num_Layers = 5
     InputDimensions = ''
     batchNormalization = False # True
     ConvLayer = convLayer
@@ -51,21 +73,22 @@ class model:
     Activitation = activation
     showHistory = True
     LabelMaxValue = 1
-
+    Measure_Dice_on_Train_Data = False
+    InitializeFromThalamus = True
 
 class machine:
     WhichMachine = 'server'
-    GPU_Index = str(5)
+    GPU_Index = str(6)
 
 class image:
     SlicingDirection = 'axial'.lower()
     SaveMode = 'nifti'.lower()
 
 class nucleus:
-    Index = [1]
+    Index = [6]
     Organ = 'THALAMUS' # 'Hippocampus
     name , FullIndexes = NucleiSelection( Index[0] , Organ)
-
+    name_Thalamus, _ = NucleiSelection( 1 , Organ)
 class hardParams:
     Model    = model
     Template = template
@@ -81,9 +104,11 @@ experiment.name = 'exp' + str(experiment.index) + '_' + experiment.tag if experi
 
 class subExperiment:
     index = 1
-    tag = 'LR00_' + nucleus.name
+    tag = 'LR00_'
     name = ''
-subExperiment.name = 'subExp' + str(subExperiment.index) + '_' + subExperiment.tag if subExperiment.tag else 'subExp' + str(subExperiment.index)
+    name_thalamus = ''
+subExperiment.name = 'subExp' + str(subExperiment.index) + '_' + subExperiment.tag + nucleus.name if subExperiment.tag else 'subExp' + str(subExperiment.index) + '_' + nucleus.name
+subExperiment.name_thalamus = 'subExp' + str(subExperiment.index) + '_' + subExperiment.tag + nucleus.name_Thalamus if subExperiment.tag else 'subExp' + str(subExperiment.index) + '_' + nucleus.name_Thalamus
 
 class validation:
     percentage = 0.1
@@ -170,4 +195,4 @@ class preprocess:
     Normalize = Normalize
     BiasCorrection = BiasCorrection
 
-del subExperiment, test, dataset, sys, Augment, Cropping, Normalize, template, reference, nucleus, experiment, machine, model, image, hardParams, method , Debug , BiasCorrection , validation, activation, maxPooling, dropout, convLayer , kernel_size , os
+del np, subExperiment, test, dataset, sys, Augment, Cropping, Normalize, template, reference, nucleus, experiment, machine, model, image, hardParams, method , Debug , BiasCorrection , validation, activation, maxPooling, dropout, convLayer , kernel_size , os

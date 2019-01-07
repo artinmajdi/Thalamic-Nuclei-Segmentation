@@ -2,7 +2,7 @@ import os, sys
 __file__ = '/array/ssd/msmajdi/code/thalamus/keras/'  #! only if I'm using Hydrogen Atom
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
-from keras.models import load_model, Model, model_from_json
+from keras.models import load_model, Model # , model_from_json
 import matplotlib.pyplot as plt
 from time import time
 from tqdm import tqdm
@@ -18,8 +18,8 @@ params.preprocess.Mode = False
 params.preprocess.CreatingTheExperiment = False
 mode = 'experiment'
 
-def Dice_Calculator(msk1,msk2):
-    return tf.reduce_sum(tf.multiply(msk1,msk2))*2/( tf.reduce_sum(msk1) + tf.reduce_sum(msk2) + tf.keras.backend.epsilon())
+# def Dice_Calculator(msk1,msk2):
+#     return tf.reduce_sum(tf.multiply(msk1,msk2))*2/( tf.reduce_sum(msk1) + tf.reduce_sum(msk2) + tf.keras.backend.epsilon())
 
 
 # TODO: check the new conda environement with skimage to make sure it works
@@ -72,29 +72,23 @@ else:
 
 #! Testing
 pred, Dice, score = {}, {}, {}
-for ind, name in tqdm(enumerate(Data.Test)):
+for name in tqdm(Data.Test):
     ResultDir = params.directories.Test.Result
     padding = params.directories.Test.Input.Subjects[name].Padding
     Dice[name], pred[name], score[name] = choosingModel.applyTestImageOnModel(model, Data.Test[name], params, name, padding, ResultDir)
 
 #! training predictions
-for ind, name in tqdm(enumerate(Data.Train_ForTest)):
-    ResultDir = params.directories.Test.Result
-    padding = params.directories.Train.Input.Subjects[name].Padding
-    Dice[name], pred[name], score[name] = choosingModel.applyTestImageOnModel(model, Data.Train_ForTest[name], params, name, padding, ResultDir)
+if params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:
+    ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
+    for name in tqdm(Data.Train_ForTest):
+        padding = params.directories.Train.Input.Subjects[name].Padding
+        Dice[name], pred[name], score[name] = choosingModel.applyTestImageOnModel(model, Data.Train_ForTest[name], params, name, padding, ResultDir)
 
 #! showing the outputs
-for ind in [10,13,17]:
-    name = list(Data.Test)[ind]
+for ind in [10]: # ,13,17]:
+    name = list(Data.Test)[ind]   # Data.Train_ForTest
     # name = 'vimp2_2039_03182016'
     smallFuncs.imShow( Data.Test[name].Image[ind,:,:,0] ,  Data.Test[name].OrigMask[...,ind]  ,  pred[name][...,ind] )
-    print(ind, name, Dice[name])
-
-#! showing the outputs
-for ind in [10,13,17]:
-    name = list(Data.Train_ForTest)[ind]
-    # name = 'vimp2_2039_03182016'
-    smallFuncs.imShow( Data.Train_ForTest[name].Image[ind,:,:,0] ,  Data.Train_ForTest[name].OrigMask[...,ind]  ,  pred[name][...,ind] )
     print(ind, name, Dice[name])
 
 # K.clear_session()

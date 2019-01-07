@@ -12,9 +12,10 @@ import pickle
 from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
+from skimage import filters
 
-def Dice_Calculator(msk1,msk2):
-    return tf.reduce_sum(tf.multiply(msk1,msk2))*2/( tf.reduce_sum(msk1) + tf.reduce_sum(msk2) + tf.keras.backend.epsilon())
+# def Dice_Calculator(msk1,msk2):
+#     return tf.reduce_sum(tf.multiply(msk1,msk2))*2/( tf.reduce_sum(msk1) + tf.reduce_sum(msk2) + tf.keras.backend.epsilon())
 
 
 
@@ -23,17 +24,22 @@ def Dice_Calculator(msk1,msk2):
 # ! main Function
 def modelTrain(Data, params, model):
     ModelParam = params.WhichExperiment.HardParams.Model
+
+    # not 1 in params.WhichExperiment.Nucleus.Index and
+    if params.WhichExperiment.HardParams.Model.InitializeFromThalamus and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
+        model.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
+
     model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
 
     # if the shuffle argument in model.fit is set to True (which is the default), the training data will be randomly shuffled at each epoch.
     if params.WhichExperiment.Dataset.Validation.fromKeras:
-        hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=0, callbacks=[TQDMCallback()])
+        hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=1, callbacks=[TQDMCallback()])
     else:
         hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label), verbose=0, callbacks=[TQDMCallback()])
 
     smallFuncs.mkDir(params.directories.Train.Model)
     model.save(params.directories.Train.Model + '/model.h5', overwrite=True, include_optimizer=True )
-
+    model.save_weights(params.directories.Train.Model + '/model_weights.h5', overwrite=True )
     if ModelParam.showHistory: print(hist.history)
 
     #! saving the params in the model folder
@@ -57,6 +63,9 @@ def architecture(Data, params):
         model = CNN_Segmetnation(ModelParam)
 
     model.summary()
+
+    # ModelParam = params.WhichExperiment.HardParams.Model
+    # model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
     return model
 
 def Unet_sublayer_Contracting(inputs, nL, Modelparam):
@@ -150,14 +159,14 @@ def trainingMultipleMethod(params, Data):
 def applyTestImageOnModel(model, Data, params, name, padding, ResultDir):
     pred = model.predict(Data.Image)
     score = model.evaluate(Data.Image, Data.Mask)
-    pred = np.transpose(pred,[1,2,0,3])
+    pred = np.transpose(pred,[1,2,0,3])[...,0]
 
-    # Thresh = max( filters.threshold_otsu(pred[...,1]) ,0.2)  if len(np.unique(pred[...,1])) != 1 else 0
-    Thresh = 0.2
+    Thresh = max( filters.threshold_otsu(pred) ,0.2)  if len(np.unique(pred)) != 1 else 0
+    # Thresh = 0.2
 
-    pred = smallFuncs.unPadding(pred, padding) #  > Thresh
-    smallFuncs.saveImage(pred, Data.Affine, Data.Header, ResultDir + '/' + name + '.nii.gz')
+    pred = smallFuncs.unPadding(pred, padding)  > Thresh
+    smallFuncs.saveImage(pred, Data.Affine, Data.Header, ResultDir + '/' + params.WhichExperiment.Nucleus.name + '_' + name + '_pred.nii.gz')
     Dice = smallFuncs.Dice_Calculator(pred , Data.OrigMask)
-    np.savetxt(ResultDir + '/' + name + '_Dice.txt',[Dice])
+    np.savetxt(ResultDir + '/' +  params.WhichExperiment.Nucleus.name + '_' + name + '_Dice.txt',[Dice])
 
     return Dice, pred, score

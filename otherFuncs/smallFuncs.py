@@ -174,6 +174,7 @@ def funcExpDirectories(whichExperiment):
     class train:
         address = mkDir(whichExperiment.Experiment.address + '/train')
         Model   = mkDir(whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name)
+        Model_Thalamus   = whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name_thalamus
         Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
 
     class test:
@@ -432,7 +433,7 @@ def imShow(*args):
 
 def unPadding(im , pad):
     sz = im.shape
-    return im[pad[0][0]:sz[0]-pad[0][1] , pad[1][0]:sz[1]-pad[1][1] , pad[2][0]:sz[2]-pad[2][1] , 0]
+    return im[pad[0][0]:sz[0]-pad[0][1] , pad[1][0]:sz[1]-pad[1][1] , pad[2][0]:sz[2]-pad[2][1]]
 
 def Dice_Calculator(msk1,msk2):
     intersection = msk1*msk2
