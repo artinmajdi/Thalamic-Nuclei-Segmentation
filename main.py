@@ -60,7 +60,7 @@ Data, params = datasets.loadDataset(params)
 # params.preprocess.TestOnly = True
 if not params.preprocess.TestOnly:
     #! Training the model
-    model = choosingModel.architecture(Data, params)
+    model = choosingModel.architecture(params)
     model, hist = choosingModel.modelTrain(Data, params, model)
 else:
     #! loading the model
@@ -93,7 +93,7 @@ if params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:
 for ind in [10]: # ,13,17]:
     name = list(Data.Test)[ind]   # Data.Train_ForTest
     # name = 'vimp2_2039_03182016'
-    smallFuncs.imShow( Data.Test[name].Image[ind,:,:,0] ,  Data.Test[name].OrigMask[...,ind]  ,  pred[name][...,ind] )
+    smallFuncs.imShow( Data.Test[name].Image[ind,:,:,0] ,  Data.Test[name].OrigMask[...,ind,0]  ,  pred[name][...,ind,0] )
     print(ind, name, Dice[name])
 
 # K.clear_session()

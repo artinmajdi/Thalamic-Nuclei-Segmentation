@@ -51,7 +51,7 @@ def modelTrain(Data, params, model):
 
     return model, hist
 
-def architecture(Data, params):
+def architecture(params):
     # params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
     ModelParam = params.WhichExperiment.HardParams.Model
     if 'U-Net' in ModelParam.architectureType:
@@ -61,7 +61,6 @@ def architecture(Data, params):
         model = CNN_Segmetnation(ModelParam)
 
     elif 'CNN_Classifier' in ModelParam.architectureType:
-        ModelParam.numClasses = Data.Train.Mask.shape[1] # len(np.unique(Train.Label))
         model = CNN_Segmetnation(ModelParam)
 
     model.summary()
@@ -108,7 +107,7 @@ def UNet(Modelparam):
         WeightBiases = Unet_sublayer_Expanding(WeightBiases, nL, Modelparam, ConvOutputs)
 
     # ! final outputing the data
-    final = Conv2D(2, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(WeightBiases)
+    final = Conv2D(Modelparam.MultiClass.num_classes, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(WeightBiases)
     # final = Conv2D(1, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(WeightBiases)
     model = Model(inputs=[inputs], outputs=[final])
 
@@ -123,7 +122,7 @@ def CNN_Segmetnation(Modelparam):
         conv = Conv2D(filters=64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
         conv = Dropout(Modelparam.Dropout.Value)(conv)
 
-    final  = Conv2D(filters=2, kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
+    final  = Conv2D(filters=Modelparam.MultiClass.num_classes, kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
 
     model = Model(inputs=[inputs], outputs=[final])
 
@@ -143,7 +142,7 @@ def CNN_Classifier(Modelparam):
     model.add(Flatten())
     model.add(Dense(128 , activation=Modelparam.Activitation.layers))
     model.add(Dropout(Modelparam.Dropout.Value))
-    model.add(Dense(Modelparam.numClasses , activation=Modelparam.Activitation.output))
+    model.add(Dense(Modelparam.MultiClass.num_classes , activation=Modelparam.Activitation.output))
 
     return model
 
@@ -152,23 +151,34 @@ def trainingMultipleMethod(params, Data):
     Models, Hist = {}, {}
     for params.WhichExperiment.HardParams.Model.architectureType in tqdm(['U-Net' , 'CNN_Segmetnation']):
         architectureType = params.WhichExperiment.HardParams.Model.architectureType
-        model = architecture(Data, params)
+        model = architecture(params)
         Models[architectureType], Hist[architectureType] = modelTrain(Data, params, model)
 
     return Models, Hist
 
 #! applying the trained model on test data
-def applyTestImageOnModel(model, Data, params, name, padding, ResultDir):
+def applyTestImageOnModel(model, Data, params, nameSubject, padding, ResultDir):
     pred = model.predict(Data.Image)
     score = model.evaluate(Data.Image, Data.Mask)
-    pred = np.transpose(pred,[1,2,0,3])[...,0]
 
-    Thresh = max( filters.threshold_otsu(pred) ,0.2)  if len(np.unique(pred)) != 1 else 0
-    # Thresh = 0.2
+    num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes
+    pred = np.transpose(pred,[1,2,0,3])[...,:num_classes-1]
+    if len(pred.shape) == 3:
+        pred= np.expand_dims(pred,axis=3)
 
-    pred = smallFuncs.unPadding(pred, padding)  > Thresh
-    smallFuncs.saveImage(pred, Data.Affine, Data.Header, ResultDir + '/' + params.WhichExperiment.Nucleus.name + '_' + name + '_pred.nii.gz')
-    Dice = smallFuncs.Dice_Calculator(pred , Data.OrigMask)
-    np.savetxt(ResultDir + '/' +  params.WhichExperiment.Nucleus.name + '_' + name + '_Dice.txt',[Dice])
+    pred = smallFuncs.unPadding(pred, padding)
+    Dice = np.zeros((num_classes-1,2))
+    for cnt in range(num_classes-1):
+        pred1N = np.squeeze(pred[...,cnt])
+        origMsk1N = Data.OrigMask[...,cnt]
+        Thresh = max( filters.threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
+        # Thresh = 0.2
+
+        pred1N = pred1N  > Thresh
+        nucleusName, _ = smallFuncs.NucleiSelection(params.WhichExperiment.Nucleus.Index[cnt])
+        dirSave = smallFuncs.mkDir(ResultDir + '/' + nameSubject)
+        smallFuncs.saveImage(pred1N, Data.Affine, Data.Header, dirSave + '/' + nucleusName + '.nii.gz')
+        Dice[cnt,:] = [ params.WhichExperiment.Nucleus.Index[cnt] , smallFuncs.Dice_Calculator(pred1N , origMsk1N) ]
+    np.savetxt(dirSave + '/Dice.txt',Dice)
 
     return Dice, pred, score

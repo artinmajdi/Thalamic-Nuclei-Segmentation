@@ -42,7 +42,7 @@ def NucleiSelection(ind = 1,organ = 'THALAMUS'):
         elif ind == 14:
             NucleusName = '14-MTT'
 
-        FullIndexes = [1,2,4567,4,5,6,7,8,9,10,11,12,13,14]
+        FullIndexes = [1,2,5,6,7,8,9,10,11,12,13,14]
 
     return NucleusName, FullIndexes
 
@@ -402,7 +402,7 @@ def imageSizesAfterPadding(params, mode):
             md = np.mod(fullpadding,2)
 
             for sn, name in enumerate(list(Subjects)):
-                padding = [np.zeros(2)]*3
+                padding = [np.zeros(2)]*4
                 for dim in range(2):
                     if md[sn, dim] == 0:
                         padding[dim] = tuple([int(fullpadding[sn,dim]/2)]*2)
@@ -410,6 +410,7 @@ def imageSizesAfterPadding(params, mode):
                         padding[dim] = tuple([int(np.floor(fullpadding[sn,dim]/2) + 1) , int(np.floor(fullpadding[sn,dim]/2))])
 
                 padding[2] = tuple([0,0])
+                padding[3] = tuple([0,0])
                 Subjects[name].Padding = tuple(padding)
 
             if 'Train' in wFolder:

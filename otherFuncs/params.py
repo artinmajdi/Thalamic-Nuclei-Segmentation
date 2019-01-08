@@ -7,29 +7,6 @@ import numpy as np
 import math
 #  ---------------------- model Params ----------------------
 
-def Dice_Calculator(y_true,y_pred):
-    y_true2 = y_true[...,0]
-    y_pred2 = y_pred[...,0]
-    Dice = tf.reduce_sum(tf.multiply(y_true2,y_pred2))*2/( tf.reduce_sum(y_true2) + tf.reduce_sum(y_pred2) + 1e-5)
-
-    #! WORKED without below
-    # if Dice is None:
-    #     Dice = tf.constant(0,dtype=tf.float32)
-    return Dice
-
-def myCross_entropy(y_true,y_pred):
-    n_class = 2
-    y_true = tf.reshape(y_true, [-1, n_class])
-    y_pred = tf.reshape(y_pred, [-1, n_class])
-    return -tf.reduce_mean(y_true*tf.log(tf.clip_by_value(y_pred,1e-10,1.0)), name="cross_entropy")
-
-def myLoss(y_true,y_pred):
-    y_true2 = y_true[...,0]
-    y_pred2 = y_pred[...,0]
-    # return myCross_entropy(y_true2,y_pred2) # + 1 - Dice_Calculator(y_true,y_pred) # categorical_crossentropy
-    #! WORKS:
-    return losses.binary_crossentropy(y_true2,y_pred2) + 1 - Dice_Calculator(y_true,y_pred) # categorical_crossentropy
-
 class template:
     Image = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/origtemplate.nii.gz'
     Mask = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/MyCrop_Template2_Gap20.nii.gz'
@@ -52,13 +29,56 @@ class convLayer:
     Kernel_size = kernel_size
     padding = 'SAME' # valid
 
+class multiclass:
+    num_classes = ''
+    mode = True
+
+
 class maxPooling:
     strides = (2,2)
     pool_size = (2,2)
 
+# def myCross_entropy(y_true,y_pred):
+#     n_class = 2
+#     y_true = tf.reshape(y_true, [-1, n_class])
+#     y_pred = tf.reshape(y_pred, [-1, n_class])
+#     return -tf.reduce_mean(y_true*tf.log(tf.clip_by_value(y_pred,1e-10,1.0)), name="cross_entropy")
+
+def Dice_Calculator_works(y_true,y_pred):
+    d = y_pred.shape[3] - 1
+    y_true2 = y_true[...,:d]
+    y_pred2 = y_pred[...,:d]
+    Dice = tf.reduce_sum(tf.multiply(y_true2,y_pred))*2/( tf.reduce_sum(y_true2) + tf.reduce_sum(y_pred) + 1e-5)
+    #! WORKED without below
+    # if Dice is None:
+    #     Dice = tf.constant(0,dtype=tf.float32)
+    return Dice
+
+def Dice_Calculator(y_true,y_pred):
+    # d = y_pred.shape[3] - 1
+    # y_true2 = y_true[...,:d]
+    # y_pred2 = y_pred[...,:d]
+    Dice = 0
+    nmCl = y_pred.shape[3] - 1
+    for d in range(nmCl):
+        Dice = Dice + tf.reduce_sum(tf.multiply(y_true[...,d],y_pred[...,d]))*2/( tf.reduce_sum(y_true[...,d]) + tf.reduce_sum(y_pred[...,d]) + 1e-5)
+
+    #! WORKED without below
+    # if Dice is None:
+    #     Dice = tf.constant(0,dtype=tf.float32)
+    return tf.divide(Dice,nmCl)
+
+def myLoss(y_true,y_pred):
+    loss = 0
+    nmCl = y_pred.shape[3] - 1
+    for d in range(nmCl):
+        loss = loss + losses.binary_crossentropy(y_true[...,d],y_pred[...,d])
+
+    return tf.divide(loss,nmCl) + 1 - Dice_Calculator(y_true,y_pred) # categorical_crossentropy binary_crossentropy
+
 class model:
     architectureType = 'U-Net' # 'U-Net' # 'MLP' #
-    epochs = 6
+    epochs = 5
     batch_size = 40
     loss = myLoss # losses.categorical_crossentropy   # binary_crossentropy  sparse_categorical_crossentropy  cosine_proximity
     metrics = ['acc',Dice_Calculator]
@@ -74,12 +94,12 @@ class model:
     showHistory = True
     LabelMaxValue = 1
     Measure_Dice_on_Train_Data = False
-
+    MultiClass = multiclass
     #! only one of these two can be true at the same time
     InitializeFromThalamus = False
     InitializeFromOlderModel = False
 
-if InitializeFromThalamus and InitializeFromOlderModel:
+if model.InitializeFromThalamus and model.InitializeFromOlderModel:
     print('initilization can only happen from one source')
     model.InitializeFromThalamus = False
     model.InitializeFromOlderModel = False
@@ -94,10 +114,21 @@ class image:
     SaveMode = 'nifti'.lower()
 
 class nucleus:
-    Index = [6]
+    # Index = [8,6,7,5]
     Organ = 'THALAMUS' # 'Hippocampus
-    name , FullIndexes = NucleiSelection( Index[0] , Organ)
-    name_Thalamus, _ = NucleiSelection( 1 , Organ)
+    name = ''
+    name_Thalamus, FullIndexes = NucleiSelection( 1 , Organ)
+    Index = FullIndexes
+
+if len(nucleus.Index) == 1:
+    nucleus.name , _ = NucleiSelection( nucleus.Index[0] , nucleus.Organ)
+else:
+    nucleus.name = ('All_' + str(nucleus.Index)).replace(', ','_').replace('[','').replace(']','')
+
+if model.MultiClass.mode:
+    model.MultiClass.num_classes = len(nucleus.Index) + 1
+else:
+    model.MultiClass.num_classes = 2
 
 class hardParams:
     Model    = model

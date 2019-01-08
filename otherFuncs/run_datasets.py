@@ -29,5 +29,6 @@ params = smallFuncs.imageSizesAfterPadding(params, mode)
 
 
 #! loading the dataset
-Data, params = datasets.loadDataset(params)
+Data,Data2,  params = datasets.loadDataset(params)
 
+print('---')
