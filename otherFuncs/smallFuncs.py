@@ -99,8 +99,7 @@ def terminalEntries(params):
 
             else:
                 params.WhichExperiment.Nucleus.Index = [int(sys.argv[en+1])]
-
-            params.WhichExperiment.Nucleus.name = "check the indexes entered by user!"
+                params.WhichExperiment.Nucleus.name, _ = NucleiSelection(int(sys.argv[en+1]))
 
         elif entry.lower() == '-i': # input image or directory
             params.WhichExperiment.address = sys.argv[en+1]

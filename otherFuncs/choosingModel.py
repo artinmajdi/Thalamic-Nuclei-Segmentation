@@ -25,9 +25,11 @@ from skimage import filters
 def modelTrain(Data, params, model):
     ModelParam = params.WhichExperiment.HardParams.Model
 
-    # not 1 in params.WhichExperiment.Nucleus.Index and
-    if params.WhichExperiment.HardParams.Model.InitializeFromThalamus and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
+
+    if params.WhichExperiment.Nucleus.Index[0] != 1 and params.WhichExperiment.HardParams.Model.InitializeFromThalamus and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
         model.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
+    elif params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
+        model.load_weights(params.directories.Train.Model + '/model_weights.h5')
 
     model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
 

@@ -58,7 +58,7 @@ class maxPooling:
 
 class model:
     architectureType = 'U-Net' # 'U-Net' # 'MLP' #
-    epochs = 3
+    epochs = 6
     batch_size = 40
     loss = myLoss # losses.categorical_crossentropy   # binary_crossentropy  sparse_categorical_crossentropy  cosine_proximity
     metrics = ['acc',Dice_Calculator]
@@ -66,7 +66,7 @@ class model:
     optimizer = optimizers.adam()
     num_Layers = 5
     InputDimensions = ''
-    batchNormalization = False # True
+    batchNormalization = True # True
     ConvLayer = convLayer
     MaxPooling = maxPooling
     Dropout = dropout
@@ -74,7 +74,16 @@ class model:
     showHistory = True
     LabelMaxValue = 1
     Measure_Dice_on_Train_Data = False
-    InitializeFromThalamus = True
+
+    #! only one of these two can be true at the same time
+    InitializeFromThalamus = False
+    InitializeFromOlderModel = False
+
+if InitializeFromThalamus and InitializeFromOlderModel:
+    print('initilization can only happen from one source')
+    model.InitializeFromThalamus = False
+    model.InitializeFromOlderModel = False
+
 
 class machine:
     WhichMachine = 'server'
@@ -89,6 +98,7 @@ class nucleus:
     Organ = 'THALAMUS' # 'Hippocampus
     name , FullIndexes = NucleiSelection( Index[0] , Organ)
     name_Thalamus, _ = NucleiSelection( 1 , Organ)
+
 class hardParams:
     Model    = model
     Template = template
@@ -103,8 +113,8 @@ class experiment:
 experiment.name = 'exp' + str(experiment.index) + '_' + experiment.tag if experiment.tag else 'subExp' + str(experiment.index)
 
 class subExperiment:
-    index = 1
-    tag = 'LR00_'
+    index = 2
+    tag = ''
     name = ''
     name_thalamus = ''
 subExperiment.name = 'subExp' + str(subExperiment.index) + '_' + subExperiment.tag + nucleus.name if subExperiment.tag else 'subExp' + str(subExperiment.index) + '_' + nucleus.name

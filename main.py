@@ -6,7 +6,6 @@ from keras.models import load_model, Model # , model_from_json
 import matplotlib.pyplot as plt
 from time import time
 from tqdm import tqdm
-
 from keras import backend as K
 import tensorflow as tf
 import pickle
@@ -18,6 +17,7 @@ params.preprocess.Mode = False
 params.preprocess.CreatingTheExperiment = False
 mode = 'experiment'
 
+
 # def Dice_Calculator(msk1,msk2):
 #     return tf.reduce_sum(tf.multiply(msk1,msk2))*2/( tf.reduce_sum(msk1) + tf.reduce_sum(msk2) + tf.keras.backend.epsilon())
 
@@ -25,7 +25,6 @@ mode = 'experiment'
 # TODO: check the new conda environement with skimage to make sure it works
 # TODO: saving the param variable as a pickle file in the model output
 params = smallFuncs.terminalEntries(params)
-print(params.WhichExperiment.HardParams.Model.epochs)
 os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
 
 
@@ -51,6 +50,7 @@ params = smallFuncs.correctNumLayers(params)
 #! Finding the final image sizes after padding & amount of padding
 params = smallFuncs.imageSizesAfterPadding(params, mode)
 
+
 # params.preprocess.TestOnly = True
 # params.preprocess.TestOnly = False
 #! loading the dataset
@@ -70,6 +70,7 @@ else:
     model = load_model(params.directories.Train.Model + '/model.h5')
 
 
+
 #! Testing
 pred, Dice, score = {}, {}, {}
 for name in tqdm(Data.Test):
@@ -77,12 +78,16 @@ for name in tqdm(Data.Test):
     padding = params.directories.Test.Input.Subjects[name].Padding
     Dice[name], pred[name], score[name] = choosingModel.applyTestImageOnModel(model, Data.Test[name], params, name, padding, ResultDir)
 
+
+
 #! training predictions
 if params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:
     ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
     for name in tqdm(Data.Train_ForTest):
         padding = params.directories.Train.Input.Subjects[name].Padding
         Dice[name], pred[name], score[name] = choosingModel.applyTestImageOnModel(model, Data.Train_ForTest[name], params, name, padding, ResultDir)
+
+
 
 #! showing the outputs
 for ind in [10]: # ,13,17]:
