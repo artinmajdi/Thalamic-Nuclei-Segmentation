@@ -1,9 +1,11 @@
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from otherFuncs import params, smallFuncs, datasets
+from otherFuncs import smallFuncs, datasets
+from Parameters import params
 params.preprocess.Mode = False
 params.preprocess.CreatingTheExperiment = False
 from preprocess import applyPreprocess
+
 mode = 'experiment'
 
 
@@ -29,6 +31,6 @@ params = smallFuncs.imageSizesAfterPadding(params, mode)
 
 
 #! loading the dataset
-Data,Data2,  params = datasets.loadDataset(params)
+Data, params = datasets.loadDataset(params)
 
 print('---')
