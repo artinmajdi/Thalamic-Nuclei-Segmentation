@@ -8,7 +8,7 @@ from preprocess import augmentA, BashCallingFunctionsA, normalizeA
 
 #! mode: 1: on train & test folders in the experiment
 #! mode: 2: on individual image
-def main_preprocess(params, mode):
+def main(params, mode):
 
     params = smallFuncs.inputNamesCheck(params, mode)
     if 'experiment' in mode:

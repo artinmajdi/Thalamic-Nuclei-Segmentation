@@ -2,27 +2,21 @@ import os, sys
 __file__ = '/array/ssd/msmajdi/code/thalamus/keras/'  #! only if I'm using Hydrogen Atom
 sys.path.append(os.path.dirname(__file__))
 import numpy as np
-from keras.models import load_model, Model # , model_from_json
+from keras.models import load_model
 import matplotlib.pyplot as plt
-from time import time
 from tqdm import tqdm
 from keras import backend as K
 import tensorflow as tf
-import pickle
-import nibabel as nib
 
-from otherFuncs import params, smallFuncs, datasets, choosingModel
-from preprocess.preprocessA import main_preprocess
+from otherFuncs import smallFuncs, datasets, choosingModel
+from Parameters import params
+from preprocess import applyPreprocess
+
 params.preprocess.Mode = False
 params.preprocess.CreatingTheExperiment = False
 mode = 'experiment'
 
 
-# def Dice_Calculator(msk1,msk2):
-#     return tf.reduce_sum(tf.multiply(msk1,msk2))*2/( tf.reduce_sum(msk1) + tf.reduce_sum(msk2) + tf.keras.backend.epsilon())
-
-
-# TODO: check the new conda environement with skimage to make sure it works
 # TODO: saving the param variable as a pickle file in the model output
 params = smallFuncs.terminalEntries(params)
 os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
@@ -34,7 +28,7 @@ if params.preprocess.CreatingTheExperiment: datasets.movingFromDatasetToExperime
 
 #! preprocessing the data
 if params.preprocess.Mode:
-    main_preprocess(params, mode)
+    applyPreprocess.main(params, mode)
     params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
 
 
@@ -52,7 +46,6 @@ params = smallFuncs.imageSizesAfterPadding(params, mode)
 
 
 # params.preprocess.TestOnly = True
-# params.preprocess.TestOnly = False
 #! loading the dataset
 Data, params = datasets.loadDataset(params)
 

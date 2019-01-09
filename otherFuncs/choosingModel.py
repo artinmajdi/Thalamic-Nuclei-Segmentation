@@ -44,6 +44,7 @@ def modelTrain(Data, params, model):
     model.save_weights(params.directories.Train.Model + '/model_weights.h5', overwrite=True )
     if ModelParam.showHistory: print(hist.history)
 
+    
     #! saving the params in the model folder
     # f = open(params.directories.Train.Model + '/params.pckl', 'wb')
     # pickle.dump(params, f)
@@ -179,6 +180,7 @@ def applyTestImageOnModel(model, Data, params, nameSubject, padding, ResultDir):
         dirSave = smallFuncs.mkDir(ResultDir + '/' + nameSubject)
         smallFuncs.saveImage(pred1N, Data.Affine, Data.Header, dirSave + '/' + nucleusName + '.nii.gz')
         Dice[cnt,:] = [ params.WhichExperiment.Nucleus.Index[cnt] , smallFuncs.Dice_Calculator(pred1N , origMsk1N) ]
-    np.savetxt(dirSave + '/Dice.txt',Dice)
+    Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.MultiClass.mode else dirSave + '/Dice_' + nucleusName + '.txt'
+    np.savetxt(Dir_Dice ,Dice)
 
     return Dice, pred, score

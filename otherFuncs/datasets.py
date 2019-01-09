@@ -13,8 +13,9 @@ from preprocess import normalizeA
 import matplotlib.pyplot as plt
 
 
-def one_hot(a, num_classes):
-  return np.eye(num_classes)[a]
+
+
+
 
 class ImageLabel:
     Image = np.zeros(3)
@@ -30,6 +31,20 @@ class data:
     Test = ""
     Validation = ImageLabel()
     Info = info
+
+
+
+def one_hot(a, num_classes):
+  return np.eye(num_classes)[a]
+
+def DatasetsInfo(DatasetIx):
+    switcher = {
+        1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/SRI_3T'),
+        2: ('kaggleCompetition', '/array/ssd/msmajdi/data/originals/KaggleCompetition/train'),
+        3: ('fashionMnist', 'intrinsic')
+    }
+    return switcher.get(DatasetIx, 'WARNING: Invalid dataset index')
+
 
 def loadDataset(params):
 

@@ -3,7 +3,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from otherFuncs import params, smallFuncs, datasets
 params.preprocess.Mode = False
 params.preprocess.CreatingTheExperiment = False
-from preprocess.preprocessA import main_preprocess
+from preprocess import applyPreprocess
 mode = 'experiment'
 
 
@@ -16,7 +16,7 @@ if params.preprocess.CreatingTheExperiment: datasets.movingFromDatasetToExperime
 
 
 #! preprocessing the data
-if params.preprocess.Mode: main_preprocess(params, mode)
+if params.preprocess.Mode: applyPreprocess.main(params, mode)
 params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
 
 

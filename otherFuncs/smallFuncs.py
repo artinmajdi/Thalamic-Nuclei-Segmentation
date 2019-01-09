@@ -172,8 +172,8 @@ def funcExpDirectories(whichExperiment):
 
     class train:
         address = mkDir(whichExperiment.Experiment.address + '/train')
-        Model   = mkDir(whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name)
-        Model_Thalamus   = whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name_thalamus
+        Model   = mkDir(whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name + '/' + whichExperiment.Nucleus.name)
+        Model_Thalamus   = whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name_thalamus + '/1-THALAMUS'
         Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
 
     class test:
