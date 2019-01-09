@@ -44,12 +44,6 @@ def modelTrain(Data, params, model):
     model.save_weights(params.directories.Train.Model + '/model_weights.h5', overwrite=True )
     if ModelParam.showHistory: print(hist.history)
 
-    
-    #! saving the params in the model folder
-    # f = open(params.directories.Train.Model + '/params.pckl', 'wb')
-    # pickle.dump(params, f)
-    # f.close()
-
     return model, hist
 
 def architecture(params):

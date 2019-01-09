@@ -18,7 +18,7 @@ def LossInfo(loss_Index):
 
 def Loss_binary_crossentropy(y_true,y_pred):
     loss = 0
-    nmCl = tf.constant(y_pred.shape[3] - 1)
+    nmCl = y_pred.shape[3] - 1
     for d in range(nmCl):
         loss = loss + losses.binary_crossentropy(y_true[...,d],y_pred[...,d])
 

@@ -1,14 +1,14 @@
 
 
 #! Nucleus Index
-nucleus_Index = [8]
+nucleus_Index = [1]
 
 
 #! Training
 num_Layers = 5
-epochs = 5
+epochs = 100
 batch_size = 40
-Initialize_FromThalamus = True
+Initialize_FromThalamus = False
 Initialize_FromOlderModel = False
 
 #! GPU
@@ -35,7 +35,7 @@ MetricIx = 3
 # lossFunction=   1: 'dice'
 #                 2: 'binary Cross Enropy'
 #                 3: 'Both'
-lossFunctionIx = 1
+lossFunctionIx = 2
 
 #! Dataset
 # DatasetIx =     1: 'SRI_3T'
@@ -73,3 +73,10 @@ Augment = False
 Augment_Rotation     = True
 Augment_Shift        = False
 Augment_NonRigidWarp = False
+
+
+#! Preprocessing
+#           'pickle'
+#           'mat'
+#           'json'
+SaveReportMethod = 'pickle'

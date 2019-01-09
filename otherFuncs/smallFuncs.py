@@ -3,6 +3,8 @@ import numpy as np
 from shutil import copyfile
 import matplotlib.pyplot as plt
 import os, sys
+import mat4py
+import pickle
 
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
@@ -438,3 +440,70 @@ def unPadding(im , pad):
 def Dice_Calculator(msk1,msk2):
     intersection = msk1*msk2
     return intersection.sum()*2/(msk1.sum()+msk2.sum() + np.finfo(float).eps)
+
+
+def saveReport(DirSave, name , data, method):
+
+    if 'pickle' in method:
+        savePickle(DirSave + '/' + name + '.pkl', data)
+    elif 'mat' in method:
+        mat4py.savemat(DirSave + '/' + name + '.mat', data)
+
+def loadReport(DirSave, name, method):
+
+    if 'pickle' in method:
+        return loadPickle(DirSave + '/' + name + '.pkl')
+    elif 'mat' in method:
+        return mat4py.loadmat(DirSave + '/' + name + '.pkl')
+
+#! saving the user parameters
+def Saving_UserInfo(DirSave, params, UserInfo):
+
+    UserInfo.InputDimensions = str(params.WhichExperiment.HardParams.Model.InputDimensions)
+    UserInfo.num_Layers      = params.WhichExperiment.HardParams.Model.num_Layers
+
+    saveReport(DirSave, 'UserInfo', dict_from_module(UserInfo) , UserInfo.SaveReportMethod)
+
+
+def Loading_UserInfo(DirLoad, method):
+    UserInfo = loadReport(DirLoad, 'UserInfo', method)
+    UserInfo = dict2obj( UserInfo )
+
+    a = UserInfo.InputDimensions.replace(',' ,'').split('[')[1].split(']')[0].split(' ')
+    UserInfo.InputDimensions = [int(ai) for ai in a]
+
+
+    return UserInfo
+
+
+def savePickle(Dir, data):
+    f = open(Dir,"wb")
+    pickle.dump(data,f)
+    f.close()
+
+def loadPickle(Dir):
+    f = open(Dir,"wb")
+    data = pickle.load(f)
+    f.close()
+    return data
+
+
+def dict_from_module(module):
+    context = {}
+    for setting in dir(module):
+        if '__' not in setting:
+            context[setting] = getattr(module, setting)
+
+    return context
+
+def dict2obj(d):
+    if isinstance(d, list):
+        d = [dict2obj(x) for x in d]
+    if not isinstance(d, dict):
+        return d
+    class C(object):
+        pass
+    o = C()
+    for k in d:
+        o.__dict__[k] = dict2obj(d[k])
+    return o

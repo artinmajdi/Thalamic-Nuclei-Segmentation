@@ -7,11 +7,13 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from keras import backend as K
 import tensorflow as tf
+import mat4py
 
 from otherFuncs import smallFuncs, datasets, choosingModel
-from Parameters import params
+from Parameters import UserInfo, paramFunc
 from preprocess import applyPreprocess
 
+params = paramFunc.__init__(UserInfo)
 params.preprocess.Mode = False
 params.preprocess.CreatingTheExperiment = False
 mode = 'experiment'
@@ -50,16 +52,31 @@ params = smallFuncs.imageSizesAfterPadding(params, mode)
 Data, params = datasets.loadDataset(params)
 
 
+import pickle
+
+
+
 # params.preprocess.TestOnly = True
 if not params.preprocess.TestOnly:
     #! Training the model
+    smallFuncs.Saving_UserInfo(params.directories.Train.Model, params, UserInfo)
     model = choosingModel.architecture(params)
     model, hist = choosingModel.modelTrain(Data, params, model)
+
+
+    smallFuncs.saveReport(params.directories.Train.Model , 'hist_history' , hist.history , UserInfo.SaveReportMethod)
+    smallFuncs.saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , UserInfo.SaveReportMethod)
+    smallFuncs.saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , UserInfo.SaveReportMethod)
+
 else:
+    # TODO: I need to think more about this, why do i need to reload params even though i already have to load it in the beggining of the code
+    #! loading the params
+    UserInfo = smallFuncs.Loading_UserInfo(params.directories.Train.Model + '/UserInfo.mat', UserInfo.SaveReportMethod)
+    params = paramFunc.__init__(UserInfo)
+    params.WhichExperiment.HardParams.Model.InputDimensions = UserInfo.InputDimensions
+    params.WhichExperiment.HardParams.Model.num_Layers      = UserInfo.num_Layers
+
     #! loading the model
-    # modelFile = params.directories.Train.Model + '/model.h5'
-    # model = model_from_json(open(modelFile).read())
-    # model.load_weights(os.path.join(os.path.dirname(modelFile), 'model_weights.h5'))
     model = load_model(params.directories.Train.Model + '/model.h5')
 
 
