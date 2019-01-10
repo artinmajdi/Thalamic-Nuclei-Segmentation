@@ -1,26 +1,14 @@
-import os
-import sys
+import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from keras.models import Sequential, Model
-from keras.layers import Dense, Conv2D, Dropout, MaxPooling2D, Reshape, Flatten, BatchNormalization, Input, Conv2DTranspose
-from keras.layers.merge import concatenate
-from keras.callbacks import ModelCheckpoint
-from keras import losses
-from otherFuncs import smallFuncs
+from keras import models as kerasmodels
+from keras import layers
+# from keras.callbacks import ModelCheckpoint
 from keras_tqdm import TQDMCallback # , TQDMNotebookCallback
-import pickle
-from tqdm import tqdm
 import numpy as np
-import matplotlib.pyplot as plt
-from skimage import filters
+from skimage.filters import threshold_otsu
 
-# def Dice_Calculator(msk1,msk2):
-#     return tf.reduce_sum(tf.multiply(msk1,msk2))*2/( tf.reduce_sum(msk1) + tf.reduce_sum(msk2) + tf.keras.backend.epsilon())
+from otherFuncs import smallFuncs
 
-
-
-# TODO: check if the params includes the padding size for training and whether it saves it via pickle beside the model
-# TODO save the params in the model folder
 # ! main Function
 def modelTrain(Data, params, model):
     ModelParam = params.WhichExperiment.HardParams.Model
@@ -65,25 +53,25 @@ def architecture(params):
     return model
 
 def Unet_sublayer_Contracting(inputs, nL, Modelparam):
-    if Modelparam.batchNormalization:  inputs = BatchNormalization()(inputs)
-    conv = Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(inputs)
-    conv = Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
-    pool = MaxPooling2D( pool_size=Modelparam.MaxPooling.pool_size)(conv)
-    if Modelparam.Dropout.Mode: pool = Dropout(Modelparam.Dropout.Value)(pool)
+    if Modelparam.batchNormalization:  inputs = layers.BatchNormalization()(inputs)
+    conv = layers.Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(inputs)
+    conv = layers.Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
+    pool = layers.MaxPooling2D( pool_size=Modelparam.MaxPooling.pool_size)(conv)
+    if Modelparam.Dropout.Mode: pool = layers.Dropout(Modelparam.Dropout.Value)(pool)
     return pool, conv
 
 def Unet_sublayer_Expanding(inputs, nL, Modelparam, contractingInfo):
-    if Modelparam.batchNormalization:  inputs = BatchNormalization()(inputs)
-    UP = Conv2DTranspose(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.convTranspose, strides=(2,2), padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(inputs)
-    UP = concatenate([UP,contractingInfo[nL+1]],axis=3)
-    conv = Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(UP)
-    conv = Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
-    if Modelparam.Dropout.Mode: conv = Dropout(Modelparam.Dropout.Value)(conv)
+    if Modelparam.batchNormalization:  inputs = layers.BatchNormalization()(inputs)
+    UP = layers.Conv2DTranspose(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.convTranspose, strides=(2,2), padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(inputs)
+    UP = layers.merge.concatenate([UP,contractingInfo[nL+1]],axis=3)
+    conv = layers.Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(UP)
+    conv = layers.Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
+    if Modelparam.Dropout.Mode: conv = layers.Dropout(Modelparam.Dropout.Value)(conv)
     return conv
 
 # ! U-Net Architecture
 def UNet(Modelparam):
-    inputs = Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1) )
+    inputs = layers.Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1) )
     WeightBiases = inputs
 
     # ! contracting layer
@@ -93,58 +81,58 @@ def UNet(Modelparam):
 
     # ! middle layer
     nL = Modelparam.num_Layers - 1
-    WeightBiases = Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(WeightBiases)
-    WeightBiases = Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(WeightBiases)
-    if Modelparam.Dropout.Mode: WeightBiases = Dropout(Modelparam.Dropout.Value)(WeightBiases)
+    WeightBiases = layers.Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(WeightBiases)
+    WeightBiases = layers.Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(WeightBiases)
+    if Modelparam.Dropout.Mode: WeightBiases = layers.Dropout(Modelparam.Dropout.Value)(WeightBiases)
 
     # ! expanding layer
     for nL in reversed(range(Modelparam.num_Layers -1)):
         WeightBiases = Unet_sublayer_Expanding(WeightBiases, nL, Modelparam, ConvOutputs)
 
     # ! final outputing the data
-    final = Conv2D(Modelparam.MultiClass.num_classes, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(WeightBiases)
-    # final = Conv2D(1, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(WeightBiases)
-    model = Model(inputs=[inputs], outputs=[final])
+    final = layers.Conv2D(Modelparam.MultiClass.num_classes, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(WeightBiases)
+    # final = layers.Conv2D(1, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(WeightBiases)
+    model = kerasmodels.Model(inputs=[inputs], outputs=[final])
 
     return model
 
 # ! CNN Architecture
 def CNN_Segmetnation(Modelparam):
-    inputs = Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1) )
+    inputs = layers.Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1) )
     conv = inputs
 
     for nL in range(Modelparam.num_Layers -1):
-        conv = Conv2D(filters=64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
-        conv = Dropout(Modelparam.Dropout.Value)(conv)
+        conv = layers.Conv2D(filters=64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
+        conv = layers.Dropout(Modelparam.Dropout.Value)(conv)
 
-    final  = Conv2D(filters=Modelparam.MultiClass.num_classes, kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
+    final  = layers.Conv2D(filters=Modelparam.MultiClass.num_classes, kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
 
-    model = Model(inputs=[inputs], outputs=[final])
+    model = kerasmodels.Model(inputs=[inputs], outputs=[final])
 
     return model
 
 # ! CNN Architecture
 def CNN_Classifier(Modelparam):
-    model = Sequential()
-    model.add(Conv2D(filters=16, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=(Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1)))
-    model.add(MaxPooling2D(pool_size=Modelparam.MaxPooling.pool_size))
-    model.add(Dropout(Modelparam.Dropout.Value))
+    model = kerasmodels.Sequential()
+    model.add(layers.Conv2D(filters=16, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=(Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1)))
+    model.add(layers.MaxPooling2D(pool_size=Modelparam.MaxPooling.pool_size))
+    model.add(layers.Dropout(Modelparam.Dropout.Value))
 
-    model.add(Conv2D(filters=8, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=(Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1)))
-    model.add(MaxPooling2D(pool_size=Modelparam.MaxPooling.pool_size))
-    model.add(Dropout(Modelparam.Dropout.Value))
+    model.add(layers.Conv2D(filters=8, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=(Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1)))
+    model.add(layers.MaxPooling2D(pool_size=Modelparam.MaxPooling.pool_size))
+    model.add(layers.Dropout(Modelparam.Dropout.Value))
 
-    model.add(Flatten())
-    model.add(Dense(128 , activation=Modelparam.Activitation.layers))
-    model.add(Dropout(Modelparam.Dropout.Value))
-    model.add(Dense(Modelparam.MultiClass.num_classes , activation=Modelparam.Activitation.output))
+    model.add(layers.Flatten())
+    model.add(layers.Dense(128 , activation=Modelparam.Activitation.layers))
+    model.add(layers.Dropout(Modelparam.Dropout.Value))
+    model.add(layers.Dense(Modelparam.MultiClass.num_classes , activation=Modelparam.Activitation.output))
 
     return model
 
 #! training on multiple architecture
 def trainingMultipleMethod(params, Data):
     Models, Hist = {}, {}
-    for params.WhichExperiment.HardParams.Model.architectureType in tqdm(['U-Net' , 'CNN_Segmetnation']):
+    for params.WhichExperiment.HardParams.Model.architectureType in ['U-Net' , 'CNN_Segmetnation']:
         architectureType = params.WhichExperiment.HardParams.Model.architectureType
         model = architecture(params)
         Models[architectureType], Hist[architectureType] = modelTrain(Data, params, model)
@@ -166,7 +154,7 @@ def applyTestImageOnModel(model, Data, params, nameSubject, padding, ResultDir):
     for cnt in range(num_classes-1):
         pred1N = np.squeeze(pred[...,cnt])
         origMsk1N = Data.OrigMask[...,cnt]
-        Thresh = max( filters.threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
+        Thresh = max( threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
         # Thresh = 0.2
 
         pred1N = pred1N  > Thresh

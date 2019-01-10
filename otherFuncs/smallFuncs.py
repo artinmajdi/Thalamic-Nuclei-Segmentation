@@ -76,47 +76,42 @@ def saveImage(Image , Affine , Header , outDirectory):
     out.get_header = Header
     nib.save(out , outDirectory)
 
-def terminalEntries(params):
+def terminalEntries( UserInfo):
 
     for en in range(len(sys.argv)):
         entry = sys.argv[en]
 
-        if entry.lower() == '-g':  # gpu num
-            params.WhichExperiment.HardParams.Machine.GPU_Index = sys.argv[en+1]
+        if entry.lower() in ('-g','--gpu'):  # gpu num
+            UserInfo.GPU_Index = sys.argv[en+1]
 
-        elif entry.lower() == '-o':  # output directory
-            params.directories.Train.Model = mkDir(sys.argv[en+1] + '/' + params.WhichExperiment.Experiment.name + '/models/' + params.WhichExperiment.SubExperiment.name)
-            params.directories.Test.Result = mkDir(sys.argv[en+1] + '/' + params.WhichExperiment.Experiment.name + '/results/' + params.WhichExperiment.SubExperiment.name)
-
-        elif entry.lower() == '-m':  # which machine; server localPC local Laptop
-            params.WhichExperiment.HardParams.Machine.WhichMachine = sys.argv[en+1]
-
-        elif entry.lower() == '-n':  # nuclei index
+        elif entry.lower() in ('-n','--nuclei'):  # nuclei index
             if sys.argv[en+1].lower() == 'all':
-                params.WhichExperiment.Nucleus.Index = np.append([1,2,4567],range(4,14))
+                UserInfo.nucleus_Index = np.append([1,2,4567],range(4,14))
 
             elif sys.argv[en+1][0] == '[':
                 B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
-                params.WhichExperiment.Nucleus.Index = [int(k) for k in B]
+                UserInfo.nucleus_Index = [int(k) for k in B]
 
             else:
-                params.WhichExperiment.Nucleus.Index = [int(sys.argv[en+1])]
-                params.WhichExperiment.Nucleus.name, _ = NucleiSelection(int(sys.argv[en+1]))
+                UserInfo.nucleus_Index = [int(sys.argv[en+1])]
 
-        elif entry.lower() == '-i': # input image or directory
-            params.WhichExperiment.address = sys.argv[en+1]
-            params.directories.Train.address =  sys.argv[en+1] + '/' + params.WhichExperiment.Experiment.name + '/train'
-            params.directories.Train.Input   = checkInputDirectory(params.directories.Train.address, params.WhichExperiment.Nucleus.name)
-            params.directories.Test.address  =  sys.argv[en+1] + '/' + params.WhichExperiment.Experiment.name + '/test'
-            params.directories.Test.Input    = checkInputDirectory(params.directories.Test.address, params.WhichExperiment.Nucleus.name)
+        elif entry.lower() in ('-l','--loss'):
+            UserInfo.lossFunctionIx = int(sys.argv[en+1])
 
-        elif entry.lower() == '-TemplateMask':  # template Mask
-            params.WhichExperiment.HardParams.Template.Mask = sys.argv[en+1]
+        elif entry.lower() in ('-d','--dataset'):
+            UserInfo.DatasetIx = int(sys.argv[en+1])
 
-        elif entry.lower() == '-e':
-            params.WhichExperiment.HardParams.Model.epochs = int(sys.argv[en+1])
+        elif entry.lower() in ('-e','--epochs'):
+            UserInfo.epochs = int(sys.argv[en+1])
 
-    return params
+        elif entry.lower() in ('-sIx','--SubExperiment_Index'):
+            UserInfo.SubExperiment_Index = int(sys.argv[en+1])
+
+        elif entry.lower() in ('-Ix','--Experiments_Index'):
+            UserInfo.Experiments_Index = int(sys.argv[en+1])
+
+    return UserInfo
+
 
 def checkInputDirectory(Dir, NucleusName):
 
@@ -464,7 +459,6 @@ def Saving_UserInfo(DirSave, params, UserInfo):
 
     saveReport(DirSave, 'UserInfo', dict_from_module(UserInfo) , UserInfo.SaveReportMethod)
 
-
 def Loading_UserInfo(DirLoad, method):
     UserInfo = loadReport(DirLoad, 'UserInfo', method)
     UserInfo = dict2obj( UserInfo )
@@ -474,7 +468,6 @@ def Loading_UserInfo(DirLoad, method):
 
 
     return UserInfo
-
 
 def savePickle(Dir, data):
     f = open(Dir,"wb")
@@ -507,3 +500,12 @@ def dict2obj(d):
     for k in d:
         o.__dict__[k] = dict2obj(d[k])
     return o
+
+def gpuConfig(GPU_Index):
+    import os
+    import tensorflow as tf
+    from keras import backend as K
+    os.environ["CUDA_VISIBLE_DEVICES"] = GPU_Index
+    session = tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   )
+    K.set_session(session)
+    return K

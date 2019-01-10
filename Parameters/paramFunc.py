@@ -5,10 +5,11 @@ from Parameters import Classes
 from otherFuncs import smallFuncs, datasets
 
 class paramsClass:
-    def __init__(self, WhichExperiment, preprocess, directories):
+    def __init__(self, WhichExperiment, preprocess, directories, UserInfo):
         self.WhichExperiment = WhichExperiment
         self.preprocess      = preprocess
         self.directories     = directories
+        self.UserInfo        = UserInfo
 
 
 def __init__(UserInfo):
@@ -74,5 +75,5 @@ def __init__(UserInfo):
     preprocess.Augment.Shift        = UserInfo.Augment_Shift
     preprocess.Augment.NonRigidWarp = UserInfo.Augment_NonRigidWarp
 
-    return paramsClass(WhichExperiment=WhichExperiment, preprocess=preprocess, directories=directories)
+    return paramsClass(WhichExperiment=WhichExperiment, preprocess=preprocess, directories=directories, UserInfo=UserInfo.__dict__)
 

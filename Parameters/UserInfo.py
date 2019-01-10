@@ -1,18 +1,18 @@
 
 
 #! Nucleus Index
-nucleus_Index = [1]
+nucleus_Index = [6]
 
 
 #! Training
 num_Layers = 5
-epochs = 100
+epochs = 5
 batch_size = 40
-Initialize_FromThalamus = False
+Initialize_FromThalamus = True
 Initialize_FromOlderModel = False
 
 #! GPU
-GPU_Index = 6
+GPU_Index = 5
 
 
 
@@ -61,9 +61,6 @@ SubExperiment_Index = 1
 cropping_method = 2
 
 
-
-
-
 #! Preprocessing
 BiasCorrection = False
 Cropping = True
@@ -75,7 +72,7 @@ Augment_Shift        = False
 Augment_NonRigidWarp = False
 
 
-#! Preprocessing
+#! save the report
 #           'pickle'
 #           'mat'
 #           'json'
