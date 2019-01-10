@@ -1,4 +1,14 @@
 
+AllExperimentsList = {
+    1: dict(nucleus_Index = [6] , GPU_Index = 5 , lossFunctionIx = 1),
+    2: dict(nucleus_Index = [6] , GPU_Index = 6 , lossFunctionIx = 2),
+    3: dict(nucleus_Index = [6] , GPU_Index = 7 , lossFunctionIx = 3),
+    4: dict(nucleus_Index = [8] , GPU_Index = 5 , lossFunctionIx = 1),
+    5: dict(nucleus_Index = [8] , GPU_Index = 6 , lossFunctionIx = 2),
+    6: dict(nucleus_Index = [8] , GPU_Index = 7 , lossFunctionIx = 3),
+}
+
+
 
 #! Nucleus Index
 nucleus_Index = [6]

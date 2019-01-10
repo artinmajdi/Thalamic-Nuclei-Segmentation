@@ -76,42 +76,41 @@ def saveImage(Image , Affine , Header , outDirectory):
     out.get_header = Header
     nib.save(out , outDirectory)
 
-def terminalEntries( UserInfo):
+def terminalEntries(UserInfo):
 
     for en in range(len(sys.argv)):
         entry = sys.argv[en]
 
         if entry.lower() in ('-g','--gpu'):  # gpu num
-            UserInfo.GPU_Index = sys.argv[en+1]
+            UserInfo['GPU_Index'] = sys.argv[en+1]
 
         elif entry.lower() in ('-n','--nuclei'):  # nuclei index
             if sys.argv[en+1].lower() == 'all':
-                UserInfo.nucleus_Index = np.append([1,2,4567],range(4,14))
+                UserInfo['nucleus_Index'] = np.append([1,2,4567],range(4,14))
 
             elif sys.argv[en+1][0] == '[':
                 B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
-                UserInfo.nucleus_Index = [int(k) for k in B]
+                UserInfo['nucleus_Index'] = [int(k) for k in B]
 
             else:
-                UserInfo.nucleus_Index = [int(sys.argv[en+1])]
+                UserInfo['nucleus_Index'] = [int(sys.argv[en+1])]
 
         elif entry.lower() in ('-l','--loss'):
-            UserInfo.lossFunctionIx = int(sys.argv[en+1])
+            UserInfo['lossFunctionIx'] = int(sys.argv[en+1])
 
         elif entry.lower() in ('-d','--dataset'):
-            UserInfo.DatasetIx = int(sys.argv[en+1])
+            UserInfo['DatasetIx'] = int(sys.argv[en+1])
 
         elif entry.lower() in ('-e','--epochs'):
-            UserInfo.epochs = int(sys.argv[en+1])
+            UserInfo['epochs'] = int(sys.argv[en+1])
 
         elif entry.lower() in ('-sIx','--SubExperiment_Index'):
-            UserInfo.SubExperiment_Index = int(sys.argv[en+1])
+            UserInfo['SubExperiment_Index'] = int(sys.argv[en+1])
 
         elif entry.lower() in ('-Ix','--Experiments_Index'):
-            UserInfo.Experiments_Index = int(sys.argv[en+1])
+            UserInfo['Experiments_Index'] = int(sys.argv[en+1])
 
     return UserInfo
-
 
 def checkInputDirectory(Dir, NucleusName):
 
@@ -364,11 +363,13 @@ def correctNumLayers(params):
         num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:2],kernel_size) )) + 1))
         print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
 
-    params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
-    return params
+    # params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
+    return num_Layers
 
 def imageSizesAfterPadding(params, mode):
 
+    Subjects_Train = ''
+    Subjects_Test = ''
     if 'experiment' in mode:
         for wFolder in ['Train' , 'Test']:
 
@@ -412,10 +413,12 @@ def imageSizesAfterPadding(params, mode):
 
             if 'Train' in wFolder:
                 params.directories.Train.Input.Subjects = Subjects
+                Subjects_Train = Subjects
             else:
                 params.directories.Test.Input.Subjects = Subjects
+                Subjects_Test = Subjects
 
-    return params
+    return Subjects_Train, Subjects_Test, new_inputSize
 
 # TODO check the matlab imshow3D see if i can use it in python
 def imShow(*args):
@@ -454,19 +457,17 @@ def loadReport(DirSave, name, method):
 #! saving the user parameters
 def Saving_UserInfo(DirSave, params, UserInfo):
 
-    UserInfo.InputDimensions = str(params.WhichExperiment.HardParams.Model.InputDimensions)
-    UserInfo.num_Layers      = params.WhichExperiment.HardParams.Model.num_Layers
+    UserInfo['InputDimensions'] = str(params.WhichExperiment.HardParams.Model.InputDimensions)
+    UserInfo['num_Layers']      = params.WhichExperiment.HardParams.Model.num_Layers
 
-    saveReport(DirSave, 'UserInfo', dict_from_module(UserInfo) , UserInfo.SaveReportMethod)
+    saveReport(DirSave, 'UserInfo', dict_from_module(UserInfo) , UserInfo['SaveReportMethod'])
 
 def Loading_UserInfo(DirLoad, method):
     UserInfo = loadReport(DirLoad, 'UserInfo', method)
     UserInfo = dict2obj( UserInfo )
 
-    a = UserInfo.InputDimensions.replace(',' ,'').split('[')[1].split(']')[0].split(' ')
-    UserInfo.InputDimensions = [int(ai) for ai in a]
-
-
+    a = UserInfo['InputDimensions'].replace(',' ,'').split('[')[1].split(']')[0].split(' ')
+    UserInfo['InputDimensions'] = [int(ai) for ai in a]
     return UserInfo
 
 def savePickle(Dir, data):
@@ -479,7 +480,6 @@ def loadPickle(Dir):
     data = pickle.load(f)
     f.close()
     return data
-
 
 def dict_from_module(module):
     context = {}
@@ -501,11 +501,3 @@ def dict2obj(d):
         o.__dict__[k] = dict2obj(d[k])
     return o
 
-def gpuConfig(GPU_Index):
-    import os
-    import tensorflow as tf
-    from keras import backend as K
-    os.environ["CUDA_VISIBLE_DEVICES"] = GPU_Index
-    session = tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   )
-    K.set_session(session)
-    return K

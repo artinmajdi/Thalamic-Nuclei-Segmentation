@@ -1,60 +1,92 @@
 import os, sys
-# __file__ = '/array/ssd/msmajdi/code/thalamus/keras/'  #! only if I'm using Hydrogen Atom
 sys.path.append(os.path.dirname(__file__))
 from otherFuncs import smallFuncs
+from tqdm import tqdm
+from modelFuncs import choosingModel
+from keras.models import load_model
+from Parameters import paramFunc
+
+#! this is for experimemnt cases
+def readingTheParams():
+
+    from Parameters import UserInfo
+    UserInfo = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
+    AllParamsList = loadExperiments(UserInfo)
+
+    return AllParamsList
+
+def subDict(UserInfoB, ExpList):
+    for entry in list(ExpList.keys()):
+        UserInfoB[entry] = ExpList[entry]
+    return UserInfoB
+
+def loadExperiments(UserInfo_Orig):
+
+    AllParamsList = {}
+    ExpList = UserInfo_Orig['AllExperimentsList']
+    for Keys in list(ExpList.keys()):
+
+        UserInfo = subDict(UserInfo_Orig, ExpList[Keys])
+
+        A = paramFunc.Run(UserInfo)
+        AllParamsList[Keys] = A
+
+    return AllParamsList
+
+def check_Dataset(params, flag, Info):  #  mode = 'experiments' # single_run'
+
+    if flag:
+        mode = 'experiment'
+        from otherFuncs import datasets
+        from preprocess import applyPreprocess
+
+        #! copying the dataset into the experiment folder
+        if params.preprocess.CreatingTheExperiment: datasets.movingFromDatasetToExperiments(params)
 
 
+        #! preprocessing the data
+        if params.preprocess.Mode:
+            applyPreprocess.main(params, mode)
+            params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
 
 
+        #! correcting the number of layers
+        num_Layers = smallFuncs.correctNumLayers(params)
+        params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
 
-def __init__():
+        #! Finding the final image sizes after padding & amount of padding
+        Subjects_Train, Subjects_Test, new_inputSize = smallFuncs.imageSizesAfterPadding(params, mode)
 
-    from Parameters import UserInfo, paramFunc
-    UserInfo = smallFuncs.terminalEntries(UserInfo=UserInfo)
-    params = paramFunc.__init__(UserInfo)
-    return params
-
-
-
-def check_Dataset(params, mode):
-
-    from otherFuncs import datasets
-    from preprocess import applyPreprocess
-
-    #! copying the dataset into the experiment folder
-    if params.preprocess.CreatingTheExperiment: datasets.movingFromDatasetToExperiments(params)
+        params.directories.Train.Input.Subjects = Subjects_Train
+        params.directories.Test.Input.Subjects  = Subjects_Test
+        params.WhichExperiment.HardParams.Model.InputDimensions = new_inputSize
 
 
-    #! preprocessing the data
-    if params.preprocess.Mode:
-        applyPreprocess.main(params, mode)
-        params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
+        # params.preprocess.TestOnly = True
+        #! loading the dataset
+        Data = datasets.loadDataset(params)
+        params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
 
+        Info['num_Layers']     = num_Layers
+        Info['new_inputSize']  = new_inputSize
+        Info['Subjects_Train'] = Subjects_Train
+        Info['Subjects_Test']  = Subjects_Test
+        Info['imageInfo']      = Data.Info
 
-    #! correcting the number of layers
-    params = smallFuncs.correctNumLayers(params)
+        return Data, params, Info
 
+    else:
+        params.WhichExperiment.HardParams.Model.num_Layers      = Info['num_Layers']
+        params.WhichExperiment.HardParams.Model.imageInfo       = Info['imageInfo']
+        params.directories.Train.Input.Subjects                 = Info['Subjects_Train']
+        params.directories.Test.Input.Subjects                  = Info['Subjects_Test']
+        params.WhichExperiment.HardParams.Model.InputDimensions = Info['new_inputSize']
 
-    #! Finding the final image sizes after padding & amount of padding
-    params = smallFuncs.imageSizesAfterPadding(params, mode)
-
-
-    # params.preprocess.TestOnly = True
-    #! loading the dataset
-    Data, params = datasets.loadDataset(params)
-
-    return Data, params
-
-
+        return '', params, ''
 
 def check_Run(params, Data):
 
-    from tqdm import tqdm
-    from modelFuncs import choosingModel
-    from keras.models import load_model
-
-    #! configing the GPU
-    K = smallFuncs.gpuConfig(params.WhichExperiment.HardParams.Machine.GPU_Index)
+    os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
 
     # params.preprocess.TestOnly = True
     if not params.preprocess.TestOnly:
@@ -97,11 +129,7 @@ def check_Run(params, Data):
             padding = params.directories.Train.Input.Subjects[name].Padding
             Dice[name], pred[name], score[name] = choosingModel.applyTestImageOnModel(model, Data.Train_ForTest[name], params, name, padding, ResultDir)
 
-    K.clear_session()
-
     return pred
-
-
 
 def check_show(Data, pred):
     #! showing the outputs
@@ -109,3 +137,30 @@ def check_show(Data, pred):
         name = list(Data.Test)[ind]   # Data.Train_ForTest
         # name = 'vimp2_2039_03182016'
         smallFuncs.imShow( Data.Test[name].Image[ind,:,:,0] ,  Data.Test[name].OrigMask[...,ind,0]  ,  pred[name][...,ind,0] )
+
+def gpuSetting(params):
+    os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
+    import tensorflow as tf
+    from keras import backend as K
+    K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
+
+
+
+#! we assume that number of layers , and other things that might effect the input data stays constant
+AllParamsList = readingTheParams()
+
+#! reading the dataset
+ind, params = list(AllParamsList.items())[0]
+Data, params, Info = check_Dataset(params=params, flag=True, Info={})
+
+for ind, params in list(AllParamsList.items()):
+
+    gpuSetting(params)
+
+    _, params, _ = check_Dataset(params=params, flag=False, Info=Info)
+
+    pred = check_Run(params, Data)
+
+    if 0: check_show(Data, pred)
+
+K.clear_session()

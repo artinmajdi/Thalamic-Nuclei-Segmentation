@@ -59,8 +59,9 @@ def loadDataset(params):
         Data = readingFromExperiments3D_new(params)
 
     _, Data.Info.Height, Data.Info.Width, _ = Data.Test[list(Data.Test)[0]].Image.shape if params.preprocess.TestOnly else Data.Train.Image.shape
-    params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
-    return Data, params
+    # params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
+    return Data
+
 
 def fashionMnist(params):
     fullData  = fashion_mnist.load_data()
