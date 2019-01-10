@@ -104,7 +104,7 @@ def check_Run(params, Data):
         # TODO: I need to think more about this, why do i need to reload params even though i already have to load it in the beggining of the code
         #! loading the params
         params.UserInfo = smallFuncs.Loading_UserInfo(params.directories.Train.Model + '/UserInfo.mat', params.UserInfo.SaveReportMethod)
-        params = paramFunc.__init__(params.UserInfo)
+        params = paramFunc.Run(params.UserInfo)
         params.WhichExperiment.HardParams.Model.InputDimensions = params.UserInfo.InputDimensions
         params.WhichExperiment.HardParams.Model.num_Layers      = params.UserInfo.num_Layers
 
