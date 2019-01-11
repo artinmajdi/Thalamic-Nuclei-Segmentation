@@ -1,0 +1,53 @@
+Using TensorFlow backend.
+Traceback (most recent call last):
+  File "main.py", line 5, in <module>
+    from modelFuncs import choosingModel
+  File "/array/ssd/msmajdi/code/thalamus/keras/modelFuncs/choosingModel.py", line 3, in <module>
+    from keras import models as kerasmodels
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/keras/__init__.py", line 3, in <module>
+    from . import utils
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/keras/utils/__init__.py", line 6, in <module>
+    from . import conv_utils
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/keras/utils/conv_utils.py", line 9, in <module>
+    from .. import backend as K
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/keras/backend/__init__.py", line 89, in <module>
+    from .tensorflow_backend import *
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py", line 5, in <module>
+    import tensorflow as tf
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tensorflow/__init__.py", line 22, in <module>
+    from tensorflow.python import pywrap_tensorflow  # pylint: disable=unused-import
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tensorflow/python/__init__.py", line 49, in <module>
+    from tensorflow.python import pywrap_tensorflow
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tensorflow/python/pywrap_tensorflow.py", line 58, in <module>
+    from tensorflow.python.pywrap_tensorflow_internal import *
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tensorflow/python/pywrap_tensorflow_internal.py", line 28, in <module>
+    _pywrap_tensorflow_internal = swig_import_helper()
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tensorflow/python/pywrap_tensorflow_internal.py", line 18, in swig_import_helper
+    fp, pathname, description = imp.find_module('_pywrap_tensorflow_internal', [dirname(__file__)])
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/imp.py", line 303, in find_module
+    file = open(file_path, mode, encoding=encoding)
+KeyboardInterrupt
+Using TensorFlow backend.
+Loading Dataset: 0it [00:00, ?it/s]Loading Dataset: 2it [00:00, 16.81it/s]Loading Dataset: 5it [00:00, 17.54it/s]Loading Dataset: 7it [00:00, 15.40it/s]Loading Dataset: 9it [00:00, 14.50it/s]Loading Dataset: 11it [00:00, 13.60it/s]Loading Dataset: 13it [00:00, 13.48it/s]Loading Dataset: 15it [00:01, 13.19it/s]Loading Dataset: 17it [00:01, 11.29it/s]Loading Dataset: 19it [00:01, 10.59it/s]Loading Dataset: 21it [00:01, 10.12it/s]Loading Dataset: 23it [00:01, 10.14it/s]Loading Dataset: 25it [00:02,  9.75it/s]Loading Dataset: 27it [00:02, 10.08it/s]Loading Dataset: 29it [00:02,  9.89it/s]Loading Dataset: 30it [00:02,  9.48it/s]Loading Dataset: 31it [00:02,  9.17it/s]Loading Dataset: 32it [00:02,  9.17it/s]Loading Dataset: 33it [00:03,  9.30it/s]Loading Dataset: 34it [00:03,  9.05it/s]Loading Dataset: 35it [00:03,  9.20it/s]Loading Dataset: 36it [00:03,  9.18it/s]Loading Dataset: 37it [00:03,  9.09it/s]Loading Dataset: 39it [00:03,  9.13it/s]Loading Dataset: 40it [00:03,  8.88it/s]Loading Dataset: 41it [00:03,  8.08it/s]Loading Dataset: 42it [00:04,  8.19it/s]Loading Dataset: 43it [00:04,  8.47it/s]Loading Dataset: 44it [00:04,  8.02it/s]Loading Dataset: 45it [00:04,  7.27it/s]Loading Dataset: 46it [00:04,  6.70it/s]Loading Dataset: 47it [00:04,  6.32it/s]Loading Dataset: 48it [00:04,  6.47it/s]Loading Dataset: 49it [00:05,  5.71it/s]Loading Dataset: 50it [00:05,  5.95it/s]Loading Dataset: 51it [00:05,  6.07it/s]Loading Dataset: 52it [00:05,  6.19it/s]Loading Dataset: 53it [00:05,  5.92it/s]Loading Dataset: 54it [00:05,  6.19it/s]Loading Dataset: 55it [00:06,  6.21it/s]Loading Dataset: 56it [00:06,  6.10it/s]Loading Dataset: 57it [00:06,  6.14it/s]Loading Dataset: 58it [00:06,  5.84it/s]Loading Dataset: 59it [00:06,  5.89it/s]Loading Dataset: 60it [00:07,  5.73it/s]Loading Dataset: 61it [00:07,  4.99it/s]Loading Dataset: 62it [00:07,  4.83it/s]Loading Dataset: 63it [00:07,  4.66it/s]Loading Dataset: 64it [00:07,  4.84it/s]Loading Dataset: 65it [00:08,  4.58it/s]Loading Dataset: 66it [00:08,  4.42it/s]Loading Dataset: 67it [00:08,  4.70it/s]
+Loading Dataset: 0it [00:00, ?it/s]Loading Dataset: 2it [00:00, 16.39it/s]Loading Dataset: 4it [00:00, 16.74it/s]Loading Dataset: 6it [00:00, 17.12it/s]Loading Dataset: 9it [00:00, 17.85it/s]Loading Dataset: 12it [00:00, 19.32it/s]Loading Dataset: 15it [00:00, 19.11it/s]Loading Dataset: 17it [00:00, 18.71it/s]Loading Dataset: 21it [00:01, 16.38it/s]Loading Dataset: 23it [00:01, 15.10it/s]Loading Dataset: 25it [00:01, 15.22it/s]Loading Dataset: 27it [00:01, 15.97it/s]Loading Dataset: 28it [00:01, 16.96it/s]2019-01-10 23:08:40.884968: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-10 23:08:46.796253: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:85:00.0
+totalMemory: 15.89GiB freeMemory: 15.60GiB
+2019-01-10 23:08:46.796340: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-01-10 23:08:47.155819: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-10 23:08:47.155914: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-01-10 23:08:47.155930: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-01-10 23:08:47.156376: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:85:00.0, compute capability: 6.0)
+
+WARNING: subject:  vimp2_1510_09022015  size is out of the training network input dimensions
+Traceback (most recent call last):
+  File "main.py", line 158, in <module>
+    gpuSetting(params)
+  File "main.py", line 145, in gpuSetting
+    K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1563, in __init__
+    super(Session, self).__init__(target, graph, config=config)
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 633, in __init__
+    self._session = tf_session.TF_NewSession(self._graph._c_graph, opts)
+KeyboardInterrupt

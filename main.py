@@ -96,17 +96,17 @@ def check_Run(params, Data):
         model, hist = choosingModel.modelTrain(Data, params, model)
 
 
-        smallFuncs.saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo.SaveReportMethod)
-        smallFuncs.saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo.SaveReportMethod)
-        smallFuncs.saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , params.UserInfo.SaveReportMethod)
+        smallFuncs.saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
+        smallFuncs.saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo['SaveReportMethod'])
+        smallFuncs.saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , params.UserInfo['SaveReportMethod'])
 
     else:
         # TODO: I need to think more about this, why do i need to reload params even though i already have to load it in the beggining of the code
         #! loading the params
-        params.UserInfo = smallFuncs.Loading_UserInfo(params.directories.Train.Model + '/UserInfo.mat', params.UserInfo.SaveReportMethod)
+        params.UserInfo = smallFuncs.Loading_UserInfo(params.directories.Train.Model + '/UserInfo.mat', params.UserInfo['SaveReportMethod'])
         params = paramFunc.Run(params.UserInfo)
-        params.WhichExperiment.HardParams.Model.InputDimensions = params.UserInfo.InputDimensions
-        params.WhichExperiment.HardParams.Model.num_Layers      = params.UserInfo.num_Layers
+        params.WhichExperiment.HardParams.Model.InputDimensions = params.UserInfo['InputDimensions']
+        params.WhichExperiment.HardParams.Model.num_Layers      = params.UserInfo['num_Layers']
 
         #! loading the model
         model = load_model(params.directories.Train.Model + '/model.h5')
@@ -143,7 +143,7 @@ def gpuSetting(params):
     import tensorflow as tf
     from keras import backend as K
     K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
-
+    return K
 
 
 #! we assume that number of layers , and other things that might effect the input data stays constant
@@ -155,7 +155,7 @@ Data, params, Info = check_Dataset(params=params, flag=True, Info={})
 
 for ind, params in list(AllParamsList.items()):
 
-    gpuSetting(params)
+    K = gpuSetting(params)
 
     _, params, _ = check_Dataset(params=params, flag=False, Info=Info)
 
