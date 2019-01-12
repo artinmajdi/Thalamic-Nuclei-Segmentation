@@ -1,18 +1,28 @@
 
+AllExperimentsList = {
+    1: dict(nucleus_Index = [9] , GPU_Index = 4 , lossFunctionIx = 3)
+    # 2: dict(nucleus_Index = [6] , GPU_Index = 6 , lossFunctionIx = 2),
+    # 3: dict(nucleus_Index = [6] , GPU_Index = 7 , lossFunctionIx = 3),
+    # 4: dict(nucleus_Index = [8] , GPU_Index = 5 , lossFunctionIx = 1),
+    # 5: dict(nucleus_Index = [8] , GPU_Index = 6 , lossFunctionIx = 2),
+    # 6: dict(nucleus_Index = [8] , GPU_Index = 7 , lossFunctionIx = 3),
+}
+
+
 
 #! Nucleus Index
-nucleus_Index = [1]
+nucleus_Index = [6]
 
 
 #! Training
 num_Layers = 5
 epochs = 100
 batch_size = 40
-Initialize_FromThalamus = False
+Initialize_FromThalamus = True
 Initialize_FromOlderModel = False
 
 #! GPU
-GPU_Index = 6
+GPU_Index = 5
 
 
 
@@ -61,9 +71,6 @@ SubExperiment_Index = 1
 cropping_method = 2
 
 
-
-
-
 #! Preprocessing
 BiasCorrection = False
 Cropping = True
@@ -75,7 +82,7 @@ Augment_Shift        = False
 Augment_NonRigidWarp = False
 
 
-#! Preprocessing
+#! save the report
 #           'pickle'
 #           'mat'
 #           'json'

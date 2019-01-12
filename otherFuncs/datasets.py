@@ -9,6 +9,8 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from keras.datasets import fashion_mnist
 from otherFuncs import smallFuncs
 from preprocess import normalizeA
+from Parameters import Classes
+
 # import h5py
 import matplotlib.pyplot as plt
 
@@ -57,8 +59,9 @@ def loadDataset(params):
         Data = readingFromExperiments3D_new(params)
 
     _, Data.Info.Height, Data.Info.Width, _ = Data.Test[list(Data.Test)[0]].Image.shape if params.preprocess.TestOnly else Data.Train.Image.shape
-    params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
-    return Data, params
+    # params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
+    return Data
+
 
 def fashionMnist(params):
     fullData  = fashion_mnist.load_data()
@@ -130,20 +133,6 @@ def backgroundDetector(masks):
 
 def readingFromExperiments3D_new(params):
 
-    class trainCase:
-        def __init__(self, Image, Mask):
-            self.Image = Image
-            self.Mask  = Mask
-
-    class testCase:
-        def __init__(self, Image, Mask, OrigMask, Affine, Header, original_Shape):
-            self.Image = Image
-            self.Mask = Mask
-            self.OrigMask  = OrigMask
-            self.Affine = Affine
-            self.Header = Header
-            self.original_Shape = original_Shape
-
     TestData = {}
     TrainData = {}
 
@@ -185,15 +174,15 @@ def readingFromExperiments3D_new(params):
             if 'train' in mode:
                 images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
                 masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
-                TrainData[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                TrainData[nameSubject] = Classes.testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
             elif 'test' in mode:
-                TestData[nameSubject]  = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                TestData[nameSubject]  = Classes.testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
 
         if 'train' in mode:
             data.Train_ForTest = TrainData
 
             if params.WhichExperiment.Dataset.Validation.fromKeras:
-                data.Train = trainCase(Image=images, Mask=masks.astype('float32'))
+                data.Train = Classes.trainCase(Image=images, Mask=masks.astype('float32'))
             else:
                 data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
         else:
@@ -207,19 +196,7 @@ def readingFromExperiments3D_new(params):
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments3D(params):
 
-    class trainCase:
-        def __init__(self, Image, Mask):
-            self.Image = Image
-            self.Mask  = Mask
 
-    class testCase:
-        def __init__(self, Image, Mask, OrigMask, Affine, Header, original_Shape):
-            self.Image = Image
-            self.Mask = Mask
-            self.OrigMask  = OrigMask
-            self.Affine = Affine
-            self.Header = Header
-            self.original_Shape = original_Shape
 
     TestData = {}
     TrainData = {}
@@ -274,17 +251,17 @@ def readingFromExperiments3D(params):
                 images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
                 masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
 
-                TrainData[name] = testCase(Image=im, Mask=msk ,OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                TrainData[name] = Classes.testCase(Image=im, Mask=msk ,OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
 
             elif 'test' in mode:
-                TestData[name] = testCase(Image=im, Mask=msk , OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                TestData[name] = Classes.testCase(Image=im, Mask=msk , OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
 
 
         if 'train' in mode:
             data.Train_ForTest = TrainData
 
             if params.WhichExperiment.Dataset.Validation.fromKeras:
-                data.Train = trainCase(Image=images, Mask=masks.astype('float32'))
+                data.Train = Classes.trainCase(Image=images, Mask=masks.astype('float32'))
             else:
                 data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
         else:
