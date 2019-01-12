@@ -6,6 +6,12 @@ from modelFuncs import choosingModel
 from keras.models import load_model
 from Parameters import paramFunc
 
+
+# TODO:   make a new functions for reading all dices for each test cases and put them in a table for each nuclei
+# TODO:    write a new function taht could raed the history files and plot the dice, loss for trainign and validation
+
+
+
 #! this is for experimemnt cases
 def readingTheParams():
 
