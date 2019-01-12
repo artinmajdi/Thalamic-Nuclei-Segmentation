@@ -44,9 +44,17 @@ def NucleiSelection(ind = 1,organ = 'THALAMUS'):
         elif ind == 14:
             NucleusName = '14-MTT'
 
-        FullIndexes = [1,2,5,6,7,8,9,10,11,12,13,14]
+        FullIndexes = [1,2,4567,4,5,6,7,8,9,10,11,12,13,14]
 
     return NucleusName, FullIndexes
+
+def AllNucleiNames(Indexes):
+    Names = []
+    for ind in Indexes:
+        name, _ = NucleiSelection(ind = ind,organ = 'THALAMUS')
+        Names.append(name)
+    return Names
+
 
 def listSubFolders(Dir):
 

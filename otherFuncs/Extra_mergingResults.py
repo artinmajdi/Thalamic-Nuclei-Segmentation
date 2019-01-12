@@ -10,6 +10,7 @@ from Parameters import UserInfo, paramFunc
 def merginResults(Dir):
         subF = os.listdir(Dir)
         subF = [a for a in subF if 'vimp' in a]
+        subF.sort()
         Dice_Test = []
 
         _, FullIndexes = smallFuncs.NucleiSelection(1)
@@ -37,10 +38,15 @@ def merginResults(Dir):
 
         return Dice_Test
 
-# params = paramFunc.Run(UserInfo.__dict__)
-Dir = params.directories.Test.Result
+def LoopAroundSubExperiments(Dir):
+        List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
+        for subExperiment in List_subExperiments:
+                merginResults(Dir + '/' + subExperiment)
 
 
-Dir = '/media/data1/artin/a/subExp1_Loss_Dice'
+params = paramFunc.Run(UserInfo.__dict__)
+Dir = (params.directories.Test.Result).split('/subExp')[0]
+print('------', Dir)
+# Dir = '/media/data1/artin/a'
+LoopAroundSubExperiments(Dir)
 
-merginResults(Dir)
