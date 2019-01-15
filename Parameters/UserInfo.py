@@ -1,6 +1,6 @@
 
 AllExperimentsList = {
-    1: dict(nucleus_Index = [9] , GPU_Index = 4 , lossFunctionIx = 3)
+    1: dict(nucleus_Index = [8] , GPU_Index = 4 , lossFunctionIx = 3)
     # 2: dict(nucleus_Index = [6] , GPU_Index = 6 , lossFunctionIx = 2),
     # 3: dict(nucleus_Index = [6] , GPU_Index = 7 , lossFunctionIx = 3),
     # 4: dict(nucleus_Index = [8] , GPU_Index = 5 , lossFunctionIx = 1),
@@ -16,7 +16,7 @@ nucleus_Index = [6]
 
 #! Training
 num_Layers = 5
-epochs = 100
+epochs = 5
 batch_size = 40
 Initialize_FromThalamus = True
 Initialize_FromOlderModel = False

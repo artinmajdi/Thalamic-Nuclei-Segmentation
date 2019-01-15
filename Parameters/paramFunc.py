@@ -8,14 +8,14 @@ from otherFuncs import smallFuncs, datasets
 def Run(UserInfo):
 
     class params:
-        WhichExperiment = ''
-        preprocess      = ''
+        WhichExperiment = Classes.WhichExperiment
+        preprocess      = Classes.preprocess
         directories     = ''
         UserInfo        = ''
 
 
-    WhichExperiment = Classes.WhichExperiment
-    preprocess      = Classes.preprocess
+    WhichExperiment = params.WhichExperiment
+    preprocess      = params.preprocess
 
     WhichExperiment.address = smallFuncs.mkDir(UserInfo['Experiments_Address'])
 

@@ -1,13 +1,54 @@
-
 import os, sys
-# __file__ = '/array/ssd/msmajdi/code/thalamus/keras/'
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
 import pandas as pd
 from otherFuncs import smallFuncs
 from Parameters import UserInfo, paramFunc
+import pickle 
+import io
 
-def merginResults(Dir):
+def savingHistory_AsCSV(Dir):
+
+        _, FullIndexes = smallFuncs.NucleiSelection(1)
+        namesNulcei = smallFuncs.AllNucleiNames(FullIndexes)
+        n_epochsMax = 300
+
+        List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
+        for nucleus in namesNulcei:
+                # dir_save = smallFuncs.mkDir((params.directories.Test.Result).split('/subExp')[0] + '/Train_Output')
+                AllNucleusInfo = []
+                ind = -1
+                for subExperiment in List_subExperiments:
+                        subDir = Dir + '/' + subExperiment + '/' + nucleus
+                        if os.path.exists(subDir):
+                                ind = ind + 1
+                                a  = open(subDir + '/hist_history.pkl' , 'rb')
+                                history = pickle.load(a)
+                                a.close()
+                                keys = list(history.keys())
+                                
+                                nucleusInfo = np.zeros((n_epochsMax,len(keys)+2))
+                                for ix, key in enumerate(keys):
+                                        A = history[key]                                        
+                                        nucleusInfo[1:len(A)+1,ix+2] = np.transpose(A)
+
+                                if ind == 0:
+                                        nucleusInfo[1:len(A)+1,0] = np.array(range(1,len(A)+1))
+                                        AllNucleusInfo = nucleusInfo
+                                        FullNamesLA = np.append(['Epochs', subExperiment],  keys )
+                                else:
+                                        AllNucleusInfo = np.concatenate((AllNucleusInfo, nucleusInfo) , axis=1)
+                                        namesLA = np.append(['', subExperiment],  keys )
+                                        FullNamesLA = np.append(FullNamesLA, namesLA)
+
+                                df = pd.DataFrame(data=nucleusInfo, columns=np.append(['Epochs', subExperiment],  keys ))
+                                df.to_csv(subDir + '/history.csv', index=False)
+
+                if len(AllNucleusInfo) != 0:
+                        df = pd.DataFrame(data=AllNucleusInfo, columns=FullNamesLA)
+                        df.to_csv(Dir + '/history_AllSubExperiments_' + nucleus + '.csv', index=False)
+                
+def mergingDiceValues_ForOneSubExperiment(Dir):
         subF = os.listdir(Dir)
         subF = [a for a in subF if 'vimp' in a]
         subF.sort()
@@ -38,15 +79,17 @@ def merginResults(Dir):
 
         return Dice_Test
 
-def LoopAroundSubExperiments(Dir):
+def LoopAround_AllSubExperiments(Dir):
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
         for subExperiment in List_subExperiments:
-                merginResults(Dir + '/' + subExperiment)
+                mergingDiceValues_ForOneSubExperiment(Dir + '/' + subExperiment)
 
 
 params = paramFunc.Run(UserInfo.__dict__)
-Dir = (params.directories.Test.Result).split('/subExp')[0]
-print('------', Dir)
-# Dir = '/media/data1/artin/a'
-LoopAroundSubExperiments(Dir)
+# Dir = (params.directories.Test.Result).split('/subExp')[0]
+# LoopAround_AllSubExperiments(Dir)
+
+
+Dir = (params.directories.Train.Model).split('/subExp')[0]
+savingHistory_AsCSV(Dir)
 
