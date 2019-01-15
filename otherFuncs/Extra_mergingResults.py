@@ -14,6 +14,7 @@ def savingHistory_AsCSV(Dir):
         n_epochsMax = 300
 
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
+        writer = pd.ExcelWriter(Dir + '/history_AllSubExperimen.xlsx', engine='xlsxwriter')
         for nucleus in namesNulcei:
                 # dir_save = smallFuncs.mkDir((params.directories.Test.Result).split('/subExp')[0] + '/Train_Output')
                 AllNucleusInfo = []
@@ -41,13 +42,17 @@ def savingHistory_AsCSV(Dir):
                                         namesLA = np.append(['', subExperiment],  keys )
                                         FullNamesLA = np.append(FullNamesLA, namesLA)
 
-                                df = pd.DataFrame(data=nucleusInfo, columns=np.append(['Epochs', subExperiment],  keys ))
-                                df.to_csv(subDir + '/history.csv', index=False)
+                                # df = pd.DataFrame(data=nucleusInfo, columns=np.append(['Epochs', subExperiment],  keys ))
+                                # df.to_csv(subDir + '/history.csv', index=False)
+                                
 
                 if len(AllNucleusInfo) != 0:
                         df = pd.DataFrame(data=AllNucleusInfo, columns=FullNamesLA)
-                        df.to_csv(Dir + '/history_AllSubExperiments_' + nucleus + '.csv', index=False)
-                
+                        # df.to_csv(Dir + '/history_AllSubExperiments_' + nucleus + '.csv', index=False)                        
+                        df.to_excel(writer, sheet_name=nucleus)
+        writer.close()
+
+        
 def mergingDiceValues_ForOneSubExperiment(Dir):
         subF = os.listdir(Dir)
         subF = [a for a in subF if 'vimp' in a]
