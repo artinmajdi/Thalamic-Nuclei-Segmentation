@@ -126,7 +126,7 @@ class reference:
 class Augment:
     Mode = ''
     LinearAugmentLength = 1  # number
-    NonLinearAugmentLength = 1
+    NonLinearAugmentLength = 2
     Rotation = ''
     Shift = ''
     NonRigidWarp = ''
@@ -151,7 +151,7 @@ class Debug:
     justForNow = True # it checks the intermediate steps and if it existed don't reproduce it
 
 class preprocess:
-    Mode = False
+    Mode = ''
     CreatingTheExperiment = False
     TestOnly = False
     Debug = Debug

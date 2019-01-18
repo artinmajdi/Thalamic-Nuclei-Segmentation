@@ -1,12 +1,15 @@
+
+
 import nibabel as nib
 import numpy as np
 from shutil import copyfile
 import matplotlib.pyplot as plt
 import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 import mat4py
 import pickle
+from copy import deepcopy
 
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 
 # TODO: Replace folder searching with "next(os.walk(directory))"
@@ -55,6 +58,40 @@ def AllNucleiNames(Indexes):
         Names.append(name)
     return Names
 
+def readingTheParams(AllExperimentsList):
+
+    from Parameters import paramFunc
+
+    def subDict(UserInfoC, ExpList):
+        UserInfoB = deepcopy(UserInfoC)
+        for entry in list(ExpList.keys()):
+            UserInfoB[entry] = ExpList[entry]
+        return UserInfoB
+        
+    def loadExperiments(UserInfo_Orig, AllExperimentsList):
+            
+        AllParamsList = {}
+        # ExpList = UserInfo_Orig['AllExperimentsList']
+        if AllExperimentsList:
+            ExpList = AllExperimentsList
+            for Keys in list(ExpList.keys()):
+
+                UserInfo = subDict(UserInfo_Orig, ExpList[Keys])
+
+                A = paramFunc.Run(UserInfo)
+                AllParamsList[Keys] = deepcopy(A)
+        else:
+            AllParamsList[0] = paramFunc.Run(UserInfo_Orig)
+            
+        return AllParamsList
+        
+    from Parameters import UserInfo
+
+    UserInfoB = deepcopy(UserInfo.__dict__)
+    UserInfoB = terminalEntries(UserInfo=UserInfoB)
+    AllParamsList = loadExperiments(UserInfoB, AllExperimentsList)
+
+    return AllParamsList
 
 def listSubFolders(Dir):
 
@@ -271,7 +308,8 @@ def InputNames(Dir , NucleusName):
 
             elif 'temp' in d:
                 Files.Label.Temp.address = Files.Label.address + '/' + d
-
+                # TODO replace the for loop with below commented code
+                # Files.Label.Temp.Cropped = [ d.split('.nii.gz')[0] for d in next(os.walk(Files.Label.Temp.address))[2] if '_Cropped.nii.gz' in d]
                 for d in os.listdir(Files.Label.Temp.address):
                     if '_Cropped.nii.gz' in d:
                         Files.Label.Temp.Cropped = d.split('.nii.gz')[0]
@@ -447,9 +485,13 @@ def Dice_Calculator(msk1,msk2):
     intersection = msk1*msk2
     return intersection.sum()*2/(msk1.sum()+msk2.sum() + np.finfo(float).eps)
 
-
 def saveReport(DirSave, name , data, method):
 
+    def savePickle(Dir, data):
+        f = open(Dir,"wb")
+        pickle.dump(data,f)
+        f.close()
+        
     if 'pickle' in method:
         savePickle(DirSave + '/' + name + '.pkl', data)
     elif 'mat' in method:
@@ -457,6 +499,12 @@ def saveReport(DirSave, name , data, method):
 
 def loadReport(DirSave, name, method):
 
+    def loadPickle(Dir):
+        f = open(Dir,"wb")
+        data = pickle.load(f)
+        f.close()
+        return data
+        
     if 'pickle' in method:
         return loadPickle(DirSave + '/' + name + '.pkl')
     elif 'mat' in method:
@@ -465,10 +513,20 @@ def loadReport(DirSave, name, method):
 #! saving the user parameters
 def Saving_UserInfo(DirSave, params, UserInfo):
 
+    def dict_from_module(module):
+        context = {}
+        for setting in dir(module):
+            if '__' not in setting:
+                context[setting] = getattr(module, setting)
+
+        return context
+        
     UserInfo['InputDimensions'] = str(params.WhichExperiment.HardParams.Model.InputDimensions)
     UserInfo['num_Layers']      = params.WhichExperiment.HardParams.Model.num_Layers
 
-    saveReport(DirSave, 'UserInfo', dict_from_module(UserInfo) , UserInfo['SaveReportMethod'])
+    # TODO check to see if the below uncommented works just like the commented one
+    # saveReport(DirSave, 'UserInfo', dict_from_module(UserInfo) , UserInfo['SaveReportMethod'])
+    saveReport(DirSave, 'UserInfo', UserInfo.__dict__ , UserInfo['SaveReportMethod'])
 
 def Loading_UserInfo(DirLoad, method):
     UserInfo = loadReport(DirLoad, 'UserInfo', method)
@@ -477,25 +535,6 @@ def Loading_UserInfo(DirLoad, method):
     a = UserInfo['InputDimensions'].replace(',' ,'').split('[')[1].split(']')[0].split(' ')
     UserInfo['InputDimensions'] = [int(ai) for ai in a]
     return UserInfo
-
-def savePickle(Dir, data):
-    f = open(Dir,"wb")
-    pickle.dump(data,f)
-    f.close()
-
-def loadPickle(Dir):
-    f = open(Dir,"wb")
-    data = pickle.load(f)
-    f.close()
-    return data
-
-def dict_from_module(module):
-    context = {}
-    for setting in dir(module):
-        if '__' not in setting:
-            context[setting] = getattr(module, setting)
-
-    return context
 
 def dict2obj(d):
     if isinstance(d, list):

@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
-from otherFuncs.smallFuncs import mkDir , NucleiSelection
+from otherFuncs import smallFuncs
 from shutil import copyfile
 
 def RigidRegistration(subject , Template , preprocess):
@@ -47,7 +47,7 @@ def Bash_Cropping(subject , params):
 
         # Cropping the Label
         for ind in params.WhichExperiment.Nucleus.FullIndexes:
-            NucleusName, _ = NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
+            NucleusName, _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
 
             inP  = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
             outP = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
@@ -64,18 +64,22 @@ def Bash_Cropping(subject , params):
 def Bash_AugmentNonLinear(subject , subjectRef , outputAddress): # Image , Mask , Reference , output):
 
     ImageOrig = subject.address       + '/' + subject.ImageProcessed + '.nii.gz'
-    MaskOrig  = subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz'
+    # MaskOrig  = subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz'
     ImageRef  = subjectRef.address    + '/' + subjectRef.ImageProcessed + '.nii.gz'
 
     OutputImage = outputAddress  + '/' + subject.ImageProcessed + '.nii.gz'
-    labelAdd    = mkDir(outputAddress + '/Label')
-    OutputMask  = labelAdd + '/' + subject.Label.LabelProcessed + '.nii.gz'
-    deformationAddr = mkDir(outputAddress + '/Temp/deformation')
+    labelAdd    = smallFuncs.mkDir(outputAddress + '/Label')
+    deformationAddr = smallFuncs.mkDir(outputAddress + '/Temp/deformation')
 
 
     if not os.path.isfile(OutputImage):
         os.system("ANTS 3 -m CC[%s, %s,1,5] -t SyN[0.25] -r Gauss[3,0] -o %s -i 30x90x20 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000"%(ImageOrig , ImageRef , deformationAddr + '/test') )
         os.system("antsApplyTransforms -d 3 -i %s -o %s -r %s -t %s"%(ImageOrig , OutputImage , ImageOrig , deformationAddr + '/testWarp.nii.gz') )
 
-    if not os.path.isfile(OutputMask):
-        os.system("antsApplyTransforms -d 3 -i %s -o %s -r %s -t %s"%(MaskOrig , OutputMask , MaskOrig , deformationAddr + '/testWarp.nii.gz' ) )
+    _, indexes = smallFuncs.NucleiSelection(ind = 1,organ = 'THALAMUS')
+    names = smallFuncs.AllNucleiNames(indexes)
+    for name in names:
+        MaskOrig  = subject.Label.address + '/' + name + '_PProcessed.nii.gz'
+        OutputMask  = labelAdd + '/' + name + '_PProcessed.nii.gz'
+        if not os.path.isfile(OutputMask):
+            os.system("antsApplyTransforms -d 3 -i %s -o %s -r %s -t %s"%(MaskOrig , OutputMask , MaskOrig , deformationAddr + '/testWarp.nii.gz' ) )

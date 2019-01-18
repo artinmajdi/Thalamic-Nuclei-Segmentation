@@ -9,6 +9,56 @@ from skimage.filters import threshold_otsu
 
 from otherFuncs import smallFuncs
 
+def check_Run(params, Data):
+
+    os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
+
+    # params.preprocess.TestOnly = True
+    if not params.preprocess.TestOnly:
+        #! Training the model
+        smallFuncs.Saving_UserInfo(params.directories.Train.Model, params, params.UserInfo)
+        model = choosingModel.architecture(params)
+        model, hist = choosingModel.modelTrain(Data, params, model)
+
+
+        smallFuncs.saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
+        smallFuncs.saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo['SaveReportMethod'])
+        smallFuncs.saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , params.UserInfo['SaveReportMethod'])
+
+    else:
+        # TODO: I need to think more about this, why do i need to reload params even though i already have to load it in the beggining of the code
+        #! loading the params
+        params.UserInfo = smallFuncs.Loading_UserInfo(params.directories.Train.Model + '/UserInfo.mat', params.UserInfo['SaveReportMethod'])
+        params = paramFunc.Run(params.UserInfo)
+        params.WhichExperiment.HardParams.Model.InputDimensions = params.UserInfo['InputDimensions']
+        params.WhichExperiment.HardParams.Model.num_Layers      = params.UserInfo['num_Layers']
+
+        #! loading the model
+        model = load_model(params.directories.Train.Model + '/model.h5')
+
+
+
+    #! Testing
+    pred, Dice, score = {}, {}, {}
+    for name in tqdm(Data.Test):
+        ResultDir = params.directories.Test.Result
+        padding = params.directories.Test.Input.Subjects[name].Padding
+        Dice[name], pred[name], score[name] = choosingModel.applyTestImageOnModel(model, Data.Test[name], params, name, padding, ResultDir)
+
+
+
+    #! training predictions
+    if params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:
+        ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
+        for name in tqdm(Data.Train_ForTest):
+            padding = params.directories.Train.Input.Subjects[name].Padding
+            Dice[name], pred[name], score[name] = choosingModel.applyTestImageOnModel(model, Data.Train_ForTest[name], params, name, padding, ResultDir)
+
+    return pred
+
+
+
+
 # ! main Function
 def modelTrain(Data, params, model):
     ModelParam = params.WhichExperiment.HardParams.Model

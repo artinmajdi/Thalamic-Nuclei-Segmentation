@@ -3,19 +3,22 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from modelFuncs import LossFunction, Metrics, Optimizers
 from Parameters import Classes
 from otherFuncs import smallFuncs, datasets
+from copy import deepcopy
+
+class paramsA:
+    WhichExperiment = Classes.WhichExperiment
+    preprocess      = Classes.preprocess
+    directories     = ''
+    UserInfo        = ''
+    
+def Run(UserInfoB):
 
 
-def Run(UserInfo):
+    params = deepcopy(paramsA)
+    UserInfo = deepcopy(UserInfoB)
 
-    class params:
-        WhichExperiment = Classes.WhichExperiment
-        preprocess      = Classes.preprocess
-        directories     = ''
-        UserInfo        = ''
-
-
-    WhichExperiment = params.WhichExperiment
-    preprocess      = params.preprocess
+    WhichExperiment = deepcopy(params.WhichExperiment)
+    preprocess      = deepcopy(params.preprocess)
 
     WhichExperiment.address = smallFuncs.mkDir(UserInfo['Experiments_Address'])
 
@@ -66,7 +69,8 @@ def Run(UserInfo):
     preprocess.Augment = smallFuncs.augmentLengthChecker(preprocess.Augment)
     preprocess.Cropping.Method = smallFuncs.whichCropMode(WhichExperiment.Nucleus.name, UserInfo['cropping_method'])  # it changes the mode to 1 if we're analyzing the Thalamus
 
-
+    
+    preprocess.Mode                = UserInfo['preprocessMode']
     preprocess.BiasCorrection.Mode = UserInfo['BiasCorrection']
     preprocess.Cropping.Mode       = UserInfo['Cropping']
     preprocess.Normalize.Mode      = UserInfo['Normalize']

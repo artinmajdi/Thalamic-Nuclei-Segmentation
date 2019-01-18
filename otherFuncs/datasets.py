@@ -8,7 +8,7 @@ import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from keras.datasets import fashion_mnist
 from otherFuncs import smallFuncs
-from preprocess import normalizeA
+from preprocess import normalizeA, applyPreprocess
 from Parameters import Classes
 
 # import h5py
@@ -33,6 +33,56 @@ class data:
     Test = ""
     Validation = ImageLabel()
     Info = info
+
+
+def check_Dataset(params, flag, Info):  #  mode = 'experiments' # single_run'
+
+    if flag:
+        mode = 'experiment'
+
+        #! copying the dataset into the experiment folder
+        if params.preprocess.CreatingTheExperiment: datasets.movingFromDatasetToExperiments(params)
+
+
+        #! preprocessing the data
+        if params.preprocess.Mode:
+            applyPreprocess.main(params, mode)
+            params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
+
+
+        #! correcting the number of layers
+        num_Layers = smallFuncs.correctNumLayers(params)
+        params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
+
+        #! Finding the final image sizes after padding & amount of padding
+        Subjects_Train, Subjects_Test, new_inputSize = smallFuncs.imageSizesAfterPadding(params, mode)
+
+        params.directories.Train.Input.Subjects = Subjects_Train
+        params.directories.Test.Input.Subjects  = Subjects_Test
+        params.WhichExperiment.HardParams.Model.InputDimensions = new_inputSize
+
+
+        # params.preprocess.TestOnly = True
+        #! loading the dataset
+        Data = loadDataset(params)
+        params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
+
+        Info['num_Layers']     = num_Layers
+        Info['new_inputSize']  = new_inputSize
+        Info['Subjects_Train'] = Subjects_Train
+        Info['Subjects_Test']  = Subjects_Test
+        Info['imageInfo']      = Data.Info
+
+        return Data, params, Info
+
+    else:
+        params.WhichExperiment.HardParams.Model.num_Layers      = Info['num_Layers']
+        params.WhichExperiment.HardParams.Model.imageInfo       = Info['imageInfo']
+        params.directories.Train.Input.Subjects                 = Info['Subjects_Train']
+        params.directories.Test.Input.Subjects                  = Info['Subjects_Test']
+        params.WhichExperiment.HardParams.Model.InputDimensions = Info['new_inputSize']
+
+        return '', params, ''
 
 
 

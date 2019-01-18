@@ -7,7 +7,7 @@ from Parameters import UserInfo, paramFunc
 import pickle 
 import io
 
-def savingHistory_AsCSV(Dir):
+def savingHistory_AsExcel(Dir):
 
         _, FullIndexes = smallFuncs.NucleiSelection(1)
         namesNulcei = smallFuncs.AllNucleiNames(FullIndexes)
@@ -52,49 +52,46 @@ def savingHistory_AsCSV(Dir):
                         df.to_excel(writer, sheet_name=nucleus)
         writer.close()
 
-        
-def mergingDiceValues_ForOneSubExperiment(Dir):
-        subF = os.listdir(Dir)
-        subF = [a for a in subF if 'vimp' in a]
-        subF.sort()
-        Dice_Test = []
+def mergingDiceValues(Dir):
 
-        _, FullIndexes = smallFuncs.NucleiSelection(1)
-        names = np.append(['subjects'], smallFuncs.AllNucleiNames(FullIndexes))
+        def mergingDiceValues_ForOneSubExperiment(Dir):
+                subF = os.listdir(Dir)
+                subF = [a for a in subF if 'vimp' in a]
+                subF.sort()
+                Dice_Test = []
 
-        for subject in subF:
-                Dir_subject = Dir + '/' + subject
-                a = os.listdir(Dir_subject)
-                a = [i for i in a if 'Dice_' in i]
+                _, FullIndexes = smallFuncs.NucleiSelection(1)
+                names = np.append(['subjects'], smallFuncs.AllNucleiNames(FullIndexes))
 
-                Dice_Single = list(np.zeros(len(FullIndexes)+1))
-                Dice_Single[0] = subject
-                for n in a:
-                        b = np.loadtxt(Dir_subject + '/' + n)
-                        index = int(b[0])
-                        if index != 4567: 
-                                Dice_Single[index] = b[1] 
-                        else: 
-                                Dice_Single[3] = b[1] 
-                                
-                Dice_Test.append(Dice_Single)
+                for subject in subF:
+                        Dir_subject = Dir + '/' + subject
+                        a = os.listdir(Dir_subject)
+                        a = [i for i in a if 'Dice_' in i]
 
-        df = pd.DataFrame(data=Dice_Test, columns=names)
-        df.to_csv(Dir + '/Dices.csv', index=False)
+                        Dice_Single = list(np.zeros(len(FullIndexes)+1))
+                        Dice_Single[0] = subject
+                        for n in a:
+                                b = np.loadtxt(Dir_subject + '/' + n)
+                                index = int(b[0])
+                                if index != 4567: 
+                                        Dice_Single[index] = b[1] 
+                                else: 
+                                        Dice_Single[3] = b[1] 
+                                        
+                        Dice_Test.append(Dice_Single)
 
-        return Dice_Test
+                df = pd.DataFrame(data=Dice_Test, columns=names)
+                df.to_csv(Dir + '/Dices.csv', index=False)
 
-def LoopAround_AllSubExperiments(Dir):
+                return Dice_Test
+
+
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
         for subExperiment in List_subExperiments:
                 mergingDiceValues_ForOneSubExperiment(Dir + '/' + subExperiment)
 
 
 params = paramFunc.Run(UserInfo.__dict__)
-# Dir = (params.directories.Test.Result).split('/subExp')[0]
-# LoopAround_AllSubExperiments(Dir)
-
-
-Dir = (params.directories.Train.Model).split('/subExp')[0]
-savingHistory_AsCSV(Dir)
+# mergingDiceValues( (params.directories.Test.Result).split('/subExp')[0] )
+savingHistory_AsExcel( (params.directories.Train.Model).split('/subExp')[0]  )
 

@@ -1,12 +1,12 @@
 
-AllExperimentsList = {
-    1: dict(nucleus_Index = [8] , GPU_Index = 4 , lossFunctionIx = 3)
-    # 2: dict(nucleus_Index = [6] , GPU_Index = 6 , lossFunctionIx = 2),
-    # 3: dict(nucleus_Index = [6] , GPU_Index = 7 , lossFunctionIx = 3),
-    # 4: dict(nucleus_Index = [8] , GPU_Index = 5 , lossFunctionIx = 1),
-    # 5: dict(nucleus_Index = [8] , GPU_Index = 6 , lossFunctionIx = 2),
-    # 6: dict(nucleus_Index = [8] , GPU_Index = 7 , lossFunctionIx = 3),
-}
+# AllExperimentsList = {
+#     1: dict(nucleus_Index = [8] , GPU_Index = 4 , lossFunctionIx = 3)
+#     # 2: dict(nucleus_Index = [6] , GPU_Index = 6 , lossFunctionIx = 2),
+#     # 3: dict(nucleus_Index = [6] , GPU_Index = 7 , lossFunctionIx = 3),
+#     # 4: dict(nucleus_Index = [8] , GPU_Index = 5 , lossFunctionIx = 1),
+#     # 5: dict(nucleus_Index = [8] , GPU_Index = 6 , lossFunctionIx = 2),
+#     # 6: dict(nucleus_Index = [8] , GPU_Index = 7 , lossFunctionIx = 3),
+# }
 
 
 
@@ -75,12 +75,12 @@ cropping_method = 2
 BiasCorrection = False
 Cropping = True
 Normalize = True
-Augment = False
+Augment = True
 
-Augment_Rotation     = True
+Augment_Rotation     = False
 Augment_Shift        = False
-Augment_NonRigidWarp = False
-
+Augment_NonRigidWarp = True
+preprocessMode = True
 
 #! save the report
 #           'pickle'
