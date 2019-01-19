@@ -1,8 +1,8 @@
 
-from keras import optimizers
-
-
 def OptimizerInfo(Optimizer_Index):
+
+    from keras import optimizers
+    
     switcher = {
         1: (optimizers.adam(), 'Adam'),
     }

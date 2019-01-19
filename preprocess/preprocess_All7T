@@ -1,0 +1,166 @@
+AFFINE: /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_824_05212013_JS/temp/deformation/linearAffine.txt
+moving_image_filename: /array/ssd/msmajdi/code/general/RigidRegistration/MyCrop_Template2_Gap20.nii.gz components 1
+output_image_filename: /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_824_05212013_JS/temp/CropMask.nii.gz
+reference_image_filename: /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_824_05212013_JS/WMnMPRAGE_BsCr_PProcessed.nii.gz
+[0/1]: AFFINE: /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_824_05212013_JS/temp/deformation/linearAffine.txt
+User Linear interpolation 
+ You are doing something more complex -- we wont check syntax in this case 
+output origin: [83.6001, 64.3113, -99.8418]
+output size: [256, 400, 256]
+output spacing: [0.7031, 0.499307, 0.7031]
+output direction: -0.999383 0.0351091 0
+-0.0351091 -0.999383 0
+0 0 1
+
+ Run Reg 
+ values 1
+  Fixed image file: /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_845_05312013_VZ/WMnMPRAGE_BsCr_PProcessed.nii.gz
+  Moving image file: /array/ssd/msmajdi/code/general/RigidRegistration/origtemplate.nii.gz
+Metric 0:  Not a Point-set
+  Fixed image file: /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_845_05312013_VZ/WMnMPRAGE_BsCr_PProcessed.nii.gz
+  Moving image file: /array/ssd/msmajdi/code/general/RigidRegistration/origtemplate.nii.gz
+  similarity metric weight: 1
+  Radius: [5, 5, 5]
+  radius: [5, 5, 5]
+ use Histogram Matching 
+ prepro 
+ set 
+Use identity affine transform as initial affine para.
+aff_init.IsNull()==1
+Use identity affine transform as initial fixed affine para.
+fixed_aff_init.IsNull()==1
+Continue affine registration from the input
+affine_opt.use_rotation_header = 0
+affine_opt.ignore_void_orgin = 0
+transform_initial: IsNotNull():0
+OptAffine: metric_type=AffineWithMutualInformation
+MI_bins=32 MI_samples=16000
+number_of_seeds=0 time_seed=1547862975
+number_of_levels=5
+number_of_iteration_list=[10000,10000,10000,10000,10000]
+graident_scales=[1,1,1,1,1,1,1,1,1,1,0.0001,0.0001,0.0001]
+is_rigid = 0
+mask null: 1
+maximum_step_length=0.1
+relaxation_factor=0.5
+minimum_step_length=0.0001
+translation_scales=0.0001
+opt.transform_initial.IsNull(): 1
+ opt.use_rotation_header: 0
+ opt.ignore_void_orgin: 0
+input affine center: [-5.01439, -38.0003, 0.705287]
+input affine para: [0, 0, 0, 1, 1, 1, 1, 0, 0, 0, -0.5446528522303504, -0.1860024721193838, -13.01043035174749]
+level 0, iter 143, size: fix[32, 32, 32]-mov[32, 32, 32], affine para: [0.02835500167907232, 0.024590934607581945, -0.0008292392455511859, 0.9992950476096533, 0.9925694091465842, 0.986437742753188, 0.967091557991933, 0.007159999461795471, 0.0035089893550672236, 0.007128834024499738, -0.13835504410944102, -3.6621315961760503, -15.491161248446572]
+    reach oscillation, current step: 9.76563e-05<0.0001
+level 1, iter 55, size: fix[45, 50, 45]-mov[45, 55, 45], affine para: [0.03427799649520397, 0.024447631574807338, 0.002315904252563868, 0.9991105889010236, 0.9937624823788128, 0.9880258172441188, 0.9705273032748175, 0.0053157276250548995, 0.005405680344383481, 0.02270733598342474, -0.19267379277787353, -3.9701596885815187, -15.586544108397698]
+    reach oscillation, current step: 9.76563e-05<0.0001
+level 2, iter 119, size: fix[90, 100, 90]-mov[90, 110, 90], affine para: [0.03718677542361463, 0.0307312335985168, 0.008224173815208827, 0.9988018311858285, 0.9966652939202665, 0.9923328211904855, 0.9731803134936268, 0.009714463764723184, 0.0015333125910589349, 0.029993519027486384, -0.21820242939849693, -4.178591478344422, -15.462303253936906]
+    reach oscillation, current step: 9.76563e-05<0.0001
+level 3, iter 87, size: fix[180, 200, 180]-mov[180, 220, 180], affine para: [0.03877933523910358, 0.03498119692035904, 0.005855846113664362, 0.9986181392738294, 0.9971634563167514, 0.9923639759403341, 0.9751758561290447, 0.010073331836881614, 0.001110949137442112, 0.03333918920331005, -0.1885909810703783, -4.045208984142072, -15.387712431838654]
+    reach oscillation, current step: 9.76563e-05<0.0001
+level 4, iter 97, size: fix[256, 400, 256]-mov[256, 440, 256], affine para: [0.0409931334213837, 0.03443829238388017, 0.003945489699363426, 0.9985579603313025, 0.9986522829440602, 0.989495762220835, 0.9740894105962433, 0.008143831888742783, -0.00025133547108681327, 0.031031386703668916, -0.24146656528349061, -4.113217326964629, -15.5350344453183]
+    reach oscillation, current step: 9.76563e-05<0.0001
+A=1 0 0 
+0 1 0 
+0 0 1 
+
+rotation R1 0 0 
+0 1 0 
+0 0 1 
+
+upper R1 0 0 
+0 1 0 
+0 0 1 
+
+s=0.25 u=0 v=0 w0 r=1
+m_Rotation from vnl0 0 0 1
+level 0, iter 124, size: fix[32, 32, 32]-mov[32, 32, 32], affine para: [-0.028699167705404552, -0.023929760821458434, 0.0016711424684963858, 0.9993002209560922, 1.0166804829041276, 1.0063943356778136, 1.0227375096165592, -0.0032660067295098905, -0.00649735936689564, -0.01654407595474583, -0.9085388942881513, 4.646532507542515, 16.47786341630426]
+    reach oscillation, current step: 9.76563e-05<0.0001
+level 1, iter 81, size: fix[45, 55, 45]-mov[45, 50, 45], affine para: [-0.03334420255981974, -0.033533104762115545, -0.003352916577593059, 0.9988755943515121, 1.017789772068421, 1.0101204818802545, 1.0225667060091812, -0.006896308992447826, 0.008134260380040694, -0.023555524886647052, -0.9516633142962426, 4.836733581458143, 16.183856819394347]
+    reach oscillation, current step: 9.76563e-05<0.0001
+level 2, iter 208, size: fix[90, 110, 90]-mov[90, 100, 90], affine para: [-0.03612971075409147, -0.03193828416659756, -0.0034215649001863007, 0.998830757885916, 1.0088395221315922, 1.0090724221747023, 1.024330831648297, -0.011720587678021739, -0.002979455874718884, -0.033302414561624784, -1.091521329293726, 4.681335973662116, 15.643881550806828]
+    reach oscillation, current step: 9.76563e-05<0.0001
+level 3, iter 236, size: fix[180, 220, 180]-mov[180, 200, 180], affine para: [-0.03874765422933653, -0.034042799911586825, -0.003436948308006356, 0.9986630535131615, 1.000585996175717, 1.0032436472538329, 1.0263047530451956, -0.005896858715967885, 0.0052027434832327924, -0.03802542721668845, -0.8148686430510321, 5.007287990362549, 15.706878308598672]
+    reach oscillation, current step: 9.76563e-05<0.0001
+level 4, iter 86, size: fix[256, 440, 256]-mov[256, 400, 256], affine para: [-0.03600974620595925, -0.032884944183435356, 0.000344253745962745, 0.9988101722117138, 0.9981739157705563, 1.0029441933943959, 1.0223036284322031, -0.007272085397785795, -0.0005442569043487284, -0.039127195125252506, -1.0531973451385235, 5.021097650156669, 15.787246502152199]
+    reach oscillation, current step: 9.76563e-05<0.0001
+ v1 -0.330644 v2 -0.34141
+ last params [0.0409931334213837, 0.03443829238388017, 0.003945489699363426, 0.9985579603313025, 0.9986522829440602, 0.989495762220835, 0.9740894105962433, 0.008143831888742783, -0.00025133547108681327, 0.031031386703668916, -0.24146656528349061, -4.113217326964629, -15.5350344453183]
+ my params [-0.03600974620595925, -0.032884944183435356, 0.000344253745962745, 0.9988101722117138, 0.9981739157705563, 1.0029441933943959, 1.0223036284322031, -0.007272085397785795, -0.0005442569043487284, -0.039127195125252506, -1.0531973451385235, 5.021097650156669, 15.787246502152199]
+A=0.999621 0.0103519 0.0660721 
+-0.000839466 0.997231 -0.0336537 
+-0.0642827 0.0703423 0.97353 
+
+rotation R0.997938 0.00538287 0.0639538 
+-0.000838053 0.997485 -0.0708793 
+-0.0641745 0.0706796 0.995433 
+
+upper R1.00169 0.00498062 0.00348828 
+0 0.99975 0.0355954 
+0 0 0.975695 
+
+s=0.250286 u=0.0354302 v=0.0320687 w-0.00155701 r=0.998856
+m_Rotation from vnl0.0354302 0.0320687 -0.00155701 0.998856
+ new params [0.03543024888173663, 0.03206874399262646, -0.0015570108607598045, 0.9988562803727536, 1.0016864347292453, 0.9997497164222787, 0.9756948904948497, 0.004972230200416802, 0.003482407020413599, 0.03560426570026788, -0.04227562818177545, -4.476777781438963, -15.790263674435238]
+outputput affine center: [-5.01439, -38.0003, 0.705287]
+output affine para: [0.03543024888173663, 0.03206874399262646, -0.0015570108607598045, 0.9988562803727536, 1.0016864347292453, 0.9997497164222787, 0.9756948904948497, 0.004972230200416802, 0.003482407020413599, 0.03560426570026788, -0.04227562818177545, -4.476777781438963, -15.790263674435238]
+initial measure value (MMI): rval = -0.202841
+final measure value (MMI): rval = -0.322986
+finish affine registeration...
+ Requested Transformation Model:  SyN : Using 
+SyN diffeomorphic model for transformation. 
+  Grad Step 0.5 total-smoothing 0.5 gradient-smoothing 3
+ setting N-TimeSteps = 1 trunc 256
+ Registration Done 
+ begin writing /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_845_05312013_VZ/temp/deformation/linear
+ writing /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_845_05312013_VZ/temp/deformation/linear affine 
+AFFINE: /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_845_05312013_VZ/temp/deformation/linearAffine.txt
+moving_image_filename: /array/ssd/msmajdi/code/general/RigidRegistration/MyCrop_Template2_Gap20.nii.gz components 1
+output_image_filename: /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_845_05312013_VZ/temp/CropMask.nii.gz
+reference_image_filename: /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_845_05312013_VZ/WMnMPRAGE_BsCr_PProcessed.nii.gz
+[0/1]: AFFINE: /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_845_05312013_VZ/temp/deformation/linearAffine.txt
+User Linear interpolation 
+ You are doing something more complex -- we wont check syntax in this case 
+output origin: [79.6559, 59.5092, -91.2122]
+output size: [256, 400, 256]
+output spacing: [0.7031, 0.500286, 0.7031]
+output direction: -0.999428 0.0338248 0
+-0.0338248 -0.999428 0
+0 0 1
+
+ Run Reg 
+ values 1
+  Fixed image file: /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_915_07112013_LC/WMnMPRAGE_BsCr_PProcessed.nii.gz
+  Moving image file: /array/ssd/msmajdi/code/general/RigidRegistration/origtemplate.nii.gz
+Metric 0:  Not a Point-set
+  Fixed image file: /array/ssd/msmajdi/experiments/keras/exp2_tmp/train/20priors_vimp_915_07112013_LC/WMnMPRAGE_BsCr_PProcessed.nii.gz
+  Moving image file: /array/ssd/msmajdi/code/general/RigidRegistration/origtemplate.nii.gz
+  similarity metric weight: 1
+  Radius: [5, 5, 5]
+  radius: [5, 5, 5]
+ use Histogram Matching 
+ prepro 
+ set 
+Use identity affine transform as initial affine para.
+aff_init.IsNull()==1
+Use identity affine transform as initial fixed affine para.
+fixed_aff_init.IsNull()==1
+Continue affine registration from the input
+affine_opt.use_rotation_header = 0
+affine_opt.ignore_void_orgin = 0
+transform_initial: IsNotNull():0
+OptAffine: metric_type=AffineWithMutualInformation
+MI_bins=32 MI_samples=16000
+number_of_seeds=0 time_seed=1547863000
+number_of_levels=5
+number_of_iteration_list=[10000,10000,10000,10000,10000]
+graident_scales=[1,1,1,1,1,1,1,1,1,1,0.0001,0.0001,0.0001]
+is_rigid = 0
+mask null: 1
+maximum_step_length=0.1
+relaxation_factor=0.5
+minimum_step_length=0.0001
+translation_scales=0.0001
+opt.transform_initial.IsNull(): 1
+ opt.use_rotation_header: 0
+ opt.ignore_void_orgin: 0

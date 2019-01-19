@@ -10,10 +10,13 @@ def RigidRegistration(subject , Template , preprocess):
 #     processed = subject.address + '/' + subject.origImage + '_bias_corr.nii.gz'
     processed = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
     outP = subject.Temp.address + '/CropMask.nii.gz'
+    LinearAffine = subject.Temp.Deformation.address + '/linearAffine.txt'
+    if preprocess.Mode and preprocess.Cropping.Mode:
+        if not os.path.isfile(LinearAffine):
+            os.system("ANTS 3 -m CC[%s, %s ,1,5] -o %s -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false" %(processed , Template.Image , subject.Temp.Deformation.address + '/linear') )
 
-    if preprocess.Mode and preprocess.Cropping.Mode and not os.path.isfile(outP):
-        os.system("ANTS 3 -m CC[%s, %s ,1,5] -o %s -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false" %(processed , Template.Image , subject.Temp.Deformation.address + '/linear') )
-        os.system("WarpImageMultiTransform 3 %s %s -R %s %s"%(Template.Mask , outP , processed , subject.Temp.Deformation.address + '/linearAffine.txt') )
+        if not os.path.isfile(outP):
+            os.system("WarpImageMultiTransform 3 %s %s -R %s %s"%(Template.Mask , outP , processed , LinearAffine) )
 
 def BiasCorrection(subject , params):
 
@@ -36,7 +39,7 @@ def Bash_Cropping(subject , params):
         inP  = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
         outP = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
         crop = subject.Temp.address + '/CropMask.nii.gz'
-        outDebug = subject.Temp.address + '/' + subject.ImageOriginal + '_bias_corr_Cropped.nii.gz'
+        outDebug = subject.Temp.address + '/' + subject.ImageOriginal + '_Cropped.nii.gz'
 
         if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
             copyfile(outDebug , outP)

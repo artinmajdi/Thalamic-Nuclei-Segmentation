@@ -6,18 +6,10 @@ import nibabel as nib
 from shutil import copytree
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from keras.datasets import fashion_mnist
+
 from otherFuncs import smallFuncs
 from preprocess import normalizeA, applyPreprocess
-from Parameters import Classes
-
-# import h5py
 import matplotlib.pyplot as plt
-
-
-
-
-
 
 class ImageLabel:
     Image = np.zeros(3)
@@ -34,6 +26,20 @@ class data:
     Validation = ImageLabel()
     Info = info
 
+class trainCase:
+    def __init__(self, Image, Mask):
+        self.Image = Image
+        self.Mask  = Mask
+
+class testCase:
+    def __init__(self, Image, Mask, OrigMask, Affine, Header, original_Shape):
+        self.Image = Image
+        self.Mask = Mask
+        self.OrigMask  = OrigMask
+        self.Affine = Affine
+        self.Header = Header
+        self.original_Shape = original_Shape
+
 
 def check_Dataset(params, flag, Info):  #  mode = 'experiments' # single_run'
 
@@ -41,7 +47,7 @@ def check_Dataset(params, flag, Info):  #  mode = 'experiments' # single_run'
         mode = 'experiment'
 
         #! copying the dataset into the experiment folder
-        if params.preprocess.CreatingTheExperiment: datasets.movingFromDatasetToExperiments(params)
+        if params.preprocess.CreatingTheExperiment: movingFromDatasetToExperiments(params)
 
 
         #! preprocessing the data
@@ -84,8 +90,6 @@ def check_Dataset(params, flag, Info):  #  mode = 'experiments' # single_run'
 
         return '', params, ''
 
-
-
 def one_hot(a, num_classes):
   return np.eye(num_classes)[a]
 
@@ -93,10 +97,11 @@ def DatasetsInfo(DatasetIx):
     switcher = {
         1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/SRI_3T'),
         2: ('kaggleCompetition', '/array/ssd/msmajdi/data/originals/KaggleCompetition/train'),
-        3: ('fashionMnist', 'intrinsic')
+        3: ('fashionMnist', 'intrinsic'),
+        4: ('All_7T', '/array/ssd/msmajdi/data/preProcessed/7T/All_7T'),
+        5: ('20priors', '/array/ssd/msmajdi/data/preProcessed/7T/20priors'),
     }
     return switcher.get(DatasetIx, 'WARNING: Invalid dataset index')
-
 
 def loadDataset(params):
 
@@ -104,7 +109,7 @@ def loadDataset(params):
         Data, _ = fashionMnist(params)
     elif 'kaggleCompetition' in params.WhichExperiment.Dataset.name:
         Data, _ = kaggleCompetition(params)
-    elif 'SRI_3T' in params.WhichExperiment.Dataset.name:
+    else:
         # Data = readingFromExperiments3D(params)
         Data = readingFromExperiments3D_new(params)
 
@@ -112,8 +117,9 @@ def loadDataset(params):
     # params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
     return Data
 
-
 def fashionMnist(params):
+    from keras.datasets import fashion_mnist
+    
     fullData  = fashion_mnist.load_data()
 
     images = (np.expand_dims(fullData[0][0],axis=3)).astype('float32') / 255
@@ -224,15 +230,15 @@ def readingFromExperiments3D_new(params):
             if 'train' in mode:
                 images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
                 masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
-                TrainData[nameSubject] = Classes.testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                TrainData[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
             elif 'test' in mode:
-                TestData[nameSubject]  = Classes.testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                TestData[nameSubject]  = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
 
         if 'train' in mode:
             data.Train_ForTest = TrainData
 
             if params.WhichExperiment.Dataset.Validation.fromKeras:
-                data.Train = Classes.trainCase(Image=images, Mask=masks.astype('float32'))
+                data.Train = trainCase(Image=images, Mask=masks.astype('float32'))
             else:
                 data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
         else:
@@ -301,17 +307,17 @@ def readingFromExperiments3D(params):
                 images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
                 masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
 
-                TrainData[name] = Classes.testCase(Image=im, Mask=msk ,OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                TrainData[name] = testCase(Image=im, Mask=msk ,OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
 
             elif 'test' in mode:
-                TestData[name] = Classes.testCase(Image=im, Mask=msk , OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                TestData[name] = testCase(Image=im, Mask=msk , OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
 
 
         if 'train' in mode:
             data.Train_ForTest = TrainData
 
             if params.WhichExperiment.Dataset.Validation.fromKeras:
-                data.Train = Classes.trainCase(Image=images, Mask=masks.astype('float32'))
+                data.Train = trainCase(Image=images, Mask=masks.astype('float32'))
             else:
                 data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
         else:
@@ -344,8 +350,10 @@ def percentageRandomDivide(percentage, subjectsList):
     per = int( percentage * L )
     if per == 0 and L > 1: per = 1
 
-    TestValList = subjectsList[:per]
-    TrainList = subjectsList[per:]
+    # TestValList = subjectsList[indexes[:per]]
+    TestValList = [subjectsList[i] for i in indexes[:per]]
+    # TrainList = subjectsList[indexes[per:]]
+    TrainList = [subjectsList[i] for i in indexes[per:]]
 
     return TrainList, TestValList
 

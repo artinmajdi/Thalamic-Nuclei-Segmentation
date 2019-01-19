@@ -1,9 +1,8 @@
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import tensorflow as tf
-from keras import losses # optimizers, metrics
 from modelFuncs import Metrics
-
+from keras import losses # optimizers, metrics
 
 
 def LossInfo(loss_Index):
@@ -15,8 +14,9 @@ def LossInfo(loss_Index):
     return switcher.get(loss_Index, 'WARNING: Invalid loss function index')
 
 
-
+# TODO: check to see if having this import inside this function slows down the code
 def Loss_binary_crossentropy(y_true,y_pred):
+
     loss = 0
     nmCl = y_pred.shape[3] - 1
     for d in range(nmCl):

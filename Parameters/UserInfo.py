@@ -11,7 +11,7 @@
 
 
 #! Nucleus Index
-nucleus_Index = [6]
+nucleus_Index = [1]
 
 
 #! Training
@@ -51,7 +51,9 @@ lossFunctionIx = 2
 # DatasetIx =     1: 'SRI_3T'
 #                 2: 'kaggleCompetition'
 #                 3: 'fashionMnist'
-DatasetIx = 1
+#                 4: 'All_7T': 20priros + MS
+#                 5: '20priros'
+DatasetIx = 4
 
 #! Optimizer
 #          1: 'Adam'
@@ -60,8 +62,8 @@ OptimizerIx = 1
 
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
-Experiments_Index = 1
-SubExperiment_Index = 1
+Experiments_Index = 2
+SubExperiment_Index = 3
 
 
 #! cropping mode
@@ -72,15 +74,15 @@ cropping_method = 2
 
 
 #! Preprocessing
+preprocessMode = True
 BiasCorrection = False
 Cropping = True
 Normalize = True
-Augment = True
+Augment = False
 
 Augment_Rotation     = False
 Augment_Shift        = False
 Augment_NonRigidWarp = True
-preprocessMode = True
 
 #! save the report
 #           'pickle'

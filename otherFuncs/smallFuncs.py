@@ -5,7 +5,7 @@ import numpy as np
 from shutil import copyfile
 import matplotlib.pyplot as plt
 import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 import mat4py
 import pickle
 from copy import deepcopy
@@ -47,7 +47,7 @@ def NucleiSelection(ind = 1,organ = 'THALAMUS'):
         elif ind == 14:
             NucleusName = '14-MTT'
 
-        FullIndexes = [1,2,4567,4,5,6,7,8,9,10,11,12,13,14]
+        FullIndexes = [1,2,4,5,6,7,8,9,10,11,12,13,14]
 
     return NucleusName, FullIndexes
 
@@ -352,9 +352,13 @@ def inputNamesCheck(params, mode):
             dirr = params.directories.Train if 'Train' in wFolder else params.directories.Test
 
             for sj in dirr.Input.Subjects:
+                if 'Aug' in sj:
+                    print('---')
                 subject = dirr.Input.Subjects[sj]
 
-                if params.preprocess.Debug.PProcessExist:
+                # TODO move this commented if function somewhere else to count for cases where user doesn't want preprocessing
+                if subject.ImageProcessed:
+                # if params.preprocess.Debug.PProcessExist:
 
                     files = os.listdir(subject.address)
 
@@ -409,8 +413,8 @@ def correctNumLayers(params):
         num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:2],kernel_size) )) + 1))
         print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
 
-    # params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
-    return num_Layers
+    params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
+    return num_Layers, params
 
 def imageSizesAfterPadding(params, mode):
 
@@ -464,7 +468,7 @@ def imageSizesAfterPadding(params, mode):
                 params.directories.Test.Input.Subjects = Subjects
                 Subjects_Test = Subjects
 
-    return Subjects_Train, Subjects_Test, new_inputSize
+    return Subjects_Train, Subjects_Test, new_inputSize, params
 
 # TODO check the matlab imshow3D see if i can use it in python
 def imShow(*args):
@@ -513,13 +517,13 @@ def loadReport(DirSave, name, method):
 #! saving the user parameters
 def Saving_UserInfo(DirSave, params, UserInfo):
 
-    def dict_from_module(module):
-        context = {}
-        for setting in dir(module):
-            if '__' not in setting:
-                context[setting] = getattr(module, setting)
+    # def dict_from_module(module):
+    #     context = {}
+    #     for setting in dir(module):
+    #         if '__' not in setting:
+    #             context[setting] = getattr(module, setting)
 
-        return context
+    #     return context
         
     UserInfo['InputDimensions'] = str(params.WhichExperiment.HardParams.Model.InputDimensions)
     UserInfo['num_Layers']      = params.WhichExperiment.HardParams.Model.num_Layers

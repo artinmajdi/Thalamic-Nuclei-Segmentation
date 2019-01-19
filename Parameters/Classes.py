@@ -163,17 +163,17 @@ class preprocess:
 
 
 
-class trainCase:
-    def __init__(self, Image, Mask):
-        self.Image = Image
-        self.Mask  = Mask
+# class trainCase:
+#     def __init__(self, Image, Mask):
+#         self.Image = Image
+#         self.Mask  = Mask
 
-class testCase:
-    def __init__(self, Image, Mask, OrigMask, Affine, Header, original_Shape):
-        self.Image = Image
-        self.Mask = Mask
-        self.OrigMask  = OrigMask
-        self.Affine = Affine
-        self.Header = Header
-        self.original_Shape = original_Shape
+# class testCase:
+#     def __init__(self, Image, Mask, OrigMask, Affine, Header, original_Shape):
+#         self.Image = Image
+#         self.Mask = Mask
+#         self.OrigMask  = OrigMask
+#         self.Affine = Affine
+#         self.Header = Header
+#         self.original_Shape = original_Shape
 
