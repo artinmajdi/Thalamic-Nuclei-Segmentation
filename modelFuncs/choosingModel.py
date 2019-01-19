@@ -36,7 +36,7 @@ def check_Run(params, Data):
         params.WhichExperiment.HardParams.Model.num_Layers      = params.UserInfo['num_Layers']
 
         #! loading the model
-        model = load_model(params.directories.Train.Model + '/model.h5')
+        model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')
 
 
 
