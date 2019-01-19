@@ -414,7 +414,7 @@ def correctNumLayers(params):
         print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
 
     params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
-    return num_Layers, params
+    return num_Layers
 
 def imageSizesAfterPadding(params, mode):
 
@@ -468,7 +468,7 @@ def imageSizesAfterPadding(params, mode):
                 params.directories.Test.Input.Subjects = Subjects
                 Subjects_Test = Subjects
 
-    return Subjects_Train, Subjects_Test, new_inputSize, params
+    return Subjects_Train, Subjects_Test, new_inputSize
 
 # TODO check the matlab imshow3D see if i can use it in python
 def imShow(*args):
@@ -530,7 +530,7 @@ def Saving_UserInfo(DirSave, params, UserInfo):
 
     # TODO check to see if the below uncommented works just like the commented one
     # saveReport(DirSave, 'UserInfo', dict_from_module(UserInfo) , UserInfo['SaveReportMethod'])
-    saveReport(DirSave, 'UserInfo', UserInfo.__dict__ , UserInfo['SaveReportMethod'])
+    saveReport(DirSave, 'UserInfo', UserInfo , UserInfo['SaveReportMethod'])
 
 def Loading_UserInfo(DirLoad, method):
     UserInfo = loadReport(DirLoad, 'UserInfo', method)

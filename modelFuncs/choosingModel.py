@@ -6,8 +6,10 @@ from keras import layers
 from keras_tqdm import TQDMCallback # , TQDMNotebookCallback
 import numpy as np
 from skimage.filters import threshold_otsu
-
+from Parameters import paramFunc
 from otherFuncs import smallFuncs
+from tqdm import tqdm
+
 
 def check_Run(params, Data):
 
@@ -17,8 +19,8 @@ def check_Run(params, Data):
     if not params.preprocess.TestOnly:
         #! Training the model
         smallFuncs.Saving_UserInfo(params.directories.Train.Model, params, params.UserInfo)
-        model = choosingModel.architecture(params)
-        model, hist = choosingModel.modelTrain(Data, params, model)
+        model = architecture(params)
+        model, hist = modelTrain(Data, params, model)
 
 
         smallFuncs.saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
@@ -43,7 +45,7 @@ def check_Run(params, Data):
     for name in tqdm(Data.Test):
         ResultDir = params.directories.Test.Result
         padding = params.directories.Test.Input.Subjects[name].Padding
-        Dice[name], pred[name], score[name] = choosingModel.applyTestImageOnModel(model, Data.Test[name], params, name, padding, ResultDir)
+        Dice[name], pred[name], score[name] = applyTestImageOnModel(model, Data.Test[name], params, name, padding, ResultDir)
 
 
 
@@ -52,7 +54,7 @@ def check_Run(params, Data):
         ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
         for name in tqdm(Data.Train_ForTest):
             padding = params.directories.Train.Input.Subjects[name].Padding
-            Dice[name], pred[name], score[name] = choosingModel.applyTestImageOnModel(model, Data.Train_ForTest[name], params, name, padding, ResultDir)
+            Dice[name], pred[name], score[name] = applyTestImageOnModel(model, Data.Train_ForTest[name], params, name, padding, ResultDir)
 
     return pred
 

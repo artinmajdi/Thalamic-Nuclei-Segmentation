@@ -16,7 +16,7 @@ nucleus_Index = [1]
 
 #! Training
 num_Layers = 5
-epochs = 5
+epochs = 100
 batch_size = 40
 Initialize_FromThalamus = True
 Initialize_FromOlderModel = False
@@ -53,7 +53,8 @@ lossFunctionIx = 2
 #                 3: 'fashionMnist'
 #                 4: 'All_7T': 20priros + MS
 #                 5: '20priros'
-DatasetIx = 4
+DatasetIx = 1
+CreatingTheExperiment = False
 
 #! Optimizer
 #          1: 'Adam'
@@ -62,7 +63,7 @@ OptimizerIx = 1
 
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
-Experiments_Index = 2
+Experiments_Index = 1
 SubExperiment_Index = 3
 
 
@@ -74,7 +75,7 @@ cropping_method = 2
 
 
 #! Preprocessing
-preprocessMode = True
+preprocessMode = False
 BiasCorrection = False
 Cropping = True
 Normalize = True

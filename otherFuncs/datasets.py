@@ -3,10 +3,8 @@ from imageio import imread
 from random import shuffle
 from tqdm import tqdm, trange
 import nibabel as nib
-from shutil import copytree
+import shutil 
 import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-
 from otherFuncs import smallFuncs
 from preprocess import normalizeA, applyPreprocess
 import matplotlib.pyplot as plt
@@ -95,7 +93,7 @@ def one_hot(a, num_classes):
 
 def DatasetsInfo(DatasetIx):
     switcher = {
-        1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/SRI_3T'),
+        1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_3T'),
         2: ('kaggleCompetition', '/array/ssd/msmajdi/data/originals/KaggleCompetition/train'),
         3: ('fashionMnist', 'intrinsic'),
         4: ('All_7T', '/array/ssd/msmajdi/data/preProcessed/7T/All_7T'),
@@ -201,8 +199,11 @@ def readingFromExperiments3D_new(params):
 
         #! reading all images and concatenating them into one array
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
-        for ind, nameSubject in tqdm(enumerate(Subjects), desc='Loading Dataset'):
+        cntSkipped = 0
+        for ind, nameSubject in tqdm(enumerate(Subjects), desc='Loading Dataset: ' + mode):
             subject = Subjects[nameSubject]
+
+            # if ind > 10: continue
 
             # TODO: replace this with cropping if the negative number is low e.g. less than 5
             if np.min(subject.Padding) < 0:
@@ -227,12 +228,19 @@ def readingFromExperiments3D_new(params):
             background = backgroundDetector(msk)
             msk = np.concatenate((msk, background),axis=3).astype('float32')
 
-            if 'train' in mode:
-                images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
-                masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
-                TrainData[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-            elif 'test' in mode:
-                TestData[nameSubject]  = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+
+            if im[...,0].shape == msk[...,0].shape:
+                if 'train' in mode:
+                    images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
+                    masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
+                    TrainData[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                elif 'test' in mode:
+                    TestData[nameSubject]  = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+            else:
+                cntSkipped = cntSkipped + 1
+                AA = subject.address.split('vimp')
+                shutil.move(subject.address, AA[0] + 'ERROR_vimp' + AA[1])
+                print('WARNING:', mode , cntSkipped , nameSubject, ' image and mask have different shape sizes')
 
         if 'train' in mode:
             data.Train_ForTest = TrainData
@@ -360,11 +368,32 @@ def percentageRandomDivide(percentage, subjectsList):
 def movingFromDatasetToExperiments(params):
 
     List = smallFuncs.listSubFolders(params.WhichExperiment.Dataset.address)
+
+    DirAugm = params.WhichExperiment.Dataset.address + '/Augments'
+
+    flagAug = os.path.exists(DirAugm)
+    if flagAug: ListAugments = smallFuncs.listSubFolders(DirAugm)
+
     TestParams = params.WhichExperiment.Dataset.Test
     _, TestList = percentageRandomDivide(TestParams.percentage, List) if 'percentage' in TestParams.mode else TestParams.subjects
     for subjects in List:
-        DirOut = params.directories.Test.address if subjects in TestList else params.directories.Train.address
+
+        if subjects in TestList:
+            DirOut = params.directories.Test.address 
+            mode = 'test'
+        else:
+            DirOut = params.directories.Train.address
+            mode = 'train'
         if not os.path.exists(DirOut + '/' + subjects):
-            copytree(params.WhichExperiment.Dataset.address + '/' + subjects  ,  DirOut + '/' + subjects)
+            shutil.copytree(params.WhichExperiment.Dataset.address + '/' + subjects  ,  DirOut + '/' + subjects)
+
+            if flagAug:
+                lstAugmts = [i for i in ListAugments if subjects in i.split('Ref_')[0]]
+
+                #! just to see the accuracy of augmented data as test as well
+                # if 'train' in mode:
+                for subjectsAgm in lstAugmts:
+                    shutil.copytree(params.WhichExperiment.Dataset.address + '/Augments/' + subjectsAgm  ,  DirOut + '/' + subjectsAgm)
+
 
     return True

@@ -1,5 +1,6 @@
 import os, sys
-sys.path.append(os.path.dirname(__file__))
+# sys.path.append(os.path.dirname(__file__))
+sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 from otherFuncs import smallFuncs, datasets
 from tqdm import tqdm
 from modelFuncs import choosingModel

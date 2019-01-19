@@ -79,7 +79,8 @@ def Run(UserInfoB):
     preprocess.Augment.Rotation     = UserInfo['Augment_Rotation']
     preprocess.Augment.Shift        = UserInfo['Augment_Shift']
     preprocess.Augment.NonRigidWarp = UserInfo['Augment_NonRigidWarp']
-
+    preprocess.CreatingTheExperiment = UserInfo['CreatingTheExperiment']
+    
     params.WhichExperiment = WhichExperiment
     params.preprocess      = preprocess
     params.directories     = directories

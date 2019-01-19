@@ -17,8 +17,7 @@ params = smallFuncs.terminalEntries(params)
 
 
 #! copying the dataset into the experiment folder
-if not (os.path.exists(params.directories.Train.address) and os.path.exists(params.directories.Test.address)): 
-    datasets.movingFromDatasetToExperiments(params)
+if params.preprocess.CreatingTheExperiment: datasets.movingFromDatasetToExperiments(params)
 
 params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
 params = smallFuncs.inputNamesCheck(params, mode)
@@ -30,11 +29,11 @@ params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
 
 
 #! correcting the number of layers
-num_Layers, params = smallFuncs.correctNumLayers(params)
-
+num_Layers  = smallFuncs.correctNumLayers(params)
+params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
 
 #! Finding the final image sizes after padding & amount of padding
-Subjects_Train, Subjects_Test, new_inputSize, params = smallFuncs.imageSizesAfterPadding(params, mode)
+Subjects_Train, Subjects_Test, new_inputSize = smallFuncs.imageSizesAfterPadding(params, mode)
 
 
 #! loading the dataset
