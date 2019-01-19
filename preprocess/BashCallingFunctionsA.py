@@ -54,7 +54,7 @@ def Bash_Cropping(subject , params):
 
             inP  = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
             outP = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
-            crop = subject.Temp.address + '/CropMask.nii.gz'
+            # crop = subject.Temp.address + '/CropMask.nii.gz'
             outDebug = subject.Label.Temp.address + '/' + NucleusName + '_Cropped.nii.gz'
 
             if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:

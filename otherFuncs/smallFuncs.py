@@ -65,7 +65,9 @@ def readingTheParams(AllExperimentsList):
     def subDict(UserInfoC, ExpList):
         UserInfoB = deepcopy(UserInfoC)
         for entry in list(ExpList.keys()):
+            print('LE  before -> ' + entry + ': ',UserInfoB[entry])
             UserInfoB[entry] = ExpList[entry]
+            print('LE  after -> ' + entry + ': ',UserInfoB[entry])
         return UserInfoB
         
     def loadExperiments(UserInfo_Orig, AllExperimentsList):
@@ -75,9 +77,8 @@ def readingTheParams(AllExperimentsList):
         if AllExperimentsList:
             ExpList = AllExperimentsList
             for Keys in list(ExpList.keys()):
-
+                
                 UserInfo = subDict(UserInfo_Orig, ExpList[Keys])
-
                 A = paramFunc.Run(UserInfo)
                 AllParamsList[Keys] = deepcopy(A)
         else:

@@ -92,6 +92,8 @@ def mergingDiceValues(Dir):
 
 
 params = paramFunc.Run(UserInfo.__dict__)
-# mergingDiceValues( (params.directories.Test.Result).split('/subExp')[0] )
+
+mergingDiceValues( (params.directories.Test.Result).split('/subExp')[0] )
+
 savingHistory_AsExcel( (params.directories.Train.Model).split('/subExp')[0]  )
 

@@ -12,7 +12,7 @@ from copy import deepcopy
 # TODO:    write a new function taht could raed the history files and plot the dice, loss for trainign and validation
 
 AllExperimentsList = {
-    1: dict(nucleus_Index = [8] , GPU_Index = 4 , lossFunctionIx = 1),
+    1: dict(),
     # 2: dict(nucleus_Index = [6] , GPU_Index = 6 , lossFunctionIx = 2),
     # 3: dict(nucleus_Index = [6] , GPU_Index = 7 , lossFunctionIx = 3),
     # 4: dict(nucleus_Index = [8] , GPU_Index = 5 , lossFunctionIx = 1),
@@ -40,12 +40,13 @@ AllParamsList = smallFuncs.readingTheParams(AllExperimentsList)
 
 #! reading the dataset
 ind, params = list(AllParamsList.items())[0]
+print('nuclei: ',params.WhichExperiment.Nucleus.name , 'gpu:',params.WhichExperiment.HardParams.Machine.GPU_Index)
 Data, params, Info = datasets.check_Dataset(params=params, flag=True, Info={})
 
 for ind, params in list(AllParamsList.items()):
 
     K = gpuSetting(params)
-
+    print('nuclei: ',params.WhichExperiment.Nucleus.name , 'gpu:',params.WhichExperiment.HardParams.Machine.GPU_Index)
     _, params, _ = datasets.check_Dataset(params=params, flag=False, Info=Info)
 
     pred = choosingModel.check_Run(params, Data)

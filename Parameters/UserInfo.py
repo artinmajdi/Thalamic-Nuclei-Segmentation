@@ -22,7 +22,7 @@ Initialize_FromThalamus = True
 Initialize_FromOlderModel = False
 
 #! GPU
-GPU_Index = 5
+GPU_Index = 4
 
 
 
