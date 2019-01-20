@@ -4,6 +4,9 @@ from modelFuncs import LossFunction, Metrics, Optimizers
 from Parameters import Classes
 from otherFuncs import smallFuncs, datasets
 from copy import deepcopy
+import pandas as pd 
+
+
 
 class paramsA:
     WhichExperiment = Classes.WhichExperiment
@@ -76,6 +79,7 @@ def Run(UserInfoB):
     preprocess.Cropping.Mode       = UserInfo['Cropping']
     preprocess.Normalize.Mode      = UserInfo['Normalize']
     preprocess.Augment.Mode        = UserInfo['Augment']
+    preprocess.TestOnly            = UserInfo['TestOnly']
 
     preprocess.Augment.Rotation     = UserInfo['Augment_Rotation']
     preprocess.Augment.Shift        = UserInfo['Augment_Shift']
@@ -86,6 +90,12 @@ def Run(UserInfoB):
     params.preprocess      = preprocess
     params.directories     = directories
     params.UserInfo        = UserInfo
+
+    if preprocess.TestOnly:
+        hist_params = pd.read_csv(directories.Train.Model + '/hist_params.csv').head()
+
+        params.WhichExperiment.HardParams.Model.InputDimensions = [hist_params['InputDimensionsX'][0], hist_params['InputDimensionsY'][0],0]
+        params.WhichExperiment.HardParams.Model.num_Layers = hist_params['num_Layers'][0]
 
     return params
 

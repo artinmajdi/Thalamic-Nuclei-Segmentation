@@ -5,13 +5,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-Dir = '/array/ssd/msmajdi/experiments/keras/exp1_tmp/models/subExp3_Loss_Dice/8-Pul/'
+Dir = '/array/ssd/msmajdi/experiments/keras/exp1_tmp/models/subExp2_Loss_BCE_withAugData/1-THALAMUS/'
 
-a  = open(Dir + 'hist_params.pkl' , 'rb')
-bb = pickle.load(a)
 
-Data = [ str(bb[key]) for key in bb.keys()]
-# for key in ListKeys: Data.append(str(bb[key]))
-
-pd.DataFrame(data=bb,columns=list(bb.keys())).to_csv(Dir + 'test.csv')
-print('----')
+print('---')
+# a  = open(Dir + 'hist_params.csv' , 'rb')

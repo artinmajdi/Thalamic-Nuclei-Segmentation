@@ -23,6 +23,9 @@ def check_Run(params, Data):
         model = architecture(params)
         model, hist = modelTrain(Data, params, model)
         hist.params['trainingTime'] = time() - a
+        hist.params['InputDimensionsX'] = params.WhichExperiment.HardParams.Model.InputDimensions[0]
+        hist.params['InputDimensionsY'] = params.WhichExperiment.HardParams.Model.InputDimensions[1]
+        hist.params['num_Layers'] = params.WhichExperiment.HardParams.Model.num_Layers
 
         smallFuncs.saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
         smallFuncs.saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo['SaveReportMethod'])
@@ -30,15 +33,14 @@ def check_Run(params, Data):
         
 
     else:
-        # TODO: I need to think more about this, why do i need to reload params even though i already have to load it in the beggining of the code
         #! loading the params
-        params.UserInfo = smallFuncs.Loading_UserInfo(params.directories.Train.Model + '/UserInfo.mat', params.UserInfo['SaveReportMethod'])
-        params = paramFunc.Run(params.UserInfo)
-        params.WhichExperiment.HardParams.Model.InputDimensions = params.UserInfo['InputDimensions']
-        params.WhichExperiment.HardParams.Model.num_Layers      = params.UserInfo['num_Layers']
+        model = architecture(params)
+        model.load_weights(params.directories.Train.Model + '/model_weights.h5')
+        
+        ModelParam = params.WhichExperiment.HardParams.Model
+        model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
 
-        #! loading the model
-        model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')
+        # model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')
 
 
 

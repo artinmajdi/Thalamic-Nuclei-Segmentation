@@ -153,7 +153,7 @@ class Debug:
 class preprocess:
     Mode = ''
     CreatingTheExperiment = False
-    TestOnly = False
+    TestOnly = ''
     Debug = Debug
     Augment = Augment
     Cropping = Cropping

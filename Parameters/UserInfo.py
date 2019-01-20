@@ -16,7 +16,7 @@ nucleus_Index = [1]
 
 #! Training
 num_Layers = 5
-epochs = 10
+epochs = 100
 batch_size = 40
 Initialize_FromThalamus = True
 Initialize_FromOlderModel = False
@@ -45,7 +45,7 @@ MetricIx = 3
 # lossFunction=   1: 'dice'
 #                 2: 'binary Cross Enropy'
 #                 3: 'Both'
-lossFunctionIx = 2
+lossFunctionIx = 3
 
 #! Dataset
 # DatasetIx =     1: 'SRI_3T'
@@ -80,6 +80,7 @@ BiasCorrection = False
 Cropping = True
 Normalize = True
 Augment = False
+TestOnly = True
 
 Augment_Rotation     = False
 Augment_Shift        = False

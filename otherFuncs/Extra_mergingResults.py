@@ -6,14 +6,16 @@ from otherFuncs import smallFuncs
 from Parameters import UserInfo, paramFunc
 import pickle 
 
-def savingHistory_AsExcel(Dir):
+def savingHistory_AsExcel(params):
+
+        Dir = (params.directories.Train.Model).split('/subExp')[0]
 
         _, FullIndexes = smallFuncs.NucleiSelection(1)
         namesNulcei = smallFuncs.AllNucleiNames(FullIndexes)
         n_epochsMax = 300
 
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
-        writer = pd.ExcelWriter(Dir + '/history_AllSubExperiments.xlsx', engine='xlsxwriter')
+        writer = pd.ExcelWriter((params.directories.Test.Result).split('/subExp')[0] + '/All_LossAccDice.xlsx', engine='xlsxwriter')
         for nucleus in namesNulcei:
                 # dir_save = smallFuncs.mkDir((params.directories.Test.Result).split('/subExp')[0] + '/Train_Output')
                 AllNucleusInfo = []
@@ -51,7 +53,8 @@ def savingHistory_AsExcel(Dir):
                         df.to_excel(writer, sheet_name=nucleus)
         writer.close()
 
-def mergingDiceValues(Dir):
+def mergingDiceValues(params):
+        Dir = (params.directories.Test.Result).split('/subExp')[0]
 
         def mergingDiceValues_ForOneSubExperiment(Dir):
                 subF = os.listdir(Dir)
@@ -82,17 +85,21 @@ def mergingDiceValues(Dir):
                 df = pd.DataFrame(data=Dice_Test, columns=names)
                 df.to_csv(Dir + '/Dices.csv', index=False)
 
-                return Dice_Test
+                return df
 
-
+        writer = pd.ExcelWriter((params.directories.Test.Result).split('/subExp')[0] + '/All_HistoryData.xlsx', engine='xlsxwriter')
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
         for subExperiment in List_subExperiments:
-                mergingDiceValues_ForOneSubExperiment(Dir + '/' + subExperiment)
+                df = mergingDiceValues_ForOneSubExperiment(Dir + '/' + subExperiment)
+                df.to_excel(writer, sheet_name=subExperiment)
+
+        writer.close()
+
 
 UserInfo = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 params = paramFunc.Run(UserInfo)
 
-mergingDiceValues( (params.directories.Test.Result).split('/subExp')[0] )
+mergingDiceValues(params)
 
-savingHistory_AsExcel( (params.directories.Train.Model).split('/subExp')[0]  )
+savingHistory_AsExcel(params)
 

@@ -206,7 +206,7 @@ def readingFromExperiments3D_new(params):
         for ind, nameSubject in tqdm(enumerate(Subjects), desc='Loading Dataset: ' + mode):
             subject = Subjects[nameSubject]
 
-            # if ind > 10: continue
+            if ind > 10: continue
 
             # TODO: replace this with cropping if the negative number is low e.g. less than 5
             if np.min(subject.Padding) < 0:
