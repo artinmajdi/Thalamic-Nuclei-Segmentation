@@ -9,7 +9,7 @@ import os, sys
 import mat4py
 import pickle
 from copy import deepcopy
-
+import pandas as pd
 
 
 # TODO: Replace folder searching with "next(os.walk(directory))"
@@ -501,6 +501,8 @@ def saveReport(DirSave, name , data, method):
         savePickle(DirSave + '/' + name + '.pkl', data)
     elif 'mat' in method:
         mat4py.savemat(DirSave + '/' + name + '.mat', data)
+    elif 'csv' in method:
+        pd.DataFrame(data=data,columns=list(data.keys())).to_csv( DirSave + '/' + name + '.csv')
 
 def loadReport(DirSave, name, method):
 

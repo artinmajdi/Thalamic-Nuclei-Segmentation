@@ -25,7 +25,8 @@ def check_Run(params, Data):
 
         smallFuncs.saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
         smallFuncs.saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo['SaveReportMethod'])
-        smallFuncs.saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , params.UserInfo['SaveReportMethod'])
+        smallFuncs.saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , 'csv')
+        
 
     else:
         # TODO: I need to think more about this, why do i need to reload params even though i already have to load it in the beggining of the code

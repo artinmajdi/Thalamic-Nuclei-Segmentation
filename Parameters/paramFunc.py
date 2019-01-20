@@ -48,7 +48,8 @@ def Run(UserInfoB):
     WhichExperiment.Experiment.index = UserInfo['Experiments_Index']
     WhichExperiment.Experiment.name = 'exp' + str(UserInfo['Experiments_Index']) + '_' + WhichExperiment.Experiment.tag if WhichExperiment.Experiment.tag else 'Exp' + str(WhichExperiment.Experiment.index)
     WhichExperiment.Experiment.address = smallFuncs.mkDir(WhichExperiment.address + '/' + WhichExperiment.Experiment.name)
-    _, WhichExperiment.SubExperiment.tag = LossFunction.LossInfo(UserInfo['lossFunctionIx'])
+    _, WhichExperiment.SubExperiment.tag = LossFunction.LossInfo(UserInfo['lossFunctionIx']) 
+    WhichExperiment.SubExperiment.tag = WhichExperiment.SubExperiment.tag + UserInfo['SubExperiment_Tag']
     WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag + WhichExperiment.Nucleus.name if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.Nucleus.name
     WhichExperiment.SubExperiment.name_thalamus = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag + WhichExperiment.Nucleus.name_Thalamus if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.Nucleus.name_Thalamus
 

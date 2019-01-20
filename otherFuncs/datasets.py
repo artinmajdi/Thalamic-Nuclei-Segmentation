@@ -184,7 +184,9 @@ def backgroundDetector(masks):
     background = np.expand_dims(background,axis=3)
     return background
 
-
+# TODO: also I need to finish this function
+# TODO: add the saving images with the format mahesh said
+# TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments3D_new(params):
 
     TestData = {}
@@ -200,6 +202,7 @@ def readingFromExperiments3D_new(params):
         #! reading all images and concatenating them into one array
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
         cntSkipped = 0
+        indTrain = 0
         for ind, nameSubject in tqdm(enumerate(Subjects), desc='Loading Dataset: ' + mode):
             subject = Subjects[nameSubject]
 
@@ -228,98 +231,21 @@ def readingFromExperiments3D_new(params):
             background = backgroundDetector(msk)
             msk = np.concatenate((msk, background),axis=3).astype('float32')
 
+            if 'ERROR_vimp' not in nameSubject:
+                if im[...,0].shape == msk[...,0].shape:
+                    if 'train' in mode:                        
+                        images = im     if indTrain == 0 else np.concatenate((images,im    ),axis=0)
+                        masks  = msk>Th if indTrain == 0 else np.concatenate((masks,msk>Th ),axis=0)
+                        TrainData[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                        indTrain = indTrain + 1
 
-            if im[...,0].shape == msk[...,0].shape:
-                if 'train' in mode:
-                    images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
-                    masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
-                    TrainData[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-                elif 'test' in mode:
-                    TestData[nameSubject]  = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-            else:
-                cntSkipped = cntSkipped + 1
-                AA = subject.address.split('vimp')
-                shutil.move(subject.address, AA[0] + 'ERROR_vimp' + AA[1])
-                print('WARNING:', mode , cntSkipped , nameSubject, ' image and mask have different shape sizes')
-
-        if 'train' in mode:
-            data.Train_ForTest = TrainData
-
-            if params.WhichExperiment.Dataset.Validation.fromKeras:
-                data.Train = trainCase(Image=images, Mask=masks.astype('float32'))
-            else:
-                data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
-        else:
-            data.Test = TestData
-
-
-    return data
-
-# TODO: also I need to finish this function
-# TODO: add the saving images with the format mahesh said
-# TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
-def readingFromExperiments3D(params):
-
-
-
-    TestData = {}
-    TrainData = {}
-    for mode in ['train','test']:
-
-        if 'train' in mode and params.preprocess.TestOnly:
-            continue
-
-        Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
-
-        #! reading all images and concatenating them into one array
-        Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
-        for ind, name in tqdm(enumerate(Subjects), desc='Loading Dataset'):
-            subject = Subjects[name]
-
-            # TODO: replace this with cropping if the negative number is low e.g. less than 5
-            if np.min(subject.Padding) < 0:
-                print('WARNING: subject: ',name,' size is out of the training network input dimensions')
-                continue
-
-            imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-
-
-            if os.path.exists(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz'):
-                OrigMsk = nib.load(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
-            else:
-                OrigMsk = np.zeros(imF.shape)
-
-            # a = np.mean(np.mean(OrigMsk,axis=1),axis=0)
-            # b = np.where(a != 0)[0]
-
-            # if 0:
-            #     msk = OrigMsk[:,:,b]
-            #     im = imF.get_data()[:,:,b]
-            # else:
-            msk = OrigMsk
-            im = imF.get_data()
-
-
-            im = np.pad(im, subject.Padding, 'constant')
-            im = np.transpose(im,[2,0,1])
-            im = np.expand_dims(im ,axis=3).astype('float32')
-            im = normalizeA.main_normalize(params.preprocess.Normalize , im)
-
-
-            msk = np.pad(msk, subject.Padding, 'constant')
-            msk = np.transpose(msk,[2,0,1])
-            msk = np.expand_dims(msk,axis=3) # .astype('float32')
-            msk = np.concatenate((msk,1-msk),axis=3).astype('float32')
-
-            if 'train' in mode:
-                images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
-                masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
-
-                TrainData[name] = testCase(Image=im, Mask=msk ,OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-
-            elif 'test' in mode:
-                TestData[name] = testCase(Image=im, Mask=msk , OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-
+                    elif 'test' in mode:
+                        TestData[nameSubject]  = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                else:
+                    cntSkipped = cntSkipped + 1
+                    AA = subject.address.split('vimp')
+                    shutil.move(subject.address, AA[0] + 'ERROR_vimp' + AA[1])
+                    print('WARNING:', mode , cntSkipped , nameSubject, ' image and mask have different shape sizes')
 
         if 'train' in mode:
             data.Train_ForTest = TrainData
@@ -333,6 +259,83 @@ def readingFromExperiments3D(params):
 
 
     return data
+
+
+# def readingFromExperiments3D(params):
+
+
+
+#     TestData = {}
+#     TrainData = {}
+#     for mode in ['train','test']:
+
+#         if 'train' in mode and params.preprocess.TestOnly:
+#             continue
+
+#         Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
+
+#         #! reading all images and concatenating them into one array
+#         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
+#         for ind, name in tqdm(enumerate(Subjects), desc='Loading Dataset'):
+#             subject = Subjects[name]
+
+#             # TODO: replace this with cropping if the negative number is low e.g. less than 5
+#             if np.min(subject.Padding) < 0:
+#                 print('WARNING: subject: ',name,' size is out of the training network input dimensions')
+#                 continue
+
+#             imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+
+
+#             if os.path.exists(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz'):
+#                 OrigMsk = nib.load(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
+#             else:
+#                 OrigMsk = np.zeros(imF.shape)
+
+#             # a = np.mean(np.mean(OrigMsk,axis=1),axis=0)
+#             # b = np.where(a != 0)[0]
+
+#             # if 0:
+#             #     msk = OrigMsk[:,:,b]
+#             #     im = imF.get_data()[:,:,b]
+#             # else:
+#             msk = OrigMsk
+#             im = imF.get_data()
+
+
+#             im = np.pad(im, subject.Padding, 'constant')
+#             im = np.transpose(im,[2,0,1])
+#             im = np.expand_dims(im ,axis=3).astype('float32')
+#             im = normalizeA.main_normalize(params.preprocess.Normalize , im)
+
+
+#             msk = np.pad(msk, subject.Padding, 'constant')
+#             msk = np.transpose(msk,[2,0,1])
+#             msk = np.expand_dims(msk,axis=3) # .astype('float32')
+#             msk = np.concatenate((msk,1-msk),axis=3).astype('float32')
+
+#             if 'train' in mode:
+#                 images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
+#                 masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
+
+#                 TrainData[name] = testCase(Image=im, Mask=msk ,OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+
+#             elif 'test' in mode:
+#                 TestData[name] = testCase(Image=im, Mask=msk , OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+
+
+#         if 'train' in mode:
+#             data.Train_ForTest = TrainData
+
+#             if params.WhichExperiment.Dataset.Validation.fromKeras:
+#                 data.Train = trainCase(Image=images, Mask=masks.astype('float32'))
+#             else:
+#                 data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
+#         else:
+#             data.Test = TestData
+
+
+#     return data
 
 def TrainValSeperate(percentage, images, masks):
 

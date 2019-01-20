@@ -16,13 +16,13 @@ nucleus_Index = [1]
 
 #! Training
 num_Layers = 5
-epochs = 100
+epochs = 10
 batch_size = 40
 Initialize_FromThalamus = True
 Initialize_FromOlderModel = False
 
 #! GPU
-GPU_Index = 4
+GPU_Index = 5
 
 
 
@@ -64,8 +64,8 @@ OptimizerIx = 1
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 Experiments_Index = 1
-SubExperiment_Index = 3
-
+SubExperiment_Index = 2
+SubExperiment_Tag = '_withAugData'
 
 #! cropping mode
 #           1 or mask:     cropping using the cropped mask acquired from rigid transformation

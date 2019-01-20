@@ -5,7 +5,6 @@ import pandas as pd
 from otherFuncs import smallFuncs
 from Parameters import UserInfo, paramFunc
 import pickle 
-import io
 
 def savingHistory_AsExcel(Dir):
 
@@ -14,7 +13,7 @@ def savingHistory_AsExcel(Dir):
         n_epochsMax = 300
 
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
-        writer = pd.ExcelWriter(Dir + '/history_AllSubExperimen.xlsx', engine='xlsxwriter')
+        writer = pd.ExcelWriter(Dir + '/history_AllSubExperiments.xlsx', engine='xlsxwriter')
         for nucleus in namesNulcei:
                 # dir_save = smallFuncs.mkDir((params.directories.Test.Result).split('/subExp')[0] + '/Train_Output')
                 AllNucleusInfo = []
@@ -90,8 +89,8 @@ def mergingDiceValues(Dir):
         for subExperiment in List_subExperiments:
                 mergingDiceValues_ForOneSubExperiment(Dir + '/' + subExperiment)
 
-
-params = paramFunc.Run(UserInfo.__dict__)
+UserInfo = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
+params = paramFunc.Run(UserInfo)
 
 mergingDiceValues( (params.directories.Test.Result).split('/subExp')[0] )
 
