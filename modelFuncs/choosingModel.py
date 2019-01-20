@@ -9,7 +9,7 @@ from skimage.filters import threshold_otsu
 from Parameters import paramFunc
 from otherFuncs import smallFuncs
 from tqdm import tqdm
-
+from time import time
 
 def check_Run(params, Data):
 
@@ -18,10 +18,11 @@ def check_Run(params, Data):
     # params.preprocess.TestOnly = True
     if not params.preprocess.TestOnly:
         #! Training the model
+        a = time()
         smallFuncs.Saving_UserInfo(params.directories.Train.Model, params, params.UserInfo)
         model = architecture(params)
         model, hist = modelTrain(Data, params, model)
-
+        hist.params['trainingTime'] = time() - a
 
         smallFuncs.saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
         smallFuncs.saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo['SaveReportMethod'])

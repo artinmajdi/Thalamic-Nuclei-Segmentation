@@ -33404,3 +33404,715 @@ Epoch 1/100
 32/48 [===================>..........] - ETA: 0s
 48/48 [==============================] - 0s 2ms/step
 100%|██████████| 83/83 [00:21<00:00,  3.87it/s]
+Using TensorFlow backend.
+Loading Dataset: train: 0it [00:00, ?it/s]Loading Dataset: train: 2it [00:00, 16.31it/s]Loading Dataset: train: 4it [00:00, 15.51it/s]Loading Dataset: train: 7it [00:00, 15.82it/s]Loading Dataset: train: 10it [00:00, 16.93it/s]Loading Dataset: train: 12it [00:00, 16.00it/s]Loading Dataset: train: 14it [00:00, 15.20it/s]Loading Dataset: train: 16it [00:01, 14.85it/s]Loading Dataset: train: 18it [00:01, 14.73it/s]Loading Dataset: train: 20it [00:01, 12.97it/s]Loading Dataset: train: 22it [00:01, 12.33it/s]Loading Dataset: train: 24it [00:01, 11.98it/s]Loading Dataset: train: 26it [00:01, 11.94it/s]Loading Dataset: train: 28it [00:02, 12.20it/s]Loading Dataset: train: 30it [00:02, 12.42it/s]Loading Dataset: train: 32it [00:02, 12.03it/s]Loading Dataset: train: 34it [00:02, 11.38it/s]Loading Dataset: train: 36it [00:02, 11.03it/s]Loading Dataset: train: 38it [00:02, 10.90it/s]Loading Dataset: train: 40it [00:03, 10.81it/s]Loading Dataset: train: 42it [00:03,  9.77it/s]Loading Dataset: train: 43it [00:03,  8.54it/s]Loading Dataset: train: 44it [00:03,  7.88it/s]Loading Dataset: train: 45it [00:03,  8.09it/s]Loading Dataset: train: 46it [00:03,  7.94it/s]Loading Dataset: train: 47it [00:04,  7.78it/s]Loading Dataset: train: 48it [00:04,  7.72it/s]Loading Dataset: train: 49it [00:04,  7.32it/s]Loading Dataset: train: 50it [00:04,  7.03it/s]Loading Dataset: train: 51it [00:04,  7.03it/s]Loading Dataset: train: 52it [00:04,  6.08it/s]Loading Dataset: train: 53it [00:05,  6.01it/s]Loading Dataset: train: 54it [00:05,  5.97it/s]Loading Dataset: train: 55it [00:05,  5.58it/s]Loading Dataset: train: 56it [00:05,  5.33it/s]Loading Dataset: train: 57it [00:05,  5.78it/s]Loading Dataset: train: 58it [00:05,  5.96it/s]Loading Dataset: train: 59it [00:06,  6.05it/s]Loading Dataset: train: 60it [00:06,  5.93it/s]Loading Dataset: train: 61it [00:06,  5.75it/s]Loading Dataset: train: 62it [00:06,  5.65it/s]Loading Dataset: train: 63it [00:06,  5.55it/s]Loading Dataset: train: 64it [00:07,  5.48it/s]Loading Dataset: train: 65it [00:07,  5.62it/s]Loading Dataset: train: 66it [00:07,  5.72it/s]Loading Dataset: train: 67it [00:07,  5.74it/s]Loading Dataset: train: 68it [00:07,  5.70it/s]Loading Dataset: train: 69it [00:07,  5.65it/s]Loading Dataset: train: 70it [00:08,  5.61it/s]Loading Dataset: train: 71it [00:08,  5.57it/s]Loading Dataset: train: 72it [00:08,  5.54it/s]Loading Dataset: train: 73it [00:08,  5.51it/s]Loading Dataset: train: 74it [00:08,  5.31it/s]Loading Dataset: train: 75it [00:09,  5.09it/s]Loading Dataset: train: 76it [00:09,  4.95it/s]Loading Dataset: train: 77it [00:09,  4.97it/s]Loading Dataset: train: 78it [00:09,  4.96it/s]Loading Dataset: train: 79it [00:09,  4.96it/s]Loading Dataset: train: 80it [00:10,  4.95it/s]Loading Dataset: train: 81it [00:10,  4.91it/s]Loading Dataset: train: 82it [00:10,  4.88it/s]Loading Dataset: train: 83it [00:10,  4.66it/s]Loading Dataset: train: 84it [00:10,  4.52it/s]Loading Dataset: train: 85it [00:11,  4.54it/s]Loading Dataset: train: 86it [00:11,  4.63it/s]Loading Dataset: train: 87it [00:11,  4.55it/s]Loading Dataset: train: 88it [00:11,  4.51it/s]Loading Dataset: train: 89it [00:12,  4.64it/s]Loading Dataset: train: 90it [00:12,  4.50it/s]Loading Dataset: train: 91it [00:12,  4.25it/s]Loading Dataset: train: 92it [00:12,  4.17it/s]Loading Dataset: train: 93it [00:13,  4.12it/s]Loading Dataset: train: 94it [00:13,  4.07it/s]Loading Dataset: train: 95it [00:13,  4.11it/s]Loading Dataset: train: 96it [00:13,  3.89it/s]Loading Dataset: train: 97it [00:14,  3.57it/s]Loading Dataset: train: 98it [00:14,  3.76it/s]Loading Dataset: train: 99it [00:14,  3.81it/s]Loading Dataset: train: 100it [00:14,  3.87it/s]Loading Dataset: train: 101it [00:15,  4.00it/s]Loading Dataset: train: 102it [00:15,  4.04it/s]Loading Dataset: train: 103it [00:15,  4.04it/s]Loading Dataset: train: 104it [00:15,  3.84it/s]Loading Dataset: train: 105it [00:16,  3.66it/s]Loading Dataset: train: 106it [00:16,  3.71it/s]Loading Dataset: train: 107it [00:16,  3.80it/s]Loading Dataset: train: 108it [00:16,  3.78it/s]Loading Dataset: train: 109it [00:17,  3.45it/s]Loading Dataset: train: 110it [00:17,  3.49it/s]Loading Dataset: train: 111it [00:17,  3.52it/s]Loading Dataset: train: 112it [00:18,  3.53it/s]Loading Dataset: train: 113it [00:18,  3.36it/s]Loading Dataset: train: 114it [00:18,  3.39it/s]Loading Dataset: train: 115it [00:19,  3.42it/s]Loading Dataset: train: 116it [00:19,  3.56it/s]Loading Dataset: train: 117it [00:19,  3.59it/s]Loading Dataset: train: 118it [00:19,  3.47it/s]Loading Dataset: train: 119it [00:20,  3.51it/s]Loading Dataset: train: 120it [00:20,  3.46it/s]Loading Dataset: train: 121it [00:20,  3.43it/s]Loading Dataset: train: 122it [00:21,  3.45it/s]Loading Dataset: train: 123it [00:21,  3.31it/s]Loading Dataset: train: 124it [00:21,  3.23it/s]Loading Dataset: train: 125it [00:21,  3.34it/s]Loading Dataset: train: 126it [00:22,  3.40it/s]Loading Dataset: train: 127it [00:22,  3.44it/s]Loading Dataset: train: 128it [00:22,  3.50it/s]Loading Dataset: train: 129it [00:23,  3.49it/s]Loading Dataset: train: 130it [00:23,  3.26it/s]Loading Dataset: train: 131it [00:23,  3.11it/s]Loading Dataset: train: 132it [00:24,  3.14it/s]Loading Dataset: train: 133it [00:24,  3.10it/s]Loading Dataset: train: 134it [00:24,  2.73it/s]Loading Dataset: train: 135it [00:25,  2.83it/s]Loading Dataset: train: 136it [00:25,  2.92it/s]Loading Dataset: train: 137it [00:25,  3.01it/s]Loading Dataset: train: 138it [00:26,  2.80it/s]Loading Dataset: train: 139it [00:26,  2.76it/s]Loading Dataset: train: 140it [00:27,  2.82it/s]Loading Dataset: train: 141it [00:27,  2.88it/s]Loading Dataset: train: 142it [00:27,  2.65it/s]Loading Dataset: train: 143it [00:28,  2.61it/s]Loading Dataset: train: 144it [00:28,  2.71it/s]Loading Dataset: train: 145it [00:28,  2.78it/s]Loading Dataset: train: 146it [00:29,  2.68it/s]Loading Dataset: train: 147it [00:29,  2.59it/s]Loading Dataset: train: 148it [00:30,  2.70it/s]Loading Dataset: train: 149it [00:30,  2.75it/s]Loading Dataset: train: 150it [00:30,  2.53it/s]Loading Dataset: train: 151it [00:31,  2.61it/s]Loading Dataset: train: 152it [00:31,  2.69it/s]Loading Dataset: train: 153it [00:31,  2.77it/s]Loading Dataset: train: 154it [00:32,  2.83it/s]Loading Dataset: train: 155it [00:32,  2.79it/s]Loading Dataset: train: 156it [00:32,  2.79it/s]Loading Dataset: train: 157it [00:33,  2.80it/s]Loading Dataset: train: 158it [00:33,  2.79it/s]Loading Dataset: train: 159it [00:34,  2.79it/s]Loading Dataset: train: 160it [00:34,  2.67it/s]Loading Dataset: train: 161it [00:34,  2.65it/s]Loading Dataset: train: 162it [00:35,  2.63it/s]Loading Dataset: train: 163it [00:35,  2.35it/s]Loading Dataset: train: 164it [00:36,  2.41it/s]Loading Dataset: train: 165it [00:36,  2.52it/s]Loading Dataset: train: 166it [00:36,  2.57it/s]Loading Dataset: train: 167it [00:37,  2.53it/s]Loading Dataset: train: 168it [00:37,  2.58it/s]Loading Dataset: train: 169it [00:38,  2.58it/s]Loading Dataset: train: 170it [00:38,  2.59it/s]Loading Dataset: train: 171it [00:38,  2.42it/s]Loading Dataset: train: 172it [00:39,  2.44it/s]Loading Dataset: train: 173it [00:39,  2.44it/s]Loading Dataset: train: 174it [00:40,  2.43it/s]Loading Dataset: train: 175it [00:40,  4.36it/s]
+Loading Dataset: test: 0it [00:00, ?it/s]Loading Dataset: test: 2it [00:00, 18.30it/s]Loading Dataset: test: 4it [00:00, 16.72it/s]Loading Dataset: test: 6it [00:00, 17.33it/s]Loading Dataset: test: 9it [00:00, 18.74it/s]Loading Dataset: test: 11it [00:00, 18.74it/s]Loading Dataset: test: 13it [00:00, 17.74it/s]Loading Dataset: test: 15it [00:00, 15.95it/s]Loading Dataset: test: 17it [00:01, 15.55it/s]Loading Dataset: test: 19it [00:01, 14.23it/s]Loading Dataset: test: 22it [00:01, 15.88it/s]Loading Dataset: test: 24it [00:01, 16.55it/s]Loading Dataset: test: 26it [00:01, 15.87it/s]Loading Dataset: test: 28it [00:01, 14.16it/s]Loading Dataset: test: 30it [00:01, 14.00it/s]Loading Dataset: test: 32it [00:02, 14.61it/s]Loading Dataset: test: 34it [00:02, 15.34it/s]Loading Dataset: test: 37it [00:02, 16.50it/s]Loading Dataset: test: 39it [00:02, 14.99it/s]Loading Dataset: test: 41it [00:02, 15.01it/s]Loading Dataset: test: 43it [00:02, 14.38it/s]Loading Dataset: test: 45it [00:02, 15.11it/s]Loading Dataset: test: 47it [00:02, 16.28it/s]Loading Dataset: test: 49it [00:03, 17.14it/s]Loading Dataset: test: 51it [00:03, 16.74it/s]Loading Dataset: test: 53it [00:03, 17.13it/s]Loading Dataset: test: 55it [00:03, 17.32it/s]Loading Dataset: test: 57it [00:03, 15.05it/s]Loading Dataset: test: 59it [00:03, 14.46it/s]Loading Dataset: test: 61it [00:03, 14.43it/s]Loading Dataset: test: 63it [00:03, 15.31it/s]Loading Dataset: test: 65it [00:04, 15.98it/s]Loading Dataset: test: 67it [00:04, 15.91it/s]Loading Dataset: test: 69it [00:04, 15.62it/s]Loading Dataset: test: 71it [00:04, 15.05it/s]Loading Dataset: test: 74it [00:04, 16.46it/s]Loading Dataset: test: 76it [00:04, 16.56it/s]Loading Dataset: test: 78it [00:04, 16.70it/s]Loading Dataset: test: 80it [00:05, 15.46it/s]Loading Dataset: test: 82it [00:05, 14.48it/s]Loading Dataset: test: 83it [00:05, 15.78it/s]2019-01-19 22:17:22.934588: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-19 22:17:23.332137: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:85:00.0
+totalMemory: 15.89GiB freeMemory: 15.60GiB
+2019-01-19 22:17:23.332199: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-01-19 22:17:23.699076: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-19 22:17:23.699146: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-01-19 22:17:23.699159: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-01-19 22:17:23.699643: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:85:00.0, compute capability: 6.0)
+Nuclei: 6-VLP   GPU: 5   Epochs: 50   Dataset: SRI_3T   Experiment: { exp1_tmp , subExp2_Loss_BCE_withAugData }
+nuclei:  6-VLP gpu: 5
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_1 (InputLayer)            (None, 96, 112, 1)   0                                            
+__________________________________________________________________________________________________
+batch_normalization_1 (BatchNor (None, 96, 112, 1)   4           input_1[0][0]                    
+__________________________________________________________________________________________________
+conv2d_1 (Conv2D)               (None, 96, 112, 64)  640         batch_normalization_1[0][0]      
+__________________________________________________________________________________________________
+conv2d_2 (Conv2D)               (None, 96, 112, 64)  36928       conv2d_1[0][0]                   
+__________________________________________________________________________________________________
+max_pooling2d_1 (MaxPooling2D)  (None, 48, 56, 64)   0           conv2d_2[0][0]                   
+__________________________________________________________________________________________________
+dropout_1 (Dropout)             (None, 48, 56, 64)   0           max_pooling2d_1[0][0]            
+__________________________________________________________________________________________________
+batch_normalization_2 (BatchNor (None, 48, 56, 64)   256         dropout_1[0][0]                  
+__________________________________________________________________________________________________
+conv2d_3 (Conv2D)               (None, 48, 56, 128)  73856       batch_normalization_2[0][0]      
+__________________________________________________________________________________________________
+conv2d_4 (Conv2D)               (None, 48, 56, 128)  147584      conv2d_3[0][0]                   
+__________________________________________________________________________________________________
+max_pooling2d_2 (MaxPooling2D)  (None, 24, 28, 128)  0           conv2d_4[0][0]                   
+__________________________________________________________________________________________________
+dropout_2 (Dropout)             (None, 24, 28, 128)  0           max_pooling2d_2[0][0]            
+__________________________________________________________________________________________________
+batch_normalization_3 (BatchNor (None, 24, 28, 128)  512         dropout_2[0][0]                  
+__________________________________________________________________________________________________
+conv2d_5 (Conv2D)               (None, 24, 28, 256)  295168      batch_normalization_3[0][0]      
+__________________________________________________________________________________________________
+conv2d_6 (Conv2D)               (None, 24, 28, 256)  590080      conv2d_5[0][0]                   
+__________________________________________________________________________________________________
+max_pooling2d_3 (MaxPooling2D)  (None, 12, 14, 256)  0           conv2d_6[0][0]                   
+__________________________________________________________________________________________________
+dropout_3 (Dropout)             (None, 12, 14, 256)  0           max_pooling2d_3[0][0]            
+__________________________________________________________________________________________________
+batch_normalization_4 (BatchNor (None, 12, 14, 256)  1024        dropout_3[0][0]                  
+__________________________________________________________________________________________________
+conv2d_7 (Conv2D)               (None, 12, 14, 512)  1180160     batch_normalization_4[0][0]      
+__________________________________________________________________________________________________
+conv2d_8 (Conv2D)               (None, 12, 14, 512)  2359808     conv2d_7[0][0]                   
+__________________________________________________________________________________________________
+max_pooling2d_4 (MaxPooling2D)  (None, 6, 7, 512)    0           conv2d_8[0][0]                   
+__________________________________________________________________________________________________
+dropout_4 (Dropout)             (None, 6, 7, 512)    0           max_pooling2d_4[0][0]            
+__________________________________________________________________________________________________
+conv2d_9 (Conv2D)               (None, 6, 7, 1024)   4719616     dropout_4[0][0]                  
+__________________________________________________________________________________________________
+conv2d_10 (Conv2D)              (None, 6, 7, 1024)   9438208     conv2d_9[0][0]                   
+__________________________________________________________________________________________________
+dropout_5 (Dropout)             (None, 6, 7, 1024)   0           conv2d_10[0][0]                  
+__________________________________________________________________________________________________
+batch_normalization_5 (BatchNor (None, 6, 7, 1024)   4096        dropout_5[0][0]                  
+__________________________________________________________________________________________________
+conv2d_transpose_1 (Conv2DTrans (None, 12, 14, 512)  2097664     batch_normalization_5[0][0]      
+__________________________________________________________________________________________________
+concatenate_1 (Concatenate)     (None, 12, 14, 1024) 0           conv2d_transpose_1[0][0]         
+                                                                 conv2d_8[0][0]                   
+__________________________________________________________________________________________________
+conv2d_11 (Conv2D)              (None, 12, 14, 512)  4719104     concatenate_1[0][0]              
+__________________________________________________________________________________________________
+conv2d_12 (Conv2D)              (None, 12, 14, 512)  2359808     conv2d_11[0][0]                  
+__________________________________________________________________________________________________
+dropout_6 (Dropout)             (None, 12, 14, 512)  0           conv2d_12[0][0]                  
+__________________________________________________________________________________________________
+batch_normalization_6 (BatchNor (None, 12, 14, 512)  2048        dropout_6[0][0]                  
+__________________________________________________________________________________________________
+conv2d_transpose_2 (Conv2DTrans (None, 24, 28, 256)  524544      batch_normalization_6[0][0]      
+__________________________________________________________________________________________________
+concatenate_2 (Concatenate)     (None, 24, 28, 512)  0           conv2d_transpose_2[0][0]         
+                                                                 conv2d_6[0][0]                   
+__________________________________________________________________________________________________
+conv2d_13 (Conv2D)              (None, 24, 28, 256)  1179904     concatenate_2[0][0]              
+__________________________________________________________________________________________________
+conv2d_14 (Conv2D)              (None, 24, 28, 256)  590080      conv2d_13[0][0]                  
+__________________________________________________________________________________________________
+dropout_7 (Dropout)             (None, 24, 28, 256)  0           conv2d_14[0][0]                  
+__________________________________________________________________________________________________
+batch_normalization_7 (BatchNor (None, 24, 28, 256)  1024        dropout_7[0][0]                  
+__________________________________________________________________________________________________
+conv2d_transpose_3 (Conv2DTrans (None, 48, 56, 128)  131200      batch_normalization_7[0][0]      
+__________________________________________________________________________________________________
+concatenate_3 (Concatenate)     (None, 48, 56, 256)  0           conv2d_transpose_3[0][0]         
+Training:   0%|          | 0/50 [00:00<?, ?it/s]
+Epoch: 0:   0%|          | 0/6516 [00:00<?, ?it/s][A
+                                                                 conv2d_4[0][0]                   
+__________________________________________________________________________________________________
+conv2d_15 (Conv2D)              (None, 48, 56, 128)  295040      concatenate_3[0][0]              
+__________________________________________________________________________________________________
+conv2d_16 (Conv2D)              (None, 48, 56, 128)  147584      conv2d_15[0][0]                  
+__________________________________________________________________________________________________
+dropout_8 (Dropout)             (None, 48, 56, 128)  0           conv2d_16[0][0]                  
+__________________________________________________________________________________________________
+batch_normalization_8 (BatchNor (None, 48, 56, 128)  512         dropout_8[0][0]                  
+__________________________________________________________________________________________________
+conv2d_transpose_4 (Conv2DTrans (None, 96, 112, 64)  32832       batch_normalization_8[0][0]      
+__________________________________________________________________________________________________
+concatenate_4 (Concatenate)     (None, 96, 112, 128) 0           conv2d_transpose_4[0][0]         
+                                                                 conv2d_2[0][0]                   
+__________________________________________________________________________________________________
+conv2d_17 (Conv2D)              (None, 96, 112, 64)  73792       concatenate_4[0][0]              
+__________________________________________________________________________________________________
+conv2d_18 (Conv2D)              (None, 96, 112, 64)  36928       conv2d_17[0][0]                  
+__________________________________________________________________________________________________
+dropout_9 (Dropout)             (None, 96, 112, 64)  0           conv2d_18[0][0]                  
+__________________________________________________________________________________________________
+conv2d_19 (Conv2D)              (None, 96, 112, 2)   130         dropout_9[0][0]                  
+==================================================================================================
+Total params: 31,040,134
+Trainable params: 31,035,396
+Non-trainable params: 4,738
+__________________________________________________________________________________________________
+Train on 6516 samples, validate on 724 samples
+Epoch 1/50
+
+  40/6516 [..............................] - ETA: 23:32 - loss: 0.0058 - acc: 0.9968 - Dice_Calculator: 0.1525
+Epoch: 0 - loss: 0.006, acc: 0.997, Dice_Calculator: 0.152:   1%|          | 40/6516 [00:08<23:32,  4.59it/s][A
+  80/6516 [..............................] - ETA: 12:13 - loss: 0.0061 - acc: 0.9967 - Dice_Calculator: 0.1830
+Epoch: 0 - loss: 0.006, acc: 0.997, Dice_Calculator: 0.183:   1%|          | 80/6516 [00:09<16:41,  6.43it/s][A
+ 120/6516 [..............................] - ETA: 8:17 - loss: 0.0066 - acc: 0.9972 - Dice_Calculator: 0.1597 
+Epoch: 0 - loss: 0.007, acc: 0.997, Dice_Calculator: 0.160:   2%|▏         | 120/6516 [00:09<11:47,  9.04it/s][A
+ 160/6516 [..............................] - ETA: 6:20 - loss: 0.0069 - acc: 0.9975 - Dice_Calculator: 0.1655
+Epoch: 0 - loss: 0.007, acc: 0.997, Dice_Calculator: 0.166:   2%|▏         | 160/6516 [00:09<08:22, 12.64it/s][A
+ 200/6516 [..............................] - ETA: 5:09 - loss: 0.0066 - acc: 0.9976 - Dice_Calculator: 0.1831
+Epoch: 0 - loss: 0.007, acc: 0.998, Dice_Calculator: 0.183:   3%|▎         | 200/6516 [00:09<06:00, 17.52it/s][A
+ 240/6516 [>.............................] - ETA: 4:22 - loss: 0.0064 - acc: 0.9976 - Dice_Calculator: 0.2139
+Epoch: 0 - loss: 0.006, acc: 0.998, Dice_Calculator: 0.214:   4%|▎         | 240/6516 [00:10<04:21, 24.01it/s][A
+ 280/6516 [>.............................] - ETA: 3:48 - loss: 0.0058 - acc: 0.9978 - Dice_Calculator: 0.2278
+Epoch: 0 - loss: 0.006, acc: 0.998, Dice_Calculator: 0.228:   4%|▍         | 280/6516 [00:10<03:12, 32.41it/s][A
+ 320/6516 [>.............................] - ETA: 3:22 - loss: 0.0054 - acc: 0.9980 - Dice_Calculator: 0.2300
+Epoch: 0 - loss: 0.005, acc: 0.998, Dice_Calculator: 0.230:   5%|▍         | 320/6516 [00:10<02:24, 42.92it/s][A
+ 360/6516 [>.............................] - ETA: 3:02 - loss: 0.0058 - acc: 0.9978 - Dice_Calculator: 0.2338
+Epoch: 0 - loss: 0.006, acc: 0.998, Dice_Calculator: 0.234:   6%|▌         | 360/6516 [00:10<01:50, 55.53it/s][A
+ 400/6516 [>.............................] - ETA: 2:47 - loss: 0.0055 - acc: 0.9979 - Dice_Calculator: 0.2361
+Epoch: 0 - loss: 0.005, acc: 0.998, Dice_Calculator: 0.236:   6%|▌         | 400/6516 [00:10<01:27, 69.92it/s][A
+ 440/6516 [=>............................] - ETA: 2:33 - loss: 0.0053 - acc: 0.9980 - Dice_Calculator: 0.2392
+Epoch: 0 - loss: 0.005, acc: 0.998, Dice_Calculator: 0.239:   7%|▋         | 440/6516 [00:11<01:11, 85.45it/s][A
+ 480/6516 [=>............................] - ETA: 2:23 - loss: 0.0052 - acc: 0.9980 - Dice_Calculator: 0.2443
+Epoch: 0 - loss: 0.005, acc: 0.998, Dice_Calculator: 0.244:   7%|▋         | 480/6516 [00:11<00:59, 101.13it/s][A
+ 520/6516 [=>............................] - ETA: 2:13 - loss: 0.0050 - acc: 0.9981 - Dice_Calculator: 0.2397
+Epoch: 0 - loss: 0.005, acc: 0.998, Dice_Calculator: 0.240:   8%|▊         | 520/6516 [00:11<00:51, 116.07it/s][A
+ 560/6516 [=>............................] - ETA: 2:05 - loss: 0.0047 - acc: 0.9982 - Dice_Calculator: 0.2357
+Epoch: 0 - loss: 0.005, acc: 0.998, Dice_Calculator: 0.236:   9%|▊         | 560/6516 [00:11<00:46, 129.41it/s][A
+ 600/6516 [=>............................] - ETA: 1:58 - loss: 0.0048 - acc: 0.9982 - Dice_Calculator: 0.2396
+Epoch: 0 - loss: 0.005, acc: 0.998, Dice_Calculator: 0.240:   9%|▉         | 600/6516 [00:12<00:42, 140.72it/s][A
+ 640/6516 [=>............................] - ETA: 1:52 - loss: 0.0046 - acc: 0.9982 - Dice_Calculator: 0.2382
+Epoch: 0 - loss: 0.005, acc: 0.998, Dice_Calculator: 0.238:  10%|▉         | 640/6516 [00:12<00:39, 149.96it/s][A
+ 680/6516 [==>...........................] - ETA: 1:47 - loss: 0.0045 - acc: 0.9983 - Dice_Calculator: 0.2358
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.236:  10%|█         | 680/6516 [00:12<00:37, 157.16it/s][A
+ 720/6516 [==>...........................] - ETA: 1:42 - loss: 0.0043 - acc: 0.9984 - Dice_Calculator: 0.2230
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.223:  11%|█         | 720/6516 [00:12<00:35, 162.23it/s][A
+ 760/6516 [==>...........................] - ETA: 1:38 - loss: 0.0042 - acc: 0.9984 - Dice_Calculator: 0.2242
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.224:  12%|█▏        | 760/6516 [00:12<00:34, 166.28it/s][A
+ 800/6516 [==>...........................] - ETA: 1:34 - loss: 0.0042 - acc: 0.9984 - Dice_Calculator: 0.2222
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.222:  12%|█▏        | 800/6516 [00:13<00:33, 168.79it/s][A
+ 840/6516 [==>...........................] - ETA: 1:30 - loss: 0.0040 - acc: 0.9985 - Dice_Calculator: 0.2179
+Epoch: 0 - loss: 0.004, acc: 0.999, Dice_Calculator: 0.218:  13%|█▎        | 840/6516 [00:13<00:33, 171.07it/s][A
+ 880/6516 [===>..........................] - ETA: 1:27 - loss: 0.0041 - acc: 0.9985 - Dice_Calculator: 0.2189
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.219:  14%|█▎        | 880/6516 [00:13<00:32, 172.84it/s][A
+ 920/6516 [===>..........................] - ETA: 1:24 - loss: 0.0040 - acc: 0.9985 - Dice_Calculator: 0.2241
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.224:  14%|█▍        | 920/6516 [00:13<00:32, 174.04it/s][A
+ 960/6516 [===>..........................] - ETA: 1:21 - loss: 0.0040 - acc: 0.9985 - Dice_Calculator: 0.2289
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.229:  15%|█▍        | 960/6516 [00:14<00:31, 174.69it/s][A
+1000/6516 [===>..........................] - ETA: 1:19 - loss: 0.0040 - acc: 0.9984 - Dice_Calculator: 0.2365
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.236:  15%|█▌        | 1000/6516 [00:14<00:31, 175.22it/s][A
+1040/6516 [===>..........................] - ETA: 1:16 - loss: 0.0039 - acc: 0.9985 - Dice_Calculator: 0.2356
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.236:  16%|█▌        | 1040/6516 [00:14<00:31, 172.84it/s][A
+1080/6516 [===>..........................] - ETA: 1:14 - loss: 0.0039 - acc: 0.9985 - Dice_Calculator: 0.2391
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.239:  17%|█▋        | 1080/6516 [00:14<00:31, 173.83it/s][A
+1120/6516 [====>.........................] - ETA: 1:12 - loss: 0.0039 - acc: 0.9985 - Dice_Calculator: 0.2400
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.240:  17%|█▋        | 1120/6516 [00:15<00:31, 173.36it/s][A
+1160/6516 [====>.........................] - ETA: 1:10 - loss: 0.0038 - acc: 0.9985 - Dice_Calculator: 0.2394
+Epoch: 0 - loss: 0.004, acc: 0.999, Dice_Calculator: 0.239:  18%|█▊        | 1160/6516 [00:15<00:30, 174.46it/s][A
+1200/6516 [====>.........................] - ETA: 1:08 - loss: 0.0038 - acc: 0.9985 - Dice_Calculator: 0.2450
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.245:  18%|█▊        | 1200/6516 [00:15<00:30, 175.15it/s][A
+1240/6516 [====>.........................] - ETA: 1:06 - loss: 0.0037 - acc: 0.9985 - Dice_Calculator: 0.2431
+Epoch: 0 - loss: 0.004, acc: 0.999, Dice_Calculator: 0.243:  19%|█▉        | 1240/6516 [00:15<00:30, 175.86it/s][A
+1280/6516 [====>.........................] - ETA: 1:05 - loss: 0.0037 - acc: 0.9985 - Dice_Calculator: 0.2491
+Epoch: 0 - loss: 0.004, acc: 0.999, Dice_Calculator: 0.249:  20%|█▉        | 1280/6516 [00:15<00:29, 176.19it/s][A
+1320/6516 [=====>........................] - ETA: 1:03 - loss: 0.0036 - acc: 0.9985 - Dice_Calculator: 0.2553
+Epoch: 0 - loss: 0.004, acc: 0.999, Dice_Calculator: 0.255:  20%|██        | 1320/6516 [00:16<00:29, 176.39it/s][A
+1360/6516 [=====>........................] - ETA: 1:02 - loss: 0.0036 - acc: 0.9985 - Dice_Calculator: 0.2598
+Epoch: 0 - loss: 0.004, acc: 0.999, Dice_Calculator: 0.260:  21%|██        | 1360/6516 [00:16<00:29, 176.47it/s][A
+1400/6516 [=====>........................] - ETA: 1:00 - loss: 0.0037 - acc: 0.9984 - Dice_Calculator: 0.2634
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.263:  21%|██▏       | 1400/6516 [00:16<00:29, 175.56it/s][A
+1440/6516 [=====>........................] - ETA: 59s - loss: 0.0037 - acc: 0.9985 - Dice_Calculator: 0.2583 
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.258:  22%|██▏       | 1440/6516 [00:16<00:28, 175.79it/s][A
+1480/6516 [=====>........................] - ETA: 58s - loss: 0.0036 - acc: 0.9985 - Dice_Calculator: 0.2636
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.264:  23%|██▎       | 1480/6516 [00:17<00:28, 176.03it/s][A
+1520/6516 [=====>........................] - ETA: 56s - loss: 0.0036 - acc: 0.9985 - Dice_Calculator: 0.2639
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.264:  23%|██▎       | 1520/6516 [00:17<00:28, 176.17it/s][A
+1560/6516 [======>.......................] - ETA: 55s - loss: 0.0036 - acc: 0.9985 - Dice_Calculator: 0.2657
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.266:  24%|██▍       | 1560/6516 [00:17<00:28, 176.32it/s][A
+1600/6516 [======>.......................] - ETA: 54s - loss: 0.0036 - acc: 0.9985 - Dice_Calculator: 0.2701
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.270:  25%|██▍       | 1600/6516 [00:17<00:27, 176.27it/s][A
+1640/6516 [======>.......................] - ETA: 53s - loss: 0.0036 - acc: 0.9984 - Dice_Calculator: 0.2728
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.273:  25%|██▌       | 1640/6516 [00:17<00:27, 176.55it/s][A
+1680/6516 [======>.......................] - ETA: 52s - loss: 0.0036 - acc: 0.9984 - Dice_Calculator: 0.2773
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.277:  26%|██▌       | 1680/6516 [00:18<00:27, 176.82it/s][A
+1720/6516 [======>.......................] - ETA: 51s - loss: 0.0036 - acc: 0.9984 - Dice_Calculator: 0.2776
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.278:  26%|██▋       | 1720/6516 [00:18<00:27, 176.74it/s][A
+1760/6516 [=======>......................] - ETA: 50s - loss: 0.0036 - acc: 0.9984 - Dice_Calculator: 0.2793
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.279:  27%|██▋       | 1760/6516 [00:18<00:26, 176.73it/s][A
+1800/6516 [=======>......................] - ETA: 49s - loss: 0.0035 - acc: 0.9985 - Dice_Calculator: 0.2813
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.281:  28%|██▊       | 1800/6516 [00:18<00:26, 176.53it/s][A
+1840/6516 [=======>......................] - ETA: 48s - loss: 0.0035 - acc: 0.9985 - Dice_Calculator: 0.2817
+Epoch: 0 - loss: 0.004, acc: 0.998, Dice_Calculator: 0.282:  28%|██▊       | 1840/6516 [00:19<00:26, 176.69it/s][A
+1880/6516 [=======>......................] - ETA: 47s - loss: 0.0035 - acc: 0.9985 - Dice_Calculator: 0.2836
+Epoch: 0 - loss: 0.003, acc: 0.998, Dice_Calculator: 0.284:  29%|██▉       | 1880/6516 [00:19<00:26, 176.80it/s][A
+1920/6516 [=======>......................] - ETA: 46s - loss: 0.0034 - acc: 0.9985 - Dice_Calculator: 0.2835
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.283:  29%|██▉       | 1920/6516 [00:19<00:25, 176.93it/s][A
+1960/6516 [========>.....................] - ETA: 45s - loss: 0.0034 - acc: 0.9985 - Dice_Calculator: 0.2848
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.285:  30%|███       | 1960/6516 [00:19<00:25, 177.02it/s][A
+2000/6516 [========>.....................] - ETA: 45s - loss: 0.0034 - acc: 0.9985 - Dice_Calculator: 0.2869
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.287:  31%|███       | 2000/6516 [00:20<00:25, 176.93it/s][A
+2040/6516 [========>.....................] - ETA: 44s - loss: 0.0034 - acc: 0.9985 - Dice_Calculator: 0.2899
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.290:  31%|███▏      | 2040/6516 [00:20<00:25, 174.57it/s][A
+2080/6516 [========>.....................] - ETA: 43s - loss: 0.0034 - acc: 0.9985 - Dice_Calculator: 0.2908
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.291:  32%|███▏      | 2080/6516 [00:20<00:25, 175.12it/s][A
+2120/6516 [========>.....................] - ETA: 42s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.2916
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.292:  33%|███▎      | 2120/6516 [00:20<00:25, 175.63it/s][A
+2160/6516 [========>.....................] - ETA: 42s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.2942
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.294:  33%|███▎      | 2160/6516 [00:20<00:24, 176.01it/s][A
+2200/6516 [=========>....................] - ETA: 41s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.2948
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.295:  34%|███▍      | 2200/6516 [00:21<00:24, 176.30it/s][A
+2240/6516 [=========>....................] - ETA: 40s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.2971
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.297:  34%|███▍      | 2240/6516 [00:21<00:24, 176.57it/s][A
+2280/6516 [=========>....................] - ETA: 40s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.2977
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.298:  35%|███▍      | 2280/6516 [00:21<00:23, 176.80it/s][A
+2320/6516 [=========>....................] - ETA: 39s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.2988
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.299:  36%|███▌      | 2320/6516 [00:21<00:23, 176.83it/s][A
+2360/6516 [=========>....................] - ETA: 38s - loss: 0.0032 - acc: 0.9986 - Dice_Calculator: 0.2989
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.299:  36%|███▌      | 2360/6516 [00:22<00:23, 175.57it/s][A
+2400/6516 [==========>...................] - ETA: 38s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.3005
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.300:  37%|███▋      | 2400/6516 [00:22<00:23, 176.01it/s][A
+2440/6516 [==========>...................] - ETA: 37s - loss: 0.0032 - acc: 0.9986 - Dice_Calculator: 0.3027
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.303:  37%|███▋      | 2440/6516 [00:22<00:25, 162.45it/s][A
+2480/6516 [==========>...................] - ETA: 37s - loss: 0.0032 - acc: 0.9986 - Dice_Calculator: 0.3031
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.303:  38%|███▊      | 2480/6516 [00:22<00:24, 164.23it/s][A
+2520/6516 [==========>...................] - ETA: 36s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.3046
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.305:  39%|███▊      | 2520/6516 [00:23<00:23, 167.83it/s][A
+2560/6516 [==========>...................] - ETA: 35s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.3031
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.303:  39%|███▉      | 2560/6516 [00:23<00:23, 170.19it/s][A
+2600/6516 [==========>...................] - ETA: 35s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.3046
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.305:  40%|███▉      | 2600/6516 [00:23<00:22, 172.20it/s][A
+2640/6516 [===========>..................] - ETA: 34s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.3045
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.305:  41%|████      | 2640/6516 [00:23<00:22, 173.43it/s][A
+2680/6516 [===========>..................] - ETA: 34s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3032
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.303:  41%|████      | 2680/6516 [00:23<00:21, 174.50it/s][A
+2720/6516 [===========>..................] - ETA: 33s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.3048
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.305:  42%|████▏     | 2720/6516 [00:24<00:21, 175.37it/s][A
+2760/6516 [===========>..................] - ETA: 33s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.3067
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.307:  42%|████▏     | 2760/6516 [00:24<00:21, 175.80it/s][A
+2800/6516 [===========>..................] - ETA: 32s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.3059
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.306:  43%|████▎     | 2800/6516 [00:24<00:21, 176.05it/s][A
+2840/6516 [============>.................] - ETA: 32s - loss: 0.0033 - acc: 0.9985 - Dice_Calculator: 0.3081
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.308:  44%|████▎     | 2840/6516 [00:24<00:20, 176.47it/s][A
+2880/6516 [============>.................] - ETA: 31s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3087
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.309:  44%|████▍     | 2880/6516 [00:25<00:20, 176.55it/s][A
+2920/6516 [============>.................] - ETA: 31s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3112
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.311:  45%|████▍     | 2920/6516 [00:25<00:20, 176.91it/s][A
+2960/6516 [============>.................] - ETA: 30s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3133
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.313:  45%|████▌     | 2960/6516 [00:25<00:20, 176.87it/s][A
+3000/6516 [============>.................] - ETA: 30s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3153
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.315:  46%|████▌     | 3000/6516 [00:25<00:19, 177.05it/s][A
+3040/6516 [============>.................] - ETA: 29s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3172
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.317:  47%|████▋     | 3040/6516 [00:25<00:19, 176.70it/s][A
+3080/6516 [=============>................] - ETA: 29s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3182
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.318:  47%|████▋     | 3080/6516 [00:26<00:19, 176.23it/s][A
+3120/6516 [=============>................] - ETA: 28s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3195
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.319:  48%|████▊     | 3120/6516 [00:26<00:19, 175.12it/s][A
+3160/6516 [=============>................] - ETA: 28s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3206
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.321:  48%|████▊     | 3160/6516 [00:26<00:19, 174.69it/s][A
+3200/6516 [=============>................] - ETA: 27s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3217
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.322:  49%|████▉     | 3200/6516 [00:26<00:18, 174.53it/s][A
+3240/6516 [=============>................] - ETA: 27s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3228
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.323:  50%|████▉     | 3240/6516 [00:27<00:18, 174.92it/s][A
+3280/6516 [==============>...............] - ETA: 26s - loss: 0.0031 - acc: 0.9986 - Dice_Calculator: 0.3205
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.320:  50%|█████     | 3280/6516 [00:27<00:18, 175.52it/s][A
+3320/6516 [==============>...............] - ETA: 26s - loss: 0.0031 - acc: 0.9986 - Dice_Calculator: 0.3219
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.322:  51%|█████     | 3320/6516 [00:27<00:18, 175.92it/s][A
+3360/6516 [==============>...............] - ETA: 26s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3235
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.324:  52%|█████▏    | 3360/6516 [00:27<00:17, 175.90it/s][A
+3400/6516 [==============>...............] - ETA: 25s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3252
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.325:  52%|█████▏    | 3400/6516 [00:28<00:17, 175.83it/s][A
+3440/6516 [==============>...............] - ETA: 25s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3275
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.328:  53%|█████▎    | 3440/6516 [00:28<00:17, 176.04it/s][A
+3480/6516 [===============>..............] - ETA: 24s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3281
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.328:  53%|█████▎    | 3480/6516 [00:28<00:17, 176.35it/s][A
+3520/6516 [===============>..............] - ETA: 24s - loss: 0.0032 - acc: 0.9985 - Dice_Calculator: 0.3290
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.329:  54%|█████▍    | 3520/6516 [00:28<00:16, 176.38it/s][A
+3560/6516 [===============>..............] - ETA: 24s - loss: 0.0032 - acc: 0.9986 - Dice_Calculator: 0.3306
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.331:  55%|█████▍    | 3560/6516 [00:28<00:16, 176.70it/s][A
+3600/6516 [===============>..............] - ETA: 23s - loss: 0.0032 - acc: 0.9986 - Dice_Calculator: 0.3317
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.332:  55%|█████▌    | 3600/6516 [00:29<00:16, 176.68it/s][A
+3640/6516 [===============>..............] - ETA: 23s - loss: 0.0031 - acc: 0.9986 - Dice_Calculator: 0.3316
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.332:  56%|█████▌    | 3640/6516 [00:29<00:16, 176.70it/s][A
+3680/6516 [===============>..............] - ETA: 22s - loss: 0.0031 - acc: 0.9986 - Dice_Calculator: 0.3323
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.332:  56%|█████▋    | 3680/6516 [00:29<00:16, 176.67it/s][A
+3720/6516 [================>.............] - ETA: 22s - loss: 0.0031 - acc: 0.9986 - Dice_Calculator: 0.3335
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.333:  57%|█████▋    | 3720/6516 [00:29<00:15, 176.37it/s][A
+3760/6516 [================>.............] - ETA: 22s - loss: 0.0031 - acc: 0.9986 - Dice_Calculator: 0.3340
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.334:  58%|█████▊    | 3760/6516 [00:30<00:15, 176.78it/s][A
+3800/6516 [================>.............] - ETA: 21s - loss: 0.0031 - acc: 0.9986 - Dice_Calculator: 0.3339
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.334:  58%|█████▊    | 3800/6516 [00:30<00:15, 176.70it/s][A
+3840/6516 [================>.............] - ETA: 21s - loss: 0.0031 - acc: 0.9986 - Dice_Calculator: 0.3335
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.333:  59%|█████▉    | 3840/6516 [00:30<00:18, 147.82it/s][A
+3880/6516 [================>.............] - ETA: 20s - loss: 0.0031 - acc: 0.9986 - Dice_Calculator: 0.3347
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.335:  60%|█████▉    | 3880/6516 [00:30<00:17, 153.80it/s][A
+3920/6516 [=================>............] - ETA: 20s - loss: 0.0031 - acc: 0.9986 - Dice_Calculator: 0.3314
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.331:  60%|██████    | 3920/6516 [00:31<00:16, 160.05it/s][A
+3960/6516 [=================>............] - ETA: 20s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3328
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.333:  61%|██████    | 3960/6516 [00:31<00:15, 165.06it/s][A
+4000/6516 [=================>............] - ETA: 19s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3335
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.333:  61%|██████▏   | 4000/6516 [00:31<00:14, 168.73it/s][A
+4040/6516 [=================>............] - ETA: 19s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3343
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.334:  62%|██████▏   | 4040/6516 [00:31<00:14, 171.39it/s][A
+4080/6516 [=================>............] - ETA: 19s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3349
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.335:  63%|██████▎   | 4080/6516 [00:32<00:14, 173.14it/s][A
+4120/6516 [=================>............] - ETA: 18s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3355
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.335:  63%|██████▎   | 4120/6516 [00:32<00:13, 174.59it/s][A
+4160/6516 [==================>...........] - ETA: 18s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3360
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.336:  64%|██████▍   | 4160/6516 [00:32<00:13, 175.28it/s][A
+4200/6516 [==================>...........] - ETA: 18s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3369
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.337:  64%|██████▍   | 4200/6516 [00:32<00:13, 175.93it/s][A
+4240/6516 [==================>...........] - ETA: 17s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3381
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.338:  65%|██████▌   | 4240/6516 [00:32<00:12, 176.45it/s][A
+4280/6516 [==================>...........] - ETA: 17s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3373
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.337:  66%|██████▌   | 4280/6516 [00:33<00:12, 176.97it/s][A
+4320/6516 [==================>...........] - ETA: 16s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3380
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.338:  66%|██████▋   | 4320/6516 [00:33<00:12, 177.26it/s][A
+4360/6516 [===================>..........] - ETA: 16s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3394
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.339:  67%|██████▋   | 4360/6516 [00:33<00:12, 177.43it/s][A
+4400/6516 [===================>..........] - ETA: 16s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3409
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.341:  68%|██████▊   | 4400/6516 [00:33<00:11, 177.57it/s][A
+4440/6516 [===================>..........] - ETA: 15s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3423
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.342:  68%|██████▊   | 4440/6516 [00:34<00:11, 177.23it/s][A
+4480/6516 [===================>..........] - ETA: 15s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3430
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.343:  69%|██████▉   | 4480/6516 [00:34<00:11, 177.33it/s][A
+4520/6516 [===================>..........] - ETA: 15s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3441
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.344:  69%|██████▉   | 4520/6516 [00:34<00:11, 177.25it/s][A
+4560/6516 [===================>..........] - ETA: 14s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3454
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.345:  70%|██████▉   | 4560/6516 [00:34<00:11, 176.54it/s][A
+4600/6516 [====================>.........] - ETA: 14s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3470
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.347:  71%|███████   | 4600/6516 [00:34<00:10, 175.99it/s][A
+4640/6516 [====================>.........] - ETA: 14s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3482
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.348:  71%|███████   | 4640/6516 [00:35<00:10, 176.38it/s][A
+4680/6516 [====================>.........] - ETA: 13s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3494
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.349:  72%|███████▏  | 4680/6516 [00:35<00:10, 176.60it/s][A
+4720/6516 [====================>.........] - ETA: 13s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3506
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.351:  72%|███████▏  | 4720/6516 [00:35<00:10, 175.73it/s][A
+4760/6516 [====================>.........] - ETA: 13s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3513
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.351:  73%|███████▎  | 4760/6516 [00:35<00:09, 176.03it/s][A
+4800/6516 [=====================>........] - ETA: 12s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3519
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.352:  74%|███████▎  | 4800/6516 [00:36<00:10, 161.45it/s][A
+4840/6516 [=====================>........] - ETA: 12s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3517
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.352:  74%|███████▍  | 4840/6516 [00:36<00:10, 165.95it/s][A
+4880/6516 [=====================>........] - ETA: 12s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3522
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.352:  75%|███████▍  | 4880/6516 [00:36<00:09, 169.24it/s][A
+4920/6516 [=====================>........] - ETA: 11s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3527
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.353:  76%|███████▌  | 4920/6516 [00:36<00:09, 171.66it/s][A
+4960/6516 [=====================>........] - ETA: 11s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3535
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.353:  76%|███████▌  | 4960/6516 [00:37<00:08, 173.24it/s][A
+5000/6516 [======================>.......] - ETA: 11s - loss: 0.0030 - acc: 0.9986 - Dice_Calculator: 0.3544
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.354:  77%|███████▋  | 5000/6516 [00:37<00:08, 174.54it/s][A
+5040/6516 [======================>.......] - ETA: 10s - loss: 0.0029 - acc: 0.9986 - Dice_Calculator: 0.3538
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.354:  77%|███████▋  | 5040/6516 [00:37<00:08, 175.37it/s][A
+5080/6516 [======================>.......] - ETA: 10s - loss: 0.0029 - acc: 0.9986 - Dice_Calculator: 0.3549
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.355:  78%|███████▊  | 5080/6516 [00:37<00:08, 176.06it/s][A
+5120/6516 [======================>.......] - ETA: 10s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3541
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.354:  79%|███████▊  | 5120/6516 [00:37<00:07, 176.39it/s][A
+5160/6516 [======================>.......] - ETA: 10s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3550
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.355:  79%|███████▉  | 5160/6516 [00:38<00:07, 176.71it/s][A
+5200/6516 [======================>.......] - ETA: 9s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3549 
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.355:  80%|███████▉  | 5200/6516 [00:38<00:07, 176.76it/s][A
+5240/6516 [=======================>......] - ETA: 9s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3552
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.355:  80%|████████  | 5240/6516 [00:38<00:07, 177.04it/s][A
+5280/6516 [=======================>......] - ETA: 9s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3556
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.356:  81%|████████  | 5280/6516 [00:38<00:06, 177.36it/s][A
+5320/6516 [=======================>......] - ETA: 8s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3557
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.356:  82%|████████▏ | 5320/6516 [00:39<00:06, 177.10it/s][A
+5360/6516 [=======================>......] - ETA: 8s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3565
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.356:  82%|████████▏ | 5360/6516 [00:39<00:06, 177.02it/s][A
+5400/6516 [=======================>......] - ETA: 8s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3576
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.358:  83%|████████▎ | 5400/6516 [00:39<00:06, 176.92it/s][A
+5440/6516 [========================>.....] - ETA: 7s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3581
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.358:  83%|████████▎ | 5440/6516 [00:39<00:06, 176.57it/s][A
+5480/6516 [========================>.....] - ETA: 7s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3586
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.359:  84%|████████▍ | 5480/6516 [00:40<00:05, 176.68it/s][A
+5520/6516 [========================>.....] - ETA: 7s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3595
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.359:  85%|████████▍ | 5520/6516 [00:40<00:05, 176.87it/s][A
+5560/6516 [========================>.....] - ETA: 6s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3604
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.360:  85%|████████▌ | 5560/6516 [00:40<00:05, 177.13it/s][A
+5600/6516 [========================>.....] - ETA: 6s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3602
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.360:  86%|████████▌ | 5600/6516 [00:40<00:05, 176.97it/s][A
+5640/6516 [========================>.....] - ETA: 6s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3611
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.361:  87%|████████▋ | 5640/6516 [00:40<00:04, 177.07it/s][A
+5680/6516 [=========================>....] - ETA: 6s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3615
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.361:  87%|████████▋ | 5680/6516 [00:41<00:04, 176.92it/s][A
+5720/6516 [=========================>....] - ETA: 5s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3628
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.363:  88%|████████▊ | 5720/6516 [00:41<00:04, 177.04it/s][A
+5760/6516 [=========================>....] - ETA: 5s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3635
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.363:  88%|████████▊ | 5760/6516 [00:41<00:04, 177.18it/s][A
+5800/6516 [=========================>....] - ETA: 5s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3644
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.364:  89%|████████▉ | 5800/6516 [00:41<00:04, 177.26it/s][A
+5840/6516 [=========================>....] - ETA: 4s - loss: 0.0029 - acc: 0.9987 - Dice_Calculator: 0.3654
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.365:  90%|████████▉ | 5840/6516 [00:42<00:03, 177.29it/s][A
+5880/6516 [==========================>...] - ETA: 4s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3670
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.367:  90%|█████████ | 5880/6516 [00:42<00:03, 177.18it/s][A
+5920/6516 [==========================>...] - ETA: 4s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3678
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.368:  91%|█████████ | 5920/6516 [00:42<00:03, 177.34it/s][A
+5960/6516 [==========================>...] - ETA: 3s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3684
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.368:  91%|█████████▏| 5960/6516 [00:42<00:03, 176.75it/s][A
+6000/6516 [==========================>...] - ETA: 3s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3692
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.369:  92%|█████████▏| 6000/6516 [00:42<00:02, 175.33it/s][A
+6040/6516 [==========================>...] - ETA: 3s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3702
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.370:  93%|█████████▎| 6040/6516 [00:43<00:02, 174.34it/s][A
+6080/6516 [==========================>...] - ETA: 3s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3716
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.372:  93%|█████████▎| 6080/6516 [00:43<00:02, 174.85it/s][A
+6120/6516 [===========================>..] - ETA: 2s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3726
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.373:  94%|█████████▍| 6120/6516 [00:43<00:02, 170.96it/s][A
+6160/6516 [===========================>..] - ETA: 2s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3738
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.374:  95%|█████████▍| 6160/6516 [00:43<00:02, 161.23it/s][A
+6200/6516 [===========================>..] - ETA: 2s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3742
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.374:  95%|█████████▌| 6200/6516 [00:44<00:01, 165.49it/s][A
+6240/6516 [===========================>..] - ETA: 1s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3746
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.375:  96%|█████████▌| 6240/6516 [00:44<00:01, 168.86it/s][A
+6280/6516 [===========================>..] - ETA: 1s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3752
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.375:  96%|█████████▋| 6280/6516 [00:44<00:01, 171.17it/s][A
+6320/6516 [============================>.] - ETA: 1s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3747
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.375:  97%|█████████▋| 6320/6516 [00:44<00:01, 172.72it/s][A
+6360/6516 [============================>.] - ETA: 1s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3750
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.375:  98%|█████████▊| 6360/6516 [00:45<00:00, 174.02it/s][A
+6400/6516 [============================>.] - ETA: 0s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3761
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.376:  98%|█████████▊| 6400/6516 [00:45<00:00, 175.13it/s][A
+6440/6516 [============================>.] - ETA: 0s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3763
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.376:  99%|█████████▉| 6440/6516 [00:45<00:00, 175.93it/s][A
+6480/6516 [============================>.] - ETA: 0s - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3770
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.377:  99%|█████████▉| 6480/6516 [00:45<00:00, 176.17it/s][A
+6516/6516 [==============================] - 49s 8ms/step - loss: 0.0028 - acc: 0.9987 - Dice_Calculator: 0.3771 - val_loss: 0.0051 - val_acc: 0.9971 - val_Dice_Calculator: 0.2316
+
+Epoch: 0 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.377, val_loss: 0.005, val_acc: 0.997, val_Dice_Calculator: 0.232: 100%|██████████| 6516/6516 [00:49<00:00, 32.10it/s][A
+[ATraining:   2%|▏         | 1/50 [00:49<40:01, 49.00s/it]
+Epoch: 1:   0%|          | 0/6516 [00:00<?, ?it/s][AEpoch 2/50
+
+  40/6516 [..............................] - ETA: 37s - loss: 0.0014 - acc: 0.9994 - Dice_Calculator: 0.4413
+Epoch: 1 - loss: 0.001, acc: 0.999, Dice_Calculator: 0.441:   1%|          | 40/6516 [00:00<00:37, 174.92it/s][A
+  80/6516 [..............................] - ETA: 36s - loss: 0.0011 - acc: 0.9995 - Dice_Calculator: 0.4109
+Epoch: 1 - loss: 0.001, acc: 1.000, Dice_Calculator: 0.411:   1%|          | 80/6516 [00:00<00:36, 174.70it/s][A
+ 120/6516 [..............................] - ETA: 36s - loss: 0.0013 - acc: 0.9994 - Dice_Calculator: 0.4164
+Epoch: 1 - loss: 0.001, acc: 0.999, Dice_Calculator: 0.416:   2%|▏         | 120/6516 [00:00<00:36, 174.06it/s][A
+ 160/6516 [..............................] - ETA: 36s - loss: 0.0012 - acc: 0.9995 - Dice_Calculator: 0.4503
+Epoch: 1 - loss: 0.001, acc: 0.999, Dice_Calculator: 0.450:   2%|▏         | 160/6516 [00:00<00:36, 173.82it/s][A
+ 200/6516 [..............................] - ETA: 36s - loss: 0.0014 - acc: 0.9994 - Dice_Calculator: 0.4195
+Epoch: 1 - loss: 0.001, acc: 0.999, Dice_Calculator: 0.420:   3%|▎         | 200/6516 [00:01<00:36, 174.23it/s][A
+ 240/6516 [>.............................] - ETA: 36s - loss: 0.0017 - acc: 0.9993 - Dice_Calculator: 0.4163
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.416:   4%|▎         | 240/6516 [00:01<00:35, 174.46it/s][A
+ 280/6516 [>.............................] - ETA: 36s - loss: 0.0020 - acc: 0.9991 - Dice_Calculator: 0.4253
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.425:   4%|▍         | 280/6516 [00:01<00:36, 170.35it/s][A
+ 320/6516 [>.............................] - ETA: 36s - loss: 0.0020 - acc: 0.9991 - Dice_Calculator: 0.4251
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.425:   5%|▍         | 320/6516 [00:01<00:38, 160.31it/s][A
+ 360/6516 [>.............................] - ETA: 36s - loss: 0.0020 - acc: 0.9992 - Dice_Calculator: 0.4260
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.426:   6%|▌         | 360/6516 [00:02<00:37, 164.51it/s][A
+ 400/6516 [>.............................] - ETA: 36s - loss: 0.0020 - acc: 0.9992 - Dice_Calculator: 0.4310
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.431:   6%|▌         | 400/6516 [00:02<00:36, 167.66it/s][A
+ 440/6516 [=>............................] - ETA: 35s - loss: 0.0020 - acc: 0.9991 - Dice_Calculator: 0.4196
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.420:   7%|▋         | 440/6516 [00:02<00:35, 169.74it/s][A
+ 480/6516 [=>............................] - ETA: 35s - loss: 0.0020 - acc: 0.9991 - Dice_Calculator: 0.4121
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.412:   7%|▋         | 480/6516 [00:02<00:35, 171.18it/s][A
+ 520/6516 [=>............................] - ETA: 35s - loss: 0.0020 - acc: 0.9992 - Dice_Calculator: 0.4092
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.409:   8%|▊         | 520/6516 [00:03<00:34, 172.33it/s][A
+ 560/6516 [=>............................] - ETA: 34s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4076
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.408:   9%|▊         | 560/6516 [00:03<00:34, 173.27it/s][A
+ 600/6516 [=>............................] - ETA: 34s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4062
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.406:   9%|▉         | 600/6516 [00:03<00:34, 173.93it/s][A
+ 640/6516 [=>............................] - ETA: 34s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4114
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.411:  10%|▉         | 640/6516 [00:03<00:33, 174.37it/s][A
+ 680/6516 [==>...........................] - ETA: 34s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4138
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.414:  10%|█         | 680/6516 [00:03<00:33, 174.60it/s][A
+ 720/6516 [==>...........................] - ETA: 33s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4107
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.411:  11%|█         | 720/6516 [00:04<00:33, 174.91it/s][A
+ 760/6516 [==>...........................] - ETA: 33s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4129
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.413:  12%|█▏        | 760/6516 [00:04<00:32, 175.12it/s][A
+ 800/6516 [==>...........................] - ETA: 33s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4110
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.411:  12%|█▏        | 800/6516 [00:04<00:32, 175.45it/s][A
+ 840/6516 [==>...........................] - ETA: 32s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4142
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.414:  13%|█▎        | 840/6516 [00:04<00:32, 175.43it/s][A
+ 880/6516 [===>..........................] - ETA: 32s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4184
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.418:  14%|█▎        | 880/6516 [00:05<00:32, 175.44it/s][A
+ 920/6516 [===>..........................] - ETA: 32s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4201
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.420:  14%|█▍        | 920/6516 [00:05<00:31, 175.35it/s][A
+ 960/6516 [===>..........................] - ETA: 32s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4216
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.422:  15%|█▍        | 960/6516 [00:05<00:31, 175.39it/s][A
+1000/6516 [===>..........................] - ETA: 31s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4216
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.422:  15%|█▌        | 1000/6516 [00:05<00:31, 175.29it/s][A
+1040/6516 [===>..........................] - ETA: 31s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4184
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.418:  16%|█▌        | 1040/6516 [00:06<00:31, 175.53it/s][A
+1080/6516 [===>..........................] - ETA: 31s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4196
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.420:  17%|█▋        | 1080/6516 [00:06<00:30, 175.48it/s][A
+1120/6516 [====>.........................] - ETA: 31s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4232
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.423:  17%|█▋        | 1120/6516 [00:06<00:30, 175.43it/s][A
+1160/6516 [====>.........................] - ETA: 30s - loss: 0.0023 - acc: 0.9991 - Dice_Calculator: 0.4251
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.425:  18%|█▊        | 1160/6516 [00:06<00:30, 175.36it/s][A
+1200/6516 [====>.........................] - ETA: 30s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4276
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.428:  18%|█▊        | 1200/6516 [00:06<00:30, 175.29it/s][A
+1240/6516 [====>.........................] - ETA: 30s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4315
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.431:  19%|█▉        | 1240/6516 [00:07<00:30, 175.30it/s][A
+1280/6516 [====>.........................] - ETA: 30s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4338
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.434:  20%|█▉        | 1280/6516 [00:07<00:29, 175.37it/s][A
+1320/6516 [=====>........................] - ETA: 29s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4379
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.438:  20%|██        | 1320/6516 [00:07<00:29, 175.55it/s][A
+1360/6516 [=====>........................] - ETA: 29s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4391
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.439:  21%|██        | 1360/6516 [00:07<00:29, 175.27it/s][A
+1400/6516 [=====>........................] - ETA: 29s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4412
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.441:  21%|██▏       | 1400/6516 [00:08<00:29, 174.52it/s][A
+1440/6516 [=====>........................] - ETA: 29s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4444
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.444:  22%|██▏       | 1440/6516 [00:08<00:29, 173.30it/s][A
+1480/6516 [=====>........................] - ETA: 29s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4420
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.442:  23%|██▎       | 1480/6516 [00:08<00:28, 173.74it/s][A
+1520/6516 [=====>........................] - ETA: 28s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4397
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.440:  23%|██▎       | 1520/6516 [00:08<00:28, 174.27it/s][A
+1560/6516 [======>.......................] - ETA: 28s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4416
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.442:  24%|██▍       | 1560/6516 [00:08<00:28, 173.90it/s][A
+1600/6516 [======>.......................] - ETA: 28s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4462
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.446:  25%|██▍       | 1600/6516 [00:09<00:28, 170.19it/s][A
+1640/6516 [======>.......................] - ETA: 28s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4499
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.450:  25%|██▌       | 1640/6516 [00:09<00:30, 160.40it/s][A
+1680/6516 [======>.......................] - ETA: 28s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4502
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.450:  26%|██▌       | 1680/6516 [00:09<00:29, 164.64it/s][A
+1720/6516 [======>.......................] - ETA: 27s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4398
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.440:  26%|██▋       | 1720/6516 [00:09<00:28, 167.62it/s][A
+1760/6516 [=======>......................] - ETA: 27s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4408
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.441:  27%|██▋       | 1760/6516 [00:10<00:27, 169.86it/s][A
+1800/6516 [=======>......................] - ETA: 27s - loss: 0.0023 - acc: 0.9991 - Dice_Calculator: 0.4424
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.442:  28%|██▊       | 1800/6516 [00:10<00:27, 171.55it/s][A
+1840/6516 [=======>......................] - ETA: 27s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4449
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.445:  28%|██▊       | 1840/6516 [00:10<00:27, 172.65it/s][A
+1880/6516 [=======>......................] - ETA: 26s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4479
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.448:  29%|██▉       | 1880/6516 [00:10<00:26, 173.56it/s][A
+1920/6516 [=======>......................] - ETA: 26s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4463
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.446:  29%|██▉       | 1920/6516 [00:11<00:26, 174.29it/s][A
+1960/6516 [========>.....................] - ETA: 26s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4480
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.448:  30%|███       | 1960/6516 [00:11<00:26, 174.64it/s][A
+2000/6516 [========>.....................] - ETA: 26s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4508
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.451:  31%|███       | 2000/6516 [00:11<00:25, 174.87it/s][A
+2040/6516 [========>.....................] - ETA: 25s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4525
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.452:  31%|███▏      | 2040/6516 [00:11<00:25, 174.99it/s][A
+2080/6516 [========>.....................] - ETA: 25s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4551
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.455:  32%|███▏      | 2080/6516 [00:12<00:25, 175.25it/s][A
+2120/6516 [========>.....................] - ETA: 25s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4580
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.458:  33%|███▎      | 2120/6516 [00:12<00:25, 175.23it/s][A
+2160/6516 [========>.....................] - ETA: 25s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4601
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.460:  33%|███▎      | 2160/6516 [00:12<00:24, 175.25it/s][A
+2200/6516 [=========>....................] - ETA: 24s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4618
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.462:  34%|███▍      | 2200/6516 [00:12<00:24, 175.23it/s][A
+2240/6516 [=========>....................] - ETA: 24s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4616
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.462:  34%|███▍      | 2240/6516 [00:12<00:24, 175.50it/s][A
+2280/6516 [=========>....................] - ETA: 24s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4555
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.456:  35%|███▍      | 2280/6516 [00:13<00:24, 175.69it/s][A
+2320/6516 [=========>....................] - ETA: 24s - loss: 0.0022 - acc: 0.9991 - Dice_Calculator: 0.4556
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.456:  36%|███▌      | 2320/6516 [00:13<00:23, 175.79it/s][A
+2360/6516 [=========>....................] - ETA: 23s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4546
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.455:  36%|███▌      | 2360/6516 [00:13<00:23, 175.85it/s][A
+2400/6516 [==========>...................] - ETA: 23s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4550
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.455:  37%|███▋      | 2400/6516 [00:13<00:23, 175.31it/s][A
+2440/6516 [==========>...................] - ETA: 23s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4552
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.455:  37%|███▋      | 2440/6516 [00:14<00:23, 175.52it/s][A
+2480/6516 [==========>...................] - ETA: 23s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4541
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.454:  38%|███▊      | 2480/6516 [00:14<00:23, 175.34it/s][A
+2520/6516 [==========>...................] - ETA: 23s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4519
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.452:  39%|███▊      | 2520/6516 [00:14<00:22, 175.29it/s][A
+2560/6516 [==========>...................] - ETA: 22s - loss: 0.0023 - acc: 0.9990 - Dice_Calculator: 0.4498
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.450:  39%|███▉      | 2560/6516 [00:14<00:22, 175.21it/s][A
+2600/6516 [==========>...................] - ETA: 22s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4468
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.447:  40%|███▉      | 2600/6516 [00:14<00:22, 175.27it/s][A
+2640/6516 [===========>..................] - ETA: 22s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4440
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.444:  41%|████      | 2640/6516 [00:15<00:22, 175.35it/s][A
+2680/6516 [===========>..................] - ETA: 22s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4393
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.439:  41%|████      | 2680/6516 [00:15<00:21, 175.18it/s][A
+2720/6516 [===========>..................] - ETA: 21s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4398
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.440:  42%|████▏     | 2720/6516 [00:15<00:21, 175.46it/s][A
+2760/6516 [===========>..................] - ETA: 21s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4392
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.439:  42%|████▏     | 2760/6516 [00:15<00:21, 175.54it/s][A
+2800/6516 [===========>..................] - ETA: 21s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4372
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.437:  43%|████▎     | 2800/6516 [00:16<00:21, 175.61it/s][A
+2840/6516 [============>.................] - ETA: 21s - loss: 0.0026 - acc: 0.9990 - Dice_Calculator: 0.4366
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.437:  44%|████▎     | 2840/6516 [00:16<00:20, 175.61it/s][A
+2880/6516 [============>.................] - ETA: 20s - loss: 0.0026 - acc: 0.9990 - Dice_Calculator: 0.4370
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.437:  44%|████▍     | 2880/6516 [00:16<00:20, 175.61it/s][A
+2920/6516 [============>.................] - ETA: 20s - loss: 0.0026 - acc: 0.9990 - Dice_Calculator: 0.4372
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.437:  45%|████▍     | 2920/6516 [00:16<00:20, 175.55it/s][A
+2960/6516 [============>.................] - ETA: 20s - loss: 0.0026 - acc: 0.9990 - Dice_Calculator: 0.4373
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.437:  45%|████▌     | 2960/6516 [00:17<00:20, 175.29it/s][A
+3000/6516 [============>.................] - ETA: 20s - loss: 0.0026 - acc: 0.9990 - Dice_Calculator: 0.4380
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.438:  46%|████▌     | 3000/6516 [00:17<00:20, 175.40it/s][A
+3040/6516 [============>.................] - ETA: 20s - loss: 0.0026 - acc: 0.9990 - Dice_Calculator: 0.4384
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.438:  47%|████▋     | 3040/6516 [00:17<00:19, 175.57it/s][A
+3080/6516 [=============>................] - ETA: 19s - loss: 0.0026 - acc: 0.9990 - Dice_Calculator: 0.4375
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.437:  47%|████▋     | 3080/6516 [00:17<00:19, 175.61it/s][A
+3120/6516 [=============>................] - ETA: 19s - loss: 0.0026 - acc: 0.9990 - Dice_Calculator: 0.4383
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.438:  48%|████▊     | 3120/6516 [00:17<00:19, 175.49it/s][A
+3160/6516 [=============>................] - ETA: 19s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4380
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.438:  48%|████▊     | 3160/6516 [00:18<00:19, 175.42it/s][A
+3200/6516 [=============>................] - ETA: 19s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4390
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.439:  49%|████▉     | 3200/6516 [00:18<00:18, 175.25it/s][A
+3240/6516 [=============>................] - ETA: 18s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4396
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.440:  50%|████▉     | 3240/6516 [00:18<00:18, 175.35it/s][A
+3280/6516 [==============>...............] - ETA: 18s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4406
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.441:  50%|█████     | 3280/6516 [00:18<00:18, 175.55it/s][A
+3320/6516 [==============>...............] - ETA: 18s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4406
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.441:  51%|█████     | 3320/6516 [00:19<00:18, 175.55it/s][A
+3360/6516 [==============>...............] - ETA: 18s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4410
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.441:  52%|█████▏    | 3360/6516 [00:19<00:18, 175.28it/s][A
+3400/6516 [==============>...............] - ETA: 17s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4410
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.441:  52%|█████▏    | 3400/6516 [00:19<00:17, 174.62it/s][A
+3440/6516 [==============>...............] - ETA: 17s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4391
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.439:  53%|█████▎    | 3440/6516 [00:19<00:17, 174.40it/s][A
+3480/6516 [===============>..............] - ETA: 17s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4389
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.439:  53%|█████▎    | 3480/6516 [00:20<00:17, 174.60it/s][A
+3520/6516 [===============>..............] - ETA: 17s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4397
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.440:  54%|█████▍    | 3520/6516 [00:20<00:17, 174.16it/s][A
+3560/6516 [===============>..............] - ETA: 17s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4404
+Epoch: 1 - loss: 0.003, acc: 0.999, Dice_Calculator: 0.440:  55%|█████▍    | 3560/6516 [00:20<00:16, 174.46it/s][A
+3600/6516 [===============>..............] - ETA: 16s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4417
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.442:  55%|█████▌    | 3600/6516 [00:20<00:16, 174.80it/s][A
+3640/6516 [===============>..............] - ETA: 16s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4435
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.444:  56%|█████▌    | 3640/6516 [00:20<00:16, 169.77it/s][A
+3680/6516 [===============>..............] - ETA: 16s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4445
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.445:  56%|█████▋    | 3680/6516 [00:21<00:17, 160.74it/s][A
+3720/6516 [================>.............] - ETA: 16s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4458
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.446:  57%|█████▋    | 3720/6516 [00:21<00:16, 164.88it/s][A
+3760/6516 [================>.............] - ETA: 15s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4468
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.447:  58%|█████▊    | 3760/6516 [00:21<00:16, 167.97it/s][A
+3800/6516 [================>.............] - ETA: 15s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4451
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.445:  58%|█████▊    | 3800/6516 [00:21<00:15, 170.18it/s][A
+3840/6516 [================>.............] - ETA: 15s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4468
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.447:  59%|█████▉    | 3840/6516 [00:22<00:15, 171.81it/s][A
+3880/6516 [================>.............] - ETA: 15s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4471
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.447:  60%|█████▉    | 3880/6516 [00:22<00:15, 173.09it/s][A
+3920/6516 [=================>............] - ETA: 14s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4479
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.448:  60%|██████    | 3920/6516 [00:22<00:14, 173.89it/s][A
+3960/6516 [=================>............] - ETA: 14s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4478
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.448:  61%|██████    | 3960/6516 [00:22<00:14, 174.38it/s][A
+4000/6516 [=================>............] - ETA: 14s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4474
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.447:  61%|██████▏   | 4000/6516 [00:23<00:14, 174.76it/s][A
+4040/6516 [=================>............] - ETA: 14s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4480
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.448:  62%|██████▏   | 4040/6516 [00:23<00:14, 175.22it/s][A
+4080/6516 [=================>............] - ETA: 14s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4494
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.449:  63%|██████▎   | 4080/6516 [00:23<00:13, 175.44it/s][A
+4120/6516 [=================>............] - ETA: 13s - loss: 0.0025 - acc: 0.9990 - Dice_Calculator: 0.4507
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.451:  63%|██████▎   | 4120/6516 [00:23<00:13, 175.69it/s][A
+4160/6516 [==================>...........] - ETA: 13s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4518
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.452:  64%|██████▍   | 4160/6516 [00:23<00:13, 175.97it/s][A
+4200/6516 [==================>...........] - ETA: 13s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4509
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.451:  64%|██████▍   | 4200/6516 [00:24<00:13, 175.77it/s][A
+4240/6516 [==================>...........] - ETA: 13s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4511
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.451:  65%|██████▌   | 4240/6516 [00:24<00:12, 175.70it/s][A
+4280/6516 [==================>...........] - ETA: 12s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4523
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.452:  66%|██████▌   | 4280/6516 [00:24<00:12, 175.75it/s][A
+4320/6516 [==================>...........] - ETA: 12s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4536
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.454:  66%|██████▋   | 4320/6516 [00:24<00:12, 175.84it/s][A
+4360/6516 [===================>..........] - ETA: 12s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4553
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.455:  67%|██████▋   | 4360/6516 [00:25<00:12, 175.89it/s][A
+4400/6516 [===================>..........] - ETA: 12s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4560
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.456:  68%|██████▊   | 4400/6516 [00:25<00:12, 175.95it/s][A
+4440/6516 [===================>..........] - ETA: 11s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4577
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.458:  68%|██████▊   | 4440/6516 [00:25<00:11, 176.04it/s][A
+4480/6516 [===================>..........] - ETA: 11s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4587
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.459:  69%|██████▉   | 4480/6516 [00:25<00:11, 176.10it/s][A
+4520/6516 [===================>..........] - ETA: 11s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4602
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.460:  69%|██████▉   | 4520/6516 [00:26<00:11, 176.28it/s][A
+4560/6516 [===================>..........] - ETA: 11s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4617
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.462:  70%|██████▉   | 4560/6516 [00:26<00:11, 176.16it/s][A
+4600/6516 [====================>.........] - ETA: 11s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4627
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.463:  71%|███████   | 4600/6516 [00:26<00:10, 176.31it/s][A
+4640/6516 [====================>.........] - ETA: 10s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4617
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.462:  71%|███████   | 4640/6516 [00:26<00:10, 176.18it/s][A
+4680/6516 [====================>.........] - ETA: 10s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4618
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.462:  72%|███████▏  | 4680/6516 [00:26<00:10, 176.29it/s][A
+4720/6516 [====================>.........] - ETA: 10s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4623
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.462:  72%|███████▏  | 4720/6516 [00:27<00:10, 176.48it/s][A
+4760/6516 [====================>.........] - ETA: 10s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4631
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.463:  73%|███████▎  | 4760/6516 [00:27<00:09, 176.15it/s][A
+4800/6516 [=====================>........] - ETA: 9s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4643 
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.464:  74%|███████▎  | 4800/6516 [00:27<00:09, 176.01it/s][A
+4840/6516 [=====================>........] - ETA: 9s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4648
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.465:  74%|███████▍  | 4840/6516 [00:27<00:09, 175.93it/s][A
+4880/6516 [=====================>........] - ETA: 9s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4651
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.465:  75%|███████▍  | 4880/6516 [00:28<00:09, 175.70it/s][A
+4920/6516 [=====================>........] - ETA: 9s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4665
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.467:  76%|███████▌  | 4920/6516 [00:28<00:09, 175.64it/s][A
+4960/6516 [=====================>........] - ETA: 8s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4676
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.468:  76%|███████▌  | 4960/6516 [00:28<00:08, 175.80it/s][A
+5000/6516 [======================>.......] - ETA: 8s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4686
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.469:  77%|███████▋  | 5000/6516 [00:28<00:08, 175.85it/s][A
+5040/6516 [======================>.......] - ETA: 8s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4701
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.470:  77%|███████▋  | 5040/6516 [00:28<00:08, 175.99it/s][A
+5080/6516 [======================>.......] - ETA: 8s - loss: 0.0024 - acc: 0.9990 - Dice_Calculator: 0.4710
+Epoch: 1 - loss: 0.002, acc: 0.999, Dice_Calculator: 0.471:  78%|███████▊  | 5080/6516 [00:29<00:08, 175.62it/s][A

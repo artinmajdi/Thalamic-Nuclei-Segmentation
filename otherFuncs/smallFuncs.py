@@ -89,7 +89,9 @@ def readingTheParams(AllExperimentsList):
     from Parameters import UserInfo
 
     UserInfoB = deepcopy(UserInfo.__dict__)
+    # print('before:',UserInfoB['epochs'])
     UserInfoB = terminalEntries(UserInfo=UserInfoB)
+    # print('after:',UserInfoB['epochs'])
     AllParamsList = loadExperiments(UserInfoB, AllExperimentsList)
 
     return AllParamsList

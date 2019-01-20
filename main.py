@@ -40,7 +40,10 @@ AllParamsList = smallFuncs.readingTheParams(AllExperimentsList)
 
 #! reading the dataset
 ind, params = list(AllParamsList.items())[0]
-print('nuclei: ',params.WhichExperiment.Nucleus.name , 'gpu:',params.WhichExperiment.HardParams.Machine.GPU_Index)
+print('Nuclei:',params.WhichExperiment.Nucleus.name , '  GPU:',params.WhichExperiment.HardParams.Machine.GPU_Index , \
+'  Epochs:', params.WhichExperiment.HardParams.Model.epochs,'  Dataset:',params.WhichExperiment.Dataset.name , \
+'  Experiment: {',params.WhichExperiment.Experiment.name ,',', params.WhichExperiment.SubExperiment.name,'}')
+
 Data, params, Info = datasets.check_Dataset(params=params, flag=True, Info={})
 
 for ind, params in list(AllParamsList.items()):
