@@ -110,6 +110,7 @@ def listSubFolders(Dir):
         else:
             subFolders = Dir_Prior
 
+    subFolders.sort()
     return subFolders
 
 def mkDir(Dir):

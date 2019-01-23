@@ -39,20 +39,20 @@ class testCase:
         self.original_Shape = original_Shape
 
 
-def check_Dataset(params, flag, Info):  #  mode = 'experiments' # single_run'
+def check_Dataset_ForTraining(params, flag, Info):  #  mode = 'experiments' # single_run'
 
     if flag:
         mode = 'experiment'
 
-        #! copying the dataset into the experiment folder
-        if params.preprocess.CreatingTheExperiment: movingFromDatasetToExperiments(params)
+        # #! copying the dataset into the experiment folder
+        # if params.preprocess.CreatingTheExperiment: movingFromDatasetToExperiments(params)
 
 
-        #! preprocessing the data
-        if params.preprocess.Mode:
-            applyPreprocess.main(params, mode)
-            params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
-
+        # #! preprocessing the data
+        # if params.preprocess.Mode:
+        #     applyPreprocess.main(params, mode)
+             
+        # params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
 
         #! correcting the number of layers
         num_Layers = smallFuncs.correctNumLayers(params)
@@ -127,7 +127,7 @@ def fashionMnist(params):
         data.Train.Image = images
         data.Train.Mask = masks
     else:
-        data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
+        data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks, params.WhichExperiment.Dataset.randomFlag)
 
     data.Test.Image = (np.expand_dims(fullData[1][0],axis=3)).astype('float32') / 255
     data.Test.Label = one_hot(fullData[1][1],10)
@@ -166,7 +166,7 @@ def kaggleCompetition(params):
         data.Train.Image = images
         data.Train.Mask = masks
     else:
-        data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage ,images, masks)
+        data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage ,images, masks, params.WhichExperiment.Dataset.randomFlag)
 
     data.Test = data.Train
     return data, '_'
@@ -259,10 +259,10 @@ def readingFromExperiments3D_new(params):
             
     return data
 
-def TrainValSeperate(percentage, images, masks):
+def TrainValSeperate(percentage, images, masks, randomFlag):
 
     subjectsList = list(range(images.shape[0]))
-    TrainList, ValList = percentageRandomDivide(percentage, subjectsList)
+    TrainList, ValList = percentageDivide(percentage, subjectsList, randomFlag)
 
 
     Validation = ImageLabel()
@@ -275,11 +275,12 @@ def TrainValSeperate(percentage, images, masks):
 
     return Train, Validation
 
-def percentageRandomDivide(percentage, subjectsList):
+def percentageDivide(percentage, subjectsList, randomFlag):
 
     L = len(subjectsList)
     indexes = np.array(range(L))
-    shuffle(indexes)
+
+    if randomFlag: shuffle(indexes)
     per = int( percentage * L )
     if per == 0 and L > 1: per = 1
 
@@ -306,27 +307,32 @@ def movingFromDatasetToExperiments(params):
         for subjectsAgm in AugDataL['list']:
             if subject in subjectsAgm: shutil.copytree(AugDataL['address'] + '/' + subjectsAgm  ,  DirOut + '/' + subjectsAgm)
                     
-    List = smallFuncs.listSubFolders(params.WhichExperiment.Dataset.address)
-
-    flagAg, AugDataL = np.zeros(3), list(np.zeros(3))
+    if len(os.listdir(params.directories.Train.address)) != 0 or len(os.listdir(params.directories.Test.address)) != 0:
+        print('*** DATASET ALREADY EXIST; PLEASE REMOVE \'train\' & \'test\' SUBFOLDERS ***')
+        sys.exit
     
-    if params.preprocess.Augment.Mode:
-        if params.preprocess.Augment.Rotation:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation')
-        if params.preprocess.Augment.Shift:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift')
-        if params.preprocess.Augment.NonRigidWarp: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear')
+    else:
+        List = smallFuncs.listSubFolders(params.WhichExperiment.Dataset.address)
+
+        flagAg, AugDataL = np.zeros(3), list(np.zeros(3))
+        
+        if params.preprocess.Augment.Mode:
+            if params.preprocess.Augment.Rotation:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation')
+            if params.preprocess.Augment.Shift:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift')
+            if params.preprocess.Augment.NonRigidWarp: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear')
 
 
-    TestParams = params.WhichExperiment.Dataset.Test
-    _, TestList = percentageRandomDivide(TestParams.percentage, List) if 'percentage' in TestParams.mode else TestParams.subjects
-    for subject in List:
+        TestParams = params.WhichExperiment.Dataset.Test
+        _, TestList = percentageDivide(TestParams.percentage, List, params.WhichExperiment.Dataset.randomFlag) if 'percentage' in TestParams.mode else TestParams.subjects
+        for subject in List:
 
-        DirOut, mode = (params.directories.Test.address , 'test') if subject in TestList else (params.directories.Train.address, 'train')
+            DirOut, mode = (params.directories.Test.address , 'test') if subject in TestList else (params.directories.Train.address, 'train')
 
-        if not os.path.exists(DirOut + '/' + subject):
-            shutil.copytree(params.WhichExperiment.Dataset.address + '/' + subject  ,  DirOut + '/' + subject)
+            if not os.path.exists(DirOut + '/' + subject):
+                shutil.copytree(params.WhichExperiment.Dataset.address + '/' + subject  ,  DirOut + '/' + subject)
 
-        if 'train' in mode:
-            for AgIx in range(len(AugDataL)):
-                if flagAg[AgIx]: copyAugmentData(DirOut, AugDataL[AgIx], subject)
+            if 'train' in mode:
+                for AgIx in range(len(AugDataL)):
+                    if flagAg[AgIx]: copyAugmentData(DirOut, AugDataL[AgIx], subject)
 
     return True

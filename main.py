@@ -17,10 +17,6 @@ from copy import deepcopy
 AllExperimentsList = {
     1: dict(),
     # 2: dict(nucleus_Index = [6] , GPU_Index = 6 , lossFunctionIx = 2),
-    # 3: dict(nucleus_Index = [6] , GPU_Index = 7 , lossFunctionIx = 3),
-    # 4: dict(nucleus_Index = [8] , GPU_Index = 5 , lossFunctionIx = 1),
-    # 5: dict(nucleus_Index = [8] , GPU_Index = 6 , lossFunctionIx = 2),
-    # 6: dict(nucleus_Index = [8] , GPU_Index = 7 , lossFunctionIx = 3),
 }
 
 def check_show(Data, pred):
@@ -37,26 +33,43 @@ def gpuSetting(params):
     K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
     return K
 
+def runExperiment(params, Info, Data):
+
+    params.preprocess.CreatingTheExperiment = False
+
+
+    print('Nuclei:',params.WhichExperiment.Nucleus.name , '  GPU:',params.WhichExperiment.HardParams.Machine.GPU_Index , \
+    '  Epochs:', params.WhichExperiment.HardParams.Model.epochs,'  Dataset:',params.WhichExperiment.Dataset.name , \
+    '  Experiment: {',params.WhichExperiment.Experiment.name ,',', params.WhichExperiment.SubExperiment.name,'}')
+
+
+    K = gpuSetting(params)
+    print('nuclei: ',params.WhichExperiment.Nucleus.name , 'gpu:',params.WhichExperiment.HardParams.Machine.GPU_Index)
+    _, params, _ = datasets.check_Dataset_ForTraining(params=params, flag=False, Info=Info)
+
+    pred = choosingModel.check_Run(params, Data)
+
+    if 0: check_show(Data, pred)
+
+    return K
+
+
 
 #! we assume that number of layers , and other things that might effect the input data stays constant
 AllParamsList = smallFuncs.readingTheParams(AllExperimentsList)
 
 #! reading the dataset
 ind, params = list(AllParamsList.items())[0]
-print('Nuclei:',params.WhichExperiment.Nucleus.name , '  GPU:',params.WhichExperiment.HardParams.Machine.GPU_Index , \
-'  Epochs:', params.WhichExperiment.HardParams.Model.epochs,'  Dataset:',params.WhichExperiment.Dataset.name , \
-'  Experiment: {',params.WhichExperiment.Experiment.name ,',', params.WhichExperiment.SubExperiment.name,'}')
+Data, params, Info = datasets.check_Dataset_ForTraining(params=params, flag=True, Info={})
 
-Data, params, Info = datasets.check_Dataset(params=params, flag=True, Info={})
 
-for ind, params in list(AllParamsList.items()):
+mode = 'singleExperiment'
 
-    K = gpuSetting(params)
-    print('nuclei: ',params.WhichExperiment.Nucleus.name , 'gpu:',params.WhichExperiment.HardParams.Machine.GPU_Index)
-    _, params, _ = datasets.check_Dataset(params=params, flag=False, Info=Info)
+if 'singleExperiment' in mode:
+    K = runExperiment(params, Info, Data)
+else:    
+    for ind, params in list(AllParamsList.items()): 
+        K = runExperiment(params, Info, Data)
 
-    pred = choosingModel.check_Run(params, Data)
-
-    if 0: check_show(Data, pred)
 
 K.clear_session()

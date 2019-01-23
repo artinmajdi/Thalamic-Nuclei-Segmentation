@@ -110,6 +110,7 @@ class dataset:
     Validation = validation
     Test = test
     onlySubjectsWvimp = True
+    randomFlag = False
 
 class WhichExperiment:
     Experiment    = experiment

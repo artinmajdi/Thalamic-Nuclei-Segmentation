@@ -64,9 +64,9 @@ OptimizerIx = 1
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 Experiments_Index = 3
-Experiments_Tag = 'SRI' # 'tmp
+# Experiments_Tag = 'SRI' # 'tmp' 'SRI_wLRAug'
 SubExperiment_Index = 1
-SubExperiment_Tag = '' #  _withAugData
+SubExperiment_Tag = '' 
 
 #! cropping mode
 #           1 or mask:     cropping using the cropped mask acquired from rigid transformation
@@ -76,7 +76,7 @@ cropping_method = 2
 
 
 #! Preprocessing
-preprocessMode = True
+preprocessMode = False
 BiasCorrection = False
 Cropping = True
 Normalize = True
@@ -85,10 +85,16 @@ TestOnly = False
 #! this flag has two applications:
 #    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment 
 #    2. Called by preprocess: to augment data inside train folder of the assigned experiment
-AugmentMode = False  
+AugmentMode = True  
 Augment_Rotation     = True
 Augment_Shift        = False
 Augment_NonRigidWarp = False
+
+if AugmentMode:
+    Experiments_Tag = 'SRI_wLRAug' # 'tmp' ''
+else:    
+    Experiments_Tag = 'SRI'
+
 
 #! save the report
 #           'pickle'
