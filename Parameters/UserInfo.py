@@ -16,7 +16,7 @@ nucleus_Index = [1]
 
 #! Training
 num_Layers = 5
-epochs = 100
+epochs = 30
 batch_size = 40
 Initialize_FromThalamus = True
 Initialize_FromOlderModel = False
@@ -54,7 +54,7 @@ lossFunctionIx = 3
 #                 4: 'All_7T': 20priros + MS
 #                 5: '20priros'
 DatasetIx = 1
-CreatingTheExperiment = False
+CreatingTheExperiment = True
 
 #! Optimizer
 #          1: 'Adam'
@@ -63,9 +63,10 @@ OptimizerIx = 1
 
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
-Experiments_Index = 1
+Experiments_Index = 3
+Experiments_Tag = 'SRI' # 'tmp
 SubExperiment_Index = 1
-SubExperiment_Tag = '' # _withAugData
+SubExperiment_Tag = '' #  _withAugData
 
 #! cropping mode
 #           1 or mask:     cropping using the cropped mask acquired from rigid transformation
@@ -81,7 +82,10 @@ Cropping = True
 Normalize = True
 TestOnly = False
 
-AugmentMode = True
+#! this flag has two applications:
+#    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment 
+#    2. Called by preprocess: to augment data inside train folder of the assigned experiment
+AugmentMode = False  
 Augment_Rotation     = True
 Augment_Shift        = False
 Augment_NonRigidWarp = False

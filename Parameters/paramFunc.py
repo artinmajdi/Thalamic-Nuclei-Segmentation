@@ -49,6 +49,7 @@ def Run(UserInfoB):
 
     WhichExperiment.SubExperiment.index = UserInfo['SubExperiment_Index']
     WhichExperiment.Experiment.index = UserInfo['Experiments_Index']
+    WhichExperiment.Experiment.tag = UserInfo['Experiments_Tag']
     WhichExperiment.Experiment.name = 'exp' + str(UserInfo['Experiments_Index']) + '_' + WhichExperiment.Experiment.tag if WhichExperiment.Experiment.tag else 'Exp' + str(WhichExperiment.Experiment.index)
     WhichExperiment.Experiment.address = smallFuncs.mkDir(WhichExperiment.address + '/' + WhichExperiment.Experiment.name)
     _, WhichExperiment.SubExperiment.tag = LossFunction.LossInfo(UserInfo['lossFunctionIx']) 

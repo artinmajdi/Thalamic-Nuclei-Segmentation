@@ -256,86 +256,8 @@ def readingFromExperiments3D_new(params):
                 data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
         else:
             data.Test = TestData
-
-
+            
     return data
-
-
-# def readingFromExperiments3D(params):
-
-
-
-#     TestData = {}
-#     TrainData = {}
-#     for mode in ['train','test']:
-
-#         if 'train' in mode and params.preprocess.TestOnly:
-#             continue
-
-#         Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
-
-#         #! reading all images and concatenating them into one array
-#         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
-#         for ind, name in tqdm(enumerate(Subjects), desc='Loading Dataset'):
-#             subject = Subjects[name]
-
-#             # TODO: replace this with cropping if the negative number is low e.g. less than 5
-#             if np.min(subject.Padding) < 0:
-#                 print('WARNING: subject: ',name,' size is out of the training network input dimensions')
-#                 continue
-
-#             imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-
-
-#             if os.path.exists(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz'):
-#                 OrigMsk = nib.load(subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz').get_data()
-#             else:
-#                 OrigMsk = np.zeros(imF.shape)
-
-#             # a = np.mean(np.mean(OrigMsk,axis=1),axis=0)
-#             # b = np.where(a != 0)[0]
-
-#             # if 0:
-#             #     msk = OrigMsk[:,:,b]
-#             #     im = imF.get_data()[:,:,b]
-#             # else:
-#             msk = OrigMsk
-#             im = imF.get_data()
-
-
-#             im = np.pad(im, subject.Padding, 'constant')
-#             im = np.transpose(im,[2,0,1])
-#             im = np.expand_dims(im ,axis=3).astype('float32')
-#             im = normalizeA.main_normalize(params.preprocess.Normalize , im)
-
-
-#             msk = np.pad(msk, subject.Padding, 'constant')
-#             msk = np.transpose(msk,[2,0,1])
-#             msk = np.expand_dims(msk,axis=3) # .astype('float32')
-#             msk = np.concatenate((msk,1-msk),axis=3).astype('float32')
-
-#             if 'train' in mode:
-#                 images = im     if ind == 0 else np.concatenate((images,im    ),axis=0)
-#                 masks  = msk>Th if ind == 0 else np.concatenate((masks,msk>Th ),axis=0)
-
-#                 TrainData[name] = testCase(Image=im, Mask=msk ,OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-
-#             elif 'test' in mode:
-#                 TestData[name] = testCase(Image=im, Mask=msk , OrigMask=OrigMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-
-
-#         if 'train' in mode:
-#             data.Train_ForTest = TrainData
-
-#             if params.WhichExperiment.Dataset.Validation.fromKeras:
-#                 data.Train = trainCase(Image=images, Mask=masks.astype('float32'))
-#             else:
-#                 data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
-#         else:
-#             data.Test = TestData
-
-
-#     return data
 
 def TrainValSeperate(percentage, images, masks):
 
@@ -371,48 +293,40 @@ def percentageRandomDivide(percentage, subjectsList):
 def movingFromDatasetToExperiments(params):
 
     def listAugmentationFolders(mode):
-        Dir_Aug1 = params.WhichExperiment.Dataset.address + '/Augments/' + Linear_Rotation + '/'
+        Dir_Aug1 = params.WhichExperiment.Dataset.address + '/Augments/' + mode
         flag_Aug = os.path.exists(Dir_Aug1)
-        if flag_Aug: 
-            ListAugments = smallFuncs.listSubFolders(Dir_Aug1)
-        else:
-            ListAugments = list('')
-        return flag_Aug, ListAugments
-        
-    def copyAugmentData(DirOut, flag_Aug, ListAugments, mode):
-        if flag_Aug:
-            lstAugmts = [i for i in ListAugments if subjects in i.split('Ref_')[0]]
 
-            #! just to see the accuracy of augmented data as test as well
-            # if 'train' in mode:
-            for subjectsAgm in lstAugmts:
-                shutil.copytree(params.WhichExperiment.Dataset.address + '/Augments/' + mode + '/' + subjectsAgm  ,  DirOut + '/' + subjectsAgm)
+        ListAugments = smallFuncs.listSubFolders(Dir_Aug1) if flag_Aug else list('')
+
+        return flag_Aug, {'address': Dir_Aug1 , 'list': ListAugments , 'mode':mode}
+        
+    def copyAugmentData(DirOut, AugDataL, subject):
+        if 'NonLinear' in AugDataL['mode']: AugDataL['list'] = [i for i in AugDataL['list'] if subject in i.split('Ref_')[0]]
+
+        for subjectsAgm in AugDataL['list']:
+            if subject in subjectsAgm: shutil.copytree(AugDataL['address'] + '/' + subjectsAgm  ,  DirOut + '/' + subjectsAgm)
                     
     List = smallFuncs.listSubFolders(params.WhichExperiment.Dataset.address)
 
-    flag_Aug, ListAugments = list(np.zeros(3)), list(np.zeros(3))
-    if params.preprocess.Mode and params.preprocess.Augment.Mode:
-
-        if params.preprocess.Augment.Rotation: flag_Aug[0], ListAugments[0] = listAugmentationFolders('Linear_Rotation')
-        if params.preprocess.Augment.Rotation: flag_Aug[1], ListAugments[1] = listAugmentationFolders('Linear_Shift')
-        if params.preprocess.Augment.Rotation: flag_Aug[2], ListAugments[2] = listAugmentationFolders('NonLinear')
+    flagAg, AugDataL = np.zeros(3), list(np.zeros(3))
+    
+    if params.preprocess.Augment.Mode:
+        if params.preprocess.Augment.Rotation:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation')
+        if params.preprocess.Augment.Shift:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift')
+        if params.preprocess.Augment.NonRigidWarp: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear')
 
 
     TestParams = params.WhichExperiment.Dataset.Test
     _, TestList = percentageRandomDivide(TestParams.percentage, List) if 'percentage' in TestParams.mode else TestParams.subjects
-    for subjects in List:
+    for subject in List:
 
-        if subjects in TestList:
-            DirOut = params.directories.Test.address 
-            mode = 'test'
-        else:
-            DirOut = params.directories.Train.address
-            mode = 'train'
+        DirOut, mode = (params.directories.Test.address , 'test') if subject in TestList else (params.directories.Train.address, 'train')
 
-        if not os.path.exists(DirOut + '/' + subjects):
-            shutil.copytree(params.WhichExperiment.Dataset.address + '/' + subjects  ,  DirOut + '/' + subjects)
+        if not os.path.exists(DirOut + '/' + subject):
+            shutil.copytree(params.WhichExperiment.Dataset.address + '/' + subject  ,  DirOut + '/' + subject)
 
-            for i in range(3):
-                if flag_Aug[i]: copyAugmentData(DirOut, flag_Aug[i], ListAugments[i], mode)
+        if 'train' in mode:
+            for AgIx in range(len(AugDataL)):
+                if flagAg[AgIx]: copyAugmentData(DirOut, AugDataL[AgIx], subject)
 
     return True

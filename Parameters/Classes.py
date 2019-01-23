@@ -80,7 +80,7 @@ class hardParams:
 
 class experiment:
     index = ''
-    tag = 'tmp'
+    tag = ''
     name = ''
     address = ''
 
