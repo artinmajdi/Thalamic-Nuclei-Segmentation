@@ -3,10 +3,11 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import pickle
 import matplotlib.pyplot as plt
 import pandas as pd
+import nibabel as nib
+import numpy as np
 
 
-Dir = '/array/ssd/msmajdi/experiments/keras/exp1_tmp/models/subExp2_Loss_BCE_withAugData/1-THALAMUS/'
-
+a = list(np.zeros(3))
+print(a)
 
 print('---')
-# a  = open(Dir + 'hist_params.csv' , 'rb')

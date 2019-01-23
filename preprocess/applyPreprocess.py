@@ -53,10 +53,12 @@ def apply_On_Experiment(params):
         dirr = params.directories.Train if mode == 'train' else params.directories.Test
         for ind, sj in enumerate(dirr.Input.Subjects) :
             subject = dirr.Input.Subjects[sj]
-
-            print('\n',mode.upper(), sj , str(ind) + '/' + str(len(dirr.Input.Subjects)),'------------')
-            print('    - RigidRegistration: ')
-            BashCallingFunctionsA.RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
+            if 'Aug' not in sj:
+                print('\n',mode.upper(), sj , str(ind) + '/' + str(len(dirr.Input.Subjects)),'------------')
+                print('    - RigidRegistration: ')
+                BashCallingFunctionsA.RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
+            else:
+                print('----')
 
             print('    - Cropping: ')
             BashCallingFunctionsA.Bash_Cropping( subject , params)

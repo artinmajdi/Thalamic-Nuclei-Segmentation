@@ -78,7 +78,7 @@ def Run(UserInfoB):
     preprocess.BiasCorrection.Mode = UserInfo['BiasCorrection']
     preprocess.Cropping.Mode       = UserInfo['Cropping']
     preprocess.Normalize.Mode      = UserInfo['Normalize']
-    preprocess.Augment.Mode        = UserInfo['Augment']
+    preprocess.Augment.Mode        = UserInfo['AugmentMode']
     preprocess.TestOnly            = UserInfo['TestOnly']
 
     preprocess.Augment.Rotation     = UserInfo['Augment_Rotation']

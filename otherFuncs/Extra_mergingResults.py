@@ -91,6 +91,7 @@ def mergingDiceValues(params):
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
         for subExperiment in List_subExperiments:
                 df = mergingDiceValues_ForOneSubExperiment(Dir + '/' + subExperiment)
+                if len(subExperiment) > 31: subExperiment = subExperiment[:31]
                 df.to_excel(writer, sheet_name=subExperiment)
 
         writer.close()

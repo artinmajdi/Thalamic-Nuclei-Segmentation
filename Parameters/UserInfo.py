@@ -64,8 +64,8 @@ OptimizerIx = 1
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 Experiments_Index = 1
-SubExperiment_Index = 2
-SubExperiment_Tag = '_withAugData'
+SubExperiment_Index = 1
+SubExperiment_Tag = '' # _withAugData
 
 #! cropping mode
 #           1 or mask:     cropping using the cropped mask acquired from rigid transformation
@@ -75,16 +75,16 @@ cropping_method = 2
 
 
 #! Preprocessing
-preprocessMode = False
+preprocessMode = True
 BiasCorrection = False
 Cropping = True
 Normalize = True
-Augment = False
-TestOnly = True
+TestOnly = False
 
-Augment_Rotation     = False
+AugmentMode = True
+Augment_Rotation     = True
 Augment_Shift        = False
-Augment_NonRigidWarp = True
+Augment_NonRigidWarp = False
 
 #! save the report
 #           'pickle'

@@ -6,6 +6,8 @@ from scipy.misc import imrotate
 import nibabel as nib
 from preprocess import BashCallingFunctionsA
 from otherFuncs import smallFuncs
+import os
+
 
 def funcRotating(Image , angle):
 
@@ -38,7 +40,7 @@ def LinearFunc(params, mode):
     SubjectNames = list(Subjects.keys())
     L = len(SubjectNames)
 
-    for imInd in range(L):
+    for imInd in range(31,L):
         nameSubject = SubjectNames[imInd]
         subject  = Subjects[nameSubject]
 
@@ -51,34 +53,51 @@ def LinearFunc(params, mode):
             Header = im.header
             Affine = im.affine
 
-            angle = np.random.random_integers(10)
-            shift = [ np.random.random_integers(10) , np.random.random_integers(10)]
+            angle = np.random.random_integers(-2,2)
+            shift = [ np.random.random_integers(-10,10) , np.random.random_integers(-10,10)]
 
-            outDirectoryImage = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Rot_' + str(angle) + '_shift_' + str(shift[0]) + '-' + str(shift[1]) )
-            outDirectoryMask = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Rot_' + str(angle) + '_shift_' + str(shift[0]) + '-' + str(shift[1]) + '/Labels')
 
+            nameSubject2 = nameSubject + '_Aug' + str(AugIx)
             if params.preprocess.Augment.Rotation:
                 Image = funcRotating(Image , angle)
+                nameSubject2 = nameSubject2 + '_Rot_' + str(angle) 
+
             if params.preprocess.Augment.Shift:
                 Image = funcShifting(Image , shift)
+                nameSubject2 = nameSubject2 + '_shift_' + str(shift[0]) + '-' + str(shift[1])
+
+            outDirectoryImage = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject2)
+            outDirectoryMask = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject2 + '/Labels')
+
 
             outDirectoryImage2 = outDirectoryImage + '/' + subject.ImageProcessed + '.nii.gz'
             smallFuncs.saveImage(Image , Affine , Header , outDirectoryImage2)
-            smallFuncs.copyfile(outDirectoryImage2 , outDirectoryImage  + '/' + subject.ImageProcessed.split('_PProcessed')[0] + '.nii.gz')
+            # smallFuncs.copyfile(outDirectoryImage2 , outDirectoryImage  + '/' + subject.ImageProcessed.split('_PProcessed')[0] + '.nii.gz')
+
+
+            #! applying the augmentation on CropMask
+            Dir_CropMask_In = subject.Temp.address + '/' + subject.Temp.CropMask + '.nii.gz'
+
+            smallFuncs.mkDir(outDirectoryImage + '/temp/')
+            Dir_CropMask_Out = outDirectoryImage + '/temp/' + subject.Temp.CropMask + '.nii.gz'
+            if os.path.isfile(Dir_CropMask_In):
+
+                CropMask = nib.load(Dir_CropMask_In).get_data() 
+                if params.preprocess.Augment.Rotation: CropMask = funcRotating(CropMask , angle)
+                if params.preprocess.Augment.Shift:    CropMask = funcShifting(CropMask , shift)
+                smallFuncs.saveImage( np.float32(CropMask > 0.5) , Affine , Header , Dir_CropMask_Out)
 
             for ind in params.WhichExperiment.Nucleus.FullIndexes:
                 NucleusName, _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
 
                 Mask   = nib.load(subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz').get_data() # 'Cropped' for cropped image
 
-                if params.preprocess.Augment.Rotation:
-                    Mask = funcRotating(Mask , angle)
-                if params.preprocess.Augment.Shift:
-                    Mask = funcShifting(Mask , shift)
+                if params.preprocess.Augment.Rotation: Mask = funcRotating(Mask , angle)
+                if params.preprocess.Augment.Shift:    Mask = funcShifting(Mask , shift)
 
                 outDirectoryMask2  = outDirectoryMask  + '/' + NucleusName + '_PProcessed.nii.gz'
                 smallFuncs.saveImage( np.float32(Mask > 0.5) , Affine , Header , outDirectoryMask2)
-                smallFuncs.copyfile(outDirectoryMask2 , outDirectoryMask  + '/' + NucleusName + '.nii.gz')
+                # smallFuncs.copyfile(outDirectoryMask2 , outDirectoryMask  + '/' + NucleusName + '.nii.gz')
 
 def NonLinearFunc(Input, Augment, mode):
 

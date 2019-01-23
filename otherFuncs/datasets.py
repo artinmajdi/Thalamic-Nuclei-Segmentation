@@ -203,10 +203,10 @@ def readingFromExperiments3D_new(params):
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
         cntSkipped = 0
         indTrain = 0
-        for ind, nameSubject in tqdm(enumerate(Subjects), desc='Loading Dataset: ' + mode):
+        for _, nameSubject in tqdm(enumerate(Subjects), desc='Loading Dataset: ' + mode):
             subject = Subjects[nameSubject]
 
-            if ind > 10: continue
+            # if ind > 10: continue
 
             # TODO: replace this with cropping if the negative number is low e.g. less than 5
             if np.min(subject.Padding) < 0:
@@ -370,12 +370,33 @@ def percentageRandomDivide(percentage, subjectsList):
 
 def movingFromDatasetToExperiments(params):
 
+    def listAugmentationFolders(mode):
+        Dir_Aug1 = params.WhichExperiment.Dataset.address + '/Augments/' + Linear_Rotation + '/'
+        flag_Aug = os.path.exists(Dir_Aug1)
+        if flag_Aug: 
+            ListAugments = smallFuncs.listSubFolders(Dir_Aug1)
+        else:
+            ListAugments = list('')
+        return flag_Aug, ListAugments
+        
+    def copyAugmentData(DirOut, flag_Aug, ListAugments, mode):
+        if flag_Aug:
+            lstAugmts = [i for i in ListAugments if subjects in i.split('Ref_')[0]]
+
+            #! just to see the accuracy of augmented data as test as well
+            # if 'train' in mode:
+            for subjectsAgm in lstAugmts:
+                shutil.copytree(params.WhichExperiment.Dataset.address + '/Augments/' + mode + '/' + subjectsAgm  ,  DirOut + '/' + subjectsAgm)
+                    
     List = smallFuncs.listSubFolders(params.WhichExperiment.Dataset.address)
 
-    DirAugm = params.WhichExperiment.Dataset.address + '/Augments'
+    flag_Aug, ListAugments = list(np.zeros(3)), list(np.zeros(3))
+    if params.preprocess.Mode and params.preprocess.Augment.Mode:
 
-    flagAug = os.path.exists(DirAugm)
-    if flagAug: ListAugments = smallFuncs.listSubFolders(DirAugm)
+        if params.preprocess.Augment.Rotation: flag_Aug[0], ListAugments[0] = listAugmentationFolders('Linear_Rotation')
+        if params.preprocess.Augment.Rotation: flag_Aug[1], ListAugments[1] = listAugmentationFolders('Linear_Shift')
+        if params.preprocess.Augment.Rotation: flag_Aug[2], ListAugments[2] = listAugmentationFolders('NonLinear')
+
 
     TestParams = params.WhichExperiment.Dataset.Test
     _, TestList = percentageRandomDivide(TestParams.percentage, List) if 'percentage' in TestParams.mode else TestParams.subjects
@@ -387,16 +408,11 @@ def movingFromDatasetToExperiments(params):
         else:
             DirOut = params.directories.Train.address
             mode = 'train'
+
         if not os.path.exists(DirOut + '/' + subjects):
             shutil.copytree(params.WhichExperiment.Dataset.address + '/' + subjects  ,  DirOut + '/' + subjects)
 
-            if flagAug:
-                lstAugmts = [i for i in ListAugments if subjects in i.split('Ref_')[0]]
-
-                #! just to see the accuracy of augmented data as test as well
-                # if 'train' in mode:
-                for subjectsAgm in lstAugmts:
-                    shutil.copytree(params.WhichExperiment.Dataset.address + '/Augments/' + subjectsAgm  ,  DirOut + '/' + subjectsAgm)
-
+            for i in range(3):
+                if flag_Aug[i]: copyAugmentData(DirOut, flag_Aug[i], ListAugments[i], mode)
 
     return True

@@ -125,7 +125,7 @@ class reference:
 
 class Augment:
     Mode = ''
-    LinearAugmentLength = 1  # number
+    LinearAugmentLength = 2  # number
     NonLinearAugmentLength = 2
     Rotation = ''
     Shift = ''
