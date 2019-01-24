@@ -6,6 +6,7 @@ from preprocess import applyPreprocess
 from Parameters import paramFunc, UserInfo
 
 params = paramFunc.Run(UserInfo.__dict__)
+params.preprocess.Mode = True
 
 #! mode: 1: on train & test folders in the experiment
 #! mode: 2: on individual image
