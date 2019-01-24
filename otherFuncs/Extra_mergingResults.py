@@ -63,14 +63,19 @@ def mergingDiceValues(params):
                 Dice_Test = []
 
                 _, FullIndexes = smallFuncs.NucleiSelection(1)
-                names = np.append(['subjects'], smallFuncs.AllNucleiNames(FullIndexes))
+                # names = np.append(['subjects'], smallFuncs.AllNucleiNames(FullIndexes))
+                names = list(np.zeros(15))
+                names[0] = 'subjects'
+                for ind in FullIndexes:
+                        if ind != 4567: 
+                                names[ind], _ = smallFuncs.NucleiSelection(ind)
 
                 for subject in subF:
                         Dir_subject = Dir + '/' + subject
                         a = os.listdir(Dir_subject)
                         a = [i for i in a if 'Dice_' in i]
 
-                        Dice_Single = list(np.zeros(len(FullIndexes)+1))
+                        Dice_Single = list(np.zeros(15))
                         Dice_Single[0] = subject
                         for n in a:
                                 b = np.loadtxt(Dir_subject + '/' + n)
