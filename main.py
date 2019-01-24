@@ -53,23 +53,39 @@ def runExperiment(params, Info, Data):
 
     return K
 
+def SingleNucleiRun(params):
+    Data, params, Info = datasets.check_Dataset_ForTraining(params=params, flag=True, Info={})
+    mode = 'singleExperiment'
 
-
-#! we assume that number of layers , and other things that might effect the input data stays constant
-AllParamsList = smallFuncs.readingTheParams(AllExperimentsList)
-
-#! reading the dataset
-ind, params = list(AllParamsList.items())[0]
-Data, params, Info = datasets.check_Dataset_ForTraining(params=params, flag=True, Info={})
-
-
-mode = 'singleExperiment'
-
-if 'singleExperiment' in mode:
-    K = runExperiment(params, Info, Data)
-else:    
-    for ind, params in list(AllParamsList.items()): 
+    if 'singleExperiment' in mode:
         K = runExperiment(params, Info, Data)
+    else:    
+        for ind, params in list(AllParamsList.items()): 
+            K = runExperiment(params, Info, Data)
+
+    return K
+
+
+
+if 0:
+
+    #! we assume that number of layers , and other things that might effect the input data stays constant
+    AllParamsList = smallFuncs.readingTheParams(AllExperimentsList)
+    #! reading the dataset
+    ind, params = list(AllParamsList.items())[0]
+    K = SingleNucleiRun(params)
+
+else:
+
+    #! this is temporary to run on all nuclei
+    from Parameters import UserInfo, paramFunc
+    UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
+    _, FullIndexes = smallFuncs.NucleiSelection(ind = 1,organ = 'THALAMUS')
+
+    for nucleiIx in FullIndexes:
+        UserInfoB['nucleus_Index'] = [nucleiIx]
+        params = paramFunc.Run(UserInfoB)
+        K = SingleNucleiRun(params)
 
 
 K.clear_session()

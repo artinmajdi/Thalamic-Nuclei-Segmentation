@@ -53,7 +53,7 @@ lossFunctionIx = 3
 #                 3: 'fashionMnist'
 #                 4: 'All_7T': 20priros + MS
 #                 5: '20priros'
-DatasetIx = 4
+DatasetIx = 1
 CreatingTheExperiment = True
 
 #! Optimizer
@@ -63,8 +63,8 @@ OptimizerIx = 1
 
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
-Experiments_Index = 2
-Experiments_Tag = '7T' # 'SRI' 'tmp' 'SRI_wLRAug'
+Experiments_Index = 3
+Experiments_Tag = '' # 'SRI' 'tmp' 'SRI_wLRAug' '7T
 SubExperiment_Index = 1
 SubExperiment_Tag = '' 
 
@@ -85,15 +85,15 @@ TestOnly = False
 #! this flag has two applications:
 #    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment 
 #    2. Called by preprocess: to augment data inside train folder of the assigned experiment
-AugmentMode = False  
+AugmentMode = True  
 Augment_Rotation     = True
 Augment_Shift        = False
 Augment_NonRigidWarp = False
 
-# if AugmentMode:
-#     Experiments_Tag = 'SRI_wLRAug' # 'tmp' ''
-# else:    
-    # Experiments_Tag = 'SRI'
+if AugmentMode:
+    Experiments_Tag = 'SRI_wLRAug' # 'tmp' ''
+else:    
+    Experiments_Tag = 'SRI'
 
 
 #! save the report
