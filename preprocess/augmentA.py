@@ -40,7 +40,7 @@ def LinearFunc(params, mode):
     SubjectNames = list(Subjects.keys())
     L = len(SubjectNames)
 
-    for imInd in range(31,L):
+    for imInd in range(L):
         nameSubject = SubjectNames[imInd]
         subject  = Subjects[nameSubject]
 

@@ -32,10 +32,10 @@ def savingHistory_AsExcel(params):
                                 nucleusInfo = np.zeros((n_epochsMax,len(keys)+2))
                                 for ix, key in enumerate(keys):
                                         A = history[key]                                        
-                                        nucleusInfo[1:len(A)+1,ix+2] = np.transpose(A)
+                                        nucleusInfo[:len(A),ix+2] = np.transpose(A)
 
                                 if ind == 0:
-                                        nucleusInfo[1:len(A)+1,0] = np.array(range(1,len(A)+1))
+                                        nucleusInfo[:len(A),0] = np.array(range(len(A)))
                                         AllNucleusInfo = nucleusInfo
                                         FullNamesLA = np.append(['Epochs', subExperiment],  keys )
                                 else:
