@@ -233,10 +233,10 @@ def funcExpDirectories(whichExperiment):
 
     return Directories
 
-def whichCropMode(NucleusName, mode):
-    if '1-THALAMUS' in NucleusName:
-        mode = 1
-    return mode
+# def whichCropMode(NucleusName, mode):
+#     if '1-THALAMUS' in NucleusName:
+#         mode = 1
+#     return mode
 
 def fixDirectoryLastDashSign(Dir):
     Dir = os.path.abspath(Dir)

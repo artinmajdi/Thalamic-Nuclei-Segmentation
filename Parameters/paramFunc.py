@@ -74,7 +74,7 @@ def Run(UserInfoB):
 
     directories = smallFuncs.funcExpDirectories(WhichExperiment)
     preprocess.Augment = smallFuncs.augmentLengthChecker(preprocess.Augment)
-    preprocess.Cropping.Method = smallFuncs.whichCropMode(WhichExperiment.Nucleus.name, UserInfo['cropping_method'])  # it changes the mode to 1 if we're analyzing the Thalamus
+    preprocess.Cropping.Method = UserInfo['cropping_method']
 
     
     preprocess.Mode                = UserInfo['preprocessMode']

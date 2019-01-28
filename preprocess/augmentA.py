@@ -53,7 +53,7 @@ def LinearFunc(params, mode):
             Header = im.header
             Affine = im.affine
 
-            angle = np.random.random_integers(-2,2)
+            angle = np.random.random_integers(-10,10)
             shift = [ np.random.random_integers(-10,10) , np.random.random_integers(-10,10)]
 
 

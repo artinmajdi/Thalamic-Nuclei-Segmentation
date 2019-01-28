@@ -1,7 +1,7 @@
 # import os, sys
 # sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from otherFuncs import smallFuncs
-from preprocess import augmentA, BashCallingFunctionsA, normalizeA
+from preprocess import augmentA, BashCallingFunctionsA, normalizeA, croppingA
 
 # TODO  check 3T 7T dimension and interpolation
 # TODO check image format and convert to nifti
@@ -61,7 +61,8 @@ def apply_On_Experiment(params):
                 print('----')
 
             print('    - Cropping: ')
-            BashCallingFunctionsA.Bash_Cropping( subject , params)
+            croppingA.main(subject , params)
+            # BashCallingFunctionsA.Bash_Cropping( subject , params)
 
     augmentA.main_augment( params , 'NonLinear' , 'experiment')
 

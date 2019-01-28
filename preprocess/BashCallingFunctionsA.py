@@ -7,7 +7,7 @@ from shutil import copyfile
 
 def RigidRegistration(subject , Template , preprocess):
 
-#     processed = subject.address + '/' + subject.origImage + '_bias_corr.nii.gz'
+    #     processed = subject.address + '/' + subject.origImage + '_bias_corr.nii.gz'
     processed = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
     outP = subject.Temp.address + '/CropMask.nii.gz'
     LinearAffine = subject.Temp.Deformation.address + '/linearAffine.txt'
@@ -32,37 +32,37 @@ def BiasCorrection(subject , params):
             if params.preprocess.Debug.doDebug:
                 copyfile(outP , outDebug)
 
-def Bash_Cropping(subject , params):
+# def Bash_Cropping(subject , params):
 
-    if params.preprocess.Cropping.Mode:
+#     if params.preprocess.Cropping.Mode:
 
-        inP  = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
-        outP = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
-        crop = subject.Temp.address + '/CropMask.nii.gz'
-        outDebug = subject.Temp.address + '/' + subject.ImageOriginal + '_Cropped.nii.gz'
+#         inP  = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
+#         outP = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
+#         crop = subject.Temp.address + '/CropMask.nii.gz'
+#         outDebug = subject.Temp.address + '/' + subject.ImageOriginal + '_Cropped.nii.gz'
 
-        if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
-            copyfile(outDebug , outP)
-        else:
-            os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
-            if params.preprocess.Debug.doDebug:
-                copyfile(outP , outDebug)
+#         if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
+#             copyfile(outDebug , outP)
+#         else:
+#             os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
+#             if params.preprocess.Debug.doDebug:
+#                 copyfile(outP , outDebug)
 
-        # Cropping the Label
-        for ind in params.WhichExperiment.Nucleus.FullIndexes:
-            NucleusName, _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
+#         # Cropping the Label
+#         for ind in params.WhichExperiment.Nucleus.FullIndexes:
+#             NucleusName, _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
 
-            inP  = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
-            outP = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
-            # crop = subject.Temp.address + '/CropMask.nii.gz'
-            outDebug = subject.Label.Temp.address + '/' + NucleusName + '_Cropped.nii.gz'
+#             inP  = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
+#             outP = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
+#             # crop = subject.Temp.address + '/CropMask.nii.gz'
+#             outDebug = subject.Label.Temp.address + '/' + NucleusName + '_Cropped.nii.gz'
 
-            if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
-                copyfile(outDebug , outP)
-            else:
-                os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
-                if params.preprocess.Debug.doDebug:
-                    copyfile(outP , outDebug)
+#             if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
+#                 copyfile(outDebug , outP)
+#             else:
+#                 os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
+#                 if params.preprocess.Debug.doDebug:
+#                     copyfile(outP , outDebug)
 
 def Bash_AugmentNonLinear(subject , subjectRef , outputAddress): # Image , Mask , Reference , output):
 

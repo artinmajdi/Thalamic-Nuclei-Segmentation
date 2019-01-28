@@ -17,7 +17,7 @@ nucleus_Index = [1]
 
 #! Training
 num_Layers = 5
-epochs = 30
+epochs = 70
 batch_size = 40
 Initialize_FromThalamus = True
 Initialize_FromOlderModel = False
@@ -54,7 +54,7 @@ lossFunctionIx = 2
 #                 3: 'fashionMnist'
 #                 4: 'All_7T': 20priros + MS
 #                 5: '20priros'
-DatasetIx = 1
+DatasetIx = 4
 CreatingTheExperiment = True
 
 #! Optimizer
@@ -65,15 +65,14 @@ OptimizerIx = 1
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 Experiments_Index = 3
-Experiments_Tag = 'SRI_wLRAug_10deg' # 'SRI' 'tmp' 'SRI_wLRAug' '7T
+Experiments_Tag = '7T_wAug' # 'SRI' 'tmp' 'SRI_wLRAug' '7T
 SubExperiment_Index = 1
 SubExperiment_Tag = ''
 
 #! cropping mode
-#           1 or mask:     cropping using the cropped mask acquired from rigid transformation
-#           2 or thalamus: cropping using the cropped mask for plain size and Thalamus Prediction for slice numbers
-#           3 or both:     cropping using the Thalamus prediction
-cropping_method = 2
+#           'ANTs'
+#           'python'
+cropping_method = 'python' # 'ANTs'
 
 
 #! Preprocessing

@@ -2,36 +2,89 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
+from shutil import copyfile
+from otherFuncs import smallFuncs
+import nibabel as nib
 
 
-def chooseAugmented(Input , AugIx):
+def main(subject , params):
+
+    if params.preprocess.Cropping.Mode:
+
+        inP  = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
+        outP = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
+        crop = subject.Temp.address + '/CropMask.nii.gz'
+        outDebug = subject.Temp.address + '/' + subject.ImageOriginal + '_Cropped.nii.gz'
+
+        if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
+            copyfile(outDebug , outP)
+        else:
+
+            if 'ANTs' in params.preprocess.Cropping.Method:
+                os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
+            elif 'python' in params.preprocess.Cropping.Method:
+                Gap = [0,0,1]
+                im = nib.load(inP)
+                CropMask = nib.load(crop)
+                imC , CropCoordinates = funcCropping_Mode(im.get_data() , CropMask.get_data() , Gap)
+                smallFuncs.saveImage(imC , im.affine , im.header , outP)
+
+            if params.preprocess.Debug.doDebug:
+                copyfile(outP , outDebug)
+
+        # Cropping the Label
+        for ind in params.WhichExperiment.Nucleus.FullIndexes:
+            NucleusName, _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
+
+            inP  = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
+            outP = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
+            # crop = subject.Temp.address + '/CropMask.nii.gz'
+            outDebug = subject.Label.Temp.address + '/' + NucleusName + '_Cropped.nii.gz'
+
+            if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
+                copyfile(outDebug , outP)
+            else:
+
+                if 'ANTs' in params.preprocess.Cropping.Method:
+                    os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
+                elif 'python' in params.preprocess.Cropping.Method:
+                    msk = nib.load(inP)
+                    mskC = cropFromCoordinates(msk.get_data(), CropCoordinates)
+                    smallFuncs.saveImage(mskC , msk.affine , msk.header , outP)
+
+                if params.preprocess.Debug.doDebug:
+                    copyfile(outP , outDebug)
+
+
+    return True
+
+def notUsed_chooseAugmented(Input , AugIx):
     return Input.Image[...,AugIx], Input.CropMask[...,AugIx], Input.ThalamusMask[...,AugIx]
 
-def main_cropping(params , Input):
+def notUsed_main_cropping(params , Input):
 
     if params.cropping:
-        CropCordinatesAll = np.zeros((Input.Image.shape[3]))
+        CropCoordinatesAll = np.zeros((Input.Image.shape[3]))
         for AugIx in range(Input.Image.shape[3]):
 
             Image, CropMask, ThalamusMask = chooseAugmented( Input , AugIx )
 
             if (params.CroppingMode == 1) | ('mask' in params.CroppingMode ):
                 Gap=[0,0,1]
-                Image , CropCordinates = funcCropping_Mode( Image , CropMask , Gap )
+                Image , CropCoordinates = funcCropping_Mode( Image , CropMask , Gap )
 
             elif (params.CroppingMode == 2) | ('thalamus' in params.CroppingMode ):
                 Gap=[20,20,1]
-                Image , CropCordinates = funcCropping_Mode( Image , ThalamusMask , Gap )
+                Image , CropCoordinates = funcCropping_Mode( Image , ThalamusMask , Gap )
 
             elif (params.CroppingMode == 3) | ('both' in params.CroppingMode ):
                 Gap=[0,0,1]
-                Image , CropCordinates = funcCropping_Mode3_SlicingFromThalamus( Image , CropMask , ThalamusMask , Gap )
+                Image , CropCoordinates = funcCropping_Mode3_SlicingFromThalamus( Image , CropMask , ThalamusMask , Gap )
 
             Input.Image[...,AugIx] = Image
-            CropCordinatesAll[AugIx] = CropCordinates
+            CropCoordinatesAll[AugIx] = CropCoordinates
 
-    return Input , CropCordinatesAll
-
+    return Input , CropCoordinatesAll
 
 def cropFunc(im , c1,c2,c3 , Gap):
 
@@ -41,9 +94,16 @@ def cropFunc(im , c1,c2,c3 , Gap):
     SliceNumbers = range(SN[0],SN[1])
 
     im = im[ d1[0]:d1[1],d2[0]:d2[1],SliceNumbers ]
-    CropCordinates = [d1,d2,SliceNumbers]
+    CropCoordinates = [d1,d2,SliceNumbers]
 
-    return im , CropCordinates
+    return im , CropCoordinates
+
+def cropFromCoordinates(im, CropCoordinates):
+    d1 = CropCoordinates[0]
+    d2 = CropCoordinates[1]
+    SliceNumbers = CropCoordinates[2] 
+
+    return im[ d1[0]:d1[1],d2[0]:d2[1],SliceNumbers ]
 
 def funcCropping_Mode(im , CropMask , Gap):
 
@@ -54,11 +114,11 @@ def funcCropping_Mode(im , CropMask , Gap):
     ss = np.sum(CropMask,axis=1)
     c3 = np.where(np.sum(ss,axis=0) > 10)[0]
 
-    im , CropCordinates = cropFunc(im , c1,c2,c3 , Gap)
+    im , CropCoordinates = cropFunc(im , c1,c2,c3 , Gap)
 
-    return im , CropCordinates
+    return im , CropCoordinates
 
-def funcCropping_Mode3_SlicingFromThalamus(im , CropMask , ThalamusMask , Gap):
+def notUsed_funcCropping_Mode3_SlicingFromThalamus(im , CropMask , ThalamusMask , Gap):
 
     ss = np.sum(CropMask,axis=2)
     c1 = np.where(np.sum(ss,axis=1) > 1)[0]
@@ -67,6 +127,6 @@ def funcCropping_Mode3_SlicingFromThalamus(im , CropMask , ThalamusMask , Gap):
     ss = np.sum(ThalamusMask,axis=1)
     c3 = np.where(np.sum(ss,axis=0) > 1)[0]
 
-    im , CropCordinates = cropFunc(im , c1,c2,c3 , Gap)
+    im , CropCoordinates = cropFunc(im , c1,c2,c3 , Gap)
 
-    return im , CropCordinates
+    return im , CropCoordinates

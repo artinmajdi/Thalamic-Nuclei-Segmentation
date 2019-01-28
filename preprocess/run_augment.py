@@ -8,6 +8,8 @@ from otherFuncs import smallFuncs
 
 params = smallFuncs.readingTheParams('')[0]
 
+# params = smallFuncs.inputNamesCheck(params, 'experiment')
+
 #! mode: 1: on train & test folders in the experiment
 #! mode: 2: on individual image
 main_augment( params , 'Linear', 'experiment')
