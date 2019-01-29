@@ -17,13 +17,13 @@ nucleus_Index = [1]
 
 #! Training
 num_Layers = 5
-epochs = 70
+epochs = 80
 batch_size = 40
 Initialize_FromThalamus = True
 Initialize_FromOlderModel = False
 
 #! GPU
-GPU_Index = 5
+GPU_Index = 6
 
 
 
@@ -65,18 +65,18 @@ OptimizerIx = 1
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 Experiments_Index = 3
-Experiments_Tag = '7T_wAug' # 'SRI' 'tmp' 'SRI_wLRAug' '7T
+Experiments_Tag = '7T' # 'SRI' 'tmp' 'SRI_wLRAug' '7T' '7T_wLRAug'
 SubExperiment_Index = 1
 SubExperiment_Tag = ''
 
 #! cropping mode
 #           'ANTs'
 #           'python'
-cropping_method = 'python' # 'ANTs'
+cropping_method = 'ANTs' # 'ANTs' 'python'
 
 
 #! Preprocessing
-preprocessMode = True
+preprocessMode = False
 BiasCorrection = False
 Cropping = True
 Normalize = True
@@ -85,7 +85,7 @@ TestOnly = False
 #! this flag has two applications:
 #    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment
 #    2. Called by preprocess: to augment data inside train folder of the assigned experiment
-AugmentMode = True
+AugmentMode = False
 Augment_Rotation     = True
 Augment_Shift        = False
 Augment_NonRigidWarp = False

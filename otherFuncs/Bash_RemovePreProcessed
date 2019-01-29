@@ -1,0 +1,16 @@
+#!/bin/tcsh
+
+# export dir = '/array/ssd/msmajdi/data/preProcessed/7T/20priors'
+# cd $dir
+
+
+rm */*_PProcessed.nii.gz
+rm */Label/*_PProcessed.nii.gz
+rm */temp/*_Cropped.nii.gz
+rm -r */Label/temp
+
+
+
+
+
+
