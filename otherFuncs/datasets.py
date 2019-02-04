@@ -171,7 +171,9 @@ def kaggleCompetition(params):
     data.Test = data.Train
     return data, '_'
 
-def inputPreparationForUnet(im,subject):
+def inputPreparationForUnet(im,subject, params):
+
+    im = np.transpose(im, params.WhichExperiment.Dataset.slicingOrder)
     im = np.pad(im, subject.Padding[:3], 'constant')
     im = np.transpose(im,[2,0,1])
     im = np.expand_dims(im ,axis=3).astype('float32')
@@ -214,7 +216,7 @@ def readingFromExperiments3D_new(params):
                 continue
 
             imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-            im = inputPreparationForUnet(imF.get_data(), subject)
+            im = inputPreparationForUnet(imF.get_data(), subject, params)
             im = normalizeA.main_normalize(params.preprocess.Normalize , im)
 
 
@@ -225,7 +227,7 @@ def readingFromExperiments3D_new(params):
                 origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imF.shape)
                 origMsk = np.expand_dims(origMsk1N ,axis=3) if cnt == 0 else np.concatenate((origMsk, np.expand_dims(origMsk1N ,axis=3)) ,axis=3).astype('float32')
 
-                msk1N = inputPreparationForUnet(origMsk1N, subject)
+                msk1N = inputPreparationForUnet(origMsk1N, subject, params)
                 msk = msk1N if cnt == 0 else np.concatenate((msk,msk1N),axis=3).astype('float32')
 
             background = backgroundDetector(msk)
@@ -317,8 +319,8 @@ def movingFromDatasetToExperiments(params):
         flagAg, AugDataL = np.zeros(3), list(np.zeros(3))
         
         if params.preprocess.Augment.Mode:
-            if params.preprocess.Augment.Rotation:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation')
-            if params.preprocess.Augment.Shift:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift')
+            if params.preprocess.Augment.Rotation.Mode:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation')
+            if params.preprocess.Augment.Shift.Mode:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift')
             if params.preprocess.Augment.NonRigidWarp: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear')
 
 

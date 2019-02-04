@@ -66,8 +66,7 @@ def SingleNucleiRun(params):
     return K
 
 
-
-if 0:
+if 1:
 
     #! we assume that number of layers , and other things that might effect the input data stays constant
     AllParamsList = smallFuncs.readingTheParams(AllExperimentsList)

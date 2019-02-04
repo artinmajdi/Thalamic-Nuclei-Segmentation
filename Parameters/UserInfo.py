@@ -8,7 +8,13 @@
 #     # 6: dict(nucleus_Index = [8] , GPU_Index = 7 , lossFunctionIx = 3),
 # }
 
-print('---')
+#! this is temporary and should later be moved down
+slicingDim = 2
+CreatingTheExperiment = False
+DatasetIx = 4
+AugmentMode = False   # this position is temporary and should later be moved down beside other augment parameters
+epochs = 10
+GPU_Index = 6
 
 
 #! Nucleus Index
@@ -17,19 +23,19 @@ nucleus_Index = [1]
 
 #! Training
 num_Layers = 5
-epochs = 80
-batch_size = 40
+# epochs = 80
+batch_size = 5
 Initialize_FromThalamus = True
 Initialize_FromOlderModel = False
 
 #! GPU
-GPU_Index = 6
+# GPU_Index = 6
 
 
 
 #! Template Address
 Tempalte_Image = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/origtemplate.nii.gz'
-Tempalte_Mask = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/MyCrop_Template2_Gap20.nii.gz'
+Tempalte_Mask = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/CropMaskV3.nii.gz'  # MyCrop_Template2_Gap20
 
 
 #! MultiClass
@@ -54,8 +60,14 @@ lossFunctionIx = 2
 #                 3: 'fashionMnist'
 #                 4: 'All_7T': 20priros + MS
 #                 5: '20priros'
-DatasetIx = 4
-CreatingTheExperiment = True
+# DatasetIx = 4
+# CreatingTheExperiment = True
+
+# orderDim =       2: [0,1,2]
+# orderDim =       1: [2,0,1]
+# orderDim =       0: [1,2,0]
+# slicingDim = 0
+
 
 #! Optimizer
 #          1: 'Adam'
@@ -64,8 +76,10 @@ OptimizerIx = 1
 
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
-Experiments_Index = 3
-Experiments_Tag = '7T' # 'SRI' 'tmp' 'SRI_wLRAug' '7T' '7T_wLRAug'
+Experiments_Index = '4_NCrp'
+# Experiments_Tag = '7T' # 'SRI' 'tmp' 'SRI_wLRAug' '7T' '7T_wLRAug'
+
+
 SubExperiment_Index = 1
 SubExperiment_Tag = ''
 
@@ -85,16 +99,16 @@ TestOnly = False
 #! this flag has two applications:
 #    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment
 #    2. Called by preprocess: to augment data inside train folder of the assigned experiment
+
 AugmentMode = False
+
 Augment_Rotation     = True
+Augment_AngleMax = 6
+
 Augment_Shift        = False
+Augment_ShiftMax = 10
+
 Augment_NonRigidWarp = False
-
-# if AugmentMode:
-#     Experiments_Tag = 'SRI_wLRAug' # 'tmp' ''
-# else:
-#     Experiments_Tag = 'SRI'
-
 
 #! save the report
 #           'pickle'

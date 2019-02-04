@@ -53,16 +53,18 @@ def LinearFunc(params, mode):
             Header = im.header
             Affine = im.affine
 
-            angle = np.random.random_integers(-10,10)
-            shift = [ np.random.random_integers(-10,10) , np.random.random_integers(-10,10)]
+            angleMax = params.preprocess.Augment.Rotation.AngleMax
+            shiftMax = params.preprocess.Augment.Shift.Mode.shiftMax
+            angle = np.random.random_integers(-angleMax,angleMax)
+            shift = [ np.random.random_integers(-shiftMax,shiftMax) , np.random.random_integers(-shiftMax,shiftMax)]
 
 
             nameSubject2 = nameSubject + '_Aug' + str(AugIx)
-            if params.preprocess.Augment.Rotation:
+            if params.preprocess.Augment.Rotation.Mode:
                 Image = funcRotating(Image , angle)
                 nameSubject2 = nameSubject2 + '_Rot_' + str(angle) 
 
-            if params.preprocess.Augment.Shift:
+            if params.preprocess.Augment.Shift.Mode:
                 Image = funcShifting(Image , shift)
                 nameSubject2 = nameSubject2 + '_shift_' + str(shift[0]) + '-' + str(shift[1])
 
@@ -83,8 +85,8 @@ def LinearFunc(params, mode):
             if os.path.isfile(Dir_CropMask_In):
 
                 CropMask = nib.load(Dir_CropMask_In).get_data() 
-                if params.preprocess.Augment.Rotation: CropMask = funcRotating(CropMask , angle)
-                if params.preprocess.Augment.Shift:    CropMask = funcShifting(CropMask , shift)
+                if params.preprocess.Augment.Rotation.Mode: CropMask = funcRotating(CropMask , angle)
+                if params.preprocess.Augment.Shift.Mode:    CropMask = funcShifting(CropMask , shift)
                 smallFuncs.saveImage( np.float32(CropMask > 0.5) , Affine , Header , Dir_CropMask_Out)
 
             for ind in params.WhichExperiment.Nucleus.FullIndexes:
@@ -92,8 +94,8 @@ def LinearFunc(params, mode):
 
                 Mask   = nib.load(subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz').get_data() # 'Cropped' for cropped image
 
-                if params.preprocess.Augment.Rotation: Mask = funcRotating(Mask , angle)
-                if params.preprocess.Augment.Shift:    Mask = funcShifting(Mask , shift)
+                if params.preprocess.Augment.Rotation.Mode: Mask = funcRotating(Mask , angle)
+                if params.preprocess.Augment.Shift.Mode:    Mask = funcShifting(Mask , shift)
 
                 outDirectoryMask2  = outDirectoryMask  + '/' + NucleusName + '_PProcessed.nii.gz'
                 smallFuncs.saveImage( np.float32(Mask > 0.5) , Affine , Header , outDirectoryMask2)
@@ -133,7 +135,7 @@ def NonLinearFunc(Input, Augment, mode):
 def main_augment(params , Flag, mode):
 
     if 'experiment' in mode:
-        if params.preprocess.Augment.Mode and (params.preprocess.Augment.Rotation or params.preprocess.Augment.Shift) and (Flag == 'Linear'):
+        if params.preprocess.Augment.Mode and (params.preprocess.Augment.Rotation.Mode or params.preprocess.Augment.Shift.Mode) and (Flag == 'Linear'):
             LinearFunc(params, mode)
 
         elif params.preprocess.Augment.Mode and params.preprocess.Augment.NonRigidWarp and (Flag == 'NonLinear'):

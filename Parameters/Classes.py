@@ -111,6 +111,9 @@ class dataset:
     Test = test
     onlySubjectsWvimp = True
     randomFlag = False
+    slicingOrder = [0,1,2]
+    slicingOrder_Reverse = [0,1,2]
+    slicingDim = 2
 
 class WhichExperiment:
     Experiment    = experiment
@@ -124,12 +127,20 @@ class reference:
     name = ''
     address = ''
 
+class rotation:
+    Mode = ''
+    AngleMax = 6
+
+class shift:
+    Mode = ''
+    ShiftMax = 10
+
 class Augment:
     Mode = ''
     LinearAugmentLength = 3  # number
     NonLinearAugmentLength = 2
-    Rotation = ''
-    Shift = ''
+    Rotation = rotation
+    Shift = shift
     NonRigidWarp = ''
 
 

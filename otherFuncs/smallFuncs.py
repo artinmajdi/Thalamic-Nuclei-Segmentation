@@ -69,23 +69,23 @@ def readingTheParams(AllExperimentsList):
             UserInfoB[entry] = ExpList[entry]
             print('LE  after -> ' + entry + ': ',UserInfoB[entry])
         return UserInfoB
-        
+
     def loadExperiments(UserInfo_Orig, AllExperimentsList):
-            
+
         AllParamsList = {}
         # ExpList = UserInfo_Orig['AllExperimentsList']
         if AllExperimentsList:
             ExpList = AllExperimentsList
             for Keys in list(ExpList.keys()):
-                
+
                 UserInfo = subDict(UserInfo_Orig, ExpList[Keys])
                 A = paramFunc.Run(UserInfo)
                 AllParamsList[Keys] = deepcopy(A)
         else:
             AllParamsList[0] = paramFunc.Run(UserInfo_Orig)
-            
+
         return AllParamsList
-        
+
     from Parameters import UserInfo
 
     UserInfoB = deepcopy(UserInfo.__dict__)
@@ -103,7 +103,7 @@ def listSubFolders(Dir):
     Dir_Prior = next(os.walk(Dir))[1]
     subFolders = []
     if len(Dir_Prior) > 0:
-        
+
         if oldStandard:
             for subFlds in Dir_Prior:
                 if 'vimp' in subFlds: subFolders.append(subFlds)
@@ -121,6 +121,7 @@ def choosingSubject(Input):
     return Input.Image.get_data() , Input.CropMask.get_data() , Input.ThalamusMask.get_data() , Input.TestAddress
 
 def saveImage(Image , Affine , Header , outDirectory):
+    mkDir(outDirectory.split(os.path.basename(outDirectory))[0])
     out = nib.Nifti1Image((Image).astype('float32'),Affine)
     out.get_header = Header
     nib.save(out , outDirectory)
@@ -132,6 +133,9 @@ def terminalEntries(UserInfo):
 
         if entry.lower() in ('-g','--gpu'):  # gpu num
             UserInfo['GPU_Index'] = sys.argv[en+1]
+
+        elif entry.lower() in ('-sd','--slicingDim'):
+            UserInfo['slicingDim'] = int(sys.argv[en+1])
 
         elif entry.lower() in ('-n','--nuclei'):  # nuclei index
             if sys.argv[en+1].lower() == 'all':
@@ -395,10 +399,14 @@ def inputNamesCheck(params, mode):
 
     return params
 
-def inputSizes(Subjects):
+def inputSizes(Subjects, params):
     inputSize = []
     for sj in Subjects:
-        inputSize.append( nib.load(Subjects[sj].address + '/' + Subjects[sj].ImageProcessed + '.nii.gz').shape)
+
+        Shape = np.array( nib.load(Subjects[sj].address + '/' + Subjects[sj].ImageProcessed + '.nii.gz').shape )
+        Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingOrder])
+
+        inputSize.append(Shape)
 
     return np.array(inputSize)
 
@@ -406,7 +414,7 @@ def correctNumLayers(params):
 
     HardParams = params.WhichExperiment.HardParams
 
-    inputSize = inputSizes(params.directories.Train.Input.Subjects)
+    inputSize = inputSizes(params.directories.Train.Input.Subjects, params)
 
     MinInputSize = np.min(inputSize, axis=0)
     kernel_size = HardParams.Model.ConvLayer.Kernel_size.conv
@@ -431,7 +439,7 @@ def imageSizesAfterPadding(params, mode):
                 continue
 
             Subjects = params.directories.Train.Input.Subjects if 'Train' in wFolder else params.directories.Test.Input.Subjects
-            inputSize = inputSizes(Subjects)
+            inputSize = inputSizes(Subjects, params)
 
             #! Finding the final image sizes after padding
             if 'Train' in wFolder:
@@ -478,8 +486,8 @@ def imageSizesAfterPadding(params, mode):
 def imShow(*args):
 
     _, axes = plt.subplots(1,len(args))
-    for sh in range(len(args)):
-        axes[sh].imshow(np.squeeze(args[sh]),cmap='gray')
+    for ax, im in enumerate(args):
+        axes[ax].imshow(im,cmap='gray')
 
     plt.show()
 
@@ -499,7 +507,7 @@ def saveReport(DirSave, name , data, method):
         f = open(Dir,"wb")
         pickle.dump(data,f)
         f.close()
-        
+
     if 'pickle' in method:
         savePickle(DirSave + '/' + name + '.pkl', data)
     elif 'mat' in method:
@@ -514,7 +522,7 @@ def loadReport(DirSave, name, method):
         data = pickle.load(f)
         f.close()
         return data
-        
+
     if 'pickle' in method:
         return loadPickle(DirSave + '/' + name + '.pkl')
     elif 'mat' in method:
@@ -530,7 +538,7 @@ def Saving_UserInfo(DirSave, params, UserInfo):
     #             context[setting] = getattr(module, setting)
 
     #     return context
-        
+
     UserInfo['InputDimensions'] = str(params.WhichExperiment.HardParams.Model.InputDimensions)
     UserInfo['num_Layers']      = params.WhichExperiment.HardParams.Model.num_Layers
 
@@ -557,4 +565,3 @@ def dict2obj(d):
     for k in d:
         o.__dict__[k] = dict2obj(d[k])
     return o
-

@@ -53,8 +53,9 @@ def savingHistory_AsExcel(params):
                         df.to_excel(writer, sheet_name=nucleus)
         writer.close()
 
-def mergingDiceValues(params):
-        Dir = (params.directories.Test.Result).split('/subExp')[0]
+def mergingDiceValues(Dir):
+        
+               
 
         def mergingDiceValues_ForOneSubExperiment(Dir):
                 subF = os.listdir(Dir)
@@ -92,7 +93,7 @@ def mergingDiceValues(params):
 
                 return df
 
-        writer = pd.ExcelWriter((params.directories.Test.Result).split('/subExp')[0] + '/All_HistoryData.xlsx', engine='xlsxwriter')
+        writer = pd.ExcelWriter(Dir + '/All_HistoryData.xlsx', engine='xlsxwriter')
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
         for subExperiment in List_subExperiments:
                 df = mergingDiceValues_ForOneSubExperiment(Dir + '/' + subExperiment)
@@ -105,7 +106,8 @@ def mergingDiceValues(params):
 UserInfo = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 params = paramFunc.Run(UserInfo)
 
-mergingDiceValues(params)
+
+mergingDiceValues((params.directories.Test.Result).split('/subExp')[0])
 
 savingHistory_AsExcel(params)
 

@@ -4,7 +4,7 @@ from modelFuncs import LossFunction, Metrics, Optimizers
 from Parameters import Classes
 from otherFuncs import smallFuncs, datasets
 from copy import deepcopy
-import pandas as pd 
+import pandas as pd
 
 
 
@@ -13,12 +13,11 @@ class paramsA:
     preprocess      = Classes.preprocess
     directories     = ''
     UserInfo        = ''
-    
-def Run(UserInfoB):
 
+def Run(UserInfo):
 
     params = deepcopy(paramsA)
-    UserInfo = deepcopy(UserInfoB)
+    # UserInfo = deepcopy(UserInfoB)
 
     WhichExperiment = deepcopy(params.WhichExperiment)
     preprocess      = deepcopy(params.preprocess)
@@ -46,16 +45,40 @@ def Run(UserInfoB):
 
     WhichExperiment.Dataset.name, WhichExperiment.Dataset.address = datasets.DatasetsInfo(UserInfo['DatasetIx'])
 
+    # orderDim =       2: [0,1,2]
+    # orderDim =       1: [2,0,1]
+    # orderDim =       0: [1,2,0]
+
+    WhichExperiment.Dataset.slicingDim = UserInfo['slicingDim']
+    if UserInfo['slicingDim'] == 0:
+        WhichExperiment.Dataset.slicingOrder         = [1,2,0]
+        WhichExperiment.Dataset.slicingOrder_Reverse = [2,0,1]
+    elif UserInfo['slicingDim'] == 1:
+        WhichExperiment.Dataset.slicingOrder         = [2,0,1]
+        WhichExperiment.Dataset.slicingOrder_Reverse = [1,2,0]
+    else:
+        WhichExperiment.Dataset.slicingOrder         = [0,1,2]
+        WhichExperiment.Dataset.slicingOrder_Reverse = [0,1,2]
 
     WhichExperiment.SubExperiment.index = UserInfo['SubExperiment_Index']
     WhichExperiment.Experiment.index = UserInfo['Experiments_Index']
-    WhichExperiment.Experiment.tag = UserInfo['Experiments_Tag']
+
+    if UserInfo['DatasetIx'] == 4:
+        Experiments_Tag = '7T'
+    elif UserInfo['DatasetIx'] == 1:
+        Experiments_Tag = 'SRI'
+
+    if UserInfo['AugmentMode']:  Experiments_Tag = Experiments_Tag + '_wLRAug'
+
+    WhichExperiment.Experiment.tag = Experiments_Tag   # UserInfo['Experiments_Tag']
     WhichExperiment.Experiment.name = 'exp' + str(UserInfo['Experiments_Index']) + '_' + WhichExperiment.Experiment.tag if WhichExperiment.Experiment.tag else 'exp' + str(WhichExperiment.Experiment.index)
     WhichExperiment.Experiment.address = smallFuncs.mkDir(WhichExperiment.address + '/' + WhichExperiment.Experiment.name)
-    _, B = LossFunction.LossInfo(UserInfo['lossFunctionIx']) 
-    WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag'] + B
+    _, B = LossFunction.LossInfo(UserInfo['lossFunctionIx'])
+
+    WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag'] + B + '_sd' + str(UserInfo['slicingDim']) if int(UserInfo['slicingDim']) != 2 else UserInfo['SubExperiment_Tag'] + B
+
     # WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag + WhichExperiment.Nucleus.name if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.Nucleus.name
-    WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index) 
+    WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index)
 
     # WhichExperiment.SubExperiment.name_thalamus = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index)
 
@@ -76,19 +99,24 @@ def Run(UserInfoB):
     preprocess.Augment = smallFuncs.augmentLengthChecker(preprocess.Augment)
     preprocess.Cropping.Method = UserInfo['cropping_method']
 
-    
+
     preprocess.Mode                = UserInfo['preprocessMode']
     preprocess.BiasCorrection.Mode = UserInfo['BiasCorrection']
     preprocess.Cropping.Mode       = UserInfo['Cropping']
     preprocess.Normalize.Mode      = UserInfo['Normalize']
     preprocess.Augment.Mode        = UserInfo['AugmentMode']
+   
     preprocess.TestOnly            = UserInfo['TestOnly']
 
-    preprocess.Augment.Rotation     = UserInfo['Augment_Rotation']
-    preprocess.Augment.Shift        = UserInfo['Augment_Shift']
+    preprocess.Augment.Rotation.Mode     = UserInfo['Augment_Rotation']
+    preprocess.Augment.Rotation.AngleMax = UserInfo['Augment_AngleMax']
+
+    preprocess.Augment.Shift.Mode        = UserInfo['Augment_Shift']
+    preprocess.Augment.Shift.ShiftMax    = UserInfo['Augment_ShiftMax']
+
     preprocess.Augment.NonRigidWarp = UserInfo['Augment_NonRigidWarp']
     preprocess.CreatingTheExperiment = UserInfo['CreatingTheExperiment']
-    
+
     params.WhichExperiment = WhichExperiment
     params.preprocess      = preprocess
     params.directories     = directories
@@ -101,4 +129,3 @@ def Run(UserInfoB):
         params.WhichExperiment.HardParams.Model.num_Layers = hist_params['num_Layers'][0]
 
     return params
-

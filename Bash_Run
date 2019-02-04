@@ -1,0 +1,19 @@
+#!/bin/bash
+
+
+# nohup python main.py -sd 0 -d 4 -g 4 -e 80 >> out_7T_SD0_G4_E80 &
+# nohup python main.py -sd 1 -d 4 -g 5 -e 80 >> out_7T_SD1_G5_E80 &
+# nohup python main.py -sd 0 -d 1 -g 6 -e 40 >> out_3T_SD0_G6_E40 &
+# nohup python main.py -sd 1 -d 1 -g 7 -e 40 >> out_3T_SD1_G7_E40 &
+
+
+
+# python otherFuncs/Extra_mergingResults.py -sd 0 -d 4 -g 4 -e 80 
+# python otherFuncs/Extra_mergingResults.py -sd 1 -d 4 -g 5 -e 80 
+# python otherFuncs/Extra_mergingResults.py -sd 0 -d 1 -g 6 -e 40 
+# python otherFuncs/Extra_mergingResults.py -sd 1 -d 1 -g 7 -e 40 
+
+
+cd /array/ssd/msmajdi/experiments/keras/
+tar -cvzf All.zip exp*/results/All_*
+

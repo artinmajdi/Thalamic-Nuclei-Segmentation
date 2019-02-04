@@ -195,6 +195,12 @@ def trainingMultipleMethod(params, Data):
 
     return Models, Hist
 
+def binarizing(pred1N):
+    Thresh = max( threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
+    # Thresh = 0.2
+    return pred1N  > Thresh
+    
+        
 #! applying the trained model on test data
 def applyTestImageOnModel(model, Data, params, nameSubject, padding, ResultDir):
     pred = model.predict(Data.Image)
@@ -210,14 +216,17 @@ def applyTestImageOnModel(model, Data, params, nameSubject, padding, ResultDir):
     for cnt in range(num_classes-1):
         pred1N = np.squeeze(pred[...,cnt])
         origMsk1N = Data.OrigMask[...,cnt]
-        Thresh = max( threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
-        # Thresh = 0.2
 
-        pred1N = pred1N  > Thresh
+        pred1N = binarizing(pred1N)
+        Thresh = max( threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
+        # # Thresh = 0.2
+        # pred1N = pred1N  > Thresh
         nucleusName, _ = smallFuncs.NucleiSelection(params.WhichExperiment.Nucleus.Index[cnt])
         dirSave = smallFuncs.mkDir(ResultDir + '/' + nameSubject)
-        smallFuncs.saveImage(pred1N, Data.Affine, Data.Header, dirSave + '/' + nucleusName + '.nii.gz')
-        Dice[cnt,:] = [ params.WhichExperiment.Nucleus.Index[cnt] , smallFuncs.Dice_Calculator(pred1N , origMsk1N) ]
+
+        pred1N_BtO = np.transpose(pred1N,params.WhichExperiment.Dataset.slicingOrder_Reverse)
+        smallFuncs.saveImage( pred1N_BtO , Data.Affine, Data.Header, dirSave + '/' + nucleusName + '.nii.gz')
+        Dice[cnt,:] = [ params.WhichExperiment.Nucleus.Index[cnt] , smallFuncs.Dice_Calculator(pred1N_BtO , origMsk1N) ]
     Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.MultiClass.mode else dirSave + '/Dice_' + nucleusName + '.txt'
     np.savetxt(Dir_Dice ,Dice)
 
