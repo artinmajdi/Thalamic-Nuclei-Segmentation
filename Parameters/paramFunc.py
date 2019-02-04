@@ -68,7 +68,17 @@ def Run(UserInfo):
     elif UserInfo['DatasetIx'] == 1:
         Experiments_Tag = 'SRI'
 
-    if UserInfo['AugmentMode']:  Experiments_Tag = Experiments_Tag + '_wLRAug'
+    if UserInfo['AugmentMode']:  
+        tagEx = ''
+        if UserInfo['Augment_LinearMode']:
+            if UserInfo['Augment_Rotation']: tagEx = tagEx + 'wLR'  + str(UserInfo['Augment_AngleMax'])
+            if UserInfo['Augment_Shift']:    tagEx = tagEx + 'wLSh' + str(UserInfo['Augment_ShiftMax'])
+
+        if UserInfo['Augment_NonLinearMode']: tagEx = tagEx + 'wNL' 
+
+        if tagEx: Experiments_Tag = Experiments_Tag + '_' + tagEx + 'Aug'
+            
+        # Experiments_Tag = Experiments_Tag + '_wLRAug'
 
     WhichExperiment.Experiment.tag = Experiments_Tag   # UserInfo['Experiments_Tag']
     WhichExperiment.Experiment.name = 'exp' + str(UserInfo['Experiments_Index']) + '_' + WhichExperiment.Experiment.tag if WhichExperiment.Experiment.tag else 'exp' + str(WhichExperiment.Experiment.index)
@@ -108,13 +118,13 @@ def Run(UserInfo):
    
     preprocess.TestOnly            = UserInfo['TestOnly']
 
-    preprocess.Augment.Rotation.Mode     = UserInfo['Augment_Rotation']
-    preprocess.Augment.Rotation.AngleMax = UserInfo['Augment_AngleMax']
+    preprocess.Augment.Linear.Rotation.Mode     = UserInfo['Augment_Rotation']
+    preprocess.Augment.Linear.Rotation.AngleMax = UserInfo['Augment_AngleMax']
 
-    preprocess.Augment.Shift.Mode        = UserInfo['Augment_Shift']
-    preprocess.Augment.Shift.ShiftMax    = UserInfo['Augment_ShiftMax']
+    preprocess.Augment.Linear.Shift.Mode        = UserInfo['Augment_Shift']
+    preprocess.Augment.Linear.Shift.ShiftMax    = UserInfo['Augment_ShiftMax']
     
-    preprocess.Augment.NonRigidWarp = UserInfo['Augment_NonRigidWarp']
+    preprocess.Augment.NonLinear.Mode = UserInfo['Augment_NonLinearMode']
     preprocess.CreatingTheExperiment = UserInfo['CreatingTheExperiment']
 
     params.WhichExperiment = WhichExperiment

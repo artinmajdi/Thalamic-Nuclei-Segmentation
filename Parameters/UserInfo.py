@@ -99,7 +99,8 @@ TestOnly = False
 #    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment
 #    2. Called by preprocess: to augment data inside train folder of the assigned experiment
 
-AugmentMode = True
+AugmentMode = False
+Augment_LinearMode = True
 
 Augment_Rotation     = True
 Augment_AngleMax = 6
@@ -107,7 +108,7 @@ Augment_AngleMax = 6
 Augment_Shift        = False
 Augment_ShiftMax = 10
 
-Augment_NonRigidWarp = False
+Augment_NonLinearMode = False
 
 #! save the report
 #           'pickle'

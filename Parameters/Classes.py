@@ -135,13 +135,25 @@ class shift:
     Mode = ''
     ShiftMax = 10
 
-class Augment:
-    Mode = ''
-    LinearAugmentLength = 3  # number
-    NonLinearAugmentLength = 2
+class linearAug:
+    Mode = True
+    Length = 3
     Rotation = rotation
     Shift = shift
-    NonRigidWarp = ''
+
+class nonlinearAug:
+    Mode = False
+    Length = 2 
+class Augment:
+    Mode = ''
+    Linear = linearAug
+    NonLinear = nonlinearAug
+    # LinearMode = True
+    # LinearAugmentLength = 3  # number
+    # NonLinearAugmentLength = 2
+    # Rotation = rotation
+    # Shift = shift
+    # NonRigidWarp = ''
 
 
 class Normalize:

@@ -15,7 +15,7 @@ def savingHistory_AsExcel(params):
         n_epochsMax = 300
 
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
-        writer = pd.ExcelWriter((params.directories.Test.Result).split('/subExp')[0] + '/All_LossAccDice.xlsx', engine='xlsxwriter')
+        writer = pd.ExcelWriter((params.directories.Test.Result).split('/subExp')[0] + '/All_LossAccForEpochs.xlsx', engine='xlsxwriter')
         for nucleus in namesNulcei:
                 # dir_save = smallFuncs.mkDir((params.directories.Test.Result).split('/subExp')[0] + '/Train_Output')
                 AllNucleusInfo = []
@@ -55,8 +55,6 @@ def savingHistory_AsExcel(params):
 
 def mergingDiceValues(Dir):
         
-               
-
         def mergingDiceValues_ForOneSubExperiment(Dir):
                 subF = os.listdir(Dir)
                 subF = [a for a in subF if 'vimp' in a]
@@ -93,7 +91,7 @@ def mergingDiceValues(Dir):
 
                 return df
 
-        writer = pd.ExcelWriter(Dir + '/All_HistoryData.xlsx', engine='xlsxwriter')
+        writer = pd.ExcelWriter(Dir + '/All_Dice.xlsx', engine='xlsxwriter')
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
         for subExperiment in List_subExperiments:
                 df = mergingDiceValues_ForOneSubExperiment(Dir + '/' + subExperiment)

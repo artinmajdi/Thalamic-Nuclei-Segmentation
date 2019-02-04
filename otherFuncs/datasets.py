@@ -319,9 +319,9 @@ def movingFromDatasetToExperiments(params):
         flagAg, AugDataL = np.zeros(3), list(np.zeros(3))
         
         if params.preprocess.Augment.Mode:
-            if params.preprocess.Augment.Rotation.Mode:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation')
-            if params.preprocess.Augment.Shift.Mode:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift')
-            if params.preprocess.Augment.NonRigidWarp: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear')
+            if params.preprocess.Augment.Linear.Rotation.Mode:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation')
+            if params.preprocess.Augment.Linear.Shift.Mode:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift')
+            if params.preprocess.Augment.NonLinear.Mode: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear')
 
 
         TestParams = params.WhichExperiment.Dataset.Test

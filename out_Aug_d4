@@ -1,0 +1,65 @@
+Using TensorFlow backend.
+*********** Nuclei: 1-THALAMUS   GPU: 6   Epochs: 10   Dataset: All_7T   Experiment: { exp4_NCrp_7T_wLRAug , subExp1_Loss_BCE }
+image 0 / 19 augment 0 / 3
+image 0 / 19 augment 1 / 3
+image 0 / 19 augment 2 / 3
+image 1 / 19 augment 0 / 3
+image 1 / 19 augment 1 / 3
+image 1 / 19 augment 2 / 3
+image 2 / 19 augment 0 / 3
+image 2 / 19 augment 1 / 3
+image 2 / 19 augment 2 / 3
+image 3 / 19 augment 0 / 3
+image 3 / 19 augment 1 / 3
+image 3 / 19 augment 2 / 3
+image 4 / 19 augment 0 / 3
+image 4 / 19 augment 1 / 3
+image 4 / 19 augment 2 / 3
+image 5 / 19 augment 0 / 3
+image 5 / 19 augment 1 / 3
+image 5 / 19 augment 2 / 3
+image 6 / 19 augment 0 / 3
+image 6 / 19 augment 1 / 3
+image 6 / 19 augment 2 / 3
+image 7 / 19 augment 0 / 3
+image 7 / 19 augment 1 / 3
+image 7 / 19 augment 2 / 3
+image 8 / 19 augment 0 / 3
+image 8 / 19 augment 1 / 3
+image 8 / 19 augment 2 / 3
+image 9 / 19 augment 0 / 3
+image 9 / 19 augment 1 / 3
+image 9 / 19 augment 2 / 3
+image 10 / 19 augment 0 / 3
+image 10 / 19 augment 1 / 3
+image 10 / 19 augment 2 / 3
+image 11 / 19 augment 0 / 3
+image 11 / 19 augment 1 / 3
+image 11 / 19 augment 2 / 3
+image 12 / 19 augment 0 / 3
+image 12 / 19 augment 1 / 3
+image 12 / 19 augment 2 / 3
+image 13 / 19 augment 0 / 3
+image 13 / 19 augment 1 / 3
+image 13 / 19 augment 2 / 3
+image 14 / 19 augment 0 / 3
+image 14 / 19 augment 1 / 3
+image 14 / 19 augment 2 / 3
+image 15 / 19 augment 0 / 3
+image 15 / 19 augment 1 / 3
+image 15 / 19 augment 2 / 3
+image 16 / 19 augment 0 / 3
+image 16 / 19 augment 1 / 3
+image 16 / 19 augment 2 / 3
+image 17 / 19 augment 0 / 3
+image 17 / 19 augment 1 / 3
+image 17 / 19 augment 2 / 3
+image 18 / 19 augment 0 / 3
+image 18 / 19 augment 1 / 3
+image 18 / 19 augment 2 / 3
+Using TensorFlow backend.
+*********** Nuclei: 1-THALAMUS   GPU: 6   Epochs: 10   Dataset: All_7T   Experiment: { exp4_NCrp_7T , subExp1_Loss_BCE }
+Using TensorFlow backend.
+*********** Nuclei: 1-THALAMUS   GPU: 6   Epochs: 10   Dataset: All_7T   Experiment: { exp4_NCrp_7T , subExp1_Loss_BCE }
+Using TensorFlow backend.
+*********** Nuclei: 1-THALAMUS   GPU: 6   Epochs: 10   Dataset: All_7T   Experiment: { exp4_NCrp_7T , subExp1_Loss_BCE }
