@@ -12,6 +12,13 @@ params = smallFuncs.readingTheParams('')[0]
 
 #! mode: 1: on train & test folders in the experiment
 #! mode: 2: on individual image
+
+print('***********' , 'Nuclei:',params.WhichExperiment.Nucleus.name , '  GPU:',params.WhichExperiment.HardParams.Machine.GPU_Index , \
+'  Epochs:', params.WhichExperiment.HardParams.Model.epochs,'  Dataset:',params.WhichExperiment.Dataset.name , \
+'  Experiment: {',params.WhichExperiment.Experiment.name ,',', params.WhichExperiment.SubExperiment.name,'}')
+
+
+
 main_augment( params , 'Linear', 'experiment')
 params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
 main_augment( params , 'NonLinear' , 'experiment')

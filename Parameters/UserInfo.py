@@ -12,7 +12,6 @@
 slicingDim = 2
 CreatingTheExperiment = False
 DatasetIx = 4
-AugmentMode = False   # this position is temporary and should later be moved down beside other augment parameters
 epochs = 10
 GPU_Index = 6
 
@@ -24,7 +23,7 @@ nucleus_Index = [1]
 #! Training
 num_Layers = 5
 # epochs = 80
-batch_size = 5
+batch_size = 40
 Initialize_FromThalamus = True
 Initialize_FromOlderModel = False
 
@@ -100,7 +99,7 @@ TestOnly = False
 #    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment
 #    2. Called by preprocess: to augment data inside train folder of the assigned experiment
 
-AugmentMode = False
+AugmentMode = True
 
 Augment_Rotation     = True
 Augment_AngleMax = 6

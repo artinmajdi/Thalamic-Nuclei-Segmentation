@@ -1,10 +1,13 @@
 #!/bin/bash
 
 
-# nohup python main.py -sd 0 -d 4 -g 4 -e 80 >> out_7T_SD0_G4_E80 &
-# nohup python main.py -sd 1 -d 4 -g 5 -e 80 >> out_7T_SD1_G5_E80 &
-# nohup python main.py -sd 0 -d 1 -g 6 -e 40 >> out_3T_SD0_G6_E40 &
-# nohup python main.py -sd 1 -d 1 -g 7 -e 40 >> out_3T_SD1_G7_E40 &
+
+nohup python preprocess/run_augment.py -d 1 -sd 2 >> out_Aug_d1 &
+nohup python preprocess/run_augment.py -d 4 -sd 2 >> out_Aug_d4 &
+
+# nohup python main.py -g 5 -e 50 -d 1 -sd 2 >> outg5e50d1sd2 &
+# nohup python main.py -g 6 -e 80 -d 4 -sd 2 >> outg6e80d4sd2 &
+
 
 
 
@@ -14,6 +17,6 @@
 # python otherFuncs/Extra_mergingResults.py -sd 1 -d 1 -g 7 -e 40 
 
 
-cd /array/ssd/msmajdi/experiments/keras/
-tar -cvzf All.zip exp*/results/All_*
+# cd /array/ssd/msmajdi/experiments/keras/
+# tar -cvzf All.zip exp*/results/All_*
 

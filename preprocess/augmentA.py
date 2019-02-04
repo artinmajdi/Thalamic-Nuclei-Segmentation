@@ -54,7 +54,7 @@ def LinearFunc(params, mode):
             Affine = im.affine
 
             angleMax = params.preprocess.Augment.Rotation.AngleMax
-            shiftMax = params.preprocess.Augment.Shift.Mode.shiftMax
+            shiftMax = params.preprocess.Augment.Shift.ShiftMax
             angle = np.random.random_integers(-angleMax,angleMax)
             shift = [ np.random.random_integers(-shiftMax,shiftMax) , np.random.random_integers(-shiftMax,shiftMax)]
 

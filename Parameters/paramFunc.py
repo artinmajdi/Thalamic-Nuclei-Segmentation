@@ -113,7 +113,7 @@ def Run(UserInfo):
 
     preprocess.Augment.Shift.Mode        = UserInfo['Augment_Shift']
     preprocess.Augment.Shift.ShiftMax    = UserInfo['Augment_ShiftMax']
-
+    
     preprocess.Augment.NonRigidWarp = UserInfo['Augment_NonRigidWarp']
     preprocess.CreatingTheExperiment = UserInfo['CreatingTheExperiment']
 
