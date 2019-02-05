@@ -137,6 +137,11 @@ def terminalEntries(UserInfo):
         elif entry.lower() in ('-sd','--slicingDim'):
             UserInfo['slicingDim'] = int(sys.argv[en+1])
 
+        elif entry.lower() in ('-Aug','--AugmentMode'):
+            a = int(sys.argv[en+1])
+            UserInfo['AugmentMode'] = True if a > 0 else False
+            
+
         elif entry.lower() in ('-n','--nuclei'):  # nuclei index
             if sys.argv[en+1].lower() == 'all':
                 UserInfo['nucleus_Index'] = np.append([1,2,4567],range(4,14))

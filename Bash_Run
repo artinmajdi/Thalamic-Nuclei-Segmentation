@@ -2,12 +2,13 @@
 
 
 
-nohup python preprocess/run_augment.py -d 1 -sd 2 >> out_Aug_d1 &
-nohup python preprocess/run_augment.py -d 4 -sd 2 >> out_Aug_d4 &
+#nohup python preprocess/run_augment.py -d 1 -sd 2 >> out_Aug_d1 &
+#nohup python preprocess/run_augment.py -d 4 -sd 2 >> out_Aug_d4 &
 
-# nohup python main.py -g 5 -e 50 -d 1 -sd 2 >> outg5e50d1sd2 &
-# nohup python main.py -g 6 -e 80 -d 4 -sd 2 >> outg6e80d4sd2 &
-
+nohup python main.py -g 5 -e 60 -d 1 -sd 2 >> out_g5_e60_d1_sd2 &
+nohup python main.py -g 7 -e 80 -d 4 -sd 2 >> out_g7_e80_d4_sd2 &
+# nohup python main.py -g 6 -e 60 -d 1 -sd 2 -Aug >> out_g6_e60_d1_sd2_wAug &
+# nohup python main.py -g 7 -e 80 -d 4 -sd 2 -Aug >> out_g7_e80_d4_sd2_wAug &
 
 
 
