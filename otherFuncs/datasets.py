@@ -191,9 +191,33 @@ def backgroundDetector(masks):
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments3D_new(params):
 
-    TestData = {}
-    TrainData = {}
 
+    def readingImage(params, subject):
+        imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+        im = inputPreparationForUnet(imF.get_data(), subject, params)
+        im = normalizeA.main_normalize(params.preprocess.Normalize , im)
+        return im
+
+    def readingNuclei(params, subject, imFshape):
+        for cnt, NucInd in enumerate(params.WhichExperiment.Nucleus.Index):
+            nameNuclei, _ = smallFuncs.NucleiSelection(NucInd)
+            inputMsk = subject.Label.address + '/' + nameNuclei + '_PProcessed.nii.gz'
+
+            origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape) 
+            msk1N = inputPreparationForUnet(origMsk1N, subject, params)
+            origMsk1N = np.expand_dims(origMsk1N ,axis=3)
+
+            origMsk = origMsk1N if cnt == 0 else np.concatenate((origMsk, origMsk1N) ,axis=3).astype('float32')
+            msk = msk1N if cnt == 0 else np.concatenate((msk,msk1N),axis=3).astype('float32')
+
+        background = backgroundDetector(msk)
+        msk = np.concatenate((msk, background),axis=3).astype('float32')
+        
+        return origMsk , msk
+            
+
+
+    TestData, TrainData = {}, {}
     for mode in ['train','test']:
 
         if 'train' in mode and params.preprocess.TestOnly:
@@ -208,30 +232,28 @@ def readingFromExperiments3D_new(params):
         for _, nameSubject in tqdm(enumerate(Subjects), desc='Loading Dataset: ' + mode):
             subject = Subjects[nameSubject]
 
-            # if ind > 10: continue
-
             # TODO: replace this with cropping if the negative number is low e.g. less than 5
             if np.min(subject.Padding) < 0:
                 print('WARNING: subject: ',nameSubject,' size is out of the training network input dimensions')
                 continue
 
-            imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-            im = inputPreparationForUnet(imF.get_data(), subject, params)
-            im = normalizeA.main_normalize(params.preprocess.Normalize , im)
+            im = readingImage(params, subject)
+            # imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+            # im = inputPreparationForUnet(imF.get_data(), subject, params)
+            # im = normalizeA.main_normalize(params.preprocess.Normalize , im)
 
 
-            for cnt, NucInd in enumerate(params.WhichExperiment.Nucleus.Index):
-                nameNuclei, _ = smallFuncs.NucleiSelection(NucInd)
-                inputMsk = subject.Label.address + '/' + nameNuclei + '_PProcessed.nii.gz'
-
-                origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imF.shape)
-                origMsk = np.expand_dims(origMsk1N ,axis=3) if cnt == 0 else np.concatenate((origMsk, np.expand_dims(origMsk1N ,axis=3)) ,axis=3).astype('float32')
-
-                msk1N = inputPreparationForUnet(origMsk1N, subject, params)
-                msk = msk1N if cnt == 0 else np.concatenate((msk,msk1N),axis=3).astype('float32')
-
-            background = backgroundDetector(msk)
-            msk = np.concatenate((msk, background),axis=3).astype('float32')
+            origMsk , msk = readingNuclei(params, subject, imF.shape)
+            # for cnt, NucInd in enumerate(params.WhichExperiment.Nucleus.Index):
+            #     nameNuclei, _ = smallFuncs.NucleiSelection(NucInd)
+            #     inputMsk = subject.Label.address + '/' + nameNuclei + '_PProcessed.nii.gz'
+            #     origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imF.shape)
+            #     msk1N = inputPreparationForUnet(origMsk1N, subject, params)
+            #     origMsk1N = np.expand_dims(origMsk1N ,axis=3)
+            #     origMsk = origMsk1N if cnt == 0 else np.concatenate((origMsk, origMsk1N) ,axis=3).astype('float32')
+            #     msk = msk1N if cnt == 0 else np.concatenate((msk,msk1N),axis=3).astype('float32')
+            # background = backgroundDetector(msk)
+            # msk = np.concatenate((msk, background),axis=3).astype('float32')
 
             if 'ERROR_vimp' not in nameSubject:
                 if im[...,0].shape == msk[...,0].shape:
@@ -255,7 +277,7 @@ def readingFromExperiments3D_new(params):
             if params.WhichExperiment.Dataset.Validation.fromKeras:
                 data.Train = trainCase(Image=images, Mask=masks.astype('float32'))
             else:
-                data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks)
+                data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks, params.WhichExperiment.Dataset.randomFlag)
         else:
             data.Test = TestData
             
@@ -295,13 +317,23 @@ def percentageDivide(percentage, subjectsList, randomFlag):
 
 def movingFromDatasetToExperiments(params):
 
-    def listAugmentationFolders(mode):
-        Dir_Aug1 = params.WhichExperiment.Dataset.address + '/Augments/' + mode
-        flag_Aug = os.path.exists(Dir_Aug1)
+    def checkAugmentedData(params):
 
-        ListAugments = smallFuncs.listSubFolders(Dir_Aug1) if flag_Aug else list('')
+        def listAugmentationFolders(mode):
+            Dir_Aug1 = params.WhichExperiment.Dataset.address + '/Augments/' + mode
+            flag_Aug = os.path.exists(Dir_Aug1)
 
-        return flag_Aug, {'address': Dir_Aug1 , 'list': ListAugments , 'mode':mode}
+            ListAugments = smallFuncs.listSubFolders(Dir_Aug1) if flag_Aug else list('')
+
+            return flag_Aug, {'address': Dir_Aug1 , 'list': ListAugments , 'mode':mode}
+
+        flagAg, AugDataL = np.zeros(3), list(np.zeros(3))
+        if params.Augment.Mode:
+            if params.Augment.Linear.Rotation.Mode:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation')
+            if params.Augment.Linear.Shift.Mode:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift')
+            if params.Augment.NonLinear.Mode: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear')
+
+        return flagAg, AugDataL
         
     def copyAugmentData(DirOut, AugDataL, subject):
         if 'NonLinear' in AugDataL['mode']: AugDataL['list'] = [i for i in AugDataL['list'] if subject in i.split('Ref_')[0]]
@@ -315,16 +347,9 @@ def movingFromDatasetToExperiments(params):
     
     else:
         List = smallFuncs.listSubFolders(params.WhichExperiment.Dataset.address)
+        flagAg, AugDataL = checkAugmentedData(params)
 
-        flagAg, AugDataL = np.zeros(3), list(np.zeros(3))
-        
-        if params.Augment.Mode:
-            if params.Augment.Linear.Rotation.Mode:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation')
-            if params.Augment.Linear.Shift.Mode:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift')
-            if params.Augment.NonLinear.Mode: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear')
-
-
-        TestParams = params.WhichExperiment.Dataset.Test
+        TestParams  = params.WhichExperiment.Dataset.Test
         _, TestList = percentageDivide(TestParams.percentage, List, params.WhichExperiment.Dataset.randomFlag) if 'percentage' in TestParams.mode else TestParams.subjects
         for subject in List:
 
