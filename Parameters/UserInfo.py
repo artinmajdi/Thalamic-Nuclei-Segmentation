@@ -10,10 +10,9 @@
 
 #! this is temporary and should later be moved down
 slicingDim = 2
-CreatingTheExperiment = False
-DatasetIx = 4
-epochs = 10
-GPU_Index = 6
+DatasetIx = 1
+epochs = 2
+GPU_Index = 1
 
 
 #! Nucleus Index
@@ -60,7 +59,6 @@ lossFunctionIx = 2
 #                 4: 'All_7T': 20priros + MS
 #                 5: '20priros'
 # DatasetIx = 4
-# CreatingTheExperiment = True
 
 # orderDim =       2: [0,1,2]
 # orderDim =       1: [2,0,1]

@@ -11,8 +11,10 @@ import pandas as pd
 class paramsA:
     WhichExperiment = Classes.WhichExperiment
     preprocess      = Classes.preprocess
+    Augment         = Classes.Augment
     directories     = ''
     UserInfo        = ''
+             
 
 def Run(UserInfo):
 
@@ -21,6 +23,7 @@ def Run(UserInfo):
 
     WhichExperiment = deepcopy(params.WhichExperiment)
     preprocess      = deepcopy(params.preprocess)
+    Augment         = deepcopy(params.Augment)
 
     WhichExperiment.address = smallFuncs.mkDir(UserInfo['Experiments_Address'])
 
@@ -51,14 +54,14 @@ def Run(UserInfo):
 
     WhichExperiment.Dataset.slicingDim = UserInfo['slicingDim']
     if UserInfo['slicingDim'] == 0:
-        WhichExperiment.Dataset.slicingOrder         = [1,2,0]
-        WhichExperiment.Dataset.slicingOrder_Reverse = [2,0,1]
+        WhichExperiment.Dataset.slicingInfo.slicingOrder         = [1,2,0]
+        WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse = [2,0,1]
     elif UserInfo['slicingDim'] == 1:
-        WhichExperiment.Dataset.slicingOrder         = [2,0,1]
-        WhichExperiment.Dataset.slicingOrder_Reverse = [1,2,0]
+        WhichExperiment.Dataset.slicingInfo.slicingOrder         = [2,0,1]
+        WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse = [1,2,0]
     else:
-        WhichExperiment.Dataset.slicingOrder         = [0,1,2]
-        WhichExperiment.Dataset.slicingOrder_Reverse = [0,1,2]
+        WhichExperiment.Dataset.slicingInfo.slicingOrder         = [0,1,2]
+        WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse = [0,1,2]
 
     WhichExperiment.SubExperiment.index = UserInfo['SubExperiment_Index']
     WhichExperiment.Experiment.index = UserInfo['Experiments_Index']
@@ -106,7 +109,7 @@ def Run(UserInfo):
 
 
     directories = smallFuncs.funcExpDirectories(WhichExperiment)
-    preprocess.Augment = smallFuncs.augmentLengthChecker(preprocess.Augment)
+    Augment = smallFuncs.augmentLengthChecker(Augment)
     preprocess.Cropping.Method = UserInfo['cropping_method']
 
 
@@ -114,23 +117,25 @@ def Run(UserInfo):
     preprocess.BiasCorrection.Mode = UserInfo['BiasCorrection']
     preprocess.Cropping.Mode       = UserInfo['Cropping']
     preprocess.Normalize.Mode      = UserInfo['Normalize']
-    preprocess.Augment.Mode        = UserInfo['AugmentMode']
+    Augment.Mode        = UserInfo['AugmentMode']
    
     preprocess.TestOnly            = UserInfo['TestOnly']
 
-    preprocess.Augment.Linear.Rotation.Mode     = UserInfo['Augment_Rotation']
-    preprocess.Augment.Linear.Rotation.AngleMax = UserInfo['Augment_AngleMax']
+    Augment.Linear.Rotation.Mode     = UserInfo['Augment_Rotation']
+    Augment.Linear.Rotation.AngleMax = UserInfo['Augment_AngleMax']
 
-    preprocess.Augment.Linear.Shift.Mode        = UserInfo['Augment_Shift']
-    preprocess.Augment.Linear.Shift.ShiftMax    = UserInfo['Augment_ShiftMax']
+    Augment.Linear.Shift.Mode        = UserInfo['Augment_Shift']
+    Augment.Linear.Shift.ShiftMax    = UserInfo['Augment_ShiftMax']
     
-    preprocess.Augment.NonLinear.Mode = UserInfo['Augment_NonLinearMode']
-    preprocess.CreatingTheExperiment = UserInfo['CreatingTheExperiment']
+    Augment.NonLinear.Mode = UserInfo['Augment_NonLinearMode']
+    # WhichExperiment.Dataset.CreatingTheExperiment = UserInfo['CreatingTheExperiment']
 
     params.WhichExperiment = WhichExperiment
     params.preprocess      = preprocess
     params.directories     = directories
     params.UserInfo        = UserInfo
+    params.Augment         = Augment
+
 
     if preprocess.TestOnly:
         hist_params = pd.read_csv(directories.Train.Model + '/hist_params.csv').head()

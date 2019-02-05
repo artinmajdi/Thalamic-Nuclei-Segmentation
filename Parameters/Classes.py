@@ -1,4 +1,6 @@
 
+# --------------------------------- Model --------------------------------
+
 class template:
     Image = ''
     Mask  = ''
@@ -91,6 +93,8 @@ class subExperiment:
     name = ''
     name_thalamus = ''
 
+# --------------------------------- Dataset --------------------------------
+
 class validation:
     percentage = 0.1
     fromKeras = True
@@ -104,16 +108,23 @@ class test:
 if 'names' in test.mode: # import test.subjects
     test.subjects = list([''])
 
-class dataset:
-    name = ''
-    address = ''
-    Validation = validation
-    Test = test
-    onlySubjectsWvimp = True
-    randomFlag = False
+class slicingDirection:
     slicingOrder = [0,1,2]
     slicingOrder_Reverse = [0,1,2]
     slicingDim = 2
+
+class dataset:
+    name = ''
+    address = ''
+    # CreatingTheExperiment = False
+    Validation = validation
+    Test = test
+    # onlySubjectsWvimp = False
+    randomFlag = False
+    slicingInfo = slicingDirection
+    # slicingOrder = [0,1,2]
+    # slicingOrder_Reverse = [0,1,2]
+    # slicingDim = 2
 
 class WhichExperiment:
     Experiment    = experiment
@@ -127,6 +138,7 @@ class reference:
     name = ''
     address = ''
 
+# --------------------------------- Augmentation --------------------------------
 class rotation:
     Mode = ''
     AngleMax = 6
@@ -155,7 +167,7 @@ class Augment:
     # Shift = shift
     # NonRigidWarp = ''
 
-
+# --------------------------------- Preprocess --------------------------------
 class Normalize:
     Mode = ''
     Method = 'MinMax'
@@ -175,8 +187,7 @@ class Debug:
     justForNow = True # it checks the intermediate steps and if it existed don't reproduce it
 
 class preprocess:
-    Mode = ''
-    CreatingTheExperiment = False
+    Mode = ''    
     TestOnly = ''
     Debug = Debug
     Augment = Augment
@@ -191,13 +202,3 @@ class preprocess:
 #     def __init__(self, Image, Mask):
 #         self.Image = Image
 #         self.Mask  = Mask
-
-# class testCase:
-#     def __init__(self, Image, Mask, OrigMask, Affine, Header, original_Shape):
-#         self.Image = Image
-#         self.Mask = Mask
-#         self.OrigMask  = OrigMask
-#         self.Affine = Affine
-#         self.Header = Header
-#         self.original_Shape = original_Shape
-

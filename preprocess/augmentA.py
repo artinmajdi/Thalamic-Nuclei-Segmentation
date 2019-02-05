@@ -45,26 +45,26 @@ def LinearFunc(params, mode):
         subject  = Subjects[nameSubject]
 
         # lst = indexFunc(L, AugLen, imInd)
-        for AugIx in range(params.preprocess.Augment.Linear.Length):
-            print('image',imInd,'/',L,'augment',AugIx,'/',params.preprocess.Augment.Linear.Length)
+        for AugIx in range(params.Augment.Linear.Length):
+            print('image',imInd,'/',L,'augment',AugIx,'/',params.Augment.Linear.Length)
 
             im = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image
             Image  = im.get_data()
             Header = im.header
             Affine = im.affine
 
-            angleMax = params.preprocess.Augment.Linear.Rotation.AngleMax
-            shiftMax = params.preprocess.Augment.Linear.Shift.ShiftMax
+            angleMax = params.Augment.Linear.Rotation.AngleMax
+            shiftMax = params.Augment.Linear.Shift.ShiftMax
             angle = np.random.random_integers(-angleMax,angleMax)
             shift = [ np.random.random_integers(-shiftMax,shiftMax) , np.random.random_integers(-shiftMax,shiftMax)]
 
 
             nameSubject2 = nameSubject + '_Aug' + str(AugIx)
-            if params.preprocess.Augment.Linear.Rotation.Mode:
+            if params.Augment.Linear.Rotation.Mode:
                 Image = funcRotating(Image , angle)
                 nameSubject2 = nameSubject2 + '_Rot_' + str(angle) 
 
-            if params.preprocess.Augment.Linear.Shift.Mode:
+            if params.Augment.Linear.Shift.Mode:
                 Image = funcShifting(Image , shift)
                 nameSubject2 = nameSubject2 + '_shift_' + str(shift[0]) + '-' + str(shift[1])
 
@@ -85,8 +85,8 @@ def LinearFunc(params, mode):
             if os.path.isfile(Dir_CropMask_In):
 
                 CropMask = nib.load(Dir_CropMask_In).get_data() 
-                if params.preprocess.Augment.Linear.Rotation.Mode: CropMask = funcRotating(CropMask , angle)
-                if params.preprocess.Augment.Linear.Shift.Mode:    CropMask = funcShifting(CropMask , shift)
+                if params.Augment.Linear.Rotation.Mode: CropMask = funcRotating(CropMask , angle)
+                if params.Augment.Linear.Shift.Mode:    CropMask = funcShifting(CropMask , shift)
                 smallFuncs.saveImage( np.float32(CropMask > 0.5) , Affine , Header , Dir_CropMask_Out)
 
             for ind in params.WhichExperiment.Nucleus.FullIndexes:
@@ -94,8 +94,8 @@ def LinearFunc(params, mode):
 
                 Mask   = nib.load(subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz').get_data() # 'Cropped' for cropped image
 
-                if params.preprocess.Augment.Linear.Rotation.Mode: Mask = funcRotating(Mask , angle)
-                if params.preprocess.Augment.Linear.Shift.Mode:    Mask = funcShifting(Mask , shift)
+                if params.Augment.Linear.Rotation.Mode: Mask = funcRotating(Mask , angle)
+                if params.Augment.Linear.Shift.Mode:    Mask = funcShifting(Mask , shift)
 
                 outDirectoryMask2  = outDirectoryMask  + '/' + NucleusName + '_PProcessed.nii.gz'
                 smallFuncs.saveImage( np.float32(Mask > 0.5) , Affine , Header , outDirectoryMask2)
@@ -135,13 +135,13 @@ def NonLinearFunc(Input, Augment, mode):
 def main_augment(params , Flag, mode):
 
     if 'experiment' in mode:
-        if params.preprocess.Augment.Mode and (params.preprocess.Augment.Linear.Rotation.Mode or params.preprocess.Augment.Linear.Shift.Mode) and (Flag == 'Linear'):
+        if params.Augment.Mode and (params.Augment.Linear.Rotation.Mode or params.Augment.Linear.Shift.Mode) and (Flag == 'Linear'):
             LinearFunc(params, mode)
 
-        elif params.preprocess.Augment.Mode and params.preprocess.Augment.NonLinear.Mode and (Flag == 'NonLinear'):
-            NonLinearFunc(params.directories.Train.Input , params.preprocess.Augment, mode)
+        elif params.Augment.Mode and params.Augment.NonLinear.Mode and (Flag == 'NonLinear'):
+            NonLinearFunc(params.directories.Train.Input , params.Augment, mode)
 
     else:
         # if 'Linear' in Flag: LinearFunc(params, mode)
-        # if 'NonLinear' in Flag: NonLinearFunc(params.directories.Train.Input , params.preprocess.Augment, mode)
+        # if 'NonLinear' in Flag: NonLinearFunc(params.directories.Train.Input , params.Augment, mode)
         print('')

@@ -65,7 +65,7 @@ AllExperimentsList = {
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 UserInfoB['TestOnly'] = True
-UserInfoB['CreatingTheExperiment'] = False
+# UserInfoB['CreatingTheExperiment'] = False
 
 dirSave = runOneExperiment(UserInfoB)
 

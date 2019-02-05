@@ -35,7 +35,14 @@ def gpuSetting(params):
 
 def runExperiment(params, Info, Data):
 
-    params.preprocess.CreatingTheExperiment = False
+    # params.WhichExperiment.Dataset.CreatingTheExperiment = False
+
+
+    print('Nuclei:',params.WhichExperiment.Nucleus.name , '  GPU:',params.WhichExperiment.HardParams.Machine.GPU_Index , \
+    '  Epochs:', params.WhichExperiment.HardParams.Model.epochs,'  Dataset:',params.WhichExperiment.Dataset.name , \
+    '  Experiment: {',params.WhichExperiment.Experiment.name ,',', params.WhichExperiment.SubExperiment.name,'}')
+
+
     K = gpuSetting(params)
     print('nuclei: ',params.WhichExperiment.Nucleus.name , 'gpu:',params.WhichExperiment.HardParams.Machine.GPU_Index)
     _, params, _ = datasets.check_Dataset_ForTraining(params=params, flag=False, Info=Info)
@@ -59,7 +66,7 @@ def SingleNucleiRun(params):
     if 'singleExperiment' in mode:
         K = runExperiment(params, Info, Data)
     else:    
-        for ind, params in list(AllParamsList.items()): 
+        for _, params in list(AllParamsList.items()): 
             K = runExperiment(params, Info, Data)
 
     return K

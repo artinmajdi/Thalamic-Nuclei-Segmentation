@@ -365,24 +365,25 @@ def inputNamesCheck(params, mode):
             dirr = params.directories.Train if 'Train' in wFolder else params.directories.Test
 
             for sj in dirr.Input.Subjects:
-                if 'Aug' in sj:
-                    print('---')
+                # if 'Aug' in sj:
+                #     print('---')
                 subject = dirr.Input.Subjects[sj]
 
                 # TODO move this commented if function somewhere else to count for cases where user doesn't want preprocessing
                 if subject.ImageProcessed:
                 # if params.preprocess.Debug.PProcessExist:
 
-                    files = os.listdir(subject.address)
-
-                    flagPPExist = False
-                    for si in files:
-                        if '_PProcessed' in si:
-                            flagPPExist = True
-                            break
-
-                    if not flagPPExist:
+                    # files = os.listdir(subject.address)
+                    _ , _ , subfiles = next(os.walk(subject.address))
+                    if not any('PProcessed' in sj for sj in subfiles ):
                         sys.exit('preprocess files doesn\'t exist ' + 'Subject: ' + sj + ' Dir: ' + subject.address)
+                    # flagPPExist = False
+                    # for si in files:
+                    #     if '_PProcessed' in si:
+                    #         flagPPExist = True
+                    #         break
+
+                    # if not flagPPExist:  sys.exit('preprocess files doesn\'t exist ' + 'Subject: ' + sj + ' Dir: ' + subject.address)
 
                 else: # if not params.preprocess.Debug.PProcessExist and
 
@@ -409,7 +410,7 @@ def inputSizes(Subjects, params):
     for sj in Subjects:
 
         Shape = np.array( nib.load(Subjects[sj].address + '/' + Subjects[sj].ImageProcessed + '.nii.gz').shape )
-        Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingOrder])
+        Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
 
         inputSize.append(Shape)
 
