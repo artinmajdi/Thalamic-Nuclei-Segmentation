@@ -81,7 +81,7 @@ def modelTrain(Data, params, model):
     if params.WhichExperiment.Dataset.Validation.fromKeras:
         hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=1, callbacks=[TQDMCallback()])
     else:
-        hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label), verbose=0, callbacks=[TQDMCallback()])
+        hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label), verbose=1, callbacks=[TQDMCallback()])
 
     smallFuncs.mkDir(params.directories.Train.Model)
     model.save(params.directories.Train.Model + '/model.h5', overwrite=True, include_optimizer=True )

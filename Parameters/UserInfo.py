@@ -79,7 +79,7 @@ Experiments_Index = '4_NCrp'
 # Experiments_Tag = '7T' # 'SRI' 'tmp' 'SRI_wLRAug' '7T' '7T_wLRAug'
 
 
-SubExperiment_Index = 1
+SubExperiment_Index = 2
 SubExperiment_Tag = ''
 
 #! cropping mode
