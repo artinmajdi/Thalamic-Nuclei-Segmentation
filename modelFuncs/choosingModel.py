@@ -218,7 +218,7 @@ def applyTestImageOnModel(model, Data, params, nameSubject, padding, ResultDir):
         origMsk1N = Data.OrigMask[...,cnt]
 
         pred1N = binarizing(pred1N)
-        Thresh = max( threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
+        # Thresh = max( threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
         # # Thresh = 0.2
         # pred1N = pred1N  > Thresh
         nucleusName, _ = smallFuncs.NucleiSelection(params.WhichExperiment.Nucleus.Index[cnt])

@@ -60,7 +60,7 @@ def SingleNucleiRun(params):
     if 'singleExperiment' in mode:
         K = runExperiment(params, Info, Data)
     else:    
-        for ind, params in list(AllParamsList.items()): 
+        for _, params in list(AllParamsList.items()): 
             K = runExperiment(params, Info, Data)
 
     return K
