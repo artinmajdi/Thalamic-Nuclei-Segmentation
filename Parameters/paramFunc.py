@@ -117,17 +117,14 @@ def Run(UserInfo):
     preprocess.BiasCorrection.Mode = UserInfo['BiasCorrection']
     preprocess.Cropping.Mode       = UserInfo['Cropping']
     preprocess.Normalize.Mode      = UserInfo['Normalize']
-    Augment.Mode        = UserInfo['AugmentMode']
-   
     preprocess.TestOnly            = UserInfo['TestOnly']
 
+    Augment.Mode                     = UserInfo['AugmentMode']  
     Augment.Linear.Rotation.Mode     = UserInfo['Augment_Rotation']
     Augment.Linear.Rotation.AngleMax = UserInfo['Augment_AngleMax']
-
     Augment.Linear.Shift.Mode        = UserInfo['Augment_Shift']
     Augment.Linear.Shift.ShiftMax    = UserInfo['Augment_ShiftMax']
-    
-    Augment.NonLinear.Mode = UserInfo['Augment_NonLinearMode']
+    Augment.NonLinear.Mode           = UserInfo['Augment_NonLinearMode']
     # WhichExperiment.Dataset.CreatingTheExperiment = UserInfo['CreatingTheExperiment']
 
     params.WhichExperiment = WhichExperiment

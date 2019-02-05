@@ -134,10 +134,10 @@ def terminalEntries(UserInfo):
         if entry.lower() in ('-g','--gpu'):  # gpu num
             UserInfo['GPU_Index'] = sys.argv[en+1]
 
-        elif entry.lower() in ('-sd','--slicingDim'):
+        elif entry.lower() in ('-sd','--slicingdim'):
             UserInfo['slicingDim'] = int(sys.argv[en+1])
 
-        elif entry.lower() in ('-Aug','--AugmentMode'):
+        elif entry in ('-Aug','--AugmentMode'):
             a = int(sys.argv[en+1])
             UserInfo['AugmentMode'] = True if a > 0 else False
             
