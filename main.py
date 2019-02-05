@@ -35,7 +35,7 @@ def gpuSetting(params):
 
 def runExperiment(params, Info, Data):
 
-    params.preprocess.CreatingTheExperiment = False
+    # params.WhichExperiment.Dataset.CreatingTheExperiment = False
 
 
     print('Nuclei:',params.WhichExperiment.Nucleus.name , '  GPU:',params.WhichExperiment.HardParams.Machine.GPU_Index , \

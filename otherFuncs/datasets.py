@@ -45,7 +45,7 @@ def check_Dataset_ForTraining(params, flag, Info):  #  mode = 'experiments' # si
         mode = 'experiment'
 
         # #! copying the dataset into the experiment folder
-        # if params.preprocess.CreatingTheExperiment: movingFromDatasetToExperiments(params)
+        # if params.WhichExperiment.Dataset.CreatingTheExperiment: movingFromDatasetToExperiments(params)
 
 
         # #! preprocessing the data
@@ -173,7 +173,7 @@ def kaggleCompetition(params):
 
 def inputPreparationForUnet(im,subject, params):
 
-    im = np.transpose(im, params.WhichExperiment.Dataset.slicingOrder)
+    im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
     im = np.pad(im, subject.Padding[:3], 'constant')
     im = np.transpose(im,[2,0,1])
     im = np.expand_dims(im ,axis=3).astype('float32')
@@ -318,10 +318,10 @@ def movingFromDatasetToExperiments(params):
 
         flagAg, AugDataL = np.zeros(3), list(np.zeros(3))
         
-        if params.preprocess.Augment.Mode:
-            if params.preprocess.Augment.Linear.Rotation.Mode:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation')
-            if params.preprocess.Augment.Linear.Shift.Mode:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift')
-            if params.preprocess.Augment.NonLinear.Mode: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear')
+        if params.Augment.Mode:
+            if params.Augment.Linear.Rotation.Mode:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation')
+            if params.Augment.Linear.Shift.Mode:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift')
+            if params.Augment.NonLinear.Mode: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear')
 
 
         TestParams = params.WhichExperiment.Dataset.Test
@@ -337,4 +337,6 @@ def movingFromDatasetToExperiments(params):
                 for AgIx in range(len(AugDataL)):
                     if flagAg[AgIx]: copyAugmentData(DirOut, AugDataL[AgIx], subject)
 
+        params = smallFuncs.inputNamesCheck(params, 'experiment')
+        
     return True

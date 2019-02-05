@@ -10,7 +10,6 @@
 
 #! this is temporary and should later be moved down
 slicingDim = 2
-CreatingTheExperiment = False
 DatasetIx = 4
 epochs = 10
 GPU_Index = 6
@@ -60,7 +59,6 @@ lossFunctionIx = 2
 #                 4: 'All_7T': 20priros + MS
 #                 5: '20priros'
 # DatasetIx = 4
-# CreatingTheExperiment = True
 
 # orderDim =       2: [0,1,2]
 # orderDim =       1: [2,0,1]
@@ -75,7 +73,7 @@ OptimizerIx = 1
 
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
-Experiments_Index = '4_NCrp'
+Experiments_Index = '5_temp'
 # Experiments_Tag = '7T' # 'SRI' 'tmp' 'SRI_wLRAug' '7T' '7T_wLRAug'
 
 
@@ -99,7 +97,7 @@ TestOnly = False
 #    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment
 #    2. Called by preprocess: to augment data inside train folder of the assigned experiment
 
-AugmentMode = False
+AugmentMode = True
 Augment_LinearMode = True
 
 Augment_Rotation     = True

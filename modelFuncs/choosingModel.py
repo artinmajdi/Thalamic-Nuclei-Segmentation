@@ -224,7 +224,7 @@ def applyTestImageOnModel(model, Data, params, nameSubject, padding, ResultDir):
         nucleusName, _ = smallFuncs.NucleiSelection(params.WhichExperiment.Nucleus.Index[cnt])
         dirSave = smallFuncs.mkDir(ResultDir + '/' + nameSubject)
 
-        pred1N_BtO = np.transpose(pred1N,params.WhichExperiment.Dataset.slicingOrder_Reverse)
+        pred1N_BtO = np.transpose(pred1N,params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
         smallFuncs.saveImage( pred1N_BtO , Data.Affine, Data.Header, dirSave + '/' + nucleusName + '.nii.gz')
         Dice[cnt,:] = [ params.WhichExperiment.Nucleus.Index[cnt] , smallFuncs.Dice_Calculator(pred1N_BtO , origMsk1N) ]
     Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.MultiClass.mode else dirSave + '/Dice_' + nucleusName + '.txt'

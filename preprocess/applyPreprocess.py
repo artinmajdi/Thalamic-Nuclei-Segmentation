@@ -10,7 +10,7 @@ from preprocess import augmentA, BashCallingFunctionsA, normalizeA, croppingA
 #! mode: 2: on individual image
 def main(params, mode):
 
-    params = smallFuncs.inputNamesCheck(params, mode)
+    # params = smallFuncs.inputNamesCheck(params, mode)
     if 'experiment' in mode:
         params = apply_On_Experiment(params)
     else:
