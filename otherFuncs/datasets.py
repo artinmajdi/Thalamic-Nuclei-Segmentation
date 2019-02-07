@@ -171,14 +171,6 @@ def kaggleCompetition(params):
     data.Test = data.Train
     return data, '_'
 
-def inputPreparationForUnet(im,subject, params):
-
-    im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
-    im = np.pad(im, subject.Padding[:3], 'constant')
-    im = np.transpose(im,[2,0,1])
-    im = np.expand_dims(im ,axis=3).astype('float32')
-    return im
-
 def backgroundDetector(masks):
     a = np.sum(masks,axis=3)
     background = np.zeros(masks.shape[:3])
@@ -191,7 +183,13 @@ def backgroundDetector(masks):
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments3D_new(params):
 
-
+    def inputPreparationForUnet(im,subject, params):
+        im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
+        im = np.pad(im, subject.Padding[:3], 'constant')
+        im = np.transpose(im,[2,0,1])
+        im = np.expand_dims(im ,axis=3).astype('float32')
+        return im
+        
     def readingImage(params, subject):
         imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
         im = inputPreparationForUnet(imF.get_data(), subject, params)
@@ -215,12 +213,13 @@ def readingFromExperiments3D_new(params):
         
         return origMsk , msk
             
-
     def Error_In_Dimention(cntSkipped,subject, mode, nameSubject):
         AA = subject.address.split('vimp')
         shutil.move(subject.address, AA[0] + 'ERROR_vimp' + AA[1])
         print('WARNING:', mode , cntSkipped + 1 , nameSubject, ' image and mask have different shape sizes')
         return cntSkipped + 1
+
+
 
     TestData, TrainData = {}, {}
     for mode in ['train','test']:
@@ -243,22 +242,7 @@ def readingFromExperiments3D_new(params):
                 continue
 
             im, imF = readingImage(params, subject)
-            # imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-            # im = inputPreparationForUnet(imF.get_data(), subject, params)
-            # im = normalizeA.main_normalize(params.preprocess.Normalize , im)
-
-
             origMsk , msk = readingNuclei(params, subject, imF.shape)
-            # for cnt, NucInd in enumerate(params.WhichExperiment.Nucleus.Index):
-            #     nameNuclei, _ = smallFuncs.NucleiSelection(NucInd)
-            #     inputMsk = subject.Label.address + '/' + nameNuclei + '_PProcessed.nii.gz'
-            #     origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imF.shape)
-            #     msk1N = inputPreparationForUnet(origMsk1N, subject, params)
-            #     origMsk1N = np.expand_dims(origMsk1N ,axis=3)
-            #     origMsk = origMsk1N if cnt == 0 else np.concatenate((origMsk, origMsk1N) ,axis=3).astype('float32')
-            #     msk = msk1N if cnt == 0 else np.concatenate((msk,msk1N),axis=3).astype('float32')
-            # background = backgroundDetector(msk)
-            # msk = np.concatenate((msk, background),axis=3).astype('float32')
 
             if 'ERROR_vimp' not in nameSubject:
                 if im[...,0].shape == msk[...,0].shape:
@@ -272,10 +256,7 @@ def readingFromExperiments3D_new(params):
                         TestData[nameSubject]  = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
                 else:
                     cntSkipped = Error_In_Dimention(cntSkipped,subject, mode, nameSubject)
-                    # cntSkipped = cntSkipped + 1
-                    # AA = subject.address.split('vimp')
-                    # shutil.move(subject.address, AA[0] + 'ERROR_vimp' + AA[1])
-                    # print('WARNING:', mode , cntSkipped , nameSubject, ' image and mask have different shape sizes')
+
 
         if 'train' in mode:
             data.Train_ForTest = TrainData
