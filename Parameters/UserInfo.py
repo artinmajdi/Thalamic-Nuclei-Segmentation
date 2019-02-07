@@ -10,7 +10,7 @@
 
 #! this is temporary and should later be moved down
 slicingDim = 2
-DatasetIx = 1
+DatasetIx = 4
 epochs = 2
 GPU_Index = 1
 
@@ -73,11 +73,11 @@ OptimizerIx = 1
 
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
-Experiments_Index = '4_NCrp'
+Experiments_Index = '5_NCrp'
 # Experiments_Tag = '7T' # 'SRI' 'tmp' 'SRI_wLRAug' '7T' '7T_wLRAug'
 
 
-SubExperiment_Index = 2
+SubExperiment_Index = 1
 SubExperiment_Tag = ''
 
 #! cropping mode
@@ -87,7 +87,7 @@ cropping_method = 'ANTs' # 'ANTs' 'python'
 
 
 #! Preprocessing
-preprocessMode = False
+preprocessMode = True
 BiasCorrection = False
 Cropping = True
 Normalize = True
@@ -97,7 +97,7 @@ TestOnly = False
 #    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment
 #    2. Called by preprocess: to augment data inside train folder of the assigned experiment
 
-AugmentMode = False
+AugmentMode = True
 Augment_LinearMode = True
 
 Augment_Rotation     = True

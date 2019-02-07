@@ -196,7 +196,7 @@ def readingFromExperiments3D_new(params):
         imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
         im = inputPreparationForUnet(imF.get_data(), subject, params)
         im = normalizeA.main_normalize(params.preprocess.Normalize , im)
-        return im
+        return im, imF
 
     def readingNuclei(params, subject, imFshape):
         for cnt, NucInd in enumerate(params.WhichExperiment.Nucleus.Index):
@@ -216,6 +216,11 @@ def readingFromExperiments3D_new(params):
         return origMsk , msk
             
 
+    def Error_In_Dimention(cntSkipped,subject, mode, nameSubject):
+        AA = subject.address.split('vimp')
+        shutil.move(subject.address, AA[0] + 'ERROR_vimp' + AA[1])
+        print('WARNING:', mode , cntSkipped + 1 , nameSubject, ' image and mask have different shape sizes')
+        return cntSkipped + 1
 
     TestData, TrainData = {}, {}
     for mode in ['train','test']:
@@ -237,7 +242,7 @@ def readingFromExperiments3D_new(params):
                 print('WARNING: subject: ',nameSubject,' size is out of the training network input dimensions')
                 continue
 
-            im = readingImage(params, subject)
+            im, imF = readingImage(params, subject)
             # imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
             # im = inputPreparationForUnet(imF.get_data(), subject, params)
             # im = normalizeA.main_normalize(params.preprocess.Normalize , im)
@@ -266,10 +271,11 @@ def readingFromExperiments3D_new(params):
                     elif 'test' in mode:
                         TestData[nameSubject]  = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
                 else:
-                    cntSkipped = cntSkipped + 1
-                    AA = subject.address.split('vimp')
-                    shutil.move(subject.address, AA[0] + 'ERROR_vimp' + AA[1])
-                    print('WARNING:', mode , cntSkipped , nameSubject, ' image and mask have different shape sizes')
+                    cntSkipped = Error_In_Dimention(cntSkipped,subject, mode, nameSubject)
+                    # cntSkipped = cntSkipped + 1
+                    # AA = subject.address.split('vimp')
+                    # shutil.move(subject.address, AA[0] + 'ERROR_vimp' + AA[1])
+                    # print('WARNING:', mode , cntSkipped , nameSubject, ' image and mask have different shape sizes')
 
         if 'train' in mode:
             data.Train_ForTest = TrainData
