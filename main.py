@@ -46,8 +46,6 @@ def SingleNucleiRun(params):
     
         
     # Data, params, Info = datasets.check_Dataset_ForTraining(params=params, flag=True, Info={})
-    params.WhichExperiment.HardParams.Model.num_Layers = datasets.correctNumLayers(params)
-    params = datasets.imageSizesAfterPadding(params, 'experiment')
     Data, params = datasets.loadDataset(params)
 
 
@@ -65,27 +63,32 @@ def SingleNucleiRun(params):
 
 
 
-
-if 1:
-
-    #! we assume that number of layers , and other things that might effect the input data stays constant
-    # AllParamsList = smallFuncs.readingTheParams(AllExperimentsList)
-    # ind, params = list(AllParamsList.items())[0]
+NucleiIndexes = UserInfoB['nucleus_Index']
+for UserInfoB['nucleus_Index'] in NucleiIndexes: #  FullIndexes:
+    # UserInfoB['nucleus_Index'] = [nucleiIx]
     params = paramFunc.Run(UserInfoB)
     K = SingleNucleiRun(params)
 
-else:
+# if 1:
 
-    #! this is temporary to run on all nuclei
-    # from Parameters import UserInfo, paramFunc
-    # UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
-    _, FullIndexes = smallFuncs.NucleiSelection(ind = 1,organ = 'THALAMUS')
+#     #! we assume that number of layers , and other things that might effect the input data stays constant
+#     # AllParamsList = smallFuncs.readingTheParams(AllExperimentsList)
+#     # ind, params = list(AllParamsList.items())[0]
+#     params = paramFunc.Run(UserInfoB)
+#     K = SingleNucleiRun(params)
 
-    NucleiIndexes = UserInfoB['nucleus_Index']
-    for nucleiIx in NucleiIndexes: #  FullIndexes:
-        UserInfoB['nucleus_Index'] = [nucleiIx]
-        params = paramFunc.Run(UserInfoB)
-        K = SingleNucleiRun(params)
+# else:
+
+#     #! this is temporary to run on all nuclei
+#     # from Parameters import UserInfo, paramFunc
+#     # UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
+#     _, FullIndexes = smallFuncs.NucleiSelection(ind = 1,organ = 'THALAMUS')
+
+#     NucleiIndexes = UserInfoB['nucleus_Index']
+#     for UserInfoB['nucleus_Index'] in NucleiIndexes: #  FullIndexes:
+#         # UserInfoB['nucleus_Index'] = [nucleiIx]
+#         params = paramFunc.Run(UserInfoB)
+#         K = SingleNucleiRun(params)
 
 
 K.clear_session()

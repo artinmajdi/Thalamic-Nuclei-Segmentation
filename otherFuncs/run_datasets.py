@@ -27,13 +27,6 @@ datasets.movingFromDatasetToExperiments(params)
 # params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
 
 
-# #! correcting the number of layers
-# num_Layers  = datasets.correctNumLayers(params)
-# params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
-
-# #! Finding the final image sizes after padding & amount of padding
-# params = datasets.imageSizesAfterPadding(params, mode)
-
 
 # #! loading the dataset
 # Data = datasets.loadDataset(params)

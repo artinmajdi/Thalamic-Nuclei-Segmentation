@@ -16,7 +16,7 @@ GPU_Index = 1
 
 
 #! Nucleus Index
-nucleus_Index = [1]
+nucleus_Index = [2]
 
 
 #! Training

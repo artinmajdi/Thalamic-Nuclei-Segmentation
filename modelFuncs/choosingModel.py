@@ -46,7 +46,7 @@ def check_Run(params, Data):
 
     #! Testing
     pred, Dice, score = {}, {}, {}
-    for name in tqdm(Data.Test):
+    for name in Data.Test:
         ResultDir = params.directories.Test.Result
         padding = params.directories.Test.Input.Subjects[name].Padding
         Dice[name], pred[name], score[name] = applyTestImageOnModel(model, Data.Test[name], params, name, padding, ResultDir)
@@ -56,7 +56,7 @@ def check_Run(params, Data):
     #! training predictions
     if params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:
         ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
-        for name in tqdm(Data.Train_ForTest):
+        for name in Data.Train_ForTest:
             padding = params.directories.Train.Input.Subjects[name].Padding
             Dice[name], pred[name], score[name] = applyTestImageOnModel(model, Data.Train_ForTest[name], params, name, padding, ResultDir)
 
@@ -208,8 +208,8 @@ def applyTestImageOnModel(model, Data, params, nameSubject, padding, ResultDir):
 
     num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes
     pred = np.transpose(pred,[1,2,0,3])[...,:num_classes-1]
-    if len(pred.shape) == 3:
-        pred= np.expand_dims(pred,axis=3)
+    if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
+
 
     pred = smallFuncs.unPadding(pred, padding)
     Dice = np.zeros((num_classes-1,2))
