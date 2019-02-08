@@ -54,6 +54,7 @@ class model:
     #! only one of these two can be true at the same time
     InitializeFromThalamus = ''
     InitializeFromOlderModel = ''
+    Idea = 'cascadeThalamus'
 
 
 

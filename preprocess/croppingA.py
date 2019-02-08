@@ -86,11 +86,26 @@ def notUsed_main_cropping(params , Input):
 
     return Input , CropCoordinatesAll
 
-def cropFunc(im , c1,c2,c3 , Gap):
+def cropFunc(im , cc , Gap):
 
-    d1 = [  c1[0]-Gap[0] , c1[ c1.shape[0]-1 ]+Gap[0]  ]
-    d2 = [  c2[0]-Gap[1] , c2[ c2.shape[0]-1 ]+Gap[1]  ]
-    SN = [  c3[0]-Gap[2] , c3[ c3.shape[0]-1 ]+Gap[2]  ]
+    szOg = im.shape
+
+    for ix in range(len(cc)):
+        d[ix] = [  cc[ix][0]-Gap[ix] , cc[ix][ cc[ix].shape[0]-1 ]+Gap[ix]  ]
+        d[ix] = [max(d[ix][0],0) , min(d[ix][1],szOg[ix])]
+
+    # d1 = [  c1[0]-Gap[0] , c1[ c1.shape[0]-1 ]+Gap[0]  ]
+    # d2 = [  c2[0]-Gap[1] , c2[ c2.shape[0]-1 ]+Gap[1]  ]
+    # SN = [  c3[0]-Gap[2] , c3[ c3.shape[0]-1 ]+Gap[2]  ]
+
+    # d1 = [max(d1[0],0) , min(d1[1],szOg[0])]
+    # d2 = [max(d2[0],0) , min(d2[1],szOg[0])]
+    # SN = [max(SN[0],0) , min(SN[1],szOg[0])]
+
+    d1 = d[0]
+    d1 = d[1]
+    SN = d[2]
+
     SliceNumbers = range(SN[0],SN[1])
 
     im = im[ d1[0]:d1[1],d2[0]:d2[1],SliceNumbers ]
@@ -105,8 +120,7 @@ def cropFromCoordinates(im, CropCoordinates):
 
     return im[ d1[0]:d1[1],d2[0]:d2[1],SliceNumbers ]
 
-def funcCropping_Mode(im , CropMask , Gap):
-
+def func_CropCoordinates(CropMask):
     ss = np.sum(CropMask,axis=2)
     c1 = np.where(np.sum(ss,axis=1) > 10)[0]
     c2 = np.where(np.sum(ss,axis=0) > 10)[0]
@@ -114,7 +128,12 @@ def funcCropping_Mode(im , CropMask , Gap):
     ss = np.sum(CropMask,axis=1)
     c3 = np.where(np.sum(ss,axis=0) > 10)[0]
 
-    im , CropCoordinates = cropFunc(im , c1,c2,c3 , Gap)
+    return c1,c2,c3
+
+def funcCropping_Mode(im , CropMask , Gap):
+    
+    c1,c2,c3 = func_CropCoordinates(CropMask)
+    im , CropCoordinates = cropFunc(im , [c1,c2,c3] , Gap)
 
     return im , CropCoordinates
 
@@ -127,6 +146,6 @@ def notUsed_funcCropping_Mode3_SlicingFromThalamus(im , CropMask , ThalamusMask 
     ss = np.sum(ThalamusMask,axis=1)
     c3 = np.where(np.sum(ss,axis=0) > 1)[0]
 
-    im , CropCoordinates = cropFunc(im , c1,c2,c3 , Gap)
+    im , CropCoordinates = cropFunc(im , [c1,c2,c3] , Gap)
 
     return im , CropCoordinates

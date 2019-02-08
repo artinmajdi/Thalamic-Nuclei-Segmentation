@@ -28,11 +28,11 @@ datasets.movingFromDatasetToExperiments(params)
 
 
 # #! correcting the number of layers
-# num_Layers  = smallFuncs.correctNumLayers(params)
+# num_Layers  = datasets.correctNumLayers(params)
 # params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
 
 # #! Finding the final image sizes after padding & amount of padding
-# Subjects_Train, Subjects_Test, new_inputSize = smallFuncs.imageSizesAfterPadding(params, mode)
+# Subjects_Train, Subjects_Test, new_inputSize = datasets.imageSizesAfterPadding(params, mode)
 
 
 # #! loading the dataset
