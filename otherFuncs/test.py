@@ -5,11 +5,14 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import nibabel as nib
 import numpy as np
-from Parameters import UserInfo, paramFunc
-from otherFuncs import datasets, smallFuncs
 
 
-params = paramFunc.Run(UserInfo.__dict__)
-datasets.movingFromDatasetToExperiments(params)
+# from Parameters import UserInfo, paramFunc
+# from otherFuncs import datasets, smallFuncs
 
-params = smallFuncs.inputNamesCheck(params, 'experiment')
+
+# params = paramFunc.Run(UserInfo.__dict__)
+# datasets.movingFromDatasetToExperiments(params)
+
+# params = smallFuncs.inputNamesCheck(params, 'experiment')
+

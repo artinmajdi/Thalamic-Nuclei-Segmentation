@@ -32,7 +32,7 @@ datasets.movingFromDatasetToExperiments(params)
 # params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
 
 # #! Finding the final image sizes after padding & amount of padding
-# Subjects_Train, Subjects_Test, new_inputSize = datasets.imageSizesAfterPadding(params, mode)
+# params = datasets.imageSizesAfterPadding(params, mode)
 
 
 # #! loading the dataset

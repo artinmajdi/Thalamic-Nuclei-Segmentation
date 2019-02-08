@@ -16,7 +16,7 @@ GPU_Index = 1
 
 
 #! Nucleus Index
-nucleus_Index = [2]
+nucleus_Index = [1]
 
 
 #! Training
@@ -77,7 +77,7 @@ Experiments_Index = '4_NCrp'
 # Experiments_Tag = '7T' # 'SRI' 'tmp' 'SRI_wLRAug' '7T' '7T_wLRAug'
 
 
-SubExperiment_Index = 3
+SubExperiment_Index = 1
 SubExperiment_Tag = ''
 
 #! cropping mode
@@ -91,7 +91,7 @@ preprocessMode = True
 BiasCorrection = False
 Cropping = True
 Normalize = True
-TestOnly = False
+TestOnly = True
 
 #! this flag has two applications:
 #    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment

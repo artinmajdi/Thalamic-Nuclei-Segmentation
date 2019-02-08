@@ -6,7 +6,7 @@ import nibabel as nib
 import shutil 
 import os, sys
 from otherFuncs import smallFuncs
-from preprocess import normalizeA, applyPreprocess
+from preprocess import normalizeA, applyPreprocess, croppingA
 import matplotlib.pyplot as plt
 
 class ImageLabel:
@@ -39,54 +39,43 @@ class testCase:
         self.original_Shape = original_Shape
 
 
-def check_Dataset_ForTraining(params, flag, Info):  #  mode = 'experiments' # single_run'
-
-    if flag:
-        mode = 'experiment'
-
-        # #! copying the dataset into the experiment folder
-        # if params.WhichExperiment.Dataset.CreatingTheExperiment: movingFromDatasetToExperiments(params)
-
-
-        # #! preprocessing the data
-        # if params.preprocess.Mode:
-        #     applyPreprocess.main(params, mode)
-             
-        # params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
-
-        #! correcting the number of layers
-        num_Layers = correctNumLayers(params)
-        params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
-
-        #! Finding the final image sizes after padding & amount of padding
-        Subjects_Train, Subjects_Test, new_inputSize = imageSizesAfterPadding(params, mode)
-
-        params.directories.Train.Input.Subjects = Subjects_Train
-        params.directories.Test.Input.Subjects  = Subjects_Test
-        params.WhichExperiment.HardParams.Model.InputDimensions = new_inputSize
-
-
-        # params.preprocess.TestOnly = True
-        #! loading the dataset
-        Data = loadDataset(params)
-        params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
-
-        Info['num_Layers']     = num_Layers
-        Info['new_inputSize']  = new_inputSize
-        Info['Subjects_Train'] = Subjects_Train
-        Info['Subjects_Test']  = Subjects_Test
-        Info['imageInfo']      = Data.Info
-
-        return Data, params, Info
-
-    else:
-        params.WhichExperiment.HardParams.Model.num_Layers      = Info['num_Layers']
-        params.WhichExperiment.HardParams.Model.imageInfo       = Info['imageInfo']
-        params.directories.Train.Input.Subjects                 = Info['Subjects_Train']
-        params.directories.Test.Input.Subjects                  = Info['Subjects_Test']
-        params.WhichExperiment.HardParams.Model.InputDimensions = Info['new_inputSize']
-
-        return '', params, ''
+# def check_Dataset_ForTraining(params, flag, Info):  #  mode = 'experiments' # single_run'
+#     if flag:
+#         # mode = 'experiment'
+#         # #! copying the dataset into the experiment folder
+#         # if params.WhichExperiment.Dataset.CreatingTheExperiment: movingFromDatasetToExperiments(params)
+#         # #! preprocessing the data
+#         # if params.preprocess.Mode:
+#         #     applyPreprocess.main(params, 'experiment')
+#    
+#         # params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
+# 
+#         #! correcting the number of layers
+#         #! Finding the final image sizes after padding & amount of padding
+#         params.WhichExperiment.HardParams.Model.num_Layers = correctNumLayers(params)
+#         params = imageSizesAfterPadding(params, 'experiment')
+#
+#         # params.preprocess.TestOnly = True
+#         #! loading the dataset
+#         Data, params = loadDataset(params)
+#         # params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
+#
+#         Info['num_Layers']     = params.WhichExperiment.HardParams.Model.num_Layers
+#         Info['new_inputSize']  = params.WhichExperiment.HardParams.Model.InputDimensions
+#         Info['Subjects_Train'] = params.directories.Train.Input.Subjects
+#         Info['Subjects_Test']  = params.directories.Test.Input.Subjects
+#         Info['imageInfo']      = params.WhichExperiment.HardParams.Model.imageInfo
+#
+#         return Data, params, Info
+#
+#     else:
+#         params.WhichExperiment.HardParams.Model.num_Layers      = Info['num_Layers']
+#         params.WhichExperiment.HardParams.Model.imageInfo       = Info['imageInfo']
+#         params.directories.Train.Input.Subjects                 = Info['Subjects_Train']
+#         params.directories.Test.Input.Subjects                  = Info['Subjects_Test']
+#         params.WhichExperiment.HardParams.Model.InputDimensions = Info['new_inputSize']
+#
+#         return '', params, ''
 
 def one_hot(a, num_classes):
   return np.eye(num_classes)[a]
@@ -112,8 +101,8 @@ def loadDataset(params):
         Data = readingFromExperiments3D_new(params)
 
     _, Data.Info.Height, Data.Info.Width, _ = Data.Test[list(Data.Test)[0]].Image.shape if params.preprocess.TestOnly else Data.Train.Image.shape
-    # params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
-    return Data
+    params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
+    return Data, params
 
 def fashionMnist(params):
     from keras.datasets import fashion_mnist
@@ -219,11 +208,26 @@ def readingFromExperiments3D_new(params):
         print('WARNING:', mode , cntSkipped + 1 , nameSubject, ' image and mask have different shape sizes')
         return cntSkipped + 1
 
+    def loadThalamusPred(params, nameSubject):
+        class ThalamusPred:
+            mask = ''
+            boundingBox = ''
+            Flag = False
+
+        if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index:
+            Thalamus_Mask = nib.load(params.directories.Test.Result + '/' + nameSubject + '/1-THALAMUS.nii.gz').get_data()
+            c1,c2,c3 = croppingA.func_CropCoordinates(Thalamus_Mask)
+
+            ThalamusPred.mask = Thalamus_Mask
+            ThalamusPred.boundingBox = [c1,c2,c3]
+            ThalamusPred.Flag = True
+
+        return ThalamusPred
 
     TestData, TrainData = {}, {}
     for mode in ['train','test']:
 
-        if 'train' in mode and params.preprocess.TestOnly:
+        if 'train' in mode and params.preprocess.TestOnly and not params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:
             continue
 
         Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
@@ -240,12 +244,9 @@ def readingFromExperiments3D_new(params):
                 print('WARNING: subject: ',nameSubject,' size is out of the training network input dimensions')
                 continue
 
-            # if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index:
-            #     Thalamus_Mask = nib.load(params.directories.Test.Result + '/' + nameSubject + '/1-THALAMUS.nii.gz').get_data()
-
-            #     c1,c2,c3 = croppingA.func_CropCoordinates(Thalamus_Mask)
-            #     print('----')
             
+            subject.ThalamusPred = loadThalamusPred(params, nameSubject) 
+                        
             im, imF = readingImage(params, subject)
             origMsk , msk = readingNuclei(params, subject, imF.shape)
 
@@ -391,10 +392,11 @@ def imageSizesAfterPadding(params, mode):
 
     Subjects_Train = ''
     Subjects_Test = ''
+    new_inputSize = ''
     if 'experiment' in mode:
         for wFolder in ['Train' , 'Test']:
 
-            if params.preprocess.TestOnly and 'Train' in wFolder:
+            if params.preprocess.TestOnly and 'Train' in wFolder and not params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:
                 continue
 
             Subjects = params.directories.Train.Input.Subjects if 'Train' in wFolder else params.directories.Test.Input.Subjects
@@ -439,4 +441,9 @@ def imageSizesAfterPadding(params, mode):
                 params.directories.Test.Input.Subjects = Subjects
                 Subjects_Test = Subjects
 
-    return Subjects_Train, Subjects_Test, new_inputSize
+
+    params.directories.Train.Input.Subjects = Subjects_Train
+    params.directories.Test.Input.Subjects  = Subjects_Test
+    params.WhichExperiment.HardParams.Model.InputDimensions = new_inputSize
+
+    return params

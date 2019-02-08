@@ -97,7 +97,8 @@ def Run(UserInfo):
 
 
     # TODO I need to fix this to count for multiple nuclei
-    WhichExperiment.Nucleus.Index = UserInfo['nucleus_Index'] # if WhichExperiment.HardParams.Model.MultiClass.mode else UserInfo['nucleus_Index']
+    WhichExperiment.Nucleus.Index = UserInfo['nucleus_Index'] if isinstance(UserInfo['nucleus_Index'],list) else [UserInfo['nucleus_Index']]
+    
     WhichExperiment.Nucleus.name_Thalamus, WhichExperiment.Nucleus.FullIndexes = smallFuncs.NucleiSelection( 1 , WhichExperiment.Nucleus.Organ)
     if len(WhichExperiment.Nucleus.Index) == 1:
         WhichExperiment.Nucleus.name , _ = smallFuncs.NucleiSelection( WhichExperiment.Nucleus.Index[0] , WhichExperiment.Nucleus.Organ)

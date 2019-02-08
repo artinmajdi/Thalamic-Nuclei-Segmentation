@@ -144,7 +144,7 @@ def terminalEntries(UserInfo):
 
         elif entry.lower() in ('-n','--nuclei'):  # nuclei index
             if sys.argv[en+1].lower() == 'all':
-                UserInfo['nucleus_Index'] = np.append([1,2,4567],range(4,14))
+                _, UserInfo['nucleus_Index'] = NucleiSelection(ind = 1,organ = 'THALAMUS')
 
             elif sys.argv[en+1][0] == '[':
                 B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
@@ -359,7 +359,7 @@ def inputNamesCheck(params, mode):
     if 'experiment' in mode:
         for wFolder in ['Train' , 'Test']:
 
-            if params.preprocess.TestOnly and 'Train' in wFolder:
+            if Params.preprocess.TestOnly and not params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data and 'Train' in wFolder:
                 continue
 
             dirr = params.directories.Train if 'Train' in wFolder else params.directories.Test
