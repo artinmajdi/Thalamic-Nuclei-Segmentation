@@ -123,9 +123,9 @@ class dataset:
     # onlySubjectsWvimp = False
     randomFlag = False
     slicingInfo = slicingDirection
-    # slicingOrder = [0,1,2]
-    # slicingOrder_Reverse = [0,1,2]
-    # slicingDim = 2
+    gapDilation = 10
+    gapOnSlicingDimention = 2
+
 
 class WhichExperiment:
     Experiment    = experiment

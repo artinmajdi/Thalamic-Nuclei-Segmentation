@@ -58,67 +58,41 @@ def main(subject , params):
 
     return True
 
-def notUsed_chooseAugmented(Input , AugIx):
-    return Input.Image[...,AugIx], Input.CropMask[...,AugIx], Input.ThalamusMask[...,AugIx]
+# def cropFunc(im , cc , Gap):
 
-def notUsed_main_cropping(params , Input):
+#     szOg = im.shape
 
-    if params.cropping:
-        CropCoordinatesAll = np.zeros((Input.Image.shape[3]))
-        for AugIx in range(Input.Image.shape[3]):
+#     d = np.zeros((3,2))
+#     for ix in range(len(cc)):
+#         d[ix,:] = [  cc[ix][0]-Gap[ix] , cc[ix][ cc[ix].shape[0]-1 ]+Gap[ix]  ]
+#         d[ix,:] = [  max(d[ix,0],0)    , min(d[ix,1],szOg[ix])  ]
 
-            Image, CropMask, ThalamusMask = chooseAugmented( Input , AugIx )
+#     # d1 = [  c1[0]-Gap[0] , c1[ c1.shape[0]-1 ]+Gap[0]  ]
+#     # d2 = [  c2[0]-Gap[1] , c2[ c2.shape[0]-1 ]+Gap[1]  ]
+#     # SN = [  c3[0]-Gap[2] , c3[ c3.shape[0]-1 ]+Gap[2]  ]
 
-            if (params.CroppingMode == 1) | ('mask' in params.CroppingMode ):
-                Gap=[0,0,1]
-                Image , CropCoordinates = funcCropping_Mode( Image , CropMask , Gap )
+#     # d1 = [max(d1[0],0) , min(d1[1],szOg[0])]
+#     # d2 = [max(d2[0],0) , min(d2[1],szOg[0])]
+#     # SN = [max(SN[0],0) , min(SN[1],szOg[0])]
 
-            elif (params.CroppingMode == 2) | ('thalamus' in params.CroppingMode ):
-                Gap=[20,20,1]
-                Image , CropCoordinates = funcCropping_Mode( Image , ThalamusMask , Gap )
+#     d1 = d[0]
+#     d1 = d[1]
+#     SN = d[2]
 
-            elif (params.CroppingMode == 3) | ('both' in params.CroppingMode ):
-                Gap=[0,0,1]
-                Image , CropCoordinates = funcCropping_Mode3_SlicingFromThalamus( Image , CropMask , ThalamusMask , Gap )
+#     SliceNumbers = range(SN[0],SN[1])
 
-            Input.Image[...,AugIx] = Image
-            CropCoordinatesAll[AugIx] = CropCoordinates
+#     im = im[ d1[0]:d1[1],d2[0]:d2[1],SliceNumbers ]
+#     CropCoordinates = [d1,d2,SliceNumbers]
 
-    return Input , CropCoordinatesAll
-
-def cropFunc(im , cc , Gap):
-
-    szOg = im.shape
-
-    for ix in range(len(cc)):
-        d[ix] = [  cc[ix][0]-Gap[ix] , cc[ix][ cc[ix].shape[0]-1 ]+Gap[ix]  ]
-        d[ix] = [max(d[ix][0],0) , min(d[ix][1],szOg[ix])]
-
-    # d1 = [  c1[0]-Gap[0] , c1[ c1.shape[0]-1 ]+Gap[0]  ]
-    # d2 = [  c2[0]-Gap[1] , c2[ c2.shape[0]-1 ]+Gap[1]  ]
-    # SN = [  c3[0]-Gap[2] , c3[ c3.shape[0]-1 ]+Gap[2]  ]
-
-    # d1 = [max(d1[0],0) , min(d1[1],szOg[0])]
-    # d2 = [max(d2[0],0) , min(d2[1],szOg[0])]
-    # SN = [max(SN[0],0) , min(SN[1],szOg[0])]
-
-    d1 = d[0]
-    d1 = d[1]
-    SN = d[2]
-
-    SliceNumbers = range(SN[0],SN[1])
-
-    im = im[ d1[0]:d1[1],d2[0]:d2[1],SliceNumbers ]
-    CropCoordinates = [d1,d2,SliceNumbers]
-
-    return im , CropCoordinates
+#     return im , CropCoordinates
 
 def cropFromCoordinates(im, CropCoordinates):
     d1 = CropCoordinates[0]
     d2 = CropCoordinates[1]
-    SliceNumbers = CropCoordinates[2] 
+    SN = CropCoordinates[2]
+    # SliceNumbers = CropCoordinates[2] 
 
-    return im[ d1[0]:d1[1],d2[0]:d2[1],SliceNumbers ]
+    return im[   d1[0]:d1[1]  ,  d2[0]:d2[1]  ,  SN[0]:SN[1]   ]
 
 def func_CropCoordinates(CropMask):
     ss = np.sum(CropMask,axis=2)
@@ -128,24 +102,14 @@ def func_CropCoordinates(CropMask):
     ss = np.sum(CropMask,axis=1)
     c3 = np.where(np.sum(ss,axis=0) > 10)[0]
 
-    return c1,c2,c3
+    BBCord = [   [c1[0],c1[-1]]  ,  [c2[0],c2[-1]]  , [c3[0],c3[-1]]  ]
 
-def funcCropping_Mode(im , CropMask , Gap):
+    return BBCord
+
+# def funcCropping_Mode(im , CropMask , Gap):
     
-    c1,c2,c3 = func_CropCoordinates(CropMask)
-    im , CropCoordinates = cropFunc(im , [c1,c2,c3] , Gap)
+#     c1,c2,c3 = func_CropCoordinates(CropMask)
+#     im , CropCoordinates = cropFunc(im , [c1,c2,c3] , Gap)
 
-    return im , CropCoordinates
+#     return im , CropCoordinates
 
-def notUsed_funcCropping_Mode3_SlicingFromThalamus(im , CropMask , ThalamusMask , Gap):
-
-    ss = np.sum(CropMask,axis=2)
-    c1 = np.where(np.sum(ss,axis=1) > 1)[0]
-    c2 = np.where(np.sum(ss,axis=0) > 1)[0]
-
-    ss = np.sum(ThalamusMask,axis=1)
-    c3 = np.where(np.sum(ss,axis=0) > 1)[0]
-
-    im , CropCoordinates = cropFunc(im , [c1,c2,c3] , Gap)
-
-    return im , CropCoordinates

@@ -7,62 +7,159 @@ from keras_tqdm import TQDMCallback # , TQDMNotebookCallback
 import numpy as np
 from skimage.filters import threshold_otsu
 from Parameters import paramFunc
-from otherFuncs import smallFuncs
+from otherFuncs import smallFuncs, datasets
 from tqdm import tqdm
 from time import time
+import nibabel as nib
 
 def check_Run(params, Data):
 
-    os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
+    class prediction:
+        Test = ''
+        Train = ''
 
-    # params.preprocess.TestOnly = True
-    if not params.preprocess.TestOnly:
-        #! Training the model
-        a = time()
-        smallFuncs.Saving_UserInfo(params.directories.Train.Model, params, params.UserInfo)
-        model = architecture(params)
-        model, hist = modelTrain(Data, params, model)
-        hist.params['trainingTime'] = time() - a
-        hist.params['InputDimensionsX'] = params.WhichExperiment.HardParams.Model.InputDimensions[0]
-        hist.params['InputDimensionsY'] = params.WhichExperiment.HardParams.Model.InputDimensions[1]
-        hist.params['num_Layers'] = params.WhichExperiment.HardParams.Model.num_Layers
+    def applyModelOnTestSubjects(model, Data, params):
+        prediction = {}
+        ResultDir = params.directories.Test.Result
+        for name in Data:            
+            padding = params.directories.Test.Input.Subjects[name].Padding
+            prediction[name] = applyTestImageOnModel(model, Data[name], params, name, padding, ResultDir)
 
-        smallFuncs.saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
-        smallFuncs.saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo['SaveReportMethod'])
-        smallFuncs.saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , 'csv')
-        
+        return prediction
 
-    else:
-        #! loading the params
+    def applyModelOnTrainSubjects(model, Data, params): 
+        prediction = {}
+        if (params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) or ( 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 in params.WhichExperiment.Nucleus.Index):            
+            ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
+            for name in Data:
+                padding = params.directories.Train.Input.Subjects[name].Padding
+                prediction[name] = applyTestImageOnModel(model, Data[name], params, name, padding, ResultDir)
+
+        return prediction
+
+    def loadModel(params):
         model = architecture(params)
         model.load_weights(params.directories.Train.Model + '/model_weights.h5')
         
         ModelParam = params.WhichExperiment.HardParams.Model
         model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
+        return model
 
-        # model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')
+    def trainModel(params):
+
+        def saveTrainInfo(hist,a, params):
+            hist.params['trainingTime'] = time() - a
+            hist.params['InputDimensionsX'] = params.WhichExperiment.HardParams.Model.InputDimensions[0]
+            hist.params['InputDimensionsY'] = params.WhichExperiment.HardParams.Model.InputDimensions[1]
+            hist.params['num_Layers'] = params.WhichExperiment.HardParams.Model.num_Layers
+
+            smallFuncs.saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
+            smallFuncs.saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo['SaveReportMethod'])
+            smallFuncs.saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , 'csv')
+            
+        a = time()
+        smallFuncs.Saving_UserInfo(params.directories.Train.Model, params, params.UserInfo)
+        model = architecture(params)
+        model, hist = modelTrain(Data, params, model)
+
+        saveTrainInfo(hist,a, params)
+        return model
+
+    os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
+    model = trainModel(params) if not params.preprocess.TestOnly else loadModel(params)
+
+    prediction.Test  = applyModelOnTestSubjects(model, Data.Test, params)
+    prediction.Train = applyModelOnTrainSubjects(model, Data.Train_ForTest, params)
 
 
+    if 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 in params.WhichExperiment.Nucleus.Index: 
+        applyThalamusOnInput(params, prediction)
 
-    #! Testing
-    pred, Dice, score = {}, {}, {}
-    for name in Data.Test:
-        ResultDir = params.directories.Test.Result
-        padding = params.directories.Test.Input.Subjects[name].Padding
-        Dice[name], pred[name], score[name] = applyTestImageOnModel(model, Data.Test[name], params, name, padding, ResultDir)
+    return True
 
 
+def applyThalamusOnInput(params, ThalamusMasks):
 
-    #! training predictions
-    if params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:
-        ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
-        for name in Data.Train_ForTest:
-            padding = params.directories.Train.Input.Subjects[name].Padding
-            Dice[name], pred[name], score[name] = applyTestImageOnModel(model, Data.Train_ForTest[name], params, name, padding, ResultDir)
+    def ApplyThalamusMask(Thalamus_Mask, params, subject, nameSubject, mode):
+            
+        def dilateMask(mask, gapDilation):
+            struc = ndimage.generate_binary_structure(3,2)
+            struc = ndimage.iterate_structure(struc,gapDilation) 
+            return ndimage.binary_dilation(Thalamus_Mask, structure=struc)
+       
+        def checkBordersOnBoundingBox(imFshape , BB , gapOnSlicingDimention):
+            return [   [   np.max(BB[d][0]-gapOnSlicingDimention,0)  ,   np.min(BB[d][1]+gapOnSlicingDimention,imFshape[d])   ]  for d in range(3) ]
 
-    return pred
+        def cropBoundingBoxes(params, imFshape, Thalamus_Mask, Thalamus_Mask_Dilated):
+            BB = smallFuncs.func_CropCoordinates(Thalamus_Mask)
+            BB = checkBordersOnBoundingBox(imFshape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
+            BBd  = smallFuncs.func_CropCoordinates(Thalamus_Mask_Dilated)
+
+            BBAll = np.zeros((3,2))
+            BBAll[:,0] = BB
+            BBAll[:,1] = BBd
+
+            return BBAll
+
+        def apply_ThalamusMask_OnImage(imF, Thalamus_Mask_Dilated, subject):
+
+            copyfile(subject.address + '/' + subject.ImageProcessed + 'nii.gz' , subject.temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz')
+
+            im = imF.get_data()
+            im[Thalamus_Mask_Dilated == 0] = 0
+            smallFuncs.saveImage(im , imF.ffine , imF.header , subject.address + '/' + subject.ImageProcessed + 'nii.gz')
+
+        def saveNewCrop(BBAll, imFshape, Dir):
+
+            BB  = BBAll[:,0]
+            BBd = BBAll[:,1]
+
+            newCrop0 = newCrop1 = newCrop2 = np.zeros(imFshape)
+            newCrop0[ BB[0][0] :BB[0][-1]   ,  BBd[1][0]:BBd[1][-1]  ,  BBd[2][0]:BBd[2][-1] ] = 1
+            newCrop1[ BBd[0][0]:BBd[0][-1]  ,  BB[1][0] :BB[1][-1]   ,  BBd[2][0]:BBd[2][-1] ] = 1
+            newCrop2[ BBd[0][0]:BBd[0][-1]  ,  BBd[1][0]:BBd[1][-1]  ,  BB[2][0] :BB[2][-1]  ] = 1
+
+            smallFuncs.saveImage(newCrop0 , imF.affine , imF.header , Dir + '/CropMask_ThCascade_sliceDim0.nii.gz')
+            smallFuncs.saveImage(newCrop1 , imF.affine , imF.header , Dir + '/CropMask_ThCascade_sliceDim1.nii.gz')
+            smallFuncs.saveImage(newCrop2 , imF.affine , imF.header , Dir + '/CropMask_ThCascade_sliceDim2.nii.gz')
+
+        if not os.path.isfile(subject.temp.address + '/CropMask_ThCascade_sliceDim0.nii.gz'):
+
+            # ThDir = params.directories.Test.Result if 'test' in mode else params.directories.Test.Result + '/TrainData_Output' 
+            # Thalamus_Mask = nib.load(ThDir + '/' + nameSubject + '/1-THALAMUS.nii.gz').get_data()
+
+            # TODO Feb 7 check of dilated values are 0 and 1
+            Thalamus_Mask_Dilated = dilateMask( Thalamus_Mask, params.WhichExperiment.Dataset.gapDilation )
+            BBAll = cropBoundingBoxes(params, imF.shape, Thalamus_Mask, Thalamus_Mask_Dilated)
+
+            imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+            apply_ThalamusMask_OnImage(imF, Thalamus_Mask_Dilated, subject)
+            saveNewCrop(BBAll, imF.shape, subject.temp.address)
+            return BBAll
+        else:
+            return np.zeros((2,3))
+    
+    def loopOverSubjects(params, ThalamusMasks, mode):
+
+        def saveOutputs(params,mode,BBFull,Subjects):
+            Dirsave = params.directories.Test.Result.split('/subExp')[0]
+            np.savetxt( Dirsave + '/ThalamicBoundingBoxes_' + mode + '.txt' , BBFull[...,0] , fmt='%d')
+            np.savetxt( Dirsave + '/ThalamicBoundingBoxes_' + mode + '_Dilated.txt', BBFull[...,1] , fmt='%d')
+            np.savetxt( Dirsave + '/SubjectNames_' + mode + '.txt' , list(Subjects) , fmt='%s')
+            
+        Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
+        
+        BBFull = np.zeros((len(Subjects),3,2))
+        for ix , sj in tqdm(enumerate(Subjects) ,desc='loading Thalamus ' + mode):                 
+            BBFull[ix,...] = ApplyThalamusMask(ThalamusMasks[sj] , params, Subjects[sj], sj, 'train') 
+
+        saveOutputs(params,mode,BBFull,Subjects)
 
 
+    loopOverSubjects(params, ThalamusMasks.Test, 'test')
+
+    if not params.preprocess.TestOnly: #  or params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:  
+        loopOverSubjects(params, ThalamusMasks.Train, 'train')
 
 
 # ! main Function
@@ -222,7 +319,7 @@ def applyTestImageOnModel(model, Data, params, nameSubject, padding, ResultDir):
         # # Thresh = 0.2
         # pred1N = pred1N  > Thresh
         nucleusName, _ = smallFuncs.NucleiSelection(params.WhichExperiment.Nucleus.Index[cnt])
-        dirSave = smallFuncs.mkDir(ResultDir + '/' + nameSubject)
+        dirSave = smallFuncs.mkDir(ResultDir + '/' + nameSubject)   
 
         pred1N_BtO = np.transpose(pred1N,params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
         smallFuncs.saveImage( pred1N_BtO , Data.Affine, Data.Header, dirSave + '/' + nucleusName + '.nii.gz')
@@ -230,4 +327,4 @@ def applyTestImageOnModel(model, Data, params, nameSubject, padding, ResultDir):
     Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.MultiClass.mode else dirSave + '/Dice_' + nucleusName + '.txt'
     np.savetxt(Dir_Dice ,Dice)
 
-    return Dice, pred, score
+    return pred1N_BtO

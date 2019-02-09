@@ -488,3 +488,15 @@ def dict2obj(d):
     for k in d:
         o.__dict__[k] = dict2obj(d[k])
     return o
+
+def func_CropCoordinates(CropMask):
+    ss = np.sum(CropMask,axis=2)
+    c1 = np.where(np.sum(ss,axis=1) > 10)[0]
+    c2 = np.where(np.sum(ss,axis=0) > 10)[0]
+
+    ss = np.sum(CropMask,axis=1)
+    c3 = np.where(np.sum(ss,axis=0) > 10)[0]
+
+    BBCord = [   [c1[0],c1[-1]]  ,  [c2[0],c2[-1]]  , [c3[0],c3[-1]]  ]
+
+    return BBCord

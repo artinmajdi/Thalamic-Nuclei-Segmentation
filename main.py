@@ -10,10 +10,7 @@ from Parameters import UserInfo, paramFunc
 
 # TODO:  add a fixed seed number for random numbers 
 # TODO:  write the name of test and train subjects in model and results and dataset  to have it for the future
-# TODO:   make a new functions for reading all dices for each test cases and put them in a table for each nuclei
-# TODO:    write a new function taht could raed the history files and plot the dice, loss for trainign and validation
 # TODO : look for a way to see epoch inside my loss function and use BCE initially and tyhen add Dice for higher epochs
-# TODO: use linear rotation augmentation
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 
@@ -30,12 +27,9 @@ def gpuSetting(params):
     return K
 
 # def runExperiment(params, Info, Data):
-
 #     # params.WhichExperiment.Dataset.CreatingTheExperiment = False
-
 #     K = gpuSetting(params)
-#     pred = choosingModel.check_Run(params, Data)
-
+#     choosingModel.check_Run(params, Data)
 #     return K
 
 def SingleNucleiRun(params):
@@ -57,7 +51,7 @@ def SingleNucleiRun(params):
     #         K = runExperiment(params, Info, Data)
 
     K = gpuSetting(params)
-    pred = choosingModel.check_Run(params, Data)
+    choosingModel.check_Run(params, Data)
 
     return K
 

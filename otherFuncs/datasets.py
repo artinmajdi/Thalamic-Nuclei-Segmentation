@@ -8,6 +8,8 @@ import os, sys
 from otherFuncs import smallFuncs
 from preprocess import normalizeA, applyPreprocess, croppingA
 import matplotlib.pyplot as plt
+from scipy import ndimage
+from shutil import copyfile
 
 class ImageLabel:
     Image = np.zeros(3)
@@ -39,9 +41,6 @@ class testCase:
         self.original_Shape = original_Shape
 
 
-def one_hot(a, num_classes):
-  return np.eye(num_classes)[a]
-
 def DatasetsInfo(DatasetIx):
     switcher = {
         1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_3T'),
@@ -66,6 +65,10 @@ def loadDataset(params):
     return Data, params
 
 def fashionMnist(params):
+
+    def one_hot(a, num_classes):
+        return np.eye(num_classes)[a]
+
     from keras.datasets import fashion_mnist
     
     fullData  = fashion_mnist.load_data()
@@ -121,27 +124,22 @@ def kaggleCompetition(params):
     data.Test = data.Train
     return data, '_'
 
-def backgroundDetector(masks):
-    a = np.sum(masks,axis=3)
-    background = np.zeros(masks.shape[:3])
-    background[np.where(a == 0)] = 1
-    background = np.expand_dims(background,axis=3)
-    return background
-
-# TODO: also I need to finish this function
 # TODO: add the saving images with the format mahesh said
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments3D_new(params):
    
     def inputPreparationForUnet(im,subject, params, subjectThalamusPred):
-        im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
-        if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea: 
-            im[np.where(subjectThalamusPred == 0)] = 0
-        else:
-            im = np.pad(im, subject.Padding[:3], 'constant')
 
-            im = np.transpose(im,[2,0,1])
-            im = np.expand_dims(im ,axis=3).astype('float32')
+        if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
+            im[np.where(subjectThalamusPred == 0)] = 0
+            im = im[tuple(subject.ThalamusPredInfo.boundingBox)]
+            # TODO Feb8 crop the image with thalamus boundingBox
+
+
+        im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
+        im = np.pad(im, subject.Padding[:3], 'constant')
+        im = np.transpose(im,[2,0,1])
+        im = np.expand_dims(im ,axis=3).astype('float32')
         
         return im
         
@@ -152,6 +150,14 @@ def readingFromExperiments3D_new(params):
         return im, imF
 
     def readingNuclei(params, subject, imFshape, subjectThalamusPred):
+
+        def backgroundDetector(masks):
+            a = np.sum(masks,axis=3)
+            background = np.zeros(masks.shape[:3])
+            background[np.where(a == 0)] = 1
+            background = np.expand_dims(background,axis=3)
+            return background
+
         for cnt, NucInd in enumerate(params.WhichExperiment.Nucleus.Index):
             nameNuclei, _ = smallFuncs.NucleiSelection(NucInd)
             inputMsk = subject.Label.address + '/' + nameNuclei + '_PProcessed.nii.gz'
@@ -173,42 +179,6 @@ def readingFromExperiments3D_new(params):
         shutil.move(subject.address, AA[0] + 'ERROR_vimp' + AA[1])
         print('WARNING:', mode , cntSkipped + 1 , nameSubject, ' image and mask have different shape sizes')
         return cntSkipped + 1
-
-    def loadThalamusPred(params, mode):
-
-        def ApplyLoad(params, nameSubject, mode):
-            class ThalamusPredInfo:
-                # mask = ''
-                boundingBox = ''
-                Flag = False
-
-            if 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index:
-                
-                ThDir = params.directories.Test.Result
-                if 'train' in mode: ThDir = ThDir + '/TrainData_Output' 
-
-                Thalamus_Mask = nib.load(ThDir + '/' + nameSubject + '/1-THALAMUS.nii.gz').get_data()
-                c1,c2,c3 = croppingA.func_CropCoordinates(Thalamus_Mask)
-
-                # ThalamusPredInfo.mask = Thalamus_Mask
-                ThalamusPredInfo.boundingBox = [c1,c2,c3]
-                ThalamusPredInfo.Flag = True
-
-            return ThalamusPredInfo, Thalamus_Mask
-        
-        class ThalamusPd:
-            Train = params.directories.Train.Input.Subjects
-            Test = params.directories.Test.Input.Subjects
-
-        if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index:
-            if not params.preprocess.TestOnly or params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:  
-                for sj in params.directories.Train.Input.Subjects: params.directories.Train.Input.Subjects[sj].ThalamusPredInfo, ThalamusPd.Train[sj] = ApplyLoad(params, sj, 'train') 
-
-            for sj in params.directories.Test.Input.Subjects: params.directories.Test.Input.Subjects[sj].ThalamusPredInfo, ThalamusPd.Test[sj] = ApplyLoad(params, sj, 'test') 
-        
-        
-        return params, ThalamusPd
-
 
     def FuncCroppingDimensions(params):
 
@@ -246,39 +216,56 @@ def readingFromExperiments3D_new(params):
 
                     return Subjects
 
-                if 'Train' in wFolder: params.WhichExperiment.HardParams.Model.InputDimensions = findingPaddedInputSize( Input.inputSize, params )
+                if 'Train' in wFolder: params.WhichExperiment.HardParams.Model.InputDimensions = findingPaddedInputSize( Input.inputSizes, params )
 
                 # else:
                 #     new_inputSize = params.WhichExperiment.HardParams.Model.InputDimensions
                 
                 #! finding the amount of padding for each subject in each direction
-                Input.Subjects = applyingPaddingDimOnSubjects(params, Input.inputSize, Input.Subjects)
+                Input.Subjects = applyingPaddingDimOnSubjects(params, Input.inputSizes, Input.Subjects)
 
                 return Input
                 
-            params.directories.Train.Input.Subjects = findingSubjectsFinalPaddingAmount('Train', params.directories.Train.Input, params)
-            params.directories.Test.Input.Subjects  = findingSubjectsFinalPaddingAmount('Test', params.directories.Test.Input, params)
+            params.directories.Train.Input = findingSubjectsFinalPaddingAmount('Train', params.directories.Train.Input, params)
+            params.directories.Test.Input  = findingSubjectsFinalPaddingAmount('Test', params.directories.Test.Input, params)
 
             return params
 
         def func_inputSizes(params):
 
-            def funcApply(Subjects):
-                inputSize = []
-                for sj in Subjects:
+            def readingThalamicCropSizes(params, mode):
 
-                    if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea: 
-                        Shape = [len(Subjects[sj].ThalamusPredInfo.boundingBox[i]) for i in len(Subjects[sj].ThalamusPredInfo.boundingBox)]
-                    else:
-                        Shape = np.array( nib.load(Subjects[sj].address + '/' + Subjects[sj].ImageProcessed + '.nii.gz').shape )
+                Dirsave = params.directories.Test.Result.split('/subExp')[0]
+                BB = np.loadtxt(Dirsave + '/ThalamicBoundingBoxes_' + mode + '.txt',dtype=int)
+                BBd = np.loadtxt(Dirsave + '/ThalamicBoundingBoxes_' + mode + '_Dilated.txt',dtype=int)
+                subjectNames = np.loadtxt(Dirsave + '/SubjectNames_' + mode + '.txt',dtype=str)
+
+
+                BB
+                newCrop0[ BB[0][0] :BB[0][-1]   ,  BBd[1][0]:BBd[1][-1]  ,  BBd[2][0]:BBd[2][-1] ] = 1
+                newCrop1[ BBd[0][0]:BBd[0][-1]  ,  BB[1][0] :BB[1][-1]   ,  BBd[2][0]:BBd[2][-1] ] = 1
+                newCrop2[ BBd[0][0]:BBd[0][-1]  ,  BBd[1][0]:BBd[1][-1]  ,  BB[2][0] :BB[2][-1]  ] = 1
+                                
+                return BB, BBd, subjectNames
+
+            def funcApply(params, mode):
+
+                if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
+                    BB, BBd, subjectNames = readingThalamicCropSizes(params, mode)
+                    inputSize = tuple(inputSize[:,params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
+                else:
                     
-                    Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
+                    Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
+                    inputSize = []
+                    for sj in Subjects:
+                        Shape = np.array( nib.load(Subjects[sj].address + '/' + Subjects[sj].ImageProcessed + '.nii.gz').shape )
+                        Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
+                        inputSize.append(Shape)
+                    inputSize = np.array(inputSize)
+                return inputSize
 
-                    inputSize.append(Shape)
-                return np.array(inputSize)
-
-            params.directories.Train.Input.inputSizes = funcApply(params.directories.Train.Input.Subjects)
-            params.directories.Test.Input.inputSizes  = funcApply(params.directories.Test.Input.Subjects)
+            params.directories.Train.Input.inputSizes = funcApply(params, 'train')
+            params.directories.Test.Input.inputSizes  = funcApply(params, 'test')
 
             return params
                     
@@ -304,66 +291,69 @@ def readingFromExperiments3D_new(params):
 
         return params
 
+    def loopingThroughInputData(params,ThalamusPd):
 
-    
-    params, ThalamusPd = loadThalamusPred(params, mode)
+        DataAll = data()
+        Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
+        TestData, TrainData = {}, {}
+        for mode in ['train','test']:
+
+            if 'train' in mode and params.preprocess.TestOnly and not params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:
+                continue
+
+            Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
+            
+            cntSkipped = 0
+            indTrain = 0
+            for _, nameSubject in tqdm(enumerate(Subjects), desc='Loading Dataset: ' + mode):
+                subject = Subjects[nameSubject]
+                ThalamusMsk = ThalamusPd.Train[nameSubject] if 'train' in mode else ThalamusPd.Test[nameSubject]
+
+                # TODO: replace this with cropping if the negative number is low e.g. less than 5
+                if np.min(subject.Padding) < 0:
+                    print('WARNING: subject: ',nameSubject,' size is out of the training network input dimensions')
+                    continue
+                            
+                im, imF = readingImage(params, subject, ThalamusMsk)
+                origMsk , msk = readingNuclei(params, subject, imF.shape, ThalamusMsk)
+
+                if 'ERROR' not in nameSubject:
+                    if im[...,0].shape == msk[...,0].shape:
+                        if 'train' in mode:                        
+                            images = im     if indTrain == 0 else np.concatenate((images,im    ),axis=0)
+                            masks  = msk>Th if indTrain == 0 else np.concatenate((masks,msk>Th ),axis=0)
+                            TrainData[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                            indTrain = indTrain + 1
+
+                        elif 'test' in mode:
+                            TestData[nameSubject]  = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                    else:
+                        cntSkipped = Error_In_Dimention(cntSkipped,subject, mode, nameSubject)
+
+
+            if 'train' in mode:
+                DataAll.Train_ForTest = TrainData
+
+                if params.WhichExperiment.Dataset.Validation.fromKeras:
+                    DataAll.Train = trainCase(Image=images, Mask=masks.astype('float32'))
+                else:
+                    DataAll.Train, DataAll.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks, params.WhichExperiment.Dataset.randomFlag)
+            else:
+                DataAll.Test = TestData
+
+        _, DataAll.Info.Height, DataAll.Info.Width, _ = DataAll.Test[list(DataAll.Test)[0]].Image.shape if params.preprocess.TestOnly else DataAll.Train.Image.shape
+
+        return DataAll
+
+    # params, ThalamusPd = applyThalamusOnInput(params)
 
     params = FuncCroppingDimensions(params)
 
+    Data = loopingThroughInputData(params,ThalamusPd)
 
+    params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
 
-    Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
-    TestData, TrainData = {}, {}
-    for mode in ['train','test']:
-
-        if 'train' in mode and params.preprocess.TestOnly and not params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:
-            continue
-
-        Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
-        Thalamus = ThalamusPd.Train if 'train' in mode else ThalamusPd.Test
-
-        cntSkipped = 0
-        indTrain = 0
-        for _, nameSubject in tqdm(enumerate(Subjects), desc='Loading Dataset: ' + mode):
-            subject = Subjects[nameSubject]
-
-            # TODO: replace this with cropping if the negative number is low e.g. less than 5
-            if np.min(subject.Padding) < 0:
-                print('WARNING: subject: ',nameSubject,' size is out of the training network input dimensions')
-                continue
-                        
-            im, imF = readingImage(params, subject, Thalamus[nameSubject])
-            origMsk , msk = readingNuclei(params, subject, imF.shape, Thalamus[nameSubject])
-
-            if 'ERROR_vimp' not in nameSubject:
-                if im[...,0].shape == msk[...,0].shape:
-                    if 'train' in mode:                        
-                        images = im     if indTrain == 0 else np.concatenate((images,im    ),axis=0)
-                        masks  = msk>Th if indTrain == 0 else np.concatenate((masks,msk>Th ),axis=0)
-                        TrainData[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-                        indTrain = indTrain + 1
-
-                    elif 'test' in mode:
-                        TestData[nameSubject]  = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-                else:
-                    cntSkipped = Error_In_Dimention(cntSkipped,subject, mode, nameSubject)
-
-
-        if 'train' in mode:
-            data.Train_ForTest = TrainData
-
-            if params.WhichExperiment.Dataset.Validation.fromKeras:
-                data.Train = trainCase(Image=images, Mask=masks.astype('float32'))
-            else:
-                data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks, params.WhichExperiment.Dataset.randomFlag)
-        else:
-            data.Test = TestData
-
-
-    _, data.Info.Height, data.Info.Width, _ = data.Test[list(data.Test)[0]].Image.shape if params.preprocess.TestOnly else data.Train.Image.shape
-    params.WhichExperiment.HardParams.Model.imageInfo = data.Info
-
-    return data, params
+    return Data, params
 
 def TrainValSeperate(percentage, images, masks, randomFlag):
 
