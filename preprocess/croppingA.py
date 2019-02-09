@@ -7,56 +7,56 @@ from otherFuncs import smallFuncs
 import nibabel as nib
 
 
-def main(subject , params):
+# def main(subject , params):
 
-    if params.preprocess.Cropping.Mode:
+#     if params.preprocess.Cropping.Mode:
 
-        inP  = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
-        outP = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
-        crop = subject.Temp.address + '/CropMask.nii.gz'
-        outDebug = subject.Temp.address + '/' + subject.ImageOriginal + '_Cropped.nii.gz'
+#         inP  = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
+#         outP = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
+#         crop = subject.Temp.address + '/CropMask.nii.gz'
+#         outDebug = subject.Temp.address + '/' + subject.ImageOriginal + '_Cropped.nii.gz'
 
-        if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
-            copyfile(outDebug , outP)
-        else:
+#         if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
+#             copyfile(outDebug , outP)
+#         else:
 
-            if 'ANTs' in params.preprocess.Cropping.Method:
-                os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
-            elif 'python' in params.preprocess.Cropping.Method:
-                Gap = [0,0,1]
-                im = nib.load(inP)
-                CropMask = nib.load(crop)
-                imC , CropCoordinates = funcCropping_Mode(im.get_data() , CropMask.get_data() , Gap)
-                smallFuncs.saveImage(imC , im.affine , im.header , outP)
+#             if 'ANTs' in params.preprocess.Cropping.Method:
+#                 os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
+#             elif 'python' in params.preprocess.Cropping.Method:
+#                 Gap = [0,0,1]
+#                 im = nib.load(inP)
+#                 CropMask = nib.load(crop)
+#                 imC , CropCoordinates = funcCropping_Mode(im.get_data() , CropMask.get_data() , Gap)
+#                 smallFuncs.saveImage(imC , im.affine , im.header , outP)
 
-            if params.preprocess.Debug.doDebug:
-                copyfile(outP , outDebug)
+#             if params.preprocess.Debug.doDebug:
+#                 copyfile(outP , outDebug)
 
-        # Cropping the Label
-        for ind in params.WhichExperiment.Nucleus.FullIndexes:
-            NucleusName, _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
+#         # Cropping the Label
+#         for ind in params.WhichExperiment.Nucleus.FullIndexes:
+#             NucleusName, _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
 
-            inP  = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
-            outP = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
-            # crop = subject.Temp.address + '/CropMask.nii.gz'
-            outDebug = subject.Label.Temp.address + '/' + NucleusName + '_Cropped.nii.gz'
+#             inP  = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
+#             outP = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
+#             # crop = subject.Temp.address + '/CropMask.nii.gz'
+#             outDebug = subject.Label.Temp.address + '/' + NucleusName + '_Cropped.nii.gz'
 
-            if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
-                copyfile(outDebug , outP)
-            else:
+#             if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
+#                 copyfile(outDebug , outP)
+#             else:
 
-                if 'ANTs' in params.preprocess.Cropping.Method:
-                    os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
-                elif 'python' in params.preprocess.Cropping.Method:
-                    msk = nib.load(inP)
-                    mskC = cropFromCoordinates(msk.get_data(), CropCoordinates)
-                    smallFuncs.saveImage(mskC , msk.affine , msk.header , outP)
+#                 if 'ANTs' in params.preprocess.Cropping.Method:
+#                     os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
+#                 elif 'python' in params.preprocess.Cropping.Method:
+#                     msk = nib.load(inP)
+#                     mskC = cropFromCoordinates(msk.get_data(), CropCoordinates)
+#                     smallFuncs.saveImage(mskC , msk.affine , msk.header , outP)
 
-                if params.preprocess.Debug.doDebug:
-                    copyfile(outP , outDebug)
+#                 if params.preprocess.Debug.doDebug:
+#                     copyfile(outP , outDebug)
 
 
-    return True
+#     return True
 
 # def cropFunc(im , cc , Gap):
 

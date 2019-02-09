@@ -11,6 +11,10 @@ from otherFuncs import smallFuncs, datasets
 from tqdm import tqdm
 from time import time
 import nibabel as nib
+from scipy import ndimage
+from shutil import copyfile
+
+
 
 def check_Run(params, Data):
 
@@ -89,6 +93,8 @@ def applyThalamusOnInput(params, ThalamusMasks):
        
         def checkBordersOnBoundingBox(imFshape , BB , gapOnSlicingDimention):
             return [   [   np.max(BB[d][0]-gapOnSlicingDimention,0)  ,   np.min(BB[d][1]+gapOnSlicingDimention,imFshape[d])   ]  for d in range(3) ]
+
+        ERROR_ERROOOOOOOOOOOOOOOOOOOOOOOOOOORRRRR # TODO 'need to save boundingbox in a excel file'
 
         def cropBoundingBoxes(params, imFshape, Thalamus_Mask, Thalamus_Mask_Dilated):
             BB = smallFuncs.func_CropCoordinates(Thalamus_Mask)

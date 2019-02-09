@@ -60,7 +60,7 @@ def AllNucleiNames(Indexes):
 
 def readingTheParams(AllExperimentsList):
 
-    from Parameters import paramFunc
+    from Parameters import paramFunc, UserInfo
 
     def subDict(UserInfoC, ExpList):
         UserInfoB = deepcopy(UserInfoC)
@@ -85,8 +85,6 @@ def readingTheParams(AllExperimentsList):
             AllParamsList[0] = paramFunc.Run(UserInfo_Orig)
 
         return AllParamsList
-
-    from Parameters import UserInfo
 
     UserInfoB = deepcopy(UserInfo.__dict__)
     # print('before:',UserInfoB['epochs'])
@@ -359,7 +357,7 @@ def inputNamesCheck(params, mode):
     if 'experiment' in mode:
         for wFolder in ['Train' , 'Test']:
 
-            if Params.preprocess.TestOnly and not params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data and 'Train' in wFolder:
+            if params.preprocess.TestOnly and not params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data and 'Train' in wFolder:
                 continue
 
             dirr = params.directories.Train if 'Train' in wFolder else params.directories.Test
