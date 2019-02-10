@@ -58,7 +58,7 @@ def loadDataset(params):
     elif 'kaggleCompetition' in params.WhichExperiment.Dataset.name:
         Data, _ = kaggleCompetition(params)
     else:
-        Data, params = readingFromExperiments3D_new(params)
+        Data, params = readingFromExperiments(params)
 
     _, Data.Info.Height, Data.Info.Width, _ = Data.Test[list(Data.Test)[0]].Image.shape if params.preprocess.TestOnly else Data.Train.Image.shape
     params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
@@ -126,15 +126,40 @@ def kaggleCompetition(params):
 
 # TODO: add the saving images with the format mahesh said
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
-def readingFromExperiments3D_new(params):
+def readingFromExperiments(params):
    
-    def inputPreparationForUnet(im,subject, params, subjectThalamusPred):
+    def newCropedSize(subject, params):
+
+        def readingThalamicCropSizes(subject , slicingDirection):
+            BB = np.loadtxt(subject.Temp.address + '/BB.txt',dtype=int)
+            BBd = np.loadtxt(subject.Temp.address + '/BBd.txt',dtype=int)
+
+            #! ebcause on the slicing direction we don't want the extra dilated effect to be considered
+            BBd[slicingDirection] = BB[slicingDirection]
+                            
+            return BBd
+            
+        if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
+            BB = readingThalamicCropSizes(subject, params.WhichExperiment.Dataset.slicingInfo.slicingDim)
+
+            origSize = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
+
+            subject.NewCropInfo.OriginalBoundingBox = BB            
+            subject.NewCropInfo.PadSizeBackToOrig   = tuple([ tuple([BB[d][0] , origSize[d]-BB[d][1]]) for d in range(3) ])
+
+            Shape = np.array([BB[d][1]-BB[d][0] for d  in range(3)])     
+        else:
+            Shape = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
+
+        Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
+        return Shape, subject
+        
+    def inputPreparationForUnet(im,subject, params):
 
         if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
-            im[np.where(subjectThalamusPred == 0)] = 0
-            im = im[tuple(subject.ThalamusPredInfo.boundingBox)]
-            # TODO Feb8 crop the image with thalamus boundingBox
-
+            # subject.NewCropInfo.PadSizeBackToOrig
+            BB = subject.NewCropInfo.OriginalBoundingBox            
+            im = im[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]] 
 
         im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
         im = np.pad(im, subject.Padding[:3], 'constant')
@@ -143,13 +168,13 @@ def readingFromExperiments3D_new(params):
         
         return im
         
-    def readingImage(params, subject, subjectThalamusPred):
+    def readingImage(params, subject):
         imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-        im = inputPreparationForUnet(imF.get_data(), subject, params, subjectThalamusPred)
+        im = inputPreparationForUnet(imF.get_data(), subject, params)
         im = normalizeA.main_normalize(params.preprocess.Normalize , im)
         return im, imF
 
-    def readingNuclei(params, subject, imFshape, subjectThalamusPred):
+    def readingNuclei(params, subject, imFshape):
 
         def backgroundDetector(masks):
             a = np.sum(masks,axis=3)
@@ -163,7 +188,7 @@ def readingFromExperiments3D_new(params):
             inputMsk = subject.Label.address + '/' + nameNuclei + '_PProcessed.nii.gz'
 
             origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape) 
-            msk1N = inputPreparationForUnet(origMsk1N, subject, params, subjectThalamusPred)
+            msk1N = inputPreparationForUnet(origMsk1N, subject, params)
             origMsk1N = np.expand_dims(origMsk1N ,axis=3)
 
             origMsk = origMsk1N if cnt == 0 else np.concatenate((origMsk, origMsk1N) ,axis=3).astype('float32')
@@ -180,9 +205,9 @@ def readingFromExperiments3D_new(params):
         print('WARNING:', mode , cntSkipped + 1 , nameSubject, ' image and mask have different shape sizes')
         return cntSkipped + 1
 
-    def FuncCroppingDimensions(params):
+    def preAnalysis(params):
 
-        def imageSizesAfterPadding(params):
+        def find_PaddingValues(params):
 
             def findingSubjectsFinalPaddingAmount(wFolder, Input, params):
 
@@ -231,45 +256,26 @@ def readingFromExperiments3D_new(params):
 
             return params
 
-        def func_inputSizes(params):
+        def find_AllInputSizes(params):
 
-            def readingThalamicCropSizes(params, mode):
+            def loopOverAllSubjects(Input):
+                inputSize = []
+                for sj in Input.Subjects:
+                    # if sj == 'vimp2_0699_04302014':
+                    #     print('----')
 
-                Dirsave = params.directories.Test.Result.split('/subExp')[0]
-                BB = np.loadtxt(Dirsave + '/ThalamicBoundingBoxes_' + mode + '.txt',dtype=int)
-                BBd = np.loadtxt(Dirsave + '/ThalamicBoundingBoxes_' + mode + '_Dilated.txt',dtype=int)
-                subjectNames = np.loadtxt(Dirsave + '/SubjectNames_' + mode + '.txt',dtype=str)
+                    Shape, Input.Subjects[sj] = newCropedSize( Input.Subjects[sj], params)
+                    inputSize.append(Shape)
 
+                Input.inputSizes = np.array(inputSize)
+                return Input
 
-                BB
-                newCrop0[ BB[0][0] :BB[0][-1]   ,  BBd[1][0]:BBd[1][-1]  ,  BBd[2][0]:BBd[2][-1] ] = 1
-                newCrop1[ BBd[0][0]:BBd[0][-1]  ,  BB[1][0] :BB[1][-1]   ,  BBd[2][0]:BBd[2][-1] ] = 1
-                newCrop2[ BBd[0][0]:BBd[0][-1]  ,  BBd[1][0]:BBd[1][-1]  ,  BB[2][0] :BB[2][-1]  ] = 1
-                                
-                return BB, BBd, subjectNames
-
-            def funcApply(params, mode):
-
-                if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
-                    BB, BBd, subjectNames = readingThalamicCropSizes(params, mode)
-                    inputSize = tuple(inputSize[:,params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
-                else:
-                    
-                    Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
-                    inputSize = []
-                    for sj in Subjects:
-                        Shape = np.array( nib.load(Subjects[sj].address + '/' + Subjects[sj].ImageProcessed + '.nii.gz').shape )
-                        Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
-                        inputSize.append(Shape)
-                    inputSize = np.array(inputSize)
-                return inputSize
-
-            params.directories.Train.Input.inputSizes = funcApply(params, 'train')
-            params.directories.Test.Input.inputSizes  = funcApply(params, 'test')
-
+            params.directories.Train.Input = loopOverAllSubjects(params.directories.Train.Input)
+            params.directories.Test.Input  = loopOverAllSubjects(params.directories.Test.Input)
+                                                
             return params
                     
-        def correctNumLayers(params):
+        def find_correctNumLayers(params):
 
             HardParams = params.WhichExperiment.HardParams
 
@@ -285,13 +291,13 @@ def readingFromExperiments3D_new(params):
             params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
             return params
 
-        params = func_inputSizes(params)
-        params = correctNumLayers(params)
-        params = imageSizesAfterPadding(params)    
+        params = find_AllInputSizes(params)
+        params = find_correctNumLayers(params)
+        params = find_PaddingValues(params)    
 
         return params
 
-    def loopingThroughInputData(params,ThalamusPd):
+    def loopOver_ReadingInput(params):
 
         DataAll = data()
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
@@ -307,15 +313,17 @@ def readingFromExperiments3D_new(params):
             indTrain = 0
             for _, nameSubject in tqdm(enumerate(Subjects), desc='Loading Dataset: ' + mode):
                 subject = Subjects[nameSubject]
-                ThalamusMsk = ThalamusPd.Train[nameSubject] if 'train' in mode else ThalamusPd.Test[nameSubject]
 
+                    
                 # TODO: replace this with cropping if the negative number is low e.g. less than 5
                 if np.min(subject.Padding) < 0:
+                    AA = subject.address.split('vimp')
+                    shutil.move(subject.address, AA[0] + 'ERROR_vimp' + AA[1])
                     print('WARNING: subject: ',nameSubject,' size is out of the training network input dimensions')
                     continue
                             
-                im, imF = readingImage(params, subject, ThalamusMsk)
-                origMsk , msk = readingNuclei(params, subject, imF.shape, ThalamusMsk)
+                im, imF = readingImage(params, subject)
+                origMsk , msk = readingNuclei(params, subject, imF.shape)
 
                 if 'ERROR' not in nameSubject:
                     if im[...,0].shape == msk[...,0].shape:
@@ -343,15 +351,11 @@ def readingFromExperiments3D_new(params):
 
         _, DataAll.Info.Height, DataAll.Info.Width, _ = DataAll.Test[list(DataAll.Test)[0]].Image.shape if params.preprocess.TestOnly else DataAll.Train.Image.shape
 
-        return DataAll
+        params.WhichExperiment.HardParams.Model.imageInfo = DataAll.Info
+        return DataAll, params
 
-    # params, ThalamusPd = applyThalamusOnInput(params)
-
-    params = FuncCroppingDimensions(params)
-
-    Data = loopingThroughInputData(params,ThalamusPd)
-
-    params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
+    params = preAnalysis(params)
+    Data, params = loopOver_ReadingInput(params)
 
     return Data, params
 

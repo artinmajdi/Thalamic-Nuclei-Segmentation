@@ -23,7 +23,7 @@ nucleus_Index = [2]
 num_Layers = 5
 # epochs = 80
 batch_size = 40
-Initialize_FromThalamus = True
+Initialize_FromThalamus = False
 Initialize_FromOlderModel = False
 
 #! GPU
@@ -91,7 +91,7 @@ preprocessMode = True
 BiasCorrection = False
 Cropping = True
 Normalize = True
-TestOnly = False
+TestOnly = True
 
 #! this flag has two applications:
 #    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment

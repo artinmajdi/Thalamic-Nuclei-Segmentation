@@ -7,13 +7,12 @@ import nibabel as nib
 from scipy import ndimage
 from preprocess import croppingA
 params = paramFunc.Run(UserInfo.__dict__)
+import numpy as np
+a = [tuple([1,2]),  tuple([8,4]),tuple([ -2, 9])]
+a = [ [1,2] ,  [8,4] , [ -2, 9]]
 
-params.directories.Test.Result.split('/subExp')[0]
-a = np.random.randint(0,9,size=(4,3,2))
-a[...,0]
-np.savetxt('/array/ssd/msmajdi/code/thalamus/keras/out.txt',a[...,0],fmt='%d')
+np.savetxt('/array/ssd/msmajdi/code/thalamus/keras/out.txt',a,fmt='%d')
 
-names = ['aa','bb','cc','dd']
 np.savetxt('/array/ssd/msmajdi/code/thalamus/keras/names.txt',names,fmt='%s')
 
 e = np.loadtxt('/array/ssd/msmajdi/code/thalamus/keras/out.txt',dtype=int)

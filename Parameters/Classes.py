@@ -64,7 +64,7 @@ class machine:
     GPU_Index = ''
 
 class image:
-    SlicingDirection = 'axial'.lower()
+    # SlicingDirection = 'axial'.lower()
     SaveMode = 'nifti'.lower()
 
 class nucleus:
@@ -123,7 +123,7 @@ class dataset:
     # onlySubjectsWvimp = False
     randomFlag = False
     slicingInfo = slicingDirection
-    gapDilation = 10
+    gapDilation = 5
     gapOnSlicingDimention = 2
 
 

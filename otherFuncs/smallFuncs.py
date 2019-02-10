@@ -104,7 +104,7 @@ def listSubFolders(Dir):
 
         if oldStandard:
             for subFlds in Dir_Prior:
-                if 'vimp' in subFlds: subFolders.append(subFlds)
+                if 'vimp' in subFlds and 'ERROR' not in subFlds: subFolders.append(subFlds)
         else:
             subFolders = Dir_Prior
 
@@ -283,12 +283,16 @@ def InputNames(Dir , NucleusName):
         Temp = tempLabel
         address = ''
 
+    class newCropInfo:
+        OriginalBoundingBox = ''
+        PadSizeBackToOrig = ''
     class Files:
         ImageOriginal = '' # WMn_MPRAGE'
         ImageProcessed = ''
         Label = label
         Temp = temp
         address = Dir
+        NewCropInfo = newCropInfo         
 
 
 
@@ -416,7 +420,7 @@ def imShow(*args):
 
 def unPadding(im , pad):
     sz = im.shape
-    return im[pad[0][0]:sz[0]-pad[0][1] , pad[1][0]:sz[1]-pad[1][1] , pad[2][0]:sz[2]-pad[2][1]]
+    return im[pad[0][0]:sz[0]-pad[0][1] , pad[1][0]:sz[1]-pad[1][1] , pad[2][0]:sz[2]-pad[2][1],:]
 
 def Dice_Calculator(msk1,msk2):
     intersection = msk1*msk2
