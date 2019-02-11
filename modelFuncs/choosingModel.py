@@ -203,10 +203,14 @@ def applyThalamusOnInput(params, ThalamusMasks):
             np.savetxt(subject.Temp.address + '/BBd.txt',BBd,fmt='%d')
             return BB,BBd
 
-        def apply_ThalamusMask_OnImage(imF, Thalamus_Mask_Dilated, subject):
+        def apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject):
 
-            copyfile(subject.address + '/' + subject.ImageProcessed + '.nii.gz' , subject.Temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz')
-
+            if not os.path.isfile(subject.Temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
+                copyfile(subject.address + '/' + subject.ImageProcessed + '.nii.gz' , subject.Temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz')
+            else:
+                copyfile( subject.Temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz' , subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+            
+            imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
             im = imF.get_data()
             im[Thalamus_Mask_Dilated == 0] = 0
             smallFuncs.saveImage(im , imF.affine , imF.header , subject.address + '/' + subject.ImageProcessed + '.nii.gz')
@@ -222,29 +226,21 @@ def applyThalamusOnInput(params, ThalamusMasks):
             smallFuncs.saveImage(newCrop1 , imF.affine , imF.header , subject.Temp.address + '/CropMask_ThCascade_sliceDim1.nii.gz')
             smallFuncs.saveImage(newCrop2 , imF.affine , imF.header , subject.Temp.address + '/CropMask_ThCascade_sliceDim2.nii.gz')
 
-        if not os.path.isfile(subject.Temp.address + '/BB.txt'):
+        # if not os.path.isfile(subject.Temp.address + '/BB.txt'):
 
-            # ThDir = params.directories.Test.Result if 'test' in mode else params.directories.Test.Result + '/TrainData_Output' 
-            # Thalamus_Mask = nib.load(ThDir + '/' + nameSubject + '/1-THALAMUS.nii.gz').get_data()
+        imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
 
-            imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+        # TODO Feb 7 check of dilated values are 0 and 1
+        Thalamus_Mask_Dilated = dilateMask( Thalamus_Mask, params.WhichExperiment.Dataset.gapDilation )
+        BB,BBd = cropBoundingBoxes(params, subject, imF.shape, Thalamus_Mask, Thalamus_Mask_Dilated)
 
-            # TODO Feb 7 check of dilated values are 0 and 1
-            Thalamus_Mask_Dilated = dilateMask( Thalamus_Mask, params.WhichExperiment.Dataset.gapDilation )
-            BB,BBd = cropBoundingBoxes(params, subject, imF.shape, Thalamus_Mask, Thalamus_Mask_Dilated)
-
-            imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-            apply_ThalamusMask_OnImage(imF, Thalamus_Mask_Dilated, subject)
-            saveNewCrop(BB,BBd, imF.shape, subject)
-        # else:
-        #     BB = np.loadtxt(subject.Temp.address + '/BB.txt',dtype=int)
-        #     BBd = np.loadtxt(subject.Temp.address + '/BBd.txt',dtype=int)
-
-        # return BB,BBd
+        imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+        apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject)
+        saveNewCrop(BB,BBd, imF.shape, subject)
     
     def loopOverSubjects(params, ThalamusMasks, mode):
         Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
-        for sj in tqdm(Subjects ,desc='applying Thalamus for cascade method' + mode):           
+        for sj in tqdm(Subjects ,desc='applying Thalamus for cascade method: ' + mode):           
             ApplyThalamusMask(ThalamusMasks[sj] , params, Subjects[sj], sj, 'train') 
 
     loopOverSubjects(params, ThalamusMasks.Test, 'test')
@@ -310,7 +306,7 @@ def architecture(params):
     elif 'CNN_Classifier' in ModelParam.architectureType:
         model = CNN_Segmetnation(ModelParam)
 
-    model.summary()
+    # model.summary()
 
     # ModelParam = params.WhichExperiment.HardParams.Model
     # model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)

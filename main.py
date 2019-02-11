@@ -11,13 +11,9 @@ from Parameters import UserInfo, paramFunc
 # TODO:  add a fixed seed number for random numbers 
 # TODO:  write the name of test and train subjects in model and results and dataset  to have it for the future
 # TODO : look for a way to see epoch inside my loss function and use BCE initially and tyhen add Dice for higher epochs
-
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
+params = paramFunc.Run(UserInfoB)
 
-# AllExperimentsList = {
-#     1: dict(),
-#     # 2: dict(nucleus_Index = [6] , GPU_Index = 6 , lossFunctionIx = 2),
-# }
 
 def gpuSetting(params):
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
@@ -26,18 +22,15 @@ def gpuSetting(params):
     K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
     return K
 
-# def runExperiment(params, Info, Data):
-#     # params.WhichExperiment.Dataset.CreatingTheExperiment = False
-#     K = gpuSetting(params)
-#     choosingModel.check_Run(params, Data)
-#     return K
-
 def SingleNucleiRun(params):
 
+    print(' ')
+    print(' ')
     print('Nuclei:',params.WhichExperiment.Nucleus.name , '  GPU:',params.WhichExperiment.HardParams.Machine.GPU_Index , \
     '  Epochs:', params.WhichExperiment.HardParams.Model.epochs,'  Dataset:',params.WhichExperiment.Dataset.name , \
     '  Experiment: {',params.WhichExperiment.Experiment.name ,',', params.WhichExperiment.SubExperiment.name,'}')
-    
+    print(' ')
+    print(' ')
         
     # Data, params, Info = datasets.check_Dataset_ForTraining(params=params, flag=True, Info={})
     Data, params = datasets.loadDataset(params)
@@ -56,33 +49,15 @@ def SingleNucleiRun(params):
     return K
 
 
+#! copying the dataset into the experiment folder
+datasets.movingFromDatasetToExperiments(params)
+
 
 NucleiIndexes = UserInfoB['nucleus_Index']
 for UserInfoB['nucleus_Index'] in NucleiIndexes: #  FullIndexes:
     # UserInfoB['nucleus_Index'] = [nucleiIx]
     params = paramFunc.Run(UserInfoB)
     K = SingleNucleiRun(params)
-
-# if 1:
-
-#     #! we assume that number of layers , and other things that might effect the input data stays constant
-#     # AllParamsList = smallFuncs.readingTheParams(AllExperimentsList)
-#     # ind, params = list(AllParamsList.items())[0]
-#     params = paramFunc.Run(UserInfoB)
-#     K = SingleNucleiRun(params)
-
-# else:
-
-#     #! this is temporary to run on all nuclei
-#     # from Parameters import UserInfo, paramFunc
-#     # UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
-#     _, FullIndexes = smallFuncs.NucleiSelection(ind = 1,organ = 'THALAMUS')
-
-#     NucleiIndexes = UserInfoB['nucleus_Index']
-#     for UserInfoB['nucleus_Index'] in NucleiIndexes: #  FullIndexes:
-#         # UserInfoB['nucleus_Index'] = [nucleiIx]
-#         params = paramFunc.Run(UserInfoB)
-#         K = SingleNucleiRun(params)
 
 
 K.clear_session()

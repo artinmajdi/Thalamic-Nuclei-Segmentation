@@ -7,13 +7,11 @@ from preprocess import applyPreprocess
 
 mode = 'experiment'
 
-params = paramFunc.Run(UserInfo.__dict__)
-# params.WhichExperiment.Dataset.CreatingTheExperiment = True
-
-
 #! reading the user input parameters via terminal
-params = smallFuncs.terminalEntries(params)
+UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
+params = paramFunc.Run(UserInfoB)
+# params.WhichExperiment.Dataset.CreatingTheExperiment = True
 
 #! copying the dataset into the experiment folder
 datasets.movingFromDatasetToExperiments(params)
