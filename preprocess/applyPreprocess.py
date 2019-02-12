@@ -28,9 +28,7 @@ def apply_On_Individual(params,subject):
 
     return params
 
-
 def apply_On_Experiment(params):
-    # params = smallFuncs.terminalEntries(params)
 
     params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
 

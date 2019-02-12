@@ -9,53 +9,47 @@ import os, sys
 
 from copy import deepcopy
 import pandas as pd
-
+import pickle
 
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
-# TODO: sort the input images so that it is system independent
 def NucleiSelection(ind = 1,organ = 'THALAMUS'):
 
-    def AllNucleiNames(Indexes):
-        Names = []
-        for ind in Indexes:
-            name, _ = NucleiSelection(ind = ind,organ = 'THALAMUS')
-            Names.append(name)
-        return Names
-        
-    if 'THALAMUS' in organ:
-        if ind == 1:
-            NucleusName = '1-THALAMUS'
-        elif ind == 2:
-            NucleusName = '2-AV'
-        elif ind == 4567:
-            NucleusName = '4567-VL'
-        elif ind == 4:
-            NucleusName = '4-VA'
-        elif ind == 5:
-            NucleusName = '5-VLa'
-        elif ind == 6:
-            NucleusName = '6-VLP'
-        elif ind == 7:
-            NucleusName = '7-VPL'
-        elif ind == 8:
-            NucleusName = '8-Pul'
-        elif ind == 9:
-            NucleusName = '9-LGN'
-        elif ind == 10:
-            NucleusName = '10-MGN'
-        elif ind == 11:
-            NucleusName = '11-CM'
-        elif ind == 12:
-            NucleusName = '12-MD-Pf'
-        elif ind == 13:
-            NucleusName = '13-Hb'
-        elif ind == 14:
-            NucleusName = '14-MTT'
+    def func_NucleusName(organ, ind):
+        if 'THALAMUS' in organ:
+            if ind == 1:
+                NucleusName = '1-THALAMUS'
+            elif ind == 2:
+                NucleusName = '2-AV'
+            elif ind == 4567:
+                NucleusName = '4567-VL'
+            elif ind == 4:
+                NucleusName = '4-VA'
+            elif ind == 5:
+                NucleusName = '5-VLa'
+            elif ind == 6:
+                NucleusName = '6-VLP'
+            elif ind == 7:
+                NucleusName = '7-VPL'
+            elif ind == 8:
+                NucleusName = '8-Pul'
+            elif ind == 9:
+                NucleusName = '9-LGN'
+            elif ind == 10:
+                NucleusName = '10-MGN'
+            elif ind == 11:
+                NucleusName = '11-CM'
+            elif ind == 12:
+                NucleusName = '12-MD-Pf'
+            elif ind == 13:
+                NucleusName = '13-Hb'
+            elif ind == 14:
+                NucleusName = '14-MTT'
+        return NucleusName
 
-        FullIndexes = [1,2,4,5,6,7,8,9,10,11,12,13,14]
-        Full_Names = AllNucleiNames(FullIndexes)
+    FullIndexes = [1,2,4,5,6,7,8,9,10,11,12,13,14]
+    Full_Names = [func_NucleusName(organ, ind) for ind in FullIndexes]
 
-    return NucleusName, FullIndexes, Full_Names
+    return func_NucleusName(organ, ind), FullIndexes, Full_Names
 
 def listSubFolders(Dir, params):
 
@@ -266,11 +260,21 @@ def Dice_Calculator(msk1,msk2):
     intersection = msk1*msk2
     return intersection.sum()*2/(msk1.sum()+msk2.sum() + np.finfo(float).eps)
 
-
-
-
 def Loading_UserInfo(DirLoad, method):
 
+    def loadReport(DirSave, name, method):
+
+        def loadPickle(Dir):
+            f = open(Dir,"wb")
+            data = pickle.load(f)
+            f.close()
+            return data
+
+        if 'pickle' in method:
+            return loadPickle(DirSave + '/' + name + '.pkl')
+        elif 'mat' in method:
+            return mat4py.loadmat(DirSave + '/' + name + '.pkl')
+                   
     def dict2obj(d):
         if isinstance(d, list):
             d = [dict2obj(x) for x in d]

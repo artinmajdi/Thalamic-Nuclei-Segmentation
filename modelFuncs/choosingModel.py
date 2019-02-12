@@ -8,6 +8,7 @@ import numpy as np
 from skimage.filters import threshold_otsu
 from Parameters import paramFunc
 from otherFuncs import smallFuncs, datasets
+from preprocess import croppingA
 from tqdm import tqdm
 from time import time
 import nibabel as nib
@@ -136,19 +137,6 @@ def testingExeriment(model, Data, params):
         
     return prediction
 
-def loadReport(DirSave, name, method):
-
-    def loadPickle(Dir):
-        f = open(Dir,"wb")
-        data = pickle.load(f)
-        f.close()
-        return data
-
-    if 'pickle' in method:
-        return loadPickle(DirSave + '/' + name + '.pkl')
-    elif 'mat' in method:
-        return mat4py.loadmat(DirSave + '/' + name + '.pkl')
-        
 def trainingExperiment(Data, params):
 
     def saveReport(DirSave, name , data, method):
@@ -226,21 +214,21 @@ def applyThalamusOnInput(params, ThalamusMasks):
 
         def cropBoundingBoxes(params, subject, imFshape, Thalamus_Mask, Thalamus_Mask_Dilated):
 
-            def func_CropCoordinates(CropMask):
-                ss = np.sum(CropMask,axis=2)
-                c1 = np.where(np.sum(ss,axis=1) > 10)[0]
-                c2 = np.where(np.sum(ss,axis=0) > 10)[0]
+            # def func_CropCoordinates(CropMask):
+            #     ss = np.sum(CropMask,axis=2)
+            #     c1 = np.where(np.sum(ss,axis=1) > 10)[0]
+            #     c2 = np.where(np.sum(ss,axis=0) > 10)[0]
 
-                ss = np.sum(CropMask,axis=1)
-                c3 = np.where(np.sum(ss,axis=0) > 10)[0]
+            #     ss = np.sum(CropMask,axis=1)
+            #     c3 = np.where(np.sum(ss,axis=0) > 10)[0]
 
-                BBCord = [   [c1[0],c1[-1]]  ,  [c2[0],c2[-1]]  , [c3[0],c3[-1]]  ]
+            #     BBCord = [   [c1[0],c1[-1]]  ,  [c2[0],c2[-1]]  , [c3[0],c3[-1]]  ]
 
-                return BBCord
+            #     return BBCord
 
-            BB = smallFuncs.func_CropCoordinates(Thalamus_Mask)
+            BB = croppingA.func_CropCoordinates(Thalamus_Mask)
             BB = checkBordersOnBoundingBox(imFshape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
-            BBd  = smallFuncs.func_CropCoordinates(Thalamus_Mask_Dilated)
+            BBd  = croppingA.func_CropCoordinates(Thalamus_Mask_Dilated)
 
             np.savetxt(subject.Temp.address + '/BB.txt',BB,fmt='%d')
             np.savetxt(subject.Temp.address + '/BBd.txt',BBd,fmt='%d')
