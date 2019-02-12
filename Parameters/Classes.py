@@ -121,7 +121,7 @@ class dataset:
     # CreatingTheExperiment = False
     Validation = validation
     Test = test
-    # onlySubjectsWvimp = False
+    check_vimp_SubjectName = True
     randomFlag = False
     slicingInfo = slicingDirection
     gapDilation = 5

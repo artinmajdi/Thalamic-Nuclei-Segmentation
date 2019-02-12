@@ -10,8 +10,8 @@ def savingHistory_AsExcel(params):
 
         Dir = (params.directories.Train.Model).split('/subExp')[0]
 
-        _, FullIndexes = smallFuncs.NucleiSelection(1)
-        namesNulcei = smallFuncs.AllNucleiNames(FullIndexes)
+        _, FullIndexes, namesNulcei = smallFuncs.NucleiSelection(1)
+        # namesNulcei = smallFuncs.AllNucleiNames(FullIndexes)
         n_epochsMax = 300
 
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
@@ -61,13 +61,12 @@ def mergingDiceValues(Dir):
                 subF.sort()
                 Dice_Test = []
 
-                _, FullIndexes = smallFuncs.NucleiSelection(1)
+                _, FullIndexes, _ = smallFuncs.NucleiSelection(1)
                 # names = np.append(['subjects'], smallFuncs.AllNucleiNames(FullIndexes))
                 names = list(np.zeros(15))
                 names[0] = 'subjects'
                 for ind in FullIndexes:
-                        if ind != 4567: 
-                                names[ind], _ = smallFuncs.NucleiSelection(ind)
+                        if ind != 4567: names[ind], _ = smallFuncs.NucleiSelection(ind)
 
                 for subject in subF:
                         Dir_subject = Dir + '/' + subject

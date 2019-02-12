@@ -16,13 +16,13 @@ params = paramFunc.Run(UserInfoB)
 #! copying the dataset into the experiment folder
 datasets.movingFromDatasetToExperiments(params)
 
-# params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
+# params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
 # params = smallFuncs.inputNamesCheck(params, mode)
 # #! needs to run preprocess first to add the PPRocessed.nii.gz files
 
 # #! preprocessing the data
 # if params.preprocess.Mode: applyPreprocess.main(params, mode)
-# params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
+# params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
 
 
 

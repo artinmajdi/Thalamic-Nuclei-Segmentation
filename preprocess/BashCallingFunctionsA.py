@@ -79,8 +79,8 @@ def Bash_AugmentNonLinear(subject , subjectRef , outputAddress): # Image , Mask 
         os.system("ANTS 3 -m CC[%s, %s,1,5] -t SyN[0.25] -r Gauss[3,0] -o %s -i 30x90x20 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000"%(ImageOrig , ImageRef , deformationAddr + '/test') )
         os.system("antsApplyTransforms -d 3 -i %s -o %s -r %s -t %s"%(ImageOrig , OutputImage , ImageOrig , deformationAddr + '/testWarp.nii.gz') )
 
-    _, indexes = smallFuncs.NucleiSelection(ind = 1,organ = 'THALAMUS')
-    names = smallFuncs.AllNucleiNames(indexes)
+    _, indexes, names = smallFuncs.NucleiSelection(ind = 1,organ = 'THALAMUS')
+    # names = smallFuncs.AllNucleiNames(indexes)
     for name in names:
         MaskOrig  = subject.Label.address + '/' + name + '_PProcessed.nii.gz'
         OutputMask  = labelAdd + '/' + name + '_PProcessed.nii.gz'

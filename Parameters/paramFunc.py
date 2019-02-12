@@ -109,8 +109,8 @@ def Run(UserInfo):
     WhichExperiment.HardParams.Model.MultiClass.num_classes = len(WhichExperiment.Nucleus.Index) + 1 if WhichExperiment.HardParams.Model.MultiClass.mode else 2
 
 
-    directories = smallFuncs.funcExpDirectories(WhichExperiment)
-    Augment = smallFuncs.augmentLengthChecker(Augment)
+    directories = smallFuncs.search_ExperimentDirectory(WhichExperiment)
+    if not Augment.Mode:  Augment.AugmentLength = 0
     preprocess.Cropping.Method = UserInfo['cropping_method']
 
 

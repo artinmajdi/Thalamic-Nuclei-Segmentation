@@ -6,7 +6,7 @@ import nibabel as nib
 import shutil 
 import os, sys
 from otherFuncs import smallFuncs
-from preprocess import normalizeA, applyPreprocess, croppingA
+from preprocess import normalizeA, applyPreprocess
 import matplotlib.pyplot as plt
 from scipy import ndimage
 from shutil import copyfile
@@ -431,19 +431,19 @@ def movingFromDatasetToExperiments(params):
 
     def checkAugmentedData(params):
 
-        def listAugmentationFolders(mode):
+        def listAugmentationFolders(mode, params):
             Dir_Aug1 = params.WhichExperiment.Dataset.address + '/Augments/' + mode
             flag_Aug = os.path.exists(Dir_Aug1)
 
-            ListAugments = smallFuncs.listSubFolders(Dir_Aug1) if flag_Aug else list('')
+            ListAugments = smallFuncs.listSubFolders(Dir_Aug1, params) if flag_Aug else list('')
 
             return flag_Aug, {'address': Dir_Aug1 , 'list': ListAugments , 'mode':mode}
 
         flagAg, AugDataL = np.zeros(3), list(np.zeros(3))
         if params.Augment.Mode:
-            if params.Augment.Linear.Rotation.Mode:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation')
-            if params.Augment.Linear.Shift.Mode:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift')
-            if params.Augment.NonLinear.Mode: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear')
+            if params.Augment.Linear.Rotation.Mode:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation', params)
+            if params.Augment.Linear.Shift.Mode:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift', params)
+            if params.Augment.NonLinear.Mode: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear', params)
 
         return flagAg, AugDataL
         
@@ -458,7 +458,7 @@ def movingFromDatasetToExperiments(params):
         sys.exit
     
     else:
-        List = smallFuncs.listSubFolders(params.WhichExperiment.Dataset.address)
+        List = smallFuncs.listSubFolders(params.WhichExperiment.Dataset.address, params)
         flagAg, AugDataL = checkAugmentedData(params)
 
         TestParams  = params.WhichExperiment.Dataset.Test
@@ -474,7 +474,7 @@ def movingFromDatasetToExperiments(params):
                 for AgIx in range(len(AugDataL)):
                     if flagAg[AgIx]: copyAugmentData(DirOut, AugDataL[AgIx], subject)
 
-        params = smallFuncs.inputNamesCheck(params, 'experiment')
+        # params = smallFuncs.inputNamesCheck(params, 'experiment')
         
     return True
 

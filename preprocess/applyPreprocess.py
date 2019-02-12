@@ -32,7 +32,7 @@ def apply_On_Individual(params,subject):
 def apply_On_Experiment(params):
     # params = smallFuncs.terminalEntries(params)
 
-    params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
+    params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
 
     for mode in ['train','test']:
 
@@ -45,7 +45,7 @@ def apply_On_Experiment(params):
             print(mode.upper(), 'BiasCorrection:' , sj , str(ind) + '/' + str(len(dirr.Input.Subjects)))
             BashCallingFunctionsA.BiasCorrection( subject , params)
 
-    params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)    
+    params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)    
     for mode in ['train','test']:
 
         dirr = params.directories.Train if mode == 'train' else params.directories.Test
@@ -62,9 +62,9 @@ def apply_On_Experiment(params):
             croppingA.main(subject , params)
             # BashCallingFunctionsA.Bash_Cropping( subject , params)
 
-    params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
+    params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
     augmentA.main_augment( params , 'Linear' , 'experiment')
-    params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
+    params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
     augmentA.main_augment( params , 'NonLinear' , 'experiment')
 
     return params

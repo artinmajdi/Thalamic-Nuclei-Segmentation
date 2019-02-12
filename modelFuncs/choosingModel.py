@@ -14,6 +14,9 @@ import nibabel as nib
 from scipy import ndimage
 from shutil import copyfile
 import pandas as pd
+import mat4py
+import pickle
+
 
 def check_Run(params, Data):
 
@@ -76,30 +79,28 @@ def testingExeriment(model, Data, params):
 
             Dice = np.zeros((num_classes-1,2))
             for cnt in range(num_classes-1):
+
                 pred1N_BtO, Dice[cnt,:] = postProcessing(params, subject, pred[...,cnt], Data.OrigMask[...,cnt] , params.WhichExperiment.Nucleus.Index[cnt] )
-                # pred1N = np.squeeze(pred[...,cnt])
-                # origMsk1N = Data.OrigMask[...,cnt]
-                # pred1N = binarizing(pred1N)                    
-                # pred1N_BtO = np.transpose(pred1N,params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
-                # pred1N_BtO = cascade_paddingToOrigSize(params, pred1N_BtO, subject)
 
                 dirSave, nucleusName = savingOutput(pred1N_BtO, params, ResultDir, nameSubject, params.WhichExperiment.Nucleus.Index[cnt], Data.Affine, Data.Header)
-                # dirSave = smallFuncs.mkDir(ResultDir + '/' + nameSubject)  
-                # nucleusName, _ = smallFuncs.NucleiSelection(params.WhichExperiment.Nucleus.Index[cnt])
-                # smallFuncs.saveImage( pred1N_BtO , Data.Affine, Data.Header, dirSave + '/' + nucleusName + '.nii.gz')
 
             Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.MultiClass.mode else dirSave + '/Dice_' + nucleusName + '.txt'
             np.savetxt(Dir_Dice ,Dice)
             return pred1N_BtO
 
         def applyPrediction(model, Data, num_classes, padding):
+
+            def unPadding(im , pad):
+                sz = im.shape
+                return im[pad[0][0]:sz[0]-pad[0][1] , pad[1][0]:sz[1]-pad[1][1] , pad[2][0]:sz[2]-pad[2][1],:]
+
             pred = model.predict(Data.Image)
             # score = model.evaluate(Data.Image, Data.Mask)
             pred = pred[...,:num_classes-1]
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
             pred = np.transpose(pred,[1,2,0,3])
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
-            pred = smallFuncs.unPadding(pred, padding)
+            pred = unPadding(pred, padding)
             return pred
 
 
@@ -132,22 +133,44 @@ def testingExeriment(model, Data, params):
 
     prediction.Test  = loopOver_Predicting_TestSubjects(model, Data.Test, params)
     prediction.Train = loopOver_Predicting_TrainSubjects(model, Data.Train_ForTest, params)
-    
-    # smallFuncs.func_CropCoordinates(CropMask)
-    
+        
     return prediction
 
+def loadReport(DirSave, name, method):
+
+    def loadPickle(Dir):
+        f = open(Dir,"wb")
+        data = pickle.load(f)
+        f.close()
+        return data
+
+    if 'pickle' in method:
+        return loadPickle(DirSave + '/' + name + '.pkl')
+    elif 'mat' in method:
+        return mat4py.loadmat(DirSave + '/' + name + '.pkl')
+        
 def trainingExperiment(Data, params):
 
+    def saveReport(DirSave, name , data, method):
+
+        def savePickle(Dir, data):
+            f = open(Dir,"wb")
+            pickle.dump(data,f)
+            f.close()
+
+        if 'pickle' in method: savePickle(DirSave + '/' + name + '.pkl', data)
+        elif 'mat'  in method: mat4py.savemat(DirSave + '/' + name + '.mat', data)
+        elif 'csv'  in method: pd.DataFrame(data=data,columns=list(data.keys())).to_csv( DirSave + '/' + name + '.csv')
+            
     def saveTrainInfo(hist,a, params):
         hist.params['trainingTime'] = time() - a
         hist.params['InputDimensionsX'] = params.WhichExperiment.HardParams.Model.InputDimensions[0]
         hist.params['InputDimensionsY'] = params.WhichExperiment.HardParams.Model.InputDimensions[1]
         hist.params['num_Layers'] = params.WhichExperiment.HardParams.Model.num_Layers
 
-        smallFuncs.saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
-        smallFuncs.saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo['SaveReportMethod'])
-        smallFuncs.saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , 'csv')
+        saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
+        saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo['SaveReportMethod'])
+        saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , 'csv')
         
     def modelTrain(Data, params, model):
         ModelParam = params.WhichExperiment.HardParams.Model
@@ -173,8 +196,15 @@ def trainingExperiment(Data, params):
 
         return model, hist
 
+    def Saving_UserInfo(DirSave, params, UserInfo):
+
+        UserInfo['InputDimensions'] = str(params.WhichExperiment.HardParams.Model.InputDimensions)
+        UserInfo['num_Layers']      = params.WhichExperiment.HardParams.Model.num_Layers
+
+        saveReport(DirSave, 'UserInfo', UserInfo , UserInfo['SaveReportMethod'])
+        
     a = time()
-    smallFuncs.Saving_UserInfo(params.directories.Train.Model, params, params.UserInfo)
+    Saving_UserInfo(params.directories.Train.Model, params, params.UserInfo)
     model = architecture(params)
     model, hist = modelTrain(Data, params, model)
 
@@ -183,7 +213,7 @@ def trainingExperiment(Data, params):
 
 def applyThalamusOnInput(params, ThalamusMasks):
 
-    params.directories = smallFuncs.funcExpDirectories(params.WhichExperiment)
+    params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
     def ApplyThalamusMask(Thalamus_Mask, params, subject, nameSubject, mode):
             
         def dilateMask(mask, gapDilation):
@@ -195,6 +225,19 @@ def applyThalamusOnInput(params, ThalamusMasks):
             return [   [   np.max([BB[d][0]-gapOnSlicingDimention,0])  ,   np.min( [BB[d][1]+gapOnSlicingDimention,imFshape[d]])   ]  for d in range(3) ]
 
         def cropBoundingBoxes(params, subject, imFshape, Thalamus_Mask, Thalamus_Mask_Dilated):
+
+            def func_CropCoordinates(CropMask):
+                ss = np.sum(CropMask,axis=2)
+                c1 = np.where(np.sum(ss,axis=1) > 10)[0]
+                c2 = np.where(np.sum(ss,axis=0) > 10)[0]
+
+                ss = np.sum(CropMask,axis=1)
+                c3 = np.where(np.sum(ss,axis=0) > 10)[0]
+
+                BBCord = [   [c1[0],c1[-1]]  ,  [c2[0],c2[-1]]  , [c3[0],c3[-1]]  ]
+
+                return BBCord
+
             BB = smallFuncs.func_CropCoordinates(Thalamus_Mask)
             BB = checkBordersOnBoundingBox(imFshape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
             BBd  = smallFuncs.func_CropCoordinates(Thalamus_Mask_Dilated)

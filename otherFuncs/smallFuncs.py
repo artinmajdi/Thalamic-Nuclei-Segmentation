@@ -6,17 +6,22 @@ from shutil import copyfile
 import matplotlib.pyplot as plt
 import os, sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-import mat4py
-import pickle
+
 from copy import deepcopy
 import pandas as pd
 
 
-# TODO: Replace folder searching with "next(os.walk(directory))"
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
 # TODO: sort the input images so that it is system independent
 def NucleiSelection(ind = 1,organ = 'THALAMUS'):
 
+    def AllNucleiNames(Indexes):
+        Names = []
+        for ind in Indexes:
+            name, _ = NucleiSelection(ind = ind,organ = 'THALAMUS')
+            Names.append(name)
+        return Names
+        
     if 'THALAMUS' in organ:
         if ind == 1:
             NucleusName = '1-THALAMUS'
@@ -48,66 +53,14 @@ def NucleiSelection(ind = 1,organ = 'THALAMUS'):
             NucleusName = '14-MTT'
 
         FullIndexes = [1,2,4,5,6,7,8,9,10,11,12,13,14]
+        Full_Names = AllNucleiNames(FullIndexes)
 
-    return NucleusName, FullIndexes
+    return NucleusName, FullIndexes, Full_Names
 
-def AllNucleiNames(Indexes):
-    Names = []
-    for ind in Indexes:
-        name, _ = NucleiSelection(ind = ind,organ = 'THALAMUS')
-        Names.append(name)
-    return Names
+def listSubFolders(Dir, params):
 
-def readingTheParams(AllExperimentsList):
-
-    from Parameters import paramFunc, UserInfo
-
-    def subDict(UserInfoC, ExpList):
-        UserInfoB = deepcopy(UserInfoC)
-        for entry in list(ExpList.keys()):
-            print('LE  before -> ' + entry + ': ',UserInfoB[entry])
-            UserInfoB[entry] = ExpList[entry]
-            print('LE  after -> ' + entry + ': ',UserInfoB[entry])
-        return UserInfoB
-
-    def loadExperiments(UserInfo_Orig, AllExperimentsList):
-
-        AllParamsList = {}
-        # ExpList = UserInfo_Orig['AllExperimentsList']
-        if AllExperimentsList:
-            ExpList = AllExperimentsList
-            for Keys in list(ExpList.keys()):
-
-                UserInfo = subDict(UserInfo_Orig, ExpList[Keys])
-                A = paramFunc.Run(UserInfo)
-                AllParamsList[Keys] = deepcopy(A)
-        else:
-            AllParamsList[0] = paramFunc.Run(UserInfo_Orig)
-
-        return AllParamsList
-
-    UserInfoB = deepcopy(UserInfo.__dict__)
-    # print('before:',UserInfoB['epochs'])
-    UserInfoB = terminalEntries(UserInfo=UserInfoB)
-    # print('after:',UserInfoB['epochs'])
-    AllParamsList = loadExperiments(UserInfoB, AllExperimentsList)
-
-    return AllParamsList
-
-def listSubFolders(Dir):
-
-    oldStandard = True
-
-    Dir_Prior = next(os.walk(Dir))[1]
-    subFolders = []
-    if len(Dir_Prior) > 0:
-
-        if oldStandard:
-            for subFlds in Dir_Prior:
-                if 'vimp' in subFlds and 'ERROR' not in subFlds: 
-                    subFolders.append(subFlds)
-        else:
-            subFolders = Dir_Prior
+    subFolders = [s for s in next(os.walk(Dir))[1] if 'ERROR' not in s]
+    if params.WhichExperiment.Dataset.check_vimp_SubjectName:  subFolders = [s for s in subFolders if 'vimp' in s]
 
     subFolders.sort()
     return subFolders
@@ -115,9 +68,6 @@ def listSubFolders(Dir):
 def mkDir(Dir):
     if not os.path.isdir(Dir): os.makedirs(Dir)
     return Dir
-
-def choosingSubject(Input):
-    return Input.Image.get_data() , Input.CropMask.get_data() , Input.ThalamusMask.get_data() , Input.TestAddress
 
 def saveImage(Image , Affine , Header , outDirectory):
     mkDir(outDirectory.split(os.path.basename(outDirectory))[0])
@@ -169,60 +119,122 @@ def terminalEntries(UserInfo):
 
     return UserInfo
 
-def checkInputDirectory(Dir, NucleusName):
+def search_ExperimentDirectory(whichExperiment):
 
-    # multipleTest , files , subfolders = checkMultipleTestOrNot(Dir,NucleusName)
+    def Search_ImageFolder(Dir, NucleusName):
 
-    subjects = {}
+        def splitNii(s):
+            return s.split('.nii.gz')[0]
 
-    for sf in listSubFolders(Dir): # os.listdir(Dir):
-        subjects[sf] = InputNames(Dir + '/' + sf ,NucleusName)
+        def Classes_Local(Dir):
+            class deformation:
+                address = ''
+                testWarp = ''
+                testInverseWarp = ''
+                testAffine = ''
 
-    if len(subjects) == 1:
-        multipleTest = False
-    else:
-        multipleTest = True
+            class temp:
+                CropMask = ''
+                Cropped = ''
+                BiasCorrected = ''
+                Deformation = deformation
+                address = ''
 
-    class Input:
-        address = fixDirectoryLastDashSign(Dir)
-        Subjects = subjects
-        MultipleTest = multipleTest
+            class tempLabel:
+                address = ''
+                Cropped = ''
 
-    return Input
+            class label:
+                LabelProcessed = ''
+                LabelOriginal = ''
+                Temp = tempLabel
+                address = ''
 
-def checkMultipleTestOrNot(Dir, NucleusName):
+            class newCropInfo:
+                OriginalBoundingBox = ''
+                PadSizeBackToOrig = ''
 
-    subjects = ''
-    files = ''
+            class Files:
+                ImageOriginal = '' 
+                ImageProcessed = ''
+                Label = label
+                Temp = temp
+                address = Dir
+                NewCropInfo = newCropInfo         
 
-    if '.nii.gz' in os.path.basename(Dir):
-        # dd = Dir.split('/')
-        # Dir = ''
-        # for d in range(len(dd)-1):
-        #     Dir = Dir + dd[d] + '/'
-        Dir = Dir.split(os.path.basename(Dir))[0]
+            return Files
+        
+        def Look_Inside_Label_SF(Files, NucleusName):
+            Files.Label.Temp.address = mkDir(Files.Label.address + '/temp')
+            A = next(os.walk(Files.Label.address))
+            for s in A[2]:
+                if NucleusName + '_PProcessed.nii.gz' in s: Files.Label.LabelProcessed = splitNii(s)
+                if NucleusName + '.nii.gz' in s: Files.Label.LabelOriginal = splitNii(s)
 
-        files = InputNames(Dir ,NucleusName)
-        multipleTest = 'False'
-    else:
-        subjects = os.listdir(Dir)
+            if Files.Label.LabelOriginal and not Files.Label.LabelProcessed: 
+                Files.Label.LabelProcessed = NucleusName + '_PProcessed'
+                copyfile(Files.Label.address + '/' + Files.Label.LabelOriginal + '.nii.gz' , Files.Label.address + '/' + Files.Label.LabelProcessed + '.nii.gz')
+                
 
-        flag = False
-        for ss in subjects:
-            if '.nii.gz' in ss:
-                flag = True
-                break
+            for s in A[1]:
+                if 'temp' in s: 
+                    Files.Label.Temp.address = Files.Label.address + '/' + s
+                    Files.Label.Temp.Cropped = [ d.split('.nii.gz')[0] for d in next(os.walk(Files.Label.Temp.address))[2] if '_Cropped.nii.gz' in d]
+                else: Files.Label.address = Dir + '/' + s
 
-        if flag or len(subjects) == 1:
-            multipleTest = 'False'
-            files = InputNames(Dir,NucleusName)
-        else:
-            multipleTest = 'True'
+            return Files
+                
+        def Look_Inside_Temp_SF(Files):
+            A = next(os.walk(Files.Temp.address))
+            for s in A[2]:
+                if 'CropMask.nii.gz' in s: Files.Temp.CropMask = splitNii(s)
+                elif 'bias_corr.nii.gz' in s: Files.Temp.BiasCorrected = splitNii(s)
+                elif 'bias_corr_Cropped.nii.gz' in s: Files.Temp.Cropped = splitNii(s)
+                else: Files.Temp.origImage = splitNii(s)
+            
+            if any('deformation' in s for s in A[1]):
+                Files.Temp.Deformation.address = Files.Temp.address + '/deformation'
+                A = next(os.walk(Files.Temp.Deformation.address))
+                for s in A[2]:
+                    if 'testWarp.nii.gz' in s: Files.Temp.Deformation.testWarp = splitNii(s)
+                    elif 'testInverseWarp.nii.gz' in s: Files.Temp.Deformation.testInverseWarp = splitNii(s)
+                    elif 'testAffine.txt' in s: Files.Temp.Deformation.testAffine = splitNii(s)
+            return Files
 
-    return multipleTest , files , subjects
+        def check_IfImageFolder(Files):            
+            A = next(os.walk(Files.address))
+            for s in A[2]:
+                if 'PProcessed.nii.gz' in s: Files.ImageProcessed = splitNii(s)
+                if '.nii.gz' in s and 'PProcessed.nii.gz' not in s: Files.ImageOriginal = splitNii(s)
 
-def funcExpDirectories(whichExperiment):
+            if Files.ImageOriginal or Files.ImageProcessed:
+                for s in A[1]:
+                    if 'temp' in s: Files.Temp.address = Dir + '/' + s
+                    else: Files.Label.address = Dir + '/' + s
 
+                if Files.ImageOriginal and not Files.ImageProcessed: 
+                    Files.ImageProcessed = 'PProcessed'
+                    copyfile(Dir + '/' + Files.ImageOriginal + '.nii.gz' , Dir + '/' + Files.ImageProcessed + '.nii.gz')               
+                    
+            return Files
+                    
+        Files = Classes_Local(Dir)
+        Files = check_IfImageFolder(Files)
+
+        if Files.ImageOriginal or Files.ImageProcessed:
+            if os.path.exists(Files.Label.address): Files = Look_Inside_Label_SF(Files, NucleusName)
+            if os.path.exists(Files.Temp.address):  Files = Look_Inside_Temp_SF(Files)
+                    
+        return Files
+
+    def checkInputDirectory(Dir, NucleusName):       
+        class Input:
+            address = os.path.abspath(Dir)
+            Subjects = [  Search_ImageFolder(Dir + '/' + s ,NucleusName)  for s in next(os.walk(Dir))[1]  ]
+            # MultipleTest = multipleTest
+
+        return Input
+        
     class train:
         address = mkDir(whichExperiment.Experiment.address + '/train')
         Model   = mkDir(whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name + '/' + whichExperiment.Nucleus.name)
@@ -235,172 +247,10 @@ def funcExpDirectories(whichExperiment):
         Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
 
     class Directories:
-        # WhichExperiment = whichExperiment
         Train = train
         Test  = test
 
     return Directories
-
-def fixDirectoryLastDashSign(Dir):
-    Dir = os.path.abspath(Dir)
-    # if Dir[len(Dir)-1] == '/':
-    #     Dir = Dir[:len(Dir)-2]
-
-    return Dir
-
-def augmentLengthChecker(augment):
-    if not augment.Mode:
-        augment.AugmentLength = 0
-
-    return augment
-
-def InputNames(Dir , NucleusName):
-
-    class deformation:
-        address = ''
-        testWarp = ''
-        testInverseWarp = ''
-        testAffine = ''
-
-    class temp:
-        CropMask = ''
-        Cropped = ''
-        BiasCorrected = ''
-        Deformation = deformation
-        address = ''
-
-    class tempLabel:
-        address = ''
-        Cropped = ''
-
-    class label:
-        LabelProcessed = ''
-        LabelOriginal = ''
-        Temp = tempLabel
-        address = ''
-
-    class newCropInfo:
-        OriginalBoundingBox = ''
-        PadSizeBackToOrig = ''
-    class Files:
-        ImageOriginal = '' # WMn_MPRAGE'
-        ImageProcessed = ''
-        Label = label
-        Temp = temp
-        address = Dir
-        NewCropInfo = newCropInfo         
-
-
-    Files.Label.address = ''
-    flagTemp = False
-    for d in os.listdir(Dir):
-        if '.nii.gz' in d:
-            flagTemp = True
-            if '_PProcessed.nii.gz' in d:
-                Files.ImageProcessed = d.split('.nii.gz')[0]
-            else:
-                Files.ImageOriginal = d.split('.nii.gz')[0]
-        elif 'temp' not in d:
-            Files.Label.address = Dir + '/' + d
-
-    if flagTemp:
-        Files.Temp.address = mkDir(Dir + '/temp')
-        Files.Temp.Deformation.address = mkDir(Dir + '/temp/deformation')
-
-    if os.path.exists(Files.Label.address):
-
-        Files.Label.Temp.address =  mkDir(Files.Label.address + '/temp')
-        for d in os.listdir(Files.Label.address):
-            if NucleusName + '.nii.gz' in d:
-                Files.Label.LabelOriginal = d.split('.nii.gz')[0]
-            elif NucleusName + '_PProcessed.nii.gz' in d:
-                Files.Label.LabelProcessed = d.split('.nii.gz')[0]
-
-            elif 'temp' in d:
-                Files.Label.Temp.address = Files.Label.address + '/' + d
-                # TODO replace the for loop with below commented code
-                # Files.Label.Temp.Cropped = [ d.split('.nii.gz')[0] for d in next(os.walk(Files.Label.Temp.address))[2] if '_Cropped.nii.gz' in d]
-                for d in os.listdir(Files.Label.Temp.address):
-                    if '_Cropped.nii.gz' in d:
-                        Files.Label.Temp.Cropped = d.split('.nii.gz')[0]
-
-    for d in os.listdir(Files.Temp.address):
-
-        if '.nii.gz' in d:
-            if 'CropMask.nii.gz' in d:
-                Files.Temp.CropMask = d.split('.nii.gz')[0]
-            elif '_bias_corr.nii.gz' in d:
-                Files.Temp.BiasCorrected = d.split('.nii.gz')[0]
-            elif '_bias_corr_Cropped.nii.gz' in d:
-                Files.Temp.Cropped = d.split('.nii.gz')[0]
-            else:
-                Files.Temp.origImage = d.split('.nii.gz')[0]
-
-        elif 'deformation' in d:
-            Files.Temp.Deformation.address = Files.Temp.address + '/' + d
-
-            for d in os.listdir(Files.Temp.Deformation.address):
-                if 'testWarp.nii.gz' in d:
-                    Files.Temp.Deformation.testWarp = d.split('.nii.gz')[0]
-                elif 'testInverseWarp.nii.gz' in d:
-                    Files.Temp.Deformation.testInverseWarp = d.split('.nii.gz')[0]
-                elif 'testAffine.txt' in d:
-                    Files.Temp.Deformation.testAffine = d.split('.nii.gz')[0]
-
-
-    return Files
-
-# TODO fix "inputNamesCheck" function to count for situations when we only want to apply the function on one case
-def inputNamesCheck(params, mode):
-
-    if 'experiment' in mode:
-        for wFolder in ['Train' , 'Test']:
-
-            if params.preprocess.TestOnly and not params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data and 'Train' in wFolder:
-                continue
-
-            dirr = params.directories.Train if 'Train' in wFolder else params.directories.Test
-
-            for sj in dirr.Input.Subjects:
-                # if 'Aug' in sj:
-                #     print('---')
-                subject = dirr.Input.Subjects[sj]
-
-                # TODO move this commented if function somewhere else to count for cases where user doesn't want preprocessing
-                if subject.ImageProcessed:
-                # if params.preprocess.Debug.PProcessExist:
-
-                    # files = os.listdir(subject.address)
-                    _ , _ , subfiles = next(os.walk(subject.address))
-                    if not any('PProcessed' in sj for sj in subfiles ):
-                        sys.exit('preprocess files doesn\'t exist ' + 'Subject: ' + sj + ' Dir: ' + subject.address)
-                    # flagPPExist = False
-                    # for si in files:
-                    #     if '_PProcessed' in si:
-                    #         flagPPExist = True
-                    #         break
-
-                    # if not flagPPExist:  sys.exit('preprocess files doesn\'t exist ' + 'Subject: ' + sj + ' Dir: ' + subject.address)
-
-                else: # if not params.preprocess.Debug.PProcessExist and
-
-                    imOrig = subject.address + '/' + subject.ImageOriginal + '.nii.gz'
-                    imProc = subject.address + '/' + subject.ImageOriginal + '_PProcessed.nii.gz'
-                    copyfile(imOrig  , imProc)
-
-                    for ind in params.WhichExperiment.Nucleus.FullIndexes:
-                        NucleusName, _ = NucleiSelection(ind, params.WhichExperiment.Nucleus.Organ)
-
-                        mskOrig = subject.Label.address + '/' + NucleusName + '.nii.gz'
-                        mskProc = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
-                        copyfile(mskOrig, mskProc)
-
-        params.directories = funcExpDirectories(params.WhichExperiment)
-
-    else:
-        print('')
-
-    return params
 
 def imShow(*args):
 
@@ -412,60 +262,27 @@ def imShow(*args):
 
     return True
 
-def unPadding(im , pad):
-    sz = im.shape
-    return im[pad[0][0]:sz[0]-pad[0][1] , pad[1][0]:sz[1]-pad[1][1] , pad[2][0]:sz[2]-pad[2][1],:]
-
 def Dice_Calculator(msk1,msk2):
     intersection = msk1*msk2
     return intersection.sum()*2/(msk1.sum()+msk2.sum() + np.finfo(float).eps)
 
-def saveReport(DirSave, name , data, method):
 
-    def savePickle(Dir, data):
-        f = open(Dir,"wb")
-        pickle.dump(data,f)
-        f.close()
 
-    if 'pickle' in method:
-        savePickle(DirSave + '/' + name + '.pkl', data)
-    elif 'mat' in method:
-        mat4py.savemat(DirSave + '/' + name + '.mat', data)
-    elif 'csv' in method:
-        pd.DataFrame(data=data,columns=list(data.keys())).to_csv( DirSave + '/' + name + '.csv')
-
-def loadReport(DirSave, name, method):
-
-    def loadPickle(Dir):
-        f = open(Dir,"wb")
-        data = pickle.load(f)
-        f.close()
-        return data
-
-    if 'pickle' in method:
-        return loadPickle(DirSave + '/' + name + '.pkl')
-    elif 'mat' in method:
-        return mat4py.loadmat(DirSave + '/' + name + '.pkl')
-
-#! saving the user parameters
-def Saving_UserInfo(DirSave, params, UserInfo):
-
-    # def dict_from_module(module):
-    #     context = {}
-    #     for setting in dir(module):
-    #         if '__' not in setting:
-    #             context[setting] = getattr(module, setting)
-
-    #     return context
-
-    UserInfo['InputDimensions'] = str(params.WhichExperiment.HardParams.Model.InputDimensions)
-    UserInfo['num_Layers']      = params.WhichExperiment.HardParams.Model.num_Layers
-
-    # TODO check to see if the below uncommented works just like the commented one
-    # saveReport(DirSave, 'UserInfo', dict_from_module(UserInfo) , UserInfo['SaveReportMethod'])
-    saveReport(DirSave, 'UserInfo', UserInfo , UserInfo['SaveReportMethod'])
 
 def Loading_UserInfo(DirLoad, method):
+
+    def dict2obj(d):
+        if isinstance(d, list):
+            d = [dict2obj(x) for x in d]
+        if not isinstance(d, dict):
+            return d
+        class C(object):
+            pass
+        o = C()
+        for k in d:
+            o.__dict__[k] = dict2obj(d[k])
+        return o
+
     UserInfo = loadReport(DirLoad, 'UserInfo', method)
     UserInfo = dict2obj( UserInfo )
 
@@ -473,26 +290,3 @@ def Loading_UserInfo(DirLoad, method):
     UserInfo['InputDimensions'] = [int(ai) for ai in a]
     return UserInfo
 
-def dict2obj(d):
-    if isinstance(d, list):
-        d = [dict2obj(x) for x in d]
-    if not isinstance(d, dict):
-        return d
-    class C(object):
-        pass
-    o = C()
-    for k in d:
-        o.__dict__[k] = dict2obj(d[k])
-    return o
-
-def func_CropCoordinates(CropMask):
-    ss = np.sum(CropMask,axis=2)
-    c1 = np.where(np.sum(ss,axis=1) > 10)[0]
-    c2 = np.where(np.sum(ss,axis=0) > 10)[0]
-
-    ss = np.sum(CropMask,axis=1)
-    c3 = np.where(np.sum(ss,axis=0) > 10)[0]
-
-    BBCord = [   [c1[0],c1[-1]]  ,  [c2[0],c2[-1]]  , [c3[0],c3[-1]]  ]
-
-    return BBCord
