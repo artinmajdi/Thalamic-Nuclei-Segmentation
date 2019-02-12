@@ -156,12 +156,30 @@ def readingFromExperiments(params):
         
     def inputPreparationForUnet(im,subject, params):
 
+        def CroppingInput(im, subject):
+            
+            if np.min(subject.Padding) < 0:    
+                padding = np.array([list(x) for x in subject.Padding])                
+                crd = -1*padding 
+                padding[padding < 0] = 0
+                crd[crd < 0] = 0
+                subject.Padding = tuple([tuple(x) for x in padding])
+
+                sz = im.shape
+                crd = crd[:len(sz),:]
+                for ix in range(len(sz)): crd[ix,1] = sz[ix] if crd[ix,1] == 0 else -crd[ix,1]
+                        
+                im = im[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
+
+            return im, subject
+
         if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
             # subject.NewCropInfo.PadSizeBackToOrig
             BB = subject.NewCropInfo.OriginalBoundingBox            
             im = im[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]] 
 
         im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
+        im, subject = CroppingInput(im, subject)    
         im = np.pad(im, subject.Padding[:3], 'constant')
         im = np.transpose(im,[2,0,1])
         im = np.expand_dims(im ,axis=3).astype('float32')
@@ -199,9 +217,9 @@ def readingFromExperiments(params):
         
         return origMsk , msk
             
-    def Error_In_Dimention(cntSkipped,subject, mode, nameSubject):
-        AA = subject.address.split('vimp')
-        shutil.move(subject.address, AA[0] + 'ERROR_vimp' + AA[1])
+    def Error_MisMatch_In_Dim_ImageMask(cntSkipped,subject, mode, nameSubject):
+        AA = subject.address.split(os.path.dirname(subject.address) + '/')
+        shutil.move(subject.address, os.path.dirname(subject.address) + '/' + 'ERROR_' + AA[1])
         print('WARNING:', mode , cntSkipped + 1 , nameSubject, ' image and mask have different shape sizes')
         return cntSkipped + 1
 
@@ -297,60 +315,78 @@ def readingFromExperiments(params):
 
         return params
 
+    def ErrorInPaddingCheck(params, subject, nameSubject):
+        ErrorFlag = False
+        if np.min(subject.Padding) < 0:
+            if np.min(subject.Padding) < -params.WhichExperiment.HardParams.Model.paddingErrorPatience:
+                AA = subject.address.split(os.path.dirname(subject.address) + '/')
+                shutil.move(subject.address, os.path.dirname(subject.address) + '/' + 'ERROR_' + AA[1])
+                print('WARNING: subject: ',nameSubject,' size is out of the training network input dimensions')
+                ErrorFlag = True
+            else:
+                Dirsave = smallFuncs.mkDir(params.directories.Test.Result + '/' + nameSubject)
+                np.savetxt(Dirsave + '/paddingError.txt', subject.Padding, fmt='%d')
+                print('WARNING: subject: ',nameSubject,' padding error patience activated, Error:', np.min(subject.Padding))
+        return ErrorFlag
+
     def loopOver_ReadingInput(params):
+
+        def saveTrainDataFinal(DataAll, TrainData, images, masks):
+            DataAll.Train_ForTest = TrainData
+
+            if params.WhichExperiment.Dataset.Validation.fromKeras:
+                DataAll.Train = trainCase(Image=images, Mask=masks.astype('float32'))
+            else:
+                DataAll.Train, DataAll.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks, params.WhichExperiment.Dataset.randomFlag)
+            return DataAll
+
+        def checkSimulationMode(params, mode):
+            if 'train' in mode and params.preprocess.TestOnly and not params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:
+                return True
+            else:
+                return False
 
         DataAll = data()
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
         TestData, TrainData = {}, {}
         for mode in ['train','test']:
-
-            if 'train' in mode and params.preprocess.TestOnly and not params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:
-                continue
-
-            Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
             
-            cntSkipped = 0
-            indTrain = 0
+            if checkSimulationMode(params, mode): continue
+            Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
+            cntSkipped, indTrain = 0, 0
             for _, nameSubject in tqdm(enumerate(Subjects), desc='Loading Dataset: ' + mode):
-                subject = Subjects[nameSubject]
-
+                # subject = Subjects[nameSubject]
                     
-                # TODO: replace this with cropping if the negative number is low e.g. less than 5
-                if np.min(subject.Padding) < 0:
-                    AA = subject.address.split('vimp')
-                    shutil.move(subject.address, AA[0] + 'ERROR_vimp' + AA[1])
-                    print('WARNING: subject: ',nameSubject,' size is out of the training network input dimensions')
-                    continue
+                if ErrorInPaddingCheck(params, Subjects[nameSubject], nameSubject): continue
                             
-                im, imF = readingImage(params, subject)
-                origMsk , msk = readingNuclei(params, subject, imF.shape)
+                im, imF = readingImage(params, Subjects[nameSubject])
+                origMsk , msk = readingNuclei(params, Subjects[nameSubject], imF.shape)
 
-                if 'ERROR' not in nameSubject:
-                    if im[...,0].shape == msk[...,0].shape:
-                        if 'train' in mode:                        
-                            images = im     if indTrain == 0 else np.concatenate((images,im    ),axis=0)
-                            masks  = msk>Th if indTrain == 0 else np.concatenate((masks,msk>Th ),axis=0)
-                            TrainData[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-                            indTrain = indTrain + 1
+                if im[...,0].shape == msk[...,0].shape:
+                    if 'train' in mode:                        
+                        images = im     if indTrain == 0 else np.concatenate((images,im    ),axis=0)
+                        masks  = msk>Th if indTrain == 0 else np.concatenate((masks,msk>Th ),axis=0)
+                        TrainData[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                        indTrain = indTrain + 1
 
-                        elif 'test' in mode:
-                            TestData[nameSubject]  = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-                    else:
-                        cntSkipped = Error_In_Dimention(cntSkipped,subject, mode, nameSubject)
+                    elif 'test' in mode:
+                        TestData[nameSubject]  = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                else:
+                    cntSkipped = Error_MisMatch_In_Dim_ImageMask(cntSkipped, Subjects[nameSubject] , mode, nameSubject)
 
 
             if 'train' in mode:
-                DataAll.Train_ForTest = TrainData
+                TrainData = saveTrainDataFinal(DataAll, TrainData, images, masks)
+                # DataAll.Train_ForTest = TrainData
 
-                if params.WhichExperiment.Dataset.Validation.fromKeras:
-                    DataAll.Train = trainCase(Image=images, Mask=masks.astype('float32'))
-                else:
-                    DataAll.Train, DataAll.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks, params.WhichExperiment.Dataset.randomFlag)
+                # if params.WhichExperiment.Dataset.Validation.fromKeras:
+                #     DataAll.Train = trainCase(Image=images, Mask=masks.astype('float32'))
+                # else:
+                #     DataAll.Train, DataAll.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks, params.WhichExperiment.Dataset.randomFlag)
             else:
                 DataAll.Test = TestData
 
         _, DataAll.Info.Height, DataAll.Info.Width, _ = DataAll.Test[list(DataAll.Test)[0]].Image.shape if params.preprocess.TestOnly else DataAll.Train.Image.shape
-
         params.WhichExperiment.HardParams.Model.imageInfo = DataAll.Info
         return DataAll, params
 

@@ -55,6 +55,7 @@ class model:
     InitializeFromThalamus = ''
     InitializeFromOlderModel = ''
     Idea = 'cascadeThalamusV1'
+    paddingErrorPatience = 3
 
 
 

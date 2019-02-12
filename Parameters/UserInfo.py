@@ -10,13 +10,13 @@
 
 #! this is temporary and should later be moved down
 slicingDim = 2
-DatasetIx = 1
+DatasetIx = 4
 epochs = 2
 GPU_Index = 1
 
 
 #! Nucleus Index
-nucleus_Index = [2,4]
+nucleus_Index = [1,2]
 
 
 #! Training
@@ -73,7 +73,7 @@ OptimizerIx = 1
 
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
-Experiments_Index = '5_cascade'
+Experiments_Index = '6_cascade'
 # Experiments_Tag = '7T' # 'SRI' 'tmp' 'SRI_wLRAug' '7T' '7T_wLRAug'
 
 

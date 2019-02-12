@@ -104,7 +104,8 @@ def listSubFolders(Dir):
 
         if oldStandard:
             for subFlds in Dir_Prior:
-                if 'vimp' in subFlds and 'ERROR' not in subFlds: subFolders.append(subFlds)
+                if 'vimp' in subFlds and 'ERROR' not in subFlds: 
+                    subFolders.append(subFlds)
         else:
             subFolders = Dir_Prior
 
@@ -240,11 +241,6 @@ def funcExpDirectories(whichExperiment):
 
     return Directories
 
-# def whichCropMode(NucleusName, mode):
-#     if '1-THALAMUS' in NucleusName:
-#         mode = 1
-#     return mode
-
 def fixDirectoryLastDashSign(Dir):
     Dir = os.path.abspath(Dir)
     # if Dir[len(Dir)-1] == '/':
@@ -293,7 +289,6 @@ def InputNames(Dir , NucleusName):
         Temp = temp
         address = Dir
         NewCropInfo = newCropInfo         
-
 
 
     Files.Label.address = ''
@@ -407,7 +402,6 @@ def inputNamesCheck(params, mode):
 
     return params
 
-# TODO check the matlab imshow3D see if i can use it in python
 def imShow(*args):
 
     _, axes = plt.subplots(1,len(args))

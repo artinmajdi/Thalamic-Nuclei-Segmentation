@@ -1,37 +1,29 @@
-import os, sys
-sys.path.append('/array/ssd/msmajdi/code/thalamus/keras/')
-import matplotlib.pyplot as plt
 import numpy as np
-from Parameters import UserInfo, paramFunc
-import nibabel as nib
-from scipy import ndimage
-from preprocess import croppingA
-params = paramFunc.Run(UserInfo.__dict__)
-import numpy as np
-a = [tuple([1,2]),  tuple([8,4]),tuple([ -2, 9])]
-a = [ [1,2] ,  [8,4] , [ -2, 9]]
 
-np.savetxt('/array/ssd/msmajdi/code/thalamus/keras/out.txt',a,fmt='%d')
 
-np.savetxt('/array/ssd/msmajdi/code/thalamus/keras/names.txt',names,fmt='%s')
+a = ((-2,9),(5,8),(-5,2),(0,-9))
 
-e = np.loadtxt('/array/ssd/msmajdi/code/thalamus/keras/out.txt',dtype=int)
-names2 = np.loadtxt('/array/ssd/msmajdi/code/thalamus/keras/names.txt',dtype=str)
+b = [list(i) for i in a]
 
-e
-names2[1]
+b
+ba = np.array(b)
+ba[ba > 0] = 0
+ba *= -1
+ba
+ba.shape
+np.where(ba < 0)[0].shape
+
+np.where(b[0] < 0)
 
 
 
 
 
+a = np.zeros((20,20))
 
-
-
-
-
-
-
+a = a[2:,:]
+a = a[:,:-3]
+a.shape
 
 
 
