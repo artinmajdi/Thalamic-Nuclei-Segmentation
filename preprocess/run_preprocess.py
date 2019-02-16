@@ -5,9 +5,9 @@ from otherFuncs import smallFuncs
 from preprocess import applyPreprocess
 from Parameters import paramFunc, UserInfo
 
-params = paramFunc.Run(UserInfo.__dict__)
+UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
+params = paramFunc.Run(UserInfoB)
 params.preprocess.Mode = True
 
-params = smallFuncs.terminalEntries(params)
 applyPreprocess.main(params, 'experiment')
 

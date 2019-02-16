@@ -99,9 +99,9 @@ def Run(UserInfo):
     # TODO I need to fix this to count for multiple nuclei
     WhichExperiment.Nucleus.Index = UserInfo['nucleus_Index'] if isinstance(UserInfo['nucleus_Index'],list) else [UserInfo['nucleus_Index']]
     
-    WhichExperiment.Nucleus.name_Thalamus, WhichExperiment.Nucleus.FullIndexes = smallFuncs.NucleiSelection( 1 , WhichExperiment.Nucleus.Organ)
+    WhichExperiment.Nucleus.name_Thalamus, WhichExperiment.Nucleus.FullIndexes, _ = smallFuncs.NucleiSelection( 1 , WhichExperiment.Nucleus.Organ)
     if len(WhichExperiment.Nucleus.Index) == 1 or not WhichExperiment.HardParams.Model.MultiClass.mode:
-        WhichExperiment.Nucleus.name , _ = smallFuncs.NucleiSelection( WhichExperiment.Nucleus.Index[0] , WhichExperiment.Nucleus.Organ)
+        WhichExperiment.Nucleus.name , _, _ = smallFuncs.NucleiSelection( WhichExperiment.Nucleus.Index[0] , WhichExperiment.Nucleus.Organ)
     else:
         WhichExperiment.Nucleus.name = ('MultiClass_' + str(WhichExperiment.Nucleus.Index)).replace(', ','_').replace('[','').replace(']','')
 

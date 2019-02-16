@@ -7,7 +7,7 @@ from shutil import copyfile
 
 def RigidRegistration(subject , Template , preprocess):
 
-    #     processed = subject.address + '/' + subject.origImage + '_bias_corr.nii.gz'
+    print('     Rigid Registration')
     processed = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
     outP = subject.Temp.address + '/CropMask.nii.gz'
     LinearAffine = subject.Temp.Deformation.address + '/linearAffine.txt'
@@ -19,6 +19,8 @@ def RigidRegistration(subject , Template , preprocess):
             os.system("WarpImageMultiTransform 3 %s %s -R %s %s"%(Template.Mask , outP , processed , LinearAffine) )
 
 def BiasCorrection(subject , params):
+
+    print('     Bias Correction')
 
     inP  = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
     outP = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
@@ -50,7 +52,7 @@ def BiasCorrection(subject , params):
 
 #         # Cropping the Label
 #         for ind in params.WhichExperiment.Nucleus.FullIndexes:
-#             NucleusName, _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
+#             NucleusName, _ , _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
 
 #             inP  = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
 #             outP = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
@@ -65,6 +67,8 @@ def BiasCorrection(subject , params):
 #                     copyfile(outP , outDebug)
 
 def Bash_AugmentNonLinear(subject , subjectRef , outputAddress): # Image , Mask , Reference , output):
+
+    print('     Augment NonLinear')
 
     ImageOrig = subject.address       + '/' + subject.ImageProcessed + '.nii.gz'
     # MaskOrig  = subject.Label.address + '/' + subject.Label.LabelProcessed + '.nii.gz'

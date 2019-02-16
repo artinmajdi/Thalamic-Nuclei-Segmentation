@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 def runOneExperiment(UserInfoB):
 
-    _, FullIndexes = smallFuncs.NucleiSelection(ind = 1,organ = 'THALAMUS')
+    _, FullIndexes,_ = smallFuncs.NucleiSelection(ind = 1,organ = 'THALAMUS')
 
     UserInfoB['slicingDim'] = 2
     params = paramFunc.Run(UserInfoB)
@@ -26,7 +26,7 @@ def runOneExperiment(UserInfoB):
         subject = params.directories.Test.Input.Subjects[sj]
 
         for nucleiIx in FullIndexes:
-            nucleusNm, _ = smallFuncs.NucleiSelection(ind = nucleiIx,organ = 'THALAMUS')
+            nucleusNm, _,_ = smallFuncs.NucleiSelection(ind = nucleiIx,organ = 'THALAMUS')
 
             if os.path.isfile(params.directories.Test.Result + '/' + sj + '/' + nucleusNm + '.nii.gz'):
                 
@@ -64,7 +64,7 @@ AllExperimentsList = {
 }
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
-UserInfoB['TestOnly'] = True
+
 # UserInfoB['CreatingTheExperiment'] = False
 
 dirSave = runOneExperiment(UserInfoB)

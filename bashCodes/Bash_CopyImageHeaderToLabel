@@ -1,15 +1,17 @@
-#!/bin/tcsh
+#!/bin/csh
 
-# export dir = '/array/ssd/msmajdi/data/preProcessed/7T/20priors'
-# cd $dir
+set Fulldata='/array/ssd/msmajdi/data/preProcessed/7T'
+set dataset='All_7T'
 
-foreach dataset ( MS )
-foreach vimp ($dataset/*)
-foreach label ($vimp/Label/*.nii.gz)
+cd $Fulldata
+
+foreach vimp ({$dataset}/*)
+foreach label( {$vimp}/vtk_rois/*.nii.gz )
 echo $label
-CopyImageHeaderInformation $vimp/WMnMPRAGE_BsCr.nii.gz $label $label 1 1 1 0
+CopyImageHeaderInformation $vimp/WMnMPRAGE*.nii.gz $label $label 1 1 1 0
 end
 end
+
 
 
 

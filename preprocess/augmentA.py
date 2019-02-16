@@ -90,7 +90,7 @@ def LinearFunc(params, mode):
                 smallFuncs.saveImage( np.float32(CropMask > 0.5) , Affine , Header , Dir_CropMask_Out)
 
             for ind in params.WhichExperiment.Nucleus.FullIndexes:
-                NucleusName, _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
+                NucleusName, _ , _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
 
                 Mask   = nib.load(subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz').get_data() # 'Cropped' for cropped image
 

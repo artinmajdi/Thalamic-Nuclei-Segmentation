@@ -10,6 +10,7 @@ import os, sys
 from copy import deepcopy
 import pandas as pd
 import pickle
+import mat4py 
 
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
 def NucleiSelection(ind = 1,organ = 'THALAMUS'):
@@ -87,7 +88,7 @@ def terminalEntries(UserInfo):
 
         elif entry.lower() in ('-n','--nuclei'):  # nuclei index
             if sys.argv[en+1].lower() == 'all':
-                _, UserInfo['nucleus_Index'] = NucleiSelection(ind = 1,organ = 'THALAMUS')
+                _, UserInfo['nucleus_Index'],_ = NucleiSelection(ind = 1,organ = 'THALAMUS')
 
             elif sys.argv[en+1][0] == '[':
                 B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
@@ -167,13 +168,18 @@ def search_ExperimentDirectory(whichExperiment):
 
             if Files.Label.LabelOriginal and not Files.Label.LabelProcessed: 
                 Files.Label.LabelProcessed = NucleusName + '_PProcessed'
-                copyfile(Files.Label.address + '/' + Files.Label.LabelOriginal + '.nii.gz' , Files.Label.address + '/' + Files.Label.LabelProcessed + '.nii.gz')
+                _, _, FullNames = NucleiSelection(ind=1,organ='THALAMUS')
+                for name in FullNames: copyfile(Files.Label.address + '/' + name + '.nii.gz' , Files.Label.address + '/' + name + '_PProcessed.nii.gz')
                 
 
             for s in A[1]:
                 if 'temp' in s: 
                     Files.Label.Temp.address = Files.Label.address + '/' + s
-                    Files.Label.Temp.Cropped = [ d.split('.nii.gz')[0] for d in next(os.walk(Files.Label.Temp.address))[2] if '_Cropped.nii.gz' in d]
+
+                    for d in os.listdir(Files.Label.Temp.address):
+                        if '_Cropped.nii.gz' in d: Files.Label.Temp.Cropped = splitNii(d)
+
+                    # Files.Label.Temp.Cropped = [ d.split('.nii.gz')[0] for d in os.listdir(Files.Label.Temp.address) if '_Cropped.nii.gz' in d]
                 else: Files.Label.address = Dir + '/' + s
 
             return Files
@@ -186,13 +192,16 @@ def search_ExperimentDirectory(whichExperiment):
                 elif 'bias_corr_Cropped.nii.gz' in s: Files.Temp.Cropped = splitNii(s)
                 else: Files.Temp.origImage = splitNii(s)
             
-            if any('deformation' in s for s in A[1]):
+            if 'deformation' in A[1]:
                 Files.Temp.Deformation.address = Files.Temp.address + '/deformation'
-                A = next(os.walk(Files.Temp.Deformation.address))
-                for s in A[2]:
+                B = next(os.walk(Files.Temp.Deformation.address))
+                for s in B[2]:
                     if 'testWarp.nii.gz' in s: Files.Temp.Deformation.testWarp = splitNii(s)
                     elif 'testInverseWarp.nii.gz' in s: Files.Temp.Deformation.testInverseWarp = splitNii(s)
                     elif 'testAffine.txt' in s: Files.Temp.Deformation.testAffine = splitNii(s)
+            
+            if not Files.Temp.Deformation.address: Files.Temp.Deformation.address = mkDir(Files.Temp.address + '/deformation')
+
             return Files
 
         def check_IfImageFolder(Files):            
@@ -201,15 +210,17 @@ def search_ExperimentDirectory(whichExperiment):
                 if 'PProcessed.nii.gz' in s: Files.ImageProcessed = splitNii(s)
                 if '.nii.gz' in s and 'PProcessed.nii.gz' not in s: Files.ImageOriginal = splitNii(s)
 
-            if Files.ImageOriginal or Files.ImageProcessed:
+            if Files.ImageOriginal or Files.ImageProcessed:                
                 for s in A[1]:
-                    if 'temp' in s: Files.Temp.address = Dir + '/' + s
+                    if 'temp' in s: Files.Temp.address = mkDir(Dir + '/' + s)
                     else: Files.Label.address = Dir + '/' + s
 
                 if Files.ImageOriginal and not Files.ImageProcessed: 
                     Files.ImageProcessed = 'PProcessed'
                     copyfile(Dir + '/' + Files.ImageOriginal + '.nii.gz' , Dir + '/' + Files.ImageProcessed + '.nii.gz')               
-                    
+            
+            if not Files.Temp.address: Files.Temp.address = mkDir(Dir + '/temp')
+
             return Files
                     
         Files = Classes_Local(Dir)
@@ -222,10 +233,12 @@ def search_ExperimentDirectory(whichExperiment):
         return Files
 
     def checkInputDirectory(Dir, NucleusName):       
+        
         class Input:
             address = os.path.abspath(Dir)
-            Subjects = [  Search_ImageFolder(Dir + '/' + s ,NucleusName)  for s in next(os.walk(Dir))[1]  ]
-            # MultipleTest = multipleTest
+            Subjects = {}
+
+        for s in next(os.walk(Dir))[1]: Input.Subjects[s] = Search_ImageFolder(Dir + '/' + s ,NucleusName)
 
         return Input
         

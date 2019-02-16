@@ -10,59 +10,79 @@ from preprocess import augmentA, BashCallingFunctionsA, normalizeA, croppingA
 #! mode: 2: on individual image
 def main(params, mode):
 
-    # params = smallFuncs.inputNamesCheck(params, mode)
-    if 'experiment' in mode:
-        params = apply_On_Experiment(params)
-    else:
-        subject = []
-        params = apply_On_Individual(params,subject)
+    def loopOverSubjects_PreProcessing(params, Mode):
+        
+        class Info:
+            mode = Mode
+            dirr = params.directories.Train if Mode == 'train' else params.directories.Test
+            Length = len(dirr.Input.Subjects)
+            subjectName = ''
+            ind = ''
+            Subjects = dirr.Input.Subjects
 
-    return params
+        for Info.ind, Info.subjectName in enumerate(Info.Subjects): apply_On_Individual(params, Info)
 
-# TODO need to fix the "BashCallingFunctionsA" function to count for situations when we only want to apply the function on one case
-def apply_On_Individual(params,subject):
+    params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
+    if not params.preprocess.TestOnly: loopOverSubjects_PreProcessing(params, 'train')
+
+    loopOverSubjects_PreProcessing(params, 'test')
+
+def apply_On_Individual(params,Info):
+
+    subject = Info.Subjects[Info.subjectName]
+
+    print( '(' + str(Info.ind) + '/'+str(Info.Length) + ')' , Info.mode, Info.subjectName)
 
     BashCallingFunctionsA.BiasCorrection( subject , params)
-    BashCallingFunctionsA.RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
-    BashCallingFunctionsA.Bash_Cropping( subject , params)
+
+    if 'Aug' not in Info.subjectName: 
+        BashCallingFunctionsA.RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
+
+    croppingA.main(subject , params)
 
     return params
 
-def apply_On_Experiment(params):
-
-    params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
-
-    for mode in ['train','test']:
-
-        if params.preprocess.TestOnly and 'train' in mode:
-            continue
-
-        dirr = params.directories.Train if mode == 'train' else params.directories.Test
-        for ind, sj in enumerate(dirr.Input.Subjects):
-            subject = dirr.Input.Subjects[sj]
-            print(mode.upper(), 'BiasCorrection:' , sj , str(ind) + '/' + str(len(dirr.Input.Subjects)))
-            BashCallingFunctionsA.BiasCorrection( subject , params)
-
-    params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)    
-    for mode in ['train','test']:
-
-        dirr = params.directories.Train if mode == 'train' else params.directories.Test
-        for ind, sj in enumerate(dirr.Input.Subjects) :
-            subject = dirr.Input.Subjects[sj]
-            if 'Aug' not in sj:
-                print('\n',mode.upper(), sj , str(ind) + '/' + str(len(dirr.Input.Subjects)),'------------')
-                print('    - RigidRegistration: ')
-                BashCallingFunctionsA.RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
-            else:
-                print('----')
-
-            print('    - Cropping: ')
-            croppingA.main(subject , params)
-            # BashCallingFunctionsA.Bash_Cropping( subject , params)
-
-    params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
+def apply_Augmentation(params):
     augmentA.main_augment( params , 'Linear' , 'experiment')
     params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
     augmentA.main_augment( params , 'NonLinear' , 'experiment')
 
-    return params
+
+# def apply_On_Experiment(params):
+
+#     params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
+
+#     for mode in ['train','test']:
+
+#         if params.preprocess.TestOnly and 'train' in mode:
+#             continue
+
+#         dirr = params.directories.Train if mode == 'train' else params.directories.Test
+#         for ind, sj in enumerate(dirr.Input.Subjects):
+#             subject = dirr.Input.Subjects[sj]
+#             print(mode.upper(), 'BiasCorrection:' , sj , str(ind) + '/' + str(len(dirr.Input.Subjects)))
+#             BashCallingFunctionsA.BiasCorrection( subject , params)
+
+#     params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)    
+#     for mode in ['train','test']:
+
+#         dirr = params.directories.Train if mode == 'train' else params.directories.Test
+#         for ind, sj in enumerate(dirr.Input.Subjects) :
+#             subject = dirr.Input.Subjects[sj]
+#             if 'Aug' not in sj:
+#                 print('\n',mode.upper(), sj , str(ind) + '/' + str(len(dirr.Input.Subjects)),'------------')
+#                 print('    - RigidRegistration: ')
+#                 BashCallingFunctionsA.RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
+#             else:
+#                 print('----')
+
+#             print('    - Cropping: ')
+#             croppingA.main(subject , params)
+#             # BashCallingFunctionsA.Bash_Cropping( subject , params)
+
+#     params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
+#     augmentA.main_augment( params , 'Linear' , 'experiment')
+#     params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
+#     augmentA.main_augment( params , 'NonLinear' , 'experiment')
+
+#     return params

@@ -66,7 +66,7 @@ def mergingDiceValues(Dir):
                 names = list(np.zeros(15))
                 names[0] = 'subjects'
                 for ind in FullIndexes:
-                        if ind != 4567: names[ind], _ = smallFuncs.NucleiSelection(ind)
+                        if ind != 4567: names[ind], _ , _ = smallFuncs.NucleiSelection(ind)
 
                 for subject in subF:
                         Dir_subject = Dir + '/' + subject
@@ -100,8 +100,8 @@ def mergingDiceValues(Dir):
         writer.close()
 
 
-UserInfo = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
-params = paramFunc.Run(UserInfo)
+UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
+params = paramFunc.Run(UserInfoB)
 
 
 mergingDiceValues((params.directories.Test.Result).split('/subExp')[0])

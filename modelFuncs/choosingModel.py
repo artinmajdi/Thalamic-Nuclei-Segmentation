@@ -17,7 +17,7 @@ from shutil import copyfile
 import pandas as pd
 import mat4py
 import pickle
-
+from skimage import measure
 
 def check_Run(params, Data):
 
@@ -70,7 +70,7 @@ def testingExeriment(model, Data, params):
 
         def savingOutput(pred1N_BtO, params, ResultDir, nameSubject, NucleiIndex, Affine, Header):
             dirSave = smallFuncs.mkDir(ResultDir + '/' + nameSubject)  
-            nucleusName, _ = smallFuncs.NucleiSelection(NucleiIndex)
+            nucleusName, _ , _ = smallFuncs.NucleiSelection(NucleiIndex)
             smallFuncs.saveImage( pred1N_BtO , Affine, Header, dirSave + '/' + nucleusName + '.nii.gz')
             return dirSave, nucleusName
 
@@ -207,28 +207,33 @@ def applyThalamusOnInput(params, ThalamusMasks):
         def dilateMask(mask, gapDilation):
             struc = ndimage.generate_binary_structure(3,2)
             struc = ndimage.iterate_structure(struc,gapDilation) 
-            return ndimage.binary_dilation(Thalamus_Mask, structure=struc)
+            return ndimage.binary_dilation(mask, structure=struc)
        
         def checkBordersOnBoundingBox(imFshape , BB , gapOnSlicingDimention):
             return [   [   np.max([BB[d][0]-gapOnSlicingDimention,0])  ,   np.min( [BB[d][1]+gapOnSlicingDimention,imFshape[d]])   ]  for d in range(3) ]
 
         def cropBoundingBoxes(params, subject, imFshape, Thalamus_Mask, Thalamus_Mask_Dilated):
 
-            # def func_CropCoordinates(CropMask):
-            #     ss = np.sum(CropMask,axis=2)
-            #     c1 = np.where(np.sum(ss,axis=1) > 10)[0]
-            #     c2 = np.where(np.sum(ss,axis=0) > 10)[0]
+            def findBoundingBox(Thalamus_Mask):
+                objects = measure.regionprops(measure.label(Thalamus_Mask))
+                area = []
+                for obj in objects: area = np.append(area, obj.area)
 
-            #     ss = np.sum(CropMask,axis=1)
-            #     c3 = np.where(np.sum(ss,axis=0) > 10)[0]
+                Ix = np.argsort(area)
 
-            #     BBCord = [   [c1[0],c1[-1]]  ,  [c2[0],c2[-1]]  , [c3[0],c3[-1]]  ]
+                L = len(Thalamus_Mask.shape)
+                bbox = objects[ Ix[-1] ].bbox
+                BB = [ [bbox[d] , bbox[L + d] ] for d in range(L)]
+                                
+                return BB
 
-            #     return BBCord
+            BB = findBoundingBox(Thalamus_Mask)
+            # BB = croppingA.func_CropCoordinates(Thalamus_Mask)
 
-            BB = croppingA.func_CropCoordinates(Thalamus_Mask)
             BB = checkBordersOnBoundingBox(imFshape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
-            BBd  = croppingA.func_CropCoordinates(Thalamus_Mask_Dilated)
+            # BBd  = croppingA.func_CropCoordinates(Thalamus_Mask_Dilated)
+            BBd = [  [BB[ii][0] - 5 , BB[ii][1] + 5] for ii in range(len(BB))]
+            BBd = checkBordersOnBoundingBox(imFshape , BBd , 0)
 
             np.savetxt(subject.Temp.address + '/BB.txt',BB,fmt='%d')
             np.savetxt(subject.Temp.address + '/BBd.txt',BBd,fmt='%d')

@@ -127,43 +127,17 @@ def kaggleCompetition(params):
 # TODO: add the saving images with the format mahesh said
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments(params):
-   
-    def newCropedSize(subject, params):
-
-        def readingThalamicCropSizes(subject , slicingDirection):
-            BB = np.loadtxt(subject.Temp.address + '/BB.txt',dtype=int)
-            BBd = np.loadtxt(subject.Temp.address + '/BBd.txt',dtype=int)
-
-            #! ebcause on the slicing direction we don't want the extra dilated effect to be considered
-            BBd[slicingDirection] = BB[slicingDirection]
-                            
-            return BBd
-            
-        if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
-            BB = readingThalamicCropSizes(subject, params.WhichExperiment.Dataset.slicingInfo.slicingDim)
-
-            origSize = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
-
-            subject.NewCropInfo.OriginalBoundingBox = BB            
-            subject.NewCropInfo.PadSizeBackToOrig   = tuple([ tuple([BB[d][0] , origSize[d]-BB[d][1]]) for d in range(3) ])
-
-            Shape = np.array([BB[d][1]-BB[d][0] for d  in range(3)])     
-        else:
-            Shape = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
-
-        Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
-        return Shape, subject
-        
+          
     def inputPreparationForUnet(im,subject, params):
 
-        def CroppingInput(im, subject):
+        def CroppingInput(im, subjectB):
             
-            if np.min(subject.Padding) < 0:    
-                padding = np.array([list(x) for x in subject.Padding])                
+            if np.min(subjectB.Padding) < 0:    
+                padding = np.array([list(x) for x in subjectB.Padding])                
                 crd = -1*padding 
                 padding[padding < 0] = 0
                 crd[crd < 0] = 0
-                subject.Padding = tuple([tuple(x) for x in padding])
+                subjectB.Padding = tuple([tuple(x) for x in padding])
 
                 sz = im.shape
                 crd = crd[:len(sz),:]
@@ -171,16 +145,21 @@ def readingFromExperiments(params):
                         
                 im = im[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
 
-            return im, subject
+                
+            im = np.pad(im, subjectB.Padding[:3], 'constant')
+
+            return im
 
         if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
             # subject.NewCropInfo.PadSizeBackToOrig
             BB = subject.NewCropInfo.OriginalBoundingBox            
             im = im[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]] 
 
+        aa = subject.address.split('train/') if len(subject.address.split('train/')) == 2 else subject.address.split('test/')
+
         im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
-        im, subject = CroppingInput(im, subject)    
-        im = np.pad(im, subject.Padding[:3], 'constant')
+        im = CroppingInput(im, subject)    
+        
         im = np.transpose(im,[2,0,1])
         im = np.expand_dims(im ,axis=3).astype('float32')
         
@@ -202,7 +181,7 @@ def readingFromExperiments(params):
             return background
 
         for cnt, NucInd in enumerate(params.WhichExperiment.Nucleus.Index):
-            nameNuclei, _ = smallFuncs.NucleiSelection(NucInd)
+            nameNuclei, _,_ = smallFuncs.NucleiSelection(NucInd)
             inputMsk = subject.Label.address + '/' + nameNuclei + '_PProcessed.nii.gz'
 
             origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape) 
@@ -276,6 +255,31 @@ def readingFromExperiments(params):
 
         def find_AllInputSizes(params):
 
+            def newCropedSize(subject, params):
+
+                def readingThalamicCropSizes(subject , slicingDirection):
+                    BB = np.loadtxt(subject.Temp.address + '/BB.txt',dtype=int)
+                    BBd = np.loadtxt(subject.Temp.address + '/BBd.txt',dtype=int)
+
+                    #! ebcause on the slicing direction we don't want the extra dilated effect to be considered
+                    BBd[slicingDirection] = BB[slicingDirection]
+                                    
+                    return BBd
+                    
+                if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
+                    BB = readingThalamicCropSizes(subject, params.WhichExperiment.Dataset.slicingInfo.slicingDim)
+
+                    origSize = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
+
+                    subject.NewCropInfo.OriginalBoundingBox = BB            
+                    subject.NewCropInfo.PadSizeBackToOrig   = tuple([ tuple([BB[d][0] , origSize[d]-BB[d][1]]) for d in range(3) ])
+
+                    Shape = np.array([BB[d][1]-BB[d][0] for d  in range(3)])     
+                else:
+                    Shape = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
+
+                Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
+                return Shape, subject
             def loopOverAllSubjects(Input):
                 inputSize = []
                 for sj in Input.Subjects:

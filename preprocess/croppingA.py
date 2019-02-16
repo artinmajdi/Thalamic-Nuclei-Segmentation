@@ -18,7 +18,7 @@ def main(subject , params):
 
             return inP, outP, crop, outDebug 
                 
-        def main_CropImage(params, inP, outP, crop):
+        def main_CropImage(params, inP, outP, crop, outDebug):
 
             def CropImage_Python(im , CropMask , Gap):
                 
@@ -45,6 +45,7 @@ def main(subject , params):
 
                 return im , CropCoordinates  
 
+            CropCoordinates = ''
             if 'ANTs' in params.preprocess.Cropping.Method:
                 os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
 
@@ -54,15 +55,18 @@ def main(subject , params):
                 CropMask = nib.load(crop)
                 imC , CropCoordinates = CropImage_Python(im.get_data() , CropMask.get_data() , Gap)
                 smallFuncs.saveImage(imC , im.affine , im.header , outP)
+
+            if params.preprocess.Debug.doDebug: copyfile(outP , outDebug)
+
             return CropCoordinates
 
         CropCoordinates = ''
         inP, outP, crop, outDebug = directoriesImage(subject)
 
         if os.path.isfile(outDebug): copyfile(outDebug , outP)
-        else: CropCoordinates = main_CropImage(params, inP, outP, crop)
+        else: CropCoordinates = main_CropImage(params, inP, outP, crop, outDebug)
         
-        if params.preprocess.Debug.doDebug: copyfile(outP , outDebug)
+        
 
         return CropCoordinates
            
@@ -70,7 +74,7 @@ def main(subject , params):
 
         def check_cropNucleus(subject, CropCoordinates, ind):
             
-            def main_cropNucleus(params, inP, outP, crop, CropCoordinates):
+            def main_cropNucleus(params, inP, outP, crop, CropCoordinates, outDebug):
 
                 def cropNucleus_Python(im, CropCoordinates):
                     d1 = CropCoordinates[0]
@@ -100,13 +104,13 @@ def main(subject , params):
             inP, outP, crop, outDebug = directoriesNuclei(subject, ind)
 
             if os.path.isfile(outDebug): copyfile(outDebug , outP)
-            else: main_cropNucleus(params, inP, outP, crop, CropCoordinates)
+            else: main_cropNucleus(params, inP, outP, crop, CropCoordinates, outDebug)
 
         for ind in params.WhichExperiment.Nucleus.FullIndexes:
             check_cropNucleus(subject, CropCoordinates, ind)
 
     if params.preprocess.Cropping.Mode:
-
+        print('     Cropping')
         CropCoordinates = check_cropImage(subject)
   
         loopOver_Nuclei(params, subject , CropCoordinates )
