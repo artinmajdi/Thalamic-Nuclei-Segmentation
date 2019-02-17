@@ -6,17 +6,23 @@ from otherFuncs import smallFuncs
 from Parameters import UserInfo, paramFunc
 import pickle 
 
+UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
+params = paramFunc.Run(UserInfoB)
+NucleiIndexes = UserInfoB['nucleus_Index']
+
+
 def savingHistory_AsExcel(params):
 
         Dir = (params.directories.Train.Model).split('/subExp')[0]
 
-        _, FullIndexes, namesNulcei = smallFuncs.NucleiSelection(1)
+        # _, FullIndexes, namesNulcei = smallFuncs.NucleiSelection(1)
         # namesNulcei = smallFuncs.AllNucleiNames(FullIndexes)
         n_epochsMax = 300
 
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
         writer = pd.ExcelWriter((params.directories.Test.Result).split('/subExp')[0] + '/All_LossAccForEpochs.xlsx', engine='xlsxwriter')
-        for nucleus in namesNulcei:
+        for ind in NucleiIndexes:
+                nucleus, _ , _ = smallFuncs.NucleiSelection(ind)
                 # dir_save = smallFuncs.mkDir((params.directories.Test.Result).split('/subExp')[0] + '/Train_Output')
                 AllNucleusInfo = []
                 ind = -1
@@ -61,11 +67,11 @@ def mergingDiceValues(Dir):
                 subF.sort()
                 Dice_Test = []
 
-                _, FullIndexes, _ = smallFuncs.NucleiSelection(1)
+                # _, FullIndexes, _ = smallFuncs.NucleiSelection(1)
                 # names = np.append(['subjects'], smallFuncs.AllNucleiNames(FullIndexes))
                 names = list(np.zeros(15))
                 names[0] = 'subjects'
-                for ind in FullIndexes:
+                for ind in NucleiIndexes:
                         if ind != 4567: names[ind], _ , _ = smallFuncs.NucleiSelection(ind)
 
                 for subject in subF:
@@ -75,13 +81,18 @@ def mergingDiceValues(Dir):
 
                         Dice_Single = list(np.zeros(15))
                         Dice_Single[0] = subject
-                        for n in a:
-                                b = np.loadtxt(Dir_subject + '/' + n)
-                                index = int(b[0])
-                                if index != 4567: 
-                                        Dice_Single[index] = b[1] 
-                                else: 
-                                        Dice_Single[3] = b[1] 
+                        # for n in a:
+
+
+                        for ind in NucleiIndexes:
+                                if os.path.isfile(Dir_subject + '/Dice_' + names[ind]+'.txt'):
+                                        b = np.loadtxt(Dir_subject + '/Dice_' + names[ind]+'.txt')
+                                        Dice_Single[int(b[0])] = b[1]
+                                        # index = int(b[0])
+                                        # if index != 4567: 
+                                        #         Dice_Single[index] = b[1] 
+                                        # else: 
+                                        #         Dice_Single[3] = b[1] 
                                         
                         Dice_Test.append(Dice_Single)
 
@@ -98,10 +109,6 @@ def mergingDiceValues(Dir):
                 df.to_excel(writer, sheet_name=subExperiment)
 
         writer.close()
-
-
-UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
-params = paramFunc.Run(UserInfoB)
 
 
 mergingDiceValues((params.directories.Test.Result).split('/subExp')[0])

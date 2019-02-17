@@ -124,50 +124,54 @@ def kaggleCompetition(params):
     data.Test = data.Train
     return data, '_'
 
+
+
+
+def paddingNegativeFix(sz, Padding):
+    padding = np.array([list(x) for x in Padding])                
+    crd = -1*padding 
+    padding[padding < 0] = 0
+    crd[crd < 0] = 0
+    Padding = tuple([tuple(x) for x in padding])
+    
+    # sz = im.shape
+    crd = crd[:len(sz),:]
+    for ix in range(len(sz)): crd[ix,1] = sz[ix] if crd[ix,1] == 0 else -crd[ix,1]
+    
+    return padding, crd
+
+
 # TODO: add the saving images with the format mahesh said
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments(params):
           
-    def inputPreparationForUnet(im,subject, params):
+    def inputPreparationForUnet(im,subject2, params):
 
-        def CroppingInput(im, subjectB):
-            
-            if np.min(subjectB.Padding) < 0:    
-                padding = np.array([list(x) for x in subjectB.Padding])                
-                crd = -1*padding 
-                padding[padding < 0] = 0
-                crd[crd < 0] = 0
-                subjectB.Padding = tuple([tuple(x) for x in padding])
-
-                sz = im.shape
-                crd = crd[:len(sz),:]
-                for ix in range(len(sz)): crd[ix,1] = sz[ix] if crd[ix,1] == 0 else -crd[ix,1]
-                        
+        def CroppingInput(im, Padding2):
+            if np.min(Padding2) < 0: 
+                Padding2, crd = paddingNegativeFix(im.shape, Padding2)          
                 im = im[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
 
-                
-            im = np.pad(im, subjectB.Padding[:3], 'constant')
-
-            return im
+            return np.pad(im, Padding2[:3], 'constant')
 
         if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
             # subject.NewCropInfo.PadSizeBackToOrig
-            BB = subject.NewCropInfo.OriginalBoundingBox            
+            BB = subject2.NewCropInfo.OriginalBoundingBox            
             im = im[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]] 
 
-        aa = subject.address.split('train/') if len(subject.address.split('train/')) == 2 else subject.address.split('test/')
+        # aa = subject.address.split('train/') if len(subject2.address.split('train/')) == 2 else subject.address.split('test/')
 
         im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
-        im = CroppingInput(im, subject)    
+        im = CroppingInput(im, subject2.Padding)    
         
         im = np.transpose(im,[2,0,1])
         im = np.expand_dims(im ,axis=3).astype('float32')
         
         return im
         
-    def readingImage(params, subject):
-        imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-        im = inputPreparationForUnet(imF.get_data(), subject, params)
+    def readingImage(params, subject2):
+        imF = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
+        im = inputPreparationForUnet(imF.get_data(), subject2, params)
         im = normalizeA.main_normalize(params.preprocess.Normalize , im)
         return im, imF
 

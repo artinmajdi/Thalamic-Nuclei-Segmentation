@@ -93,7 +93,19 @@ def testingExeriment(model, Data, params):
 
             def unPadding(im , pad):
                 sz = im.shape
-                return im[pad[0][0]:sz[0]-pad[0][1] , pad[1][0]:sz[1]-pad[1][1] , pad[2][0]:sz[2]-pad[2][1],:]
+                if np.min(pad) < 0:
+                    pad, crd = datasets.paddingNegativeFix(sz, pad)
+                    for ix in range(len(sz)):
+                         crd[ix,1] = 0  if crd[ix,1] == sz[ix] else -crd[ix,1]
+
+                    crd = tuple([tuple(x) for x in crd])
+
+                    im = im[pad[0][0]:sz[0]-pad[0][1] , pad[1][0]:sz[1]-pad[1][1] , pad[2][0]:sz[2]-pad[2][1],:]
+                    im = np.pad( im , crd , 'constant')
+                else:
+                    im = im[pad[0][0]:sz[0]-pad[0][1] , pad[1][0]:sz[1]-pad[1][1] , pad[2][0]:sz[2]-pad[2][1],:]
+
+                return im
 
             pred = model.predict(Data.Image)
             # score = model.evaluate(Data.Image, Data.Mask)
@@ -276,7 +288,9 @@ def applyThalamusOnInput(params, ThalamusMasks):
     
     def loopOverSubjects(params, ThalamusMasks, mode):
         Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
-        for sj in tqdm(Subjects ,desc='applying Thalamus for cascade method: ' + mode):           
+        for sj in tqdm(Subjects ,desc='applying Thalamus for cascade method: ' + mode):     
+            if 'ERROR_vimp2_1448_08132015' in sj:
+                print('----')      
             ApplyThalamusMask(ThalamusMasks[sj] , params, Subjects[sj], sj, 'train') 
 
     loopOverSubjects(params, ThalamusMasks.Test, 'test')

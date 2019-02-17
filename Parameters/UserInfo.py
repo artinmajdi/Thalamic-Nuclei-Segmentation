@@ -10,8 +10,8 @@
 
 #! this is temporary and should later be moved down
 slicingDim = 2
-DatasetIx = 4
-epochs = 10
+DatasetIx = 1
+epochs = 60
 GPU_Index = 2
 Experiments_Index = '6_cascade'
 
