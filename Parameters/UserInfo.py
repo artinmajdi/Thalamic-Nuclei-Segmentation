@@ -1,27 +1,18 @@
 
-# AllExperimentsList = {
-#     1: dict(nucleus_Index = [8] , GPU_Index = 4 , lossFunctionIx = 3)
-#     # 2: dict(nucleus_Index = [6] , GPU_Index = 6 , lossFunctionIx = 2),
-#     # 3: dict(nucleus_Index = [6] , GPU_Index = 7 , lossFunctionIx = 3),
-#     # 4: dict(nucleus_Index = [8] , GPU_Index = 5 , lossFunctionIx = 1),
-#     # 5: dict(nucleus_Index = [8] , GPU_Index = 6 , lossFunctionIx = 2),
-#     # 6: dict(nucleus_Index = [8] , GPU_Index = 7 , lossFunctionIx = 3),
-# }
-
-#! this is temporary and should later be moved down
-slicingDim = 2
-DatasetIx = 4
 epochs = 60
 GPU_Index = 2
-Experiments_Index = '6_cascade'
+Learning_Rate = 1e-3
+num_Layers = 3
 
-#! Nucleus Index
+TestOnly = False
+Experiments_Index = '6_cascade'
 nucleus_Index = [1]
+
+slicingDim = 2
+DatasetIx = 4
 
 
 #! Training
-num_Layers = 5
-# epochs = 80
 batch_size = 40
 Initialize_FromThalamus = False
 Initialize_FromOlderModel = False
@@ -69,7 +60,7 @@ lossFunctionIx = 2
 #! Optimizer
 #          1: 'Adam'
 OptimizerIx = 1
-Learning_Rate = 1e-3
+# Learning_Rate = 1e-3
 
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
@@ -91,7 +82,6 @@ preprocessMode = True
 BiasCorrection = False
 Cropping = True
 Normalize = True
-TestOnly = False
 
 #! this flag has two applications:
 #    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment
