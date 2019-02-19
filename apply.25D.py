@@ -58,17 +58,10 @@ def saveImageDice(Image1, MLabel, dirSave, sj, nucleusNm, nucleiIx):
     np.savetxt(dirSave + '/' + sj + '/Dice_' + nucleusNm + '.txt' ,Dice)
 
 
-AllExperimentsList = {
-    1: dict(),
-    # 2: dict(nucleus_Index = [6] , GPU_Index = 6 , lossFunctionIx = 2),
-}
-
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
-
-# UserInfoB['CreatingTheExperiment'] = False
 
 dirSave = runOneExperiment(UserInfoB)
 
 Extra_mergingResults.mergingDiceValues(dirSave.split('/subExp')[0])
 
-os.system('bash Bash_Run')
+os.system('bash bashCodes/bash_zip')

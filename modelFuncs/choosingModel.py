@@ -58,6 +58,9 @@ def testingExeriment(model, Data, params):
             def cascade_paddingToOrigSize(params, im, subject):
                 if 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index:
                     im = np.pad(im, subject.NewCropInfo.PadSizeBackToOrig, 'constant')
+
+                    # Padding2, crd = paddingNegativeFix(im.shape, Padding2)          
+                    # im = im[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
                 return im
                         
             pred1N = binarizing( np.squeeze(pred) )                    
@@ -113,7 +116,10 @@ def testingExeriment(model, Data, params):
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
             pred = np.transpose(pred,[1,2,0,3])
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
-            pred = unPadding(pred, padding)
+
+            paddingTp = [ padding[p] for p in params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
+
+            pred = unPadding(pred, paddingTp)
             return pred
 
 
@@ -253,10 +259,10 @@ def applyThalamusOnInput(params, ThalamusMasks):
 
         def apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject):
 
-            if not os.path.isfile(subject.Temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
-                copyfile(subject.address + '/' + subject.ImageProcessed + '.nii.gz' , subject.Temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz')
-            else:
-                copyfile( subject.Temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz' , subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+            # if not os.path.isfile(subject.Temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
+            #     copyfile(subject.address + '/' + subject.ImageProcessed + '.nii.gz' , subject.Temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz')
+            # else:
+            #     copyfile( subject.Temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz' , subject.address + '/' + subject.ImageProcessed + '.nii.gz')
             
             imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
             im = imF.get_data()

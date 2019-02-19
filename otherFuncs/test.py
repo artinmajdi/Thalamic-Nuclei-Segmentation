@@ -7,6 +7,8 @@ from skimage import morphology
 from skimage.measure import regionprops, label
 import os
 
+float(0.001)
+isinstance([2],list)
 
 def dilateMask(mask, gapDilation):
     struc = ndimage.generate_binary_structure(3,2)
@@ -45,10 +47,10 @@ imD = nib.load(dir + lst[ind] + '/1-THALAMUS.nii.gz').get_data()
 objects = regionprops(label(imD))
 area = []
 for obj in objects: area = np.append(area, obj.area)
-len(area)
+
 Ix = np.argsort(area)
 objects[ Ix[-1] ].bbox
-area[Ix[-1]]
+
 func_CropCoordinates(imD)
 
 

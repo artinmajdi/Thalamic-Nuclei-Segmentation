@@ -125,8 +125,6 @@ def kaggleCompetition(params):
     return data, '_'
 
 
-
-
 def paddingNegativeFix(sz, Padding):
     padding = np.array([list(x) for x in Padding])                
     crd = -1*padding 
@@ -160,16 +158,20 @@ def readingFromExperiments(params):
             im = im[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]] 
 
         # aa = subject.address.split('train/') if len(subject2.address.split('train/')) == 2 else subject.address.split('test/')
-
-        im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
-        im = CroppingInput(im, subject2.Padding)    
         
+        im = CroppingInput(im, subject2.Padding)    
+        im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
+
         im = np.transpose(im,[2,0,1])
         im = np.expand_dims(im ,axis=3).astype('float32')
         
         return im
         
     def readingImage(params, subject2):
+
+        if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 in params.WhichExperiment.Nucleus.Index and os.path.isfile(subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
+            copyfile( subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz' , subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
+        
         imF = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
         im = inputPreparationForUnet(imF.get_data(), subject2, params)
         im = normalizeA.main_normalize(params.preprocess.Normalize , im)
@@ -212,43 +214,42 @@ def readingFromExperiments(params):
 
             def findingSubjectsFinalPaddingAmount(wFolder, Input, params):
 
-                def findingPaddedInputSize(inputSize, params):
-                    MaxInputSize = np.max(inputSize, axis=0)
-                    new_inputSize = MaxInputSize
+                def findingPaddedInputSize(params):
+                    new_inputSize = np.max(Input.inputSizes, axis=0)
+                    # new_inputSize = MaxInputSize
 
                     a = 2**(params.WhichExperiment.HardParams.Model.num_Layers - 1)
-                    for dim in range(2):
-                        # checking how much we need to pad the input image to make sure the we don't lose any information because of odd dimension sizes
-                        if MaxInputSize[dim] % a != 0:
-                            new_inputSize[dim] = a * np.ceil(MaxInputSize[dim] / a)
+                    for dim in range(3):
+                        if new_inputSize[dim] % a != 0: new_inputSize[dim] = a * np.ceil(new_inputSize[dim] / a)
 
                     return new_inputSize
                 
-                def applyingPaddingDimOnSubjects(params, inputSize, Subjects):
-                    fullpadding = params.WhichExperiment.HardParams.Model.InputDimensions[:2] - inputSize[:,:2]
+                def applyingPaddingDimOnSubjects(params, Subjects):
+                    fullpadding = params.WhichExperiment.HardParams.Model.InputDimensions - Input.inputSizes
                     md = np.mod(fullpadding,2)
 
                     for sn, name in enumerate(list(Subjects)):
                         padding = [np.zeros(2)]*4
-                        for dim in range(2):
+                        for dim in params.WhichExperiment.Dataset.slicingInfo.slicingOrder[:2]:
                             if md[sn, dim] == 0:
                                 padding[dim] = tuple([int(fullpadding[sn,dim]/2)]*2)
                             else:
                                 padding[dim] = tuple([int(np.floor(fullpadding[sn,dim]/2) + 1) , int(np.floor(fullpadding[sn,dim]/2))])
 
-                        padding[2] = tuple([0,0])
+                        padding[params.WhichExperiment.Dataset.slicingInfo.slicingOrder[2]] = tuple([0,0])
                         padding[3] = tuple([0,0])
                         Subjects[name].Padding = tuple(padding)
 
                     return Subjects
 
-                if 'Train' in wFolder: params.WhichExperiment.HardParams.Model.InputDimensions = findingPaddedInputSize( Input.inputSizes, params )
+                # TODO check ehjy this works for test only cases even though i am not feeding teh dimension for padding; check where im adding dimension to the params
+                if 'Train' in wFolder: params.WhichExperiment.HardParams.Model.InputDimensions = findingPaddedInputSize( params )
 
                 # else:
                 #     new_inputSize = params.WhichExperiment.HardParams.Model.InputDimensions
                 
                 #! finding the amount of padding for each subject in each direction
-                Input.Subjects = applyingPaddingDimOnSubjects(params, Input.inputSizes, Input.Subjects)
+                Input.Subjects = applyingPaddingDimOnSubjects(params, Input.Subjects)
 
                 return Input
                 
@@ -282,7 +283,7 @@ def readingFromExperiments(params):
                 else:
                     Shape = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
 
-                Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
+                # Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
                 return Shape, subject
             def loopOverAllSubjects(Input):
                 inputSize = []

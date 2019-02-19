@@ -15,6 +15,8 @@ NucleiIndexes = UserInfoB['nucleus_Index']
 
 def Run_SingleNuclei(UserInfoB):
 
+
+    
     def gpuSetting(params):
         os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
         import tensorflow as tf
@@ -23,6 +25,7 @@ def Run_SingleNuclei(UserInfoB):
         return K
         
     params = paramFunc.Run(UserInfoB)
+    print('Learning_Rate',params.WhichExperiment.HardParams.Model.Lear)
     Data, params = datasets.loadDataset(params)
     K = gpuSetting(params)
     choosingModel.check_Run(params, Data)

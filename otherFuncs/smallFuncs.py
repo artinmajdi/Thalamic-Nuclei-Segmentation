@@ -78,8 +78,16 @@ def terminalEntries(UserInfo):
         if entry.lower() in ('-g','--gpu'):  # gpu num
             UserInfo['GPU_Index'] = sys.argv[en+1]
 
-        elif entry.lower() in ('-sd','--slicingdim'):
-            UserInfo['slicingDim'] = int(sys.argv[en+1])
+        elif entry.lower() in ('-sd','--slicingdim'):            
+            if sys.argv[en+1].lower() == 'all':
+                UserInfo['slicingDim'] = [0,1,2]
+
+            elif sys.argv[en+1][0] == '[':
+                B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
+                UserInfo['slicingDim'] = [int(k) for k in B]
+
+            else:
+                UserInfo['slicingDim'] = int(sys.argv[en+1])
 
         elif entry in ('-Aug','--AugmentMode'):
             a = int(sys.argv[en+1])
@@ -111,6 +119,11 @@ def terminalEntries(UserInfo):
 
         elif entry.lower() in ('-Ix','--Experiments_Index'):
             UserInfo['Experiments_Index'] = int(sys.argv[en+1])
+        elif entry.lower() in ('-lr','--Learning_Rate'):
+            UserInfo['Learning_Rate'] = float(sys.argv[en+1]) 
+        elif entry.lower() in ('-nl','--num_Layers'):
+            UserInfo['num_Layers'] = int(sys.argv[en+1]) 
+            
 
     return UserInfo
 

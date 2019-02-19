@@ -10,13 +10,13 @@
 
 #! this is temporary and should later be moved down
 slicingDim = 2
-DatasetIx = 1
+DatasetIx = 4
 epochs = 60
 GPU_Index = 2
 Experiments_Index = '6_cascade'
 
 #! Nucleus Index
-nucleus_Index = [2]
+nucleus_Index = [1]
 
 
 #! Training
@@ -69,7 +69,7 @@ lossFunctionIx = 2
 #! Optimizer
 #          1: 'Adam'
 OptimizerIx = 1
-
+Learning_Rate = 1e-3
 
 #! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
@@ -77,7 +77,7 @@ Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 # Experiments_Tag = '7T' # 'SRI' 'tmp' 'SRI_wLRAug' '7T' '7T_wLRAug'
 
 
-SubExperiment_Index = 2
+SubExperiment_Index = 3
 SubExperiment_Tag = ''
 
 #! cropping mode

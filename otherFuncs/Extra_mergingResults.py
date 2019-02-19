@@ -115,3 +115,6 @@ mergingDiceValues((params.directories.Test.Result).split('/subExp')[0])
 
 savingHistory_AsExcel(params)
 
+# A = UserInfoB['slicingDim'] if isinstance(UserInfoB['slicingDim'] , list) else [UserInfoB['slicingDim']]
+
+# for UserInfoB['slicingDim'] in A:

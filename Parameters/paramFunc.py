@@ -32,7 +32,7 @@ def Run(UserInfo):
     WhichExperiment.HardParams.Model.MultiClass.mode = UserInfo['MultiClass_mode']
     WhichExperiment.HardParams.Model.loss, _      = LossFunction.LossInfo(UserInfo['lossFunctionIx'])
     WhichExperiment.HardParams.Model.metrics, _   = Metrics.MetricInfo(UserInfo['MetricIx'])
-    WhichExperiment.HardParams.Model.optimizer, _ = Optimizers.OptimizerInfo(UserInfo['OptimizerIx'])
+    WhichExperiment.HardParams.Model.optimizer, _ = Optimizers.OptimizerInfo(UserInfo['OptimizerIx'], UserInfo['Learning_Rate'])
     WhichExperiment.HardParams.Model.num_Layers   = UserInfo['num_Layers']
     WhichExperiment.HardParams.Model.batch_size   = UserInfo['batch_size']
     WhichExperiment.HardParams.Model.epochs       = UserInfo['epochs']
@@ -88,7 +88,8 @@ def Run(UserInfo):
     WhichExperiment.Experiment.address = smallFuncs.mkDir(WhichExperiment.address + '/' + WhichExperiment.Experiment.name)
     _, B = LossFunction.LossInfo(UserInfo['lossFunctionIx'])
 
-    WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag'] + B + '_sd' + str(UserInfo['slicingDim']) if int(UserInfo['slicingDim']) != 2 else UserInfo['SubExperiment_Tag'] + B
+    # WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag'] + B + '_sd' + str(UserInfo['slicingDim']) if int(UserInfo['slicingDim']) != 2 else UserInfo['SubExperiment_Tag'] + B
+    WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag'] + 'lr' + str(UserInfo['Learning_Rate'])  + '_nl' + str(UserInfo['num_Layers']) 
 
     # WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag + WhichExperiment.Nucleus.name if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.Nucleus.name
     WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index)
