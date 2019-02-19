@@ -1,0 +1,263 @@
+Using TensorFlow backend.
+Loading Dataset: train: 0it [00:00, ?it/s]
+*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
+(0/19) train vimp_668_02282013_CD
+     Bias Correction
+     Rigid Registration
+     Cropping
+(1/19) train vimp_819_05172013_DS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(2/19) train vimp_869_06142013_BL
+     Bias Correction
+     Rigid Registration
+     Cropping
+(3/19) train vimp_884_06272013_TS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(4/19) train vimp_901_07052013_AS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(5/19) train vimp_915_07112013_LC
+     Bias Correction
+     Rigid Registration
+     Cropping
+(6/19) train vimp_964_08092013_TG
+     Bias Correction
+     Rigid Registration
+     Cropping
+(7/19) train vimp_ANON606_20130110
+     Bias Correction
+     Rigid Registration
+     Cropping
+(8/19) train vimp_ANON624_20130117
+     Bias Correction
+     Rigid Registration
+     Cropping
+(9/19) train vimp_ANON724_03272013
+     Bias Correction
+     Rigid Registration
+     Cropping
+(10/19) train vimp_ctrl_902_07052013_SI
+     Bias Correction
+     Rigid Registration
+     Cropping
+(11/19) train vimp_ctrl_911_07082013_TTO
+     Bias Correction
+     Rigid Registration
+     Cropping
+(12/19) train vimp_ctrl_918_07112013_TQ
+     Bias Correction
+     Rigid Registration
+     Cropping
+(13/19) train vimp_823_05202013_AJ
+     Bias Correction
+     Rigid Registration
+     Cropping
+(14/19) train vimp_824_05212013_JS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(15/19) train vimp_845_05312013_VZ
+     Bias Correction
+     Rigid Registration
+     Cropping
+(16/19) train vimp_943_07242013_PA
+     Bias Correction
+     Rigid Registration
+     Cropping
+(17/19) train vimp_ctrl_920_07122013_SW
+     Bias Correction
+     Rigid Registration
+     Cropping
+(18/19) train vimp_ctrl_921_07122013_MP
+     Bias Correction
+     Rigid Registration
+     Cropping
+(0/8) test vimp2_765_04162013_AW
+     Bias Correction
+     Rigid Registration
+     Cropping
+(1/8) test vimp2_967_08132013_KW
+     Bias Correction
+     Rigid Registration
+     Cropping
+(2/8) test vimp2_ANON714_03222013
+     Bias Correction
+     Rigid Registration
+     Cropping
+(3/8) test vimp2_972_08152013_DC
+     Bias Correction
+     Rigid Registration
+     Cropping
+(4/8) test vimp2_988_08302013_CB
+     Bias Correction
+     Rigid Registration
+     Cropping
+(5/8) test vimp2_ANON695_03132013
+     Bias Correction
+     Rigid Registration
+     Cropping
+(6/8) test vimp2_ANON702_03152013
+     Bias Correction
+     Rigid Registration
+     Cropping
+(7/8) test vimp2_ctrl_991_08302013_JF
+     Bias Correction
+     Rigid Registration
+     Cropping
+Traceback (most recent call last):
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/loadsave.py", line 40, in load
+    stat_result = os.stat(filename)
+FileNotFoundError: [Errno 2] No such file or directory: '/array/ssd/msmajdi/experiments/keras/exp6_cascade_7T/results/subExp5_Loss_BCE_sd0/1-THALAMUS.nii.gz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "main.py", line 37, in <module>
+    for UserInfoB['nucleus_Index'] in NucleiIndexes:  K = Run_SingleNuclei(UserInfoB)
+  File "main.py", line 26, in Run_SingleNuclei
+    Data, params = datasets.loadDataset(params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 61, in loadDataset
+    Data, params = readingFromExperiments(params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 421, in readingFromExperiments
+    Data, params = loopOver_ReadingInput(params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 389, in loopOver_ReadingInput
+    im, imF = readingImage(params, Subjects[nameSubject])
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 192, in readingImage
+    im = applyThalamusMaskONImage(imF.get_data())
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 183, in applyThalamusMaskONImage
+    Thalamus_Mask = nib.load(params.directories.Test.Result + '/1-THALAMUS.nii.gz').get_data()
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/loadsave.py", line 42, in load
+    raise FileNotFoundError("No such file or no access: '%s'" % filename)
+FileNotFoundError: No such file or no access: '/array/ssd/msmajdi/experiments/keras/exp6_cascade_7T/results/subExp5_Loss_BCE_sd0/1-THALAMUS.nii.gz'
+Using TensorFlow backend.
+Loading Dataset: train: 0it [00:00, ?it/s]Loading Dataset: train: 1it [00:00,  6.94it/s]Loading Dataset: train: 2it [00:00,  7.29it/s]
+*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
+(0/19) train vimp_668_02282013_CD
+     Bias Correction
+     Rigid Registration
+     Cropping
+(1/19) train vimp_819_05172013_DS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(2/19) train vimp_869_06142013_BL
+     Bias Correction
+     Rigid Registration
+     Cropping
+(3/19) train vimp_884_06272013_TS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(4/19) train vimp_901_07052013_AS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(5/19) train vimp_915_07112013_LC
+     Bias Correction
+     Rigid Registration
+     Cropping
+(6/19) train vimp_964_08092013_TG
+     Bias Correction
+     Rigid Registration
+     Cropping
+(7/19) train vimp_ANON606_20130110
+     Bias Correction
+     Rigid Registration
+     Cropping
+(8/19) train vimp_ANON624_20130117
+     Bias Correction
+     Rigid Registration
+     Cropping
+(9/19) train vimp_ANON724_03272013
+     Bias Correction
+     Rigid Registration
+     Cropping
+(10/19) train vimp_ctrl_902_07052013_SI
+     Bias Correction
+     Rigid Registration
+     Cropping
+(11/19) train vimp_ctrl_911_07082013_TTO
+     Bias Correction
+     Rigid Registration
+     Cropping
+(12/19) train vimp_ctrl_918_07112013_TQ
+     Bias Correction
+     Rigid Registration
+     Cropping
+(13/19) train vimp_823_05202013_AJ
+     Bias Correction
+     Rigid Registration
+     Cropping
+(14/19) train vimp_824_05212013_JS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(15/19) train vimp_845_05312013_VZ
+     Bias Correction
+     Rigid Registration
+     Cropping
+(16/19) train vimp_943_07242013_PA
+     Bias Correction
+     Rigid Registration
+     Cropping
+(17/19) train vimp_ctrl_920_07122013_SW
+     Bias Correction
+     Rigid Registration
+     Cropping
+(18/19) train vimp_ctrl_921_07122013_MP
+     Bias Correction
+     Rigid Registration
+     Cropping
+(0/8) test vimp2_765_04162013_AW
+     Bias Correction
+     Rigid Registration
+     Cropping
+(1/8) test vimp2_967_08132013_KW
+     Bias Correction
+     Rigid Registration
+     Cropping
+(2/8) test vimp2_ANON714_03222013
+     Bias Correction
+     Rigid Registration
+     Cropping
+(3/8) test vimp2_972_08152013_DC
+     Bias Correction
+     Rigid Registration
+     Cropping
+(4/8) test vimp2_988_08302013_CB
+     Bias Correction
+     Rigid Registration
+     Cropping
+(5/8) test vimp2_ANON695_03132013
+     Bias Correction
+     Rigid Registration
+     Cropping
+(6/8) test vimp2_ANON702_03152013
+     Bias Correction
+     Rigid Registration
+     Cropping
+(7/8) test vimp2_ctrl_991_08302013_JF
+     Bias Correction
+     Rigid Registration
+     Cropping
+Traceback (most recent call last):
+  File "main.py", line 37, in <module>
+    for UserInfoB['nucleus_Index'] in NucleiIndexes:  K = Run_SingleNuclei(UserInfoB)
+  File "main.py", line 26, in Run_SingleNuclei
+    Data, params = datasets.loadDataset(params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 61, in loadDataset
+    Data, params = readingFromExperiments(params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 426, in readingFromExperiments
+    Data, params = loopOver_ReadingInput(params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 394, in loopOver_ReadingInput
+    im, imF = readingImage(params, Subjects[nameSubject])
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 191, in readingImage
+    imF = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/loadsave.py", line 44, in load
+    raise ImageFileError("Empty file: '%s'" % filename)
+nibabel.filebasedimages.ImageFileError: Empty file: '/array/ssd/msmajdi/experiments/keras/exp6_cascade_7T/train/vimp_869_06142013_BL/PProcessed.nii.gz'

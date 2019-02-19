@@ -191,9 +191,9 @@ def trainingExperiment(Data, params):
 
         # if the shuffle argument in model.fit is set to True (which is the default), the training data will be randomly shuffled at each epoch.
         if params.WhichExperiment.Dataset.Validation.fromKeras:
-            hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=1, callbacks=[TQDMCallback()])
+            hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=1) # , callbacks=[TQDMCallback()])
         else:
-            hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label), verbose=1, callbacks=[TQDMCallback()])
+            hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label), verbose=1) # , callbacks=[TQDMCallback()])
 
         smallFuncs.mkDir(params.directories.Train.Model)
         model.save(params.directories.Train.Model + '/model.h5', overwrite=True, include_optimizer=True )
@@ -259,15 +259,12 @@ def applyThalamusOnInput(params, ThalamusMasks):
 
         def apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject):
 
-            # if not os.path.isfile(subject.Temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
-            #     copyfile(subject.address + '/' + subject.ImageProcessed + '.nii.gz' , subject.Temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz')
-            # else:
-            #     copyfile( subject.Temp.address + '/' + subject.ImageProcessed + '_BeforeThalamsMultiply.nii.gz' , subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-            
             imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
             im = imF.get_data()
             im[Thalamus_Mask_Dilated == 0] = 0
-            smallFuncs.saveImage(im , imF.affine , imF.header , subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+            # smallFuncs.saveImage(im , imF.affine , imF.header , subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+
+            return imF
 
         def saveNewCrop(BB,BBd, imFshape, subject):
 
@@ -288,8 +285,7 @@ def applyThalamusOnInput(params, ThalamusMasks):
         Thalamus_Mask_Dilated = dilateMask( Thalamus_Mask, params.WhichExperiment.Dataset.gapDilation )
         BB,BBd = cropBoundingBoxes(params, subject, imF.shape, Thalamus_Mask, Thalamus_Mask_Dilated)
 
-        imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-        apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject)
+        imF = apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject)
         saveNewCrop(BB,BBd, imF.shape, subject)
     
     def loopOverSubjects(params, ThalamusMasks, mode):

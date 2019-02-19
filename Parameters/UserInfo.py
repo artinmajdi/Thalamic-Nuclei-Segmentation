@@ -1,5 +1,5 @@
 
-epochs = 60
+epochs = 100
 GPU_Index = 2
 Learning_Rate = 1e-3
 num_Layers = 3
@@ -10,7 +10,7 @@ nucleus_Index = [1]
 
 slicingDim = 2
 DatasetIx = 4
-
+SubExperiment_Index = 4
 
 #! Training
 batch_size = 40
@@ -68,7 +68,7 @@ Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 # Experiments_Tag = '7T' # 'SRI' 'tmp' 'SRI_wLRAug' '7T' '7T_wLRAug'
 
 
-SubExperiment_Index = 3
+
 SubExperiment_Tag = ''
 
 #! cropping mode

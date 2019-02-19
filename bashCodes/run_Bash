@@ -5,8 +5,10 @@
 #nohup python preprocess/run_augment.py -d 1 -sd 2 >> out_Aug_d1 &
 #nohup python preprocess/run_augment.py -d 4 -sd 2 >> out_Aug_d4 &
 
-nohup python main.py -g 5 -n all -d 1 -e 60 >> out_3T_Cascade_G5 &
-nohup python main.py -g 6 -n all -d 4 -e 60 >> out_7T_Cascade_G6 &
+nohup python main.py -g 4 -n all -sd 0 -e 10 >> out_2.5D_g4_sd0 &
+nohup python main.py -g 5 -n all -sd 1 -e 10 >> out_2.5D_g5_sd1 &
+nohup python main.py -g 6 -n all -sd 2 -e 10 >> out_2.5D_g6_sd2 &
+
 
 
 

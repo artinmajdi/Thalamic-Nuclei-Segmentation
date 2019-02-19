@@ -169,11 +169,34 @@ def readingFromExperiments(params):
         
     def readingImage(params, subject2):
 
+        # TODO remove this after couple of runs
         if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 in params.WhichExperiment.Nucleus.Index and os.path.isfile(subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
             copyfile( subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz' , subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
         
+        def applyThalamusMaskONImage(imm):
+
+            def dilateMask(mask):
+                struc = ndimage.generate_binary_structure(3,2)
+                struc = ndimage.iterate_structure(struc, params.WhichExperiment.Dataset.gapDilation ) 
+                return ndimage.binary_dilation(mask, structure=struc)
+                
+            Thalamus_Mask = nib.load(params.directories.Test.Result + '/1-THALAMUS.nii.gz').get_data()
+            Thalamus_Mask_Dilated = dilateMask( Thalamus_Mask)
+
+            # imF = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
+            # imm = imF.get_data()
+            imm[Thalamus_Mask_Dilated == 0] = 0
+            return imm
+                    
         imF = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
-        im = inputPreparationForUnet(imF.get_data(), subject2, params)
+
+        if 1 not in params.WhichExperiment.Nucleus.Index: 
+            im = applyThalamusMaskONImage(imF.get_data())
+        else:
+            im = imF.get_data()
+
+
+        im = inputPreparationForUnet(im, subject2, params)
         im = normalizeA.main_normalize(params.preprocess.Normalize , im)
         return im, imF
 
