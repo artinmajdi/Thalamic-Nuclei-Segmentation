@@ -1,14 +1,14 @@
 
-epochs = 100
+epochs = 10
 GPU_Index = 2
 Learning_Rate = 1e-3
 num_Layers = 3
 
 TestOnly = False
 Experiments_Index = '6_cascade'
-nucleus_Index = [1]
+nucleus_Index = [1,2]
 
-slicingDim = 2
+slicingDim = 0
 DatasetIx = 4
 SubExperiment_Index = 4
 

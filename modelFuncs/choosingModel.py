@@ -98,9 +98,10 @@ def testingExeriment(model, Data, params):
                 sz = im.shape
                 if np.min(pad) < 0:
                     pad, crd = datasets.paddingNegativeFix(sz, pad)
-                    for ix in range(len(sz)):
+                    for ix in range(3):
                          crd[ix,1] = 0  if crd[ix,1] == sz[ix] else -crd[ix,1]
 
+                    # if len(crd) == 3: crd = np.append(crd,[0,0],axs=1)
                     crd = tuple([tuple(x) for x in crd])
 
                     im = im[pad[0][0]:sz[0]-pad[0][1] , pad[1][0]:sz[1]-pad[1][1] , pad[2][0]:sz[2]-pad[2][1],:]
@@ -118,7 +119,7 @@ def testingExeriment(model, Data, params):
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
 
             paddingTp = [ padding[p] for p in params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
-
+            if len(paddingTp) == 3: paddingTp.append((0,0))
             pred = unPadding(pred, paddingTp)
             return pred
 
@@ -253,8 +254,11 @@ def applyThalamusOnInput(params, ThalamusMasks):
             BBd = [  [BB[ii][0] - 5 , BB[ii][1] + 5] for ii in range(len(BB))]
             BBd = checkBordersOnBoundingBox(imFshape , BBd , 0)
 
-            np.savetxt(subject.Temp.address + '/BB.txt',BB,fmt='%d')
-            np.savetxt(subject.Temp.address + '/BBd.txt',BBd,fmt='%d')
+            dirr = params.directories.Test.Result 
+            if 'train' in mode: dirr += '/TrainData_Output'
+                           
+            np.savetxt(dirr + '/' + nameSubject + '/BB.txt',BB,fmt='%d')
+            np.savetxt(dirr + '/' + nameSubject + '/BBd.txt',BBd,fmt='%d')
             return BB,BBd
 
         def apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject):
@@ -293,7 +297,7 @@ def applyThalamusOnInput(params, ThalamusMasks):
         for sj in tqdm(Subjects ,desc='applying Thalamus for cascade method: ' + mode):     
             if 'ERROR_vimp2_1448_08132015' in sj:
                 print('----')      
-            ApplyThalamusMask(ThalamusMasks[sj] , params, Subjects[sj], sj, 'train') 
+            ApplyThalamusMask(ThalamusMasks[sj] , params, Subjects[sj], sj, mode) 
 
     loopOverSubjects(params, ThalamusMasks.Test, 'test')
 

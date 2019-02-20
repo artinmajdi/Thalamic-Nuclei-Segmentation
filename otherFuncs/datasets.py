@@ -133,8 +133,8 @@ def paddingNegativeFix(sz, Padding):
     Padding = tuple([tuple(x) for x in padding])
     
     # sz = im.shape
-    crd = crd[:len(sz),:]
-    for ix in range(len(sz)): crd[ix,1] = sz[ix] if crd[ix,1] == 0 else -crd[ix,1]
+    # crd = crd[:3,:]
+    for ix in range(3): crd[ix,1] = sz[ix] if crd[ix,1] == 0 else -crd[ix,1]
     
     return padding, crd
 
@@ -180,7 +180,7 @@ def readingFromExperiments(params):
                 struc = ndimage.iterate_structure(struc, params.WhichExperiment.Dataset.gapDilation ) 
                 return ndimage.binary_dilation(mask, structure=struc)
                 
-            Thalamus_Mask = nib.load(params.directories.Test.Result + '/1-THALAMUS.nii.gz').get_data()
+            Thalamus_Mask = nib.load( subject2.Label.address + '/1-THALAMUS_PProcessed.nii.gz').get_data()
             Thalamus_Mask_Dilated = dilateMask( Thalamus_Mask)
 
             # imF = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
@@ -283,12 +283,15 @@ def readingFromExperiments(params):
 
         def find_AllInputSizes(params):
 
-            def newCropedSize(subject, params):
+            def newCropedSize(subjectName , subject, params, mode):
 
                 def readingThalamicCropSizes(subject , slicingDirection):
-                    BB = np.loadtxt(subject.Temp.address + '/BB.txt',dtype=int)
-                    BBd = np.loadtxt(subject.Temp.address + '/BBd.txt',dtype=int)
-
+                    dirr = params.directories.Test.Result 
+                    if 'train' in mode: dirr += '/TrainData_Output'
+                        
+                    BB = np.loadtxt(dirr + '/' + subjectName  + '/BB.txt',dtype=int)
+                    BBd = np.loadtxt(dirr + '/' + subjectName  + '/BBd.txt',dtype=int)
+                    
                     #! ebcause on the slicing direction we don't want the extra dilated effect to be considered
                     BBd[slicingDirection] = BB[slicingDirection]
                                     
@@ -308,20 +311,17 @@ def readingFromExperiments(params):
 
                 # Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
                 return Shape, subject
-            def loopOverAllSubjects(Input):
+            def loopOverAllSubjects(Input, mode):
                 inputSize = []
                 for sj in Input.Subjects:
-                    # if sj == 'vimp2_0699_04302014':
-                    #     print('----')
-
-                    Shape, Input.Subjects[sj] = newCropedSize( Input.Subjects[sj], params)
+                    Shape, Input.Subjects[sj] = newCropedSize(sj, Input.Subjects[sj], params, mode)
                     inputSize.append(Shape)
 
                 Input.inputSizes = np.array(inputSize)
                 return Input
 
-            params.directories.Train.Input = loopOverAllSubjects(params.directories.Train.Input)
-            params.directories.Test.Input  = loopOverAllSubjects(params.directories.Test.Input)
+            params.directories.Train.Input = loopOverAllSubjects(params.directories.Train.Input, 'train')
+            params.directories.Test.Input  = loopOverAllSubjects(params.directories.Test.Input, 'test')
                                                 
             return params
                     
