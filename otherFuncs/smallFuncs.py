@@ -168,7 +168,8 @@ def search_ExperimentDirectory(whichExperiment):
                 Label = label
                 Temp = temp
                 address = Dir
-                NewCropInfo = newCropInfo         
+                NewCropInfo = newCropInfo     
+                subjectName = ''    
 
             return Files
         
@@ -233,7 +234,7 @@ def search_ExperimentDirectory(whichExperiment):
                     copyfile(Dir + '/' + Files.ImageOriginal + '.nii.gz' , Dir + '/' + Files.ImageProcessed + '.nii.gz')               
             
             if not Files.Temp.address: Files.Temp.address = mkDir(Dir + '/temp')
-
+            
             return Files
                     
         Files = Classes_Local(Dir)
@@ -251,7 +252,9 @@ def search_ExperimentDirectory(whichExperiment):
             address = os.path.abspath(Dir)
             Subjects = {}
 
-        for s in next(os.walk(Dir))[1]: Input.Subjects[s] = Search_ImageFolder(Dir + '/' + s ,NucleusName)
+        for s in next(os.walk(Dir))[1]: 
+            Input.Subjects[s] = Search_ImageFolder(Dir + '/' + s ,NucleusName)
+            Input.Subjects[s].subjectName = s
 
         return Input
         

@@ -1,0 +1,288 @@
+Using TensorFlow backend.
+Loading Dataset: train: 0it [00:00, ?it/s]Loading Dataset: train: 1it [00:00,  6.79it/s]Loading Dataset: train: 2it [00:00,  7.23it/s]Loading Dataset: train: 3it [00:00,  7.69it/s]Loading Dataset: train: 4it [00:00,  7.98it/s]Loading Dataset: train: 5it [00:00,  7.91it/s]Loading Dataset: train: 6it [00:00,  8.41it/s]Loading Dataset: train: 7it [00:00,  7.49it/s]Loading Dataset: train: 8it [00:00,  8.01it/s]Loading Dataset: train: 9it [00:01,  8.15it/s]Loading Dataset: train: 10it [00:01,  7.99it/s]Loading Dataset: train: 11it [00:01,  7.92it/s]Loading Dataset: train: 12it [00:01,  7.89it/s]Loading Dataset: train: 13it [00:01,  8.05it/s]Loading Dataset: train: 14it [00:01,  8.15it/s]Loading Dataset: train: 15it [00:01,  7.46it/s]Loading Dataset: train: 16it [00:02,  6.87it/s]Loading Dataset: train: 17it [00:02,  6.50it/s]Loading Dataset: train: 18it [00:02,  6.36it/s]Loading Dataset: train: 19it [00:02,  6.42it/s]
+Loading Dataset: test: 0it [00:00, ?it/s]Loading Dataset: test: 1it [00:00,  9.07it/s]Loading Dataset: test: 3it [00:00,  9.45it/s]Loading Dataset: test: 4it [00:00,  9.37it/s]Loading Dataset: test: 5it [00:00,  7.71it/s]Loading Dataset: test: 6it [00:00,  8.10it/s]Loading Dataset: test: 8it [00:00,  8.87it/s]2019-02-20 17:03:03.813237: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-02-20 17:03:05.326000: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:89:00.0
+totalMemory: 15.89GiB freeMemory: 15.60GiB
+2019-02-20 17:03:05.326083: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-02-20 17:03:05.663870: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-02-20 17:03:05.663939: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-02-20 17:03:05.663951: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-02-20 17:03:05.664433: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:89:00.0, compute capability: 6.0)
+*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
+(0/19) train vimp_668_02282013_CD
+     Bias Correction
+     Rigid Registration
+     Cropping
+(1/19) train vimp_819_05172013_DS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(2/19) train vimp_823_05202013_AJ
+     Bias Correction
+     Rigid Registration
+     Cropping
+(3/19) train vimp_824_05212013_JS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(4/19) train vimp_845_05312013_VZ
+     Bias Correction
+     Rigid Registration
+     Cropping
+(5/19) train vimp_869_06142013_BL
+     Bias Correction
+     Rigid Registration
+     Cropping
+(6/19) train vimp_884_06272013_TS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(7/19) train vimp_901_07052013_AS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(8/19) train vimp_915_07112013_LC
+     Bias Correction
+     Rigid Registration
+     Cropping
+(9/19) train vimp_943_07242013_PA
+     Bias Correction
+     Rigid Registration
+     Cropping
+(10/19) train vimp_964_08092013_TG
+     Bias Correction
+     Rigid Registration
+     Cropping
+(11/19) train vimp_ANON606_20130110
+     Bias Correction
+     Rigid Registration
+     Cropping
+(12/19) train vimp_ANON624_20130117
+     Bias Correction
+     Rigid Registration
+     Cropping
+(13/19) train vimp_ANON724_03272013
+     Bias Correction
+     Rigid Registration
+     Cropping
+(14/19) train vimp_ctrl_902_07052013_SI
+     Bias Correction
+     Rigid Registration
+     Cropping
+(15/19) train vimp_ctrl_911_07082013_TTO
+     Bias Correction
+     Rigid Registration
+     Cropping
+(16/19) train vimp_ctrl_918_07112013_TQ
+     Bias Correction
+     Rigid Registration
+     Cropping
+(17/19) train vimp_ctrl_920_07122013_SW
+     Bias Correction
+     Rigid Registration
+     Cropping
+(18/19) train vimp_ctrl_921_07122013_MP
+     Bias Correction
+     Rigid Registration
+     Cropping
+(0/8) test vimp2_765_04162013_AW
+     Bias Correction
+     Rigid Registration
+     Cropping
+(1/8) test vimp2_967_08132013_KW
+     Bias Correction
+     Rigid Registration
+     Cropping
+(2/8) test vimp2_972_08152013_DC
+     Bias Correction
+     Rigid Registration
+     Cropping
+(3/8) test vimp2_988_08302013_CB
+     Bias Correction
+     Rigid Registration
+     Cropping
+(4/8) test vimp2_ANON695_03132013
+     Bias Correction
+     Rigid Registration
+     Cropping
+(5/8) test vimp2_ANON702_03152013
+     Bias Correction
+     Rigid Registration
+     Cropping
+(6/8) test vimp2_ANON714_03222013
+     Bias Correction
+     Rigid Registration
+     Cropping
+(7/8) test vimp2_ctrl_991_08302013_JF
+     Bias Correction
+     Rigid Registration
+     Cropping
+Train on 1063 samples, validate on 119 samples
+Epoch 1/100
+
+  40/1063 [>.............................] - ETA: 1:51 - loss: 0.7599 - acc: 0.7083 - Dice_Calculator: 0.0554
+  80/1063 [=>............................] - ETA: 55s - loss: 0.6598 - acc: 0.8406 - Dice_Calculator: 0.0521 
+ 120/1063 [==>...........................] - ETA: 36s - loss: 0.5587 - acc: 0.8863 - Dice_Calculator: 0.0497
+ 160/1063 [===>..........................] - ETA: 27s - loss: 0.4633 - acc: 0.9091 - Dice_Calculator: 0.0496
+ 200/1063 [====>.........................] - ETA: 21s - loss: 0.3957 - acc: 0.9209 - Dice_Calculator: 0.0528
+ 240/1063 [=====>........................] - ETA: 17s - loss: 0.3470 - acc: 0.9298 - Dice_Calculator: 0.0533
+ 280/1063 [======>.......................] - ETA: 15s - loss: 0.3122 - acc: 0.9361 - Dice_Calculator: 0.0537
+ 320/1063 [========>.....................] - ETA: 12s - loss: 0.2881 - acc: 0.9407 - Dice_Calculator: 0.0528
+ 360/1063 [=========>....................] - ETA: 11s - loss: 0.2663 - acc: 0.9448 - Dice_Calculator: 0.0538
+ 400/1063 [==========>...................] - ETA: 9s - loss: 0.2473 - acc: 0.9482 - Dice_Calculator: 0.0561 
+ 440/1063 [===========>..................] - ETA: 8s - loss: 0.2323 - acc: 0.9508 - Dice_Calculator: 0.0595
+ 480/1063 [============>.................] - ETA: 7s - loss: 0.2187 - acc: 0.9531 - Dice_Calculator: 0.0648
+ 520/1063 [=============>................] - ETA: 6s - loss: 0.2064 - acc: 0.9553 - Dice_Calculator: 0.0696
+ 560/1063 [==============>...............] - ETA: 5s - loss: 0.1965 - acc: 0.9569 - Dice_Calculator: 0.0757
+ 600/1063 [===============>..............] - ETA: 5s - loss: 0.1870 - acc: 0.9585 - Dice_Calculator: 0.0819
+ 640/1063 [=================>............] - ETA: 4s - loss: 0.1794 - acc: 0.9595 - Dice_Calculator: 0.0895
+ 680/1063 [==================>...........] - ETA: 3s - loss: 0.1731 - acc: 0.9600 - Dice_Calculator: 0.0985
+ 720/1063 [===================>..........] - ETA: 3s - loss: 0.1671 - acc: 0.9605 - Dice_Calculator: 0.1085
+ 760/1063 [====================>.........] - ETA: 2s - loss: 0.1606 - acc: 0.9616 - Dice_Calculator: 0.1174
+ 800/1063 [=====================>........] - ETA: 2s - loss: 0.1558 - acc: 0.9619 - Dice_Calculator: 0.1262
+ 840/1063 [======================>.......] - ETA: 2s - loss: 0.1509 - acc: 0.9627 - Dice_Calculator: 0.1303
+ 880/1063 [=======================>......] - ETA: 1s - loss: 0.1466 - acc: 0.9629 - Dice_Calculator: 0.1404
+ 920/1063 [========================>.....] - ETA: 1s - loss: 0.1424 - acc: 0.9632 - Dice_Calculator: 0.1511
+ 960/1063 [==========================>...] - ETA: 0s - loss: 0.1384 - acc: 0.9637 - Dice_Calculator: 0.1601
+1000/1063 [===========================>..] - ETA: 0s - loss: 0.1345 - acc: 0.9643 - Dice_Calculator: 0.1684
+1040/1063 [============================>.] - ETA: 0s - loss: 0.1313 - acc: 0.9645 - Dice_Calculator: 0.1775
+1063/1063 [==============================] - 10s 9ms/step - loss: 0.1293 - acc: 0.9649 - Dice_Calculator: 0.1813 - val_loss: 0.1235 - val_acc: 0.9719 - val_Dice_Calculator: 0.1507
+Epoch 2/100
+
+  40/1063 [>.............................] - ETA: 4s - loss: 0.0512 - acc: 0.9642 - Dice_Calculator: 0.4425
+  80/1063 [=>............................] - ETA: 4s - loss: 0.0471 - acc: 0.9704 - Dice_Calculator: 0.4073
+ 120/1063 [==>...........................] - ETA: 3s - loss: 0.0458 - acc: 0.9718 - Dice_Calculator: 0.4062
+ 160/1063 [===>..........................] - ETA: 3s - loss: 0.0431 - acc: 0.9736 - Dice_Calculator: 0.4070
+ 200/1063 [====>.........................] - ETA: 3s - loss: 0.0426 - acc: 0.9731 - Dice_Calculator: 0.4191
+ 240/1063 [=====>........................] - ETA: 3s - loss: 0.0417 - acc: 0.9734 - Dice_Calculator: 0.4256
+ 280/1063 [======>.......................] - ETA: 3s - loss: 0.0402 - acc: 0.9743 - Dice_Calculator: 0.4296
+ 320/1063 [========>.....................] - ETA: 3s - loss: 0.0408 - acc: 0.9732 - Dice_Calculator: 0.4367
+ 360/1063 [=========>....................] - ETA: 2s - loss: 0.0405 - acc: 0.9734 - Dice_Calculator: 0.4385
+ 400/1063 [==========>...................] - ETA: 2s - loss: 0.0395 - acc: 0.9741 - Dice_Calculator: 0.4382
+ 440/1063 [===========>..................] - ETA: 2s - loss: 0.0389 - acc: 0.9744 - Dice_Calculator: 0.4417
+ 480/1063 [============>.................] - ETA: 2s - loss: 0.0385 - acc: 0.9744 - Dice_Calculator: 0.4471
+ 520/1063 [=============>................] - ETA: 2s - loss: 0.0372 - acc: 0.9753 - Dice_Calculator: 0.4476
+ 560/1063 [==============>...............] - ETA: 2s - loss: 0.0374 - acc: 0.9750 - Dice_Calculator: 0.4516
+ 600/1063 [===============>..............] - ETA: 1s - loss: 0.0368 - acc: 0.9753 - Dice_Calculator: 0.4539
+ 640/1063 [=================>............] - ETA: 1s - loss: 0.0368 - acc: 0.9752 - Dice_Calculator: 0.4551
+ 680/1063 [==================>...........] - ETA: 1s - loss: 0.0365 - acc: 0.9752 - Dice_Calculator: 0.4572
+ 720/1063 [===================>..........] - ETA: 1s - loss: 0.0365 - acc: 0.9751 - Dice_Calculator: 0.4591
+ 760/1063 [====================>.........] - ETA: 1s - loss: 0.0365 - acc: 0.9750 - Dice_Calculator: 0.4620
+ 800/1063 [=====================>........] - ETA: 1s - loss: 0.0362 - acc: 0.9752 - Dice_Calculator: 0.4630
+ 840/1063 [======================>.......] - ETA: 0s - loss: 0.0359 - acc: 0.9753 - Dice_Calculator: 0.4644
+ 880/1063 [=======================>......] - ETA: 0s - loss: 0.0356 - acc: 0.9755 - Dice_Calculator: 0.4653
+ 920/1063 [========================>.....] - ETA: 0s - loss: 0.0360 - acc: 0.9751 - Dice_Calculator: 0.4672
+ 960/1063 [==========================>...] - ETA: 0s - loss: 0.0359 - acc: 0.9750 - Dice_Calculator: 0.4693
+1000/1063 [===========================>..] - ETA: 0s - loss: 0.0358 - acc: 0.9749 - Dice_Calculator: 0.4709
+1040/1063 [============================>.] - ETA: 0s - loss: 0.0359 - acc: 0.9747 - Dice_Calculator: 0.4722
+1063/1063 [==============================] - 5s 4ms/step - loss: 0.0358 - acc: 0.9749 - Dice_Calculator: 0.4718 - val_loss: 0.0402 - val_acc: 0.9719 - val_Dice_Calculator: 0.4887
+Epoch 3/100
+
+  40/1063 [>.............................] - ETA: 4s - loss: 0.0355 - acc: 0.9742 - Dice_Calculator: 0.4993
+  80/1063 [=>............................] - ETA: 4s - loss: 0.0327 - acc: 0.9793 - Dice_Calculator: 0.4644
+ 120/1063 [==>...........................] - ETA: 3s - loss: 0.0329 - acc: 0.9769 - Dice_Calculator: 0.4901
+ 160/1063 [===>..........................] - ETA: 3s - loss: 0.0307 - acc: 0.9781 - Dice_Calculator: 0.4946
+ 200/1063 [====>.........................] - ETA: 3s - loss: 0.0299 - acc: 0.9782 - Dice_Calculator: 0.4973
+ 240/1063 [=====>........................] - ETA: 3s - loss: 0.0331 - acc: 0.9757 - Dice_Calculator: 0.5007
+ 280/1063 [======>.......................] - ETA: 3s - loss: 0.0318 - acc: 0.9764 - Dice_Calculator: 0.5008
+ 320/1063 [========>.....................] - ETA: 3s - loss: 0.0322 - acc: 0.9759 - Dice_Calculator: 0.5021
+ 360/1063 [=========>....................] - ETA: 2s - loss: 0.0319 - acc: 0.9761 - Dice_Calculator: 0.5013
+ 400/1063 [==========>...................] - ETA: 2s - loss: 0.0326 - acc: 0.9756 - Dice_Calculator: 0.5002
+ 440/1063 [===========>..................] - ETA: 2s - loss: 0.0325 - acc: 0.9755 - Dice_Calculator: 0.5006
+ 480/1063 [============>.................] - ETA: 2s - loss: 0.0324 - acc: 0.9759 - Dice_Calculator: 0.4957
+ 520/1063 [=============>................] - ETA: 2s - loss: 0.0328 - acc: 0.9752 - Dice_Calculator: 0.4992
+ 560/1063 [==============>...............] - ETA: 2s - loss: 0.0323 - acc: 0.9757 - Dice_Calculator: 0.4983
+ 600/1063 [===============>..............] - ETA: 1s - loss: 0.0325 - acc: 0.9753 - Dice_Calculator: 0.5006
+ 640/1063 [=================>............] - ETA: 1s - loss: 0.0326 - acc: 0.9752 - Dice_Calculator: 0.5022
+ 680/1063 [==================>...........] - ETA: 1s - loss: 0.0324 - acc: 0.9754 - Dice_Calculator: 0.5024
+ 720/1063 [===================>..........] - ETA: 1s - loss: 0.0322 - acc: 0.9756 - Dice_Calculator: 0.5023
+ 760/1063 [====================>.........] - ETA: 1s - loss: 0.0321 - acc: 0.9756 - Dice_Calculator: 0.5039
+ 800/1063 [=====================>........] - ETA: 1s - loss: 0.0318 - acc: 0.9758 - Dice_Calculator: 0.5055
+ 840/1063 [======================>.......] - ETA: 0s - loss: 0.0318 - acc: 0.9757 - Dice_Calculator: 0.5065
+ 880/1063 [=======================>......] - ETA: 0s - loss: 0.0319 - acc: 0.9754 - Dice_Calculator: 0.5086
+ 920/1063 [========================>.....] - ETA: 0s - loss: 0.0322 - acc: 0.9752 - Dice_Calculator: 0.5097
+ 960/1063 [==========================>...] - ETA: 0s - loss: 0.0322 - acc: 0.9750 - Dice_Calculator: 0.5109
+1000/1063 [===========================>..] - ETA: 0s - loss: 0.0324 - acc: 0.9747 - Dice_Calculator: 0.5126
+1040/1063 [============================>.] - ETA: 0s - loss: 0.0324 - acc: 0.9746 - Dice_Calculator: 0.5138
+1063/1063 [==============================] - 5s 4ms/step - loss: 0.0321 - acc: 0.9749 - Dice_Calculator: 0.5126 - val_loss: 0.0412 - val_acc: 0.9719 - val_Dice_Calculator: 0.4802
+Epoch 4/100
+
+  40/1063 [>.............................] - ETA: 4s - loss: 0.0237 - acc: 0.9811 - Dice_Calculator: 0.5239
+  80/1063 [=>............................] - ETA: 4s - loss: 0.0314 - acc: 0.9728 - Dice_Calculator: 0.5406
+ 120/1063 [==>...........................] - ETA: 3s - loss: 0.0295 - acc: 0.9755 - Dice_Calculator: 0.5267
+ 160/1063 [===>..........................] - ETA: 3s - loss: 0.0290 - acc: 0.9753 - Dice_Calculator: 0.5324
+ 200/1063 [====>.........................] - ETA: 3s - loss: 0.0286 - acc: 0.9758 - Dice_Calculator: 0.5304
+ 240/1063 [=====>........................] - ETA: 3s - loss: 0.0289 - acc: 0.9750 - Dice_Calculator: 0.5362
+ 280/1063 [======>.......................] - ETA: 3s - loss: 0.0291 - acc: 0.9747 - Dice_Calculator: 0.5389
+ 320/1063 [========>.....................] - ETA: 3s - loss: 0.0289 - acc: 0.9750 - Dice_Calculator: 0.5411
+ 360/1063 [=========>....................] - ETA: 2s - loss: 0.0292 - acc: 0.9746 - Dice_Calculator: 0.5427
+ 400/1063 [==========>...................] - ETA: 2s - loss: 0.0287 - acc: 0.9751 - Dice_Calculator: 0.5421
+ 440/1063 [===========>..................] - ETA: 2s - loss: 0.0288 - acc: 0.9750 - Dice_Calculator: 0.5443
+ 480/1063 [============>.................] - ETA: 2s - loss: 0.0287 - acc: 0.9748 - Dice_Calculator: 0.5461
+ 520/1063 [=============>................] - ETA: 2s - loss: 0.0289 - acc: 0.9745 - Dice_Calculator: 0.5479
+ 560/1063 [==============>...............] - ETA: 2s - loss: 0.0287 - acc: 0.9746 - Dice_Calculator: 0.5482
+ 600/1063 [===============>..............] - ETA: 1s - loss: 0.0286 - acc: 0.9747 - Dice_Calculator: 0.5483
+ 640/1063 [=================>............] - ETA: 1s - loss: 0.0284 - acc: 0.9748 - Dice_Calculator: 0.5488
+ 680/1063 [==================>...........] - ETA: 1s - loss: 0.0288 - acc: 0.9744 - Dice_Calculator: 0.5498
+ 720/1063 [===================>..........] - ETA: 1s - loss: 0.0287 - acc: 0.9746 - Dice_Calculator: 0.5498
+ 760/1063 [====================>.........] - ETA: 1s - loss: 0.0289 - acc: 0.9743 - Dice_Calculator: 0.5504
+ 800/1063 [=====================>........] - ETA: 1s - loss: 0.0286 - acc: 0.9746 - Dice_Calculator: 0.5502
+ 840/1063 [======================>.......] - ETA: 0s - loss: 0.0285 - acc: 0.9746 - Dice_Calculator: 0.5504
+ 880/1063 [=======================>......] - ETA: 0s - loss: 0.0287 - acc: 0.9744 - Dice_Calculator: 0.5510
+ 920/1063 [========================>.....] - ETA: 0s - loss: 0.0286 - acc: 0.9743 - Dice_Calculator: 0.5518
+ 960/1063 [==========================>...] - ETA: 0s - loss: 0.0285 - acc: 0.9744 - Dice_Calculator: 0.5520
+1000/1063 [===========================>..] - ETA: 0s - loss: 0.0284 - acc: 0.9745 - Dice_Calculator: 0.5514
+1040/1063 [============================>.] - ETA: 0s - loss: 0.0282 - acc: 0.9747 - Dice_Calculator: 0.5516
+1063/1063 [==============================] - 5s 4ms/step - loss: 0.0280 - acc: 0.9749 - Dice_Calculator: 0.5521 - val_loss: 0.0381 - val_acc: 0.9719 - val_Dice_Calculator: 0.5180
+Epoch 5/100
+
+  40/1063 [>.............................] - ETA: 4s - loss: 0.0322 - acc: 0.9698 - Dice_Calculator: 0.5684
+  80/1063 [=>............................] - ETA: 4s - loss: 0.0281 - acc: 0.9735 - Dice_Calculator: 0.5718
+ 120/1063 [==>...........................] - ETA: 3s - loss: 0.0251 - acc: 0.9773 - Dice_Calculator: 0.5533
+ 160/1063 [===>..........................] - ETA: 3s - loss: 0.0263 - acc: 0.9763 - Dice_Calculator: 0.5520
+ 200/1063 [====>.........................] - ETA: 3s - loss: 0.0262 - acc: 0.9758 - Dice_Calculator: 0.5582
+ 240/1063 [=====>........................] - ETA: 3s - loss: 0.0262 - acc: 0.9756 - Dice_Calculator: 0.5598
+ 280/1063 [======>.......................] - ETA: 3s - loss: 0.0264 - acc: 0.9756 - Dice_Calculator: 0.5585
+ 320/1063 [========>.....................] - ETA: 3s - loss: 0.0266 - acc: 0.9755 - Dice_Calculator: 0.5580
+ 360/1063 [=========>....................] - ETA: 2s - loss: 0.0276 - acc: 0.9743 - Dice_Calculator: 0.5617
+ 400/1063 [==========>...................] - ETA: 2s - loss: 0.0279 - acc: 0.9759 - Dice_Calculator: 0.5631
+ 440/1063 [===========>..................] - ETA: 2s - loss: 0.0266 - acc: 0.9776 - Dice_Calculator: 0.5507
+ 480/1063 [============>.................] - ETA: 2s - loss: 0.0271 - acc: 0.9786 - Dice_Calculator: 0.5518
+ 520/1063 [=============>................] - ETA: 2s - loss: 0.0267 - acc: 0.9798 - Dice_Calculator: 0.5511
+ 560/1063 [==============>...............] - ETA: 2s - loss: 0.0266 - acc: 0.9806 - Dice_Calculator: 0.5522
+ 600/1063 [===============>..............] - ETA: 1s - loss: 0.0270 - acc: 0.9810 - Dice_Calculator: 0.5538
+ 640/1063 [=================>............] - ETA: 1s - loss: 0.0269 - acc: 0.9817 - Dice_Calculator: 0.5549
+ 680/1063 [==================>...........] - ETA: 1s - loss: 0.0265 - acc: 0.9824 - Dice_Calculator: 0.5546
+ 720/1063 [===================>..........] - ETA: 1s - loss: 0.0269 - acc: 0.9828 - Dice_Calculator: 0.5561
+ 760/1063 [====================>.........] - ETA: 1s - loss: 0.0272 - acc: 0.9831 - Dice_Calculator: 0.5570
+ 800/1063 [=====================>........] - ETA: 1s - loss: 0.0273 - acc: 0.9836 - Dice_Calculator: 0.5567
+ 840/1063 [======================>.......] - ETA: 0s - loss: 0.0273 - acc: 0.9840 - Dice_Calculator: 0.5551
+ 880/1063 [=======================>......] - ETA: 0s - loss: 0.0272 - acc: 0.9843 - Dice_Calculator: 0.5551
+ 920/1063 [========================>.....] - ETA: 0s - loss: 0.0270 - acc: 0.9847 - Dice_Calculator: 0.5559
+ 960/1063 [==========================>...] - ETA: 0s - loss: 0.0271 - acc: 0.9849 - Dice_Calculator: 0.5565
+1000/1063 [===========================>..] - ETA: 0s - loss: 0.0270 - acc: 0.9852 - Dice_Calculator: 0.5573
+1040/1063 [============================>.] - ETA: 0s - loss: 0.0270 - acc: 0.9854 - Dice_Calculator: 0.5577
+1063/1063 [==============================] - 5s 4ms/step - loss: 0.0270 - acc: 0.9855 - Dice_Calculator: 0.5582 - val_loss: 0.0404 - val_acc: 0.9864 - val_Dice_Calculator: 0.5310
+Epoch 6/100
+
+  40/1063 [>.............................] - ETA: 4s - loss: 0.0260 - acc: 0.9924 - Dice_Calculator: 0.5823
+  80/1063 [=>............................] - ETA: 4s - loss: 0.0243 - acc: 0.9931 - Dice_Calculator: 0.5733
+ 120/1063 [==>...........................] - ETA: 3s - loss: 0.0270 - acc: 0.9923 - Dice_Calculator: 0.5745
+ 160/1063 [===>..........................] - ETA: 3s - loss: 0.0279 - acc: 0.9913 - Dice_Calculator: 0.5759
+ 200/1063 [====>.........................] - ETA: 3s - loss: 0.0283 - acc: 0.9910 - Dice_Calculator: 0.5768
+ 240/1063 [=====>........................] - ETA: 3s - loss: 0.0287 - acc: 0.9908 - Dice_Calculator: 0.5759
+ 280/1063 [======>.......................] - ETA: 3s - loss: 0.0281 - acc: 0.9909 - Dice_Calculator: 0.5749
+ 320/1063 [========>.....................] - ETA: 3s - loss: 0.0283 - acc: 0.9907 - Dice_Calculator: 0.5752
+ 360/1063 [=========>....................] - ETA: 2s - loss: 0.0283 - acc: 0.9907 - Dice_Calculator: 0.5715
+ 400/1063 [==========>...................] - ETA: 2s - loss: 0.0277 - acc: 0.9910 - Dice_Calculator: 0.5732
+ 440/1063 [===========>..................] - ETA: 2s - loss: 0.0270 - acc: 0.9911 - Dice_Calculator: 0.5711
+ 480/1063 [============>.................] - ETA: 2s - loss: 0.0261 - acc: 0.9914 - Dice_Calculator: 0.5678
+ 520/1063 [=============>................] - ETA: 2s - loss: 0.0269 - acc: 0.9912 - Dice_Calculator: 0.5692
+ 560/1063 [==============>...............] - ETA: 2s - loss: 0.0263 - acc: 0.9913 - Dice_Calculator: 0.5695
+ 600/1063 [===============>..............] - ETA: 1s - loss: 0.0259 - acc: 0.9915 - Dice_Calculator: 0.5700
+ 640/1063 [=================>............] - ETA: 1s - loss: 0.0254 - acc: 0.9917 - Dice_Calculator: 0.5701
+ 680/1063 [==================>...........] - ETA: 1s - loss: 0.0255 - acc: 0.9917 - Dice_Calculator: 0.5704
+ 720/1063 [===================>..........] - ETA: 1s - loss: 0.0257 - acc: 0.9916 - Dice_Calculator: 0.5710
+ 760/1063 [====================>.........] - ETA: 1s - loss: 0.0262 - acc: 0.9915 - Dice_Calculator: 0.5708

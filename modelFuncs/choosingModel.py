@@ -58,18 +58,18 @@ def testingExeriment(model, Data, params):
             def cascade_paddingToOrigSize(params, im, subject):
                 if 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index:
                     im = np.pad(im, subject.NewCropInfo.PadSizeBackToOrig, 'constant')
-
                     # Padding2, crd = paddingNegativeFix(im.shape, Padding2)          
                     # im = im[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
                 return im
                         
             pred1N = binarizing( np.squeeze(pred) )                    
-            pred1N_BtO = np.transpose(pred1N,params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
-            pred1N_BtO = cascade_paddingToOrigSize(params, pred1N_BtO, subject)
+            
+            pred1N_origShape = cascade_paddingToOrigSize(params, pred1N, subject)
+            pred1N_origShape = np.transpose(pred1N_origShape,params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
 
-            Dice = [ NucleiIndex , smallFuncs.Dice_Calculator(pred1N_BtO , origMsk1N) ]
+            Dice = [ NucleiIndex , smallFuncs.Dice_Calculator(pred1N_origShape , origMsk1N) ]
 
-            return pred1N_BtO, Dice
+            return pred1N_origShape, Dice
 
         def savingOutput(pred1N_BtO, params, ResultDir, nameSubject, NucleiIndex, Affine, Header):
             dirSave = smallFuncs.mkDir(ResultDir + '/' + nameSubject)  
@@ -118,9 +118,9 @@ def testingExeriment(model, Data, params):
             pred = np.transpose(pred,[1,2,0,3])
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
 
-            paddingTp = [ padding[p] for p in params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
-            if len(paddingTp) == 3: paddingTp.append((0,0))
-            pred = unPadding(pred, paddingTp)
+            # paddingTp = [ padding[p] for p in params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
+            # if len(paddingTp) == 3: paddingTp.append((0,0))
+            pred = unPadding(pred, padding)
             return pred
 
 
@@ -231,7 +231,7 @@ def applyThalamusOnInput(params, ThalamusMasks):
         def checkBordersOnBoundingBox(imFshape , BB , gapOnSlicingDimention):
             return [   [   np.max([BB[d][0]-gapOnSlicingDimention,0])  ,   np.min( [BB[d][1]+gapOnSlicingDimention,imFshape[d]])   ]  for d in range(3) ]
 
-        def cropBoundingBoxes(params, subject, imFshape, Thalamus_Mask, Thalamus_Mask_Dilated):
+        def cropBoundingBoxes(params, Thalamus_Mask):
 
             def findBoundingBox(Thalamus_Mask):
                 objects = measure.regionprops(measure.label(Thalamus_Mask))
@@ -246,57 +246,57 @@ def applyThalamusOnInput(params, ThalamusMasks):
                                 
                 return BB
 
+            # Thalamus_Mask_Dilated = dilateMask( Thalamus_Mask, params.WhichExperiment.Dataset.gapDilation )
+            imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+
             BB = findBoundingBox(Thalamus_Mask)
             # BB = croppingA.func_CropCoordinates(Thalamus_Mask)
 
-            BB = checkBordersOnBoundingBox(imFshape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
+            BB = checkBordersOnBoundingBox(imF.shape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
             # BBd  = croppingA.func_CropCoordinates(Thalamus_Mask_Dilated)
             BBd = [  [BB[ii][0] - 5 , BB[ii][1] + 5] for ii in range(len(BB))]
-            BBd = checkBordersOnBoundingBox(imFshape , BBd , 0)
+            BBd = checkBordersOnBoundingBox(imF.shape , BBd , 0)
 
             dirr = params.directories.Test.Result 
             if 'train' in mode: dirr += '/TrainData_Output'
                            
-            np.savetxt(dirr + '/' + nameSubject + '/BB.txt',BB,fmt='%d')
-            np.savetxt(dirr + '/' + nameSubject + '/BBd.txt',BBd,fmt='%d')
+            np.savetxt(dirr + '/' + subject.subjectName + '/BB.txt',BB,fmt='%d')
+            np.savetxt(dirr + '/' + subject.subjectName + '/BBd.txt',BBd,fmt='%d')
             return BB,BBd
 
-        def apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject):
+        # def apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject):
 
-            imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-            im = imF.get_data()
-            im[Thalamus_Mask_Dilated == 0] = 0
-            # smallFuncs.saveImage(im , imF.affine , imF.header , subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+        #     imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+        #     im = imF.get_data()
+        #     im[Thalamus_Mask_Dilated == 0] = 0
+        #     # smallFuncs.saveImage(im , imF.affine , imF.header , subject.address + '/' + subject.ImageProcessed + '.nii.gz')
 
-            return imF
+        #     return imF
 
-        def saveNewCrop(BB,BBd, imFshape, subject):
+        # def saveNewCrop(BB,BBd):
 
-            newCrop0 = newCrop1 = newCrop2 = np.zeros(imFshape)
-            newCrop0[ BB[0][0] :BB[0][-1]   ,  BBd[1][0]:BBd[1][-1]  ,  BBd[2][0]:BBd[2][-1] ] = 1
-            newCrop1[ BBd[0][0]:BBd[0][-1]  ,  BB[1][0] :BB[1][-1]   ,  BBd[2][0]:BBd[2][-1] ] = 1
-            newCrop2[ BBd[0][0]:BBd[0][-1]  ,  BBd[1][0]:BBd[1][-1]  ,  BB[2][0] :BB[2][-1]  ] = 1
+        #     imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
 
-            smallFuncs.saveImage(newCrop0 , imF.affine , imF.header , subject.Temp.address + '/CropMask_ThCascade_sliceDim0.nii.gz')
-            smallFuncs.saveImage(newCrop1 , imF.affine , imF.header , subject.Temp.address + '/CropMask_ThCascade_sliceDim1.nii.gz')
-            smallFuncs.saveImage(newCrop2 , imF.affine , imF.header , subject.Temp.address + '/CropMask_ThCascade_sliceDim2.nii.gz')
+        #     newCrop0 = newCrop1 = newCrop2 = np.zeros(imF.shape)
+        #     newCrop0[ BB[0][0] :BB[0][-1]   ,  BBd[1][0]:BBd[1][-1]  ,  BBd[2][0]:BBd[2][-1] ] = 1
+        #     newCrop1[ BBd[0][0]:BBd[0][-1]  ,  BB[1][0] :BB[1][-1]   ,  BBd[2][0]:BBd[2][-1] ] = 1
+        #     newCrop2[ BBd[0][0]:BBd[0][-1]  ,  BBd[1][0]:BBd[1][-1]  ,  BB[2][0] :BB[2][-1]  ] = 1
+
+        #     smallFuncs.saveImage(newCrop0 , imF.affine , imF.header , subject.Temp.address + '/CropMask_ThCascade_sliceDim0.nii.gz')
+        #     smallFuncs.saveImage(newCrop1 , imF.affine , imF.header , subject.Temp.address + '/CropMask_ThCascade_sliceDim1.nii.gz')
+        #     smallFuncs.saveImage(newCrop2 , imF.affine , imF.header , subject.Temp.address + '/CropMask_ThCascade_sliceDim2.nii.gz')
 
         # if not os.path.isfile(subject.Temp.address + '/BB.txt'):
 
-        imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+        imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')       
+        BB,BBd = cropBoundingBoxes(params, Thalamus_Mask)
 
-        # TODO Feb 7 check of dilated values are 0 and 1
-        Thalamus_Mask_Dilated = dilateMask( Thalamus_Mask, params.WhichExperiment.Dataset.gapDilation )
-        BB,BBd = cropBoundingBoxes(params, subject, imF.shape, Thalamus_Mask, Thalamus_Mask_Dilated)
-
-        imF = apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject)
-        saveNewCrop(BB,BBd, imF.shape, subject)
+        # imF = apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject)
+        # saveNewCrop(BB,BBd)
     
     def loopOverSubjects(params, ThalamusMasks, mode):
         Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
-        for sj in tqdm(Subjects ,desc='applying Thalamus for cascade method: ' + mode):     
-            if 'ERROR_vimp2_1448_08132015' in sj:
-                print('----')      
+        for sj in tqdm(Subjects ,desc='applying Thalamus for cascade method: ' + mode):         
             ApplyThalamusMask(ThalamusMasks[sj] , params, Subjects[sj], sj, mode) 
 
     loopOverSubjects(params, ThalamusMasks.Test, 'test')

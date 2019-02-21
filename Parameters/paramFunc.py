@@ -52,7 +52,7 @@ def Run(UserInfo):
     # orderDim =       1: [2,0,1]
     # orderDim =       0: [1,2,0]
 
-    WhichExperiment.Dataset.slicingDim = UserInfo['slicingDim']
+    WhichExperiment.Dataset.slicingInfo.slicingDim = UserInfo['slicingDim']
     if UserInfo['slicingDim'] == 0:
         WhichExperiment.Dataset.slicingInfo.slicingOrder         = [1,2,0]
         WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse = [2,0,1]
@@ -92,7 +92,8 @@ def Run(UserInfo):
     # WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag'] + 'lr' + str(UserInfo['Learning_Rate'])  + '_nl' + str(UserInfo['num_Layers']) 
 
     # WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag + WhichExperiment.Nucleus.name if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.Nucleus.name
-    WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index)
+    AAA = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index)
+    WhichExperiment.SubExperiment.name = AAA + '_nl' + str(UserInfo['num_Layers']) 
 
     # WhichExperiment.SubExperiment.name_thalamus = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index)
 

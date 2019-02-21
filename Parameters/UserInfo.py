@@ -1,16 +1,16 @@
 
-epochs = 10
+epochs = 100
 GPU_Index = 2
 Learning_Rate = 1e-3
 num_Layers = 3
 
 TestOnly = False
 Experiments_Index = '6_cascade'
-nucleus_Index = [1,2]
+nucleus_Index = [1]
 
 slicingDim = 0
 DatasetIx = 4
-SubExperiment_Index = 4
+SubExperiment_Index = 5
 
 #! Training
 batch_size = 40
@@ -54,7 +54,6 @@ lossFunctionIx = 2
 # orderDim =       2: [0,1,2]
 # orderDim =       1: [2,0,1]
 # orderDim =       0: [1,2,0]
-# slicingDim = 0
 
 
 #! Optimizer

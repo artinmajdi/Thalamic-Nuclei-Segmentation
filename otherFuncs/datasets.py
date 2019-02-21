@@ -138,7 +138,10 @@ def paddingNegativeFix(sz, Padding):
     
     return padding, crd
 
-
+def readingWithTranpose(Dirr , params):
+    ImageF = nib.load( Dirr)
+    return ImageF, np.transpose(ImageF.get_data() , params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
+        
 # TODO: add the saving images with the format mahesh said
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments(params):
@@ -160,14 +163,13 @@ def readingFromExperiments(params):
         # aa = subject.address.split('train/') if len(subject2.address.split('train/')) == 2 else subject.address.split('test/')
         
         im = CroppingInput(im, subject2.Padding)    
-        im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
-
+        # im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
         im = np.transpose(im,[2,0,1])
         im = np.expand_dims(im ,axis=3).astype('float32')
         
         return im
         
-    def readingImage(params, subject2):
+    def readingImage(params, subject2, mode):
 
         # TODO remove this after couple of runs
         if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 in params.WhichExperiment.Nucleus.Index and os.path.isfile(subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
@@ -180,22 +182,19 @@ def readingFromExperiments(params):
                 struc = ndimage.iterate_structure(struc, params.WhichExperiment.Dataset.gapDilation ) 
                 return ndimage.binary_dilation(mask, structure=struc)
                 
-            Thalamus_Mask = nib.load( subject2.Label.address + '/1-THALAMUS_PProcessed.nii.gz').get_data()
-            Thalamus_Mask_Dilated = dilateMask( Thalamus_Mask)
+            Dirr = params.directories.Test.Result 
+            if 'train' in mode: Dirr += '/TrainData_Output'
+            _, Thalamus_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/1-THALAMUS.nii.gz' , params)
 
-            # imF = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
-            # imm = imF.get_data()
+            Thalamus_Mask_Dilated = dilateMask(Thalamus_Mask)
             imm[Thalamus_Mask_Dilated == 0] = 0
             return imm
                     
-        imF = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
+        imF, im = readingWithTranpose(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz' , params)
 
-        if 1 not in params.WhichExperiment.Nucleus.Index: 
-            im = applyThalamusMaskONImage(imF.get_data())
-        else:
-            im = imF.get_data()
-
-
+        if 1 not in params.WhichExperiment.Nucleus.Index and 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea: 
+            im = applyThalamusMaskONImage( im )
+            
         im = inputPreparationForUnet(im, subject2, params)
         im = normalizeA.main_normalize(params.preprocess.Normalize , im)
         return im, imF
@@ -209,13 +208,20 @@ def readingFromExperiments(params):
             background = np.expand_dims(background,axis=3)
             return background
 
-        for cnt, NucInd in enumerate(params.WhichExperiment.Nucleus.Index):
+        def readingOriginalMask(NucInd):
             nameNuclei, _,_ = smallFuncs.NucleiSelection(NucInd)
             inputMsk = subject.Label.address + '/' + nameNuclei + '_PProcessed.nii.gz'
 
-            origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape) 
-            msk1N = inputPreparationForUnet(origMsk1N, subject, params)
-            origMsk1N = np.expand_dims(origMsk1N ,axis=3)
+            origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape)
+            return np.expand_dims(origMsk1N ,axis=3)
+
+        for cnt, NucInd in enumerate(params.WhichExperiment.Nucleus.Index):
+                        
+            origMsk1N = readingOriginalMask(NucInd)  
+
+            
+            msk1N = np.transpose( np.squeeze(origMsk1N) , params.WhichExperiment.Dataset.slicingInfo.slicingOrder) 
+            msk1N = inputPreparationForUnet(msk1N, subject, params)                     
 
             origMsk = origMsk1N if cnt == 0 else np.concatenate((origMsk, origMsk1N) ,axis=3).astype('float32')
             msk = msk1N if cnt == 0 else np.concatenate((msk,msk1N),axis=3).astype('float32')
@@ -252,15 +258,13 @@ def readingFromExperiments(params):
                     md = np.mod(fullpadding,2)
 
                     for sn, name in enumerate(list(Subjects)):
-                        padding = [np.zeros(2)]*4
-                        for dim in params.WhichExperiment.Dataset.slicingInfo.slicingOrder[:2]:
+                        padding = [tuple([0,0])]*4
+                        for dim in range(2): # params.WhichExperiment.Dataset.slicingInfo.slicingOrder[:2]:
                             if md[sn, dim] == 0:
                                 padding[dim] = tuple([int(fullpadding[sn,dim]/2)]*2)
                             else:
                                 padding[dim] = tuple([int(np.floor(fullpadding[sn,dim]/2) + 1) , int(np.floor(fullpadding[sn,dim]/2))])
 
-                        padding[params.WhichExperiment.Dataset.slicingInfo.slicingOrder[2]] = tuple([0,0])
-                        padding[3] = tuple([0,0])
                         Subjects[name].Padding = tuple(padding)
 
                     return Subjects
@@ -268,9 +272,6 @@ def readingFromExperiments(params):
                 # TODO check ehjy this works for test only cases even though i am not feeding teh dimension for padding; check where im adding dimension to the params
                 if 'Train' in wFolder: params.WhichExperiment.HardParams.Model.InputDimensions = findingPaddedInputSize( params )
 
-                # else:
-                #     new_inputSize = params.WhichExperiment.HardParams.Model.InputDimensions
-                
                 #! finding the amount of padding for each subject in each direction
                 Input.Subjects = applyingPaddingDimOnSubjects(params, Input.Subjects)
 
@@ -283,24 +284,26 @@ def readingFromExperiments(params):
 
         def find_AllInputSizes(params):
 
-            def newCropedSize(subjectName , subject, params, mode):
+            def newCropedSize(subject, params, mode):
 
-                def readingThalamicCropSizes(subject , slicingDirection):
+                def readingThalamicCropSizes(subject):
                     dirr = params.directories.Test.Result 
                     if 'train' in mode: dirr += '/TrainData_Output'
                         
-                    BB = np.loadtxt(dirr + '/' + subjectName  + '/BB.txt',dtype=int)
-                    BBd = np.loadtxt(dirr + '/' + subjectName  + '/BBd.txt',dtype=int)
+                    BB = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB.txt',dtype=int)
+                    BBd = np.loadtxt(dirr + '/' + subject.subjectName  + '/BBd.txt',dtype=int)
                     
-                    #! ebcause on the slicing direction we don't want the extra dilated effect to be considered
-                    BBd[slicingDirection] = BB[slicingDirection]
-                                    
+                    #! because on the slicing direction we don't want the extra dilated effect to be considered
+                    BBd[params.WhichExperiment.Dataset.slicingInfo.slicingDim] = BB[params.WhichExperiment.Dataset.slicingInfo.slicingDim]
+                    BBd = BBd[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
                     return BBd
                     
                 if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
-                    BB = readingThalamicCropSizes(subject, params.WhichExperiment.Dataset.slicingInfo.slicingDim)
+                    BB = readingThalamicCropSizes(subject)
 
-                    origSize = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
+                    origSize = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )                    
+                    origSize = origSize[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
+                    
 
                     subject.NewCropInfo.OriginalBoundingBox = BB            
                     subject.NewCropInfo.PadSizeBackToOrig   = tuple([ tuple([BB[d][0] , origSize[d]-BB[d][1]]) for d in range(3) ])
@@ -308,13 +311,15 @@ def readingFromExperiments(params):
                     Shape = np.array([BB[d][1]-BB[d][0] for d  in range(3)])     
                 else:
                     Shape = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
+                    Shape = Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
 
                 # Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
                 return Shape, subject
+
             def loopOverAllSubjects(Input, mode):
                 inputSize = []
                 for sj in Input.Subjects:
-                    Shape, Input.Subjects[sj] = newCropedSize(sj, Input.Subjects[sj], params, mode)
+                    Shape, Input.Subjects[sj] = newCropedSize(Input.Subjects[sj], params, mode)
                     inputSize.append(Shape)
 
                 Input.inputSizes = np.array(inputSize)
@@ -391,7 +396,7 @@ def readingFromExperiments(params):
                     
                 if ErrorInPaddingCheck(params, Subjects[nameSubject], nameSubject): continue
                             
-                im, imF = readingImage(params, Subjects[nameSubject])
+                im, imF = readingImage(params, Subjects[nameSubject], mode)
                 origMsk , msk = readingNuclei(params, Subjects[nameSubject], imF.shape)
 
                 if im[...,0].shape == msk[...,0].shape:
@@ -409,12 +414,6 @@ def readingFromExperiments(params):
 
             if 'train' in mode:
                 TrainData = saveTrainDataFinal(DataAll, TrainData, images, masks)
-                # DataAll.Train_ForTest = TrainData
-
-                # if params.WhichExperiment.Dataset.Validation.fromKeras:
-                #     DataAll.Train = trainCase(Image=images, Mask=masks.astype('float32'))
-                # else:
-                #     DataAll.Train, DataAll.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks, params.WhichExperiment.Dataset.randomFlag)
             else:
                 DataAll.Test = TestData
 
