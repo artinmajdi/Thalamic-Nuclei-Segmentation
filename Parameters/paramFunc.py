@@ -93,7 +93,7 @@ def Run(UserInfo):
 
     # WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag + WhichExperiment.Nucleus.name if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.Nucleus.name
     AAA = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index)
-    WhichExperiment.SubExperiment.name = AAA + '_nl' + str(UserInfo['num_Layers']) 
+    WhichExperiment.SubExperiment.name = AAA   + '_nl' + str(UserInfo['num_Layers'])  # + '5' #
 
     # WhichExperiment.SubExperiment.name_thalamus = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index)
 

@@ -4,11 +4,11 @@ GPU_Index = 2
 Learning_Rate = 1e-3
 num_Layers = 3
 
-TestOnly = False
+TestOnly = True
 Experiments_Index = '6_cascade'
 nucleus_Index = [1]
 
-slicingDim = 0
+slicingDim = 2
 DatasetIx = 4
 SubExperiment_Index = 5
 
