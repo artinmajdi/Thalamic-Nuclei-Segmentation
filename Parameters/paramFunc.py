@@ -70,6 +70,8 @@ def Run(UserInfo):
         Experiments_Tag = '7T'
     elif UserInfo['DatasetIx'] == 1:
         Experiments_Tag = 'SRI'
+    elif UserInfo['DatasetIx'] == 2:
+        Experiments_Tag = 'Cropping'
 
     if UserInfo['AugmentMode']:  
         tagEx = ''
@@ -91,10 +93,14 @@ def Run(UserInfo):
     WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag'] + B + '_sd' + str(UserInfo['slicingDim']) if int(UserInfo['slicingDim']) != 2 else UserInfo['SubExperiment_Tag'] + B
     # WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag'] + 'lr' + str(UserInfo['Learning_Rate'])  + '_nl' + str(UserInfo['num_Layers']) 
 
-    # WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag + WhichExperiment.Nucleus.name if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.Nucleus.name
-    AAA = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index)
-    WhichExperiment.SubExperiment.name = AAA   + '_nl' + str(UserInfo['num_Layers'])  # + '5' #
+    if 'U-Net' in WhichExperiment.HardParams.Model.architectureType:
+        # WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag + WhichExperiment.Nucleus.name if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.Nucleus.name
+        AAA = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index)
+        WhichExperiment.SubExperiment.name = AAA   + '_nl' + str(UserInfo['num_Layers'])  # + '5' #
+    else:
+        WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index)
 
+        
     # WhichExperiment.SubExperiment.name_thalamus = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index)
 
 

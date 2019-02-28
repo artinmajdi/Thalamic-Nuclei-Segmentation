@@ -179,7 +179,7 @@ def trainingExperiment(Data, params):
         saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo['SaveReportMethod'])
         saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , 'csv')
         
-    def modelTrain(Data, params, model):
+    def modelTrain_Unet(Data, params, model):
         ModelParam = params.WhichExperiment.HardParams.Model
 
 
@@ -203,6 +203,23 @@ def trainingExperiment(Data, params):
 
         return model, hist
 
+    def modelTrain_Cropping(Data, params, model):
+        ModelParam = params.WhichExperiment.HardParams.Model
+        model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
+
+        if params.WhichExperiment.Dataset.Validation.fromKeras:
+            hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=1) # , callbacks=[TQDMCallback()])
+        else:
+            hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label), verbose=1) # , callbacks=[TQDMCallback()])
+
+        smallFuncs.mkDir(params.directories.Train.Model)
+        model.save(params.directories.Train.Model + '/model.h5', overwrite=True, include_optimizer=True )
+        model.save_weights(params.directories.Train.Model + '/model_weights.h5', overwrite=True )
+        if ModelParam.showHistory: print(hist.history)
+
+        return model, hist
+
+
     def Saving_UserInfo(DirSave, params, UserInfo):
 
         UserInfo['InputDimensions'] = str(params.WhichExperiment.HardParams.Model.InputDimensions)
@@ -213,9 +230,13 @@ def trainingExperiment(Data, params):
     a = time()
     Saving_UserInfo(params.directories.Train.Model, params, params.UserInfo)
     model = architecture(params)
-    model, hist = modelTrain(Data, params, model)
 
-    saveTrainInfo(hist,a, params)
+    if 'U-Net' in params.WhichExperiment.HardParams.Model.architectureType:
+        model, hist = modelTrain_Unet(Data, params, model)
+        saveTrainInfo(hist,a, params)
+    elif 'FCN_Cropping':
+        model, hist = modelTrain_Unet(Data, params, model)
+
     return model
 
 def applyThalamusOnInput(params, ThalamusMasks):
@@ -351,16 +372,47 @@ def architecture(params):
 
         return model
 
+    def CNN_Segmetnation(Modelparam):
+        inputs = layers.Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1) )
+        conv = inputs
+
+        for nL in range(Modelparam.num_Layers -1):
+            conv = layers.Conv2D(filters=64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
+            conv = layers.Dropout(Modelparam.Dropout.Value)(conv)
+
+        final  = layers.Conv2D(filters=Modelparam.MultiClass.num_classes, kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
+
+        model = kerasmodels.Model(inputs=[inputs], outputs=[final])
+
+        return model
+
+    def CNN_Classifier(Modelparam):
+        model = kerasmodels.Sequential()
+        model.add(layers.Conv2D(filters=16, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=(Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1)))
+        model.add(layers.MaxPooling2D(pool_size=Modelparam.MaxPooling.pool_size))
+        model.add(layers.Dropout(Modelparam.Dropout.Value))
+
+        model.add(layers.Conv2D(filters=8, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=(Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1)))
+        model.add(layers.MaxPooling2D(pool_size=Modelparam.MaxPooling.pool_size))
+        model.add(layers.Dropout(Modelparam.Dropout.Value))
+
+        model.add(layers.Flatten())
+        model.add(layers.Dense(128 , activation=Modelparam.Activitation.layers))
+        model.add(layers.Dropout(Modelparam.Dropout.Value))
+        model.add(layers.Dense(Modelparam.MultiClass.num_classes , activation=Modelparam.Activitation.output))
+
+        return model
+        
     # params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
     ModelParam = params.WhichExperiment.HardParams.Model
     if 'U-Net' in ModelParam.architectureType:
         model = UNet(ModelParam)
 
-    elif 'CNN_Segmetnation' in ModelParam.architectureType:
+    elif 'FCN_Cropping' in ModelParam.architectureType:
         model = CNN_Segmetnation(ModelParam)
 
     elif 'CNN_Classifier' in ModelParam.architectureType:
-        model = CNN_Segmetnation(ModelParam)
+        model = CNN_Classifier(ModelParam)
 
     # model.summary()
 
@@ -368,34 +420,3 @@ def architecture(params):
     # model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
     return model
 
-def CNN_Segmetnation(Modelparam):
-    inputs = layers.Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1) )
-    conv = inputs
-
-    for nL in range(Modelparam.num_Layers -1):
-        conv = layers.Conv2D(filters=64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
-        conv = layers.Dropout(Modelparam.Dropout.Value)(conv)
-
-    final  = layers.Conv2D(filters=Modelparam.MultiClass.num_classes, kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
-
-    model = kerasmodels.Model(inputs=[inputs], outputs=[final])
-
-    return model
-
-def CNN_Classifier(Modelparam):
-    model = kerasmodels.Sequential()
-    model.add(layers.Conv2D(filters=16, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=(Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1)))
-    model.add(layers.MaxPooling2D(pool_size=Modelparam.MaxPooling.pool_size))
-    model.add(layers.Dropout(Modelparam.Dropout.Value))
-
-    model.add(layers.Conv2D(filters=8, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=(Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1)))
-    model.add(layers.MaxPooling2D(pool_size=Modelparam.MaxPooling.pool_size))
-    model.add(layers.Dropout(Modelparam.Dropout.Value))
-
-    model.add(layers.Flatten())
-    model.add(layers.Dense(128 , activation=Modelparam.Activitation.layers))
-    model.add(layers.Dropout(Modelparam.Dropout.Value))
-    model.add(layers.Dense(Modelparam.MultiClass.num_classes , activation=Modelparam.Activitation.output))
-
-    return model
-    

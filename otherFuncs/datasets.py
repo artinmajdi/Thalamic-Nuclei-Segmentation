@@ -44,7 +44,7 @@ class testCase:
 def DatasetsInfo(DatasetIx):
     switcher = {
         1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_3T'),
-        2: ('kaggleCompetition', '/array/ssd/msmajdi/data/originals/KaggleCompetition/train'),
+        2: ('croppingData', '/array/ssd/msmajdi/data/preProcessed/croppingData'),
         3: ('fashionMnist', 'intrinsic'),
         4: ('All_7T', '/array/ssd/msmajdi/data/preProcessed/7T/All_7T'),
         5: ('20priors', '/array/ssd/msmajdi/data/preProcessed/7T/20priors'),
@@ -155,7 +155,7 @@ def readingFromExperiments(params):
 
             return np.pad(im, Padding2[:3], 'constant')
 
-        if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
+        if 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
             # subject.NewCropInfo.PadSizeBackToOrig
             BB = subject2.NewCropInfo.OriginalBoundingBox            
             im = im[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]] 
@@ -172,7 +172,7 @@ def readingFromExperiments(params):
     def readingImage(params, subject2, mode):
 
         # TODO remove this after couple of runs
-        if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 in params.WhichExperiment.Nucleus.Index and os.path.isfile(subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
+        if 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 in params.WhichExperiment.Nucleus.Index and os.path.isfile(subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
             copyfile( subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz' , subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
         
         def applyThalamusMaskONImage(imm):
@@ -298,7 +298,7 @@ def readingFromExperiments(params):
                     BBd = BBd[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
                     return BBd
                     
-                if 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
+                if 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
                     BB = readingThalamicCropSizes(subject)
 
                     origSize = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )                    

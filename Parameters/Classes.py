@@ -34,7 +34,7 @@ class maxPooling:
 
 
 class model:
-    architectureType = 'U-Net'
+    architectureType = 'FCN_Cropping'  #'U-Net'
     epochs = ''
     batch_size = ''
     loss = ''
@@ -54,7 +54,7 @@ class model:
     #! only one of these two can be true at the same time
     InitializeFromThalamus = ''
     InitializeFromOlderModel = ''
-    Idea = 'cascadeThalamusV1'
+    Idea = 'FCN_Cropping'  # 'cascadeThalamusV1'
     paddingErrorPatience = 20
 
 

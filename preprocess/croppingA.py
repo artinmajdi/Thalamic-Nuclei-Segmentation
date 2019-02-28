@@ -109,7 +109,7 @@ def main(subject , params):
         for ind in params.WhichExperiment.Nucleus.FullIndexes:
             check_cropNucleus(subject, CropCoordinates, ind)
 
-    if params.preprocess.Cropping.Mode:
+    if params.preprocess.Mode and params.preprocess.Cropping.Mode:
         print('     Cropping')
         CropCoordinates = check_cropImage(subject)
   

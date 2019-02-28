@@ -1,15 +1,15 @@
 
 epochs = 100
-GPU_Index = 2
+GPU_Index = 3
 Learning_Rate = 1e-3
 num_Layers = 3
 
-TestOnly = True
-Experiments_Index = '6_cascade'
+TestOnly = False
+Experiments_Index = 'cropping' # 7_croppingNetwork' # 
 nucleus_Index = [1]
 
 slicingDim = 2
-DatasetIx = 4
+DatasetIx = 2
 SubExperiment_Index = 5
 
 #! Training
@@ -77,7 +77,7 @@ cropping_method = 'ANTs' # 'ANTs' 'python'
 
 
 #! Preprocessing
-preprocessMode = True
+preprocessMode = False
 BiasCorrection = False
 Cropping = True
 Normalize = True
