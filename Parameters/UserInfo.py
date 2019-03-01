@@ -8,7 +8,7 @@ NormalizaeMethod = 'MinMax' #'1Std0Mean' #
 
 TestOnly = False
 Experiments_Index = '7' # 'cropping' # 7_croppingNetwork' # 
-Experiments_Tag = 'cascadeV1_0M1Sd' # _wLR7Aug 'cascadeV1_3TforInit7T' # 
+Experiments_Tag = 'cascadeV1_0M1Sd_wLR7Aug' # 'cascadeV1_3TforInit7T' # 
 nucleus_Index = [1]
 
 slicingDim = 2
