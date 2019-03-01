@@ -81,19 +81,18 @@ def LinearFunc(params, mode):
             Dir_CropMask_In = subject.Temp.address + '/' + subject.Temp.CropMask + '.nii.gz'
 
             smallFuncs.mkDir(outDirectoryImage + '/temp/')
-            Dir_CropMask_Out = outDirectoryImage + '/temp/' + subject.Temp.CropMask + '.nii.gz'
-            if os.path.isfile(Dir_CropMask_In):
+            # Dir_CropMask_Out = outDirectoryImage + '/temp/' + subject.Temp.CropMask + '.nii.gz'
+            # if os.path.isfile(Dir_CropMask_In):
 
-                CropMask = nib.load(Dir_CropMask_In).get_data() 
-                if params.Augment.Linear.Rotation.Mode: CropMask = funcRotating(CropMask , angle)
-                if params.Augment.Linear.Shift.Mode:    CropMask = funcShifting(CropMask , shift)
-                smallFuncs.saveImage( np.float32(CropMask > 0.5) , Affine , Header , Dir_CropMask_Out)
+            #     CropMask = nib.load(Dir_CropMask_In).get_data() 
+            #     if params.Augment.Linear.Rotation.Mode: CropMask = funcRotating(CropMask , angle)
+            #     if params.Augment.Linear.Shift.Mode:    CropMask = funcShifting(CropMask , shift)
+            #     smallFuncs.saveImage( np.float32(CropMask > 0.5) , Affine , Header , Dir_CropMask_Out)
 
             for ind in params.WhichExperiment.Nucleus.FullIndexes:
                 NucleusName, _ , _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
 
                 Mask   = nib.load(subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz').get_data() # 'Cropped' for cropped image
-
                 if params.Augment.Linear.Rotation.Mode: Mask = funcRotating(Mask , angle)
                 if params.Augment.Linear.Shift.Mode:    Mask = funcShifting(Mask , shift)
 

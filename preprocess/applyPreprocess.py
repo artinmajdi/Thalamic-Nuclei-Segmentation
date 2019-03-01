@@ -38,7 +38,7 @@ def apply_On_Individual(params,Info):
     if 'Aug' not in Info.subjectName: 
         BashCallingFunctionsA.RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
 
-    croppingA.main(subject , params)
+        croppingA.main(subject , params)
 
     return params
 

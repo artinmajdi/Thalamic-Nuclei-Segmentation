@@ -4,18 +4,30 @@ GPU_Index = 3
 Learning_Rate = 1e-3
 num_Layers = 3
 
+NormalizaeMethod = 'MinMax' #'1Std0Mean' # 
+
 TestOnly = False
-Experiments_Index = 'cropping' # 7_croppingNetwork' # 
+Experiments_Index = '7' # 'cropping' # 7_croppingNetwork' # 
+Experiments_Tag = 'cascadeV1_0M1Sd' # _wLR7Aug 'cascadeV1_3TforInit7T' # 
 nucleus_Index = [1]
 
 slicingDim = 2
-DatasetIx = 2
-SubExperiment_Index = 5
+
+# 1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_3T'),
+# 2: ('SRI_ReSliced', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_ReSliced'),
+# 3: ('croppingData', '/array/ssd/msmajdi/data/preProcessed/croppingData'),
+# 4: ('All_7T', '/array/ssd/msmajdi/data/preProcessed/7T/All_DBD'),
+# 5: ('20priors', '/array/ssd/msmajdi/data/preProcessed/7T/20priors'),
+DatasetIx = 4
+SubExperiment_Index = 1
 
 #! Training
 batch_size = 40
 Initialize_FromThalamus = False
 Initialize_FromOlderModel = False
+
+InputPadding_Automatic = True
+InputPadding_HardDimensions = [112,112,0]
 
 #! GPU
 # GPU_Index = 6
@@ -68,7 +80,7 @@ Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 
 
-SubExperiment_Tag = ''
+SubExperiment_Tag = NormalizaeMethod # '1Std0Mean'
 
 #! cropping mode
 #           'ANTs'
@@ -77,7 +89,7 @@ cropping_method = 'ANTs' # 'ANTs' 'python'
 
 
 #! Preprocessing
-preprocessMode = False
+preprocessMode = True
 BiasCorrection = False
 Cropping = True
 Normalize = True
@@ -90,7 +102,7 @@ AugmentMode = False
 Augment_LinearMode = True
 
 Augment_Rotation     = True
-Augment_AngleMax = 6
+Augment_AngleMax = 7
 
 Augment_Shift        = False
 Augment_ShiftMax = 10

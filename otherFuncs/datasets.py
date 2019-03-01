@@ -44,9 +44,9 @@ class testCase:
 def DatasetsInfo(DatasetIx):
     switcher = {
         1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_3T'),
-        2: ('croppingData', '/array/ssd/msmajdi/data/preProcessed/croppingData'),
-        3: ('fashionMnist', 'intrinsic'),
-        4: ('All_7T', '/array/ssd/msmajdi/data/preProcessed/7T/All_7T'),
+        2: ('SRI_ReSliced', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_ReSliced'),
+        3: ('croppingData', '/array/ssd/msmajdi/data/preProcessed/croppingData'),
+        4: ('All_7T', '/array/ssd/msmajdi/data/preProcessed/7T/All_DBD'),
         5: ('20priors', '/array/ssd/msmajdi/data/preProcessed/7T/20priors'),
     }
     return switcher.get(DatasetIx, 'WARNING: Invalid dataset index')
@@ -270,7 +270,13 @@ def readingFromExperiments(params):
                     return Subjects
 
                 # TODO check ehjy this works for test only cases even though i am not feeding teh dimension for padding; check where im adding dimension to the params
-                if 'Train' in wFolder: params.WhichExperiment.HardParams.Model.InputDimensions = findingPaddedInputSize( params )
+                
+                if 'Train' in wFolder: 
+                    if params.WhichExperiment.Dataset.InputPadding.Automatic: 
+                        params.WhichExperiment.HardParams.Model.InputDimensions = findingPaddedInputSize( params )
+                    else:
+                        params.WhichExperiment.HardParams.Model.InputDimensions = params.WhichExperiment.Dataset.InputPadding.HardDimensions
+
 
                 #! finding the amount of padding for each subject in each direction
                 Input.Subjects = applyingPaddingDimOnSubjects(params, Input.Subjects)
@@ -334,7 +340,11 @@ def readingFromExperiments(params):
 
             HardParams = params.WhichExperiment.HardParams
 
-            MinInputSize = np.min(params.directories.Train.Input.inputSizes, axis=0)
+            if params.WhichExperiment.Dataset.InputPadding.Automatic:
+                MinInputSize = np.min(params.directories.Train.Input.inputSizes, axis=0)
+            else:
+                MinInputSize = params.WhichExperiment.Dataset.InputPadding.HardDimensions
+
             kernel_size = HardParams.Model.ConvLayer.Kernel_size.conv
             num_Layers  = HardParams.Model.num_Layers
 

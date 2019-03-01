@@ -66,13 +66,14 @@ def Run(UserInfo):
     WhichExperiment.SubExperiment.index = UserInfo['SubExperiment_Index']
     WhichExperiment.Experiment.index = UserInfo['Experiments_Index']
 
-    if UserInfo['DatasetIx'] == 4:
-        Experiments_Tag = '7T'
-    elif UserInfo['DatasetIx'] == 1:
-        Experiments_Tag = 'SRI'
-    elif UserInfo['DatasetIx'] == 2:
-        Experiments_Tag = 'Cropping'
+    # if UserInfo['DatasetIx'] == 4:
+    #     Experiments_Tag = '7T'
+    # elif UserInfo['DatasetIx'] == 1:
+    #     Experiments_Tag = 'SRI'
+    # elif UserInfo['DatasetIx'] == 2:
+    #     Experiments_Tag = 'Cropping'
 
+    Experiments_Tag = UserInfo['Experiments_Tag']
     if UserInfo['AugmentMode']:  
         tagEx = ''
         if UserInfo['Augment_LinearMode']:
@@ -116,16 +117,20 @@ def Run(UserInfo):
 
     WhichExperiment.HardParams.Model.MultiClass.num_classes = len(WhichExperiment.Nucleus.Index) + 1 if WhichExperiment.HardParams.Model.MultiClass.mode else 2
 
-
+    WhichExperiment.Dataset.InputPadding.Automatic = UserInfo['InputPadding_Automatic']
+    WhichExperiment.Dataset.InputPadding.HardDimensions = UserInfo['InputPadding_HardDimensions']
+    if WhichExperiment.Dataset.InputPadding.Automatic:
+        UserInfo['InputPadding_Automatic']
     directories = smallFuncs.search_ExperimentDirectory(WhichExperiment)
     if not Augment.Mode:  Augment.AugmentLength = 0
     preprocess.Cropping.Method = UserInfo['cropping_method']
 
-
+    
     preprocess.Mode                = UserInfo['preprocessMode']
     preprocess.BiasCorrection.Mode = UserInfo['BiasCorrection']
     preprocess.Cropping.Mode       = UserInfo['Cropping']
     preprocess.Normalize.Mode      = UserInfo['Normalize']
+    preprocess.Normalize.Method    = UserInfo['NormalizaeMethod']
     preprocess.TestOnly            = UserInfo['TestOnly']
 
     Augment.Mode                     = UserInfo['AugmentMode']  

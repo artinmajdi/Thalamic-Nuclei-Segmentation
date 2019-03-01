@@ -1,12 +1,11 @@
 #!/bin/csh
 
-set Fulldata='/array/ssd/msmajdi/data/preProcessed/7T'
-set dataset='All_7T'
+set Fulldata='/array/ssd/msmajdi/data/preProcessed/7T/All_DBD/ET'
 
 cd $Fulldata
 
-foreach vimp ({$dataset}/*)
-foreach label( {$vimp}/vtk_rois/*.nii.gz )
+foreach vimp (*)
+foreach label( {$vimp}/Label/*.nii.gz )
 echo $label
 CopyImageHeaderInformation $vimp/WMnMPRAGE*.nii.gz $label $label 1 1 1 0
 end

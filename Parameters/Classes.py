@@ -34,7 +34,7 @@ class maxPooling:
 
 
 class model:
-    architectureType = 'FCN_Cropping'  #'U-Net'
+    architectureType = 'U-Net' 
     epochs = ''
     batch_size = ''
     loss = ''
@@ -54,7 +54,7 @@ class model:
     #! only one of these two can be true at the same time
     InitializeFromThalamus = ''
     InitializeFromOlderModel = ''
-    Idea = 'FCN_Cropping'  # 'cascadeThalamusV1'
+    Idea = 'cascadeThalamusV1'  
     paddingErrorPatience = 20
 
 
@@ -115,6 +115,10 @@ class slicingDirection:
     slicingOrder_Reverse = [0,1,2]
     slicingDim = 2
 
+class inputPadding:
+    Automatic = True
+    HardDimensions = ''
+
 class dataset:
     name = ''
     address = ''
@@ -126,6 +130,7 @@ class dataset:
     slicingInfo = slicingDirection
     gapDilation = 5
     gapOnSlicingDimention = 2
+    InputPadding = inputPadding
 
 
 class WhichExperiment:
@@ -151,7 +156,7 @@ class shift:
 
 class linearAug:
     Mode = True
-    Length = 3
+    Length = 4
     Rotation = rotation
     Shift = shift
 
