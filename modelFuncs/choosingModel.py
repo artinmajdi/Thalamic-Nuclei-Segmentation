@@ -40,60 +40,59 @@ def loadModel(params):
     
 def testingExeriment(model, Data, params):
 
-    # subject.NewCropInfo.PadSizeBackToOrig
-
     class prediction:
         Test = ''
         Train = ''
 
-    def predictingTestSubject(model, Data, subject, params, nameSubject, padding, ResultDir):
+    def predictingTestSubject(DataSubj, subject, ResultDir):
         
-        def postProcessing(params, subject, pred, origMsk1N, NucleiIndex):
+        def postProcessing(pred1Class, origMsk1N, NucleiIndex):
 
             def binarizing(pred1N):
                 Thresh = max( threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
                 # Thresh = 0.2
                 return pred1N  > Thresh
             
-            def cascade_paddingToOrigSize(params, im, subject):
+            def cascade_paddingToOrigSize(im):
                 if 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index:
                     im = np.pad(im, subject.NewCropInfo.PadSizeBackToOrig, 'constant')
                     # Padding2, crd = paddingNegativeFix(im.shape, Padding2)          
                     # im = im[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
                 return im
                         
-            pred1N = binarizing( np.squeeze(pred) )                    
+            pred1N = binarizing( np.squeeze(pred1Class) )                    
             
-            pred1N_origShape = cascade_paddingToOrigSize(params, pred1N, subject)
+            pred1N_origShape = cascade_paddingToOrigSize(pred1N)
             pred1N_origShape = np.transpose(pred1N_origShape,params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
 
             Dice = [ NucleiIndex , smallFuncs.Dice_Calculator(pred1N_origShape , origMsk1N) ]
 
             return pred1N_origShape, Dice
 
-        def savingOutput(pred1N_BtO, params, ResultDir, nameSubject, NucleiIndex, Affine, Header):
-            dirSave = smallFuncs.mkDir(ResultDir + '/' + nameSubject)  
+        def savingOutput(pred1N_BtO, NucleiIndex):
+            dirSave = smallFuncs.mkDir(ResultDir + '/' + subject.subjectName)  
             nucleusName, _ , _ = smallFuncs.NucleiSelection(NucleiIndex)
-            smallFuncs.saveImage( pred1N_BtO , Affine, Header, dirSave + '/' + nucleusName + '.nii.gz')
+            smallFuncs.saveImage( pred1N_BtO , DataSubj.Affine, DataSubj.Header, dirSave + '/' + nucleusName + '.nii.gz')
             return dirSave, nucleusName
 
-        def loopOver_AllClasses_postProcessing(params, subject, pred, Data, num_classes, ResultDir, nameSubject):
+        def applyPrediction():
 
-            # TODO "pred1N_BtO" needs to concatenate for different classes
+            num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes
+            def loopOver_AllClasses_postProcessing(pred):
 
-            Dice = np.zeros((num_classes-1,2))
-            for cnt in range(num_classes-1):
+                # TODO "pred1N_BtO" needs to concatenate for different classes
 
-                pred1N_BtO, Dice[cnt,:] = postProcessing(params, subject, pred[...,cnt], Data.OrigMask[...,cnt] , params.WhichExperiment.Nucleus.Index[cnt] )
+                Dice = np.zeros((num_classes-1,2))
+                for cnt in range(num_classes-1):
 
-                dirSave, nucleusName = savingOutput(pred1N_BtO, params, ResultDir, nameSubject, params.WhichExperiment.Nucleus.Index[cnt], Data.Affine, Data.Header)
+                    pred1N_BtO, Dice[cnt,:] = postProcessing(pred[...,cnt], DataSubj.OrigMask[...,cnt] , params.WhichExperiment.Nucleus.Index[cnt] )
 
-            Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.MultiClass.mode else dirSave + '/Dice_' + nucleusName + '.txt'
-            np.savetxt(Dir_Dice ,Dice)
-            return pred1N_BtO
+                    dirSave, nucleusName = savingOutput(pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
 
-        def applyPrediction(model, Data, num_classes, padding):
-
+                Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.MultiClass.mode else dirSave + '/Dice_' + nucleusName + '.txt'
+                np.savetxt(Dir_Dice ,Dice)
+                return pred1N_BtO
+                            
             def unPadding(im , pad):
                 sz = im.shape
                 if np.min(pad) < 0:
@@ -111,48 +110,39 @@ def testingExeriment(model, Data, params):
 
                 return im
 
-            pred = model.predict(Data.Image)
-            # score = model.evaluate(Data.Image, Data.Mask)
+            pred = model.predict(DataSubj.Image)
+            # score = model.evaluate(DataSubj.Image, DataSubj.Mask)
             pred = pred[...,:num_classes-1]
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
             pred = np.transpose(pred,[1,2,0,3])
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
 
-            # paddingTp = [ padding[p] for p in params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
+            # paddingTp = [ subject.Padding[p] for p in params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
             # if len(paddingTp) == 3: paddingTp.append((0,0))
-            pred = unPadding(pred, padding)
-            return pred
+            pred = unPadding(pred, subject.Padding)
+            return loopOver_AllClasses_postProcessing(pred)
 
+        return applyPrediction()
 
-        num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes
-
-        pred = applyPrediction(model, Data, num_classes, padding)
-
-        pred1N_BtO = loopOver_AllClasses_postProcessing(params, subject, pred, Data, num_classes, ResultDir, nameSubject)
-
-        return pred1N_BtO
-
-    def loopOver_Predicting_TestSubjects(model, Data, params):
+    def loopOver_Predicting_TestSubjects(DataTest):
         prediction = {}
         ResultDir = params.directories.Test.Result
-        for name in Data:            
-            padding = params.directories.Test.Input.Subjects[name].Padding
-            prediction[name] = predictingTestSubject(model, Data[name], params.directories.Test.Input.Subjects[name] , params, name, padding, ResultDir)
+        for name in DataTest:            
+            prediction[name] = predictingTestSubject(DataTest[name], params.directories.Test.Input.Subjects[name] , ResultDir)
 
         return prediction
 
-    def loopOver_Predicting_TrainSubjects(model, Data, params): 
+    def loopOver_Predicting_TrainSubjects(DataTrain): 
         prediction = {}
         if (params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) or ( 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 in params.WhichExperiment.Nucleus.Index):            
             ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
-            for name in Data:
-                padding = params.directories.Train.Input.Subjects[name].Padding
-                prediction[name] = predictingTestSubject(model, Data[name], params.directories.Train.Input.Subjects[name] , params, name, padding, ResultDir)
+            for name in DataTrain:
+                prediction[name] = predictingTestSubject(DataTrain[name], params.directories.Train.Input.Subjects[name] , ResultDir)
 
         return prediction
 
-    prediction.Test  = loopOver_Predicting_TestSubjects(model, Data.Test, params)
-    prediction.Train = loopOver_Predicting_TrainSubjects(model, Data.Train_ForTest, params)
+    prediction.Test  = loopOver_Predicting_TestSubjects(Data.Test)
+    prediction.Train = loopOver_Predicting_TrainSubjects(Data.Train_ForTest)
         
     return prediction
 
@@ -219,7 +209,6 @@ def trainingExperiment(Data, params):
 
         return model, hist
 
-
     def Saving_UserInfo(DirSave, params, UserInfo):
 
         UserInfo['InputDimensions'] = str(params.WhichExperiment.HardParams.Model.InputDimensions)
@@ -242,17 +231,17 @@ def trainingExperiment(Data, params):
 def applyThalamusOnInput(params, ThalamusMasks):
 
     params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
-    def ApplyThalamusMask(Thalamus_Mask, params, subject, nameSubject, mode):
-            
-        def dilateMask(mask, gapDilation):
-            struc = ndimage.generate_binary_structure(3,2)
-            struc = ndimage.iterate_structure(struc,gapDilation) 
-            return ndimage.binary_dilation(mask, structure=struc)
-       
-        def checkBordersOnBoundingBox(imFshape , BB , gapOnSlicingDimention):
-            return [   [   np.max([BB[d][0]-gapOnSlicingDimention,0])  ,   np.min( [BB[d][1]+gapOnSlicingDimention,imFshape[d]])   ]  for d in range(3) ]
+    def ApplyThalamusMask(Thalamus_Mask, subject, mode):
+                  
+        def cropBoundingBoxes(Thalamus_Mask):
 
-        def cropBoundingBoxes(params, Thalamus_Mask):
+            def dilateMask(mask, gapDilation):
+                struc = ndimage.generate_binary_structure(3,2)
+                struc = ndimage.iterate_structure(struc,gapDilation) 
+                return ndimage.binary_dilation(mask, structure=struc)
+                
+            def checkBordersOnBoundingBox(imFshape , BB , gapOnSlicingDimention):
+                return [   [   np.max([BB[d][0]-gapOnSlicingDimention,0])  ,   np.min( [BB[d][1]+gapOnSlicingDimention,imFshape[d]])   ]  for d in range(3) ]
 
             def findBoundingBox(Thalamus_Mask):
                 objects = measure.regionprops(measure.label(Thalamus_Mask))
@@ -283,47 +272,27 @@ def applyThalamusOnInput(params, ThalamusMasks):
                            
             np.savetxt(dirr + '/' + subject.subjectName + '/BB.txt',BB,fmt='%d')
             np.savetxt(dirr + '/' + subject.subjectName + '/BBd.txt',BBd,fmt='%d')
-            return BB,BBd
-
+            
         # def apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject):
-
         #     imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
         #     im = imF.get_data()
         #     im[Thalamus_Mask_Dilated == 0] = 0
         #     # smallFuncs.saveImage(im , imF.affine , imF.header , subject.address + '/' + subject.ImageProcessed + '.nii.gz')
 
-        #     return imF
-
-        # def saveNewCrop(BB,BBd):
-
-        #     imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-
-        #     newCrop0 = newCrop1 = newCrop2 = np.zeros(imF.shape)
-        #     newCrop0[ BB[0][0] :BB[0][-1]   ,  BBd[1][0]:BBd[1][-1]  ,  BBd[2][0]:BBd[2][-1] ] = 1
-        #     newCrop1[ BBd[0][0]:BBd[0][-1]  ,  BB[1][0] :BB[1][-1]   ,  BBd[2][0]:BBd[2][-1] ] = 1
-        #     newCrop2[ BBd[0][0]:BBd[0][-1]  ,  BBd[1][0]:BBd[1][-1]  ,  BB[2][0] :BB[2][-1]  ] = 1
-
-        #     smallFuncs.saveImage(newCrop0 , imF.affine , imF.header , subject.Temp.address + '/CropMask_ThCascade_sliceDim0.nii.gz')
-        #     smallFuncs.saveImage(newCrop1 , imF.affine , imF.header , subject.Temp.address + '/CropMask_ThCascade_sliceDim1.nii.gz')
-        #     smallFuncs.saveImage(newCrop2 , imF.affine , imF.header , subject.Temp.address + '/CropMask_ThCascade_sliceDim2.nii.gz')
-
-        # if not os.path.isfile(subject.Temp.address + '/BB.txt'):
-
-        imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')       
-        BB,BBd = cropBoundingBoxes(params, Thalamus_Mask)
+   
+        cropBoundingBoxes(Thalamus_Mask)
 
         # imF = apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject)
-        # saveNewCrop(BB,BBd)
     
-    def loopOverSubjects(params, ThalamusMasks, mode):
+    def loopOverSubjects(ThalamusMasks, mode):
         Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
         for sj in tqdm(Subjects ,desc='applying Thalamus for cascade method: ' + mode):         
-            ApplyThalamusMask(ThalamusMasks[sj] , params, Subjects[sj], sj, mode) 
+            ApplyThalamusMask(ThalamusMasks[sj] , Subjects[sj] , mode) 
 
-    loopOverSubjects(params, ThalamusMasks.Test, 'test')
+    loopOverSubjects(ThalamusMasks.Test, 'test')
 
     if not params.preprocess.TestOnly or params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:  
-        loopOverSubjects(params, ThalamusMasks.Train, 'train')
+        loopOverSubjects(ThalamusMasks.Train, 'train')
 
 # ! U-Net Architecture
 def architecture(params):

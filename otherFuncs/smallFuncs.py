@@ -218,7 +218,7 @@ def search_ExperimentDirectory(whichExperiment):
 
             return Files
 
-        def check_IfImageFolder(Files):            
+        def check_IfImageFolder(Files):
             A = next(os.walk(Files.address))
             for s in A[2]:
                 if 'PProcessed.nii.gz' in s: Files.ImageProcessed = splitNii(s)
