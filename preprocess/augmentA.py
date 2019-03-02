@@ -133,14 +133,9 @@ def NonLinearFunc(Input, Augment, mode):
 # TODO fix "LinearFunc" & "NonLinearFunc" function to count for situations when we only want to apply the function on one case
 def main_augment(params , Flag, mode):
 
-    if 'experiment' in mode:
-        if params.Augment.Mode and (params.Augment.Linear.Rotation.Mode or params.Augment.Linear.Shift.Mode) and (Flag == 'Linear'):
-            LinearFunc(params, mode)
+    if params.Augment.Mode and (params.Augment.Linear.Rotation.Mode or params.Augment.Linear.Shift.Mode) and (Flag == 'Linear'):
+        LinearFunc(params, mode)
 
-        elif params.Augment.Mode and params.Augment.NonLinear.Mode and (Flag == 'NonLinear'):
-            NonLinearFunc(params.directories.Train.Input , params.Augment, mode)
+    elif params.Augment.Mode and params.Augment.NonLinear.Mode and (Flag == 'NonLinear'):
+        NonLinearFunc(params.directories.Train.Input , params.Augment, mode)
 
-    else:
-        # if 'Linear' in Flag: LinearFunc(params, mode)
-        # if 'NonLinear' in Flag: NonLinearFunc(params.directories.Train.Input , params.Augment, mode)
-        print('')

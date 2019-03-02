@@ -1,18 +1,17 @@
 import numpy as np
 import nibabel as nib
 import os
+import matplotlib.pyplot as plt
+
+def myshow(im,msk,ind):
+    fig, axs = plt.subplots(nrows=1,ncols=2)
+    axs[0].imshow(im[...,ind],cmap='gray')
+    axs[1].imshow(msk[...,ind],cmap='gray')
+    plt.show()
 
 
-dir_Train = os.listdir('/array/ssd/msmajdi/data/preProcessed/7T/All_DBD/train')
+dir = '/array/ssd/msmajdi/data/preProcessed/7T/DividedByDisease/ET/vimp2_C_ET7T/'
+im = nib.load(dir + 'WMnMPRAGE_bias_corr.nii.gz').get_data()
+msk = nib.load(dir + 'Label/1-THALAMUS.nii.gz').get_data()
 
-dir = '/array/ssd/msmajdi/data/preProcessed/7T/All_DBD/test'
-
-for sb in os.listdir(dir):
-    # if sb in dir_Train:
-    if 'Test_' in sb:
-
-    
-    # os.system('mv %s/%s/vtk_rois %s/%s/Label'%(dir,sb,dir,sb))
-        # sb2 = sb.split('vimp_')[1] if 'vimp_' in sb else sb.split('vimp2_')[1]
-        sb2 = sb.split('Test_')[1] #  if '_MS' in sb else sb.split('_priors_control')[0]
-        os.system('mv %s/%s %s/%s'%(dir,sb,dir,sb2))
+myshow(im,msk,ind=120)

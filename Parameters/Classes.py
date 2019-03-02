@@ -131,6 +131,7 @@ class dataset:
     gapDilation = 5
     gapOnSlicingDimention = 2
     InputPadding = inputPadding
+    readAugments = False
 
 
 class WhichExperiment:

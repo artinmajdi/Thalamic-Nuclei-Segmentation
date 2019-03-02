@@ -1,13 +1,15 @@
 #!/bin/csh
 
-set Fulldata='/array/ssd/msmajdi/data/preProcessed/7T/All_DBD/ET'
+set dirr='/array/ssd/msmajdi/data/preProcessed/7T/DividedByDisease/ET/Ver2_CopiedHeader'
 
-cd $Fulldata
+cd $dirr
 
-foreach vimp (*)
-foreach label( {$vimp}/Label/*.nii.gz )
+foreach vimp (vimp2*)
+
+cd $dirr/{$vimp}/Label/
+foreach label(*.nii.gz )
 echo $label
-CopyImageHeaderInformation $vimp/WMnMPRAGE*.nii.gz $label $label 1 1 1 0
+CopyImageHeaderInformation ../WMnMPRAGE*.nii.gz $label $label 1 1 1 0
 end
 end
 

@@ -246,15 +246,25 @@ def search_ExperimentDirectory(whichExperiment):
                     
         return Files
 
-    def checkInputDirectory(Dir, NucleusName):       
-        
+    def checkInputDirectory(Dir, NucleusName):               
         class Input:
             address = os.path.abspath(Dir)
             Subjects = {}
 
-        for s in next(os.walk(Dir))[1]: 
-            Input.Subjects[s] = Search_ImageFolder(Dir + '/' + s ,NucleusName)
-            Input.Subjects[s].subjectName = s
+        def LoopReadingData(Inputt, Dirr):
+            SubjectsList = next(os.walk(Dirr))[1]
+            if 'Augments' in SubjectsList: del SubjectsList[SubjectsList.index('Augments')]
+            for s in SubjectsList:                 
+                Inputt.Subjects[s] = Search_ImageFolder(Dirr + '/' + s , NucleusName)
+                Inputt.Subjects[s].subjectName = s
+
+            return Inputt
+
+        Input = LoopReadingData(Input, Dir)
+
+        if whichExperiment.Dataset.readAugments and 'Augments' in os.listdir(Dir):
+            Input = LoopReadingData(Input, Dir + '/Augments')
+
 
         return Input
         

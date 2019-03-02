@@ -74,24 +74,23 @@ def Run(UserInfo):
     #     Experiments_Tag = 'Cropping'
 
     Experiments_Tag = UserInfo['Experiments_Tag']
-    if UserInfo['AugmentMode']:  
-        tagEx = ''
-        if UserInfo['Augment_LinearMode']:
-            if UserInfo['Augment_Rotation']: tagEx = tagEx + 'wLR'  + str(UserInfo['Augment_AngleMax'])
-            if UserInfo['Augment_Shift']:    tagEx = tagEx + 'wLSh' + str(UserInfo['Augment_ShiftMax'])
+    # if UserInfo['AugmentMode']:  
+    #     tagEx = ''
+    #     if UserInfo['Augment_LinearMode']:
+    #         if UserInfo['Augment_Rotation']: tagEx = tagEx + 'wLR'  + str(UserInfo['Augment_AngleMax'])
+    #         if UserInfo['Augment_Shift']:    tagEx = tagEx + 'wLSh' + str(UserInfo['Augment_ShiftMax'])
 
-        if UserInfo['Augment_NonLinearMode']: tagEx = tagEx + 'wNL' 
+    #     if UserInfo['Augment_NonLinearMode']: tagEx = tagEx + 'wNL' 
 
-        if tagEx: Experiments_Tag = Experiments_Tag + '_' + tagEx + 'Aug'
+    #     if tagEx: Experiments_Tag = Experiments_Tag + '_' + tagEx + 'Aug'
             
-        # Experiments_Tag = Experiments_Tag + '_wLRAug'
 
     WhichExperiment.Experiment.tag = Experiments_Tag   # UserInfo['Experiments_Tag']
     WhichExperiment.Experiment.name = 'exp' + str(UserInfo['Experiments_Index']) + '_' + WhichExperiment.Experiment.tag if WhichExperiment.Experiment.tag else 'exp' + str(WhichExperiment.Experiment.index)
     WhichExperiment.Experiment.address = smallFuncs.mkDir(WhichExperiment.address + '/' + WhichExperiment.Experiment.name)
     _, B = LossFunction.LossInfo(UserInfo['lossFunctionIx'])
 
-    WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag'] + B + '_sd' + str(UserInfo['slicingDim']) if int(UserInfo['slicingDim']) != 2 else UserInfo['SubExperiment_Tag'] + B
+    WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag'] + '_' + B + '_sd' + str(UserInfo['slicingDim']) if int(UserInfo['slicingDim']) != 2 else UserInfo['SubExperiment_Tag'] + '_' + B
     # WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag'] + 'lr' + str(UserInfo['Learning_Rate'])  + '_nl' + str(UserInfo['num_Layers']) 
 
     if 'U-Net' in WhichExperiment.HardParams.Model.architectureType:
@@ -119,6 +118,8 @@ def Run(UserInfo):
 
     WhichExperiment.Dataset.InputPadding.Automatic = UserInfo['InputPadding_Automatic']
     WhichExperiment.Dataset.InputPadding.HardDimensions = UserInfo['InputPadding_HardDimensions']
+    WhichExperiment.Dataset.readAugments = UserInfo['readAugments']
+
     if WhichExperiment.Dataset.InputPadding.Automatic:
         UserInfo['InputPadding_Automatic']
     directories = smallFuncs.search_ExperimentDirectory(WhichExperiment)

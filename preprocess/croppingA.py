@@ -9,6 +9,10 @@ import nibabel as nib
 
 def main(subject , params):
 
+    def applyCropping(image, coordinates):
+        d = coordinates
+        return image.slicer[ d[0,0]:d[0,1], d[1,0]:d[1,1], d[2,0]:d[2,1] ]
+
     def check_cropImage(subject):
         
         def directoriesImage(subject):
@@ -18,44 +22,21 @@ def main(subject , params):
 
             return inP, outP, crop, outDebug 
                 
-        def main_CropImage(params, inP, outP, crop, outDebug):
-
-            def CropImage_Python(im , CropMask , Gap):
-                
-                def cropImage_FromCoordinates(im , cc , Gap):
-
-                    szOg = im.shape
-
-                    d = np.zeros((3,2))
-                    for ix in range(len(cc)):
-                        d[ix,:] = [  cc[ix][0]-Gap[ix] , cc[ix][ cc[ix].shape[0]-1 ]+Gap[ix]  ]
-                        d[ix,:] = [  max(d[ix,0],0)    , min(d[ix,1],szOg[ix])  ]
-
-                    d1, d2, SN = d[0], d[1], d[2]
-
-                    SliceNumbers = range(SN[0],SN[1])
-
-                    im = im[ d1[0]:d1[1],d2[0]:d2[1],SliceNumbers ]
-                    CropCoordinates = [d1,d2,SliceNumbers]
-
-                    return im , CropCoordinates
-
-                c1,c2,c3 = func_CropCoordinates(CropMask)
-                im , CropCoordinates = cropImage_FromCoordinates(im , [c1,c2,c3] , Gap)
-
-                return im , CropCoordinates  
+        def main_CropImage(inP, outP, crop, outDebug):
 
             CropCoordinates = ''
             if 'ANTs' in params.preprocess.Cropping.Method:
                 os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
-
+                
             elif 'python' in params.preprocess.Cropping.Method:
                 Gap = [0,0,1]
                 im = nib.load(inP)
                 CropMask = nib.load(crop)
-                imC , CropCoordinates = CropImage_Python(im.get_data() , CropMask.get_data() , Gap)
-                smallFuncs.saveImage(imC , im.affine , im.header , outP)
+                CropCoordinates = cropImage_FromCoordinates(CropMask.get_data() , Gap)
 
+                imC = applyCropping(im, CropCoordinates)
+                nib.save(imC , outP)
+                
             if params.preprocess.Debug.doDebug: copyfile(outP , outDebug)
 
             return CropCoordinates
@@ -64,31 +45,28 @@ def main(subject , params):
         inP, outP, crop, outDebug = directoriesImage(subject)
 
         if os.path.isfile(outDebug): copyfile(outDebug , outP)
-        else: CropCoordinates = main_CropImage(params, inP, outP, crop, outDebug)
+        else: CropCoordinates = main_CropImage(inP, outP, crop, outDebug)
         
-        
-
         return CropCoordinates
            
     def loopOver_Nuclei(params, subject , CropCoordinates ):
 
         def check_cropNucleus(subject, CropCoordinates, ind):
             
-            def main_cropNucleus(params, inP, outP, crop, CropCoordinates, outDebug):
-
-                def cropNucleus_Python(im, CropCoordinates):
-                    d1 = CropCoordinates[0]
-                    d2 = CropCoordinates[1]
-                    SN = CropCoordinates[2]
-                    return im[   d1[0]:d1[1]  ,  d2[0]:d2[1]  ,  SN[0]:SN[1]   ]
+            def main_cropNucleus(params, subject, inP, outP, crop, CropCoordinates, outDebug):
                     
                 if 'ANTs' in params.preprocess.Cropping.Method:
-                    os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
+                    cropFailure = os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
+
+                    # if cropFailure != 0:    
+                    #     NucleusName, _, _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
+                    #     print(' cropping failed - >  copying image header into designated label',NucleusName)                    
+                    #     os.system("CopyImageHeaderInformation %s %s %s"%(subject.address + '/' + subject.ImageProcessed + '.nii.gz', inP, inP))
+                    #     cropFailure = os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
 
                 elif 'python' in params.preprocess.Cropping.Method:
-                    msk = nib.load(inP)
-                    mskC = cropNucleus_Python(msk.get_data(), CropCoordinates)
-                    smallFuncs.saveImage(mskC , msk.affine , msk.header , outP)
+                    mskC = applyCropping( nib.load(inP) , CropCoordinates)
+                    nib.save(mskC , outP)
 
                 if params.preprocess.Debug.doDebug:
                     copyfile(outP , outDebug)
@@ -104,21 +82,27 @@ def main(subject , params):
             inP, outP, crop, outDebug = directoriesNuclei(subject, ind)
 
             if os.path.isfile(outDebug): copyfile(outDebug , outP)
-            else: main_cropNucleus(params, inP, outP, crop, CropCoordinates, outDebug)
+            else: main_cropNucleus(params, subject, inP, outP, crop, CropCoordinates, outDebug)
 
         for ind in params.WhichExperiment.Nucleus.FullIndexes:
             check_cropNucleus(subject, CropCoordinates, ind)
 
     if params.preprocess.Mode and params.preprocess.Cropping.Mode:
         print('     Cropping')
-        CropCoordinates = check_cropImage(subject)
-  
-        loopOver_Nuclei(params, subject , CropCoordinates )
+
+        if 'python' in params.preprocess.Cropping.Method:
+            CropCoordinates = check_cropImage(subject)
+            loopOver_Nuclei(params, subject , CropCoordinates )
+        else:
+            loopOver_Nuclei(params, subject , '' )
+            check_cropImage(subject)
+
 
     return True
 
 
-def func_CropCoordinates(CropMask):
+   
+def cropImage_FromCoordinates(CropMask , Gap): # func_CropCoordinates
     ss = np.sum(CropMask,axis=2)
     c1 = np.where(np.sum(ss,axis=1) > 10)[0]
     c2 = np.where(np.sum(ss,axis=0) > 10)[0]
@@ -128,7 +112,13 @@ def func_CropCoordinates(CropMask):
 
     BBCord = [   [c1[0],c1[-1]]  ,  [c2[0],c2[-1]]  , [c3[0],c3[-1]]  ]
 
-    return BBCord
+
+    d = np.zeros((3,2),dtype=np.int)
+    for ix in range(len(BBCord)):
+        d[ix,:] = [  BBCord[ix][0]-Gap[ix] , BBCord[ix][-1]+Gap[ix]  ]
+        d[ix,:] = [  max(d[ix,0],0)    , min(d[ix,1],CropMask.shape[ix])  ]
+
+    return d
 
 
 

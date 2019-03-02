@@ -5,10 +5,13 @@ Learning_Rate = 1e-3
 num_Layers = 3
 
 NormalizaeMethod = 'MinMax' #'1Std0Mean' # 
+readAugments = True
+
 
 TestOnly = False
 Experiments_Index = '7' # 'cropping' # 7_croppingNetwork' # 
-Experiments_Tag = 'cascadeV1_0M1Sd_wLR7Aug' # 'cascadeV1_3TforInit7T' # 
+Experiments_Tag = 'cascadeV1'  # 'cascadeV1_3TforInit7T' # 
+
 nucleus_Index = [1]
 
 slicingDim = 2
@@ -27,7 +30,7 @@ Initialize_FromThalamus = False
 Initialize_FromOlderModel = False
 
 InputPadding_Automatic = True
-InputPadding_HardDimensions = [112,112,0]
+InputPadding_HardDimensions = 2 # [112,112,0]
 
 #! GPU
 # GPU_Index = 6
@@ -55,14 +58,6 @@ MetricIx = 3
 #                 3: 'Both'
 lossFunctionIx = 2
 
-#! Dataset
-# DatasetIx =     1: 'SRI_3T'
-#                 2: 'kaggleCompetition'
-#                 3: 'fashionMnist'
-#                 4: 'All_7T': 20priros + MS
-#                 5: '20priros'
-# DatasetIx = 4
-
 # orderDim =       2: [0,1,2]
 # orderDim =       1: [2,0,1]
 # orderDim =       0: [1,2,0]
@@ -80,12 +75,13 @@ Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 
 
-SubExperiment_Tag = NormalizaeMethod # '1Std0Mean'
+SubExperiment_Tag = NormalizaeMethod 
+if readAugments: SubExperiment_Tag += '_wAug'
 
 #! cropping mode
 #           'ANTs'
 #           'python'
-cropping_method = 'ANTs' # 'ANTs' 'python'
+cropping_method = 'python' # 'ANTs' 'python'
 
 
 #! Preprocessing
