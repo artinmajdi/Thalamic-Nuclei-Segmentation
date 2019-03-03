@@ -1,6 +1,6 @@
 {
     "python.linting.pylintEnabled": true,
-    "python.pythonPath": "/home/artin/anaconda3/envs/keras-cpu/bin/python",
+    "python.pythonPath": "/home/artinl/anaconda3/envs/myKeras/bin/python",
     "python.linting.enabled": true,
     "python.linting.banditEnabled": false
 }

@@ -10,7 +10,7 @@ import os, sys
 from copy import deepcopy
 import pandas as pd
 import pickle
-import mat4py 
+# import mat4py 
 
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
 def NucleiSelection(ind = 1,organ = 'THALAMUS'):
@@ -311,8 +311,8 @@ def Loading_UserInfo(DirLoad, method):
 
         if 'pickle' in method:
             return loadPickle(DirSave + '/' + name + '.pkl')
-        elif 'mat' in method:
-            return mat4py.loadmat(DirSave + '/' + name + '.pkl')
+        # elif 'mat' in method:
+            # return mat4py.loadmat(DirSave + '/' + name + '.pkl')
                    
     def dict2obj(d):
         if isinstance(d, list):
