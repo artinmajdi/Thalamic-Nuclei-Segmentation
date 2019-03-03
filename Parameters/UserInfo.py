@@ -5,14 +5,14 @@ Learning_Rate = 1e-3
 num_Layers = 3
 
 NormalizaeMethod = 'MinMax' #'1Std0Mean' # 
-readAugments = True
+readAugments = False
 
 
 TestOnly = False
 Experiments_Index = '7' # 'cropping' # 7_croppingNetwork' # 
 Experiments_Tag = 'cascadeV1'  # 'cascadeV1_3TforInit7T' # 
 
-nucleus_Index = [1]
+nucleus_Index = [2]
 
 slicingDim = 2
 
@@ -56,7 +56,7 @@ MetricIx = 3
 # lossFunction=   1: 'dice'
 #                 2: 'binary Cross Enropy'
 #                 3: 'Both'
-lossFunctionIx = 2
+lossFunctionIx = 3
 
 # orderDim =       2: [0,1,2]
 # orderDim =       1: [2,0,1]
@@ -85,7 +85,7 @@ cropping_method = 'python' # 'ANTs' 'python'
 
 
 #! Preprocessing
-preprocessMode = True
+preprocessMode = False
 BiasCorrection = False
 Cropping = True
 Normalize = True

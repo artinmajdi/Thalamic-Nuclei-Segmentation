@@ -270,9 +270,9 @@ def applyThalamusOnInput(params, ThalamusMasks):
             dirr = params.directories.Test.Result 
             if 'train' in mode: dirr += '/TrainData_Output'
                            
-            np.savetxt(dirr + '/' + subject.subjectName + '/BB.txt',BB,fmt='%d')
-            np.savetxt(dirr + '/' + subject.subjectName + '/BBd.txt',BBd,fmt='%d')
-            
+            np.savetxt(dirr + '/' + subject.subjectName + '/BB_stage1_Th.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')
+            # np.savetxt(dirr + '/' + subject.subjectName + '/BBd.txt',BBd,fmt='%d')
+
         # def apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject):
         #     imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
         #     im = imF.get_data()

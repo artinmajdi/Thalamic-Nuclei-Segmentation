@@ -296,8 +296,10 @@ def readingFromExperiments(params):
                     dirr = params.directories.Test.Result 
                     if 'train' in mode: dirr += '/TrainData_Output'
                         
-                    BB = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB.txt',dtype=int)
-                    BBd = np.loadtxt(dirr + '/' + subject.subjectName  + '/BBd.txt',dtype=int)
+                    BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_stage1_Th.txt',dtype=int)
+                    BB = BBf[:,:2]
+                    BBd = BBf[:,2:]
+                    # BBd = np.loadtxt(dirr + '/' + subject.subjectName  + '/BBd.txt',dtype=int)
                     
                     #! because on the slicing direction we don't want the extra dilated effect to be considered
                     BBd[params.WhichExperiment.Dataset.slicingInfo.slicingDim] = BB[params.WhichExperiment.Dataset.slicingInfo.slicingDim]

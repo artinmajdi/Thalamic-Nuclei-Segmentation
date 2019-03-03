@@ -32,7 +32,7 @@ def Loss_Dice(y_true,y_pred):
 
 
 def Loss_binary_And_Dice(y_true,y_pred):
-    return Loss_binary_crossentropy(y_true,y_pred) + Loss_Dice(y_true,y_pred)
+    return Loss_binary_crossentropy(y_true,y_pred) + 0.01*Loss_Dice(y_true,y_pred)
 
 
 
