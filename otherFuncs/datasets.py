@@ -195,8 +195,7 @@ def readingFromExperiments(params):
             elif params.WhichExperiment.Nucleus.Index[0] in lateral_Indexes:
                 NameCascadeMask = nameC
 
-            print('     ******   nuclei_index' , params.WhichExperiment.Nucleus.Index)
-            print('NameCascadeMask' , NameCascadeMask)
+
             _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + NameCascadeMask + '.nii.gz' , params)
 
             Cascade_Mask_Dilated = dilateMask(Cascade_Mask)
@@ -312,7 +311,7 @@ def readingFromExperiments(params):
                     nameB, posterior_Indexes, _ = smallFuncs.NucleiSelection(ind = 1.1,organ = 'THALAMUS')
                     nameC, lateral_Indexes  , _ = smallFuncs.NucleiSelection(ind = 1.2,organ = 'THALAMUS')
                                             
-                    if params.WhichExperiment.Nucleus.Index[0] in [1.1, 1.2, 13, 14]:
+                    if params.WhichExperiment.Nucleus.Index[0] in [1.1, 1.2, 2, 12, 13, 14]:
                         NameCascadeMask = '1-THALAMUS' 
                     elif params.WhichExperiment.Nucleus.Index[0] in posterior_Indexes:
                         NameCascadeMask = nameB 

@@ -21,8 +21,8 @@ def savingHistory_AsExcel(params):
 
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
         writer = pd.ExcelWriter((params.directories.Test.Result).split('/subExp')[0] + '/All_LossAccForEpochs.xlsx', engine='xlsxwriter')
-        for ind in NucleiIndexes:
-                nucleus, _ , _ = smallFuncs.NucleiSelection(ind)
+        for IxNu in tuple(NucleiIndexes) + tuple([1.1,1.2]):
+                nucleus, _ , _ = smallFuncs.NucleiSelection(IxNu)
                 # dir_save = smallFuncs.mkDir((params.directories.Test.Result).split('/subExp')[0] + '/Train_Output')
                 AllNucleusInfo = []
                 ind = -1
@@ -69,30 +69,34 @@ def mergingDiceValues(Dir):
 
                 # _, FullIndexes, _ = smallFuncs.NucleiSelection(1)
                 # names = np.append(['subjects'], smallFuncs.AllNucleiNames(FullIndexes))
-                names = list(np.zeros(15))
+                names = list(np.zeros(17))
                 names[0] = 'subjects'
-                for ind in NucleiIndexes:
-                        if ind != 4567: names[ind], _ , _ = smallFuncs.NucleiSelection(ind)
+                # for ind in NucleiIndexes:
+                #         if ind != 4567: names[ind], _ , _ = smallFuncs.NucleiSelection(ind)
 
                 for subject in subF:
                         Dir_subject = Dir + '/' + subject
                         a = os.listdir(Dir_subject)
                         a = [i for i in a if 'Dice_' in i]
 
-                        Dice_Single = list(np.zeros(15))
+                        Dice_Single = list(np.zeros(17))
                         Dice_Single[0] = subject
                         # for n in a:
 
 
-                        for ind in NucleiIndexes:
+                        for ix in tuple(NucleiIndexes) + tuple([1.1,1.2]):
+                                if ix in range(16):
+                                        ind = ix                                 
+                                elif ix == 1.1:
+                                        ind = 15
+                                elif ix == 1.2:
+                                        ind = 16
+
+                                names[ind], _ , _ = smallFuncs.NucleiSelection(ix)
                                 if os.path.isfile(Dir_subject + '/Dice_' + names[ind]+'.txt'):
                                         b = np.loadtxt(Dir_subject + '/Dice_' + names[ind]+'.txt')
                                         Dice_Single[int(b[0])] = b[1]
-                                        # index = int(b[0])
-                                        # if index != 4567: 
-                                        #         Dice_Single[index] = b[1] 
-                                        # else: 
-                                        #         Dice_Single[3] = b[1] 
+
                                         
                         Dice_Test.append(Dice_Single)
 
