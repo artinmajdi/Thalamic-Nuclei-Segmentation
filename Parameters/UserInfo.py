@@ -1,6 +1,6 @@
 
-epochs = 100
-GPU_Index = 3
+epochs = 30
+GPU_Index = 6
 Learning_Rate = 1e-3
 num_Layers = 3
 
@@ -12,7 +12,7 @@ TestOnly = False
 Experiments_Index = '7' # 'cropping' # 7_croppingNetwork' # 
 Experiments_Tag = 'cascadeV1'  # 'cascadeV1_3TforInit7T' # 
 
-nucleus_Index = [2]
+nucleus_Index = [1,2,8,10]
 
 slicingDim = 2
 
@@ -22,7 +22,7 @@ slicingDim = 2
 # 4: ('All_7T', '/array/ssd/msmajdi/data/preProcessed/7T/All_DBD'),
 # 5: ('20priors', '/array/ssd/msmajdi/data/preProcessed/7T/20priors'),
 DatasetIx = 4
-SubExperiment_Index = 1
+SubExperiment_Index = 2
 
 #! Training
 batch_size = 40
@@ -36,7 +36,7 @@ InputPadding_HardDimensions = 2 # [112,112,0]
 # GPU_Index = 6
 
 
-
+gapDilation = 5
 #! Template Address
 Tempalte_Image = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/origtemplate.nii.gz'
 Tempalte_Mask = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/CropMaskV3.nii.gz'  # MyCrop_Template2_Gap20

@@ -21,8 +21,6 @@ def NucleiSelection(ind = 1,organ = 'THALAMUS'):
                 NucleusName = '1-THALAMUS'
             elif ind == 2:
                 NucleusName = '2-AV'
-            elif ind == 4567:
-                NucleusName = '4567-VL'
             elif ind == 4:
                 NucleusName = '4-VA'
             elif ind == 5:
@@ -44,21 +42,25 @@ def NucleiSelection(ind = 1,organ = 'THALAMUS'):
             elif ind == 13:
                 NucleusName = '13-Hb'
             elif ind == 14:
-                NucleusName = '14-MTT'
-        
-        elif 'stage2' in organ:
-            if ind == 1:
-                NucleusName = 'posterior'
-            elif ind == 2:
-                NucleusName = 'lateral'
-            elif ind == 3:
-                NucleusName = 'Anterior'
-            elif ind == 4:
-                NucleusName = 'Medial'
+                NucleusName = '14-MTT'        
+            elif ind == 1.1:
+                NucleusName = 'posterior_ImClosed'
+            elif ind == 1.2:
+                NucleusName = 'lateral_ImClosed'
+            elif ind == 1.3:
+                NucleusName = 'Anterior_ImClosed'
+            elif ind == 1.4:
+                NucleusName = 'Medial_ImClosed'
 
         return NucleusName
 
-    FullIndexes = [1,2,4,5,6,7,8,9,10,11,12,13,14]
+    if ind in range(15):
+        FullIndexes = [1,2,4,5,6,7,8,9,10,11,12,13,14]
+    elif ind == 1.1:
+        FullIndexes = [8,9,10,11]
+    elif ind == 1.2:
+        FullIndexes = [4,5,6,7]
+
     Full_Names = [func_NucleusName(organ, ind) for ind in FullIndexes]
 
     return func_NucleusName(organ, ind), FullIndexes, Full_Names
@@ -205,7 +207,7 @@ def search_ExperimentDirectory(whichExperiment):
                         if '_Cropped.nii.gz' in d: Files.Label.Temp.Cropped = splitNii(d)
 
                     # Files.Label.Temp.Cropped = [ d.split('.nii.gz')[0] for d in os.listdir(Files.Label.Temp.address) if '_Cropped.nii.gz' in d]
-                else: Files.Label.address = Dir + '/' + s
+                elif 'Label' in s: Files.Label.address = Dir + '/' + s
 
             return Files
                 
@@ -238,7 +240,7 @@ def search_ExperimentDirectory(whichExperiment):
             if Files.ImageOriginal or Files.ImageProcessed:                
                 for s in A[1]:
                     if 'temp' in s: Files.Temp.address = mkDir(Dir + '/' + s)
-                    else: Files.Label.address = Dir + '/' + s
+                    elif 'Label' in s: Files.Label.address = Dir + '/' + s
 
                 if Files.ImageOriginal and not Files.ImageProcessed: 
                     Files.ImageProcessed = 'PProcessed'

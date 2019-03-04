@@ -155,7 +155,7 @@ def readingFromExperiments(params):
 
             return np.pad(im, Padding2[:3], 'constant')
 
-        if 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
+        if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index: 
             # subject.NewCropInfo.PadSizeBackToOrig
             BB = subject2.NewCropInfo.OriginalBoundingBox            
             im = im[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]] 
@@ -172,10 +172,10 @@ def readingFromExperiments(params):
     def readingImage(params, subject2, mode):
 
         # TODO remove this after couple of runs
-        if 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 in params.WhichExperiment.Nucleus.Index and os.path.isfile(subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
-            copyfile( subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz' , subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
+        # if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1) and os.path.isfile(subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
+        #     copyfile( subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz' , subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
         
-        def applyThalamusMaskONImage(imm):
+        def apply_Cascade_PreFinalStageMask_OnImage(imm):
 
             def dilateMask(mask):
                 struc = ndimage.generate_binary_structure(3,2)
@@ -184,16 +184,27 @@ def readingFromExperiments(params):
                 
             Dirr = params.directories.Test.Result 
             if 'train' in mode: Dirr += '/TrainData_Output'
-            _, Thalamus_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/1-THALAMUS.nii.gz' , params)
 
-            Thalamus_Mask_Dilated = dilateMask(Thalamus_Mask)
-            imm[Thalamus_Mask_Dilated == 0] = 0
+            nameB, posterior_Indexes, _ = smallFuncs.NucleiSelection(ind = 1.1,organ = 'THALAMUS')
+            nameC, lateral_Indexes  , _ = smallFuncs.NucleiSelection(ind = 1.2,organ = 'THALAMUS')
+
+            if params.WhichExperiment.Nucleus.Index[0] in [1.1, 1.2, 13, 14]:
+                NameCascadeMask = '1-THALAMUS' 
+            elif params.WhichExperiment.Nucleus.Index[0] in posterior_Indexes:
+                NameCascadeMask = nameB 
+            elif params.WhichExperiment.Nucleus.Index[0] in lateral_Indexes:
+                NameCascadeMask = nameC
+
+            _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + NameCascadeMask + '.nii.gz' , params)
+
+            Cascade_Mask_Dilated = dilateMask(Cascade_Mask)
+            imm[Cascade_Mask_Dilated == 0] = 0
             return imm
                     
         imF, im = readingWithTranpose(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz' , params)
 
-        if 1 not in params.WhichExperiment.Nucleus.Index and 'cascadeThalamus' in params.WhichExperiment.HardParams.Model.Idea: 
-            im = applyThalamusMaskONImage( im )
+        if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index: 
+            im = apply_Cascade_PreFinalStageMask_OnImage( im )
             
         im = inputPreparationForUnet(im, subject2, params)
         im = normalizeA.main_normalize(params.preprocess.Normalize , im)
@@ -292,11 +303,21 @@ def readingFromExperiments(params):
 
             def newCropedSize(subject, params, mode):
 
-                def readingThalamicCropSizes(subject):
+                def readingCascadeCropSizes(subject):
                     dirr = params.directories.Test.Result 
                     if 'train' in mode: dirr += '/TrainData_Output'
                         
-                    BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_stage1_Th.txt',dtype=int)
+                    nameB, posterior_Indexes, _ = smallFuncs.NucleiSelection(ind = 1.1,organ = 'THALAMUS')
+                    nameC, lateral_Indexes  , _ = smallFuncs.NucleiSelection(ind = 1.2,organ = 'THALAMUS')
+                                            
+                    if params.WhichExperiment.Nucleus.Index[0] in [1.1, 1.2, 13, 14]:
+                        NameCascadeMask = '1-THALAMUS' 
+                    elif params.WhichExperiment.Nucleus.Index[0] in posterior_Indexes:
+                        NameCascadeMask = nameB 
+                    elif params.WhichExperiment.Nucleus.Index[0] in lateral_Indexes:
+                        NameCascadeMask = nameC
+                                                
+                    BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_' + NameCascadeMask + '.txt',dtype=int)
                     BB = BBf[:,:2]
                     BBd = BBf[:,2:]
                     # BBd = np.loadtxt(dirr + '/' + subject.subjectName  + '/BBd.txt',dtype=int)
@@ -305,9 +326,9 @@ def readingFromExperiments(params):
                     BBd[params.WhichExperiment.Dataset.slicingInfo.slicingDim] = BB[params.WhichExperiment.Dataset.slicingInfo.slicingDim]
                     BBd = BBd[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
                     return BBd
-                    
-                if 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index: 
-                    BB = readingThalamicCropSizes(subject)
+                
+                if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index: 
+                    BB = readingCascadeCropSizes(subject)
 
                     origSize = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )                    
                     origSize = origSize[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]

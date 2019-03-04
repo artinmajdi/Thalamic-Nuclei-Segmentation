@@ -13,6 +13,27 @@ UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 params = paramFunc.Run(UserInfoB)
 NucleiIndexes = UserInfoB['nucleus_Index']
 
+def RunAllCascadeStages(UserInfoB):
+
+    # stage 1
+    print('************ stage 1 ************')
+    UserInfoB['nucleus_Index'] = [1]
+    UserInfoB['gapDilation'] = 5
+    K = Run_SingleNuclei(UserInfoB)
+
+    # stage 2
+    print('************ stage 2 ************')
+    UserInfoB['gapDilation'] = 3
+    for UserInfoB['nucleus_Index'] in [1.1 , 1.2]:
+        K = Run_SingleNuclei(UserInfoB)
+
+    print('************ stage 3 ************')
+    # stage 3 ; final for now
+    for UserInfoB['nucleus_Index'] in NucleiIndexes:  
+        K = Run_SingleNuclei(UserInfoB)
+
+    return K
+
 def Run_SingleNuclei(UserInfoB):
     
     def gpuSetting(params):
@@ -33,6 +54,6 @@ datasets.movingFromDatasetToExperiments(params)
 applyPreprocess.main(params, 'experiment')
 params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
 
-for UserInfoB['nucleus_Index'] in NucleiIndexes:  K = Run_SingleNuclei(UserInfoB)
+K = RunAllCascadeStages(UserInfoB)
 
 K.clear_session()

@@ -31,7 +31,15 @@ class maxPooling:
     strides = (2,2)
     pool_size = (2,2)
 
+class method:
+    Type = 'Hierarchical_Cascade'
+    InitializeMode = False # from 3T or WMn for CSFn
 
+
+# method.Type
+# 1. Normal
+# 2. Cascade
+# 3. Hierarchical_Cascade    
 
 class model:
     architectureType = 'U-Net' 
@@ -54,7 +62,7 @@ class model:
     #! only one of these two can be true at the same time
     InitializeFromThalamus = ''
     InitializeFromOlderModel = ''
-    Idea = 'cascadeThalamusV1'  
+    Method = method 
     paddingErrorPatience = 20
 
 

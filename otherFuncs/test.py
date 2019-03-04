@@ -17,3 +17,6 @@ def myshow(ind, *argv):
 
 
 # myshow(137,im, msk8,msk10,msk11,postriorMask)
+
+if 1 in range(15):
+    print('yes')

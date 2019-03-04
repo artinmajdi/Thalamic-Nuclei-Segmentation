@@ -45,7 +45,7 @@ def Run(UserInfo):
         WhichExperiment.HardParams.Model.InitializeFromThalamus = False
         WhichExperiment.HardParams.Model.InitializeFromOlderModel = False
 
-
+    WhichExperiment.Dataset.gapDilation = UserInfo['gapDilation']
     WhichExperiment.Dataset.name, WhichExperiment.Dataset.address = datasets.DatasetsInfo(UserInfo['DatasetIx'])
 
     # orderDim =       2: [0,1,2]

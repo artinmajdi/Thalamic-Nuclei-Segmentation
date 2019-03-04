@@ -25,8 +25,8 @@ def check_Run(params, Data):
     model      = trainingExperiment(Data, params) if not params.preprocess.TestOnly else loadModel(params)
     prediction = testingExeriment(model, Data, params)
 
-    if 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 in params.WhichExperiment.Nucleus.Index:         
-        applyThalamusOnInput(params, prediction)
+    if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1):
+        savePreFinalStageBBs(params, prediction)
 
     return True
 
@@ -54,7 +54,7 @@ def testingExeriment(model, Data, params):
                 return pred1N  > Thresh
             
             def cascade_paddingToOrigSize(im):
-                if 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 not in params.WhichExperiment.Nucleus.Index:
+                if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
                     im = np.pad(im, subject.NewCropInfo.PadSizeBackToOrig, 'constant')
                     # Padding2, crd = paddingNegativeFix(im.shape, Padding2)          
                     # im = im[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
@@ -134,7 +134,7 @@ def testingExeriment(model, Data, params):
 
     def loopOver_Predicting_TrainSubjects(DataTrain): 
         prediction = {}
-        if (params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) or ( 'cascadeThalamusV1' in params.WhichExperiment.HardParams.Model.Idea and 1 in params.WhichExperiment.Nucleus.Index):            
+        if (params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) or ( 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1)): 
             ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
             for name in DataTrain:
                 prediction[name] = predictingTestSubject(DataTrain[name], params.directories.Train.Input.Subjects[name] , ResultDir)
@@ -228,12 +228,12 @@ def trainingExperiment(Data, params):
 
     return model
 
-def applyThalamusOnInput(params, ThalamusMasks):
+def savePreFinalStageBBs(params, CascadePreStageMasks):
 
     params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
-    def ApplyThalamusMask(Thalamus_Mask, subject, mode):
+    def ApplyPreFinalStageMask(PreStageMask, subject, mode):
                   
-        def cropBoundingBoxes(Thalamus_Mask):
+        def cropBoundingBoxes(PreStageMask):
 
             def dilateMask(mask, gapDilation):
                 struc = ndimage.generate_binary_structure(3,2)
@@ -243,56 +243,49 @@ def applyThalamusOnInput(params, ThalamusMasks):
             def checkBordersOnBoundingBox(imFshape , BB , gapOnSlicingDimention):
                 return [   [   np.max([BB[d][0]-gapOnSlicingDimention,0])  ,   np.min( [BB[d][1]+gapOnSlicingDimention,imFshape[d]])   ]  for d in range(3) ]
 
-            def findBoundingBox(Thalamus_Mask):
-                objects = measure.regionprops(measure.label(Thalamus_Mask))
+            def findBoundingBox(PreStageMask):
+                objects = measure.regionprops(measure.label(PreStageMask))
                 area = []
                 for obj in objects: area = np.append(area, obj.area)
 
                 Ix = np.argsort(area)
 
-                L = len(Thalamus_Mask.shape)
+                L = len(PreStageMask.shape)
                 bbox = objects[ Ix[-1] ].bbox
                 BB = [ [bbox[d] , bbox[L + d] ] for d in range(L)]
                                 
                 return BB
 
-            # Thalamus_Mask_Dilated = dilateMask( Thalamus_Mask, params.WhichExperiment.Dataset.gapDilation )
+            # Thalamus_Mask_Dilated = dilateMask( PreStageMask, params.WhichExperiment.Dataset.gapDilation )
             imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
 
-            BB = findBoundingBox(Thalamus_Mask)
-            # BB = croppingA.func_CropCoordinates(Thalamus_Mask)
+            BB = findBoundingBox(PreStageMask)
+            # BB = croppingA.func_CropCoordinates(PreStageMask)
 
             BB = checkBordersOnBoundingBox(imF.shape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
             # BBd  = croppingA.func_CropCoordinates(Thalamus_Mask_Dilated)
-            BBd = [  [BB[ii][0] - 5 , BB[ii][1] + 5] for ii in range(len(BB))]
+            gapDilation = params.WhichExperiment.Dataset.gapDilation
+            BBd = [  [BB[ii][0] - gapDilation , BB[ii][1] + gapDilation] for ii in range(len(BB))]
             BBd = checkBordersOnBoundingBox(imF.shape , BBd , 0)
 
             dirr = params.directories.Test.Result 
             if 'train' in mode: dirr += '/TrainData_Output'
                            
-            np.savetxt(dirr + '/' + subject.subjectName + '/BB_stage1_Th.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')
+            np.savetxt(dirr + '/' + subject.subjectName + '/BB_' + params.WhichExperiment.Nucleus.name + '.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')
             # np.savetxt(dirr + '/' + subject.subjectName + '/BBd.txt',BBd,fmt='%d')
-
-        # def apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject):
-        #     imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-        #     im = imF.get_data()
-        #     im[Thalamus_Mask_Dilated == 0] = 0
-        #     # smallFuncs.saveImage(im , imF.affine , imF.header , subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-
-   
-        cropBoundingBoxes(Thalamus_Mask)
-
-        # imF = apply_ThalamusMask_OnImage(Thalamus_Mask_Dilated, subject)
+  
+        cropBoundingBoxes(PreStageMask)
     
-    def loopOverSubjects(ThalamusMasks, mode):
+    def loopOverSubjects(CascadePreStageMasks, mode):
         Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
-        for sj in tqdm(Subjects ,desc='applying Thalamus for cascade method: ' + mode):         
-            ApplyThalamusMask(ThalamusMasks[sj] , Subjects[sj] , mode) 
+        string = 'Thalamus' if 1 in params.WhichExperiment.Nucleus.Index else 'stage2 ' + params.WhichExperiment.Nucleus.name
+        for sj in tqdm(Subjects ,desc='applying ' + string + ' for cascade method: ' + mode):         
+            ApplyPreFinalStageMask(CascadePreStageMasks[sj] , Subjects[sj] , mode) 
 
-    loopOverSubjects(ThalamusMasks.Test, 'test')
+    loopOverSubjects(CascadePreStageMasks.Test, 'test')
 
     if not params.preprocess.TestOnly or params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:  
-        loopOverSubjects(ThalamusMasks.Train, 'train')
+        loopOverSubjects(CascadePreStageMasks.Train, 'train')
 
 # ! U-Net Architecture
 def architecture(params):
