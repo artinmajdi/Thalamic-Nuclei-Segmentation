@@ -8,10 +8,10 @@ from otherFuncs import smallFuncs
 from scipy import ndimage
 
 
-def applyMain(Dir):
+def applyMain(Dir,mode):
     
     def RunAllFunctions(Directory):
-        im = nib.load(Directory + '1-THALAMUS.nii.gz')
+        im = nib.load(Directory + '1-THALAMUS' + mode + '.nii.gz')
         Names = dict({1:['posterior',[8,9,10,11]], 2:['lateral',[4,5,6,7]] , 3:['Anterior',[2]] , 4:['Medial',[12]] })
 
         def closeMask(mask):
@@ -23,33 +23,31 @@ def applyMain(Dir):
             for mIx in range(1,5):
                 for cnt, nix in enumerate(Names[mIx][1]):
                     name, _, _ = smallFuncs.NucleiSelection(ind=nix,organ='THALAMUS')
-                    msk = nib.load(Directory + name + '.nii.gz').get_data()
+                    msk = nib.load(Directory + name + mode + '.nii.gz').get_data()
                     Mask = msk if cnt == 0 else Mask + msk
 
-                smallFuncs.saveImage( Mask > 0 , im.affine , im.header, Directory + 'Hierarchical/' + Names[mIx][0] + '.nii.gz')
-                smallFuncs.saveImage( closeMask(Mask > 0) , im.affine , im.header, Directory + 'Hierarchical/' + Names[mIx][0] + '_ImClosed.nii.gz')
+                smallFuncs.saveImage( Mask > 0 , im.affine , im.header, Directory + 'Hierarchical/' + Names[mIx][0] + mode + '.nii.gz')
+                smallFuncs.saveImage( closeMask(Mask > 0) , im.affine , im.header, Directory + 'Hierarchical/' + Names[mIx][0] + '_ImClosed' + mode + '.nii.gz')
 
         def creatingFullMaskWithAll4Supernuclei():
             print('    creating Full Mask With All 4 Super Nuclei')
             for cnt in range(1,5):
-                msk = nib.load(Directory + 'Hierarchical/' + Names[cnt][0] + '.nii.gz').get_data()
+                msk = nib.load(Directory + 'Hierarchical/' + Names[cnt][0] + mode + '.nii.gz').get_data()
                 Mask = msk if cnt == 1 else Mask + cnt*msk
 
-                msk = nib.load(Directory + 'Hierarchical/' + Names[cnt][0] + '_ImClosed.nii.gz').get_data()
+                msk = nib.load(Directory + 'Hierarchical/' + Names[cnt][0] + '_ImClosed' + mode + '.nii.gz').get_data()
                 MaskClosed = msk if cnt == 1 else MaskClosed + cnt*msk
 
-            smallFuncs.saveImage(Mask , im.affine , im.header, Directory + 'Hierarchical/All_4MainNuclei.nii.gz')
-            smallFuncs.saveImage(MaskClosed , im.affine , im.header, Directory + 'Hierarchical/All_4MainNuclei_ImClosed.nii.gz')
+            smallFuncs.saveImage(Mask , im.affine , im.header, Directory + 'Hierarchical/All_4MainNuclei' + mode + '.nii.gz')
+            smallFuncs.saveImage(MaskClosed , im.affine , im.header, Directory + 'Hierarchical/All_4MainNuclei_ImClosed' + mode + '.nii.gz')
 
         def ImClosingAllNuclei():
             print('    ImClosing All Nuclei')
             _, _, AllNames = smallFuncs.NucleiSelection(ind=1,organ='THALAMUS')
-            smallFuncs.mkDir(Directory + 'ImClosed/')
             for name in AllNames:
-                msk = nib.load(Directory + name + '.nii.gz').get_data()            
-                smallFuncs.saveImage( closeMask(msk > 0) , im.affine , im.header, Directory + 'ImClosed/' + name + '_ImClosed.nii.gz')
+                msk = nib.load(Directory + name + mode + '.nii.gz').get_data()            
+                smallFuncs.saveImage( closeMask(msk > 0) , im.affine , im.header, Directory + 'ImClosed/' + name + '_ImClosed' + mode + '.nii.gz')
                 
-        smallFuncs.mkDir(Dir + 'Hierarchical')
         saving4SuperNuclei()
 
         creatingFullMaskWithAll4Supernuclei()
@@ -64,8 +62,9 @@ def applyMain(Dir):
 
 
 
-Dir = '/array/ssd/msmajdi/data/preProcessed/7T/All_imClosed'
+Dir = '/array/ssd/msmajdi/data/preProcessed/7T/All'
 
-applyMain(Dir + '/train')
-applyMain(Dir + '/test')
-if os.path.exists(Dir + '/train/Augments'): applyMain(Dir + '/train/Augments')
+mode = '_PProcessed'
+# applyMain(Dir + '/train',mode)
+# applyMain(Dir + '/test',mode)
+if os.path.exists(Dir + '/train/Augments'): applyMain(Dir + '/train/Augments',mode)

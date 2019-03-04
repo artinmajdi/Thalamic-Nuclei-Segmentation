@@ -45,6 +45,17 @@ def NucleiSelection(ind = 1,organ = 'THALAMUS'):
                 NucleusName = '13-Hb'
             elif ind == 14:
                 NucleusName = '14-MTT'
+        
+        elif 'stage2' in organ:
+            if ind == 1:
+                NucleusName = 'posterior'
+            elif ind == 2:
+                NucleusName = 'lateral'
+            elif ind == 3:
+                NucleusName = 'Anterior'
+            elif ind == 4:
+                NucleusName = 'Medial'
+
         return NucleusName
 
     FullIndexes = [1,2,4,5,6,7,8,9,10,11,12,13,14]
