@@ -17,19 +17,20 @@ def RunAllCascadeStages(UserInfoB):
 
     # stage 1
     print('************ stage 1 ************')
-    UserInfoB['nucleus_Index'] = [1]
-    UserInfoB['gapDilation'] = 5
-    K = Run_SingleNuclei(UserInfoB)
+    # UserInfoB['nucleus_Index'] = [1]
+    # UserInfoB['gapDilation'] = 5
+    # K = Run_SingleNuclei(UserInfoB)
 
     # stage 2
     print('************ stage 2 ************')
-    UserInfoB['gapDilation'] = 3
-    for UserInfoB['nucleus_Index'] in [1.1 , 1.2]:
-        K = Run_SingleNuclei(UserInfoB)
+    #UserInfoB['gapDilation'] = 3
+    #for UserInfoB['nucleus_Index'] in [1.1 , 1.2]:
+    #    K = Run_SingleNuclei(UserInfoB)
 
     print('************ stage 3 ************')
     # stage 3 ; final for now
-    for UserInfoB['nucleus_Index'] in NucleiIndexes:  
+    print('index',NucleiIndexes)
+    for UserInfoB['nucleus_Index'] in NucleiIndexes[1:]:  
         K = Run_SingleNuclei(UserInfoB)
 
     return K
@@ -44,6 +45,7 @@ def Run_SingleNuclei(UserInfoB):
         return K
         
     params = paramFunc.Run(UserInfoB)
+    
     Data, params = datasets.loadDataset(params)
     K = gpuSetting(params)
     choosingModel.check_Run(params, Data)
