@@ -5,14 +5,14 @@ Learning_Rate = 1e-3
 num_Layers = 3
 
 NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-readAugments = False
+readAugments = True
 
 
-TestOnly = True
+TestOnly = False
 Experiments_Index = '7' # 'cropping' # 7_croppingNetwork' # 
 Experiments_Tag = 'cascadeV1'  # 'cascadeV1_3TforInit7T' # 
 
-nucleus_Index = [1,2,8,10]
+nucleus_Index = [1]
 
 slicingDim = 2
 
@@ -22,7 +22,7 @@ slicingDim = 2
 # 4: ('All_7T', '/array/ssd/msmajdi/data/preProcessed/7T/All_DBD'),
 # 5: ('20priors', '/array/ssd/msmajdi/data/preProcessed/7T/20priors'),
 DatasetIx = 4
-SubExperiment_Index = 2
+SubExperiment_Index = 3
 
 #! Training
 batch_size = 40
@@ -85,7 +85,7 @@ cropping_method = 'python' # 'ANTs' 'python'
 
 
 #! Preprocessing
-preprocessMode = False
+preprocessMode = True
 BiasCorrection = False
 Cropping = True
 Normalize = True

@@ -23,13 +23,13 @@ def readImageMask(UserInfoB,sjIx):
 
     return im, msk, pred
 
-dir = '/array/ssd/msmajdi/data/originals/ET/prunnedForReSlicing/7T/vimp2_B'
+dir = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/results/subExp3_MinMax_wAug_Loss_BCE_nl3/vimp2_K'
 im = nib.load(dir + '/WMnMPRAGE_bias_corr.nii.gz').get_data()
 msk = nib.load(dir + '/Label/1-THALAMUS.nii.gz').get_data()
 pred = nib.load(dir + '/Label/1-THALAMUS2.nii.gz').get_data()
 
-UserInfoB['nucleus_Index'] = [1]
-im, msk, pred = readImageMask(UserInfoB,8)
+# UserInfoB['nucleus_Index'] = [1]
+# im, msk, pred = readImageMask(UserInfoB,8)
 a = nib.viewers.OrthoSlicer3D(msk,title='manual')
 b = nib.viewers.OrthoSlicer3D(pred,title='prediction')
 c = nib.viewers.OrthoSlicer3D(im,title='image')

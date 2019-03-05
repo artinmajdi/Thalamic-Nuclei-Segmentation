@@ -27,7 +27,7 @@ def applyMain(Dir,mode):
                     Mask = msk if cnt == 0 else Mask + msk
 
                 smallFuncs.saveImage( Mask > 0 , im.affine , im.header, Directory + 'Hierarchical/' + Names[mIx][0] + mode + '.nii.gz')
-                smallFuncs.saveImage( closeMask(Mask > 0) , im.affine , im.header, Directory + 'Hierarchical/' + Names[mIx][0] + '_ImClosed' + mode + '.nii.gz')
+                smallFuncs.saveImage( closeMask(Mask > 0) , im.affine , im.header, Directory + Names[mIx][0] + '_ImClosed' + mode + '.nii.gz')
 
         def creatingFullMaskWithAll4Supernuclei():
             print('    creating Full Mask With All 4 Super Nuclei')
@@ -62,9 +62,8 @@ def applyMain(Dir,mode):
 
 
 
-Dir = '/array/ssd/msmajdi/data/preProcessed/7T/All'
+Dir = '/array/ssd/msmajdi/data/preProcessed/7T/DividedByDisease/ET'
 
 mode = '_PProcessed'
 # applyMain(Dir + '/train',mode)
-# applyMain(Dir + '/test',mode)
-if os.path.exists(Dir + '/train/Augments'): applyMain(Dir + '/train/Augments',mode)
+applyMain(Dir + '/Augments',mode)

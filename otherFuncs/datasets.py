@@ -146,6 +146,24 @@ def readingWithTranpose(Dirr , params):
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments(params):
           
+    def cascadeRefMask():
+
+        if params.WhichExperiment.HardParams.Model.Method.Type == 'Hierarchical_Cascade':
+            nameB, posterior_Indexes, _ = smallFuncs.NucleiSelection(ind = 1.1,organ = 'THALAMUS')
+            nameC, lateral_Indexes  , _ = smallFuncs.NucleiSelection(ind = 1.2,organ = 'THALAMUS')
+
+            if params.WhichExperiment.Nucleus.Index[0] in [1.1, 1.2, 2, 12, 13, 14]:
+                NameCascadeMask = '1-THALAMUS' 
+            elif params.WhichExperiment.Nucleus.Index[0] in posterior_Indexes:
+                NameCascadeMask = nameB 
+            elif params.WhichExperiment.Nucleus.Index[0] in lateral_Indexes:
+                NameCascadeMask = nameC
+            
+        else: # elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade':
+            NameCascadeMask = '1-THALAMUS' 
+
+        return NameCascadeMask
+                
     def inputPreparationForUnet(im,subject2, params):
 
         def CroppingInput(im, Padding2):
@@ -185,18 +203,7 @@ def readingFromExperiments(params):
             Dirr = params.directories.Test.Result 
             if 'train' in mode: Dirr += '/TrainData_Output'
 
-            nameB, posterior_Indexes, _ = smallFuncs.NucleiSelection(ind = 1.1,organ = 'THALAMUS')
-            nameC, lateral_Indexes  , _ = smallFuncs.NucleiSelection(ind = 1.2,organ = 'THALAMUS')
-
-            if params.WhichExperiment.Nucleus.Index[0] in [1.1, 1.2, 2, 12, 13, 14]:
-                NameCascadeMask = '1-THALAMUS' 
-            elif params.WhichExperiment.Nucleus.Index[0] in posterior_Indexes:
-                NameCascadeMask = nameB 
-            elif params.WhichExperiment.Nucleus.Index[0] in lateral_Indexes:
-                NameCascadeMask = nameC
-
-
-            _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + NameCascadeMask + '.nii.gz' , params)
+            _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + cascadeRefMask() + '.nii.gz' , params)
 
             Cascade_Mask_Dilated = dilateMask(Cascade_Mask)
             imm[Cascade_Mask_Dilated == 0] = 0
@@ -307,21 +314,10 @@ def readingFromExperiments(params):
                 def readingCascadeCropSizes(subject):
                     dirr = params.directories.Test.Result 
                     if 'train' in mode: dirr += '/TrainData_Output'
-                        
-                    nameB, posterior_Indexes, _ = smallFuncs.NucleiSelection(ind = 1.1,organ = 'THALAMUS')
-                    nameC, lateral_Indexes  , _ = smallFuncs.NucleiSelection(ind = 1.2,organ = 'THALAMUS')
-                                            
-                    if params.WhichExperiment.Nucleus.Index[0] in [1.1, 1.2, 2, 12, 13, 14]:
-                        NameCascadeMask = '1-THALAMUS' 
-                    elif params.WhichExperiment.Nucleus.Index[0] in posterior_Indexes:
-                        NameCascadeMask = nameB 
-                    elif params.WhichExperiment.Nucleus.Index[0] in lateral_Indexes:
-                        NameCascadeMask = nameC
-                                                
-                    BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_' + NameCascadeMask + '.txt',dtype=int)
+                                                                    
+                    BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_' + cascadeRefMask() + '.txt',dtype=int)
                     BB = BBf[:,:2]
                     BBd = BBf[:,2:]
-                    # BBd = np.loadtxt(dirr + '/' + subject.subjectName  + '/BBd.txt',dtype=int)
                     
                     #! because on the slicing direction we don't want the extra dilated effect to be considered
                     BBd[params.WhichExperiment.Dataset.slicingInfo.slicingDim] = BB[params.WhichExperiment.Dataset.slicingInfo.slicingDim]

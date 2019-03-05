@@ -57,7 +57,7 @@ class model:
     Activitation = activation
     showHistory = True
     LabelMaxValue = 1
-    Measure_Dice_on_Train_Data = True
+    Measure_Dice_on_Train_Data = False
     MultiClass = multiclass
     #! only one of these two can be true at the same time
     InitializeFromThalamus = ''
