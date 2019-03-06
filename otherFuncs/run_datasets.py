@@ -42,7 +42,9 @@ f.close()
 
 
 g = h5py.File(params.WhichExperiment.Experiment.address + '/7T_wAug.h5py' , 'r')
-g['Train/Image/batch0']
+b = g['Train']['vimp2_A']['Image']
+
+b
 
 g.close()
 
