@@ -50,7 +50,6 @@ def testingExeriment(model, Data, params):
 
             def binarizing(pred1N):
                 Thresh = max( threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
-                # Thresh = 0.2
                 return pred1N  > Thresh
             
             def cascade_paddingToOrigSize(im):
@@ -65,7 +64,7 @@ def testingExeriment(model, Data, params):
             pred1N_origShape = cascade_paddingToOrigSize(pred1N)
             pred1N_origShape = np.transpose(pred1N_origShape,params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
 
-            Dice = [ NucleiIndex , smallFuncs.Dice_Calculator(pred1N_origShape , origMsk1N) ]
+            Dice = [ NucleiIndex , smallFuncs.Dice_Calculator(pred1N_origShape , binarizing(origMsk1N)) ]
 
             return pred1N_origShape, Dice
 
@@ -184,9 +183,9 @@ def trainingExperiment(Data, params):
         if params.WhichExperiment.Dataset.Validation.fromKeras:
             hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=1) # , callbacks=[TQDMCallback()])
         else:
-            hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label), verbose=1) # , callbacks=[TQDMCallback()])
+            hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=1) # , callbacks=[TQDMCallback()])
 
-        model.fit_generator()
+        # model.fit_generator()
         smallFuncs.mkDir(params.directories.Train.Model)
         model.save(params.directories.Train.Model + '/model.h5', overwrite=True, include_optimizer=True )
         model.save_weights(params.directories.Train.Model + '/model_weights.h5', overwrite=True )
@@ -284,9 +283,8 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
             ApplyPreFinalStageMask(CascadePreStageMasks[sj] , Subjects[sj] , mode) 
 
     loopOverSubjects(CascadePreStageMasks.Test, 'test')
-
-    if not params.preprocess.TestOnly or params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:  
-        loopOverSubjects(CascadePreStageMasks.Train, 'train')
+    loopOverSubjects(CascadePreStageMasks.Train, 'train')
+        
 
 # ! U-Net Architecture
 def architecture(params):

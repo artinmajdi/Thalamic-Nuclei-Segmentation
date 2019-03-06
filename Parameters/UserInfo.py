@@ -1,5 +1,5 @@
 
-epochs = 250
+epochs = 20
 GPU_Index = 6
 Learning_Rate = 1e-3
 num_Layers = 3
@@ -75,7 +75,7 @@ Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 
 
-SubExperiment_Tag = NormalizaeMethod 
+SubExperiment_Tag = 'e100_' + NormalizaeMethod + '_' + Model_Method # 'b_separateValsubjects_' +
 if readAugments: SubExperiment_Tag += '_wAug'
 
 #! cropping mode

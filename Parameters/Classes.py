@@ -107,7 +107,7 @@ class subExperiment:
 
 class validation:
     percentage = 0.1
-    fromKeras = True
+    fromKeras = False
 
 class test:
     mode = 'percentage' # 'names'

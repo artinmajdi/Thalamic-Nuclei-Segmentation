@@ -13,7 +13,7 @@ from shutil import copyfile
 
 class ImageLabel:
     Image = np.zeros(3)
-    Label = ''
+    Mask = ''
 
 class info:
     Height = ''
@@ -397,20 +397,35 @@ def readingFromExperiments(params):
 
     def loopOver_ReadingInput(params):
 
-        def saveTrainDataFinal(DataAll, TrainData, images, masks):
+        def saveTrainDataFinal(DataAll, TrainData,subjects):
+
+            def separatingConcatenatingIndexes(sjList):
+                for ix, nameSubject in enumerate(sjList):    
+                    im, msk = TrainData[nameSubject].Image  , TrainData[nameSubject].Mask          
+                    images = im     if ix == 0 else np.concatenate((images,im    ),axis=0)
+                    masks  = msk>Th if ix == 0 else np.concatenate((masks,msk>Th ),axis=0)
+
+                return trainCase(Image=images, Mask=masks.astype('float32'))
+
             DataAll.Train_ForTest = TrainData
 
             if params.WhichExperiment.Dataset.Validation.fromKeras:
-                DataAll.Train = trainCase(Image=images, Mask=masks.astype('float32'))
+                DataAll.Train = separatingConcatenatingIndexes(list(TrainData))
             else:
-                DataAll.Train, DataAll.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks, params.WhichExperiment.Dataset.randomFlag)
+
+                TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage, list(TrainData), params.WhichExperiment.Dataset.randomFlag)
+                DataAll.Train = separatingConcatenatingIndexes(TrainList)
+                DataAll.Validation = separatingConcatenatingIndexes(ValList)
+
+                # DataAll.Train, DataAll.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks, params.WhichExperiment.Dataset.randomFlag)
             return DataAll
 
         def checkSimulationMode(params, mode):
-            if 'train' in mode and params.preprocess.TestOnly and not params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data:
+            if 'train' in mode and (params.preprocess.TestOnly and not params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) and not ( 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1)):
                 return True
             else:
                 return False
+
 
             if 'test' in mode and not params.directories.Test.Input.Subjects:
                 return True
@@ -436,19 +451,19 @@ def readingFromExperiments(params):
 
                 if im[...,0].shape == msk[...,0].shape:
                     if 'train' in mode:                        
-                        images = im     if indTrain == 0 else np.concatenate((images,im    ),axis=0)
-                        masks  = msk>Th if indTrain == 0 else np.concatenate((masks,msk>Th ),axis=0)
-                        TrainData[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                        # images = im     if indTrain == 0 else np.concatenate((images,im    ),axis=0)
+                        # masks  = msk>Th if indTrain == 0 else np.concatenate((masks,msk>Th ),axis=0)
+                        TrainData[nameSubject] = testCase(Image=im, Mask=msk>Th ,OrigMask=(origMsk>Th).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
                         indTrain = indTrain + 1
 
                     elif 'test' in mode:
-                        TestData[nameSubject]  = testCase(Image=im, Mask=msk ,OrigMask=origMsk.astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                        TestData[nameSubject]  = testCase(Image=im, Mask=msk>Th ,OrigMask=(origMsk>Th).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
                 else:
                     cntSkipped = Error_MisMatch_In_Dim_ImageMask(cntSkipped, Subjects[nameSubject] , mode, nameSubject)
 
 
             if 'train' in mode:
-                TrainData = saveTrainDataFinal(DataAll, TrainData, images, masks)
+                DataAll = saveTrainDataFinal(DataAll, TrainData,Subjects)
             else:
                 DataAll.Test = TestData
 
@@ -469,11 +484,11 @@ def TrainValSeperate(percentage, images, masks, randomFlag):
 
     Validation = ImageLabel()
     Validation.Image = images[ValList, ...]
-    Validation.Label = masks[ValList, ...]
+    Validation.Mask = masks[ValList, ...]
 
     Train = ImageLabel()
     Train.Image = images[TrainList, ...]
-    Train.Label = masks[TrainList, ...]
+    Train.Mask = masks[TrainList, ...]
 
     return Train, Validation
 

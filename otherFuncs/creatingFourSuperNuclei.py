@@ -35,7 +35,7 @@ def applyMain(Dir,mode):
                 msk = nib.load(Directory + 'Hierarchical/' + Names[cnt][0] + mode + '.nii.gz').get_data()
                 Mask = msk if cnt == 1 else Mask + cnt*msk
 
-                msk = nib.load(Directory + 'Hierarchical/' + Names[cnt][0] + '_ImClosed' + mode + '.nii.gz').get_data()
+                msk = nib.load(Directory + Names[cnt][0] + '_ImClosed' + mode + '.nii.gz').get_data()
                 MaskClosed = msk if cnt == 1 else MaskClosed + cnt*msk
 
             smallFuncs.saveImage(Mask , im.affine , im.header, Directory + 'Hierarchical/All_4MainNuclei' + mode + '.nii.gz')
@@ -65,5 +65,5 @@ def applyMain(Dir,mode):
 Dir = '/array/ssd/msmajdi/data/preProcessed/7T/DividedByDisease/ET'
 
 mode = '_PProcessed'
-# applyMain(Dir + '/train',mode)
+applyMain(Dir + '/train',mode)
 applyMain(Dir + '/Augments',mode)

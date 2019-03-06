@@ -27,27 +27,29 @@ def Run(UserInfoB):
         print('************ stage 1 ************')
         UserInfoB['nucleus_Index'] = [1]
         UserInfoB['gapDilation'] = 5
-        K = Run_SingleNuclei(UserInfoB)
+        Run_SingleNuclei(UserInfoB)
 
         # stage 2
         print('************ stage 2 ************')
         UserInfoB['gapDilation'] = 3
         for UserInfoB['nucleus_Index'] in [1.1 , 1.2]:
-            K = Run_SingleNuclei(UserInfoB)
+            name,_,_ = smallFuncs.NucleiSelection(ind=UserInfoB['nucleus_Index'],organ='THALAMUS')
+            print('      ', name , 'gpu: ',UserInfoB['GPU_Index'])
+            Run_SingleNuclei(UserInfoB)
 
         print('************ stage 3 ************')
         # stage 3 ; final for now
         print('index',NucleiIndexes)
         for UserInfoB['nucleus_Index'] in NucleiIndexes[1:]:
-            K = Run_SingleNuclei(UserInfoB)
-        return K
+            name,_,_ = smallFuncs.NucleiSelection(ind=UserInfoB['nucleus_Index'],organ='THALAMUS')
+            print('      ', name , 'gpu: ',UserInfoB['GPU_Index'])            
+            Run_SingleNuclei(UserInfoB)
 
     def CacadeStages(UserInfoB):
 
         for UserInfoB['nucleus_Index'] in NucleiIndexes:
             print('    Nucleus:  ', UserInfoB['nucleus_Index']  , 'GPU:  ', UserInfoB['GPU_Index'])
-            K = Run_SingleNuclei(UserInfoB)
-        return K
+            Run_SingleNuclei(UserInfoB)
 
     def Run_SingleNuclei(UserInfoB):
 
@@ -55,16 +57,16 @@ def Run(UserInfoB):
         Data, params = datasets.loadDataset(params)
         choosingModel.check_Run(params, Data)
 
-    if params.WhichExperiment.HardParams.Model.Method.Type == 'Hierarchical_Cascade': K = HierarchicalStages(UserInfoB)
-    elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': K = CacadeStages(UserInfoB)
+    if params.WhichExperiment.HardParams.Model.Method.Type == 'Hierarchical_Cascade': HierarchicalStages(UserInfoB)
+    elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': CacadeStages(UserInfoB)
 
-    K.clear_session()
 
 params = paramFunc.Run(UserInfoB)
-datasets.movingFromDatasetToExperiments(params)
 
+datasets.movingFromDatasetToExperiments(params)
 applyPreprocess.main(params, 'experiment')
 
 K = gpuSetting(params)
-
 Run(UserInfoB)
+
+K.clear_session()
