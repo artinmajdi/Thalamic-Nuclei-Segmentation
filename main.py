@@ -10,52 +10,61 @@ from preprocess import applyPreprocess
 # TODO:  write the name of test and train subjects in model and results and dataset  to have it for the future
 # TODO : look for a way to see epoch inside my loss function and use BCE initially and tyhen add Dice for higher epochs
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
-params = paramFunc.Run(UserInfoB)
 NucleiIndexes = UserInfoB['nucleus_Index']
 
-def RunAllCascadeStages(UserInfoB):
-
-    # stage 1
-    print('************ stage 1 ************')
-    UserInfoB['nucleus_Index'] = [1]
-    UserInfoB['gapDilation'] = 5
-    K = Run_SingleNuclei(UserInfoB)
-
-    # stage 2
-    print('************ stage 2 ************')
-    UserInfoB['gapDilation'] = 3
-    for UserInfoB['nucleus_Index'] in [1.1 , 1.2]:
-        K = Run_SingleNuclei(UserInfoB)
-
-    print('************ stage 3 ************')
-    # stage 3 ; final for now
-    print('index',NucleiIndexes)
-    for UserInfoB['nucleus_Index'] in NucleiIndexes[1:]:
-        K = Run_SingleNuclei(UserInfoB)
-
+def gpuSetting(params):
+    os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
+    import tensorflow as tf
+    from keras import backend as K
+    K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
     return K
 
-def Run_SingleNuclei(UserInfoB):
+def Run(UserInfoB):
 
-    def gpuSetting(params):
-        os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
-        import tensorflow as tf
-        from keras import backend as K
-        K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
+    def HierarchicalStages(UserInfoB):
+
+        # stage 1
+        print('************ stage 1 ************')
+        UserInfoB['nucleus_Index'] = [1]
+        UserInfoB['gapDilation'] = 5
+        K = Run_SingleNuclei(UserInfoB)
+
+        # stage 2
+        print('************ stage 2 ************')
+        UserInfoB['gapDilation'] = 3
+        for UserInfoB['nucleus_Index'] in [1.1 , 1.2]:
+            K = Run_SingleNuclei(UserInfoB)
+
+        print('************ stage 3 ************')
+        # stage 3 ; final for now
+        print('index',NucleiIndexes)
+        for UserInfoB['nucleus_Index'] in NucleiIndexes[1:]:
+            K = Run_SingleNuclei(UserInfoB)
         return K
 
-    params = paramFunc.Run(UserInfoB)
+    def CacadeStages(UserInfoB):
 
-    Data, params = datasets.loadDataset(params)
-    K = gpuSetting(params)
-    choosingModel.check_Run(params, Data)
+        for UserInfoB['nucleus_Index'] in NucleiIndexes:
+            print('    Nucleus:  ', UserInfoB['nucleus_Index']  , 'GPU:  ', UserInfoB['GPU_Index'])
+            K = Run_SingleNuclei(UserInfoB)
+        return K
 
-    return K
+    def Run_SingleNuclei(UserInfoB):
 
+        params = paramFunc.Run(UserInfoB)
+        Data, params = datasets.loadDataset(params)
+        choosingModel.check_Run(params, Data)
+
+    if params.WhichExperiment.HardParams.Model.Method.Type == 'Hierarchical_Cascade': K = HierarchicalStages(UserInfoB)
+    elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': K = CacadeStages(UserInfoB)
+
+    K.clear_session()
+
+params = paramFunc.Run(UserInfoB)
 datasets.movingFromDatasetToExperiments(params)
+
 applyPreprocess.main(params, 'experiment')
-params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
 
-K = RunAllCascadeStages(UserInfoB)
+K = gpuSetting(params)
 
-K.clear_session()
+Run(UserInfoB)

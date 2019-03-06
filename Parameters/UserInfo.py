@@ -5,12 +5,12 @@ Learning_Rate = 1e-3
 num_Layers = 3
 
 NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-readAugments = True
-
+readAugments = False
+Model_Method = 'Cascade' # 'Hierarchical_Cascade'
 
 TestOnly = False
 Experiments_Index = '7' # 'cropping' # 7_croppingNetwork' # 
-Experiments_Tag = 'cascadeV1'  # 'cascadeV1_3TforInit7T' # 
+Experiments_Tag = 'testHdf5'  # 'cascadeV1_3TforInit7T' # 
 
 nucleus_Index = [1]
 
@@ -22,10 +22,10 @@ slicingDim = 2
 # 4: ('All_7T', '/array/ssd/msmajdi/data/preProcessed/7T/All_DBD'),
 # 5: ('20priors', '/array/ssd/msmajdi/data/preProcessed/7T/20priors'),
 DatasetIx = 4
-SubExperiment_Index = 3
+SubExperiment_Index = 333
 
 #! Training
-batch_size = 40
+batch_size = 100
 Initialize_FromThalamus = False
 Initialize_FromOlderModel = False
 

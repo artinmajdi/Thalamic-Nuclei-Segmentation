@@ -31,6 +31,7 @@ def Run(UserInfo):
     WhichExperiment.HardParams.Template.Mask  = UserInfo['Tempalte_Mask']
     WhichExperiment.HardParams.Model.MultiClass.mode = UserInfo['MultiClass_mode']
     WhichExperiment.HardParams.Model.loss, _      = LossFunction.LossInfo(UserInfo['lossFunctionIx'])
+    WhichExperiment.HardParams.Model.Method.Type       = UserInfo['Model_Method']
     WhichExperiment.HardParams.Model.metrics, _   = Metrics.MetricInfo(UserInfo['MetricIx'])
     WhichExperiment.HardParams.Model.optimizer, _ = Optimizers.OptimizerInfo(UserInfo['OptimizerIx'], UserInfo['Learning_Rate'])
     WhichExperiment.HardParams.Model.num_Layers   = UserInfo['num_Layers']

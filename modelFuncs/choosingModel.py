@@ -186,6 +186,7 @@ def trainingExperiment(Data, params):
         else:
             hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label), verbose=1) # , callbacks=[TQDMCallback()])
 
+        model.fit_generator()
         smallFuncs.mkDir(params.directories.Train.Model)
         model.save(params.directories.Train.Model + '/model.h5', overwrite=True, include_optimizer=True )
         model.save_weights(params.directories.Train.Model + '/model_weights.h5', overwrite=True )
@@ -334,19 +335,19 @@ def architecture(params):
 
         return model
 
-    def CNN_Segmetnation(Modelparam):
-        inputs = layers.Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1) )
-        conv = inputs
+    # def CNN_Segmentation(Modelparam):
+    #     inputs = layers.Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, Modelparam.imageInfo.depth, 1) )
+    #     conv = inputs
 
-        for nL in range(Modelparam.num_Layers -1):
-            conv = layers.Conv2D(filters=64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
-            conv = layers.Dropout(Modelparam.Dropout.Value)(conv)
+    #     for nL in range(Modelparam.num_Layers -1):
+    #         conv = layers.Conv3D(filters=64*(2**nL), kernel_size=(3,3,3), padding='SAME', activation='relu')(conv)
+    #         conv = layers.Dropout(Modelparam.Dropout.Value)(conv)
 
-        final  = layers.Conv2D(filters=Modelparam.MultiClass.num_classes, kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
+    #     final  = layers.Conv3D(filters=2, kernel_size=(3,3,3), padding='SAME', activation='relu')(conv)
 
-        model = kerasmodels.Model(inputs=[inputs], outputs=[final])
+    #     model = kerasmodels.Model(inputs=[inputs], outputs=[final])
 
-        return model
+    #     return model
 
     def CNN_Classifier(Modelparam):
         model = kerasmodels.Sequential()
@@ -370,8 +371,8 @@ def architecture(params):
     if 'U-Net' in ModelParam.architectureType:
         model = UNet(ModelParam)
 
-    elif 'FCN_Cropping' in ModelParam.architectureType:
-        model = CNN_Segmetnation(ModelParam)
+    # elif 'FCN_Cropping' in ModelParam.architectureType:
+    #     model = CNN_Segmentation(ModelParam)
 
     elif 'CNN_Classifier' in ModelParam.architectureType:
         model = CNN_Classifier(ModelParam)

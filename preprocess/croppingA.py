@@ -35,9 +35,8 @@ def func_cropImage(params, subject):
         return d
             
     crop = subject.Temp.address + '/CropMask.nii.gz' 
-    CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0]) if 'python' in params.preprocess.Cropping.Method else ''
-
-    def check_crop(inP, outP, outDebug):
+    
+    def check_crop(inP, outP, outDebug, CropCoordinates):
 
         def applyCropping(image):
             d = CropCoordinates
@@ -66,10 +65,13 @@ def func_cropImage(params, subject):
         outDebug = subject.Label.Temp.address + '/' + NucleusName + '_Cropped.nii.gz'
         return inP, outP, outDebug
 
-    inP, outP, outDebug = directoriesImage(subject)        
-    check_crop(inP, outP, outDebug)
+    inP, outP, outDebug = directoriesImage(subject)          
+    CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  if not os.path.isfile(outDebug) and 'python' in params.preprocess.Cropping.Method else ''
+
+    check_crop(inP, outP, outDebug, CropCoordinates)
 
     for ind in params.WhichExperiment.Nucleus.FullIndexes:
         inP, outP, outDebug = directoriesNuclei(subject, ind)
-        check_crop(inP, outP, outDebug)
+        CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  if not os.path.isfile(outDebug) and 'python' in params.preprocess.Cropping.Method and not CropCoordinates else ''
+        check_crop(inP, outP, outDebug, CropCoordinates)
 

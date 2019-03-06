@@ -124,7 +124,6 @@ def kaggleCompetition(params):
     data.Test = data.Train
     return data, '_'
 
-
 def paddingNegativeFix(sz, Padding):
     padding = np.array([list(x) for x in Padding])                
     crd = -1*padding 
@@ -302,8 +301,8 @@ def readingFromExperiments(params):
 
                 return Input
                 
-            params.directories.Train.Input = findingSubjectsFinalPaddingAmount('Train', params.directories.Train.Input, params)
-            params.directories.Test.Input  = findingSubjectsFinalPaddingAmount('Test', params.directories.Test.Input, params)
+            if params.directories.Train.Input.Subjects: params.directories.Train.Input = findingSubjectsFinalPaddingAmount('Train', params.directories.Train.Input, params)
+            if params.directories.Test.Input.Subjects:  params.directories.Test.Input  = findingSubjectsFinalPaddingAmount('Test', params.directories.Test.Input, params)
 
             return params
 
@@ -351,8 +350,8 @@ def readingFromExperiments(params):
                 Input.inputSizes = np.array(inputSize)
                 return Input
 
-            params.directories.Train.Input = loopOverAllSubjects(params.directories.Train.Input, 'train')
-            params.directories.Test.Input  = loopOverAllSubjects(params.directories.Test.Input, 'test')
+            if params.directories.Train.Input.Subjects: params.directories.Train.Input = loopOverAllSubjects(params.directories.Train.Input, 'train')
+            if params.directories.Test.Input.Subjects: params.directories.Test.Input  = loopOverAllSubjects(params.directories.Test.Input, 'test')
                                                 
             return params
                     
@@ -412,6 +411,12 @@ def readingFromExperiments(params):
                 return True
             else:
                 return False
+
+            if 'test' in mode and not params.directories.Test.Input.Subjects:
+                return True
+
+            if 'train' in mode and not params.directories.Train.Input.Subjects:
+                return True                
 
         DataAll = data()
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
