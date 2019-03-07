@@ -28,37 +28,23 @@ datasets.movingFromDatasetToExperiments(params)
 
 # #! loading the dataset
 Data, params = datasets.loadDataset(params)
-f = h5py.File(params.WhichExperiment.Experiment.address + '/7T_wAug.h5py' , 'w')
-for subject in Data.Test:
-    f.create_dataset('Test/%s/Image'%(subject),data=Data.Test[subject].Image)
-    f.create_dataset('Test/%s/Mask'%(subject),data=Data.Test[subject].Mask)
+# params.directories.Tr
+# def saveHdf5(Data):
+#     with h5py.File(params.WhichExperiment.Experiment.address + '/7T_wAug.h5py' , 'w') as f:
+#         for subject in Data.Test:
+#             f.create_dataset('Test/%s/Image'%(subject),data=Data.Test[subject].Image)
+#             f.create_dataset('Test/%s/Mask'%(subject),data=Data.Test[subject].Mask)
 
-for subject in Data.Train_ForTest:
-    f.create_dataset('Train/%s/Image'%(subject),data=Data.Train_ForTest[subject].Image)
-    f.create_dataset('Train/%s/Mask'%(subject),data=Data.Train_ForTest[subject].Mask)
+#         for subject in Data.Train_ForTest:
+#             f.create_dataset('Train/%s/Image'%(subject),data=Data.Train_ForTest[subject].Image)
+#             f.create_dataset('Train/%s/Mask'%(subject),data=Data.Train_ForTest[subject].Mask)
 
-f.visit(print)
-f.close()
+#         f.visit(print)
 
+# saveHdf5(Data)
 
-g = h5py.File(params.WhichExperiment.Experiment.address + '/7T_wAug.h5py' , 'r')
-b = g['Train']['vimp2_A']['Image']
-
-b
-
-g.close()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-print('----')
+# with h5py.File(params.WhichExperiment.Experiment.address + '/7T_wAug.h5py' , 'r') as g:
+#     for subject in Data.Train_ForTest:
+#         g.create_dataset('Test/%s/Image'%(subject + '_b'),data=Data.Test[subject].Image)
+#         g.create_dataset('Test/%s/Mask'%(subject + '_b'),data=Data.Test[subject].Mask)
+#     b = g['Train']['vimp2_A']['Image']

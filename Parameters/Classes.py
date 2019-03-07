@@ -107,7 +107,7 @@ class subExperiment:
 
 class validation:
     percentage = 0.1
-    fromKeras = False
+    fromKeras = True
 
 class test:
     mode = 'percentage' # 'names'
@@ -127,6 +127,11 @@ class inputPadding:
     Automatic = True
     HardDimensions = ''
 
+class hDF5:
+    mode = True
+    saveTrue_LoadFalse = True
+
+    
 class dataset:
     name = ''
     address = ''
@@ -140,6 +145,7 @@ class dataset:
     gapOnSlicingDimention = 2
     InputPadding = inputPadding
     readAugments = False
+    HDf5 = hDF5
 
 
 class WhichExperiment:

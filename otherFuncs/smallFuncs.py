@@ -6,7 +6,7 @@ from shutil import copyfile
 import matplotlib.pyplot as plt
 import os, sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-
+from skimage import measure
 from copy import deepcopy
 import pandas as pd
 import pickle
@@ -15,8 +15,8 @@ import pickle
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
 def NucleiSelection(ind = 1,organ = 'THALAMUS'):
 
-    def func_NucleusName(organ, ind):
-        if 'THALAMUS' in organ:
+    def func_NucleusName(ind):
+        if ind in range(20):
             if ind == 1:
                 NucleusName = '1-THALAMUS'
             elif ind == 2:
@@ -42,28 +42,40 @@ def NucleiSelection(ind = 1,organ = 'THALAMUS'):
             elif ind == 13:
                 NucleusName = '13-Hb'
             elif ind == 14:
-                NucleusName = '14-MTT'        
-            elif ind == 1.1:
-                NucleusName = 'posterior_ImClosed'
+                NucleusName = '14-MTT'    
+        else:
+            if ind == 1.1:
+                NucleusName = 'lateral_ImClosed'  
             elif ind == 1.2:
-                NucleusName = 'lateral_ImClosed'
+                NucleusName = 'posterior_ImClosed'
             elif ind == 1.3:
-                NucleusName = 'Anterior_ImClosed'
+                NucleusName = 'Medial_ImClosed'  
             elif ind == 1.4:
-                NucleusName = 'Medial_ImClosed'
+                NucleusName = 'Anterior_ImClosed'                  
+            elif ind == 1.9:
+                NucleusName = 'HierarchicalCascade'
 
         return NucleusName
 
-    if ind in range(15):
-        FullIndexes = [1,2,4,5,6,7,8,9,10,11,12,13,14]
-    elif ind == 1.1:
-        FullIndexes = [8,9,10,11]
-    elif ind == 1.2:
-        FullIndexes = [4,5,6,7]
+    def func_FullIndexes(ind):
+        if ind in range(20):
+            return [1,2,4,5,6,7,8,9,10,11,12,13,14]
+        elif ind == 1.1:
+            return [4,5,6,7]
+        elif ind == 1.2:
+            return [8,9,10]
+        elif ind == 1.3:
+            return [11,12,13]
+        elif ind == 1.4:
+            return [2]   
+        elif ind == 1.9:
+            return [1.1 , 1.2 , 1.3 , 1.4] 
 
-    Full_Names = [func_NucleusName(organ, ind) for ind in FullIndexes]
+    name = func_NucleusName(ind)
+    FullIndexes = func_FullIndexes(ind)
+    Full_Names = [func_NucleusName(ix) for ix in FullIndexes]
 
-    return func_NucleusName(organ, ind), FullIndexes, Full_Names
+    return name, FullIndexes, Full_Names
 
 def listSubFolders(Dir, params):
 
@@ -346,3 +358,20 @@ def Loading_UserInfo(DirLoad, method):
     UserInfo['InputDimensions'] = [int(ai) for ai in a]
     return UserInfo
 
+def findBoundingBox(PreStageMask):
+    objects = measure.regionprops(measure.label(PreStageMask))
+
+    L = len(PreStageMask.shape)
+    if len(objects) > 1:
+        area = []
+        for obj in objects: area = np.append(area, obj.area)
+
+        Ix = np.argsort(area)
+        bbox = objects[ Ix[-1] ].bbox
+
+    else:
+        bbox = objects[0].bbox
+
+    BB = [ [bbox[d] , bbox[L + d] ] for d in range(L)]
+                    
+    return BB

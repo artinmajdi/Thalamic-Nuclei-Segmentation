@@ -10,6 +10,7 @@ from preprocess import normalizeA, applyPreprocess
 import matplotlib.pyplot as plt
 from scipy import ndimage
 from shutil import copyfile
+import h5py
 
 class ImageLabel:
     Image = np.zeros(3)
@@ -24,7 +25,7 @@ class data:
     Train_ForTest = ""
     Test = ""
     Validation = ImageLabel()
-    Info = info
+    Info = info()
 
 class trainCase:
     def __init__(self, Image, Mask):
@@ -39,7 +40,6 @@ class testCase:
         self.Affine = Affine
         self.Header = Header
         self.original_Shape = original_Shape
-
 
 def DatasetsInfo(DatasetIx):
     switcher = {
@@ -60,8 +60,6 @@ def loadDataset(params):
     else:
         Data, params = readingFromExperiments(params)
 
-    _, Data.Info.Height, Data.Info.Width, _ = Data.Test[list(Data.Test)[0]].Image.shape if params.preprocess.TestOnly else Data.Train.Image.shape
-    params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
     return Data, params
 
 def fashionMnist(params):
@@ -249,11 +247,10 @@ def readingFromExperiments(params):
         
         return origMsk , msk
             
-    def Error_MisMatch_In_Dim_ImageMask(cntSkipped,subject, mode, nameSubject):
+    def Error_MisMatch_In_Dim_ImageMask(subject, mode, nameSubject):
         AA = subject.address.split(os.path.dirname(subject.address) + '/')
         shutil.move(subject.address, os.path.dirname(subject.address) + '/' + 'ERROR_' + AA[1])
-        print('WARNING:', mode , cntSkipped + 1 , nameSubject, ' image and mask have different shape sizes')
-        return cntSkipped + 1
+        print('WARNING:', mode , nameSubject, ' image and mask have different shape sizes')
 
     def preAnalysis(params):
 
@@ -274,7 +271,6 @@ def readingFromExperiments(params):
                 def applyingPaddingDimOnSubjects(params, Subjects):
                     fullpadding = params.WhichExperiment.HardParams.Model.InputDimensions - Input.inputSizes
                     md = np.mod(fullpadding,2)
-
                     for sn, name in enumerate(list(Subjects)):
                         padding = [tuple([0,0])]*4
                         for dim in range(2): # params.WhichExperiment.Dataset.slicingInfo.slicingOrder[:2]:
@@ -359,7 +355,7 @@ def readingFromExperiments(params):
 
             HardParams = params.WhichExperiment.HardParams
 
-            if params.WhichExperiment.Dataset.InputPadding.Automatic:
+            if params.WhichExperiment.Dataset.InputPadding.Automatic and not params.WhichExperiment.Dataset.loadDatasetFromHDf5:
                 MinInputSize = np.min(params.directories.Train.Input.inputSizes, axis=0)
             else:
                 MinInputSize = params.WhichExperiment.Dataset.InputPadding.HardDimensions
@@ -381,23 +377,19 @@ def readingFromExperiments(params):
 
         return params
 
-    def ErrorInPaddingCheck(params, subject, nameSubject):
-        ErrorFlag = False
-        if np.min(subject.Padding) < 0:
-            if np.min(subject.Padding) < -params.WhichExperiment.HardParams.Model.paddingErrorPatience:
-                AA = subject.address.split(os.path.dirname(subject.address) + '/')
-                shutil.move(subject.address, os.path.dirname(subject.address) + '/' + 'ERROR_' + AA[1])
-                print('WARNING: subject: ',nameSubject,' size is out of the training network input dimensions')
-                ErrorFlag = True
-            else:
-                Dirsave = smallFuncs.mkDir(params.directories.Test.Result + '/' + nameSubject)
-                np.savetxt(Dirsave + '/paddingError.txt', subject.Padding, fmt='%d')
-                print('WARNING: subject: ',nameSubject,' padding error patience activated, Error:', np.min(subject.Padding))
-        return ErrorFlag
+    def main_ReadingDataset(params):
 
-    def loopOver_ReadingInput(params):
+        def trainFlag():            
+            Flag_TestOnly = params.preprocess.TestOnly 
+            Flag_TrainDice = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data 
+            Flag_cascadeMethod = 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and int(params.WhichExperiment.Nucleus.Index[0]) == 1
+            Flag_notEmpty = params.directories.Train.Input.Subjects
+            return ( (not Flag_TestOnly) or Flag_TrainDice or Flag_cascadeMethod ) and Flag_notEmpty
+            
+        if trainFlag(): TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage, list(params.directories.Train.Input.Subjects), params.WhichExperiment.Dataset.randomFlag)  
+        Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
 
-        def saveTrainDataFinal(DataAll, TrainData,subjects):
+        def separateTrainVal_and_concatenateTrain(TrainData):
 
             def separatingConcatenatingIndexes(sjList):
                 for ix, nameSubject in enumerate(sjList):    
@@ -407,72 +399,76 @@ def readingFromExperiments(params):
 
                 return trainCase(Image=images, Mask=masks.astype('float32'))
 
-            DataAll.Train_ForTest = TrainData
-
             if params.WhichExperiment.Dataset.Validation.fromKeras:
-                DataAll.Train = separatingConcatenatingIndexes(list(TrainData))
+                Train = separatingConcatenatingIndexes(list(TrainData))
+                Validation = ''
             else:
+                Train = separatingConcatenatingIndexes(TrainList)
+                Validation = separatingConcatenatingIndexes(ValList)
 
-                TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage, list(TrainData), params.WhichExperiment.Dataset.randomFlag)
-                DataAll.Train = separatingConcatenatingIndexes(TrainList)
-                DataAll.Validation = separatingConcatenatingIndexes(ValList)
+            return Train, Validation
+                                    
+        def readingAllSubjects(Subjects, mode):
 
-                # DataAll.Train, DataAll.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks, params.WhichExperiment.Dataset.randomFlag)
-            return DataAll
-
-        def checkSimulationMode(params, mode):
-            if 'train' in mode and (params.preprocess.TestOnly and not params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) and not ( 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1)):
-                return True
-            else:
-                return False
-
-
-            if 'test' in mode and not params.directories.Test.Input.Subjects:
-                return True
-
-            if 'train' in mode and not params.directories.Train.Input.Subjects:
-                return True                
-
-        DataAll = data()
-        Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
-        TestData, TrainData = {}, {}
-        for mode in ['train','test']:
+            def ErrorInPaddingCheck(subject):
+                ErrorFlag = False
+                if np.min(subject.Padding) < 0:
+                    if np.min(subject.Padding) < -params.WhichExperiment.HardParams.Model.paddingErrorPatience:
+                        AA = subject.address.split(os.path.dirname(subject.address) + '/')
+                        shutil.move(subject.address, os.path.dirname(subject.address) + '/' + 'ERROR_' + AA[1])
+                        print('WARNING: subject: ',subject.subjectName,' size is out of the training network input dimensions')
+                        ErrorFlag = True
+                    else:
+                        Dirsave = smallFuncs.mkDir(params.directories.Test.Result + '/' + subject.subjectName,)
+                        np.savetxt(Dirsave + '/paddingError.txt', subject.Padding, fmt='%d')
+                        print('WARNING: subject: ',subject.subjectName,' padding error patience activated, Error:', np.min(subject.Padding))
+                return ErrorFlag            
             
-            if checkSimulationMode(params, mode): continue
-            Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
-            cntSkipped, indTrain = 0, 0
-            for _, nameSubject in tqdm(enumerate(Subjects), desc='Loading Dataset: ' + mode):
-                # subject = Subjects[nameSubject]
-                    
-                if ErrorInPaddingCheck(params, Subjects[nameSubject], nameSubject): continue
-                            
+            if params.WhichExperiment.Dataset.hDF5.mode: f = h5py.File(params.WhichExperiment.Experiment.address + '/' + mode + '_' + params.WhichExperiment.Nucleus.name + '.h5py' , 'w')
+
+            ListSubjects = list(Subjects)             
+                
+            Data = {}
+            for nameSubject in tqdm(ListSubjects, desc='Loading Dataset: ' + mode):
+                
+                if ErrorInPaddingCheck(Subjects[nameSubject]): continue
+                                            
                 im, imF = readingImage(params, Subjects[nameSubject], mode)
                 origMsk , msk = readingNuclei(params, Subjects[nameSubject], imF.shape)
 
-                if im[...,0].shape == msk[...,0].shape:
-                    if 'train' in mode:                        
-                        # images = im     if indTrain == 0 else np.concatenate((images,im    ),axis=0)
-                        # masks  = msk>Th if indTrain == 0 else np.concatenate((masks,msk>Th ),axis=0)
-                        TrainData[nameSubject] = testCase(Image=im, Mask=msk>Th ,OrigMask=(origMsk>Th).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-                        indTrain = indTrain + 1
-
-                    elif 'test' in mode:
-                        TestData[nameSubject]  = testCase(Image=im, Mask=msk>Th ,OrigMask=(origMsk>Th).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                if im[...,0].shape == msk[...,0].shape:                                            
+                        if params.WhichExperiment.Dataset.hDF5.mode:   
+                            mode_TrainVal = 'validation'  if 'train' in mode and not params.WhichExperiment.Dataset.Validation.fromKeras and nameSubject in ValList else mode                                                        
+                            f.create_dataset('%s/%s/Image'%(mode_TrainVal,nameSubject)  , data=im)
+                            f.create_dataset('%s/%s/Mask'%(mode_TrainVal,nameSubject)   , data=msk)
+                            f.create_dataset('%s/%s/Padding'%(mode_TrainVal,nameSubject) , data=Subjects[nameSubject].Padding)
+                            f.create_dataset('%s/%s/NewCropInfo/OriginalBoundingBox'%(mode_TrainVal,nameSubject) , data=Subjects[nameSubject].NewCropInfo.OriginalBoundingBox)
+                            f.create_dataset('%s/%s/NewCropInfo/PadSizeBackToOrig'%(mode_TrainVal,nameSubject)   , data=Subjects[nameSubject].NewCropInfo.PadSizeBackToOrig)
+                            # f.create_dataset('%s/%s/Affine'%(mode_TrainVal,nameSubject) , data=imF.affine)
+                        else:                                        
+                            Data[nameSubject] = testCase(Image=im, Mask=msk>Th ,OrigMask=(origMsk>Th).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
                 else:
-                    cntSkipped = Error_MisMatch_In_Dim_ImageMask(cntSkipped, Subjects[nameSubject] , mode, nameSubject)
+                    Error_MisMatch_In_Dim_ImageMask(Subjects[nameSubject] , mode, nameSubject)
 
+            if params.WhichExperiment.Dataset.hDF5.mode:  f.close()
 
-            if 'train' in mode:
-                DataAll = saveTrainDataFinal(DataAll, TrainData,Subjects)
-            else:
-                DataAll.Test = TestData
+            return Data
+                                       
+        DataAll = data()
+        if trainFlag():
+            DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
+            if not params.WhichExperiment.Dataset.hDF5.mode: 
+                DataAll.Train, DataAll.Validation = separateTrainVal_and_concatenateTrain( DataAll.Train_ForTest )
+        
+        if params.directories.Test.Input.Subjects: DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
 
-        _, DataAll.Info.Height, DataAll.Info.Width, _ = DataAll.Test[list(DataAll.Test)[0]].Image.shape if params.preprocess.TestOnly else DataAll.Train.Image.shape
-        params.WhichExperiment.HardParams.Model.imageInfo = DataAll.Info
+        # DataAll.Info.Height, DataAll.Info.Width = params.WhichExperiment.HardParams.Model.InputDimensions[:2]
+        # params.WhichExperiment.HardParams.Model.imageInfo = DataAll.Info
+
         return DataAll, params
 
     params = preAnalysis(params)
-    Data, params = loopOver_ReadingInput(params)
+    Data, params = main_ReadingDataset(params)
 
     return Data, params
 

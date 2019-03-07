@@ -48,6 +48,7 @@ def Run(UserInfo):
 
     WhichExperiment.Dataset.gapDilation = UserInfo['gapDilation']
     WhichExperiment.Dataset.name, WhichExperiment.Dataset.address = datasets.DatasetsInfo(UserInfo['DatasetIx'])
+    WhichExperiment.Dataset.hDF5.mode = UserInfo['hDF5_saveToHDf5']
 
     # orderDim =       2: [0,1,2]
     # orderDim =       1: [2,0,1]

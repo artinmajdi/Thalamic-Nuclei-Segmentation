@@ -243,23 +243,23 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
             def checkBordersOnBoundingBox(imFshape , BB , gapOnSlicingDimention):
                 return [   [   np.max([BB[d][0]-gapOnSlicingDimention,0])  ,   np.min( [BB[d][1]+gapOnSlicingDimention,imFshape[d]])   ]  for d in range(3) ]
 
-            def findBoundingBox(PreStageMask):
-                objects = measure.regionprops(measure.label(PreStageMask))
-                area = []
-                for obj in objects: area = np.append(area, obj.area)
+            # def findBoundingBox(PreStageMask):
+            #     objects = measure.regionprops(measure.label(PreStageMask))
+            #     area = []
+            #     for obj in objects: area = np.append(area, obj.area)
 
-                Ix = np.argsort(area)
+            #     Ix = np.argsort(area)
 
-                L = len(PreStageMask.shape)
-                bbox = objects[ Ix[-1] ].bbox
-                BB = [ [bbox[d] , bbox[L + d] ] for d in range(L)]
+            #     L = len(PreStageMask.shape)
+            #     bbox = objects[ Ix[-1] ].bbox
+            #     BB = [ [bbox[d] , bbox[L + d] ] for d in range(L)]
                                 
-                return BB
+            #     return BB
 
             # Thalamus_Mask_Dilated = dilateMask( PreStageMask, params.WhichExperiment.Dataset.gapDilation )
             imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
 
-            BB = findBoundingBox(PreStageMask)
+            BB = smallFuncs.findBoundingBox(PreStageMask)
             # BB = croppingA.func_CropCoordinates(PreStageMask)
 
             BB = checkBordersOnBoundingBox(imF.shape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
@@ -308,7 +308,9 @@ def architecture(params):
             if Modelparam.Dropout.Mode: conv = layers.Dropout(Modelparam.Dropout.Value)(conv)
             return conv
 
-        inputs = layers.Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1) )
+        
+        inputs = layers.Input( tuple(Modelparam.InputDimensions[:2]) + (1,) )
+        # inputs = layers.Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1) )
         WeightBiases = inputs
 
         # ! contracting layer
@@ -333,27 +335,13 @@ def architecture(params):
 
         return model
 
-    # def CNN_Segmentation(Modelparam):
-    #     inputs = layers.Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, Modelparam.imageInfo.depth, 1) )
-    #     conv = inputs
-
-    #     for nL in range(Modelparam.num_Layers -1):
-    #         conv = layers.Conv3D(filters=64*(2**nL), kernel_size=(3,3,3), padding='SAME', activation='relu')(conv)
-    #         conv = layers.Dropout(Modelparam.Dropout.Value)(conv)
-
-    #     final  = layers.Conv3D(filters=2, kernel_size=(3,3,3), padding='SAME', activation='relu')(conv)
-
-    #     model = kerasmodels.Model(inputs=[inputs], outputs=[final])
-
-    #     return model
-
     def CNN_Classifier(Modelparam):
         model = kerasmodels.Sequential()
-        model.add(layers.Conv2D(filters=16, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=(Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1)))
+        model.add(layers.Conv2D(filters=16, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape= tuple(Modelparam.InputDimensions[:2]) + (1,)  ))
         model.add(layers.MaxPooling2D(pool_size=Modelparam.MaxPooling.pool_size))
         model.add(layers.Dropout(Modelparam.Dropout.Value))
 
-        model.add(layers.Conv2D(filters=8, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=(Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1)))
+        model.add(layers.Conv2D(filters=8, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=tuple(Modelparam.InputDimensions[:2]) + (1,) ))
         model.add(layers.MaxPooling2D(pool_size=Modelparam.MaxPooling.pool_size))
         model.add(layers.Dropout(Modelparam.Dropout.Value))
 
@@ -369,15 +357,10 @@ def architecture(params):
     if 'U-Net' in ModelParam.architectureType:
         model = UNet(ModelParam)
 
-    # elif 'FCN_Cropping' in ModelParam.architectureType:
-    #     model = CNN_Segmentation(ModelParam)
-
     elif 'CNN_Classifier' in ModelParam.architectureType:
         model = CNN_Classifier(ModelParam)
 
     # model.summary()
 
-    # ModelParam = params.WhichExperiment.HardParams.Model
-    # model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
     return model
 
