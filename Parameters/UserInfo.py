@@ -1,6 +1,6 @@
 
 readAugments = True
-Model_Method = 'Cascade' #'Hierarchical_Cascade' # 
+Model_Method = 'Hierarchical_Cascade' # 'Cascade' #
 TestOnly = False
 SubExperiment_Index = 3
 hDF5_saveToHDf5 = True
@@ -11,7 +11,7 @@ Learning_Rate = 1e-3
 num_Layers = 3
 NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
 Experiments_Index = '7' 
-Experiments_Tag = 'cropping' # initilization' # 'cascadeV1'  # 'cascadeV1_3TforInit7T' # 
+Experiments_Tag = 'cascadeV1'  # 'cropping' # initilization' # 'cascadeV1_3TforInit7T' # 
 
 nucleus_Index = [1]
 
@@ -57,7 +57,7 @@ MetricIx = 3
 # lossFunction=   1: 'dice'
 #                 2: 'binary Cross Enropy'
 #                 3: 'Both'
-lossFunctionIx = 3
+lossFunctionIx = 2
 
 # orderDim =       2: [0,1,2]
 # orderDim =       1: [2,0,1]
