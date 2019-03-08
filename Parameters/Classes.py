@@ -129,7 +129,7 @@ class inputPadding:
 
 class hDF5:
     mode = True
-    saveTrue_LoadFalse = True
+    mode_saveTrue_LoadFalse = True
 
     
 class dataset:

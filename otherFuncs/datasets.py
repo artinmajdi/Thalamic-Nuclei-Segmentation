@@ -355,7 +355,7 @@ def readingFromExperiments(params):
 
             HardParams = params.WhichExperiment.HardParams
 
-            if params.WhichExperiment.Dataset.InputPadding.Automatic and not params.WhichExperiment.Dataset.loadDatasetFromHDf5:
+            if params.WhichExperiment.Dataset.InputPadding.Automatic and params.WhichExperiment.Dataset.HDf5.mode_saveTrue_LoadFalse:
                 MinInputSize = np.min(params.directories.Train.Input.inputSizes, axis=0)
             else:
                 MinInputSize = params.WhichExperiment.Dataset.InputPadding.HardDimensions
@@ -424,7 +424,7 @@ def readingFromExperiments(params):
                         print('WARNING: subject: ',subject.subjectName,' padding error patience activated, Error:', np.min(subject.Padding))
                 return ErrorFlag            
             
-            if params.WhichExperiment.Dataset.hDF5.mode: f = h5py.File(params.WhichExperiment.Experiment.address + '/' + mode + '_' + params.WhichExperiment.Nucleus.name + '.h5py' , 'w')
+            if params.WhichExperiment.Dataset.HDf5.mode: f = h5py.File(params.WhichExperiment.Experiment.address + '/' + mode + '_' + params.WhichExperiment.Nucleus.name + '.h5py' , 'w')
 
             ListSubjects = list(Subjects)             
                 
@@ -437,7 +437,7 @@ def readingFromExperiments(params):
                 origMsk , msk = readingNuclei(params, Subjects[nameSubject], imF.shape)
 
                 if im[...,0].shape == msk[...,0].shape:                                            
-                        if params.WhichExperiment.Dataset.hDF5.mode:   
+                        if params.WhichExperiment.Dataset.HDf5.mode:   
                             mode_TrainVal = 'validation'  if 'train' in mode and not params.WhichExperiment.Dataset.Validation.fromKeras and nameSubject in ValList else mode                                                        
                             f.create_dataset('%s/%s/Image'%(mode_TrainVal,nameSubject)  , data=im)
                             f.create_dataset('%s/%s/Mask'%(mode_TrainVal,nameSubject)   , data=msk)
@@ -450,14 +450,14 @@ def readingFromExperiments(params):
                 else:
                     Error_MisMatch_In_Dim_ImageMask(Subjects[nameSubject] , mode, nameSubject)
 
-            if params.WhichExperiment.Dataset.hDF5.mode:  f.close()
+            if params.WhichExperiment.Dataset.HDf5.mode:  f.close()
 
             return Data
                                        
         DataAll = data()
         if trainFlag():
             DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
-            if not params.WhichExperiment.Dataset.hDF5.mode: 
+            if not params.WhichExperiment.Dataset.HDf5.mode: 
                 DataAll.Train, DataAll.Validation = separateTrainVal_and_concatenateTrain( DataAll.Train_ForTest )
         
         if params.directories.Test.Input.Subjects: DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
@@ -468,7 +468,11 @@ def readingFromExperiments(params):
         return DataAll, params
 
     params = preAnalysis(params)
-    Data, params = main_ReadingDataset(params)
+
+    if params.WhichExperiment.Dataset.HDf5.mode_saveTrue_LoadFalse:
+        Data, params = main_ReadingDataset(params)
+    else:
+        print('load HDF5')
 
     return Data, params
 

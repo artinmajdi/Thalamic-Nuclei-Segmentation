@@ -3,7 +3,7 @@ readAugments = True
 Model_Method = 'Hierarchical_Cascade' # 'Cascade' #
 TestOnly = False
 SubExperiment_Index = 3
-hDF5_saveToHDf5 = True
+mode_saveTrue_LoadFalse = True
 
 epochs = 20
 GPU_Index = 6
