@@ -57,8 +57,9 @@ def Run(UserInfoB):
         Data, params = datasets.loadDataset(params)
         choosingModel.check_Run(params, Data)
 
-    if params.WhichExperiment.HardParams.Model.Method.Type == 'Hierarchical_Cascade': HierarchicalStages(UserInfoB)
-    elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': CacadeStages(UserInfoB)
+    Run_SingleNuclei(UserInfoB)
+    # if params.WhichExperiment.HardParams.Model.Method.Type == 'Hierarchical_Cascade': HierarchicalStages(UserInfoB)
+    # elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': CacadeStages(UserInfoB)
 
 
 params = paramFunc.Run(UserInfoB)
@@ -67,6 +68,7 @@ datasets.movingFromDatasetToExperiments(params)
 applyPreprocess.main(params, 'experiment')
 
 K = gpuSetting(params)
+
 Run(UserInfoB)
 
 K.clear_session()

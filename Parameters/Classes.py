@@ -128,7 +128,7 @@ class inputPadding:
     HardDimensions = ''
 
 class hDF5:
-    mode = True
+    mode = False
     mode_saveTrue_LoadFalse = True
 
     

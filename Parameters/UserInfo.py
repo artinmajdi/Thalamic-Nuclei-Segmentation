@@ -5,7 +5,7 @@ TestOnly = False
 SubExperiment_Index = 3
 mode_saveTrue_LoadFalse = True
 
-epochs = 20
+epochs = 30
 GPU_Index = 6
 Learning_Rate = 1e-3
 num_Layers = 3

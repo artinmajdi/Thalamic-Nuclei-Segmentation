@@ -128,7 +128,7 @@ def terminalEntries(UserInfo):
                 UserInfo['nucleus_Index'] = [int(k) for k in B]
 
             else:
-                UserInfo['nucleus_Index'] = [int(sys.argv[en+1])]
+                UserInfo['nucleus_Index'] = [sys.argv[en+1]] # [int(sys.argv[en+1])]
 
         elif entry.lower() in ('-l','--loss'):
             UserInfo['lossFunctionIx'] = int(sys.argv[en+1])
