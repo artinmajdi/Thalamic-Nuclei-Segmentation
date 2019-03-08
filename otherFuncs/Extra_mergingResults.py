@@ -27,31 +27,33 @@ def savingHistory_AsExcel(params):
                 AllNucleusInfo = []
                 ind = -1
                 for subExperiment in List_subExperiments:
-                        subDir = Dir + '/' + subExperiment + '/' + nucleus
-                        if os.path.exists(subDir):
-                                ind = ind + 1
-                                a  = open(subDir + '/hist_history.pkl' , 'rb')
-                                history = pickle.load(a)
-                                a.close()
-                                keys = list(history.keys())
-                                
-                                nucleusInfo = np.zeros((n_epochsMax,len(keys)+2))
-                                for ix, key in enumerate(keys):
-                                        A = history[key]                                        
-                                        nucleusInfo[:len(A),ix+2] = np.transpose(A)
+                        try:
+                                subDir = Dir + '/' + subExperiment + '/' + nucleus
+                                if os.path.exists(subDir):
+                                        ind = ind + 1
+                                        a  = open(subDir + '/hist_history.pkl' , 'rb')
+                                        history = pickle.load(a)
+                                        a.close()
+                                        keys = list(history.keys())
+                                        
+                                        nucleusInfo = np.zeros((n_epochsMax,len(keys)+2))
+                                        for ix, key in enumerate(keys):
+                                                A = history[key]                                        
+                                                nucleusInfo[:len(A),ix+2] = np.transpose(A)
 
-                                if ind == 0:
-                                        nucleusInfo[:len(A),0] = np.array(range(len(A)))
-                                        AllNucleusInfo = nucleusInfo
-                                        FullNamesLA = np.append(['Epochs', subExperiment],  keys )
-                                else:
-                                        AllNucleusInfo = np.concatenate((AllNucleusInfo, nucleusInfo) , axis=1)
-                                        namesLA = np.append(['', subExperiment],  keys )
-                                        FullNamesLA = np.append(FullNamesLA, namesLA)
+                                        if ind == 0:
+                                                nucleusInfo[:len(A),0] = np.array(range(len(A)))
+                                                AllNucleusInfo = nucleusInfo
+                                                FullNamesLA = np.append(['Epochs', subExperiment],  keys )
+                                        else:
+                                                AllNucleusInfo = np.concatenate((AllNucleusInfo, nucleusInfo) , axis=1)
+                                                namesLA = np.append(['', subExperiment],  keys )
+                                                FullNamesLA = np.append(FullNamesLA, namesLA)
 
-                                # df = pd.DataFrame(data=nucleusInfo, columns=np.append(['Epochs', subExperiment],  keys ))
-                                # df.to_csv(subDir + '/history.csv', index=False)
-                                
+                                        # df = pd.DataFrame(data=nucleusInfo, columns=np.append(['Epochs', subExperiment],  keys ))
+                                        # df.to_csv(subDir + '/history.csv', index=False)
+                        except:
+                                print('failed')
 
                 if len(AllNucleusInfo) != 0:
                         df = pd.DataFrame(data=AllNucleusInfo, columns=FullNamesLA)
@@ -108,10 +110,12 @@ def mergingDiceValues(Dir):
         writer = pd.ExcelWriter(Dir + '/All_Dice.xlsx', engine='xlsxwriter')
         List_subExperiments = [a for a in os.listdir(Dir) if 'subExp' in a]
         for subExperiment in List_subExperiments:
-                df = mergingDiceValues_ForOneSubExperiment(Dir + '/' + subExperiment)
-                if len(subExperiment) > 31: subExperiment = subExperiment[:31]
-                df.to_excel(writer, sheet_name=subExperiment)
-
+                try:
+                        df = mergingDiceValues_ForOneSubExperiment(Dir + '/' + subExperiment)
+                        if len(subExperiment) > 31: subExperiment = subExperiment[:31]
+                        df.to_excel(writer, sheet_name=subExperiment)
+                except:
+                        print(subExperiment,'failed')
         writer.close()
 
 

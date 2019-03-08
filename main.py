@@ -32,7 +32,7 @@ def Run(UserInfoB):
         # stage 2
         print('************ stage 2 ************')
         UserInfoB['gapDilation'] = 3
-        for UserInfoB['nucleus_Index'] in [1.1 , 1.2]:
+        for UserInfoB['nucleus_Index'] in [1.1 , 1.2 , 1.3]:
             name,_,_ = smallFuncs.NucleiSelection(ind=UserInfoB['nucleus_Index'],organ='THALAMUS')
             print('      ', name , 'gpu: ',UserInfoB['GPU_Index'])
             Run_SingleNuclei(UserInfoB)

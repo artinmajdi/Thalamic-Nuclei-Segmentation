@@ -75,7 +75,7 @@ Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 
 
-SubExperiment_Tag = 'e100_' + NormalizaeMethod + '_' + Model_Method # 'b_separateValsubjects_' +
+SubExperiment_Tag = NormalizaeMethod + '_' + Model_Method # 'b_separateValsubjects_' + 'e100_' + 
 if readAugments: SubExperiment_Tag += '_wAug'
 
 #! cropping mode
