@@ -6,7 +6,7 @@ from shutil import copyfile
 import matplotlib.pyplot as plt
 import os, sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-
+from skimage import measure
 from copy import deepcopy
 import pandas as pd
 import pickle
@@ -358,3 +358,20 @@ def Loading_UserInfo(DirLoad, method):
     UserInfo['InputDimensions'] = [int(ai) for ai in a]
     return UserInfo
 
+def findBoundingBox(PreStageMask):
+    objects = measure.regionprops(measure.label(PreStageMask))
+
+    L = len(PreStageMask.shape)
+    if len(objects) > 1:
+        area = []
+        for obj in objects: area = np.append(area, obj.area)
+
+        Ix = np.argsort(area)
+        bbox = objects[ Ix[-1] ].bbox
+
+    else:
+        bbox = objects[0].bbox
+
+    BB = [ [bbox[d] , bbox[L + d] ] for d in range(L)]
+                    
+    return BB

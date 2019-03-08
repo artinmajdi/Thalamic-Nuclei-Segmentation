@@ -1,521 +1,0 @@
-*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
-(0/150) train vimp2_A
-     Bias Correction
-     Rigid Registration
-     Cropping
-(1/150) train vimp2_B
-     Bias Correction
-     Rigid Registration
-     Cropping
-(2/150) train vimp2_C
-     Bias Correction
-     Rigid Registration
-     Cropping
-(3/150) train vimp2_668_02282013_CD_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(4/150) train vimp2_765_04162013_AW_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(5/150) train vimp2_819_05172013_DS_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(6/150) train vimp2_823_05202013_AJ_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(7/150) train vimp2_824_05212013_JS_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(8/150) train vimp2_845_05312013_VZ_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(9/150) train vimp2_884_06272013_TS_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(10/150) train vimp2_901_07052013_AS_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(11/150) train vimp2_943_07242013_PA_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(12/150) train vimp2_964_08092013_TG_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(13/150) train vimp2_967_08132013_KW_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(14/150) train vimp2_972_08152013_DC_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(15/150) train vimp2_ANON606_20130110_control
-     Bias Correction
-     Rigid Registration
-     Cropping
-(16/150) train vimp2_ANON695_03132013_control
-     Bias Correction
-     Rigid Registration
-     Cropping
-(17/150) train vimp2_ANON702_03152013_control
-     Bias Correction
-     Rigid Registration
-     Cropping
-(18/150) train vimp2_ANON724_03272013_control
-     Bias Correction
-     Rigid Registration
-     Cropping
-(19/150) train vimp2_ctrl_902_07052013_SI
-     Bias Correction
-     Rigid Registration
-     Cropping
-(20/150) train vimp2_ctrl_918_07112013_TQ
-     Bias Correction
-     Rigid Registration
-     Cropping
-(21/150) train vimp2_ctrl_920_07122013_SW
-     Bias Correction
-     Rigid Registration
-     Cropping
-(22/150) train vimp2_ctrl_921_07122013_MP
-     Bias Correction
-     Rigid Registration
-     Cropping
-(23/150) train vimp2_ctrl_991_08302013_JF
-     Bias Correction
-     Rigid Registration
-     Cropping
-(24/150) train vimp2_D
-     Bias Correction
-     Rigid Registration
-     Cropping
-(25/150) train vimp2_F
-     Bias Correction
-     Rigid Registration
-     Cropping
-(26/150) train vimp2_G
-     Bias Correction
-     Rigid Registration
-     Cropping
-(27/150) train vimp2_H
-     Bias Correction
-     Rigid Registration
-     Cropping
-(28/150) train vimp2_I
-     Bias Correction
-     Rigid Registration
-     Cropping
-(29/150) train vimp2_J
-     Bias Correction
-     Rigid Registration
-     Cropping
-(30/150) train vimp2_845_05312013_VZ_MS_Aug2_Rot_-4
-     Bias Correction
-(31/150) train vimp2_ctrl_918_07112013_TQ_Aug3_Rot_6
-     Bias Correction
-(32/150) train vimp2_901_07052013_AS_MS_Aug1_Rot_3
-     Bias Correction
-(33/150) train vimp2_G_Aug1_Rot_-3
-     Bias Correction
-(34/150) train vimp2_967_08132013_KW_MS_Aug1_Rot_7
-     Bias Correction
-(35/150) train vimp2_972_08152013_DC_MS_Aug2_Rot_5
-     Bias Correction
-(36/150) train vimp2_ctrl_902_07052013_SI_Aug3_Rot_3
-     Bias Correction
-(37/150) train vimp2_ANON702_03152013_control_Aug2_Rot_-6
-     Bias Correction
-(38/150) train vimp2_824_05212013_JS_MS_Aug3_Rot_-3
-     Bias Correction
-(39/150) train vimp2_D_Aug0_Rot_-3
-     Bias Correction
-(40/150) train vimp2_A_Aug3_Rot_2
-     Bias Correction
-(41/150) train vimp2_943_07242013_PA_MS_Aug0_Rot_6
-     Bias Correction
-(42/150) train vimp2_ANON695_03132013_control_Aug0_Rot_-1
-     Bias Correction
-(43/150) train vimp2_823_05202013_AJ_MS_Aug0_Rot_2
-     Bias Correction
-(44/150) train vimp2_ctrl_920_07122013_SW_Aug1_Rot_4
-     Bias Correction
-(45/150) train vimp2_819_05172013_DS_MS_Aug1_Rot_-5
-     Bias Correction
-(46/150) train vimp2_J_Aug3_Rot_0
-     Bias Correction
-(47/150) train vimp2_H_Aug2_Rot_3
-     Bias Correction
-(48/150) train vimp2_819_05172013_DS_MS_Aug0_Rot_7
-     Bias Correction
-(49/150) train vimp2_ctrl_921_07122013_MP_Aug2_Rot_0
-     Bias Correction
-(50/150) train vimp2_823_05202013_AJ_MS_Aug1_Rot_2
-     Bias Correction
-(51/150) train vimp2_F_Aug1_Rot_-1
-     Bias Correction
-(52/150) train vimp2_884_06272013_TS_MS_Aug0_Rot_2
-     Bias Correction
-(53/150) train vimp2_C_Aug0_Rot_4
-     Bias Correction
-(54/150) train vimp2_668_02282013_CD_MS_Aug0_Rot_-2
-     Bias Correction
-(55/150) train vimp2_I_Aug3_Rot_-7
-     Bias Correction
-(56/150) train vimp2_668_02282013_CD_MS_Aug1_Rot_0
-     Bias Correction
-(57/150) train vimp2_G_Aug2_Rot_5
-     Bias Correction
-(58/150) train vimp2_ANON724_03272013_control_Aug1_Rot_6
-     Bias Correction
-(59/150) train vimp2_ctrl_918_07112013_TQ_Aug2_Rot_7
-     Bias Correction
-(60/150) train vimp2_967_08132013_KW_MS_Aug2_Rot_-3
-     Bias Correction
-(61/150) train vimp2_967_08132013_KW_MS_Aug3_Rot_4
-     Bias Correction
-(62/150) train vimp2_ctrl_991_08302013_JF_Aug0_Rot_5
-     Bias Correction
-(63/150) train vimp2_ANON606_20130110_control_Aug2_Rot_0
-     Bias Correction
-(64/150) train vimp2_943_07242013_PA_MS_Aug2_Rot_-3
-     Bias Correction
-(65/150) train vimp2_D_Aug1_Rot_3
-     Bias Correction
-(66/150) train vimp2_ctrl_920_07122013_SW_Aug0_Rot_4
-     Bias Correction
-(67/150) train vimp2_824_05212013_JS_MS_Aug2_Rot_1
-     Bias Correction
-(68/150) train vimp2_B_Aug0_Rot_2
-     Bias Correction
-(69/150) train vimp2_ctrl_902_07052013_SI_Aug0_Rot_-3
-     Bias Correction
-(70/150) train vimp2_901_07052013_AS_MS_Aug3_Rot_1
-     Bias Correction
-(71/150) train vimp2_ANON695_03132013_control_Aug2_Rot_4
-     Bias Correction
-(72/150) train vimp2_901_07052013_AS_MS_Aug2_Rot_-2
-     Bias Correction
-(73/150) train vimp2_H_Aug3_Rot_-7
-     Bias Correction
-(74/150) train vimp2_ANON702_03152013_control_Aug1_Rot_0
-     Bias Correction
-(75/150) train vimp2_ANON702_03152013_control_Aug3_Rot_7
-     Bias Correction
-(76/150) train vimp2_823_05202013_AJ_MS_Aug2_Rot_7
-     Bias Correction
-(77/150) train vimp2_ANON695_03132013_control_Aug3_Rot_0
-     Bias Correction
-(78/150) train vimp2_F_Aug2_Rot_0
-     Bias Correction
-(79/150) train vimp2_C_Aug1_Rot_1
-     Bias Correction
-(80/150) train vimp2_A_Aug0_Rot_-2
-     Bias Correction
-(81/150) train vimp2_ctrl_918_07112013_TQ_Aug1_Rot_-7
-     Bias Correction
-(82/150) train vimp2_845_05312013_VZ_MS_Aug3_Rot_-2
-     Bias Correction
-(83/150) train vimp2_J_Aug0_Rot_4
-     Bias Correction
-(84/150) train vimp2_G_Aug3_Rot_0
-     Bias Correction
-(85/150) train vimp2_ctrl_921_07122013_MP_Aug1_Rot_1
-     Bias Correction
-(86/150) train vimp2_823_05202013_AJ_MS_Aug3_Rot_1
-     Bias Correction
-(87/150) train vimp2_972_08152013_DC_MS_Aug0_Rot_7
-     Bias Correction
-(88/150) train vimp2_ctrl_902_07052013_SI_Aug2_Rot_6
-     Bias Correction
-(89/150) train vimp2_ctrl_920_07122013_SW_Aug3_Rot_3
-     Bias Correction
-(90/150) train vimp2_D_Aug2_Rot_-1
-     Bias Correction
-(91/150) train vimp2_765_04162013_AW_MS_Aug2_Rot_-2
-     Bias Correction
-(92/150) train vimp2_ANON606_20130110_control_Aug0_Rot_-6
-     Bias Correction
-(93/150) train vimp2_765_04162013_AW_MS_Aug0_Rot_1
-     Bias Correction
-(94/150) train vimp2_972_08152013_DC_MS_Aug3_Rot_7
-     Bias Correction
-(95/150) train vimp2_B_Aug1_Rot_3
-     Bias Correction
-(96/150) train vimp2_819_05172013_DS_MS_Aug2_Rot_-4
-     Bias Correction
-(97/150) train vimp2_964_08092013_TG_MS_Aug2_Rot_-6
-     Bias Correction
-(98/150) train vimp2_972_08152013_DC_MS_Aug1_Rot_7
-     Bias Correction
-(99/150) train vimp2_ctrl_991_08302013_JF_Aug1_Rot_4
-     Bias Correction
-(100/150) train vimp2_ANON724_03272013_control_Aug2_Rot_4
-     Bias Correction
-(101/150) train vimp2_I_Aug0_Rot_-7
-     Bias Correction
-(102/150) train vimp2_819_05172013_DS_MS_Aug3_Rot_5
-     Bias Correction
-(103/150) train vimp2_F_Aug3_Rot_-1
-     Bias Correction
-(104/150) train vimp2_943_07242013_PA_MS_Aug1_Rot_-3
-     Bias Correction
-(105/150) train vimp2_C_Aug2_Rot_4
-     Bias Correction
-(106/150) train vimp2_943_07242013_PA_MS_Aug3_Rot_-3
-     Bias Correction2019-03-06 14:39:28.829756: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
-2019-03-06 14:39:29.276069: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
-name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
-pciBusID: 0000:84:00.0
-totalMemory: 15.89GiB freeMemory: 15.60GiB
-2019-03-06 14:39:29.276139: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
-2019-03-06 14:39:29.664690: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
-2019-03-06 14:39:29.664771: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
-2019-03-06 14:39:29.664786: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
-2019-03-06 14:39:29.666867: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:84:00.0, compute capability: 6.0)
-Using TensorFlow backend.
-Loading Dataset: train: 0it [00:00, ?it/s]Loading Dataset: train: 1it [00:00,  8.02it/s]Loading Dataset: train: 2it [00:00,  7.85it/s]Loading Dataset: train: 3it [00:00,  7.80it/s]Loading Dataset: train: 4it [00:00,  8.16it/s]Loading Dataset: train: 5it [00:00,  8.20it/s]Loading Dataset: train: 6it [00:00,  8.54it/s]Loading Dataset: train: 8it [00:00,  9.02it/s]Loading Dataset: train: 9it [00:01,  8.83it/s]Loading Dataset: train: 10it [00:01,  8.25it/s]Loading Dataset: train: 12it [00:01,  8.94it/s]Loading Dataset: train: 13it [00:01,  9.20it/s]Loading Dataset: train: 14it [00:01,  9.26it/s]Loading Dataset: train: 16it [00:01, 10.04it/s]Loading Dataset: train: 18it [00:01,  9.98it/s]Loading Dataset: train: 20it [00:02, 10.20it/s]Loading Dataset: train: 22it [00:02, 10.07it/s]Loading Dataset: train: 24it [00:02, 10.23it/s]Loading Dataset: train: 26it [00:02,  9.20it/s]Loading Dataset: train: 28it [00:03,  8.94it/s]Loading Dataset: train: 29it [00:03,  8.97it/s]Loading Dataset: train: 30it [00:03,  8.35it/s]Loading Dataset: train: 32it [00:03,  8.94it/s]Loading Dataset: train: 34it [00:03,  9.85it/s]Loading Dataset: train: 36it [00:03, 10.30it/s]Loading Dataset: train: 38it [00:03, 10.42it/s]Loading Dataset: train: 40it [00:04, 10.86it/s]Loading Dataset: train: 42it [00:04, 11.10it/s]Loading Dataset: train: 44it [00:04, 11.34it/s]Loading Dataset: train: 46it [00:04, 11.08it/s]Loading Dataset: train: 48it [00:04, 10.23it/s]Loading Dataset: train: 50it [00:05, 10.90it/s]Loading Dataset: train: 52it [00:05, 10.22it/s]Loading Dataset: train: 54it [00:05,  9.79it/s]Loading Dataset: train: 56it [00:05,  9.94it/s]Loading Dataset: train: 58it [00:05, 10.17it/s]Loading Dataset: train: 60it [00:06, 10.57it/s]Loading Dataset: train: 62it [00:06, 10.50it/s]Loading Dataset: train: 64it [00:06, 11.24it/s]Loading Dataset: train: 66it [00:06, 11.03it/s]Loading Dataset: train: 68it [00:06, 11.17it/s]Loading Dataset: train: 70it [00:06, 10.52it/s]Loading Dataset: train: 72it [00:07, 11.04it/s]Loading Dataset: train: 74it [00:07, 10.79it/s]Loading Dataset: train: 76it [00:07, 11.02it/s]Loading Dataset: train: 78it [00:07, 11.06it/s]Loading Dataset: train: 80it [00:07, 10.05it/s]Loading Dataset: train: 82it [00:08, 10.48it/s]Loading Dataset: train: 84it [00:08,  9.97it/s]Loading Dataset: train: 86it [00:08, 10.80it/s]Loading Dataset: train: 88it [00:08, 11.16it/s]Loading Dataset: train: 90it [00:08, 10.69it/s]Loading Dataset: train: 92it [00:09, 10.67it/s]Loading Dataset: train: 94it [00:09, 10.93it/s]Loading Dataset: train: 96it [00:09, 10.92it/s]Loading Dataset: train: 98it [00:09, 11.18it/s]Loading Dataset: train: 100it [00:09, 11.05it/s]Loading Dataset: train: 102it [00:09, 10.98it/s]Loading Dataset: train: 104it [00:10, 10.10it/s]Loading Dataset: train: 106it [00:10, 10.22it/s]Loading Dataset: train: 108it [00:10, 10.53it/s]Loading Dataset: train: 110it [00:10, 10.35it/s]Loading Dataset: train: 112it [00:10, 10.87it/s]Loading Dataset: train: 114it [00:11, 10.60it/s]Loading Dataset: train: 116it [00:11, 10.46it/s]Loading Dataset: train: 118it [00:11, 10.33it/s]Loading Dataset: train: 120it [00:11, 10.48it/s]Loading Dataset: train: 122it [00:11, 10.47it/s]Loading Dataset: train: 124it [00:12, 10.08it/s]Loading Dataset: train: 126it [00:12, 11.09it/s]Loading Dataset: train: 128it [00:12, 10.58it/s]Loading Dataset: train: 130it [00:12, 10.15it/s]Loading Dataset: train: 132it [00:12, 10.63it/s]Loading Dataset: train: 134it [00:12, 11.66it/s]Loading Dataset: train: 136it [00:13, 12.11it/s]Loading Dataset: train: 138it [00:13, 11.34it/s]Loading Dataset: train: 140it [00:13, 11.03it/s]Loading Dataset: train: 142it [00:13, 11.73it/s]Loading Dataset: train: 144it [00:13, 11.01it/s]Loading Dataset: train: 146it [00:14, 10.00it/s]Loading Dataset: train: 148it [00:14, 10.32it/s]Loading Dataset: train: 150it [00:14, 10.16it/s]
-Loading Dataset: test: 0it [00:00, ?it/s]Loading Dataset: test: 1it [00:00,  9.15it/s]Loading Dataset: test: 2it [00:00,  9.38it/s]Loading Dataset: test: 3it [00:00,  9.30it/s]Loading Dataset: test: 5it [00:00, 10.25it/s]Loading Dataset: test: 6it [00:00,  9.79it/s]Loading Dataset: test: 7it [00:00,  9.43it/s]Loading Dataset: test: 8it [00:00,  8.65it/s]Loading Dataset: test: 9it [00:00,  8.74it/s]
-(107/150) train vimp2_964_08092013_TG_MS_Aug3_Rot_2
-     Bias Correction
-(108/150) train vimp2_A_Aug1_Rot_3
-     Bias Correction
-(109/150) train vimp2_J_Aug1_Rot_-7
-     Bias Correction
-(110/150) train vimp2_964_08092013_TG_MS_Aug1_Rot_-6
-     Bias Correction
-(111/150) train vimp2_824_05212013_JS_MS_Aug1_Rot_-1
-     Bias Correction
-(112/150) train vimp2_H_Aug0_Rot_5
-     Bias Correction
-(113/150) train vimp2_765_04162013_AW_MS_Aug1_Rot_-6
-     Bias Correction
-(114/150) train vimp2_D_Aug3_Rot_7
-     Bias Correction
-(115/150) train vimp2_765_04162013_AW_MS_Aug3_Rot_-4
-     Bias Correction
-(116/150) train vimp2_845_05312013_VZ_MS_Aug0_Rot_5
-     Bias Correction
-(117/150) train vimp2_B_Aug2_Rot_-1
-     Bias Correction
-(118/150) train vimp2_668_02282013_CD_MS_Aug3_Rot_-7
-     Bias Correction
-(119/150) train vimp2_ctrl_902_07052013_SI_Aug1_Rot_3
-     Bias Correction
-(120/150) train vimp2_ctrl_991_08302013_JF_Aug3_Rot_-5
-     Bias Correction
-(121/150) train vimp2_I_Aug1_Rot_2
-     Bias Correction
-(122/150) train vimp2_ctrl_918_07112013_TQ_Aug0_Rot_-1
-     Bias Correction
-(123/150) train vimp2_884_06272013_TS_MS_Aug1_Rot_-1
-     Bias Correction
-(124/150) train vimp2_ANON606_20130110_control_Aug3_Rot_-3
-     Bias Correction
-(125/150) train vimp2_G_Aug0_Rot_-7
-     Bias Correction
-(126/150) train vimp2_ANON695_03132013_control_Aug1_Rot_-2
-     Bias Correction
-(127/150) train vimp2_C_Aug3_Rot_-4
-     Bias Correction
-(128/150) train vimp2_884_06272013_TS_MS_Aug2_Rot_-4
-     Bias Correction
-(129/150) train vimp2_845_05312013_VZ_MS_Aug1_Rot_-4
-     Bias Correction
-(130/150) train vimp2_967_08132013_KW_MS_Aug0_Rot_1
-     Bias Correction
-(131/150) train vimp2_A_Aug2_Rot_3
-     Bias Correction
-(132/150) train vimp2_ANON606_20130110_control_Aug1_Rot_-4
-     Bias Correction
-(133/150) train vimp2_ctrl_921_07122013_MP_Aug3_Rot_2
-     Bias Correction
-(134/150) train vimp2_ANON724_03272013_control_Aug3_Rot_4
-     Bias Correction
-(135/150) train vimp2_ctrl_991_08302013_JF_Aug2_Rot_5
-     Bias Correction
-(136/150) train vimp2_901_07052013_AS_MS_Aug0_Rot_-2
-     Bias Correction
-(137/150) train vimp2_J_Aug2_Rot_3
-     Bias Correction
-(138/150) train vimp2_ctrl_921_07122013_MP_Aug0_Rot_-5
-     Bias Correction
-(139/150) train vimp2_H_Aug1_Rot_-4
-     Bias Correction
-(140/150) train vimp2_964_08092013_TG_MS_Aug0_Rot_-4
-     Bias Correction
-(141/150) train vimp2_ANON724_03272013_control_Aug0_Rot_-1
-     Bias Correction
-(142/150) train vimp2_884_06272013_TS_MS_Aug3_Rot_0
-     Bias Correction
-(143/150) train vimp2_ctrl_920_07122013_SW_Aug2_Rot_3
-     Bias Correction
-(144/150) train vimp2_F_Aug0_Rot_4
-     Bias Correction
-(145/150) train vimp2_B_Aug3_Rot_3
-     Bias Correction
-(146/150) train vimp2_668_02282013_CD_MS_Aug2_Rot_-3
-     Bias Correction
-(147/150) train vimp2_824_05212013_JS_MS_Aug0_Rot_-2
-     Bias Correction
-(148/150) train vimp2_ANON702_03152013_control_Aug0_Rot_1
-     Bias Correction
-(149/150) train vimp2_I_Aug2_Rot_4
-     Bias Correction
-(0/9) test vimp2_869_06142013_BL_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(1/9) test vimp2_915_07112013_LC_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(2/9) test vimp2_988_08302013_CB_MS
-     Bias Correction
-     Rigid Registration
-     Cropping
-(3/9) test vimp2_ANON624_20130117_control
-     Bias Correction
-     Rigid Registration
-     Cropping
-(4/9) test vimp2_ANON714_03222013_control
-     Bias Correction
-     Rigid Registration
-     Cropping
-(5/9) test vimp2_ctrl_911_07082013_TTO
-     Bias Correction
-     Rigid Registration
-     Cropping
-(6/9) test vimp2_K
-     Bias Correction
-     Rigid Registration
-     Cropping
-(7/9) test vimp2_L
-     Bias Correction
-     Rigid Registration
-     Cropping
-(8/9) test vimp2_M
-     Bias Correction
-     Rigid Registration
-     Cropping
-************ stage 1 ************
-Train on 8573 samples, validate on 959 samples
-Epoch 1/250
-
- 100/8573 [..............................] - ETA: 9:08 - loss: 0.5825 - acc: 0.7717 - Dice_Calculator: 0.0539
- 200/8573 [..............................] - ETA: 4:51 - loss: 0.4530 - acc: 0.8731 - Dice_Calculator: 0.0529
- 300/8573 [>.............................] - ETA: 3:25 - loss: 0.3528 - acc: 0.9065 - Dice_Calculator: 0.0546
- 400/8573 [>.............................] - ETA: 2:41 - loss: 0.2868 - acc: 0.9239 - Dice_Calculator: 0.0601
- 500/8573 [>.............................] - ETA: 2:15 - loss: 0.2464 - acc: 0.9341 - Dice_Calculator: 0.0654
- 600/8573 [=>............................] - ETA: 1:58 - loss: 0.2224 - acc: 0.9406 - Dice_Calculator: 0.0640
- 700/8573 [=>............................] - ETA: 1:45 - loss: 0.2041 - acc: 0.9450 - Dice_Calculator: 0.0681
- 800/8573 [=>............................] - ETA: 1:36 - loss: 0.1901 - acc: 0.9482 - Dice_Calculator: 0.0744
- 900/8573 [==>...........................] - ETA: 1:29 - loss: 0.1770 - acc: 0.9512 - Dice_Calculator: 0.0828
-1000/8573 [==>...........................] - ETA: 1:23 - loss: 0.1654 - acc: 0.9536 - Dice_Calculator: 0.0937
-1100/8573 [==>...........................] - ETA: 1:17 - loss: 0.1571 - acc: 0.9550 - Dice_Calculator: 0.1071
-1200/8573 [===>..........................] - ETA: 1:13 - loss: 0.1482 - acc: 0.9570 - Dice_Calculator: 0.1180
-1300/8573 [===>..........................] - ETA: 1:09 - loss: 0.1420 - acc: 0.9577 - Dice_Calculator: 0.1308
-1400/8573 [===>..........................] - ETA: 1:06 - loss: 0.1362 - acc: 0.9585 - Dice_Calculator: 0.1442
-1500/8573 [====>.........................] - ETA: 1:03 - loss: 0.1305 - acc: 0.9595 - Dice_Calculator: 0.1550
-1600/8573 [====>.........................] - ETA: 1:00 - loss: 0.1256 - acc: 0.9604 - Dice_Calculator: 0.1662
-1700/8573 [====>.........................] - ETA: 57s - loss: 0.1211 - acc: 0.9612 - Dice_Calculator: 0.1755 
-1800/8573 [=====>........................] - ETA: 55s - loss: 0.1176 - acc: 0.9615 - Dice_Calculator: 0.1865
-1900/8573 [=====>........................] - ETA: 53s - loss: 0.1142 - acc: 0.9619 - Dice_Calculator: 0.1968
-2000/8573 [=====>........................] - ETA: 51s - loss: 0.1107 - acc: 0.9625 - Dice_Calculator: 0.2060
-2100/8573 [======>.......................] - ETA: 50s - loss: 0.1072 - acc: 0.9633 - Dice_Calculator: 0.2137
-2200/8573 [======>.......................] - ETA: 48s - loss: 0.1043 - acc: 0.9639 - Dice_Calculator: 0.2215
-2300/8573 [=======>......................] - ETA: 46s - loss: 0.1017 - acc: 0.9643 - Dice_Calculator: 0.2299
-2400/8573 [=======>......................] - ETA: 45s - loss: 0.0993 - acc: 0.9646 - Dice_Calculator: 0.2382
-2500/8573 [=======>......................] - ETA: 44s - loss: 0.0969 - acc: 0.9649 - Dice_Calculator: 0.2461
-2600/8573 [========>.....................] - ETA: 42s - loss: 0.0949 - acc: 0.9650 - Dice_Calculator: 0.2546
-2700/8573 [========>.....................] - ETA: 41s - loss: 0.0926 - acc: 0.9655 - Dice_Calculator: 0.2614
-2800/8573 [========>.....................] - ETA: 40s - loss: 0.0905 - acc: 0.9660 - Dice_Calculator: 0.2678
-2900/8573 [=========>....................] - ETA: 39s - loss: 0.0888 - acc: 0.9661 - Dice_Calculator: 0.2753
-3000/8573 [=========>....................] - ETA: 38s - loss: 0.0870 - acc: 0.9664 - Dice_Calculator: 0.2807
-3100/8573 [=========>....................] - ETA: 37s - loss: 0.0853 - acc: 0.9667 - Dice_Calculator: 0.2869
-3200/8573 [==========>...................] - ETA: 36s - loss: 0.0839 - acc: 0.9668 - Dice_Calculator: 0.2928
-3300/8573 [==========>...................] - ETA: 35s - loss: 0.0825 - acc: 0.9670 - Dice_Calculator: 0.2984
-3400/8573 [==========>...................] - ETA: 34s - loss: 0.0811 - acc: 0.9673 - Dice_Calculator: 0.3034
-3500/8573 [===========>..................] - ETA: 33s - loss: 0.0799 - acc: 0.9675 - Dice_Calculator: 0.3075
-3600/8573 [===========>..................] - ETA: 32s - loss: 0.0786 - acc: 0.9678 - Dice_Calculator: 0.3120
-3700/8573 [===========>..................] - ETA: 31s - loss: 0.0778 - acc: 0.9675 - Dice_Calculator: 0.3178
-3800/8573 [============>.................] - ETA: 30s - loss: 0.0766 - acc: 0.9678 - Dice_Calculator: 0.3222
-3900/8573 [============>.................] - ETA: 29s - loss: 0.0756 - acc: 0.9678 - Dice_Calculator: 0.3271
-4000/8573 [============>.................] - ETA: 29s - loss: 0.0745 - acc: 0.9681 - Dice_Calculator: 0.3307
-4100/8573 [=============>................] - ETA: 28s - loss: 0.0736 - acc: 0.9681 - Dice_Calculator: 0.3351
-4200/8573 [=============>................] - ETA: 27s - loss: 0.0726 - acc: 0.9684 - Dice_Calculator: 0.3388
-4300/8573 [==============>...............] - ETA: 26s - loss: 0.0716 - acc: 0.9685 - Dice_Calculator: 0.3431
-4400/8573 [==============>...............] - ETA: 25s - loss: 0.0708 - acc: 0.9685 - Dice_Calculator: 0.3473
-4500/8573 [==============>...............] - ETA: 25s - loss: 0.0699 - acc: 0.9687 - Dice_Calculator: 0.3513
-4600/8573 [===============>..............] - ETA: 24s - loss: 0.0691 - acc: 0.9687 - Dice_Calculator: 0.3553
-4700/8573 [===============>..............] - ETA: 23s - loss: 0.0682 - acc: 0.9689 - Dice_Calculator: 0.3590
-4800/8573 [===============>..............] - ETA: 23s - loss: 0.0675 - acc: 0.9690 - Dice_Calculator: 0.3628
-4900/8573 [================>.............] - ETA: 22s - loss: 0.0667 - acc: 0.9691 - Dice_Calculator: 0.3660
-5000/8573 [================>.............] - ETA: 21s - loss: 0.0659 - acc: 0.9693 - Dice_Calculator: 0.3695
-5100/8573 [================>.............] - ETA: 20s - loss: 0.0652 - acc: 0.9693 - Dice_Calculator: 0.3730
-5200/8573 [=================>............] - ETA: 20s - loss: 0.0646 - acc: 0.9693 - Dice_Calculator: 0.3765
-5300/8573 [=================>............] - ETA: 19s - loss: 0.0640 - acc: 0.9694 - Dice_Calculator: 0.3797
-5400/8573 [=================>............] - ETA: 18s - loss: 0.0633 - acc: 0.9694 - Dice_Calculator: 0.3831
-5500/8573 [==================>...........] - ETA: 18s - loss: 0.0626 - acc: 0.9696 - Dice_Calculator: 0.3863
-5600/8573 [==================>...........] - ETA: 17s - loss: 0.0621 - acc: 0.9695 - Dice_Calculator: 0.3895
-5700/8573 [==================>...........] - ETA: 16s - loss: 0.0615 - acc: 0.9696 - Dice_Calculator: 0.3925
-5800/8573 [===================>..........] - ETA: 16s - loss: 0.0609 - acc: 0.9697 - Dice_Calculator: 0.3950
-5900/8573 [===================>..........] - ETA: 15s - loss: 0.0604 - acc: 0.9698 - Dice_Calculator: 0.3978
-6000/8573 [===================>..........] - ETA: 15s - loss: 0.0599 - acc: 0.9698 - Dice_Calculator: 0.4007
-6100/8573 [====================>.........] - ETA: 14s - loss: 0.0594 - acc: 0.9698 - Dice_Calculator: 0.4031
-6200/8573 [====================>.........] - ETA: 13s - loss: 0.0590 - acc: 0.9699 - Dice_Calculator: 0.4054
-6300/8573 [=====================>........] - ETA: 13s - loss: 0.0585 - acc: 0.9699 - Dice_Calculator: 0.4080
-6400/8573 [=====================>........] - ETA: 12s - loss: 0.0581 - acc: 0.9699 - Dice_Calculator: 0.4103
-6500/8573 [=====================>........] - ETA: 11s - loss: 0.0576 - acc: 0.9701 - Dice_Calculator: 0.4119
-6600/8573 [======================>.......] - ETA: 11s - loss: 0.0572 - acc: 0.9701 - Dice_Calculator: 0.4137
-6700/8573 [======================>.......] - ETA: 10s - loss: 0.0567 - acc: 0.9702 - Dice_Calculator: 0.4158
-6800/8573 [======================>.......] - ETA: 10s - loss: 0.0563 - acc: 0.9703 - Dice_Calculator: 0.4179
-6900/8573 [=======================>......] - ETA: 9s - loss: 0.0559 - acc: 0.9703 - Dice_Calculator: 0.4199 
-7000/8573 [=======================>......] - ETA: 8s - loss: 0.0556 - acc: 0.9703 - Dice_Calculator: 0.4219
-7100/8573 [=======================>......] - ETA: 8s - loss: 0.0552 - acc: 0.9704 - Dice_Calculator: 0.4238
-7200/8573 [========================>.....] - ETA: 7s - loss: 0.0548 - acc: 0.9705 - Dice_Calculator: 0.4254
-7300/8573 [========================>.....] - ETA: 7s - loss: 0.0544 - acc: 0.9706 - Dice_Calculator: 0.4275
-7400/8573 [========================>.....] - ETA: 6s - loss: 0.0540 - acc: 0.9706 - Dice_Calculator: 0.4293
-7500/8573 [=========================>....] - ETA: 6s - loss: 0.0536 - acc: 0.9709 - Dice_Calculator: 0.4309
-7600/8573 [=========================>....] - ETA: 5s - loss: 0.0533 - acc: 0.9711 - Dice_Calculator: 0.4325
-7700/8573 [=========================>....] - ETA: 4s - loss: 0.0529 - acc: 0.9714 - Dice_Calculator: 0.4341
-7800/8573 [==========================>...] - ETA: 4s - loss: 0.0526 - acc: 0.9716 - Dice_Calculator: 0.4357
-7900/8573 [==========================>...] - ETA: 3s - loss: 0.0522 - acc: 0.9718 - Dice_Calculator: 0.4372
-8000/8573 [==========================>...] - ETA: 3s - loss: 0.0519 - acc: 0.9720 - Dice_Calculator: 0.4387
-8100/8573 [===========================>..] - ETA: 2s - loss: 0.0517 - acc: 0.9722 - Dice_Calculator: 0.4402
-8200/8573 [===========================>..] - ETA: 2s - loss: 0.0514 - acc: 0.9724 - Dice_Calculator: 0.4416
-8300/8573 [============================>.] - ETA: 1s - loss: 0.0511 - acc: 0.9726 - Dice_Calculator: 0.4432
-8400/8573 [============================>.] - ETA: 0s - loss: 0.0508 - acc: 0.9728 - Dice_Calculator: 0.4447
-8500/8573 [============================>.] - ETA: 0s - loss: 0.0505 - acc: 0.9730 - Dice_Calculator: 0.4461
-8573/8573 [==============================] - 52s 6ms/step - loss: 0.0503 - acc: 0.9732 - Dice_Calculator: 0.4467 - val_loss: 0.0292 - val_acc: 0.9897 - val_Dice_Calculator: 0.5007
-Epoch 2/250
-
- 100/8573 [..............................] - ETA: 51s - loss: 0.0317 - acc: 0.9888 - Dice_Calculator: 0.5777
- 200/8573 [..............................] - ETA: 45s - loss: 0.0286 - acc: 0.9902 - Dice_Calculator: 0.5728
- 300/8573 [>.............................] - ETA: 43s - loss: 0.0281 - acc: 0.9901 - Dice_Calculator: 0.5705
- 400/8573 [>.............................] - ETA: 42s - loss: 0.0277 - acc: 0.9898 - Dice_Calculator: 0.5684
- 500/8573 [>.............................] - ETA: 41s - loss: 0.0275 - acc: 0.9900 - Dice_Calculator: 0.5712
- 600/8573 [=>............................] - ETA: 40s - loss: 0.0276 - acc: 0.9901 - Dice_Calculator: 0.5736
- 700/8573 [=>............................] - ETA: 39s - loss: 0.0272 - acc: 0.9903 - Dice_Calculator: 0.5731
- 800/8573 [=>............................] - ETA: 38s - loss: 0.0268 - acc: 0.9906 - Dice_Calculator: 0.5714
- 900/8573 [==>...........................] - ETA: 38s - loss: 0.0266 - acc: 0.9909 - Dice_Calculator: 0.5721
-1000/8573 [==>...........................] - ETA: 37s - loss: 0.0266 - acc: 0.9910 - Dice_Calculator: 0.5716
-1100/8573 [==>...........................] - ETA: 36s - loss: 0.0266 - acc: 0.9911 - Dice_Calculator: 0.5712
-1200/8573 [===>..........................] - ETA: 36s - loss: 0.0265 - acc: 0.9912 - Dice_Calculator: 0.5718
-1300/8573 [===>..........................] - ETA: 35s - loss: 0.0265 - acc: 0.9911 - Dice_Calculator: 0.5728
-1400/8573 [===>..........................] - ETA: 35s - loss: 0.0268 - acc: 0.9911 - Dice_Calculator: 0.5734
-1500/8573 [====>.........................] - ETA: 34s - loss: 0.0272 - acc: 0.9911 - Dice_Calculator: 0.5745
-1600/8573 [====>.........................] - ETA: 34s - loss: 0.0273 - acc: 0.9911 - Dice_Calculator: 0.5748
-1700/8573 [====>.........................] - ETA: 34s - loss: 0.0271 - acc: 0.9913 - Dice_Calculator: 0.5753
-1800/8573 [=====>........................] - ETA: 33s - loss: 0.0270 - acc: 0.9913 - Dice_Calculator: 0.5759
-1900/8573 [=====>........................] - ETA: 33s - loss: 0.0269 - acc: 0.9914 - Dice_Calculator: 0.5763
-2000/8573 [=====>........................] - ETA: 32s - loss: 0.0266 - acc: 0.9915 - Dice_Calculator: 0.5754
