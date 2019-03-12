@@ -57,9 +57,9 @@ def Run(UserInfoB):
         Data, params = datasets.loadDataset(params)
         choosingModel.check_Run(params, Data)
 
-    Run_SingleNuclei(UserInfoB)
-    # if params.WhichExperiment.HardParams.Model.Method.Type == 'Hierarchical_Cascade': HierarchicalStages(UserInfoB)
-    # elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': CacadeStages(UserInfoB)
+    if params.WhichExperiment.HardParams.Model.Method.Type == 'Hierarchical_Cascade': HierarchicalStages(UserInfoB)
+    elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': CacadeStages(UserInfoB)
+    elif params.WhichExperiment.HardParams.Model.Method.Type == 'singleRun': Run_SingleNuclei(UserInfoB)
 
 
 params = paramFunc.Run(UserInfoB)
