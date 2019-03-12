@@ -169,11 +169,16 @@ class shift:
     Mode = ''
     ShiftMax = 10
 
+class shear:
+    Mode = ''
+    ShearMax = 0    
+
 class linearAug:
     Mode = True
     Length = 4
     Rotation = rotation
     Shift = shift
+    Shear = shear
 
 class nonlinearAug:
     Mode = False

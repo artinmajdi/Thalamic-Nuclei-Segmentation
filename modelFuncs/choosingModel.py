@@ -17,8 +17,10 @@ from shutil import copyfile
 import pandas as pd
 import mat4py
 import pickle
-from skimage import measure
+import skimage 
+import keras
 
+# keras.preprocessing.utils.multi_gpu_model
 def check_Run(params, Data):
 
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
@@ -244,7 +246,7 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
                 return [   [   np.max([BB[d][0]-gapOnSlicingDimention,0])  ,   np.min( [BB[d][1]+gapOnSlicingDimention,imFshape[d]])   ]  for d in range(3) ]
 
             # def findBoundingBox(PreStageMask):
-            #     objects = measure.regionprops(measure.label(PreStageMask))
+            #     objects = skimage.measure.regionprops(skimage.measure.label(PreStageMask))
             #     area = []
             #     for obj in objects: area = np.append(area, obj.area)
 

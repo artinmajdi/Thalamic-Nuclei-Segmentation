@@ -7,12 +7,25 @@ import nibabel as nib
 from preprocess import BashCallingFunctionsA
 from otherFuncs import smallFuncs
 import os
+import skimage
+import numpy as np
 
+
+def funcShearing(Image, Shear, Order):    
+    inverse_map = skimage.transform.AffineTransform(shear= np.deg2rad(Shear)) #  * 0.01745   # 0.01745 = pi/180
+    for i in range(Image.shape[2]):        
+        Image[...,i] = skimage.transform.warp(Image[...,i],inverse_map=inverse_map,order=Order,clip=True,preserve_range=True,output_shape=tuple(Image.shape[:2]))
+        
+    return Image   
+
+def funcScaling(Image, Scale):    
+    for i in range(Image.shape[2]):
+        Image[...,i] = skimage.transform.AffineTransform(Image[...,i] , scale=Scale) 
+    return Image 
 
 def funcRotating(Image , angle):
-
     for i in range(Image.shape[2]):
-        Image[...,i] = imrotate(Image[...,i],angle)
+        Image[...,i] = imrotate(Image[...,i],angle)        
 
     return Image
 
@@ -53,20 +66,33 @@ def LinearFunc(params, mode):
             Header = im.header
             Affine = im.affine
 
-            angleMax = params.Augment.Linear.Rotation.AngleMax
-            shiftMax = params.Augment.Linear.Shift.ShiftMax
-            angle = np.random.random_integers(-angleMax,angleMax)
-            shift = [ np.random.random_integers(-shiftMax,shiftMax) , np.random.random_integers(-shiftMax,shiftMax)]
+            
+            
+            
+            
 
 
             nameSubject2 = nameSubject + '_Aug' + str(AugIx)
             if params.Augment.Linear.Rotation.Mode:
+                angleMax = params.Augment.Linear.Rotation.AngleMax
+                angle = np.random.random_integers(-angleMax,angleMax)
+
                 Image = funcRotating(Image , angle)
                 nameSubject2 = nameSubject2 + '_Rot_' + str(angle) 
 
             if params.Augment.Linear.Shift.Mode:
+                shiftMax = params.Augment.Linear.Shift.ShiftMax
+                shift = [ np.random.random_integers(-shiftMax,shiftMax) , np.random.random_integers(-shiftMax,shiftMax)]
+
                 Image = funcShifting(Image , shift)
                 nameSubject2 = nameSubject2 + '_shift_' + str(shift[0]) + '-' + str(shift[1])
+
+            if params.Augment.Linear.Shear.Mode:
+                ShearMax = params.Augment.Linear.Shear.ShearMax
+                Shear = np.random.random_integers(-ShearMax,ShearMax)
+
+                Image = funcShearing(Image , Shear, 3)
+                nameSubject2 = nameSubject2 + '_Shear_' + str(shift[0]) + '-' + str(shift[1])                
 
             outDirectoryImage = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject2)
             outDirectoryMask = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject2 + '/Labels')
@@ -95,6 +121,7 @@ def LinearFunc(params, mode):
                 Mask   = nib.load(subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz').get_data() # 'Cropped' for cropped image
                 if params.Augment.Linear.Rotation.Mode: Mask = funcRotating(Mask , angle)
                 if params.Augment.Linear.Shift.Mode:    Mask = funcShifting(Mask , shift)
+                if params.Augment.Linear.Shear.Mode:    Mask = funcShearing(Mask , Shear, 1)
 
                 outDirectoryMask2  = outDirectoryMask  + '/' + NucleusName + '_PProcessed.nii.gz'
                 smallFuncs.saveImage( np.float32(Mask > 0.5) , Affine , Header , outDirectoryMask2)
@@ -133,7 +160,7 @@ def NonLinearFunc(Input, Augment, mode):
 # TODO fix "LinearFunc" & "NonLinearFunc" function to count for situations when we only want to apply the function on one case
 def main_augment(params , Flag, mode):
 
-    if params.Augment.Mode and (params.Augment.Linear.Rotation.Mode or params.Augment.Linear.Shift.Mode) and (Flag == 'Linear'):
+    if params.Augment.Mode and (params.Augment.Linear.Rotation.Mode or params.Augment.Linear.Shift.Mode or params.Augment.Linear.Shear.Mode)  and (Flag == 'Linear'):
         LinearFunc(params, mode)
 
     elif params.Augment.Mode and params.Augment.NonLinear.Mode and (Flag == 'NonLinear'):

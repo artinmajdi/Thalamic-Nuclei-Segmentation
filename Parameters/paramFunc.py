@@ -139,6 +139,10 @@ def Run(UserInfo):
     Augment.Mode                     = UserInfo['AugmentMode']  
     Augment.Linear.Rotation.Mode     = UserInfo['Augment_Rotation']
     Augment.Linear.Rotation.AngleMax = UserInfo['Augment_AngleMax']
+
+    Augment.Linear.Shear.Mode     = UserInfo['Augment_Shearing']
+    Augment.Linear.Shear.ShearMax = UserInfo['Augment_ShearMax']
+
     Augment.Linear.Shift.Mode        = UserInfo['Augment_Shift']
     Augment.Linear.Shift.ShiftMax    = UserInfo['Augment_ShiftMax']
     Augment.NonLinear.Mode           = UserInfo['Augment_NonLinearMode']

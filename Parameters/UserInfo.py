@@ -1,8 +1,8 @@
 
-readAugments = True
+readAugments = False
 Model_Method = 'Hierarchical_Cascade' # 'Cascade' #
 TestOnly = False
-SubExperiment_Index = 3
+SubExperiment_Index = 333
 mode_saveTrue_LoadFalse = True
 
 epochs = 30
@@ -95,11 +95,14 @@ Normalize = True
 #    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment
 #    2. Called by preprocess: to augment data inside train folder of the assigned experiment
 
-AugmentMode = False
+AugmentMode = True
 Augment_LinearMode = True
 
-Augment_Rotation     = True
-Augment_AngleMax = 7
+Augment_Rotation = False
+Augment_AngleMax = 15
+
+Augment_Shearing = True
+Augment_ShearMax = 10
 
 Augment_Shift        = False
 Augment_ShiftMax = 10
