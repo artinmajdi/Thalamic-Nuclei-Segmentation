@@ -75,36 +75,36 @@ def Run(UserInfo):
     # elif UserInfo['DatasetIx'] == 2:
     #     Experiments_Tag = 'Cropping'
 
-    Experiments_Tag = UserInfo['Experiments_Tag']
-    # if UserInfo['AugmentMode']:  
-    #     tagEx = ''
-    #     if UserInfo['Augment_LinearMode']:
-    #         if UserInfo['Augment_Rotation']: tagEx = tagEx + 'wLR'  + str(UserInfo['Augment_AngleMax'])
-    #         if UserInfo['Augment_Shift']:    tagEx = tagEx + 'wLSh' + str(UserInfo['Augment_ShiftMax'])
-
-    #     if UserInfo['Augment_NonLinearMode']: tagEx = tagEx + 'wNL' 
-
-    #     if tagEx: Experiments_Tag = Experiments_Tag + '_' + tagEx + 'Aug'
-            
+    Experiments_Tag = UserInfo['Experiments_Tag']            
 
     WhichExperiment.Experiment.tag = Experiments_Tag   # UserInfo['Experiments_Tag']
     WhichExperiment.Experiment.name = 'exp' + str(UserInfo['Experiments_Index']) + '_' + WhichExperiment.Experiment.tag if WhichExperiment.Experiment.tag else 'exp' + str(WhichExperiment.Experiment.index)
     WhichExperiment.Experiment.address = smallFuncs.mkDir(WhichExperiment.address + '/' + WhichExperiment.Experiment.name)
-    _, B = LossFunction.LossInfo(UserInfo['lossFunctionIx'])
+    # _, B = LossFunction.LossInfo(UserInfo['lossFunctionIx'])
 
-    WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag'] + '_' + B + '_sd' + str(UserInfo['slicingDim']) if int(UserInfo['slicingDim']) != 2 else UserInfo['SubExperiment_Tag'] + '_' + B
-    # WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag'] + 'lr' + str(UserInfo['Learning_Rate'])  + '_nl' + str(UserInfo['num_Layers']) 
 
-    if 'U-Net' in WhichExperiment.HardParams.Model.architectureType:
-        # WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag + WhichExperiment.Nucleus.name if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.Nucleus.name
-        AAA = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index)
-        WhichExperiment.SubExperiment.name = AAA   + '_nl' + str(UserInfo['num_Layers'])  # + '5' #
-    else:
-        WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index)
+    def subExperimentName():
+
+        readAugmentTag = ''
+        if UserInfo['Augment_Rotation']: readAugmentTag = 'wRot'   + str(UserInfo['Augment_AngleMax'])
+        elif UserInfo['Augment_Shear']:  readAugmentTag = 'wShift' + str(UserInfo['Augment_ShiftMax'])   
+        elif UserInfo['Augment_Shift']:  readAugmentTag = 'wShear' + str(UserInfo['Augment_ShearMax'])  
 
         
-    # WhichExperiment.SubExperiment.name_thalamus = 'subExp' + str(WhichExperiment.SubExperiment.index) + '_' + WhichExperiment.SubExperiment.tag if WhichExperiment.SubExperiment.tag else 'subExp' + str(WhichExperiment.SubExperiment.index)
+        WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag']
+        
+        if readAugmentTag: WhichExperiment.SubExperiment.tag += '_Aug_' + readAugmentTag
+            
+        if int(UserInfo['slicingDim']) != 2:
+            WhichExperiment.SubExperiment.tag += '_sd' + str(UserInfo['slicingDim'])
 
+        WhichExperiment.SubExperiment.tag += '_DrpOt' + str(UserInfo['dropout'])
+
+        WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) +  '_' + WhichExperiment.SubExperiment.tag 
+
+        return readAugmentTag
+
+    readAugmentTag = subExperimentName()
 
     # TODO I need to fix this to count for multiple nuclei
     WhichExperiment.Nucleus.Index = UserInfo['nucleus_Index'] if isinstance(UserInfo['nucleus_Index'],list) else [UserInfo['nucleus_Index']]
@@ -120,7 +120,8 @@ def Run(UserInfo):
 
     WhichExperiment.Dataset.InputPadding.Automatic = UserInfo['InputPadding_Automatic']
     WhichExperiment.Dataset.InputPadding.HardDimensions = UserInfo['InputPadding_HardDimensions']
-    WhichExperiment.Dataset.readAugments = UserInfo['readAugments']
+    WhichExperiment.Dataset.ReadAugments.Mode = UserInfo['readAugments']
+    WhichExperiment.Dataset.ReadAugments.Tag = readAugmentTag
 
     if WhichExperiment.Dataset.InputPadding.Automatic:
         UserInfo['InputPadding_Automatic']
@@ -140,13 +141,14 @@ def Run(UserInfo):
     Augment.Linear.Rotation.Mode     = UserInfo['Augment_Rotation']
     Augment.Linear.Rotation.AngleMax = UserInfo['Augment_AngleMax']
 
-    Augment.Linear.Shear.Mode     = UserInfo['Augment_Shearing']
+    Augment.Linear.Shear.Mode     = UserInfo['Augment_Shear']
     Augment.Linear.Shear.ShearMax = UserInfo['Augment_ShearMax']
 
     Augment.Linear.Shift.Mode        = UserInfo['Augment_Shift']
     Augment.Linear.Shift.ShiftMax    = UserInfo['Augment_ShiftMax']
     Augment.NonLinear.Mode           = UserInfo['Augment_NonLinearMode']
-    # WhichExperiment.Dataset.CreatingTheExperiment = UserInfo['CreatingTheExperiment']
+    
+    WhichExperiment.HardParams.Model.Dropout.Value = UserInfo['dropout']
 
     params.WhichExperiment = WhichExperiment
     params.preprocess      = preprocess

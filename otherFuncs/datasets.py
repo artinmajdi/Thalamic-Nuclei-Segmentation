@@ -510,29 +510,22 @@ def percentageDivide(percentage, subjectsList, randomFlag):
 
 def movingFromDatasetToExperiments(params):
 
-    def checkAugmentedData(params):
-
-        def listAugmentationFolders(mode, params):
-            Dir_Aug1 = params.WhichExperiment.Dataset.address + '/Augments/' + mode
-            flag_Aug = os.path.exists(Dir_Aug1)
-
-            ListAugments = smallFuncs.listSubFolders(Dir_Aug1, params) if flag_Aug else list('')
-
-            return flag_Aug, {'address': Dir_Aug1 , 'list': ListAugments , 'mode':mode}
-
-        flagAg, AugDataL = np.zeros(3), list(np.zeros(3))
-        if params.Augment.Mode:
-            if params.Augment.Linear.Rotation.Mode:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation', params)
-            if params.Augment.Linear.Shift.Mode:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift', params)
-            if params.Augment.NonLinear.Mode: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear', params)
-
-        return flagAg, AugDataL
-        
-    def copyAugmentData(DirOut, AugDataL, subject):
-        if 'NonLinear' in AugDataL['mode']: AugDataL['list'] = [i for i in AugDataL['list'] if subject in i.split('Ref_')[0]]
-
-        for subjectsAgm in AugDataL['list']:
-            if subject in subjectsAgm: shutil.copytree(AugDataL['address'] + '/' + subjectsAgm  ,  DirOut + '/' + subjectsAgm)
+    # def checkAugmentedData(params):
+    #     def listAugmentationFolders(mode, params):
+    #         Dir_Aug1 = params.WhichExperiment.Dataset.address + '/Augments/' + mode
+    #         flag_Aug = os.path.exists(Dir_Aug1)
+    #         ListAugments = smallFuncs.listSubFolders(Dir_Aug1, params) if flag_Aug else list('')
+    #         return flag_Aug, {'address': Dir_Aug1 , 'list': ListAugments , 'mode':mode}
+    #     flagAg, AugDataL = np.zeros(3), list(np.zeros(3))
+    #     if params.Augment.Mode:
+    #         if params.Augment.Linear.Rotation.Mode:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation', params)
+    #         if params.Augment.Linear.Shift.Mode:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift', params)
+    #         if params.Augment.NonLinear.Mode: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear', params)
+    #     return flagAg, AugDataL
+    # def copyAugmentData(DirOut, AugDataL, subject):
+    #     if 'NonLinear' in AugDataL['mode']: AugDataL['list'] = [i for i in AugDataL['list'] if subject in i.split('Ref_')[0]]
+    #     for subjectsAgm in AugDataL['list']:
+    #         if subject in subjectsAgm: shutil.copytree(AugDataL['address'] + '/' + subjectsAgm  ,  DirOut + '/' + subjectsAgm)
                     
     if len(os.listdir(params.directories.Train.address)) != 0 or len(os.listdir(params.directories.Test.address)) != 0:
         print('*** DATASET ALREADY EXIST; PLEASE REMOVE \'train\' & \'test\' SUBFOLDERS ***')
@@ -540,7 +533,7 @@ def movingFromDatasetToExperiments(params):
     
     else:
         List = smallFuncs.listSubFolders(params.WhichExperiment.Dataset.address, params)
-        flagAg, AugDataL = checkAugmentedData(params)
+        # flagAg, AugDataL = checkAugmentedData(params)
 
         TestParams  = params.WhichExperiment.Dataset.Test
         _, TestList = percentageDivide(TestParams.percentage, List, params.WhichExperiment.Dataset.randomFlag) if 'percentage' in TestParams.mode else TestParams.subjects
@@ -551,9 +544,9 @@ def movingFromDatasetToExperiments(params):
             if not os.path.exists(DirOut + '/' + subject):
                 shutil.copytree(params.WhichExperiment.Dataset.address + '/' + subject  ,  DirOut + '/' + subject)
 
-            if 'train' in mode:
-                for AgIx in range(len(AugDataL)):
-                    if flagAg[AgIx]: copyAugmentData(DirOut, AugDataL[AgIx], subject)
+            # if 'train' in mode:
+            #     for AgIx in range(len(AugDataL)):
+            #         if flagAg[AgIx]: copyAugmentData(DirOut, AugDataL[AgIx], subject)
 
         # params = smallFuncs.inputNamesCheck(params, 'experiment')
         

@@ -132,6 +132,9 @@ class hDF5:
     mode_saveTrue_LoadFalse = True
 
     
+class readAugmentFn:
+    Mode = False
+    Tag = ''
 class dataset:
     name = ''
     address = ''
@@ -144,7 +147,7 @@ class dataset:
     gapDilation = 5
     gapOnSlicingDimention = 2
     InputPadding = inputPadding
-    readAugments = False
+    ReadAugments = readAugmentFn
     HDf5 = hDF5
 
 

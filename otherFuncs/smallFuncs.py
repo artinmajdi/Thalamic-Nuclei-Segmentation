@@ -278,7 +278,9 @@ def search_ExperimentDirectory(whichExperiment):
 
         def LoopReadingData(Inputt, Dirr):
             SubjectsList = next(os.walk(Dirr))[1]
-            if 'Augments' in SubjectsList: del SubjectsList[SubjectsList.index('Augments')]
+
+            if whichExperiment.Dataset.check_vimp_SubjectName: SubjectsList = [s for s in SubjectsList if 'vimp' in s]
+
             for s in SubjectsList:                 
                 Inputt.Subjects[s] = Search_ImageFolder(Dirr + '/' + s , NucleusName)
                 Inputt.Subjects[s].subjectName = s
@@ -287,8 +289,8 @@ def search_ExperimentDirectory(whichExperiment):
 
         Input = LoopReadingData(Input, Dir)
 
-        if whichExperiment.Dataset.readAugments and 'Augments' in os.listdir(Dir):
-            Input = LoopReadingData(Input, Dir + '/Augments')
+        if whichExperiment.Dataset.ReadAugments.Mode and 'Augments' in os.listdir(Dir):
+            Input = LoopReadingData(Input, Dir + '/Augments/' + whichExperiment.Dataset.ReadAugments.Tag)
 
 
         return Input
@@ -316,6 +318,8 @@ def imShow(*args):
     for ax, im in enumerate(args):
         axes[ax].imshow(im,cmap='gray')
 
+    # a = nib.viewers.OrthoSlicer3D(im,title='image')
+#
     plt.show()
 
     return True

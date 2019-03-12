@@ -1,4 +1,11 @@
 import numpy as np
+
+K = []
+for i in range(1000):
+    K.append(np.random.randint(low=0, high=2))
+
+np.unique(K)
+
 import nibabel as nib
 # import matplotlib.pyplot as plt
 import os, sys

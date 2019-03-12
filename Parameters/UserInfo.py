@@ -1,10 +1,11 @@
 
 readAugments = False
-Model_Method = 'Hierarchical_Cascade' # 'Cascade' #
+Model_Method = 'Cascade' #'Hierarchical_Cascade' # 
 TestOnly = False
 SubExperiment_Index = 333
 mode_saveTrue_LoadFalse = True
 
+dropout = 0.2
 epochs = 30
 GPU_Index = 6
 Learning_Rate = 1e-3
@@ -76,8 +77,7 @@ Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 
 
-SubExperiment_Tag = NormalizaeMethod + '_' + Model_Method # 'b_separateValsubjects_' +
-if readAugments: SubExperiment_Tag += '_wAug'
+SubExperiment_Tag = Model_Method 
 
 #! cropping mode
 #           'ANTs'
@@ -95,14 +95,14 @@ Normalize = True
 #    1. Called by dataset: to load the augmented data if available alongside dataset while creatting an experiment
 #    2. Called by preprocess: to augment data inside train folder of the assigned experiment
 
-AugmentMode = True
+AugmentMode = False
 Augment_LinearMode = True
 
-Augment_Rotation = False
-Augment_AngleMax = 15
+Augment_Rotation = True
+Augment_AngleMax = 7 # 15 # 
 
-Augment_Shearing = True
-Augment_ShearMax = 10
+Augment_Shear = False
+Augment_ShearMax = 4
 
 Augment_Shift        = False
 Augment_ShiftMax = 10
@@ -114,3 +114,6 @@ Augment_NonLinearMode = False
 #           'mat'
 #           'json'
 SaveReportMethod = 'pickle'
+
+
+ 

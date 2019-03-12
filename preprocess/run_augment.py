@@ -7,6 +7,7 @@ from Parameters import paramFunc, UserInfo
 
 
 params = paramFunc.Run(UserInfo.__dict__)
+params.Augment.Mode = True
 
 print('***********' , 'Nuclei:',params.WhichExperiment.Nucleus.name , '  GPU:',params.WhichExperiment.HardParams.Machine.GPU_Index , \
 '  Epochs:', params.WhichExperiment.HardParams.Model.epochs,'  Dataset:',params.WhichExperiment.Dataset.name , \
