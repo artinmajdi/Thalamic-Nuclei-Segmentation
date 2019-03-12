@@ -104,7 +104,7 @@ def LinearFunc(params, mode):
 
 
             #! applying the augmentation on CropMask
-            Dir_CropMask_In = subject.Temp.address + '/' + subject.Temp.CropMask + '.nii.gz'
+            # Dir_CropMask_In = subject.Temp.address + '/' + subject.Temp.CropMask + '.nii.gz'
 
             smallFuncs.mkDir(outDirectoryImage + '/temp/')
             # Dir_CropMask_Out = outDirectoryImage + '/temp/' + subject.Temp.CropMask + '.nii.gz'
