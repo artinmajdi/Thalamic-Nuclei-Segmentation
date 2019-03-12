@@ -87,8 +87,8 @@ def Run(UserInfo):
 
         readAugmentTag = ''
         if UserInfo['Augment_Rotation']: readAugmentTag = 'wRot'   + str(UserInfo['Augment_AngleMax'])
-        elif UserInfo['Augment_Shear']:  readAugmentTag = 'wShift' + str(UserInfo['Augment_ShiftMax'])   
-        elif UserInfo['Augment_Shift']:  readAugmentTag = 'wShear' + str(UserInfo['Augment_ShearMax'])  
+        elif UserInfo['Augment_Shear']:  readAugmentTag = 'wShear' + str(UserInfo['Augment_ShearMax'])   
+        elif UserInfo['Augment_Shift']:  readAugmentTag = 'wShift' + str(UserInfo['Augment_ShiftMax'])  
 
         
         WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag']

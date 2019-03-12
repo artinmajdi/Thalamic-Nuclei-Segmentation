@@ -17,8 +17,11 @@ from shutil import copyfile
 import pandas as pd
 import mat4py
 import pickle
-import skimage 
+import skimage
 import keras
+import keras.preprocessing
+from keras.utils import multi_gpu_model, multi_gpu_utils
+
 
 # keras.preprocessing.utils.multi_gpu_model
 def check_Run(params, Data):
@@ -35,11 +38,11 @@ def check_Run(params, Data):
 def loadModel(params):
     model = architecture(params)
     model.load_weights(params.directories.Train.Model + '/model_weights.h5')
-    
+
     ModelParam = params.WhichExperiment.HardParams.Model
     model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
     return model
-    
+
 def testingExeriment(model, Data, params):
 
     class prediction:
@@ -47,22 +50,22 @@ def testingExeriment(model, Data, params):
         Train = ''
 
     def predictingTestSubject(DataSubj, subject, ResultDir):
-        
+
         def postProcessing(pred1Class, origMsk1N, NucleiIndex):
 
             def binarizing(pred1N):
                 Thresh = max( threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
                 return pred1N  > Thresh
-            
+
             def cascade_paddingToOrigSize(im):
                 if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
                     im = np.pad(im, subject.NewCropInfo.PadSizeBackToOrig, 'constant')
-                    # Padding2, crd = paddingNegativeFix(im.shape, Padding2)          
+                    # Padding2, crd = paddingNegativeFix(im.shape, Padding2)
                     # im = im[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
                 return im
-                        
-            pred1N = binarizing( np.squeeze(pred1Class) )                    
-            
+
+            pred1N = binarizing( np.squeeze(pred1Class) )
+
             pred1N_origShape = cascade_paddingToOrigSize(pred1N)
             pred1N_origShape = np.transpose(pred1N_origShape,params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
 
@@ -71,7 +74,7 @@ def testingExeriment(model, Data, params):
             return pred1N_origShape, Dice
 
         def savingOutput(pred1N_BtO, NucleiIndex):
-            dirSave = smallFuncs.mkDir(ResultDir + '/' + subject.subjectName)  
+            dirSave = smallFuncs.mkDir(ResultDir + '/' + subject.subjectName)
             nucleusName, _ , _ = smallFuncs.NucleiSelection(NucleiIndex)
             smallFuncs.saveImage( pred1N_BtO , DataSubj.Affine, DataSubj.Header, dirSave + '/' + nucleusName + '.nii.gz')
             return dirSave, nucleusName
@@ -93,7 +96,7 @@ def testingExeriment(model, Data, params):
                 Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.MultiClass.mode else dirSave + '/Dice_' + nucleusName + '.txt'
                 np.savetxt(Dir_Dice ,Dice)
                 return pred1N_BtO
-                            
+
             def unPadding(im , pad):
                 sz = im.shape
                 if np.min(pad) < 0:
@@ -128,14 +131,14 @@ def testingExeriment(model, Data, params):
     def loopOver_Predicting_TestSubjects(DataTest):
         prediction = {}
         ResultDir = params.directories.Test.Result
-        for name in DataTest:            
+        for name in DataTest:
             prediction[name] = predictingTestSubject(DataTest[name], params.directories.Test.Input.Subjects[name] , ResultDir)
 
         return prediction
 
-    def loopOver_Predicting_TrainSubjects(DataTrain): 
+    def loopOver_Predicting_TrainSubjects(DataTrain):
         prediction = {}
-        if (params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) or ( 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1)): 
+        if (params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) or ( 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1)):
             ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
             for name in DataTrain:
                 prediction[name] = predictingTestSubject(DataTrain[name], params.directories.Train.Input.Subjects[name] , ResultDir)
@@ -144,7 +147,7 @@ def testingExeriment(model, Data, params):
 
     prediction.Test  = loopOver_Predicting_TestSubjects(Data.Test)
     prediction.Train = loopOver_Predicting_TrainSubjects(Data.Train_ForTest)
-        
+
     return prediction
 
 def trainingExperiment(Data, params):
@@ -159,7 +162,7 @@ def trainingExperiment(Data, params):
         if 'pickle' in method: savePickle(DirSave + '/' + name + '.pkl', data)
         elif 'mat'  in method: mat4py.savemat(DirSave + '/' + name + '.mat', data)
         elif 'csv'  in method: pd.DataFrame(data=data,columns=list(data.keys())).to_csv( DirSave + '/' + name + '.csv')
-            
+
     def saveTrainInfo(hist,a, params):
         hist.params['trainingTime'] = time() - a
         hist.params['InputDimensionsX'] = params.WhichExperiment.HardParams.Model.InputDimensions[0]
@@ -169,7 +172,7 @@ def trainingExperiment(Data, params):
         saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
         saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo['SaveReportMethod'])
         saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , 'csv')
-        
+
     def modelTrain_Unet(Data, params, model):
         ModelParam = params.WhichExperiment.HardParams.Model
 
@@ -179,8 +182,11 @@ def trainingExperiment(Data, params):
         elif params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
             model.load_weights(params.directories.Train.Model + '/model_weights.h5')
 
+        model = multi_gpu_model(model)
         model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
-
+        
+        
+        
         # if the shuffle argument in model.fit is set to True (which is the default), the training data will be randomly shuffled at each epoch.
         if params.WhichExperiment.Dataset.Validation.fromKeras:
             hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=1) # , callbacks=[TQDMCallback()])
@@ -217,7 +223,7 @@ def trainingExperiment(Data, params):
         UserInfo['num_Layers']      = params.WhichExperiment.HardParams.Model.num_Layers
 
         saveReport(DirSave, 'UserInfo', UserInfo , UserInfo['SaveReportMethod'])
-        
+
     a = time()
     Saving_UserInfo(params.directories.Train.Model, params, params.UserInfo)
     model = architecture(params)
@@ -234,14 +240,14 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
 
     params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
     def ApplyPreFinalStageMask(PreStageMask, subject, mode):
-                  
+
         def cropBoundingBoxes(PreStageMask):
 
             def dilateMask(mask, gapDilation):
                 struc = ndimage.generate_binary_structure(3,2)
-                struc = ndimage.iterate_structure(struc,gapDilation) 
+                struc = ndimage.iterate_structure(struc,gapDilation)
                 return ndimage.binary_dilation(mask, structure=struc)
-                
+
             def checkBordersOnBoundingBox(imFshape , BB , gapOnSlicingDimention):
                 return [   [   np.max([BB[d][0]-gapOnSlicingDimention,0])  ,   np.min( [BB[d][1]+gapOnSlicingDimention,imFshape[d]])   ]  for d in range(3) ]
 
@@ -255,7 +261,7 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
             #     L = len(PreStageMask.shape)
             #     bbox = objects[ Ix[-1] ].bbox
             #     BB = [ [bbox[d] , bbox[L + d] ] for d in range(L)]
-                                
+
             #     return BB
 
             # Thalamus_Mask_Dilated = dilateMask( PreStageMask, params.WhichExperiment.Dataset.gapDilation )
@@ -270,23 +276,23 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
             BBd = [  [BB[ii][0] - gapDilation , BB[ii][1] + gapDilation] for ii in range(len(BB))]
             BBd = checkBordersOnBoundingBox(imF.shape , BBd , 0)
 
-            dirr = params.directories.Test.Result 
+            dirr = params.directories.Test.Result
             if 'train' in mode: dirr += '/TrainData_Output'
-                           
+
             np.savetxt(dirr + '/' + subject.subjectName + '/BB_' + params.WhichExperiment.Nucleus.name + '.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')
             # np.savetxt(dirr + '/' + subject.subjectName + '/BBd.txt',BBd,fmt='%d')
-  
+
         cropBoundingBoxes(PreStageMask)
-    
+
     def loopOverSubjects(CascadePreStageMasks, mode):
         Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
         string = 'Thalamus' if 1 in params.WhichExperiment.Nucleus.Index else 'stage2 ' + params.WhichExperiment.Nucleus.name
-        for sj in tqdm(Subjects ,desc='applying ' + string + ' for cascade method: ' + mode):         
-            ApplyPreFinalStageMask(CascadePreStageMasks[sj] , Subjects[sj] , mode) 
+        for sj in tqdm(Subjects ,desc='applying ' + string + ' for cascade method: ' + mode):
+            ApplyPreFinalStageMask(CascadePreStageMasks[sj] , Subjects[sj] , mode)
 
     loopOverSubjects(CascadePreStageMasks.Test, 'test')
     loopOverSubjects(CascadePreStageMasks.Train, 'train')
-        
+
 
 # ! U-Net Architecture
 def architecture(params):
@@ -310,7 +316,7 @@ def architecture(params):
             if Modelparam.Dropout.Mode: conv = layers.Dropout(Modelparam.Dropout.Value)(conv)
             return conv
 
-        
+
         inputs = layers.Input( tuple(Modelparam.InputDimensions[:2]) + (1,) )
         # inputs = layers.Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1) )
         WeightBiases = inputs
@@ -353,7 +359,7 @@ def architecture(params):
         model.add(layers.Dense(Modelparam.MultiClass.num_classes , activation=Modelparam.Activitation.output))
 
         return model
-        
+
     # params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
     ModelParam = params.WhichExperiment.HardParams.Model
     if 'U-Net' in ModelParam.architectureType:
@@ -362,7 +368,6 @@ def architecture(params):
     elif 'CNN_Classifier' in ModelParam.architectureType:
         model = CNN_Classifier(ModelParam)
 
-    # model.summary()
+    model.summary()
 
     return model
-

@@ -1,18 +1,18 @@
 
-readAugments = False
-Model_Method = 'Cascade' #'Hierarchical_Cascade' # 
+readAugments = True
+Model_Method = 'Cascade' #'Hierarchical_Cascade' #
 TestOnly = False
-SubExperiment_Index = 333
+SubExperiment_Index = 3
 mode_saveTrue_LoadFalse = True
 
 dropout = 0.2
-epochs = 30
-GPU_Index = 6
+epochs = 100
+GPU_Index = 4
 Learning_Rate = 1e-3
 num_Layers = 3
 NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-Experiments_Index = '7' 
-Experiments_Tag = 'cascadeV1'  # 'cropping' # initilization' # 'cascadeV1_3TforInit7T' # 
+Experiments_Index = '7'
+Experiments_Tag = 'cascadeV1'  # 'cropping' # initilization' # 'cascadeV1_3TforInit7T' #
 
 nucleus_Index = [1]
 
@@ -77,7 +77,7 @@ Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 
 
-SubExperiment_Tag = Model_Method 
+SubExperiment_Tag = Model_Method
 
 #! cropping mode
 #           'ANTs'
@@ -99,7 +99,7 @@ AugmentMode = False
 Augment_LinearMode = True
 
 Augment_Rotation = True
-Augment_AngleMax = 7 # 15 # 
+Augment_AngleMax = 7 # 15 #
 
 Augment_Shear = False
 Augment_ShearMax = 4
@@ -114,6 +114,3 @@ Augment_NonLinearMode = False
 #           'mat'
 #           'json'
 SaveReportMethod = 'pickle'
-
-
- 
