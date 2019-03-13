@@ -27,7 +27,7 @@ DatasetIx = 4
 
 
 #! Training
-batch_size = 70
+batch_size = 100
 Initialize_FromThalamus = False
 Initialize_FromOlderModel = False
 
@@ -98,10 +98,10 @@ Normalize = True
 AugmentMode = False
 Augment_LinearMode = True
 
-Augment_Rotation = True
+Augment_Rotation = False
 Augment_AngleMax = 15 # 15 #
 
-Augment_Shear = False
+Augment_Shear = True
 Augment_ShearMax = 4
 
 Augment_Shift        = False
