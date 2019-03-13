@@ -1,7 +1,7 @@
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import tensorflow as tf
-from modelFuncs import Metrics
+import modelFuncs.Metrics as Metrics
 from keras import losses # optimizers, metrics
 
 
@@ -13,7 +13,6 @@ def LossInfo(loss_Index):
     }
     return switcher.get(loss_Index, 'WARNING: Invalid loss function index')
 
-
 # TODO: check to see if having this import inside this function slows down the code
 def Loss_binary_crossentropy(y_true,y_pred):
 
@@ -24,12 +23,8 @@ def Loss_binary_crossentropy(y_true,y_pred):
 
     return tf.divide(loss,tf.cast(nmCl,tf.float32))
 
-
-
 def Loss_Dice(y_true,y_pred):
     return 1 - Metrics.Dice_Calculator(y_true,y_pred)
-
-
 
 def Loss_binary_And_Dice(y_true,y_pred):
     return Loss_binary_crossentropy(y_true,y_pred) + 0.01*Loss_Dice(y_true,y_pred)

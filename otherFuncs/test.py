@@ -2,7 +2,8 @@
 # import nibabel as nib
 import os, sys
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-from Parameters import UserInfo, paramFunc
+import Parameters.UserInfo as UserInfo
+import Parameters.paramFunc as paramFunc
 # from otherFuncs import smallFuncs
 # import pickle
 
@@ -15,3 +16,6 @@ for i in range(1,5):
     print( params[i].WhichExperiment.Dataset.name )
 
 print('---')
+
+def main():
+    print('---')

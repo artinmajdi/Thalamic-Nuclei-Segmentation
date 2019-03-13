@@ -5,9 +5,9 @@ from keras import layers
 # from keras.callbacks import ModelCheckpoint
 from keras_tqdm import TQDMCallback # , TQDMNotebookCallback
 import numpy as np
-from skimage.filters import threshold_otsu
-from otherFuncs import smallFuncs, datasets
-from preprocess import croppingA
+import otherFuncs.smallFuncs as smallFuncs
+import otherFuncs.datasets as datasets
+import preprocess.croppingA as croppingA
 from tqdm import tqdm
 from time import time
 import nibabel as nib
@@ -53,7 +53,7 @@ def testingExeriment(model, Data, params):
         def postProcessing(pred1Class, origMsk1N, NucleiIndex):
 
             def binarizing(pred1N):
-                Thresh = max( threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
+                Thresh = max( skimage.filters.threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
                 return pred1N  > Thresh
 
             def cascade_paddingToOrigSize(im):

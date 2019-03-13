@@ -1,10 +1,12 @@
 import os, sys
 # sys.path.append(os.path.dirname(__file__))
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-from otherFuncs import smallFuncs, datasets
-from modelFuncs import choosingModel
-from Parameters import UserInfo, paramFunc
-from preprocess import applyPreprocess
+import otherFuncs.smallFuncs as smallFuncs
+import otherFuncs.datasets as datasets
+import modelFuncs.choosingModel as choosingModel
+import Parameters.UserInfo as UserInfo
+import Parameters.paramFunc as paramFunc
+import preprocess.applyPreprocess as applyPreprocess
 
 # TODO:  add a fixed seed number for random numbers
 # TODO:  write the name of test and train subjects in model and results and dataset  to have it for the future
