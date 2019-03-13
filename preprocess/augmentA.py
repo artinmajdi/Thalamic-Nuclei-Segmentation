@@ -51,6 +51,31 @@ def indexFunc(L,AugmentLength, ind):
 
 def LinearFunc(params, mode):
 
+    def nameOutput(nameSubject, InputThreshs, AugIx):
+        nameSubject2 = nameSubject + '_Aug' + str(AugIx)
+        if params.Augment.Linear.Rotation.Mode: nameSubject2 += '_Rot_'   + str(InputThreshs.angle) 
+        if params.Augment.Linear.Shift.Mode:    nameSubject2 += '_shift_' + str(InputThreshs.shift[0]) + '-' + str(InputThreshs.shift[1])
+        if params.Augment.Linear.Shear.Mode:    nameSubject2 += '_Shear_' + str(InputThreshs.Shear) 
+        return nameSubject2
+        
+    def inputThresholds():
+        angleMax = params.Augment.Linear.Rotation.AngleMax
+        shiftMax = params.Augment.Linear.Shift.ShiftMax              
+        ShearMax = params.Augment.Linear.Shear.ShearMax
+
+        class InputThreshs:
+            angle = np.random.random_integers(-angleMax,angleMax)
+            shift = [ np.random.random_integers(-shiftMax,shiftMax) , np.random.random_integers(-shiftMax,shiftMax)]
+            Shear = np.random.random_integers(-ShearMax,ShearMax)
+
+        return InputThreshs
+            
+    def applyLinearAugment(im, InputThreshs, mode):
+        if params.Augment.Linear.Rotation.Mode: im = funcRotating(im , InputThreshs.angle)
+        if params.Augment.Linear.Shift.Mode:    im = funcShifting(im , InputThreshs.shift)
+        if params.Augment.Linear.Shear.Mode:    im = funcShearing(im , InputThreshs.Shear, mode)
+        return im
+                
     Subjects = params.directories.Train.Input.Subjects
     SubjectNames = list(Subjects.keys())
     L = len(SubjectNames)
@@ -59,52 +84,30 @@ def LinearFunc(params, mode):
         nameSubject = SubjectNames[imInd]
         subject  = Subjects[nameSubject]
 
-        # lst = indexFunc(L, AugLen, imInd)
         for AugIx in range(params.Augment.Linear.Length):
             print('image',imInd,'/',L,'augment',AugIx,'/',params.Augment.Linear.Length)
 
-            im = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image
-            Image  = im.get_data()
-            Header = im.header
-            Affine = im.affine                                            
+            imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image
 
-            angleMax = params.Augment.Linear.Rotation.AngleMax
-            angle = np.random.random_integers(-angleMax,angleMax)
+            InputThreshs = inputThresholds()
+            nameSubject2 = nameOutput(nameSubject, InputThreshs, AugIx)
 
-            shiftMax = params.Augment.Linear.Shift.ShiftMax
-            shift = [ np.random.random_integers(-shiftMax,shiftMax) , np.random.random_integers(-shiftMax,shiftMax)]
-                        
-            ShearMax = params.Augment.Linear.Shear.ShearMax
-            Shear = np.random.random_integers(-ShearMax,ShearMax)
-                                    
-            nameSubject2 = nameSubject + '_Aug' + str(AugIx)
+            Image = applyLinearAugment(imF.get_data(), InputThreshs, 3)
 
-            if params.Augment.Linear.Rotation.Mode: nameSubject2 += '_Rot_'   + str(angle) 
-            if params.Augment.Linear.Shift.Mode:    nameSubject2 += '_shift_' + str(shift[0]) + '-' + str(shift[1])
-            if params.Augment.Linear.Shear.Mode:    nameSubject2 += '_Shear_' + str(Shear) 
+            class outDirectory:
+                Image = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject2)
+                Mask = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject2 + '/Labels')
 
-            if params.Augment.Linear.Rotation.Mode: Image = funcRotating(Image , angle)
-            if params.Augment.Linear.Shift.Mode:    Image = funcShifting(Image , shift)
-            if params.Augment.Linear.Shear.Mode:    Image = funcShearing(Image , Shear, 3)
-
-
-            outDirectoryImage = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject2)
-            outDirectoryMask = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject2 + '/Labels')
-
-
-            smallFuncs.saveImage(Image , Affine , Header , outDirectoryImage + '/' + subject.ImageProcessed + '.nii.gz' )
-            smallFuncs.mkDir(outDirectoryImage + '/temp/')
+            smallFuncs.saveImage(Image , imF.affine , imF.header , outDirectory.Image + '/' + subject.ImageProcessed + '.nii.gz' )
+            smallFuncs.mkDir(outDirectory.Image + '/temp/')
 
             subF = [s for s in os.listdir(subject.Label.address) if 'PProcessed' in s]
-            for NucleusName in subF: # params.WhichExperiment.Nucleus.FullIndexes:
-                # NucleusName, _ , _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
+            for NucleusName in subF: 
 
-                Mask = nib.load(subject.Label.address + '/' + NucleusName).get_data() # 'Cropped' for cropped image
-                if params.Augment.Linear.Rotation.Mode: Mask = funcRotating(Mask , angle)
-                if params.Augment.Linear.Shift.Mode:    Mask = funcShifting(Mask , shift)
-                if params.Augment.Linear.Shear.Mode:    Mask = funcShearing(Mask , Shear, 1)
+                Mask = nib.load(subject.Label.address + '/' + NucleusName).get_data() 
+                Mask = applyLinearAugment(Mask, InputThreshs, 1)
 
-                smallFuncs.saveImage( np.float32(Mask > 0.5) , Affine , Header ,  outDirectoryMask  + '/' + NucleusName  )
+                smallFuncs.saveImage( np.float32(Mask > 0.5) , imF.affine , imF.header ,  outDirectory.Mask  + '/' + NucleusName  )
 
 def NonLinearFunc(Input, Augment, mode):
 

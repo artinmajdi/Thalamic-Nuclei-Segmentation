@@ -1,0 +1,505 @@
+--------- 5
+*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
+(0/270) train vimp2_ANON724_03272013_control
+     Bias Correction
+     Rigid Registration
+     Cropping
+(1/270) train vimp2_901_07052013_AS_MS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(2/270) train vimp2_D
+     Bias Correction
+     Rigid Registration
+     Cropping
+(3/270) train vimp2_ctrl_920_07122013_SW
+     Bias Correction
+     Rigid Registration
+     Cropping
+(4/270) train vimp2_823_05202013_AJ_MS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(5/270) train vimp2_J
+     Bias Correction
+     Rigid Registration
+     Cropping
+(6/270) train vimp2_943_07242013_PA_MS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(7/270) train vimp2_F
+     Bias Correction
+     Rigid Registration
+     Cropping
+(8/270) train vimp2_ctrl_921_07122013_MP
+     Bias Correction
+     Rigid Registration
+     Cropping
+(9/270) train vimp2_ANON606_20130110_control
+     Bias Correction
+     Rigid Registration
+     Cropping
+(10/270) train vimp2_824_05212013_JS_MS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(11/270) train vimp2_A
+     Bias Correction
+     Rigid Registration
+     Cropping
+(12/270) train vimp2_964_08092013_TG_MS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(13/270) train vimp2_668_02282013_CD_MS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(14/270) train vimp2_G
+     Bias Correction
+     Rigid Registration
+     Cropping
+(15/270) train vimp2_ctrl_991_08302013_JF
+     Bias Correction
+     Rigid Registration
+     Cropping
+(16/270) train vimp2_ANON695_03132013_control
+     Bias Correction
+     Rigid Registration
+     Cropping
+(17/270) train vimp2_845_05312013_VZ_MS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(18/270) train vimp2_B
+     Bias Correction
+     Rigid Registration
+     Cropping
+(19/270) train vimp2_ctrl_902_07052013_SI
+     Bias Correction
+     Rigid Registration
+     Cropping
+(20/270) train vimp2_967_08132013_KW_MS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(21/270) train vimp2_H
+     Bias Correction
+     Rigid Registration
+     Cropping
+(22/270) train vimp2_765_04162013_AW_MS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(23/270) train vimp2_ANON702_03152013_control
+     Bias Correction
+     Rigid Registration
+     Cropping
+(24/270) train vimp2_884_06272013_TS_MS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(25/270) train vimp2_C
+     Bias Correction
+     Rigid Registration
+     Cropping
+(26/270) train vimp2_ctrl_918_07112013_TQ
+     Bias Correction
+     Rigid Registration
+     Cropping
+(27/270) train vimp2_972_08152013_DC_MS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(28/270) train vimp2_819_05172013_DS_MS
+     Bias Correction
+     Rigid Registration
+     Cropping
+(29/270) train vimp2_I
+     Bias Correction
+     Rigid Registration
+     Cropping
+(30/270) train vimp2_668_02282013_CD_MS_Aug0_Rot_-1
+     Bias Correction
+(31/270) train vimp2_668_02282013_CD_MS_Aug1_Rot_-15
+     Bias Correction
+(32/270) train vimp2_668_02282013_CD_MS_Aug2_Rot_-6
+     Bias Correction
+(33/270) train vimp2_668_02282013_CD_MS_Aug3_Rot_8
+     Bias Correction
+(34/270) train vimp2_668_02282013_CD_MS_Aug4_Rot_5
+     Bias Correction
+(35/270) train vimp2_668_02282013_CD_MS_Aug5_Rot_11
+     Bias Correction
+(36/270) train vimp2_668_02282013_CD_MS_Aug6_Rot_6
+     Bias Correction
+(37/270) train vimp2_668_02282013_CD_MS_Aug7_Rot_2
+     Bias Correction
+(38/270) train vimp2_765_04162013_AW_MS_Aug0_Rot_-15
+     Bias Correction
+(39/270) train vimp2_765_04162013_AW_MS_Aug1_Rot_6
+     Bias Correction
+(40/270) train vimp2_765_04162013_AW_MS_Aug2_Rot_15
+     Bias Correction
+(41/270) train vimp2_765_04162013_AW_MS_Aug3_Rot_-2
+     Bias Correction
+(42/270) train vimp2_765_04162013_AW_MS_Aug4_Rot_12
+     Bias Correction
+(43/270) train vimp2_765_04162013_AW_MS_Aug5_Rot_5
+     Bias Correction
+(44/270) train vimp2_765_04162013_AW_MS_Aug6_Rot_11
+     Bias Correction
+(45/270) train vimp2_765_04162013_AW_MS_Aug7_Rot_15
+     Bias Correction
+(46/270) train vimp2_819_05172013_DS_MS_Aug0_Rot_4
+     Bias Correction
+(47/270) train vimp2_819_05172013_DS_MS_Aug1_Rot_-2
+     Bias Correction
+(48/270) train vimp2_819_05172013_DS_MS_Aug2_Rot_12
+     Bias Correction
+(49/270) train vimp2_819_05172013_DS_MS_Aug3_Rot_9
+     Bias Correction
+(50/270) train vimp2_819_05172013_DS_MS_Aug4_Rot_-11
+     Bias Correction
+(51/270) train vimp2_819_05172013_DS_MS_Aug5_Rot_1
+     Bias Correction
+(52/270) train vimp2_819_05172013_DS_MS_Aug6_Rot_6
+     Bias Correction
+(53/270) train vimp2_819_05172013_DS_MS_Aug7_Rot_-2
+     Bias Correction
+(54/270) train vimp2_823_05202013_AJ_MS_Aug0_Rot_10
+     Bias Correction
+(55/270) train vimp2_823_05202013_AJ_MS_Aug1_Rot_9
+     Bias Correction
+(56/270) train vimp2_823_05202013_AJ_MS_Aug2_Rot_2
+     Bias Correction
+(57/270) train vimp2_823_05202013_AJ_MS_Aug3_Rot_-1
+     Bias Correction
+(58/270) train vimp2_823_05202013_AJ_MS_Aug4_Rot_12
+     Bias Correction
+(59/270) train vimp2_823_05202013_AJ_MS_Aug5_Rot_9
+     Bias Correction
+(60/270) train vimp2_823_05202013_AJ_MS_Aug6_Rot_1
+     Bias Correction
+(61/270) train vimp2_823_05202013_AJ_MS_Aug7_Rot_7
+     Bias Correction
+(62/270) train vimp2_824_05212013_JS_MS_Aug0_Rot_9
+     Bias Correction
+(63/270) train vimp2_824_05212013_JS_MS_Aug1_Rot_0
+     Bias Correction
+(64/270) train vimp2_824_05212013_JS_MS_Aug2_Rot_-1
+     Bias Correction
+(65/270) train vimp2_824_05212013_JS_MS_Aug3_Rot_11
+     Bias Correction
+(66/270) train vimp2_824_05212013_JS_MS_Aug4_Rot_8
+     Bias Correction
+(67/270) train vimp2_824_05212013_JS_MS_Aug5_Rot_11
+     Bias Correction
+(68/270) train vimp2_824_05212013_JS_MS_Aug6_Rot_7
+     Bias Correction
+(69/270) train vimp2_824_05212013_JS_MS_Aug7_Rot_-9
+     Bias Correction
+(70/270) train vimp2_845_05312013_VZ_MS_Aug0_Rot_9
+     Bias Correction
+(71/270) train vimp2_845_05312013_VZ_MS_Aug1_Rot_7
+     Bias Correction
+(72/270) train vimp2_845_05312013_VZ_MS_Aug2_Rot_-10
+     Bias Correction
+(73/270) train vimp2_845_05312013_VZ_MS_Aug3_Rot_10
+     Bias Correction
+(74/270) train vimp2_845_05312013_VZ_MS_Aug4_Rot_11
+     Bias Correction
+(75/270) train vimp2_845_05312013_VZ_MS_Aug5_Rot_1
+     Bias Correction
+(76/270) train vimp2_845_05312013_VZ_MS_Aug6_Rot_15
+     Bias Correction
+(77/270) train vimp2_845_05312013_VZ_MS_Aug7_Rot_9
+     Bias Correction
+(78/270) train vimp2_884_06272013_TS_MS_Aug0_Rot_-8
+     Bias Correction
+(79/270) train vimp2_884_06272013_TS_MS_Aug1_Rot_7
+     Bias Correction
+(80/270) train vimp2_884_06272013_TS_MS_Aug2_Rot_4
+     Bias Correction
+(81/270) train vimp2_884_06272013_TS_MS_Aug3_Rot_-14
+     Bias Correction
+(82/270) train vimp2_884_06272013_TS_MS_Aug4_Rot_-13
+     Bias Correction
+(83/270) train vimp2_884_06272013_TS_MS_Aug5_Rot_4
+     Bias Correction
+(84/270) train vimp2_884_06272013_TS_MS_Aug6_Rot_-2
+     Bias Correction
+(85/270) train vimp2_884_06272013_TS_MS_Aug7_Rot_-1
+     Bias Correction
+(86/270) train vimp2_901_07052013_AS_MS_Aug0_Rot_-2
+     Bias Correction
+(87/270) train vimp2_901_07052013_AS_MS_Aug1_Rot_12
+     Bias Correction
+(88/270) train vimp2_901_07052013_AS_MS_Aug2_Rot_-4
+     Bias Correction
+(89/270) train vimp2_901_07052013_AS_MS_Aug3_Rot_-2
+     Bias Correction
+(90/270) train vimp2_901_07052013_AS_MS_Aug4_Rot_9
+     Bias Correction
+(91/270) train vimp2_901_07052013_AS_MS_Aug5_Rot_8
+     Bias Correction
+(92/270) train vimp2_901_07052013_AS_MS_Aug6_Rot_8
+     Bias Correction
+(93/270) train vimp2_901_07052013_AS_MS_Aug7_Rot_13
+     Bias Correction
+(94/270) train vimp2_943_07242013_PA_MS_Aug0_Rot_12
+     Bias Correction
+(95/270) train vimp2_943_07242013_PA_MS_Aug1_Rot_-10
+     Bias Correction
+(96/270) train vimp2_943_07242013_PA_MS_Aug2_Rot_-11
+     Bias Correction
+(97/270) train vimp2_943_07242013_PA_MS_Aug3_Rot_5
+     Bias Correction
+(98/270) train vimp2_943_07242013_PA_MS_Aug4_Rot_-4
+     Bias Correction
+(99/270) train vimp2_943_07242013_PA_MS_Aug5_Rot_-7
+     Bias Correction
+(100/270) train vimp2_943_07242013_PA_MS_Aug6_Rot_0
+     Bias Correction
+(101/270) train vimp2_943_07242013_PA_MS_Aug7_Rot_9
+     Bias Correction
+(102/270) train vimp2_964_08092013_TG_MS_Aug0_Rot_15
+     Bias Correction
+(103/270) train vimp2_964_08092013_TG_MS_Aug1_Rot_-12
+     Bias Correction
+(104/270) train vimp2_964_08092013_TG_MS_Aug2_Rot_-12
+     Bias Correction
+(105/270) train vimp2_964_08092013_TG_MS_Aug3_Rot_-5
+     Bias Correction
+(106/270) train vimp2_964_08092013_TG_MS_Aug4_Rot_-15
+     Bias Correction
+(107/270) train vimp2_964_08092013_TG_MS_Aug5_Rot_9
+     Bias Correction
+(108/270) train vimp2_964_08092013_TG_MS_Aug6_Rot_9
+     Bias Correction
+(109/270) train vimp2_964_08092013_TG_MS_Aug7_Rot_0
+     Bias Correction
+(110/270) train vimp2_967_08132013_KW_MS_Aug0_Rot_1
+     Bias Correction
+(111/270) train vimp2_967_08132013_KW_MS_Aug1_Rot_12
+     Bias Correction
+(112/270) train vimp2_967_08132013_KW_MS_Aug2_Rot_-1
+     Bias Correction
+(113/270) train vimp2_967_08132013_KW_MS_Aug3_Rot_-13
+     Bias Correction
+(114/270) train vimp2_967_08132013_KW_MS_Aug4_Rot_-4
+     Bias Correction
+(115/270) train vimp2_967_08132013_KW_MS_Aug5_Rot_14
+     Bias Correction
+(116/270) train vimp2_967_08132013_KW_MS_Aug6_Rot_-13
+     Bias Correction
+(117/270) train vimp2_967_08132013_KW_MS_Aug7_Rot_-14
+     Bias Correction
+(118/270) train vimp2_972_08152013_DC_MS_Aug0_Rot_-12
+     Bias Correction
+(119/270) train vimp2_972_08152013_DC_MS_Aug1_Rot_-5
+     Bias Correction
+(120/270) train vimp2_972_08152013_DC_MS_Aug2_Rot_3
+     Bias Correction
+(121/270) train vimp2_972_08152013_DC_MS_Aug3_Rot_6
+     Bias Correction
+(122/270) train vimp2_972_08152013_DC_MS_Aug4_Rot_-5
+     Bias Correction
+(123/270) train vimp2_972_08152013_DC_MS_Aug5_Rot_-13
+     Bias Correction
+(124/270) train vimp2_972_08152013_DC_MS_Aug6_Rot_-3
+     Bias Correction
+(125/270) train vimp2_972_08152013_DC_MS_Aug7_Rot_-5
+     Bias Correction
+(126/270) train vimp2_A_Aug0_Rot_3
+     Bias Correction
+(127/270) train vimp2_A_Aug1_Rot_0
+     Bias Correction
+(128/270) train vimp2_A_Aug2_Rot_-9
+     Bias Correction
+(129/270) train vimp2_A_Aug3_Rot_-4
+     Bias Correction
+(130/270) train vimp2_A_Aug4_Rot_13
+     Bias Correction
+(131/270) train vimp2_A_Aug5_Rot_-3
+     Bias Correction
+(132/270) train vimp2_A_Aug6_Rot_14
+     Bias Correction
+(133/270) train vimp2_A_Aug7_Rot_-15
+     Bias Correction
+(134/270) train vimp2_ANON606_20130110_control_Aug0_Rot_-11
+     Bias Correction
+(135/270) train vimp2_ANON606_20130110_control_Aug1_Rot_4
+     Bias Correction
+(136/270) train vimp2_ANON606_20130110_control_Aug2_Rot_-11
+     Bias Correction
+(137/270) train vimp2_ANON606_20130110_control_Aug3_Rot_8
+     Bias Correction
+(138/270) train vimp2_ANON606_20130110_control_Aug4_Rot_-3
+     Bias Correction
+(139/270) train vimp2_ANON606_20130110_control_Aug5_Rot_-6
+     Bias Correction
+(140/270) train vimp2_ANON606_20130110_control_Aug6_Rot_4
+     Bias Correction
+(141/270) train vimp2_ANON606_20130110_control_Aug7_Rot_-12
+     Bias Correction
+(142/270) train vimp2_ANON695_03132013_control_Aug0_Rot_-14
+     Bias Correction
+(143/270) train vimp2_ANON695_03132013_control_Aug1_Rot_13
+     Bias Correction
+(144/270) train vimp2_ANON695_03132013_control_Aug2_Rot_-13
+     Bias Correction
+(145/270) train vimp2_ANON695_03132013_control_Aug3_Rot_-11
+     Bias Correction
+(146/270) train vimp2_ANON695_03132013_control_Aug4_Rot_1
+     Bias Correction
+(147/270) train vimp2_ANON695_03132013_control_Aug5_Rot_-4
+     Bias Correction
+(148/270) train vimp2_ANON695_03132013_control_Aug6_Rot_15
+     Bias Correction
+(149/270) train vimp2_ANON695_03132013_control_Aug7_Rot_13
+     Bias Correction
+(150/270) train vimp2_ANON702_03152013_control_Aug0_Rot_-2
+     Bias Correction
+(151/270) train vimp2_ANON702_03152013_control_Aug1_Rot_6
+     Bias Correction
+(152/270) train vimp2_ANON702_03152013_control_Aug2_Rot_2
+     Bias Correction
+(153/270) train vimp2_ANON702_03152013_control_Aug3_Rot_-15
+     Bias Correction
+(154/270) train vimp2_ANON702_03152013_control_Aug4_Rot_12
+     Bias Correction
+(155/270) train vimp2_ANON702_03152013_control_Aug5_Rot_-12
+     Bias Correction
+(156/270) train vimp2_ANON702_03152013_control_Aug6_Rot_3
+     Bias Correction
+(157/270) train vimp2_ANON702_03152013_control_Aug7_Rot_8
+     Bias Correction
+(158/270) train vimp2_ANON724_03272013_control_Aug0_Rot_2
+     Bias Correction
+(159/270) train vimp2_ANON724_03272013_control_Aug1_Rot_15
+     Bias Correction
+(160/270) train vimp2_ANON724_03272013_control_Aug2_Rot_-5
+     Bias Correction
+(161/270) train vimp2_ANON724_03272013_control_Aug3_Rot_-10
+     Bias Correction
+(162/270) train vimp2_ANON724_03272013_control_Aug4_Rot_-11
+     Bias Correction
+(163/270) train vimp2_ANON724_03272013_control_Aug5_Rot_-10
+     Bias Correction
+(164/270) train vimp2_ANON724_03272013_control_Aug6_Rot_-7
+     Bias Correction
+(165/270) train vimp2_ANON724_03272013_control_Aug7_Rot_-14
+     Bias Correction
+(166/270) train vimp2_B_Aug0_Rot_-11
+     Bias Correction
+(167/270) train vimp2_B_Aug1_Rot_9
+     Bias Correction
+(168/270) train vimp2_B_Aug2_Rot_-7
+     Bias Correction
+(169/270) train vimp2_B_Aug3_Rot_-1
+     Bias Correction
+(170/270) train vimp2_B_Aug4_Rot_1
+     Bias Correction
+(171/270) train vimp2_B_Aug5_Rot_14
+     Bias Correction
+(172/270) train vimp2_B_Aug6_Rot_0
+     Bias Correction
+(173/270) train vimp2_B_Aug7_Rot_-1
+     Bias Correction
+(174/270) train vimp2_C_Aug0_Rot_-7
+     Bias Correction
+(175/270) train vimp2_C_Aug1_Rot_5
+     Bias Correction
+(176/270) train vimp2_C_Aug2_Rot_-7
+     Bias Correction
+(177/270) train vimp2_C_Aug3_Rot_6
+     Bias Correction
+(178/270) train vimp2_C_Aug4_Rot_13
+     Bias Correction
+(179/270) train vimp2_C_Aug5_Rot_-6
+     Bias Correction
+(180/270) train vimp2_C_Aug6_Rot_10
+     Bias Correction
+(181/270) train vimp2_C_Aug7_Rot_-13
+     Bias Correction
+(182/270) train vimp2_ctrl_902_07052013_SI_Aug0_Rot_12
+     Bias Correction
+(183/270) train vimp2_ctrl_902_07052013_SI_Aug1_Rot_15
+     Bias Correction
+(184/270) train vimp2_ctrl_902_07052013_SI_Aug2_Rot_10
+     Bias Correction
+(185/270) train vimp2_ctrl_902_07052013_SI_Aug3_Rot_6
+     Bias Correction
+(186/270) train vimp2_ctrl_902_07052013_SI_Aug4_Rot_-8
+     Bias Correction
+(187/270) train vimp2_ctrl_902_07052013_SI_Aug5_Rot_5
+     Bias Correction
+(188/270) train vimp2_ctrl_902_07052013_SI_Aug6_Rot_15
+     Bias Correction
+(189/270) train vimp2_ctrl_902_07052013_SI_Aug7_Rot_1
+     Bias Correction
+(190/270) train vimp2_ctrl_918_07112013_TQ_Aug0_Rot_4
+     Bias Correction
+(191/270) train vimp2_ctrl_918_07112013_TQ_Aug1_Rot_-12
+     Bias Correction
+(192/270) train vimp2_ctrl_918_07112013_TQ_Aug2_Rot_14
+     Bias Correction
+(193/270) train vimp2_ctrl_918_07112013_TQ_Aug3_Rot_6
+     Bias Correction
+(194/270) train vimp2_D_Aug0_Rot_5
+     Bias Correction
+(195/270) train vimp2_ctrl_918_07112013_TQ_Aug4_Rot_-8
+     Bias Correction
+(196/270) train vimp2_ctrl_918_07112013_TQ_Aug5_Rot_4
+     Bias Correction
+(197/270) train vimp2_ctrl_918_07112013_TQ_Aug6_Rot_6
+     Bias Correction
+(198/270) train vimp2_ctrl_918_07112013_TQ_Aug7_Rot_-5
+     Bias Correction
+(199/270) train vimp2_ctrl_920_07122013_SW_Aug0_Rot_10
+     Bias Correction
+(200/270) train vimp2_ctrl_920_07122013_SW_Aug1_Rot_4
+     Bias Correction
+(201/270) train vimp2_ctrl_920_07122013_SW_Aug2_Rot_14
+     Bias Correction
+(202/270) train vimp2_ctrl_920_07122013_SW_Aug3_Rot_3
+     Bias Correction
+(203/270) train vimp2_ctrl_920_07122013_SW_Aug4_Rot_-11
+     Bias Correction
+(204/270) train vimp2_ctrl_920_07122013_SW_Aug5_Rot_4
+     Bias Correction
+(205/270) train vimp2_ctrl_920_07122013_SW_Aug6_Rot_14
+     Bias Correction
+(206/270) train vimp2_ctrl_920_07122013_SW_Aug7_Rot_3
+     Bias Correction
+(207/270) train vimp2_ctrl_921_07122013_MP_Aug0_Rot_-4
+     Bias Correction
+(208/270) train vimp2_ctrl_921_07122013_MP_Aug1_Rot_-15
+     Bias Correction
+(209/270) train vimp2_ctrl_921_07122013_MP_Aug2_Rot_-4
+     Bias Correction
+(210/270) train vimp2_ctrl_921_07122013_MP_Aug3_Rot_-10
+     Bias Correction
+(211/270) train vimp2_ctrl_921_07122013_MP_Aug4_Rot_-15
+     Bias Correction
+(212/270) train vimp2_ctrl_921_07122013_MP_Aug5_Rot_-8
+     Bias Correction
+(213/270) train vimp2_ctrl_921_07122013_MP_Aug6_Rot_8
+     Bias Correction
+(214/270) train vimp2_ctrl_921_07122013_MP_Aug7_Rot_7
+     Bias Correction
+(215/270) train vimp2_ctrl_991_08302013_JF_Aug0_Rot_7
+     Bias Correction2019-03-12 20:47:37.093166: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-03-12 20:47:38.066558: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:85:00.0
+totalMemory: 15.89GiB freeMemory: 15.60GiB
+2019-03-12 20:47:38.066619: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-03-12 20:47:38.645289: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-03-12 20:47:38.645359: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-03-12 20:47:38.645372: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-03-12 20:47:38.645904: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:85:00.0, compute capability: 6.0)
+Using TensorFlow backend.
+Loading Dataset: train:   0%|          | 0/270 [00:00<?, ?it/s]Loading Dataset: train:   0%|          | 1/270 [00:00<00:27,  9.92it/s]Loading Dataset: train:   1%|          | 3/270 [00:00<00:26,  9.97it/s]Loading Dataset: train:   1%|▏         | 4/270 [00:00<00:27,  9.55it/s]Loading Dataset: train:   2%|▏         | 5/270 [00:00<00:28,  9.45it/s]Loading Dataset: train:   2%|▏         | 6/270 [00:00<00:30,  8.54it/s]Loading Dataset: train:   3%|▎         | 7/270 [00:00<00:30,  8.66it/s]Loading Dataset: train:   3%|▎         | 8/270 [00:00<00:33,  7.71it/s]Loading Dataset: train:   4%|▎         | 10/270 [00:01<00:29,  8.83it/s]Loading Dataset: train:   4%|▍         | 11/270 [00:01<00:28,  8.97it/s]Loading Dataset: train:   5%|▍         | 13/270 [00:01<00:26,  9.53it/s]Loading Dataset: train:   5%|▌         | 14/270 [00:01<00:27,  9.44it/s]Loading Dataset: train:   6%|▌         | 16/270 [00:01<00:26,  9.71it/s]Loading Dataset: train:   7%|▋         | 18/270 [00:01<00:26,  9.55it/s]Loading Dataset: train:   7%|▋         | 19/270 [00:02<00:26,  9.36it/s]Loading Dataset: train:   7%|▋         | 20/270 [00:02<00:26,  9.52it/s]Loading Dataset: train:   8%|▊         | 22/270 [00:02<00:27,  9.15it/s]Loading Dataset: train:   9%|▊         | 23/270 [00:02<00:26,  9.23it/s]Loading Dataset: train:   9%|▉         | 25/270 [00:02<00:27,  9.06it/s]Loading Dataset: train:  10%|▉         | 26/270 [00:02<00:27,  9.00it/s]Loading Dataset: train:  10%|█         | 27/270 [00:02<00:26,  9.24it/s]Loading Dataset: train:  10%|█         | 28/270 [00:02<00:25,  9.40it/s]Loading Dataset: train:  11%|█         | 29/270 [00:03<00:26,  9.04it/s]Loading Dataset: train:  11%|█         | 30/270 [00:03<00:27,  8.76it/s]Loading Dataset: train:  12%|█▏        | 32/270 [00:03<00:26,  9.10it/s]Loading Dataset: train:  13%|█▎        | 34/270 [00:03<00:24,  9.46it/s]Loading Dataset: train:  13%|█▎        | 35/270 [00:03<00:24,  9.42it/s]Loading Dataset: train:  14%|█▎        | 37/270 [00:03<00:23,  9.73it/s]Loading Dataset: train:  14%|█▍        | 38/270 [00:04<00:24,  9.66it/s]Loading Dataset: train:  15%|█▍        | 40/270 [00:04<00:23,  9.80it/s]Loading Dataset: train:  16%|█▌        | 42/270 [00:04<00:22, 10.08it/s]Loading Dataset: train:  16%|█▋        | 44/270 [00:04<00:22, 10.00it/s]Loading Dataset: train:  17%|█▋        | 46/270 [00:04<00:22,  9.92it/s]Loading Dataset: train:  18%|█▊        | 48/270 [00:05<00:22,  9.84it/s]Loading Dataset: train:  19%|█▊        | 50/270 [00:05<00:21, 10.11it/s]Loading Dataset: train:  19%|█▉        | 52/270 [00:05<00:21, 10.03it/s]Loading Dataset: train:  20%|██        | 54/270 [00:05<00:21, 10.17it/s]Loading Dataset: train:  21%|██        | 56/270 [00:05<00:20, 10.37it/s]Loading Dataset: train:  21%|██▏       | 58/270 [00:05<00:20, 10.53it/s]Loading Dataset: train:  22%|██▏       | 60/270 [00:06<00:19, 10.54it/s]Loading Dataset: train:  23%|██▎       | 62/270 [00:06<00:19, 10.47it/s]Loading Dataset: train:  24%|██▎       | 64/270 [00:06<00:19, 10.69it/s]

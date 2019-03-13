@@ -2,12 +2,12 @@
 readAugments = True
 Model_Method = 'Cascade' #'Hierarchical_Cascade' #
 TestOnly = False
-SubExperiment_Index = 3
+SubExperiment_Index = 4
 mode_saveTrue_LoadFalse = True
 
-dropout = 0.2
+dropout = 0.3
 epochs = 100
-GPU_Index = 4
+GPU_Index = "4,5,6"
 Learning_Rate = 1e-3
 num_Layers = 3
 NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
@@ -27,7 +27,7 @@ DatasetIx = 4
 
 
 #! Training
-batch_size = 100
+batch_size = 70
 Initialize_FromThalamus = False
 Initialize_FromOlderModel = False
 
@@ -99,7 +99,7 @@ AugmentMode = False
 Augment_LinearMode = True
 
 Augment_Rotation = True
-Augment_AngleMax = 7 # 15 #
+Augment_AngleMax = 15 # 15 #
 
 Augment_Shear = False
 Augment_ShearMax = 4

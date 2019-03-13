@@ -457,8 +457,8 @@ def readingFromExperiments(params):
         DataAll = data()
         if trainFlag():
             DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
-            if not params.WhichExperiment.Dataset.HDf5.mode: 
-                DataAll.Train, DataAll.Validation = separateTrainVal_and_concatenateTrain( DataAll.Train_ForTest )
+            # if not params.WhichExperiment.Dataset.HDf5.mode: 
+            DataAll.Train, DataAll.Validation = separateTrainVal_and_concatenateTrain( DataAll.Train_ForTest )
         
         if params.directories.Test.Input.Subjects: DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
 

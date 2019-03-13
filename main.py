@@ -14,7 +14,7 @@ NucleiIndexes = UserInfoB['nucleus_Index']
 
 def gpuSetting(params):
     
-    os.environ["CUDA_VISIBLE_DEVICES"] = "4,6,7" # "params.WhichExperiment.HardParams.Machine.GPU_Index
+    os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
     import tensorflow as tf
     from keras import backend as K
     K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
@@ -61,38 +61,6 @@ def Run(UserInfoB):
     if params.WhichExperiment.HardParams.Model.Method.Type == 'Hierarchical_Cascade': HierarchicalStages(UserInfoB)
     elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': CacadeStages(UserInfoB)
     elif params.WhichExperiment.HardParams.Model.Method.Type == 'singleRun': Run_SingleNuclei(UserInfoB)
-
-# # step 1
-# UserInfoB['dropout'] = 0.3
-# UserInfoB['Augment_Rotation'] = True
-# UserInfoB['Augment_AngleMax'] = 7
-# UserInfoB['Augment_Shear'] = False
-
-# params = paramFunc.Run(UserInfoB)
-
-# datasets.movingFromDatasetToExperiments(params)
-# applyPreprocess.main(params, 'experiment')
-
-# K = gpuSetting(params)
-
-# try:
-#     Run(UserInfoB)
-# except: ''
-
-# # step 2
-# try:
-#     UserInfoB['dropout'] = 0.2
-#     UserInfoB['Augment_Rotation'] = True
-#     UserInfoB['Augment_AngleMax'] = 15
-#     UserInfoB['Augment_Shear'] = False
-#     Run(UserInfoB)
-# except: ''
-
-# step 3
-UserInfoB['dropout'] = 0.2
-UserInfoB['Augment_Rotation'] = False
-UserInfoB['Augment_Shear'] = True
-UserInfoB['Augment_ShearMax'] = 4
 
 params = paramFunc.Run(UserInfoB)
 

@@ -178,7 +178,7 @@ class shear:
 
 class linearAug:
     Mode = True
-    Length = 4
+    Length = 8
     Rotation = rotation
     Shift = shift
     Shear = shear

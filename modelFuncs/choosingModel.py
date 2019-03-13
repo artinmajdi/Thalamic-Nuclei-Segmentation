@@ -182,7 +182,9 @@ def trainingExperiment(Data, params):
         elif params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
             model.load_weights(params.directories.Train.Model + '/model_weights.h5')
 
-        model = multi_gpu_model(model)
+        if len(params.WhichExperiment.HardParams.Machine.GPU_Index) > 1:
+            model = multi_gpu_model(model)
+            
         model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
         
         

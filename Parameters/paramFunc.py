@@ -39,7 +39,11 @@ def Run(UserInfo):
     WhichExperiment.HardParams.Model.epochs       = UserInfo['epochs']
     WhichExperiment.HardParams.Model.InitializeFromThalamus = UserInfo['Initialize_FromThalamus']
     WhichExperiment.HardParams.Model.InitializeFromOlderModel = UserInfo['Initialize_FromOlderModel']
+
+
+
     WhichExperiment.HardParams.Machine.GPU_Index = str(UserInfo['GPU_Index'])
+    print('---------',WhichExperiment.HardParams.Machine.GPU_Index)
 
     if WhichExperiment.HardParams.Model.InitializeFromThalamus and WhichExperiment.HardParams.Model.InitializeFromOlderModel:
         print('WARNING:   initilization can only happen from one source')
