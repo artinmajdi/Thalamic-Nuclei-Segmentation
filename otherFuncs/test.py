@@ -1,14 +1,17 @@
-import numpy as np
-import nibabel as nib
+# import numpy as np
+# import nibabel as nib
 import os, sys
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 from Parameters import UserInfo, paramFunc
-from otherFuncs import smallFuncs
-import pickle
+# from otherFuncs import smallFuncs
+# import pickle
 
+params , User = {}, {}
+for i in range(1,5):
+    UserInfoB = UserInfo.__dict__.copy()
+    UserInfoB['DatasetIx'] = i
+    User[i] = UserInfoB
+    params[i] = paramFunc.Run(UserInfoB)
+    print( params[i].WhichExperiment.Dataset.name )
 
-Dir = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/models/subExp2_MinMax_Cascade_wAug_Loss_BCE_nl3/1-THALAMUS/hist_history.pkl'
-with open(Dir,"rb") as f:
-    data = pickle.load(f)
-
-data.keys()
+print('---')

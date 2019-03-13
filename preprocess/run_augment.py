@@ -1,7 +1,7 @@
 import os, sys
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras/')
 # sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from augmentA import main_augment
+from preprocess import augmentA
 from otherFuncs import smallFuncs
 from Parameters import paramFunc, UserInfo
 
@@ -15,6 +15,6 @@ print('***********' , 'Nuclei:',params.WhichExperiment.Nucleus.name , '  GPU:',p
 
 
 
-main_augment( params , 'Linear', 'experiment')
+augmentA.main_augment( params , 'Linear', 'experiment')
 params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
-main_augment( params , 'NonLinear' , 'experiment')
+augmentA.main_augment( params , 'NonLinear' , 'experiment')

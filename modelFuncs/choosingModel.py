@@ -6,7 +6,6 @@ from keras import layers
 from keras_tqdm import TQDMCallback # , TQDMNotebookCallback
 import numpy as np
 from skimage.filters import threshold_otsu
-from Parameters import paramFunc
 from otherFuncs import smallFuncs, datasets
 from preprocess import croppingA
 from tqdm import tqdm

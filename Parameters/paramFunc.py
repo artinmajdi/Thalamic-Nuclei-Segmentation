@@ -1,29 +1,18 @@
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from modelFuncs import LossFunction, Metrics, Optimizers
-from Parameters import Classes
+# from Parameters import Classes
 from otherFuncs import smallFuncs, datasets
 from copy import deepcopy
 import pandas as pd
-
-
-
-class paramsA:
-    WhichExperiment = Classes.WhichExperiment
-    preprocess      = Classes.preprocess
-    Augment         = Classes.Augment
-    directories     = ''
-    UserInfo        = ''
-             
-
+          
 def Run(UserInfo):
+    
+    class params:
+        WhichExperiment, preprocess, Augment, directories = Classes()
+        UserInfo = ''
 
-    params = deepcopy(paramsA)
-    # UserInfo = deepcopy(UserInfoB)
-
-    WhichExperiment = deepcopy(params.WhichExperiment)
-    preprocess      = deepcopy(params.preprocess)
-    Augment         = deepcopy(params.Augment)
+    WhichExperiment, preprocess, Augment, directories = Classes()
 
     WhichExperiment.address = smallFuncs.mkDir(UserInfo['Experiments_Address'])
 
@@ -31,7 +20,7 @@ def Run(UserInfo):
     WhichExperiment.HardParams.Template.Mask  = UserInfo['Tempalte_Mask']
     WhichExperiment.HardParams.Model.MultiClass.mode = UserInfo['MultiClass_mode']
     WhichExperiment.HardParams.Model.loss, _      = LossFunction.LossInfo(UserInfo['lossFunctionIx'])
-    WhichExperiment.HardParams.Model.Method.Type       = UserInfo['Model_Method']
+    WhichExperiment.HardParams.Model.Method.Type  = UserInfo['Model_Method']
     WhichExperiment.HardParams.Model.metrics, _   = Metrics.MetricInfo(UserInfo['MetricIx'])
     WhichExperiment.HardParams.Model.optimizer, _ = Optimizers.OptimizerInfo(UserInfo['OptimizerIx'], UserInfo['Learning_Rate'])
     WhichExperiment.HardParams.Model.num_Layers   = UserInfo['num_Layers']
@@ -168,3 +157,252 @@ def Run(UserInfo):
         params.WhichExperiment.HardParams.Model.num_Layers = hist_params['num_Layers'][0]
 
     return params
+
+
+
+def Classes():
+
+    # --------------------------------- Model --------------------------------
+
+    class input:
+        address , Subjects = '', {}
+    class train:
+        address , Model, Model_Thalamus, Input   = '' , '' , '' , input()
+
+    class test:
+        address, Result, Input = '' , '', input()
+
+    class Directories:
+        Train, Test = train, test
+
+
+    class template:
+        Image = ''
+        Mask  = ''
+
+    class dropout:
+        Mode = True
+        Value = 0.2
+
+    class kernel_size:
+        conv = (3,3)
+        convTranspose = (2,2)
+        output = (1,1)
+
+    class activation:
+        layers = 'relu'
+        output = 'sigmoid'
+
+    class convLayer:
+        # strides = (1,1)
+        Kernel_size = kernel_size()
+        padding = 'SAME' # valid
+
+    class multiclass:
+        num_classes = ''
+        mode = ''
+
+    class maxPooling:
+        strides = (2,2)
+        pool_size = (2,2)
+
+    class method:
+        Type = 'Hierarchical_Cascade'
+        InitializeMode = False # from 3T or WMn for CSFn
+
+
+    # method.Type
+    # 1. Normal
+    # 2. Cascade
+    # 3. Hierarchical_Cascade    
+
+    class model:
+        architectureType = 'U-Net' 
+        epochs = ''
+        batch_size = ''
+        loss = ''
+        metrics = ''
+        optimizer = ''  # adamax Nadam Adadelta Adagrad  optimizers.adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
+        num_Layers = ''
+        InputDimensions = ''
+        batchNormalization = True # True
+        ConvLayer = convLayer()
+        MaxPooling = maxPooling()
+        Dropout = dropout()
+        Activitation = activation()
+        showHistory = True
+        LabelMaxValue = 1
+        Measure_Dice_on_Train_Data = False
+        MultiClass = multiclass()
+        #! only one of these two can be true at the same time
+        InitializeFromThalamus = ''
+        InitializeFromOlderModel = ''
+        Method = method()
+        paddingErrorPatience = 20
+
+
+    class machine:
+        WhichMachine = 'server'
+        GPU_Index = ''
+
+    class image:
+        # SlicingDirection = 'axial'.lower()
+        SaveMode = 'nifti'.lower()
+
+    class nucleus:
+        Organ = 'THALAMUS' # 'Hippocampus
+        name = ''
+        name_Thalamus = ''
+        FullIndexes = ''
+        Index = ''
+
+
+    class hardParams:
+        Model    = model()
+        Template = template()
+        Machine  = machine()
+        Image    = image()
+
+    class experiment:
+        index = ''
+        tag = ''
+        name = ''
+        address = ''
+
+
+    class subExperiment:
+        index = ''
+        tag = ''
+        name = ''
+        name_thalamus = ''
+
+    # --------------------------------- Dataset --------------------------------
+
+    class validation:
+        percentage = 0.1
+        fromKeras = True
+
+    class testDs:
+        mode = 'percentage' # 'names'
+        percentage = 0.3
+        subjects = ''
+
+    # TODO IMPORT TEST SUBJECTS NAMES AS A LIST
+    if 'names' in testDs.mode: # import testDs.subjects
+        testDs.subjects = list([''])
+
+    class slicingDirection:
+        slicingOrder = [0,1,2]
+        slicingOrder_Reverse = [0,1,2]
+        slicingDim = 2
+
+    class inputPadding:
+        Automatic = True
+        HardDimensions = ''
+
+    class hDF5:
+        mode = False
+        mode_saveTrue_LoadFalse = True
+
+        
+    class readAugmentFn:
+        Mode = False
+        Tag = ''
+    class dataset:
+        name = ''
+        address = ''
+        # CreatingTheExperiment = False
+        Validation = validation()
+        Test = testDs()
+        check_vimp_SubjectName = True
+        randomFlag = False
+        slicingInfo = slicingDirection()
+        gapDilation = 5
+        gapOnSlicingDimention = 2
+        InputPadding = inputPadding()
+        ReadAugments = readAugmentFn()
+        HDf5 = hDF5
+
+
+    class WhichExperiment:
+        Experiment    = experiment()
+        SubExperiment = subExperiment()
+        address = ''
+        Nucleus = nucleus()
+        HardParams = hardParams()
+        Dataset = dataset()
+
+    class reference:
+        name = ''
+        address = ''
+
+    # --------------------------------- Augmentation --------------------------------
+    class rotation:
+        Mode = ''
+        AngleMax = 6
+
+    class shift:
+        Mode = ''
+        ShiftMax = 10
+
+    class shear:
+        Mode = ''
+        ShearMax = 0    
+
+    class linearAug:
+        Mode = True
+        Length = 8
+        Rotation = rotation()
+        Shift = shift()
+        Shear = shear()
+
+    class nonlinearAug:
+        Mode = False
+        Length = 2 
+    class augment:
+        Mode = ''
+        Linear = linearAug()
+        NonLinear = nonlinearAug()
+        # LinearMode = True
+        # LinearAugmentLength = 3  # number
+        # NonLinearAugmentLength = 2
+        # Rotation = rotation
+        # Shift = shift
+        # NonRigidWarp = ''
+
+    # --------------------------------- Preprocess --------------------------------
+    class normalize:
+        Mode = ''
+        Method = 'MinMax'
+
+
+    class cropping:
+        Mode = ''
+        Method = ''
+
+    class biasCorrection:
+        Mode = ''
+
+    # TODO fix the justfornow
+    class debug:
+        doDebug = True
+        PProcessExist = False  # rename it to preprocess exist
+        justForNow = True # it checks the intermediate steps and if it existed don't reproduce it
+
+    class preprocess:
+        Mode = ''    
+        TestOnly = ''
+        Debug = debug()
+        Augment = augment()
+        Cropping = cropping()
+        Normalize = normalize()
+        BiasCorrection = biasCorrection()
+
+
+    return WhichExperiment, preprocess, augment, Directories
+
+    # class trainCase:
+    #     def __init__(self, Image, Mask):
+    #         self.Image = Image
+    #         self.Mask  = Mask
+

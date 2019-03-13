@@ -1,4 +1,6 @@
 
+import tensorflow as tf
+
 def MetricInfo(Metric_Index):
     switcher = {
         1: (Dice_Calculator, 'Dice'),
@@ -8,11 +10,7 @@ def MetricInfo(Metric_Index):
     return switcher.get(Metric_Index, 'WARNING: Invalid metric index')
 
 
-
 def Dice_Calculator(y_true,y_pred):
-
-    import tensorflow as tf
-
 
     Dice = 0
     nmCl = y_pred.shape[3] - 1

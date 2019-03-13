@@ -1,6 +1,6 @@
 
-readAugments = True
-Model_Method = 'Cascade' #'Hierarchical_Cascade' #
+readAugments = False
+Model_Method = 'Hierarchical_Cascade' #'Cascade' #
 TestOnly = False
 SubExperiment_Index = 444
 mode_saveTrue_LoadFalse = True
