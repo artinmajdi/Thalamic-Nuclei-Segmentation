@@ -10,10 +10,10 @@ from skimage import measure
 from copy import deepcopy
 import pandas as pd
 import pickle
-# import mat4py 
+# import mat4py
 
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
-def NucleiSelection(ind = 1,organ = 'THALAMUS'):
+def NucleiSelection(ind = 1):
 
     def func_NucleusName(ind):
         if ind in range(20):
@@ -42,16 +42,16 @@ def NucleiSelection(ind = 1,organ = 'THALAMUS'):
             elif ind == 13:
                 NucleusName = '13-Hb'
             elif ind == 14:
-                NucleusName = '14-MTT'    
+                NucleusName = '14-MTT'
         else:
             if ind == 1.1:
-                NucleusName = 'lateral_ImClosed'  
+                NucleusName = 'lateral_ImClosed'
             elif ind == 1.2:
                 NucleusName = 'posterior_ImClosed'
             elif ind == 1.3:
-                NucleusName = 'Medial_ImClosed'  
+                NucleusName = 'Medial_ImClosed'
             elif ind == 1.4:
-                NucleusName = 'Anterior_ImClosed'                  
+                NucleusName = 'Anterior_ImClosed'
             elif ind == 1.9:
                 NucleusName = 'HierarchicalCascade'
 
@@ -67,9 +67,9 @@ def NucleiSelection(ind = 1,organ = 'THALAMUS'):
         elif ind == 1.3:
             return [11,12,13]
         elif ind == 1.4:
-            return [2]   
+            return [2]
         elif ind == 1.9:
-            return [1.1 , 1.2 , 1.3 , 1.4] 
+            return [1.1 , 1.2 , 1.3 , 1.4]
 
     name = func_NucleusName(ind)
     FullIndexes = func_FullIndexes(ind)
@@ -103,7 +103,7 @@ def terminalEntries(UserInfo):
         if entry.lower() in ('-g','--gpu'):  # gpu num
             UserInfo['GPU_Index'] = sys.argv[en+1]
 
-        elif entry.lower() in ('-sd','--slicingdim'):            
+        elif entry.lower() in ('-sd','--slicingdim'):
             if sys.argv[en+1].lower() == 'all':
                 UserInfo['slicingDim'] = [0,1,2]
 
@@ -117,11 +117,11 @@ def terminalEntries(UserInfo):
         elif entry in ('-Aug','--AugmentMode'):
             a = int(sys.argv[en+1])
             UserInfo['AugmentMode'] = True if a > 0 else False
-            
+
 
         elif entry.lower() in ('-n','--nuclei'):  # nuclei index
             if sys.argv[en+1].lower() == 'all':
-                _, UserInfo['nucleus_Index'],_ = NucleiSelection(ind = 1,organ = 'THALAMUS')
+                _, UserInfo['nucleus_Index'],_ = NucleiSelection(ind = 1)
 
             elif sys.argv[en+1][0] == '[':
                 B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
@@ -145,10 +145,10 @@ def terminalEntries(UserInfo):
         elif entry.lower() in ('-Ix','--Experiments_Index'):
             UserInfo['Experiments_Index'] = int(sys.argv[en+1])
         elif entry.lower() in ('-lr','--Learning_Rate'):
-            UserInfo['Learning_Rate'] = float(sys.argv[en+1]) 
+            UserInfo['Learning_Rate'] = float(sys.argv[en+1])
         elif entry.lower() in ('-nl','--num_Layers'):
-            UserInfo['num_Layers'] = int(sys.argv[en+1]) 
-            
+            UserInfo['num_Layers'] = int(sys.argv[en+1])
+
 
     return UserInfo
 
@@ -188,16 +188,16 @@ def search_ExperimentDirectory(whichExperiment):
                 PadSizeBackToOrig = ''
 
             class Files:
-                ImageOriginal = '' 
+                ImageOriginal = ''
                 ImageProcessed = ''
                 Label = label
                 Temp = temp
                 address = Dir
-                NewCropInfo = newCropInfo     
-                subjectName = ''    
+                NewCropInfo = newCropInfo
+                subjectName = ''
 
             return Files
-        
+
         def Look_Inside_Label_SF(Files, NucleusName):
             Files.Label.Temp.address = mkDir(Files.Label.address + '/temp')
             A = next(os.walk(Files.Label.address))
@@ -205,14 +205,14 @@ def search_ExperimentDirectory(whichExperiment):
                 if NucleusName + '_PProcessed.nii.gz' in s: Files.Label.LabelProcessed = splitNii(s)
                 if NucleusName + '.nii.gz' in s: Files.Label.LabelOriginal = splitNii(s)
 
-            if Files.Label.LabelOriginal and not Files.Label.LabelProcessed: 
+            if Files.Label.LabelOriginal and not Files.Label.LabelProcessed:
                 Files.Label.LabelProcessed = NucleusName + '_PProcessed'
-                _, _, FullNames = NucleiSelection(ind=1,organ='THALAMUS')
+                _, _, FullNames = NucleiSelection(ind=1)
                 for name in FullNames: copyfile(Files.Label.address + '/' + name + '.nii.gz' , Files.Label.address + '/' + name + '_PProcessed.nii.gz')
-                
+
 
             for s in A[1]:
-                if 'temp' in s: 
+                if 'temp' in s:
                     Files.Label.Temp.address = Files.Label.address + '/' + s
 
                     for d in os.listdir(Files.Label.Temp.address):
@@ -222,7 +222,7 @@ def search_ExperimentDirectory(whichExperiment):
                 elif 'Label' in s: Files.Label.address = Dir + '/' + s
 
             return Files
-                
+
         def Look_Inside_Temp_SF(Files):
             A = next(os.walk(Files.Temp.address))
             for s in A[2]:
@@ -230,7 +230,7 @@ def search_ExperimentDirectory(whichExperiment):
                 elif 'bias_corr.nii.gz' in s: Files.Temp.BiasCorrected = splitNii(s)
                 elif 'bias_corr_Cropped.nii.gz' in s: Files.Temp.Cropped = splitNii(s)
                 else: Files.Temp.origImage = splitNii(s)
-            
+
             if 'deformation' in A[1]:
                 Files.Temp.Deformation.address = Files.Temp.address + '/deformation'
                 B = next(os.walk(Files.Temp.Deformation.address))
@@ -238,7 +238,7 @@ def search_ExperimentDirectory(whichExperiment):
                     if 'testWarp.nii.gz' in s: Files.Temp.Deformation.testWarp = splitNii(s)
                     elif 'testInverseWarp.nii.gz' in s: Files.Temp.Deformation.testInverseWarp = splitNii(s)
                     elif 'testAffine.txt' in s: Files.Temp.Deformation.testAffine = splitNii(s)
-            
+
             if not Files.Temp.Deformation.address: Files.Temp.Deformation.address = mkDir(Files.Temp.address + '/deformation')
 
             return Files
@@ -249,29 +249,29 @@ def search_ExperimentDirectory(whichExperiment):
                 if 'PProcessed.nii.gz' in s: Files.ImageProcessed = splitNii(s)
                 if '.nii.gz' in s and 'PProcessed.nii.gz' not in s: Files.ImageOriginal = splitNii(s)
 
-            if Files.ImageOriginal or Files.ImageProcessed:                
+            if Files.ImageOriginal or Files.ImageProcessed:
                 for s in A[1]:
                     if 'temp' in s: Files.Temp.address = mkDir(Dir + '/' + s)
                     elif 'Label' in s: Files.Label.address = Dir + '/' + s
 
-                if Files.ImageOriginal and not Files.ImageProcessed: 
+                if Files.ImageOriginal and not Files.ImageProcessed:
                     Files.ImageProcessed = 'PProcessed'
-                    copyfile(Dir + '/' + Files.ImageOriginal + '.nii.gz' , Dir + '/' + Files.ImageProcessed + '.nii.gz')               
-            
+                    copyfile(Dir + '/' + Files.ImageOriginal + '.nii.gz' , Dir + '/' + Files.ImageProcessed + '.nii.gz')
+
             if not Files.Temp.address: Files.Temp.address = mkDir(Dir + '/temp')
-            
+
             return Files
-                    
+
         Files = Classes_Local(Dir)
         Files = check_IfImageFolder(Files)
 
         if Files.ImageOriginal or Files.ImageProcessed:
             if os.path.exists(Files.Label.address): Files = Look_Inside_Label_SF(Files, NucleusName)
             if os.path.exists(Files.Temp.address):  Files = Look_Inside_Temp_SF(Files)
-                    
+
         return Files
 
-    def checkInputDirectory(Dir, NucleusName):               
+    def checkInputDirectory(Dir, NucleusName):
         class Input:
             address = os.path.abspath(Dir)
             Subjects = {}
@@ -281,7 +281,7 @@ def search_ExperimentDirectory(whichExperiment):
 
             if whichExperiment.Dataset.check_vimp_SubjectName: SubjectsList = [s for s in SubjectsList if 'vimp' in s]
 
-            for s in SubjectsList:                 
+            for s in SubjectsList:
                 Inputt.Subjects[s] = Search_ImageFolder(Dirr + '/' + s , NucleusName)
                 Inputt.Subjects[s].subjectName = s
 
@@ -294,7 +294,7 @@ def search_ExperimentDirectory(whichExperiment):
 
 
         return Input
-        
+
     class train:
         address = mkDir(whichExperiment.Experiment.address + '/train')
         Model   = mkDir(whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name + '/' + whichExperiment.Nucleus.name)
@@ -342,7 +342,7 @@ def Loading_UserInfo(DirLoad, method):
             return loadPickle(DirSave + '/' + name + '.pkl')
         # elif 'mat' in method:
             # return mat4py.loadmat(DirSave + '/' + name + '.pkl')
-                   
+
     def dict2obj(d):
         if isinstance(d, list):
             d = [dict2obj(x) for x in d]
@@ -377,5 +377,5 @@ def findBoundingBox(PreStageMask):
         bbox = objects[0].bbox
 
     BB = [ [bbox[d] , bbox[L + d] ] for d in range(L)]
-                    
+
     return BB

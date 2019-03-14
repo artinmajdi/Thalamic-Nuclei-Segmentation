@@ -1,9 +1,10 @@
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname('/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/run_datasets.py')))
-from otherFuncs import smallFuncs, datasets
-from Parameters import paramFunc
-from Parameters import UserInfo
-from preprocess import applyPreprocess
+import otherFuncs.smallFuncs as smallFuncs
+import otherFuncs.datasets as datasets
+import Parameters.paramFunc as paramFunc
+import Parameters.UserInfo as UserInfo
+import preprocess.applyPreprocess as applyPreprocess
 import h5py
 import numpy as np
 

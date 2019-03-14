@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
 from shutil import copyfile
-from otherFuncs import smallFuncs
+import otherFuncs.smallFuncs as smallFuncs
 import nibabel as nib
 from skimage import measure
 
@@ -61,7 +61,7 @@ def func_cropImage(params, subject):
         return inP, outP, outDebug 
 
     def directoriesNuclei(subject, ind):
-        NucleusName, _, _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
+        NucleusName, _, _ = smallFuncs.NucleiSelection(ind )
         inP = outP = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
         outDebug = subject.Label.Temp.address + '/' + NucleusName + '_Cropped.nii.gz'
         return inP, outP, outDebug

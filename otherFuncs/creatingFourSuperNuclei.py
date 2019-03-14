@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os, sys
 # sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from otherFuncs import smallFuncs
+import otherFuncs.smallFuncs as smallFuncs
 from scipy import ndimage
 
 def applyMain(Dir,mode):
@@ -18,12 +18,12 @@ def applyMain(Dir,mode):
                 self.FullNames = FullNames
 
 
-        _, HierarchicalIndexes, HierarchicalNames = smallFuncs.NucleiSelection(ind=1.9,organ='THALAMUS')
+        _, HierarchicalIndexes, HierarchicalNames = smallFuncs.NucleiSelection(ind=1.9)
         HierarchicalNames = [nm.split('_ImClosed')[0] for nm in HierarchicalNames]
         
         Names = dict()
         for ix in HierarchicalIndexes:
-            name, fullIndexes, FullNames = smallFuncs.NucleiSelection(ind=ix,organ='THALAMUS')
+            name, fullIndexes, FullNames = smallFuncs.NucleiSelection(ind=ix)
             if '_ImClosed' in name: name = name.split('_ImClosed')[0]
             Names[name] = inputInfo(fullIndexes=fullIndexes, FullNames=FullNames)
 
@@ -57,7 +57,7 @@ def applyMain(Dir,mode):
 
         def ImClosingAllNuclei():
             print('    ImClosing All Nuclei')
-            _, _, AllNames = smallFuncs.NucleiSelection(ind=1,organ='THALAMUS')
+            _, _, AllNames = smallFuncs.NucleiSelection(ind=1)
             for name in AllNames:
                 msk = nib.load(Directory + name + mode + '.nii.gz').get_data()            
                 smallFuncs.saveImage( closeMask(msk > 0) , im.affine , im.header, Directory + 'ImClosed/' + name + '_ImClosed' + mode + '.nii.gz')

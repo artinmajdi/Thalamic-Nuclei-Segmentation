@@ -4,7 +4,8 @@ from keras import models as kerasmodels
 from keras import layers, losses, optimizers
 import numpy as np
 from skimage.filters import threshold_otsu
-from otherFuncs import smallFuncs, datasets
+import otherFuncs.smallFuncs as smallFuncs
+import otherFuncs.datasets as datasets
 import nibabel as nib
 from scipy import ndimage
 from shutil import copyfile
@@ -55,16 +56,16 @@ def func_params():
         metrics = ['acc',Dice_Calculator]
         downsampleFactor = 3
 
-    class trainTest:
+    class dataClass:
         Subjects = {}
         Address = ''
 
     class trainTest:
-        Train = trainTest()
-        Test = trainTest()
+        Train = dataClass()
+        Test = dataClass()
 
     class params:
-        Input = trainTest()
+        Input = dataClass()
         Address = '/array/ssd/msmajdi/experiments/keras/exp_cropping'
         Modelparam = modelparam
 

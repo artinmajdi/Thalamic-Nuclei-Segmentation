@@ -38,6 +38,8 @@ def loadModel(params):
     model = architecture(params)
     model.load_weights(params.directories.Train.Model + '/model_weights.h5')
 
+    # model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')    
+
     ModelParam = params.WhichExperiment.HardParams.Model
     model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
     return model
@@ -81,10 +83,12 @@ def testingExeriment(model, Data, params):
         def applyPrediction():
 
             num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes
+            if not params.WhichExperiment.HardParams.Model.Method.havingBackGround_AsExtraDimension: 
+                num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes + 1
+                            
             def loopOver_AllClasses_postProcessing(pred):
 
-                # TODO "pred1N_BtO" needs to concatenate for different classes
-
+                # TODO "pred1N_BtO" needs to concatenate for different classes                    
                 Dice = np.zeros((num_classes-1,2))
                 for cnt in range(num_classes-1):
 
@@ -93,7 +97,7 @@ def testingExeriment(model, Data, params):
                     dirSave, nucleusName = savingOutput(pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
 
                 Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.MultiClass.mode else dirSave + '/Dice_' + nucleusName + '.txt'
-                np.savetxt(Dir_Dice ,Dice)
+                np.savetxt(Dir_Dice ,Dice,fmt='%1.1f %1.4f')
                 return pred1N_BtO
 
             def unPadding(im , pad):
@@ -113,9 +117,9 @@ def testingExeriment(model, Data, params):
 
                 return im
 
-            pred = model.predict(DataSubj.Image)
+            predF = model.predict(DataSubj.Image)
             # score = model.evaluate(DataSubj.Image, DataSubj.Mask)
-            pred = pred[...,:num_classes-1]
+            pred = predF[...,:num_classes-1]
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
             pred = np.transpose(pred,[1,2,0,3])
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
@@ -180,6 +184,8 @@ def trainingExperiment(Data, params):
             model.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
         elif params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
             model.load_weights(params.directories.Train.Model + '/model_weights.h5')
+        # elif params.WhichExperiment.HardParams.Model.Method.InitializeFromReference and 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and os.path.exists(params.directories.Train.Model + '/model_weights.h5')  :
+        #     print('--')
 
         if len(params.WhichExperiment.HardParams.Machine.GPU_Index) > 1:
             model = multi_gpu_model(model)
@@ -189,6 +195,7 @@ def trainingExperiment(Data, params):
         
         
         # if the shuffle argument in model.fit is set to True (which is the default), the training data will be randomly shuffled at each epoch.
+        # class_weights = params.WhichExperiment.HardParams.Model.class_weight
         if params.WhichExperiment.Dataset.Validation.fromKeras:
             hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=1) # , callbacks=[TQDMCallback()])
         else:
@@ -244,10 +251,10 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
 
         def cropBoundingBoxes(PreStageMask):
 
-            def dilateMask(mask, gapDilation):
-                struc = ndimage.generate_binary_structure(3,2)
-                struc = ndimage.iterate_structure(struc,gapDilation)
-                return ndimage.binary_dilation(mask, structure=struc)
+            # def dilateMask(mask, gapDilation):
+            #     struc = ndimage.generate_binary_structure(3,2)
+            #     struc = ndimage.iterate_structure(struc,gapDilation)
+            #     return ndimage.binary_dilation(mask, structure=struc)
 
             def checkBordersOnBoundingBox(imFshape , BB , gapOnSlicingDimention):
                 return [   [   np.max([BB[d][0]-gapOnSlicingDimention,0])  ,   np.min( [BB[d][1]+gapOnSlicingDimention,imFshape[d]])   ]  for d in range(3) ]
@@ -294,8 +301,6 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
     loopOverSubjects(CascadePreStageMasks.Test, 'test')
     loopOverSubjects(CascadePreStageMasks.Train, 'train')
 
-
-# ! U-Net Architecture
 def architecture(params):
 
     def UNet(Modelparam):

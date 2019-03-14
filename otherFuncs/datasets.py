@@ -5,8 +5,9 @@ from tqdm import tqdm, trange
 import nibabel as nib
 import shutil 
 import os, sys
-from otherFuncs import smallFuncs
-from preprocess import normalizeA, applyPreprocess
+import otherFuncs.smallFuncs as smallFuncs
+import preprocess.normalizeA as normalizeA
+import preprocess.applyPreprocess as applyPreprocess
 import matplotlib.pyplot as plt
 from scipy import ndimage
 from shutil import copyfile
@@ -138,29 +139,16 @@ def paddingNegativeFix(sz, Padding):
 def readingWithTranpose(Dirr , params):
     ImageF = nib.load( Dirr)
     return ImageF, np.transpose(ImageF.get_data() , params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
+
+
         
+
 # TODO: add the saving images with the format mahesh said
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments(params):
-          
-    def cascadeRefMask():
+              
+    NameCascadeMask = params.WhichExperiment.HardParams.Model.Method.ReferenceMask
 
-        if params.WhichExperiment.HardParams.Model.Method.Type == 'Hierarchical_Cascade':
-            nameB, posterior_Indexes, _ = smallFuncs.NucleiSelection(ind = 1.1,organ = 'THALAMUS')
-            nameC, lateral_Indexes  , _ = smallFuncs.NucleiSelection(ind = 1.2,organ = 'THALAMUS')
-
-            if params.WhichExperiment.Nucleus.Index[0] in [1.1, 1.2, 2, 12, 13, 14]:
-                NameCascadeMask = '1-THALAMUS' 
-            elif params.WhichExperiment.Nucleus.Index[0] in posterior_Indexes:
-                NameCascadeMask = nameB 
-            elif params.WhichExperiment.Nucleus.Index[0] in lateral_Indexes:
-                NameCascadeMask = nameC
-            
-        else: # elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade':
-            NameCascadeMask = '1-THALAMUS' 
-
-        return NameCascadeMask
-                
     def inputPreparationForUnet(im,subject2, params):
 
         def CroppingInput(im, Padding2):
@@ -200,16 +188,18 @@ def readingFromExperiments(params):
             Dirr = params.directories.Test.Result 
             if 'train' in mode: Dirr += '/TrainData_Output'
 
-            _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + cascadeRefMask() + '.nii.gz' , params)
+            _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + NameCascadeMask + '.nii.gz' , params)
+            # _, manualLabel = readingWithTranpose(subject2.Label.address + '/' + NameCascadeMask + '_PProcessed.nii.gz' , params)
 
             Cascade_Mask_Dilated = dilateMask(Cascade_Mask)
+            # imm2 = imm.copy() + 400*Cascade_Mask
             imm[Cascade_Mask_Dilated == 0] = 0
             return imm
                     
         imF, im = readingWithTranpose(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz' , params)
 
         if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index: 
-            im = apply_Cascade_PreFinalStageMask_OnImage( im )
+            im = apply_Cascade_PreFinalStageMask_OnImage( im)
             
         im = inputPreparationForUnet(im, subject2, params)
         im = normalizeA.main_normalize(params.preprocess.Normalize , im)
@@ -242,8 +232,9 @@ def readingFromExperiments(params):
             origMsk = origMsk1N if cnt == 0 else np.concatenate((origMsk, origMsk1N) ,axis=3).astype('float32')
             msk = msk1N if cnt == 0 else np.concatenate((msk,msk1N),axis=3).astype('float32')
 
-        background = backgroundDetector(msk)
-        msk = np.concatenate((msk, background),axis=3).astype('float32')
+        if params.WhichExperiment.HardParams.Model.Method.havingBackGround_AsExtraDimension:
+            background = backgroundDetector(msk)
+            msk = np.concatenate((msk, background),axis=3).astype('float32')
         
         return origMsk , msk
             
@@ -310,7 +301,7 @@ def readingFromExperiments(params):
                     dirr = params.directories.Test.Result 
                     if 'train' in mode: dirr += '/TrainData_Output'
                                                                     
-                    BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_' + cascadeRefMask() + '.txt',dtype=int)
+                    BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_' + NameCascadeMask + '.txt',dtype=int)
                     BB = BBf[:,:2]
                     BBd = BBf[:,2:]
                     
@@ -539,7 +530,7 @@ def movingFromDatasetToExperiments(params):
         _, TestList = percentageDivide(TestParams.percentage, List, params.WhichExperiment.Dataset.randomFlag) if 'percentage' in TestParams.mode else TestParams.subjects
         for subject in List:
 
-            DirOut, mode = (params.directories.Test.address , 'test') if subject in TestList else (params.directories.Train.address, 'train')
+            DirOut, _ = (params.directories.Test.address , 'test') if subject in TestList else (params.directories.Train.address, 'train')
 
             if not os.path.exists(DirOut + '/' + subject):
                 shutil.copytree(params.WhichExperiment.Dataset.address + '/' + subject  ,  DirOut + '/' + subject)

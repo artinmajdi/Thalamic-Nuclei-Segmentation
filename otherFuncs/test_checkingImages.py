@@ -4,8 +4,9 @@ import nibabel as nib
 import os, sys
 # sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from Parameters import UserInfo, paramFunc
-# from otherFuncs import smallFuncs
+import Parameters.UserInfo as UserInfo
+import Parameters.paramFunc as paramFunc
+# import otherFuncs.smallFuncs as smallFuncs
 from skimage import measure
 
 # from scipy import ndimage
@@ -17,7 +18,7 @@ param = paramFunc.Run(UserInfo.__dict__)
 subejcts = param.directories.Test.Input.Subjects
 
 def showw(label):
-    # label,_ , _ = smallFuncs.NucleiSelection(ind=1,organ='THALAMUS')
+    # label,_ , _ = smallFuncs.NucleiSelection(ind=1)
     im = nib.load('/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/test/vimp2_K/PProcessed.nii.gz').get_data()
     msk = nib.load('/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/test/vimp2_K/Label/' + label + '_PProcessed.nii.gz').get_data()
     pred = nib.load('/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/results/subExp2_MinMax_wAug_Loss_BCE_nl3/vimp2_L/' + label + '.nii.gz').get_data()

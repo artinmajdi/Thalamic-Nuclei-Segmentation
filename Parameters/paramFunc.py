@@ -1,8 +1,12 @@
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from modelFuncs import LossFunction, Metrics, Optimizers
+import modelFuncs.LossFunction as LossFunction
+import modelFuncs.Metrics as Metrics
+import modelFuncs.Optimizers as Optimizers
 # from Parameters import Classes
-from otherFuncs import smallFuncs, datasets
+import otherFuncs.smallFuncs as smallFuncs
+import otherFuncs.datasets as datasets
+
 from copy import deepcopy
 import pandas as pd
           
@@ -28,7 +32,7 @@ def Run(UserInfo):
     WhichExperiment.HardParams.Model.epochs       = UserInfo['epochs']
     WhichExperiment.HardParams.Model.InitializeFromThalamus = UserInfo['Initialize_FromThalamus']
     WhichExperiment.HardParams.Model.InitializeFromOlderModel = UserInfo['Initialize_FromOlderModel']
-
+    WhichExperiment.HardParams.Model.class_weight = UserInfo['class_weights']
 
 
     WhichExperiment.HardParams.Machine.GPU_Index = str(UserInfo['GPU_Index'])
@@ -75,41 +79,22 @@ def Run(UserInfo):
     WhichExperiment.Experiment.address = smallFuncs.mkDir(WhichExperiment.address + '/' + WhichExperiment.Experiment.name)
     # _, B = LossFunction.LossInfo(UserInfo['lossFunctionIx'])
 
-
-    def subExperimentName():
-
-        readAugmentTag = ''
-        if UserInfo['Augment_Rotation']: readAugmentTag = 'wRot'   + str(UserInfo['Augment_AngleMax'])
-        elif UserInfo['Augment_Shear']:  readAugmentTag = 'wShear' + str(UserInfo['Augment_ShearMax'])   
-        elif UserInfo['Augment_Shift']:  readAugmentTag = 'wShift' + str(UserInfo['Augment_ShiftMax'])  
-
-        
-        WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag']
-        
-        if readAugmentTag: WhichExperiment.SubExperiment.tag += '_Aug_' + readAugmentTag
-            
-        if int(UserInfo['slicingDim']) != 2:
-            WhichExperiment.SubExperiment.tag += '_sd' + str(UserInfo['slicingDim'])
-
-        WhichExperiment.SubExperiment.tag += '_DrpOt' + str(UserInfo['dropout'])
-
-        WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) +  '_' + WhichExperiment.SubExperiment.tag 
-
-        return readAugmentTag
-
-    readAugmentTag = subExperimentName()
+    readAugmentTag, WhichExperiment = subExperimentName(UserInfo, WhichExperiment)
 
     # TODO I need to fix this to count for multiple nuclei
     WhichExperiment.Nucleus.Index = UserInfo['nucleus_Index'] if isinstance(UserInfo['nucleus_Index'],list) else [UserInfo['nucleus_Index']]
     
-    WhichExperiment.Nucleus.name_Thalamus, WhichExperiment.Nucleus.FullIndexes, _ = smallFuncs.NucleiSelection( 1 , WhichExperiment.Nucleus.Organ)
+    WhichExperiment.Nucleus.name_Thalamus, WhichExperiment.Nucleus.FullIndexes, _ = smallFuncs.NucleiSelection( 1 )
     if len(WhichExperiment.Nucleus.Index) == 1 or not WhichExperiment.HardParams.Model.MultiClass.mode:
-        WhichExperiment.Nucleus.name , _, _ = smallFuncs.NucleiSelection( WhichExperiment.Nucleus.Index[0] , WhichExperiment.Nucleus.Organ)
+        WhichExperiment.Nucleus.name , _, _ = smallFuncs.NucleiSelection( WhichExperiment.Nucleus.Index[0] )
     else:
         WhichExperiment.Nucleus.name = ('MultiClass_' + str(WhichExperiment.Nucleus.Index)).replace(', ','_').replace('[','').replace(']','')
 
-
-    WhichExperiment.HardParams.Model.MultiClass.num_classes = len(WhichExperiment.Nucleus.Index) + 1 if WhichExperiment.HardParams.Model.MultiClass.mode else 2
+    WhichExperiment.HardParams.Model.Method.havingBackGround_AsExtraDimension = UserInfo['havingBackGround_AsExtraDimension']
+    if UserInfo['havingBackGround_AsExtraDimension']:
+        WhichExperiment.HardParams.Model.MultiClass.num_classes = len(WhichExperiment.Nucleus.Index) + 1 if WhichExperiment.HardParams.Model.MultiClass.mode else 2
+    else:
+        WhichExperiment.HardParams.Model.MultiClass.num_classes = len(WhichExperiment.Nucleus.Index) if WhichExperiment.HardParams.Model.MultiClass.mode else 1
 
     WhichExperiment.Dataset.InputPadding.Automatic = UserInfo['InputPadding_Automatic']
     WhichExperiment.Dataset.InputPadding.HardDimensions = UserInfo['InputPadding_HardDimensions']
@@ -143,6 +128,10 @@ def Run(UserInfo):
     
     WhichExperiment.HardParams.Model.Dropout.Value = UserInfo['dropout']
 
+    AAA = ReferenceForCascadeMethod(WhichExperiment.HardParams.Model.Method.Type)
+    WhichExperiment.HardParams.Model.Method.ReferenceMask = AAA[WhichExperiment.Nucleus.Index[0]]
+
+
     params.WhichExperiment = WhichExperiment
     params.preprocess      = preprocess
     params.directories     = directories
@@ -158,6 +147,54 @@ def Run(UserInfo):
 
     return params
 
+def subExperimentName(UserInfo, WhichExperiment):
+
+    readAugmentTag = ''
+    if UserInfo['Augment_Rotation']: readAugmentTag = 'wRot'   + str(UserInfo['Augment_AngleMax'])
+    elif UserInfo['Augment_Shear']:  readAugmentTag = 'wShear' + str(UserInfo['Augment_ShearMax'])   
+    elif UserInfo['Augment_Shift']:  readAugmentTag = 'wShift' + str(UserInfo['Augment_ShiftMax'])  
+
+    
+    WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag']
+    
+    if readAugmentTag: WhichExperiment.SubExperiment.tag += '_Aug_' + readAugmentTag
+        
+    if int(UserInfo['slicingDim']) != 2:
+        WhichExperiment.SubExperiment.tag += '_sd' + str(UserInfo['slicingDim'])
+
+    WhichExperiment.SubExperiment.tag += '_DrpOt' + str(UserInfo['dropout'])
+
+    WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) +  '_' + WhichExperiment.SubExperiment.tag 
+
+    return readAugmentTag, WhichExperiment
+    
+def ReferenceForCascadeMethod(ModelIdea):
+
+    _ , fullIndexes, _ = smallFuncs.NucleiSelection(ind=1)
+    referenceLabel = {}  
+
+    if ModelIdea == 'Hierarchical_Cascade':
+
+        Name, Indexes = {}, {}
+        for i in [1.1, 1.2, 1.3]:  
+            Name[i], Indexes[i], _ = smallFuncs.NucleiSelection(ind=i)
+
+        for ixf in tuple(fullIndexes) + tuple([1.1, 1.2, 1.3]):
+
+            if ixf in Indexes[1.1]: referenceLabel[ixf] = Name[1.1]
+            elif ixf in Indexes[1.2]: referenceLabel[ixf] = Name[1.2]
+            elif ixf in Indexes[1.3]: referenceLabel[ixf] = Name[1.3]
+            elif ixf == 1: referenceLabel[ixf] = 'None'
+            else: referenceLabel[ixf] = '1-THALAMUS'
+
+
+    elif ModelIdea == 'Cascade':
+        for ix in fullIndexes: referenceLabel[ix] = '1-THALAMUS' if ix != 1 else 'None'
+
+    else:
+        for ix in fullIndexes: referenceLabel[ix] = 'None'
+
+    return referenceLabel
 
 
 def Classes():
@@ -206,15 +243,20 @@ def Classes():
         strides = (2,2)
         pool_size = (2,2)
 
+
     class method:
-        Type = 'Hierarchical_Cascade'
-        InitializeMode = False # from 3T or WMn for CSFn
+        Type = ''
+        InitializeFromReference = True # from 3T or WMn for CSFn
+        ReferenceMask = ''
+        havingBackGround_AsExtraDimension = True
 
 
     # method.Type
     # 1. Normal
     # 2. Cascade
     # 3. Hierarchical_Cascade    
+
+
 
     class model:
         architectureType = 'U-Net' 
@@ -232,6 +274,7 @@ def Classes():
         Activitation = activation()
         showHistory = True
         LabelMaxValue = 1
+        class_weight = {}
         Measure_Dice_on_Train_Data = False
         MultiClass = multiclass()
         #! only one of these two can be true at the same time
@@ -239,6 +282,7 @@ def Classes():
         InitializeFromOlderModel = ''
         Method = method()
         paddingErrorPatience = 20
+        
 
 
     class machine:
@@ -332,9 +376,7 @@ def Classes():
         HardParams = hardParams()
         Dataset = dataset()
 
-    class reference:
-        name = ''
-        address = ''
+
 
     # --------------------------------- Augmentation --------------------------------
     class rotation:

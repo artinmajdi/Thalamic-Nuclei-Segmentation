@@ -4,8 +4,8 @@ import numpy as np
 from random import shuffle
 from scipy.misc import imrotate
 import nibabel as nib
-from preprocess import BashCallingFunctionsA
-from otherFuncs import smallFuncs
+import preprocess.BashCallingFunctionsA as BashCallingFunctionsA
+import otherFuncs.smallFuncs as smallFuncs
 import os
 import skimage
 import numpy as np

@@ -1,15 +1,19 @@
 import os, sys
 # sys.path.append(os.path.dirname(__file__))
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-from otherFuncs import smallFuncs, datasets, Extra_mergingResults
+import otherFuncs.smallFuncs as smallFuncs
+import otherFuncs.datasets as datasets
+import otherFuncs.Extra_mergingResults as Extra_mergingResults
+
 import nibabel as nib
 import numpy as np
-from Parameters import UserInfo, paramFunc
+import Parameters.UserInfo as UserInfo
+import Parameters.paramFunc as paramFunc
 from tqdm import tqdm
 
 def runOneExperiment(UserInfoB):
 
-    _, FullIndexes,_ = smallFuncs.NucleiSelection(ind = 1,organ = 'THALAMUS')
+    _, FullIndexes,_ = smallFuncs.NucleiSelection(ind = 1)
 
     UserInfoB['slicingDim'] = 2
     params = paramFunc.Run(UserInfoB)
@@ -26,7 +30,7 @@ def runOneExperiment(UserInfoB):
         subject = params.directories.Test.Input.Subjects[sj]
 
         for nucleiIx in FullIndexes:
-            nucleusNm, _,_ = smallFuncs.NucleiSelection(ind = nucleiIx,organ = 'THALAMUS')
+            nucleusNm, _,_ = smallFuncs.NucleiSelection(ind = nucleiIx)
 
             if os.path.isfile(params.directories.Test.Result + '/' + sj + '/' + nucleusNm + '.nii.gz'):
                 

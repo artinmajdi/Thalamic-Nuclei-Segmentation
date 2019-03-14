@@ -1,20 +1,24 @@
 
-readAugments = False
-Model_Method = 'Hierarchical_Cascade' #'Cascade' #
+readAugments = True
+Model_Method = 'Hierarchical_Cascade' # 'Cascade' #
 TestOnly = False
 SubExperiment_Index = 444
 mode_saveTrue_LoadFalse = True
 
+lossFunctionIx = 5
+havingBackGround_AsExtraDimension = True
+
+class_weights = {0:1, 1:1e6}
 dropout = 0.3
-epochs = 100
-GPU_Index = "4,5,6"
+epochs = 20
+GPU_Index = "1,2,3,4,5"
 Learning_Rate = 1e-3
 num_Layers = 3
 NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
 Experiments_Index = '7'
 Experiments_Tag = 'cascadeV1'  # 'cropping' # initilization' # 'cascadeV1_3TforInit7T' #
 
-nucleus_Index = [1]
+nucleus_Index = [6]
 
 slicingDim = 2
 
@@ -27,7 +31,7 @@ DatasetIx = 4
 
 
 #! Training
-batch_size = 100
+batch_size = 50 # 100
 Initialize_FromThalamus = False
 Initialize_FromOlderModel = False
 
@@ -58,7 +62,7 @@ MetricIx = 3
 # lossFunction=   1: 'dice'
 #                 2: 'binary Cross Enropy'
 #                 3: 'Both'
-lossFunctionIx = 2
+
 
 # orderDim =       2: [0,1,2]
 # orderDim =       1: [2,0,1]
@@ -98,10 +102,10 @@ Normalize = True
 AugmentMode = False
 Augment_LinearMode = True
 
-Augment_Rotation = False
-Augment_AngleMax = 15 # 15 #
+Augment_Rotation = True
+Augment_AngleMax = 7 # 15 #
 
-Augment_Shear = True
+Augment_Shear = False
 Augment_ShearMax = 4
 
 Augment_Shift        = False

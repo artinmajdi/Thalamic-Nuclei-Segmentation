@@ -1,6 +1,6 @@
 # import os, sys
 # sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from otherFuncs import smallFuncs
+import otherFuncs.smallFuncs as smallFuncs
 from preprocess import augmentA, BashCallingFunctionsA, normalizeA, croppingA
 
 # TODO  check 3T 7T dimension and interpolation
