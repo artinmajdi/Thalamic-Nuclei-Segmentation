@@ -35,10 +35,10 @@ def check_Run(params, Data):
     return True
 
 def loadModel(params):
-    model = architecture(params)
-    model.load_weights(params.directories.Train.Model + '/model_weights.h5')
+    # model = architecture(params)
+    # model.load_weights(params.directories.Train.Model + '/model_weights.h5')
 
-    # model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')    
+    model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')    
 
     ModelParam = params.WhichExperiment.HardParams.Model
     model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)

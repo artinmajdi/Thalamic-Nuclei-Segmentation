@@ -1,5 +1,5 @@
 
-readAugments = True
+readAugments = False
 Model_Method = 'Hierarchical_Cascade' # 'Cascade' #
 TestOnly = False
 SubExperiment_Index = 444
@@ -10,8 +10,8 @@ havingBackGround_AsExtraDimension = True
 
 class_weights = {0:1, 1:1e6}
 dropout = 0.3
-epochs = 20
-GPU_Index = "1,2,3,4,5"
+epochs = 15
+GPU_Index = "3"
 Learning_Rate = 1e-3
 num_Layers = 3
 NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
@@ -57,35 +57,13 @@ MultiClass_mode = False
 #          2: 'Accuracy'
 #          3: 'Dice & Accuracy'
 MetricIx = 3
-
-#! loss function
-# lossFunction=   1: 'dice'
-#                 2: 'binary Cross Enropy'
-#                 3: 'Both'
-
-
-# orderDim =       2: [0,1,2]
-# orderDim =       1: [2,0,1]
-# orderDim =       0: [1,2,0]
-
-
-#! Optimizer
-#          1: 'Adam'
 OptimizerIx = 1
 # Learning_Rate = 1e-3
-
-#! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 # Experiments_Tag = '7T' # 'SRI' 'tmp' 'SRI_wLRAug' '7T' '7T_wLRAug'
-
-
-
 SubExperiment_Tag = Model_Method
 
-#! cropping mode
-#           'ANTs'
-#           'python'
 cropping_method = 'python' # 'ANTs' 'python'
 
 
@@ -102,14 +80,20 @@ Normalize = True
 AugmentMode = False
 Augment_LinearMode = True
 
-Augment_Rotation = True
-Augment_AngleMax = 7 # 15 #
 
-Augment_Shear = False
-Augment_ShearMax = 4
+Augment_Rotation, Augment_Shear, Augment_Merge, Augment_Shift = [False]*4
 
-Augment_Shift        = False
+# ! below is just for the sake of reading Augment data since we're not doing two augments at once at the moment
+indAugment = 'Augment_Rotation'
+if indAugment == 'Augment_Rotation': Augment_Rotation = True
+elif indAugment == 'Augment_Shear':  Augment_Shear = True
+elif indAugment == 'Augment_Shift':  Augment_Shift = True
+elif indAugment == 'Augment_Merge':  Augment_Merge = True
+
+
 Augment_ShiftMax = 10
+Augment_ShearMax = 4
+Augment_AngleMax = 7 # 15 #
 
 Augment_NonLinearMode = False
 

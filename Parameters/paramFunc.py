@@ -153,6 +153,7 @@ def subExperimentName(UserInfo, WhichExperiment):
     if UserInfo['Augment_Rotation']: readAugmentTag = 'wRot'   + str(UserInfo['Augment_AngleMax'])
     elif UserInfo['Augment_Shear']:  readAugmentTag = 'wShear' + str(UserInfo['Augment_ShearMax'])   
     elif UserInfo['Augment_Shift']:  readAugmentTag = 'wShift' + str(UserInfo['Augment_ShiftMax'])  
+    elif UserInfo['Augment_Merge']:  readAugmentTag = 'wMerge'
 
     
     WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag']
@@ -324,7 +325,7 @@ def Classes():
 
     class validation:
         percentage = 0.1
-        fromKeras = True
+        fromKeras = False
 
     class testDs:
         mode = 'percentage' # 'names'
@@ -345,7 +346,7 @@ def Classes():
         HardDimensions = ''
 
     class hDF5:
-        mode = False
+        mode = True
         mode_saveTrue_LoadFalse = True
 
         
