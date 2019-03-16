@@ -7,12 +7,15 @@ import Parameters.UserInfo as UserInfo
 import preprocess.applyPreprocess as applyPreprocess
 import h5py
 import numpy as np
-
+import nibabel as nib
+import skimage
+import matplotlib.pyplot as plt
 mode = 'experiment'
 
 #! reading the user input parameters via terminal
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
-
+UserInfoB['slicingDim'] = 0
+UserInfoB['nucleus_Index'] = 1
 params = paramFunc.Run(UserInfoB)
 # params.WhichExperiment.Dataset.CreatingTheExperiment = True
 
@@ -29,45 +32,43 @@ datasets.movingFromDatasetToExperiments(params)
 
 # #! loading the dataset
 Data, params = datasets.loadDataset(params)
-FullData = Data.__dict__
+BBOX = np.zeros((30,6))
+Shape = np.zeros((30,3))
+subjects = list(Data.Train_ForTest)
+for ind in range(len(subjects)):
+    data = Data.Train_ForTest[subjects[ind]]
+    # Data.Train.Image.shape
+    # data.Image.shape
 
-f.close()
-f = h5py.File(params.WhichExperiment.Experiment.address + '/data.h5py' , 'w')
-for mode in list(FullData):
-    # print(mode)
-    # g = f.create_group(mode)
-    DataMode = FullData[mode]
+    a = np.squeeze(data.Mask[...,0]).astype(np.int32)
+    obj = skimage.measure.regionprops(a)
+    BBOX[ind,...] = list(obj[0].bbox)
+    Shape[ind,...] = list( data.Image.shape[:3] )
 
-    if mode == 'Train' or mode == 'Validation':
-        for imMsk in DataMode.__dict__.items():
-            f.create_dataset(name='%s/%s'%(mode,imMsk[0]),data=imMsk[1])
+b = np.zeros((30,4))
+b[:,:2] = BBOX[:,[0,3]]
+b[:,2] = Shape[:,0]
+b[:,3] = b[:,2]/2 - b[:,1] + 5
 
-# else:
-#     for subject in DataMode:
-#         DataSubject = DataMode[subject].__dict__
-#         for tag in list(DataSubject):
-#             print(DataSubject[tag])
-#         break
-
-dtst = f['Train/Image']
-dtst[:100,...].shape
-Image = np.array(f['Train/Image'])
-Mask = np.array(f['Train/Mask'])
-
-np.savez
-f['Train/Image']
-n[:,:100,:,:].shape
-
-mode = list(Datadt)[0]
-subData = Datadt[mode]
-for subject in subData:
-    Tags = list(subData[subject].__dict__)
-    print(Tags)
-    break
+b
+tuple( BBOX[:,:3].min(axis=0)  )  + tuple( BBOX[:,3:].max(axis=0) )
 
 
-    # mode = aa[ix][0]
-# aa[3]
+
+
+
+plt.plot(BBOX[:,0])
+
+def myView(data):
+
+    b = nib.viewers.OrthoSlicer3D(data.Mask)
+    a = nib.viewers.OrthoSlicer3D(data.Image)
+    a.link_to(b)
+    a.show()
+
+myView(data)
+
+print('--')
 # params.directories.Tr
 # def saveHdf5(Data):
 #     with h5py.File(params.WhichExperiment.Experiment.address + '/7T_wAug.h5py' , 'w') as f:

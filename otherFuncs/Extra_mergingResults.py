@@ -9,8 +9,8 @@ import pickle
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 params = paramFunc.Run(UserInfoB)
-NucleiIndexes = UserInfoB['nucleus_Index']
-
+# NucleiIndexes = UserInfoB['nucleus_Index']
+_, NucleiIndexes , _ = smallFuncs.NucleiSelection(ind=1)
 
 def savingHistory_AsExcel(params):
 
