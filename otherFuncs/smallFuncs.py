@@ -95,6 +95,13 @@ def saveImage(Image , Affine , Header , outDirectory):
     out.get_header = Header
     nib.save(out , outDirectory)
 
+def fixMaskMinMax(Image):
+    if Image.max() != 1 or Image.min() != 0:
+        Image = np.float32(Image)
+        Image = ( Image-Image.min() )/( Image.max() - Image.min() )
+        
+    return Image
+
 def terminalEntries(UserInfo):
 
     for en in range(len(sys.argv)):
@@ -112,7 +119,7 @@ def terminalEntries(UserInfo):
                 UserInfo['slicingDim'] = [int(k) for k in B]
 
             else:
-                UserInfo['slicingDim'] = int(sys.argv[en+1])
+                UserInfo['slicingDim'] = [int(sys.argv[en+1])]
 
         elif entry in ('-Aug','--AugmentMode'):
             a = int(sys.argv[en+1])
@@ -128,7 +135,7 @@ def terminalEntries(UserInfo):
                 UserInfo['nucleus_Index'] = [int(k) for k in B]
 
             else:
-                UserInfo['nucleus_Index'] = [sys.argv[en+1]] # [int(sys.argv[en+1])]
+                UserInfo['nucleus_Index'] = [float(sys.argv[en+1])] # [int(sys.argv[en+1])]
 
         elif entry.lower() in ('-l','--loss'):
             UserInfo['lossFunctionIx'] = int(sys.argv[en+1])
@@ -313,13 +320,12 @@ def search_ExperimentDirectory(whichExperiment):
     return Directories
 
 def imShow(*args):
-
     _, axes = plt.subplots(1,len(args))
     for ax, im in enumerate(args):
         axes[ax].imshow(im,cmap='gray')
 
     # a = nib.viewers.OrthoSlicer3D(im,title='image')
-#
+
     plt.show()
 
     return True

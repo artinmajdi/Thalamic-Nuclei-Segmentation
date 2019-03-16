@@ -6,6 +6,7 @@ from scipy.misc import imrotate
 import nibabel as nib
 from preprocess import BashCallingFunctionsA
 from otherFuncs import smallFuncs
+import preprocess.normalizeA as normalizeA
 import os
 import skimage
 import numpy as np
@@ -88,11 +89,14 @@ def LinearFunc(params, mode):
             print('image',imInd,'/',L,'augment',AugIx,'/',params.Augment.Linear.Length)
 
             imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image
-
+            im = imF.get_data()
+            im = normalizeA.main_normalize(params.preprocess.Normalize , im)
+            
+            
             InputThreshs = inputThresholds()
             nameSubject2 = nameOutput(nameSubject, InputThreshs, AugIx)
 
-            Image = applyLinearAugment(imF.get_data(), InputThreshs, 3)
+            Image = applyLinearAugment(im, InputThreshs, 3)
 
             class outDirectory:
                 Image = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject2)
@@ -105,6 +109,7 @@ def LinearFunc(params, mode):
             for NucleusName in subF: 
 
                 Mask = nib.load(subject.Label.address + '/' + NucleusName).get_data() 
+                Mask = smallFuncs.fixMaskMinMax(Mask)
                 Mask = applyLinearAugment(Mask, InputThreshs, 1)
 
                 smallFuncs.saveImage( np.float32(Mask > 0.5) , imF.affine , imF.header ,  outDirectory.Mask  + '/' + NucleusName  )

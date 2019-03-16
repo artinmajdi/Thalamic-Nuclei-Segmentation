@@ -229,6 +229,7 @@ def readingFromExperiments(params):
             inputMsk = subject.Label.address + '/' + nameNuclei + '_PProcessed.nii.gz'
 
             origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape)
+            origMsk1N = smallFuncs.fixMaskMinMax(origMsk1N)
             return np.expand_dims(origMsk1N ,axis=3)
 
         for cnt, NucInd in enumerate(params.WhichExperiment.Nucleus.Index):
@@ -437,16 +438,16 @@ def readingFromExperiments(params):
                 origMsk , msk = readingNuclei(params, Subjects[nameSubject], imF.shape)
 
                 if im[...,0].shape == msk[...,0].shape:                                            
-                        if params.WhichExperiment.Dataset.HDf5.mode:   
-                            mode_TrainVal = 'validation'  if 'train' in mode and not params.WhichExperiment.Dataset.Validation.fromKeras and nameSubject in ValList else mode                                                        
-                            f.create_dataset('%s/%s/Image'%(mode_TrainVal,nameSubject)  , data=im)
-                            f.create_dataset('%s/%s/Mask'%(mode_TrainVal,nameSubject)   , data=msk)
-                            f.create_dataset('%s/%s/Padding'%(mode_TrainVal,nameSubject) , data=Subjects[nameSubject].Padding)
-                            f.create_dataset('%s/%s/NewCropInfo/OriginalBoundingBox'%(mode_TrainVal,nameSubject) , data=Subjects[nameSubject].NewCropInfo.OriginalBoundingBox)
-                            f.create_dataset('%s/%s/NewCropInfo/PadSizeBackToOrig'%(mode_TrainVal,nameSubject)   , data=Subjects[nameSubject].NewCropInfo.PadSizeBackToOrig)
-                            # f.create_dataset('%s/%s/Affine'%(mode_TrainVal,nameSubject) , data=imF.affine)
-                        else:                                        
-                            Data[nameSubject] = testCase(Image=im, Mask=msk>Th ,OrigMask=(origMsk>Th).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                    if params.WhichExperiment.Dataset.HDf5.mode:   
+                        mode_TrainVal = 'validation'  if 'train' in mode and not params.WhichExperiment.Dataset.Validation.fromKeras and nameSubject in ValList else mode                                                        
+                        f.create_dataset('%s/%s/Image'%(mode_TrainVal,nameSubject)  , data=im)
+                        f.create_dataset('%s/%s/Mask'%(mode_TrainVal,nameSubject)   , data=msk)
+                        f.create_dataset('%s/%s/Padding'%(mode_TrainVal,nameSubject) , data=Subjects[nameSubject].Padding)
+                        f.create_dataset('%s/%s/NewCropInfo/OriginalBoundingBox'%(mode_TrainVal,nameSubject) , data=Subjects[nameSubject].NewCropInfo.OriginalBoundingBox)
+                        f.create_dataset('%s/%s/NewCropInfo/PadSizeBackToOrig'%(mode_TrainVal,nameSubject)   , data=Subjects[nameSubject].NewCropInfo.PadSizeBackToOrig)
+                        # f.create_dataset('%s/%s/Affine'%(mode_TrainVal,nameSubject) , data=imF.affine)
+                    else:                                        
+                        Data[nameSubject] = testCase(Image=im, Mask=msk>Th ,OrigMask=(origMsk>Th).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
                 else:
                     Error_MisMatch_In_Dim_ImageMask(Subjects[nameSubject] , mode, nameSubject)
 

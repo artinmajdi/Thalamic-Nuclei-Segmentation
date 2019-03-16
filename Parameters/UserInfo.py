@@ -1,13 +1,17 @@
 
-readAugments = True
+readAugments = False
 Model_Method = 'Cascade' #'Hierarchical_Cascade' #
 TestOnly = False
 SubExperiment_Index = 444
 mode_saveTrue_LoadFalse = True
 
+lossFunctionIx = 5
+havingBackGround_AsExtraDimension = True
+
+class_weights = {0:1, 1:1e6}
 dropout = 0.3
 epochs = 100
-GPU_Index = "4,5,6"
+GPU_Index = "3"
 Learning_Rate = 1e-3
 num_Layers = 3
 NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
@@ -16,7 +20,7 @@ Experiments_Tag = 'cascadeV1'  # 'cropping' # initilization' # 'cascadeV1_3TforI
 
 nucleus_Index = [1]
 
-slicingDim = 2
+slicingDim = [2]
 
 # 1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_3T'),
 # 2: ('SRI_ReSliced', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_ReSliced'),
@@ -27,7 +31,7 @@ DatasetIx = 4
 
 
 #! Training
-batch_size = 100
+batch_size = 100 # 100
 Initialize_FromThalamus = False
 Initialize_FromOlderModel = False
 
@@ -58,7 +62,7 @@ MetricIx = 3
 # lossFunction=   1: 'dice'
 #                 2: 'binary Cross Enropy'
 #                 3: 'Both'
-lossFunctionIx = 2
+
 
 # orderDim =       2: [0,1,2]
 # orderDim =       1: [2,0,1]
@@ -98,14 +102,20 @@ Normalize = True
 AugmentMode = False
 Augment_LinearMode = True
 
-Augment_Rotation = False
-Augment_AngleMax = 15 # 15 #
 
-Augment_Shear = True
-Augment_ShearMax = 4
+Augment_Rotation, Augment_Shear, Augment_Merge, Augment_Shift = [False]*4
 
-Augment_Shift        = False
+# ! below is just for the sake of reading Augment data since we're not doing two augments at once at the moment
+indAugment = 'Augment_Rotation'
+if indAugment == 'Augment_Rotation': Augment_Rotation = True
+elif indAugment == 'Augment_Shear':  Augment_Shear = True
+elif indAugment == 'Augment_Shift':  Augment_Shift = True
+elif indAugment == 'Augment_Merge':  Augment_Merge = True
+
+
 Augment_ShiftMax = 10
+Augment_ShearMax = 4
+Augment_AngleMax = 7 # 15 #
 
 Augment_NonLinearMode = False
 

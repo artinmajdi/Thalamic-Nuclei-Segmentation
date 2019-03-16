@@ -11,6 +11,7 @@ from preprocess import applyPreprocess
 # TODO : look for a way to see epoch inside my loss function and use BCE initially and tyhen add Dice for higher epochs
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 NucleiIndexes = UserInfoB['nucleus_Index']
+slicingDim = UserInfoB['slicingDim']
 
 def gpuSetting(params):
     
@@ -54,9 +55,11 @@ def Run(UserInfoB):
 
     def Run_SingleNuclei(UserInfoB):
 
-        params = paramFunc.Run(UserInfoB)
-        Data, params = datasets.loadDataset(params)
-        choosingModel.check_Run(params, Data)
+        for sd in slicingDim:
+            UserInfoB['slicingDim'] = [sd]
+            params = paramFunc.Run(UserInfoB)
+            Data, params = datasets.loadDataset(params)
+            choosingModel.check_Run(params, Data)
 
     if params.WhichExperiment.HardParams.Model.Method.Type == 'Hierarchical_Cascade': HierarchicalStages(UserInfoB)
     elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': CacadeStages(UserInfoB)
