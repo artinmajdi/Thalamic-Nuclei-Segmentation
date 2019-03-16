@@ -14,8 +14,8 @@ mode = 'experiment'
 
 #! reading the user input parameters via terminal
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
-UserInfoB['slicingDim'] = 0
-UserInfoB['nucleus_Index'] = 1
+UserInfoB['slicingDim'] = [0]
+UserInfoB['nucleus_Index'] = [1]
 params = paramFunc.Run(UserInfoB)
 # params.WhichExperiment.Dataset.CreatingTheExperiment = True
 
@@ -32,9 +32,15 @@ datasets.movingFromDatasetToExperiments(params)
 
 # #! loading the dataset
 Data, params = datasets.loadDataset(params)
+
 BBOX = np.zeros((30,6))
 Shape = np.zeros((30,3))
 subjects = list(Data.Train_ForTest)
+
+subjects = list(Data.Train_ForTest)
+BBOX = np.zeros((len(subjects),6))
+Shape = np.zeros((len(subjects),3))
+
 for ind in range(len(subjects)):
     data = Data.Train_ForTest[subjects[ind]]
     # Data.Train.Image.shape
@@ -50,12 +56,7 @@ b[:,:2] = BBOX[:,[0,3]]
 b[:,2] = Shape[:,0]
 b[:,3] = b[:,2]/2 - b[:,1] + 5
 
-b
 tuple( BBOX[:,:3].min(axis=0)  )  + tuple( BBOX[:,3:].max(axis=0) )
-
-
-
-
 
 plt.plot(BBOX[:,0])
 
@@ -67,25 +68,3 @@ def myView(data):
     a.show()
 
 myView(data)
-
-print('--')
-# params.directories.Tr
-# def saveHdf5(Data):
-#     with h5py.File(params.WhichExperiment.Experiment.address + '/7T_wAug.h5py' , 'w') as f:
-#         for subject in Data.Test:
-#             f.create_dataset('Test/%s/Image'%(subject),data=Data.Test[subject].Image)
-#             f.create_dataset('Test/%s/Mask'%(subject),data=Data.Test[subject].Mask)
-
-#         for subject in Data.Train_ForTest:
-#             f.create_dataset('Train/%s/Image'%(subject),data=Data.Train_ForTest[subject].Image)
-#             f.create_dataset('Train/%s/Mask'%(subject),data=Data.Train_ForTest[subject].Mask)
-
-#         f.visit(print)
-
-# saveHdf5(Data)
-
-# with h5py.File(params.WhichExperiment.Experiment.address + '/7T_wAug.h5py' , 'r') as g:
-#     for subject in Data.Train_ForTest:
-#         g.create_dataset('Test/%s/Image'%(subject + '_b'),data=Data.Test[subject].Image)
-#         g.create_dataset('Test/%s/Mask'%(subject + '_b'),data=Data.Test[subject].Mask)
-#     b = g['Train']['vimp2_A']['Image']

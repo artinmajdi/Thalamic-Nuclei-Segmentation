@@ -50,12 +50,12 @@ def Run(UserInfo):
     # orderDim =       2: [0,1,2]
     # orderDim =       1: [2,0,1]
     # orderDim =       0: [1,2,0]
-
-    WhichExperiment.Dataset.slicingInfo.slicingDim = UserInfo['slicingDim']
-    if UserInfo['slicingDim'] == 0:
+    print('---',UserInfo['slicingDim'])
+    WhichExperiment.Dataset.slicingInfo.slicingDim = UserInfo['slicingDim'][0]
+    if UserInfo['slicingDim'][0] == 0:
         WhichExperiment.Dataset.slicingInfo.slicingOrder         = [1,2,0]
         WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse = [2,0,1]
-    elif UserInfo['slicingDim'] == 1:
+    elif UserInfo['slicingDim'][0] == 1:
         WhichExperiment.Dataset.slicingInfo.slicingOrder         = [2,0,1]
         WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse = [1,2,0]
     else:
@@ -72,7 +72,7 @@ def Run(UserInfo):
     # elif UserInfo['DatasetIx'] == 2:
     #     Experiments_Tag = 'Cropping'
 
-    Experiments_Tag = UserInfo['Experiments_Tag']            
+    Experiments_Tag = UserInfo['Experiments_Tag']
 
     WhichExperiment.Experiment.tag = Experiments_Tag   # UserInfo['Experiments_Tag']
     WhichExperiment.Experiment.name = 'exp' + str(UserInfo['Experiments_Index']) + '_' + WhichExperiment.Experiment.tag if WhichExperiment.Experiment.tag else 'exp' + str(WhichExperiment.Experiment.index)
@@ -107,7 +107,7 @@ def Run(UserInfo):
     if not Augment.Mode:  Augment.AugmentLength = 0
     preprocess.Cropping.Method = UserInfo['cropping_method']
 
-    
+
     preprocess.Mode                = UserInfo['preprocessMode']
     preprocess.BiasCorrection.Mode = UserInfo['BiasCorrection']
     preprocess.Cropping.Mode       = UserInfo['Cropping']
@@ -115,7 +115,7 @@ def Run(UserInfo):
     preprocess.Normalize.Method    = UserInfo['NormalizaeMethod']
     preprocess.TestOnly            = UserInfo['TestOnly']
 
-    Augment.Mode                     = UserInfo['AugmentMode']  
+    Augment.Mode                     = UserInfo['AugmentMode']
     Augment.Linear.Rotation.Mode     = UserInfo['Augment_Rotation']
     Augment.Linear.Rotation.AngleMax = UserInfo['Augment_AngleMax']
 
@@ -125,7 +125,7 @@ def Run(UserInfo):
     Augment.Linear.Shift.Mode        = UserInfo['Augment_Shift']
     Augment.Linear.Shift.ShiftMax    = UserInfo['Augment_ShiftMax']
     Augment.NonLinear.Mode           = UserInfo['Augment_NonLinearMode']
-    
+
     WhichExperiment.HardParams.Model.Dropout.Value = UserInfo['dropout']
 
     AAA = ReferenceForCascadeMethod(WhichExperiment.HardParams.Model.Method.Type)
@@ -284,8 +284,6 @@ def Classes():
         Method = method()
         paddingErrorPatience = 20
         
-
-
     class machine:
         WhichMachine = 'server'
         GPU_Index = ''
@@ -346,7 +344,7 @@ def Classes():
         HardDimensions = ''
 
     class hDF5:
-        mode = True
+        mode = False
         mode_saveTrue_LoadFalse = True
 
         
@@ -415,7 +413,7 @@ def Classes():
 
     # --------------------------------- Preprocess --------------------------------
     class normalize:
-        Mode = ''
+        Mode = True
         Method = 'MinMax'
 
 
@@ -448,4 +446,3 @@ def Classes():
     #     def __init__(self, Image, Mask):
     #         self.Image = Image
     #         self.Mask  = Mask
-

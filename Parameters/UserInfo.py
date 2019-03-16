@@ -20,7 +20,7 @@ Experiments_Tag = 'cascadeV1'  # 'cropping' # initilization' # 'cascadeV1_3TforI
 
 nucleus_Index = [6]
 
-slicingDim = 2
+slicingDim = [2]
 
 # 1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_3T'),
 # 2: ('SRI_ReSliced', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_ReSliced'),

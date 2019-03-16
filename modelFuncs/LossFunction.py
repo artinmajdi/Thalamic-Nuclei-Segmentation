@@ -4,6 +4,12 @@ import tensorflow as tf
 import modelFuncs.Metrics as Metrics
 from keras import losses # optimizers, metrics
 import keras.backend as Keras_Backend
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> 728f7be89b43cd9b1abd0c81b6545f927c8122c6
 
 
 
@@ -37,7 +43,11 @@ def Loss_binary_And_Dice(y_true,y_pred):
 
 
 def weightedBinaryCrossEntropy(y_true, y_pred):
+<<<<<<< HEAD
+    weight = y_true*1e6
+=======
     weight = y_true*1e6 
+>>>>>>> 728f7be89b43cd9b1abd0c81b6545f927c8122c6
     bce = Keras_Backend.binary_crossentropy(y_true, y_pred)
     return Keras_Backend.mean(bce*weight)
 
@@ -46,5 +56,3 @@ def weightedBinaryCrossEntropy(y_true, y_pred):
 #     y_true = tf.reshape(y_true, [-1, n_class])
 #     y_pred = tf.reshape(y_pred, [-1, n_class])
 #     return -tf.reduce_mean(y_true*tf.log(tf.clip_by_value(y_pred,1e-10,1.0)), name="cross_entropy")
-
-

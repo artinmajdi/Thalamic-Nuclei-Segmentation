@@ -140,9 +140,6 @@ def readingWithTranpose(Dirr , params):
     ImageF = nib.load( Dirr)
     return ImageF, np.transpose(ImageF.get_data() , params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
-
-
-
 # TODO: add the saving images with the format mahesh said
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments(params):
@@ -219,6 +216,7 @@ def readingFromExperiments(params):
             inputMsk = subject.Label.address + '/' + nameNuclei + '_PProcessed.nii.gz'
 
             origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape)
+            origMsk1N = smallFuncs.fixMaskMinMax(origMsk1N)
             return np.expand_dims(origMsk1N ,axis=3)
 
         for cnt, NucInd in enumerate(params.WhichExperiment.Nucleus.Index):
