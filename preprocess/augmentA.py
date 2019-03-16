@@ -88,8 +88,7 @@ def LinearFunc(params, mode):
             print('image',imInd,'/',L,'augment',AugIx,'/',params.Augment.Linear.Length)
 
             imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image
-            im = imF.get_data()
-            im = normalizeA.main_normalize(params.preprocess.Normalize , im)
+            im = normalizeA.main_normalize(params.preprocess.Normalize ,  imF.get_data())
             
             
             InputThreshs = inputThresholds()

@@ -140,9 +140,6 @@ def readingWithTranpose(Dirr , params):
     ImageF = nib.load( Dirr)
     return ImageF, np.transpose(ImageF.get_data() , params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
-
-
-
 # TODO: add the saving images with the format mahesh said
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments(params):
