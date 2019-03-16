@@ -1,3 +1,6 @@
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+import tensorflow as tf
 
 def MetricInfo(Metric_Index):
     switcher = {
@@ -8,14 +11,11 @@ def MetricInfo(Metric_Index):
     return switcher.get(Metric_Index, 'WARNING: Invalid metric index')
 
 
-
 def Dice_Calculator(y_true,y_pred):
 
-    import tensorflow as tf
-
-
-    Dice = 0
-    nmCl = y_pred.shape[3] - 1
+    Dice = 0    
+    # TODO I need to remove max if i wanted to do multi class without the concatenate(msk,1-msk)
+    nmCl = max(y_pred.shape[3] - 1,1)  # max is for when I don't add the background to the label concatenate(msk,1-msk)
     for d in range(nmCl):
         Dice = Dice + tf.reduce_sum(tf.multiply(y_true[...,d],y_pred[...,d]))*2/( tf.reduce_sum(y_true[...,d]) + tf.reduce_sum(y_pred[...,d]) + 1e-5)
     # Dice = Dice / tf.cast(nmCl,tf.float32)

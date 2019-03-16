@@ -1,9 +1,18 @@
 import os, sys
+<<<<<<< HEAD
 sys.path.append(os.path.dirname(os.path.dirname('/array/ssd/msmajdi/code/thalamus/keras_run/otherFuncs/run_datasets.py')))
 from otherFuncs import smallFuncs, datasets
 from Parameters import paramFunc
 from Parameters import UserInfo
 from preprocess import applyPreprocess
+=======
+sys.path.append(os.path.dirname(os.path.dirname('/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/run_datasets.py')))
+import otherFuncs.smallFuncs as smallFuncs
+import otherFuncs.datasets as datasets
+import Parameters.paramFunc as paramFunc
+import Parameters.UserInfo as UserInfo
+import preprocess.applyPreprocess as applyPreprocess
+>>>>>>> 728f7be89b43cd9b1abd0c81b6545f927c8122c6
 import h5py
 import numpy as np
 import nibabel as nib
@@ -31,6 +40,7 @@ datasets.movingFromDatasetToExperiments(params)
 
 # #! loading the dataset
 Data, params = datasets.loadDataset(params)
+<<<<<<< HEAD
 subjects = list(Data.Train_ForTest)
 BBOX = np.zeros((len(subjects),6))
 Shape = np.zeros((len(subjects),3))
@@ -68,6 +78,47 @@ def myView(data):
 myView(data)
 
 print('--')
+=======
+FullData = Data.__dict__
+
+f.close()
+f = h5py.File(params.WhichExperiment.Experiment.address + '/data.h5py' , 'w')
+for mode in list(FullData):
+    # print(mode)
+    # g = f.create_group(mode)
+    DataMode = FullData[mode]
+
+    if mode == 'Train' or mode == 'Validation':
+        for imMsk in DataMode.__dict__.items():
+            f.create_dataset(name='%s/%s'%(mode,imMsk[0]),data=imMsk[1])
+
+# else:
+#     for subject in DataMode:
+#         DataSubject = DataMode[subject].__dict__
+#         for tag in list(DataSubject):
+#             print(DataSubject[tag])
+#         break
+
+dtst = f['Train/Image']
+dtst[:100,...].shape
+Image = np.array(f['Train/Image'])
+Mask = np.array(f['Train/Mask'])
+
+np.savez
+f['Train/Image']
+n[:,:100,:,:].shape
+
+mode = list(Datadt)[0]
+subData = Datadt[mode]
+for subject in subData:
+    Tags = list(subData[subject].__dict__)
+    print(Tags)
+    break
+
+
+    # mode = aa[ix][0]
+# aa[3]
+>>>>>>> 728f7be89b43cd9b1abd0c81b6545f927c8122c6
 # params.directories.Tr
 # def saveHdf5(Data):
 #     with h5py.File(params.WhichExperiment.Experiment.address + '/7T_wAug.h5py' , 'w') as f:

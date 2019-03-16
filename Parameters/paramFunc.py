@@ -9,9 +9,9 @@ import otherFuncs.datasets as datasets
 
 from copy import deepcopy
 import pandas as pd
-
+          
 def Run(UserInfo):
-
+    
     class params:
         WhichExperiment, preprocess, Augment, directories = Classes()
         UserInfo = ''
@@ -151,33 +151,33 @@ def subExperimentName(UserInfo, WhichExperiment):
 
     readAugmentTag = ''
     if UserInfo['Augment_Rotation']: readAugmentTag = 'wRot'   + str(UserInfo['Augment_AngleMax'])
-    elif UserInfo['Augment_Shear']:  readAugmentTag = 'wShear' + str(UserInfo['Augment_ShearMax'])
-    elif UserInfo['Augment_Shift']:  readAugmentTag = 'wShift' + str(UserInfo['Augment_ShiftMax'])
+    elif UserInfo['Augment_Shear']:  readAugmentTag = 'wShear' + str(UserInfo['Augment_ShearMax'])   
+    elif UserInfo['Augment_Shift']:  readAugmentTag = 'wShift' + str(UserInfo['Augment_ShiftMax'])  
     elif UserInfo['Augment_Merge']:  readAugmentTag = 'wMerge'
 
-
+    
     WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag']
-
+    
     if readAugmentTag: WhichExperiment.SubExperiment.tag += '_Aug_' + readAugmentTag
-
-    if int(UserInfo['slicingDim'][0]) != 2:
-        WhichExperiment.SubExperiment.tag += '_sd' + str(UserInfo['slicingDim'][0])
+        
+    if int(UserInfo['slicingDim']) != 2:
+        WhichExperiment.SubExperiment.tag += '_sd' + str(UserInfo['slicingDim'])
 
     WhichExperiment.SubExperiment.tag += '_DrpOt' + str(UserInfo['dropout'])
 
-    WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) +  '_' + WhichExperiment.SubExperiment.tag
+    WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) +  '_' + WhichExperiment.SubExperiment.tag 
 
     return readAugmentTag, WhichExperiment
-
+    
 def ReferenceForCascadeMethod(ModelIdea):
 
     _ , fullIndexes, _ = smallFuncs.NucleiSelection(ind=1)
-    referenceLabel = {}
+    referenceLabel = {}  
 
     if ModelIdea == 'Hierarchical_Cascade':
 
         Name, Indexes = {}, {}
-        for i in [1.1, 1.2, 1.3]:
+        for i in [1.1, 1.2, 1.3]:  
             Name[i], Indexes[i], _ = smallFuncs.NucleiSelection(ind=i)
 
         for ixf in tuple(fullIndexes) + tuple([1.1, 1.2, 1.3]):
@@ -255,12 +255,12 @@ def Classes():
     # method.Type
     # 1. Normal
     # 2. Cascade
-    # 3. Hierarchical_Cascade
+    # 3. Hierarchical_Cascade    
 
 
 
     class model:
-        architectureType = 'U-Net'
+        architectureType = 'U-Net' 
         epochs = ''
         batch_size = ''
         loss = ''
@@ -283,9 +283,7 @@ def Classes():
         InitializeFromOlderModel = ''
         Method = method()
         paddingErrorPatience = 20
-
-
-
+        
     class machine:
         WhichMachine = 'server'
         GPU_Index = ''
@@ -349,7 +347,7 @@ def Classes():
         mode = False
         mode_saveTrue_LoadFalse = True
 
-
+        
     class readAugmentFn:
         Mode = False
         Tag = ''
@@ -390,7 +388,7 @@ def Classes():
 
     class shear:
         Mode = ''
-        ShearMax = 0
+        ShearMax = 0    
 
     class linearAug:
         Mode = True
@@ -401,7 +399,7 @@ def Classes():
 
     class nonlinearAug:
         Mode = False
-        Length = 2
+        Length = 2 
     class augment:
         Mode = ''
         Linear = linearAug()
@@ -433,7 +431,7 @@ def Classes():
         justForNow = True # it checks the intermediate steps and if it existed don't reproduce it
 
     class preprocess:
-        Mode = ''
+        Mode = ''    
         TestOnly = ''
         Debug = debug()
         Augment = augment()

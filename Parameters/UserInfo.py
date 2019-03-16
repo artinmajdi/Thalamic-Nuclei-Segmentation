@@ -1,6 +1,6 @@
 
 readAugments = False
-Model_Method = 'Cascade' #'Hierarchical_Cascade' #
+Model_Method = 'Hierarchical_Cascade' # 'Cascade' #
 TestOnly = False
 SubExperiment_Index = 444
 mode_saveTrue_LoadFalse = True
@@ -10,7 +10,7 @@ havingBackGround_AsExtraDimension = True
 
 class_weights = {0:1, 1:1e6}
 dropout = 0.3
-epochs = 100
+epochs = 15
 GPU_Index = "3"
 Learning_Rate = 1e-3
 num_Layers = 3
@@ -18,7 +18,7 @@ NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
 Experiments_Index = '7'
 Experiments_Tag = 'cascadeV1'  # 'cropping' # initilization' # 'cascadeV1_3TforInit7T' #
 
-nucleus_Index = [1]
+nucleus_Index = [6]
 
 slicingDim = [2]
 
@@ -31,7 +31,7 @@ DatasetIx = 4
 
 
 #! Training
-batch_size = 100 # 100
+batch_size = 50 # 100
 Initialize_FromThalamus = False
 Initialize_FromOlderModel = False
 
@@ -57,35 +57,13 @@ MultiClass_mode = False
 #          2: 'Accuracy'
 #          3: 'Dice & Accuracy'
 MetricIx = 3
-
-#! loss function
-# lossFunction=   1: 'dice'
-#                 2: 'binary Cross Enropy'
-#                 3: 'Both'
-
-
-# orderDim =       2: [0,1,2]
-# orderDim =       1: [2,0,1]
-# orderDim =       0: [1,2,0]
-
-
-#! Optimizer
-#          1: 'Adam'
 OptimizerIx = 1
 # Learning_Rate = 1e-3
-
-#! Experiments Address
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 # Experiments_Tag = '7T' # 'SRI' 'tmp' 'SRI_wLRAug' '7T' '7T_wLRAug'
-
-
-
 SubExperiment_Tag = Model_Method
 
-#! cropping mode
-#           'ANTs'
-#           'python'
 cropping_method = 'python' # 'ANTs' 'python'
 
 

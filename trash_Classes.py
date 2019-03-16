@@ -20,7 +20,7 @@ class activation:
 
 class convLayer:
     # strides = (1,1)
-    Kernel_size = kernel_size
+    Kernel_size = kernel_size()
     padding = 'SAME' # valid
 
 class multiclass:
@@ -51,21 +51,19 @@ class model:
     num_Layers = ''
     InputDimensions = ''
     batchNormalization = True # True
-    ConvLayer = convLayer
-    MaxPooling = maxPooling
-    Dropout = dropout
-    Activitation = activation
+    ConvLayer = convLayer()
+    MaxPooling = maxPooling()
+    Dropout = dropout()
+    Activitation = activation()
     showHistory = True
     LabelMaxValue = 1
     Measure_Dice_on_Train_Data = False
-    MultiClass = multiclass
+    MultiClass = multiclass()
     #! only one of these two can be true at the same time
     InitializeFromThalamus = ''
     InitializeFromOlderModel = ''
-    Method = method 
+    Method = method()
     paddingErrorPatience = 20
-
-
 
 
 class machine:
@@ -85,10 +83,10 @@ class nucleus:
 
 
 class hardParams:
-    Model    = model
-    Template = template
-    Machine  = machine
-    Image    = image
+    Model    = model()
+    Template = template()
+    Machine  = machine()
+    Image    = image()
 
 class experiment:
     index = ''
@@ -139,25 +137,25 @@ class dataset:
     name = ''
     address = ''
     # CreatingTheExperiment = False
-    Validation = validation
-    Test = test
+    Validation = validation()
+    Test = test()
     check_vimp_SubjectName = True
     randomFlag = False
-    slicingInfo = slicingDirection
+    slicingInfo = slicingDirection()
     gapDilation = 5
     gapOnSlicingDimention = 2
-    InputPadding = inputPadding
-    ReadAugments = readAugmentFn
+    InputPadding = inputPadding()
+    ReadAugments = readAugmentFn()
     HDf5 = hDF5
 
 
 class WhichExperiment:
-    Experiment    = experiment
-    SubExperiment = subExperiment
+    Experiment    = experiment()
+    SubExperiment = subExperiment()
     address = ''
-    Nucleus = nucleus
-    HardParams = hardParams
-    Dataset = dataset
+    Nucleus = nucleus()
+    HardParams = hardParams()
+    Dataset = dataset()
 
 class reference:
     name = ''
@@ -179,17 +177,17 @@ class shear:
 class linearAug:
     Mode = True
     Length = 8
-    Rotation = rotation
-    Shift = shift
-    Shear = shear
+    Rotation = rotation()
+    Shift = shift()
+    Shear = shear()
 
 class nonlinearAug:
     Mode = False
     Length = 2 
 class Augment:
     Mode = ''
-    Linear = linearAug
-    NonLinear = nonlinearAug
+    Linear = linearAug()
+    NonLinear = nonlinearAug()
     # LinearMode = True
     # LinearAugmentLength = 3  # number
     # NonLinearAugmentLength = 2
@@ -219,11 +217,11 @@ class Debug:
 class preprocess:
     Mode = ''    
     TestOnly = ''
-    Debug = Debug
-    Augment = Augment
-    Cropping = Cropping
-    Normalize = Normalize
-    BiasCorrection = BiasCorrection
+    Debug = Debug()
+    Augment = Augment()
+    Cropping = Cropping()
+    Normalize = Normalize()
+    BiasCorrection = BiasCorrection()
 
 
 

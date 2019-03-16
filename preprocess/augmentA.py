@@ -4,13 +4,12 @@ import numpy as np
 from random import shuffle
 from scipy.misc import imrotate
 import nibabel as nib
-from preprocess import BashCallingFunctionsA
-from otherFuncs import smallFuncs
-import preprocess.normalizeA as normalizeA
+import preprocess.BashCallingFunctionsA as BashCallingFunctionsA
+import otherFuncs.smallFuncs as smallFuncs
 import os
 import skimage
 import numpy as np
-
+import preprocess.normalizeA as normalizeA
 
 def funcShearing(Image, Shear, Order):    
     inverse_map = skimage.transform.AffineTransform(shear= np.deg2rad(Shear)) #  * 0.01745   # 0.01745 = pi/180
