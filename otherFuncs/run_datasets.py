@@ -33,9 +33,6 @@ datasets.movingFromDatasetToExperiments(params)
 # #! loading the dataset
 Data, params = datasets.loadDataset(params)
 
-BBOX = np.zeros((30,6))
-Shape = np.zeros((30,3))
-subjects = list(Data.Train_ForTest)
 
 subjects = list(Data.Train_ForTest)
 BBOX = np.zeros((len(subjects),6))
@@ -51,11 +48,12 @@ for ind in range(len(subjects)):
     BBOX[ind,...] = list(obj[0].bbox)
     Shape[ind,...] = list( data.Image.shape[:3] )
 
-b = np.zeros((30,4))
+b = np.zeros((len(subjects),4))
 b[:,:2] = BBOX[:,[0,3]]
 b[:,2] = Shape[:,0]
-b[:,3] = b[:,2]/2 - b[:,1] + 5
+b[:,3] = b[:,2]/2 - b[:,1]
 
+b[np.where(b[:,3] < 0)[0],:]
 tuple( BBOX[:,:3].min(axis=0)  )  + tuple( BBOX[:,3:].max(axis=0) )
 
 plt.plot(BBOX[:,0])

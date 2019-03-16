@@ -1,6 +1,6 @@
 
 readAugments = False
-Model_Method = 'Hierarchical_Cascade' # 'Cascade' #
+Model_Method = 'Cascade' # 'Hierarchical_Cascade' #
 TestOnly = False
 SubExperiment_Index = 444
 mode_saveTrue_LoadFalse = True
@@ -10,17 +10,17 @@ havingBackGround_AsExtraDimension = True
 
 class_weights = {0:1, 1:1e6}
 dropout = 0.3
-epochs = 15
-GPU_Index = "3"
+epochs = 3
+GPU_Index = "6"
 Learning_Rate = 1e-3
 num_Layers = 3
 NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
 Experiments_Index = '7'
 Experiments_Tag = 'cascadeV1'  # 'cropping' # initilization' # 'cascadeV1_3TforInit7T' #
 
-nucleus_Index = [6]
+nucleus_Index = [1]
 
-slicingDim = [2]
+slicingDim = [0]
 
 # 1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_3T'),
 # 2: ('SRI_ReSliced', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_ReSliced'),
@@ -31,7 +31,7 @@ DatasetIx = 4
 
 
 #! Training
-batch_size = 50 # 100
+batch_size = 200 # 100
 Initialize_FromThalamus = False
 Initialize_FromOlderModel = False
 

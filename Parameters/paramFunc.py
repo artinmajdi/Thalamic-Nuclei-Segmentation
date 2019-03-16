@@ -160,7 +160,7 @@ def subExperimentName(UserInfo, WhichExperiment):
     
     if readAugmentTag: WhichExperiment.SubExperiment.tag += '_Aug_' + readAugmentTag
         
-    if int(UserInfo['slicingDim']) != 2:
+    if int(UserInfo['slicingDim'][0]) != 2:
         WhichExperiment.SubExperiment.tag += '_sd' + str(UserInfo['slicingDim'])
 
     WhichExperiment.SubExperiment.tag += '_DrpOt' + str(UserInfo['dropout'])

@@ -136,9 +136,15 @@ def paddingNegativeFix(sz, Padding):
 
     return padding, crd
 
+# def fix25D_sd0(Image):
+#     return Image[:int(Image.shape[2]/2+5) , : , :]
+
 def readingWithTranpose(Dirr , params):
     ImageF = nib.load( Dirr)
-    return ImageF, np.transpose(ImageF.get_data() , params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
+    Image = ImageF.get_data()
+    # if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0: Image = fix25D_sd0(Image)
+    
+    return ImageF, np.transpose(Image, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
 # TODO: add the saving images with the format mahesh said
 # TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
@@ -217,6 +223,9 @@ def readingFromExperiments(params):
 
             origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape)
             origMsk1N = smallFuncs.fixMaskMinMax(origMsk1N)
+
+            
+
             return np.expand_dims(origMsk1N ,axis=3)
 
         for cnt, NucInd in enumerate(params.WhichExperiment.Nucleus.Index):
@@ -388,6 +397,12 @@ def readingFromExperiments(params):
             def separatingConcatenatingIndexes(sjList):
                 for ix, nameSubject in enumerate(sjList):
                     im, msk = TrainData[nameSubject].Image  , TrainData[nameSubject].Mask
+
+                    if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0: 
+                        im = im[:int(im.shape[0]/2+5),...]
+                        msk = msk[:int(msk.shape[0]/2+5),...]
+
+
                     images = im     if ix == 0 else np.concatenate((images,im    ),axis=0)
                     masks  = msk>Th if ix == 0 else np.concatenate((masks,msk>Th ),axis=0)
 

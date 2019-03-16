@@ -117,9 +117,25 @@ def testingExeriment(model, Data, params):
 
                 return im
 
-            predF = model.predict(DataSubj.Image)
+            im = DataSubj.Image.copy()
+            if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0: 
+                class cropSD0: 
+                    crop = int(im.shape[0]/2+5)
+                    padBackToOrig = im.shape[0] - int(im.shape[0]/2+5)
+                im = im[:cropSD0.crop,...]
+                
+            predF = model.predict(im)
+
+            if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0: 
+                predF = np.pad(predF,((0,cropSD0.padBackToOrig),(0,0),(0,0),(0,0)),mode='constant')
+
+
             # score = model.evaluate(DataSubj.Image, DataSubj.Mask)
             pred = predF[...,:num_classes-1]
+
+
+
+
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
             pred = np.transpose(pred,[1,2,0,3])
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
