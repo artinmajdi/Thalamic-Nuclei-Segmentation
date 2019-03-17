@@ -299,6 +299,8 @@ def search_ExperimentDirectory(whichExperiment):
         if whichExperiment.Dataset.ReadAugments.Mode and 'Augments' in os.listdir(Dir):
             Input = LoopReadingData(Input, Dir + '/Augments/' + whichExperiment.Dataset.ReadAugments.Tag)
 
+        if whichExperiment.Dataset.Read3T.Mode and whichExperiment.Dataset.Read3T.Tag in os.listdir(Dir):
+            Input = LoopReadingData(Input, Dir + '/' + whichExperiment.Dataset.Read3T.Tag )
 
         return Input
 

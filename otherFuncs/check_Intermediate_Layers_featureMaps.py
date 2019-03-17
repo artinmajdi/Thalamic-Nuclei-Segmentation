@@ -35,12 +35,3 @@ def main(nl):
 
 main(12)
 print('----')
-# params , User = {}, {}
-# for i in range(1,5):
-#     UserInfoB = UserInfo.__dict__.copy()
-#     UserInfoB['DatasetIx'] = i
-#     User[i] = UserInfoB
-#     params[i] = paramFunc.Run(UserInfoB)
-#     print( params[i].WhichExperiment.Dataset.name )
-#
-# print('---')

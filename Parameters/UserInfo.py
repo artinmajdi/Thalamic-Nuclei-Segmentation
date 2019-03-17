@@ -1,5 +1,8 @@
 
-readAugments = False
+readAugments = True
+read3T_Mode = True
+read3T_Tag = 'SRI'
+
 Model_Method = 'Cascade' # 'Hierarchical_Cascade' #
 TestOnly = False
 SubExperiment_Index = 445
@@ -10,8 +13,8 @@ havingBackGround_AsExtraDimension = True
 
 class_weights = {0:1, 1:1e6}
 dropout = 0.3
-epochs = 3
-GPU_Index = "6"
+epochs = 15
+GPU_Index = "4"
 Learning_Rate = 1e-3
 num_Layers = 3
 NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
@@ -20,7 +23,7 @@ Experiments_Tag = 'cascadeV1'  # 'cropping' # initilization' # 'cascadeV1_3TforI
 
 nucleus_Index = [1]
 
-slicingDim = [0]
+slicingDim = [2]
 
 # 1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_3T'),
 # 2: ('SRI_ReSliced', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_ReSliced'),

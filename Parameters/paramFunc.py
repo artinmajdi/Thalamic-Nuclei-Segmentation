@@ -101,6 +101,9 @@ def Run(UserInfo):
     WhichExperiment.Dataset.ReadAugments.Mode = UserInfo['readAugments']
     WhichExperiment.Dataset.ReadAugments.Tag = readAugmentTag
 
+    WhichExperiment.Dataset.Read3T.Mode = UserInfo['read3T_Mode']
+    WhichExperiment.Dataset.Read3T.Tag = UserInfo['read3T_Tag']
+
     if WhichExperiment.Dataset.InputPadding.Automatic:
         UserInfo['InputPadding_Automatic']
     directories = smallFuncs.search_ExperimentDirectory(WhichExperiment)
@@ -257,7 +260,9 @@ def Classes():
     # 2. Cascade
     # 3. Hierarchical_Cascade    
 
-
+    class transfer_Learning:
+        Mode = False
+        FrozenLayers = [0,1]
 
     class model:
         architectureType = 'U-Net' 
@@ -283,6 +288,7 @@ def Classes():
         InitializeFromOlderModel = ''
         Method = method()
         paddingErrorPatience = 20
+        Transfer_Learning = transfer_Learning()
         
     class machine:
         WhichMachine = 'server'
@@ -347,10 +353,14 @@ def Classes():
         mode = False
         mode_saveTrue_LoadFalse = True
 
-        
+    class Read3TFn:
+        Mode = False
+        Tag = '' # SRI
+
     class readAugmentFn:
         Mode = False
         Tag = ''
+        
     class dataset:
         name = ''
         address = ''
@@ -364,6 +374,7 @@ def Classes():
         gapOnSlicingDimention = 2
         InputPadding = inputPadding()
         ReadAugments = readAugmentFn()
+        Read3T = Read3TFn()
         HDf5 = hDF5
 
 

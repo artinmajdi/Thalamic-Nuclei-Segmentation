@@ -38,7 +38,7 @@ def loadModel(params):
     # model = architecture(params)
     # model.load_weights(params.directories.Train.Model + '/model_weights.h5')
 
-    model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')    
+    model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')
 
     ModelParam = params.WhichExperiment.HardParams.Model
     model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
@@ -83,12 +83,12 @@ def testingExeriment(model, Data, params):
         def applyPrediction():
 
             num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes
-            if not params.WhichExperiment.HardParams.Model.Method.havingBackGround_AsExtraDimension: 
+            if not params.WhichExperiment.HardParams.Model.Method.havingBackGround_AsExtraDimension:
                 num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes + 1
-                            
+
             def loopOver_AllClasses_postProcessing(pred):
 
-                # TODO "pred1N_BtO" needs to concatenate for different classes                    
+                # TODO "pred1N_BtO" needs to concatenate for different classes
                 Dice = np.zeros((num_classes-1,2))
                 for cnt in range(num_classes-1):
 
@@ -118,15 +118,15 @@ def testingExeriment(model, Data, params):
                 return im
 
             im = DataSubj.Image.copy()
-            if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0: 
-                class cropSD0: 
+            if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
+                class cropSD0:
                     crop = int(im.shape[0]/2+5)
                     padBackToOrig = im.shape[0] - int(im.shape[0]/2+5)
                 im = im[:cropSD0.crop,...]
-                
+
             predF = model.predict(im)
 
-            if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0: 
+            if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
                 predF = np.pad(predF,((0,cropSD0.padBackToOrig),(0,0),(0,0),(0,0)),mode='constant')
 
 
@@ -200,16 +200,18 @@ def trainingExperiment(Data, params):
             model.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
         elif params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
             model.load_weights(params.directories.Train.Model + '/model_weights.h5')
-        # elif params.WhichExperiment.HardParams.Model.Method.InitializeFromReference and 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and os.path.exists(params.directories.Train.Model + '/model_weights.h5')  :
-        #     print('--')
+        
+        
+        if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode:
+            model.load_weights(params.directories.Train.Model + '/model_weights.h5')
 
         if len(params.WhichExperiment.HardParams.Machine.GPU_Index) > 1:
             model = multi_gpu_model(model)
-            
+
         model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
-        
-        
-        
+
+
+
         # if the shuffle argument in model.fit is set to True (which is the default), the training data will be randomly shuffled at each epoch.
         # class_weights = params.WhichExperiment.HardParams.Model.class_weight
         if params.WhichExperiment.Dataset.Validation.fromKeras:
@@ -219,8 +221,9 @@ def trainingExperiment(Data, params):
 
         # model.fit_generator()
         smallFuncs.mkDir(params.directories.Train.Model)
-        model.save(params.directories.Train.Model + '/model.h5', overwrite=True, include_optimizer=True )
-        model.save_weights(params.directories.Train.Model + '/model_weights.h5', overwrite=True )
+        tagTF = '_TF' if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
+        model.save(params.directories.Train.Model + '/model' + tagTF + '.h5', overwrite=True, include_optimizer=False )
+        model.save_weights(params.directories.Train.Model + '/model_weights' + tagTF + '.h5', overwrite=True )
         if ModelParam.showHistory: print(hist.history)
 
         return model, hist
@@ -267,35 +270,14 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
 
         def cropBoundingBoxes(PreStageMask):
 
-            # def dilateMask(mask, gapDilation):
-            #     struc = ndimage.generate_binary_structure(3,2)
-            #     struc = ndimage.iterate_structure(struc,gapDilation)
-            #     return ndimage.binary_dilation(mask, structure=struc)
-
             def checkBordersOnBoundingBox(imFshape , BB , gapOnSlicingDimention):
                 return [   [   np.max([BB[d][0]-gapOnSlicingDimention,0])  ,   np.min( [BB[d][1]+gapOnSlicingDimention,imFshape[d]])   ]  for d in range(3) ]
-
-            # def findBoundingBox(PreStageMask):
-            #     objects = skimage.measure.regionprops(skimage.measure.label(PreStageMask))
-            #     area = []
-            #     for obj in objects: area = np.append(area, obj.area)
-
-            #     Ix = np.argsort(area)
-
-            #     L = len(PreStageMask.shape)
-            #     bbox = objects[ Ix[-1] ].bbox
-            #     BB = [ [bbox[d] , bbox[L + d] ] for d in range(L)]
-
-            #     return BB
 
             # Thalamus_Mask_Dilated = dilateMask( PreStageMask, params.WhichExperiment.Dataset.gapDilation )
             imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
 
             BB = smallFuncs.findBoundingBox(PreStageMask)
-            # BB = croppingA.func_CropCoordinates(PreStageMask)
-
             BB = checkBordersOnBoundingBox(imF.shape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
-            # BBd  = croppingA.func_CropCoordinates(Thalamus_Mask_Dilated)
             gapDilation = params.WhichExperiment.Dataset.gapDilation
             BBd = [  [BB[ii][0] - gapDilation , BB[ii][1] + gapDilation] for ii in range(len(BB))]
             BBd = checkBordersOnBoundingBox(imF.shape , BBd , 0)
@@ -304,7 +286,6 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
             if 'train' in mode: dirr += '/TrainData_Output'
 
             np.savetxt(dirr + '/' + subject.subjectName + '/BB_' + params.WhichExperiment.Nucleus.name + '.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')
-            # np.savetxt(dirr + '/' + subject.subjectName + '/BBd.txt',BBd,fmt='%d')
 
         cropBoundingBoxes(PreStageMask)
 
@@ -319,23 +300,28 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
 
 def architecture(params):
 
+    NumberFM = 8
     def UNet(Modelparam):
 
         def Unet_sublayer_Contracting(inputs, nL, Modelparam):
+
+            Trainable = True if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else False
             if Modelparam.batchNormalization:  inputs = layers.BatchNormalization()(inputs)
-            conv = layers.Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(inputs)
-            conv = layers.Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
+            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(inputs)
+            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(conv)
             pool = layers.MaxPooling2D( pool_size=Modelparam.MaxPooling.pool_size)(conv)
-            if Modelparam.Dropout.Mode: pool = layers.Dropout(Modelparam.Dropout.Value)(pool)
+            if Modelparam.Dropout.Mode and Trainable: pool = layers.Dropout(Modelparam.Dropout.Value)(pool)
             return pool, conv
 
         def Unet_sublayer_Expanding(inputs, nL, Modelparam, contractingInfo):
+
+            Trainable = True if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else False
             if Modelparam.batchNormalization:  inputs = layers.BatchNormalization()(inputs)
-            UP = layers.Conv2DTranspose(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.convTranspose, strides=(2,2), padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(inputs)
+            UP = layers.Conv2DTranspose(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.convTranspose, strides=(2,2), padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(inputs)
             UP = layers.merge.concatenate([UP,contractingInfo[nL+1]],axis=3)
-            conv = layers.Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(UP)
-            conv = layers.Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(conv)
-            if Modelparam.Dropout.Mode: conv = layers.Dropout(Modelparam.Dropout.Value)(conv)
+            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(UP)
+            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(conv)
+            if Modelparam.Dropout.Mode and Trainable: conv = layers.Dropout(Modelparam.Dropout.Value)(conv)
             return conv
 
 
@@ -350,9 +336,10 @@ def architecture(params):
 
         # ! middle layer
         nL = Modelparam.num_Layers - 1
-        WeightBiases = layers.Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(WeightBiases)
-        WeightBiases = layers.Conv2D(64*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers)(WeightBiases)
-        if Modelparam.Dropout.Mode: WeightBiases = layers.Dropout(Modelparam.Dropout.Value)(WeightBiases)
+        Trainable = True if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else False
+        WeightBiases = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(WeightBiases)
+        WeightBiases = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(WeightBiases)
+        if Modelparam.Dropout.Mode and Trainable: WeightBiases = layers.Dropout(Modelparam.Dropout.Value)(WeightBiases)
 
         # ! expanding layer
         for nL in reversed(range(Modelparam.num_Layers -1)):
