@@ -134,6 +134,8 @@ def Run(UserInfo):
     AAA = ReferenceForCascadeMethod(WhichExperiment.HardParams.Model.Method.Type)
     WhichExperiment.HardParams.Model.Method.ReferenceMask = AAA[WhichExperiment.Nucleus.Index[0]]
 
+    WhichExperiment.HardParams.Model.Transfer_Learning.Mode         = UserInfo['Transfer_Learning_Mode']
+    WhichExperiment.HardParams.Model.Transfer_Learning.FrozenLayers = UserInfo['Transfer_Learning_Layers']
 
     params.WhichExperiment = WhichExperiment
     params.preprocess      = preprocess

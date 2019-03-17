@@ -4,43 +4,21 @@ import os, sys
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
-import otherFuncs.smallFuncs as smallFuncs
-import modelFuncs.choosingModel as choosingModel
-import otherFuncs.datasets as datasets
-import pickle
-import keras.models as kerasmodels
-import keras
-
 params = paramFunc.Run(UserInfo.__dict__)
-Data, params = datasets.loadDataset(params)
-model = choosingModel.architecture(params)
-model.load_weights(params.directories.Train.Model + '/model_weights.h5')
 
 
-def main(nl):
-    print(model.layers[12].output)
-    inputs = keras.layers.Input( tuple(params.WhichExperiment.HardParams.Model.InputDimensions[:2]) + (1,) )
-    model2 = keras.models.Model(inputs=[model.layers[0].output], outputs=[model.layers[nl].output, model.layers[-1].output])
+Dir = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/train/SRI/vimp2_1604_10092015/'
+Dir2 = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/train/temp/vimp2_B/'
 
-    subject = Data.Test[list(Data.Test)[0]]
+im = nib.load(Dir + 'PProcessed.nii.gz').get_data()
+im2 = nib.load(Dir2 + 'PProcessed.nii.gz').get_data()
 
-    pred, final = model2.predict(subject.Image)
+im.shape
+im2.shape
 
-    a = nib.viewers.OrthoSlicer3D(pred,title='intermediate prediction')
-    b = nib.viewers.OrthoSlicer3D(subject.Image,title='Image')
-    c = nib.viewers.OrthoSlicer3D(final[...,0], title='final prediction')
-    a.link_to(b)
-    a.link_to(c)
-    a.show()
 
-main(12)
-print('----')
-# params , User = {}, {}
-# for i in range(1,5):
-#     UserInfoB = UserInfo.__dict__.copy()
-#     UserInfoB['DatasetIx'] = i
-#     User[i] = UserInfoB
-#     params[i] = paramFunc.Run(UserInfoB)
-#     print( params[i].WhichExperiment.Dataset.name )
-#
-# print('---')
+a = nib.viewers.OrthoSlicer3D(im)
+b = nib.viewers.OrthoSlicer3D(msk)
+a.link_to(b)
+a.show()
+print('---')

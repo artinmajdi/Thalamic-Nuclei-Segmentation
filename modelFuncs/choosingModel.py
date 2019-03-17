@@ -300,12 +300,12 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
 
 def architecture(params):
 
-    NumberFM = 8
+    NumberFM = 64
     def UNet(Modelparam):
 
         def Unet_sublayer_Contracting(inputs, nL, Modelparam):
 
-            Trainable = True if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else False
+            Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
             if Modelparam.batchNormalization:  inputs = layers.BatchNormalization()(inputs)
             conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(inputs)
             conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(conv)
@@ -315,7 +315,7 @@ def architecture(params):
 
         def Unet_sublayer_Expanding(inputs, nL, Modelparam, contractingInfo):
 
-            Trainable = True if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else False
+            Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
             if Modelparam.batchNormalization:  inputs = layers.BatchNormalization()(inputs)
             UP = layers.Conv2DTranspose(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.convTranspose, strides=(2,2), padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(inputs)
             UP = layers.merge.concatenate([UP,contractingInfo[nL+1]],axis=3)
@@ -336,7 +336,7 @@ def architecture(params):
 
         # ! middle layer
         nL = Modelparam.num_Layers - 1
-        Trainable = True if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else False
+        Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
         WeightBiases = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(WeightBiases)
         WeightBiases = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(WeightBiases)
         if Modelparam.Dropout.Mode and Trainable: WeightBiases = layers.Dropout(Modelparam.Dropout.Value)(WeightBiases)

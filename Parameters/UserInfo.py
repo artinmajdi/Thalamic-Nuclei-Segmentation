@@ -1,7 +1,14 @@
 
-readAugments = True
+readAugments = False
+
 read3T_Mode = True
 read3T_Tag = 'SRI'
+
+Transfer_Learning_Mode = False
+Transfer_Learning_Layers = [0,1]
+
+Initialize_FromOlderModel = False
+
 
 Model_Method = 'Cascade' # 'Hierarchical_Cascade' #
 TestOnly = False
@@ -36,7 +43,7 @@ DatasetIx = 4
 #! Training
 batch_size = 200 # 100
 Initialize_FromThalamus = False
-Initialize_FromOlderModel = False
+
 
 InputPadding_Automatic = True
 InputPadding_HardDimensions = 2 # [112,112,0]
