@@ -14,7 +14,8 @@ import keras
 params = paramFunc.Run(UserInfo.__dict__)
 Data, params = datasets.loadDataset(params)
 model = choosingModel.architecture(params)
-model.load_weights(params.directories.Train.Model + '/model_weights.h5')
+model.load_weights('/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/models/subExp445_Cascade_Aug_wRot7_DrpOt0.3/1-THALAMUS/model_weights.h5')
+# model.load_weights(params.directories.Train.Model + '/model_weights.h5')
 
 
 def main(nl):

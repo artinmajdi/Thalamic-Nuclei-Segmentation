@@ -1,13 +1,13 @@
 
-readAugments = False
+readAugments = True
 
-read3T_Mode = True
+read3T_Mode = False
 read3T_Tag = 'SRI'
 
 Transfer_Learning_Mode = False
-Transfer_Learning_Layers = [0,1]
+Transfer_Learning_Layers = [0]
 
-Initialize_FromOlderModel = False
+Initialize_FromOlderModel = True
 
 
 Model_Method = 'Cascade' # 'Hierarchical_Cascade' #
@@ -21,7 +21,7 @@ havingBackGround_AsExtraDimension = True
 class_weights = {0:1, 1:1e6}
 dropout = 0.3
 epochs = 15
-GPU_Index = "4"
+GPU_Index = "4,5"
 Learning_Rate = 1e-3
 num_Layers = 3
 NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
@@ -41,7 +41,7 @@ DatasetIx = 4
 
 
 #! Training
-batch_size = 200 # 100
+batch_size = 40 # 100
 Initialize_FromThalamus = False
 
 

@@ -9,7 +9,6 @@ params = paramFunc.Run(UserInfo.__dict__)
 
 Dir = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/train/SRI/vimp2_1604_10092015/'
 Dir2 = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/train/temp/vimp2_B/'
-
 im = nib.load(Dir + 'PProcessed.nii.gz').get_data()
 im2 = nib.load(Dir2 + 'PProcessed.nii.gz').get_data()
 

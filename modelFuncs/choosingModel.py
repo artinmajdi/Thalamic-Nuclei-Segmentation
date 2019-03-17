@@ -21,7 +21,6 @@ import keras
 import keras.preprocessing
 from keras.utils import multi_gpu_model, multi_gpu_utils
 
-
 # keras.preprocessing.utils.multi_gpu_model
 def check_Run(params, Data):
 
@@ -38,6 +37,11 @@ def loadModel(params):
     # model = architecture(params)
     # model.load_weights(params.directories.Train.Model + '/model_weights.h5')
 
+    # with open(params.directories.Train.Model + '/model' + tagTF + '.json', 'r') as json_file:
+    #     model2 = keras.models.model_from_json(json_file.read())
+
+    # model2.load_weights("model.h5")
+    
     model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')
 
     ModelParam = params.WhichExperiment.HardParams.Model
@@ -195,18 +199,40 @@ def trainingExperiment(Data, params):
     def modelTrain_Unet(Data, params, model):
         ModelParam = params.WhichExperiment.HardParams.Model
 
+        def saveModel_h5(model2, params):       
+            smallFuncs.mkDir(params.directories.Train.Model)
+            tagTF = '_TF' if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
+            model2.save(params.directories.Train.Model + '/model' + tagTF + '.h5', overwrite=True, include_optimizer=False )
+            model2.save_weights(params.directories.Train.Model + '/model_weights' + tagTF + '.h5', overwrite=True )
 
-        if params.WhichExperiment.Nucleus.Index[0] != 1 and params.WhichExperiment.HardParams.Model.InitializeFromThalamus and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
-            model.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
-        elif params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
-            model.load_weights(params.directories.Train.Model + '/model_weights.h5')
-        
-        
-        if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode:
-            model.load_weights(params.directories.Train.Model + '/model_weights.h5')
+            with open(params.directories.Train.Model + '/model' + tagTF + '.json', "w") as json_file:
+                json_file.write(model2.to_json())
+                                    
+        def modelInitialize(model2):
+
+            # with open(params.directories.Train.Model + '/model' + tagTF + '.json', 'r') as json_file:
+            #     model2 = keras.models.model_from_json(json_file.read())
+
+            # model2.load_weights("model.h5")
+            #                         
+            if params.WhichExperiment.Nucleus.Index[0] != 1 and params.WhichExperiment.HardParams.Model.InitializeFromThalamus and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
+                model2.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
+            elif params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
+                model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
+                    
+            if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode:
+                model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
+
+            return model2
+
+        model = modelInitialize(model)
 
         if len(params.WhichExperiment.HardParams.Machine.GPU_Index) > 1:
+            # inputTensors = keras.layers.Input( tuple(params.WhichExperiment.HardParams.Model.InputDimensions[:2]) + (1,) )
+            # model_singleGPU = keras.models.clone_model(model, input_tensors=inputTensors)
+            # model_singleGPU.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
             model = multi_gpu_model(model)
+            
 
         model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
 
@@ -219,11 +245,13 @@ def trainingExperiment(Data, params):
         else:
             hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=1) # , callbacks=[TQDMCallback()])
 
+        # if len(params.WhichExperiment.HardParams.Machine.GPU_Index) == 1:
+        saveModel_h5(model, params)
+        # else:
+        #     model_singleGPU.set_weights(model.get_weights())
+        #     saveModel_h5(model_singleGPU, params)
+
         # model.fit_generator()
-        smallFuncs.mkDir(params.directories.Train.Model)
-        tagTF = '_TF' if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
-        model.save(params.directories.Train.Model + '/model' + tagTF + '.h5', overwrite=True, include_optimizer=False )
-        model.save_weights(params.directories.Train.Model + '/model_weights' + tagTF + '.h5', overwrite=True )
         if ModelParam.showHistory: print(hist.history)
 
         return model, hist
