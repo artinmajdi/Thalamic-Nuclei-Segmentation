@@ -20,6 +20,7 @@ import skimage
 import keras
 import keras.preprocessing
 from keras.utils import multi_gpu_model, multi_gpu_utils
+import h5py
 
 # keras.preprocessing.utils.multi_gpu_model
 def check_Run(params, Data):
@@ -187,14 +188,15 @@ def trainingExperiment(Data, params):
         elif 'csv'  in method: pd.DataFrame(data=data,columns=list(data.keys())).to_csv( DirSave + '/' + name + '.csv')
 
     def saveTrainInfo(hist,a, params):
-        hist.params['trainingTime'] = time() - a
+
+        hist.params['trainingTime']     = time() - a
         hist.params['InputDimensionsX'] = params.WhichExperiment.HardParams.Model.InputDimensions[0]
         hist.params['InputDimensionsY'] = params.WhichExperiment.HardParams.Model.InputDimensions[1]
-        hist.params['num_Layers'] = params.WhichExperiment.HardParams.Model.num_Layers
+        hist.params['num_Layers']       = params.WhichExperiment.HardParams.Model.num_Layers
 
         saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
         saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo['SaveReportMethod'])
-        saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , 'csv')
+        saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , params.UserInfo['SaveReportMethod'])
 
     def modelTrain_Unet(Data, params, model):
         ModelParam = params.WhichExperiment.HardParams.Model
@@ -275,7 +277,7 @@ def trainingExperiment(Data, params):
     def Saving_UserInfo(DirSave, params, UserInfo):
 
         UserInfo['InputDimensions'] = str(params.WhichExperiment.HardParams.Model.InputDimensions)
-        UserInfo['num_Layers']      = params.WhichExperiment.HardParams.Model.num_Layers
+        UserInfo['simulation'].num_Layers      = params.WhichExperiment.HardParams.Model.num_Layers
 
         saveReport(DirSave, 'UserInfo', UserInfo , UserInfo['SaveReportMethod'])
 

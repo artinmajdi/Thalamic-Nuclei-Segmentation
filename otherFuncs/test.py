@@ -1,23 +1,25 @@
 import numpy as np
 import nibabel as nib
 import os, sys
+import csv
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 params = paramFunc.Run(UserInfo.__dict__)
+import pandas as pd
+import h5py
+import pickle
 
 
-Dir = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/train/SRI/vimp2_1604_10092015/'
-Dir2 = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/train/temp/vimp2_B/'
-im = nib.load(Dir + 'PProcessed.nii.gz').get_data()
-im2 = nib.load(Dir2 + 'PProcessed.nii.gz').get_data()
-
-im.shape
-im2.shape
+Dir = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/models/sE555_Hierarchical_CascadewRot7_sd2_Dt0.3/1-THALAMUS'
 
 
-a = nib.viewers.OrthoSlicer3D(im)
-b = nib.viewers.OrthoSlicer3D(msk)
-a.link_to(b)
-a.show()
-print('---')
+
+
+with open(Dir + '/UserInfoB.pkl', 'rb') as f:
+    a = pickle.load(f)
+class InputDimensions:
+    WoAug = [104, 108, 72]
+    wAug = [116, 124, 80]
+    wAug_SRI = [116,144,84]
+a['InputDimensions']

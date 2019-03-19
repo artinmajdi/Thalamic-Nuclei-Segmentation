@@ -108,18 +108,18 @@ def terminalEntries(UserInfo):
         entry = sys.argv[en]
 
         if entry.lower() in ('-g','--gpu'):  # gpu num
-            UserInfo['GPU_Index'] = sys.argv[en+1]
+            UserInfo['simulation'].GPU_Index = sys.argv[en+1]
 
         elif entry.lower() in ('-sd','--slicingdim'):
             if sys.argv[en+1].lower() == 'all':
-                UserInfo['slicingDim'] = [0,1,2]
+                UserInfo['simulation'].slicingDim = [0,1,2]
 
             elif sys.argv[en+1][0] == '[':
                 B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
-                UserInfo['slicingDim'] = [int(k) for k in B]
+                UserInfo['simulation'].slicingDim = [int(k) for k in B]
 
             else:
-                UserInfo['slicingDim'] = [int(sys.argv[en+1])]
+                UserInfo['simulation'].slicingDim = [int(sys.argv[en+1])]
 
         elif entry in ('-Aug','--AugmentMode'):
             a = int(sys.argv[en+1])
@@ -128,14 +128,14 @@ def terminalEntries(UserInfo):
 
         elif entry.lower() in ('-n','--nuclei'):  # nuclei index
             if sys.argv[en+1].lower() == 'all':
-                _, UserInfo['nucleus_Index'],_ = NucleiSelection(ind = 1)
+                _, UserInfo['simulation'].nucleus_Index,_ = NucleiSelection(ind = 1)
 
             elif sys.argv[en+1][0] == '[':
                 B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
-                UserInfo['nucleus_Index'] = [int(k) for k in B]
+                UserInfo['simulation'].nucleus_Index = [int(k) for k in B]
 
             else:
-                UserInfo['nucleus_Index'] = [float(sys.argv[en+1])] # [int(sys.argv[en+1])]
+                UserInfo['simulation'].nucleus_Index = [float(sys.argv[en+1])] # [int(sys.argv[en+1])]
 
         elif entry.lower() in ('-l','--loss'):
             UserInfo['lossFunctionIx'] = int(sys.argv[en+1])
@@ -144,17 +144,13 @@ def terminalEntries(UserInfo):
             UserInfo['DatasetIx'] = int(sys.argv[en+1])
 
         elif entry.lower() in ('-e','--epochs'):
-            UserInfo['epochs'] = int(sys.argv[en+1])
+            UserInfo['simulation'].epochs = int(sys.argv[en+1])
 
-        elif entry.lower() in ('-sIx','--SubExperiment_Index'):
-            UserInfo['SubExperiment_Index'] = int(sys.argv[en+1])
-
-        elif entry.lower() in ('-Ix','--Experiments_Index'):
-            UserInfo['Experiments_Index'] = int(sys.argv[en+1])
         elif entry.lower() in ('-lr','--Learning_Rate'):
-            UserInfo['Learning_Rate'] = float(sys.argv[en+1])
+            UserInfo['simulation'].Learning_Rate = float(sys.argv[en+1])
+            
         elif entry.lower() in ('-nl','--num_Layers'):
-            UserInfo['num_Layers'] = int(sys.argv[en+1])
+            UserInfo['simulation'].num_Layers = int(sys.argv[en+1])
 
 
     return UserInfo
@@ -294,7 +290,8 @@ def search_ExperimentDirectory(whichExperiment):
 
             return Inputt
 
-        Input = LoopReadingData(Input, Dir)
+        if whichExperiment.Dataset.ReadMain.Mode and 'Main' in os.listdir(Dir):
+            Input = LoopReadingData(Input, Dir + '/Main')
 
         if whichExperiment.Dataset.ReadAugments.Mode and 'Augments' in os.listdir(Dir):
             Input = LoopReadingData(Input, Dir + '/Augments/' + whichExperiment.Dataset.ReadAugments.Tag)
@@ -305,14 +302,14 @@ def search_ExperimentDirectory(whichExperiment):
         return Input
 
     class train:
-        address = mkDir(whichExperiment.Experiment.address + '/train')
-        Model   = mkDir(whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name + '/' + whichExperiment.Nucleus.name)
+        address = whichExperiment.Experiment.address + '/train'
+        Model   = whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name + '/' + whichExperiment.Nucleus.name
         Model_Thalamus   = whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name + '/1-THALAMUS'
         Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
 
     class test:
-        address = mkDir(whichExperiment.Experiment.address + '/test')
-        Result  = mkDir(whichExperiment.Experiment.address + '/results/' + whichExperiment.SubExperiment.name)
+        address = whichExperiment.Experiment.address + '/test'
+        Result  = whichExperiment.Experiment.address + '/results/' + whichExperiment.SubExperiment.name
         Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
 
     class Directories:

@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from scipy import ndimage
 from shutil import copyfile
 import h5py
+import pickle
 
 class ImageLabel:
     Image = np.zeros(3)
@@ -252,6 +253,19 @@ def readingFromExperiments(params):
 
     def preAnalysis(params):
 
+        def saveUserParams(params):
+            params.UserInfo['simulation'].num_Layers = params.WhichExperiment.HardParams.Model.num_Layers
+            params.UserInfo['InputDimensions'] = params.WhichExperiment.HardParams.Model.InputDimensions
+            print('InputDimensions', params.WhichExperiment.HardParams.Model.InputDimensions)
+            print('num_Layers', params.WhichExperiment.HardParams.Model.num_Layers)
+
+            for sf in list(params.UserInfo):
+                if '__' in sf: params.UserInfo.__delitem__(sf)
+
+            smallFuncs.mkDir(params.directories.Train.Model)
+            with open(params.directories.Train.Model + '/UserInfoB.pkl' , 'wb') as f:
+                pickle.dump(params.UserInfo , f)
+
         def find_PaddingValues(params):
 
             def findingSubjectsFinalPaddingAmount(wFolder, Input, params):
@@ -372,6 +386,8 @@ def readingFromExperiments(params):
         params = find_AllInputSizes(params)
         params = find_correctNumLayers(params)
         params = find_PaddingValues(params)
+
+        saveUserParams(params)
 
         return params
 

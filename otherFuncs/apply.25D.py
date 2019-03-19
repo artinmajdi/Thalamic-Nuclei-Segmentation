@@ -15,7 +15,7 @@ def runOneExperiment(UserInfoB):
 
     _, FullIndexes,_ = smallFuncs.NucleiSelection(ind = 1)
 
-    UserInfoB['slicingDim'] = 2
+    UserInfoB['simulation'].slicingDim = 2
     params = paramFunc.Run(UserInfoB)
 
     dirSave = params.directories.Test.Result # + '_2.5D'
@@ -35,7 +35,7 @@ def runOneExperiment(UserInfoB):
             if os.path.isfile(params.directories.Test.Result + '/' + sj + '/' + nucleusNm + '.nii.gz'):
                 
                 for slicingDim in range(3): # 
-                    UserInfoB['slicingDim'] = slicingDim
+                    UserInfoB['simulation'].slicingDim = slicingDim
                     params = paramFunc.Run(UserInfoB)   
                     im = nib.load(params.directories.Test.Result + '/' + sj + '/' + nucleusNm + '.nii.gz').get_data()[...,np.newaxis]
                     MLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')

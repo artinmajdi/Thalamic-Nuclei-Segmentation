@@ -18,25 +18,23 @@ def Run(UserInfo):
 
     WhichExperiment, preprocess, Augment, directories = Classes()
 
-    WhichExperiment.address = smallFuncs.mkDir(UserInfo['Experiments_Address'])
+    WhichExperiment.address = UserInfo['Experiments_Address']
 
-    WhichExperiment.HardParams.Template.Image = UserInfo['Tempalte_Image']
-    WhichExperiment.HardParams.Template.Mask  = UserInfo['Tempalte_Mask']
+    WhichExperiment.HardParams.Template = UserInfo['Template']()
     WhichExperiment.HardParams.Model.MultiClass.mode = UserInfo['MultiClass_mode']
     WhichExperiment.HardParams.Model.loss, _      = LossFunction.LossInfo(UserInfo['lossFunctionIx'])
     WhichExperiment.HardParams.Model.Method.Type  = UserInfo['Model_Method']
     WhichExperiment.HardParams.Model.metrics, _   = Metrics.MetricInfo(UserInfo['MetricIx'])
-    WhichExperiment.HardParams.Model.optimizer, _ = Optimizers.OptimizerInfo(UserInfo['OptimizerIx'], UserInfo['Learning_Rate'])
-    WhichExperiment.HardParams.Model.num_Layers   = UserInfo['num_Layers']
-    WhichExperiment.HardParams.Model.batch_size   = UserInfo['batch_size']
-    WhichExperiment.HardParams.Model.epochs       = UserInfo['epochs']
-    WhichExperiment.HardParams.Model.InitializeFromThalamus = UserInfo['Initialize_FromThalamus']
-    WhichExperiment.HardParams.Model.InitializeFromOlderModel = UserInfo['Initialize_FromOlderModel']
-    WhichExperiment.HardParams.Model.class_weight = UserInfo['class_weights']
+    WhichExperiment.HardParams.Model.optimizer, _ = Optimizers.OptimizerInfo(UserInfo['OptimizerIx'], UserInfo['simulation'].Learning_Rate)
+    WhichExperiment.HardParams.Model.num_Layers   = UserInfo['simulation'].num_Layers
+    WhichExperiment.HardParams.Model.batch_size   = UserInfo['simulation'].batch_size
+    WhichExperiment.HardParams.Model.epochs       = UserInfo['simulation'].epochs
+    WhichExperiment.HardParams.Model.InitializeFromThalamus = UserInfo['simulation'].Initialize_FromThalamus
+    WhichExperiment.HardParams.Model.InitializeFromOlderModel = UserInfo['simulation'].Initialize_FromOlderModel
 
 
-    WhichExperiment.HardParams.Machine.GPU_Index = str(UserInfo['GPU_Index'])
-    print('---------',WhichExperiment.HardParams.Machine.GPU_Index)
+    WhichExperiment.HardParams.Machine.GPU_Index = str(UserInfo['simulation'].GPU_Index)
+    print('GPU_Index:  ',WhichExperiment.HardParams.Machine.GPU_Index)
 
     if WhichExperiment.HardParams.Model.InitializeFromThalamus and WhichExperiment.HardParams.Model.InitializeFromOlderModel:
         print('WARNING:   initilization can only happen from one source')
@@ -47,43 +45,21 @@ def Run(UserInfo):
     WhichExperiment.Dataset.name, WhichExperiment.Dataset.address = datasets.DatasetsInfo(UserInfo['DatasetIx'])
     WhichExperiment.Dataset.HDf5.mode_saveTrue_LoadFalse = UserInfo['mode_saveTrue_LoadFalse']
 
-    # orderDim =       2: [0,1,2]
-    # orderDim =       1: [2,0,1]
-    # orderDim =       0: [1,2,0]
-    print('---',UserInfo['slicingDim'])
-    WhichExperiment.Dataset.slicingInfo.slicingDim = UserInfo['slicingDim'][0]
-    if UserInfo['slicingDim'][0] == 0:
-        WhichExperiment.Dataset.slicingInfo.slicingOrder         = [1,2,0]
-        WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse = [2,0,1]
-    elif UserInfo['slicingDim'][0] == 1:
-        WhichExperiment.Dataset.slicingInfo.slicingOrder         = [2,0,1]
-        WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse = [1,2,0]
-    else:
-        WhichExperiment.Dataset.slicingInfo.slicingOrder         = [0,1,2]
-        WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse = [0,1,2]
+    WhichExperiment.Dataset.slicingInfo = slicingInfoFunc(WhichExperiment.Dataset.slicingInfo, UserInfo['simulation'].slicingDim)
 
-    WhichExperiment.SubExperiment.index = UserInfo['SubExperiment_Index']
-    WhichExperiment.Experiment.index = UserInfo['Experiments_Index']
-
-    # if UserInfo['DatasetIx'] == 4:
-    #     Experiments_Tag = '7T'
-    # elif UserInfo['DatasetIx'] == 1:
-    #     Experiments_Tag = 'SRI'
-    # elif UserInfo['DatasetIx'] == 2:
-    #     Experiments_Tag = 'Cropping'
-
-    Experiments_Tag = UserInfo['Experiments_Tag']
-
-    WhichExperiment.Experiment.tag = Experiments_Tag   # UserInfo['Experiments_Tag']
-    WhichExperiment.Experiment.name = 'exp' + str(UserInfo['Experiments_Index']) + '_' + WhichExperiment.Experiment.tag if WhichExperiment.Experiment.tag else 'exp' + str(WhichExperiment.Experiment.index)
+    WhichExperiment.SubExperiment.index = UserInfo['SubExperiment'].Index
+    WhichExperiment.Experiment.index = UserInfo['Experiments'].Index
+    WhichExperiment.Experiment.tag   = UserInfo['Experiments'].Tag
+    WhichExperiment.Experiment.name  = 'exp' + str(UserInfo['Experiments'].Index) + '_' + WhichExperiment.Experiment.tag if WhichExperiment.Experiment.tag else 'exp' + str(WhichExperiment.Experiment.index)
     WhichExperiment.Experiment.address = smallFuncs.mkDir(WhichExperiment.address + '/' + WhichExperiment.Experiment.name)
     # _, B = LossFunction.LossInfo(UserInfo['lossFunctionIx'])
 
     readAugmentTag, WhichExperiment = subExperimentName(UserInfo, WhichExperiment)
 
     # TODO I need to fix this to count for multiple nuclei
-    WhichExperiment.Nucleus.Index = UserInfo['nucleus_Index'] if isinstance(UserInfo['nucleus_Index'],list) else [UserInfo['nucleus_Index']]
-    
+    WhichExperiment.Nucleus.Index = UserInfo['simulation'].nucleus_Index if isinstance(UserInfo['simulation'].nucleus_Index,list) else [UserInfo['simulation'].nucleus_Index]
+    print('nucleus_Index', WhichExperiment.Nucleus.Index)
+
     WhichExperiment.Nucleus.name_Thalamus, WhichExperiment.Nucleus.FullIndexes, _ = smallFuncs.NucleiSelection( 1 )
     if len(WhichExperiment.Nucleus.Index) == 1 or not WhichExperiment.HardParams.Model.MultiClass.mode:
         WhichExperiment.Nucleus.name , _, _ = smallFuncs.NucleiSelection( WhichExperiment.Nucleus.Index[0] )
@@ -96,46 +72,37 @@ def Run(UserInfo):
     else:
         WhichExperiment.HardParams.Model.MultiClass.num_classes = len(WhichExperiment.Nucleus.Index) if WhichExperiment.HardParams.Model.MultiClass.mode else 1
 
-    WhichExperiment.Dataset.InputPadding.Automatic = UserInfo['InputPadding_Automatic']
-    WhichExperiment.Dataset.InputPadding.HardDimensions = UserInfo['InputPadding_HardDimensions']
-    WhichExperiment.Dataset.ReadAugments.Mode = UserInfo['readAugments']
+    WhichExperiment.Dataset.InputPadding = UserInfo['InputPadding']
+    WhichExperiment.Dataset.ReadAugments.Mode = UserInfo['readAugmentsMode']
     WhichExperiment.Dataset.ReadAugments.Tag = readAugmentTag
 
-    WhichExperiment.Dataset.Read3T.Mode = UserInfo['read3T_Mode']
-    WhichExperiment.Dataset.Read3T.Tag = UserInfo['read3T_Tag']
+    WhichExperiment.Dataset.Read3T   = UserInfo['Read3T']
+    WhichExperiment.Dataset.ReadMain = UserInfo['ReadMain']
 
-    if WhichExperiment.Dataset.InputPadding.Automatic:
-        UserInfo['InputPadding_Automatic']
+    
+
     directories = smallFuncs.search_ExperimentDirectory(WhichExperiment)
-    if not Augment.Mode:  Augment.AugmentLength = 0
-    preprocess.Cropping.Method = UserInfo['cropping_method']
+    
 
 
-    preprocess.Mode                = UserInfo['preprocessMode']
-    preprocess.BiasCorrection.Mode = UserInfo['BiasCorrection']
-    preprocess.Cropping.Mode       = UserInfo['Cropping']
-    preprocess.Normalize.Mode      = UserInfo['Normalize']
-    preprocess.Normalize.Method    = UserInfo['NormalizaeMethod']
-    preprocess.TestOnly            = UserInfo['TestOnly']
+    preprocess.Mode                = UserInfo['preprocess'].Mode
+    preprocess.BiasCorrection.Mode = UserInfo['preprocess'].BiasCorrection
+    preprocess.Normalize.Mode      = UserInfo['preprocess'].Normalize
+    preprocess.Normalize.Method    = UserInfo['simulation'].NormalizaeMethod
+    preprocess.TestOnly            = UserInfo['simulation'].TestOnly
+    preprocess.Cropping            = UserInfo['cropping']
 
-    Augment.Mode                     = UserInfo['AugmentMode']
-    Augment.Linear.Rotation.Mode     = UserInfo['Augment_Rotation']
-    Augment.Linear.Rotation.AngleMax = UserInfo['Augment_AngleMax']
+    Augment.Mode            = UserInfo['AugmentMode']
+    Augment.Linear.Rotation = UserInfo['Augment_Rotation']()
+    Augment.Linear.Shear    = UserInfo['Augment_Shear']()
+    Augment.NonLinear.Mode  = UserInfo['Augment_NonLinearMode']
 
-    Augment.Linear.Shear.Mode     = UserInfo['Augment_Shear']
-    Augment.Linear.Shear.ShearMax = UserInfo['Augment_ShearMax']
-
-    Augment.Linear.Shift.Mode        = UserInfo['Augment_Shift']
-    Augment.Linear.Shift.ShiftMax    = UserInfo['Augment_ShiftMax']
-    Augment.NonLinear.Mode           = UserInfo['Augment_NonLinearMode']
-
-    WhichExperiment.HardParams.Model.Dropout.Value = UserInfo['dropout']
+    WhichExperiment.HardParams.Model.Dropout = UserInfo['dropout']()
 
     AAA = ReferenceForCascadeMethod(WhichExperiment.HardParams.Model.Method.Type)
     WhichExperiment.HardParams.Model.Method.ReferenceMask = AAA[WhichExperiment.Nucleus.Index[0]]
 
-    WhichExperiment.HardParams.Model.Transfer_Learning.Mode         = UserInfo['Transfer_Learning_Mode']
-    WhichExperiment.HardParams.Model.Transfer_Learning.FrozenLayers = UserInfo['Transfer_Learning_Layers']
+    WhichExperiment.HardParams.Model.Transfer_Learning = UserInfo['Transfer_Learning']()
 
     params.WhichExperiment = WhichExperiment
     params.preprocess      = preprocess
@@ -148,30 +115,43 @@ def Run(UserInfo):
         hist_params = pd.read_csv(directories.Train.Model + '/hist_params.csv').head()
 
         params.WhichExperiment.HardParams.Model.InputDimensions = [hist_params['InputDimensionsX'][0], hist_params['InputDimensionsY'][0],0]
-        params.WhichExperiment.HardParams.Model.num_Layers = hist_params['num_Layers'][0]
+        params.WhichExperiment.HardParams.Model.num_Layers = hist_params['simulation'].num_Layers[0]
 
     return params
 
+def slicingInfoFunc(slicingInfo, slicingDim):
+    print('slicingDim:  ',slicingDim[0])
+    slicingInfo.slicingDim = slicingDim[0]
+    if slicingDim[0] == 0:
+        slicingInfo.slicingOrder         = [1,2,0]
+        slicingInfo.slicingOrder_Reverse = [2,0,1]
+    elif slicingDim[0] == 1:
+        slicingInfo.slicingOrder         = [2,0,1]
+        slicingInfo.slicingOrder_Reverse = [1,2,0]
+    else:
+        slicingInfo.slicingOrder         = [0,1,2]
+        slicingInfo.slicingOrder_Reverse = [0,1,2]
+
+    return slicingInfo
+    
 def subExperimentName(UserInfo, WhichExperiment):
 
     readAugmentTag = ''
-    if UserInfo['Augment_Rotation']: readAugmentTag = 'wRot'   + str(UserInfo['Augment_AngleMax'])
-    elif UserInfo['Augment_Shear']:  readAugmentTag = 'wShear' + str(UserInfo['Augment_ShearMax'])   
-    elif UserInfo['Augment_Shift']:  readAugmentTag = 'wShift' + str(UserInfo['Augment_ShiftMax'])  
-    elif UserInfo['Augment_Merge']:  readAugmentTag = 'wMerge'
+    if UserInfo['Augment_Rotation'].Mode: readAugmentTag = 'wRot'   + str(UserInfo['Augment_Rotation'].AngleMax)
+    elif UserInfo['Augment_Shear'].Mode:  readAugmentTag = 'wShear' + str(UserInfo['Augment_Shear'].ShearMax)   
 
     
-    WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment_Tag']
+    WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment'].Tag
     
-    if readAugmentTag: WhichExperiment.SubExperiment.tag += '_Aug_' + readAugmentTag
-        
-    if int(UserInfo['slicingDim'][0]) != 2:
-        WhichExperiment.SubExperiment.tag += '_sd' + str(UserInfo['slicingDim'][0])
+    # if readAugmentTag: WhichExperiment.SubExperiment.tag += '_Aug_' + readAugmentTag
+    if readAugmentTag: WhichExperiment.SubExperiment.tag += readAugmentTag    
 
-    WhichExperiment.SubExperiment.tag += '_DrpOt' + str(UserInfo['dropout'])
-
-    WhichExperiment.SubExperiment.name = 'subExp' + str(WhichExperiment.SubExperiment.index) +  '_' + WhichExperiment.SubExperiment.tag 
-
+    # if int(UserInfo['simulation'].slicingDim[0]) != 2:
+    WhichExperiment.SubExperiment.tag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
+    WhichExperiment.SubExperiment.tag += '_Dt' + str(UserInfo['dropout'].Value)
+    if UserInfo['Read3T'].Mode: WhichExperiment.SubExperiment.tag += '_SRI'
+    WhichExperiment.SubExperiment.name = 'sE' + str(WhichExperiment.SubExperiment.index) +  '_' + WhichExperiment.SubExperiment.tag 
+    
     return readAugmentTag, WhichExperiment
     
 def ReferenceForCascadeMethod(ModelIdea):
@@ -264,6 +244,7 @@ def Classes():
 
     class transfer_Learning:
         Mode = False
+        Stage = 0 # 1
         FrozenLayers = [0,1]
 
     class model:
@@ -363,6 +344,8 @@ def Classes():
         Mode = False
         Tag = ''
         
+    class readMain:
+        Mode = True
     class dataset:
         name = ''
         address = ''
@@ -377,6 +360,7 @@ def Classes():
         InputPadding = inputPadding()
         ReadAugments = readAugmentFn()
         Read3T = Read3TFn()
+        ReadMain = readMain()
         HDf5 = hDF5
 
 
@@ -392,15 +376,15 @@ def Classes():
 
     # --------------------------------- Augmentation --------------------------------
     class rotation:
-        Mode = ''
+        Mode = False
         AngleMax = 6
 
     class shift:
-        Mode = ''
+        Mode = False
         ShiftMax = 10
 
     class shear:
-        Mode = ''
+        Mode = False
         ShearMax = 0    
 
     class linearAug:
@@ -414,15 +398,9 @@ def Classes():
         Mode = False
         Length = 2 
     class augment:
-        Mode = ''
+        Mode = False
         Linear = linearAug()
         NonLinear = nonlinearAug()
-        # LinearMode = True
-        # LinearAugmentLength = 3  # number
-        # NonLinearAugmentLength = 2
-        # Rotation = rotation
-        # Shift = shift
-        # NonRigidWarp = ''
 
     # --------------------------------- Preprocess --------------------------------
     class normalize:

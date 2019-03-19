@@ -12,8 +12,8 @@ import preprocess.applyPreprocess as applyPreprocess
 # TODO:  write the name of test and train subjects in model and results and dataset  to have it for the future
 # TODO : look for a way to see epoch inside my loss function and use BCE initially and tyhen add Dice for higher epochs
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
-NucleiIndexes = UserInfoB['nucleus_Index']
-slicingDim = UserInfoB['slicingDim']
+NucleiIndexes = UserInfoB['simulation'].nucleus_Index
+slicingDim = UserInfoB['simulation'].slicingDim
 
 def gpuSetting(params):
     
@@ -27,39 +27,39 @@ def Run(UserInfoB):
 
     def HierarchicalStages(UserInfoB):
 
-        # # stage 1
-        # print('************ stage 1 ************')
-        # UserInfoB['nucleus_Index'] = [1]
-        # UserInfoB['gapDilation'] = 5
-        # Run_SingleNuclei(UserInfoB)
+        # stage 1
+        print('************ stage 1 ************')
+        UserInfoB['simulation'].nucleus_Index = [1]
+        UserInfoB['gapDilation'] = 5
+        Run_SingleNuclei(UserInfoB)
 
-        # # stage 2
-        # print('************ stage 2 ************')
-        # UserInfoB['gapDilation'] = 3
-        # for UserInfoB['nucleus_Index'] in [1.1 , 1.2 , 1.3]:
-        #     name,_,_ = smallFuncs.NucleiSelection(ind=UserInfoB['nucleus_Index'])
-        #     print('      ', name , 'gpu: ',UserInfoB['GPU_Index'])
-        #     Run_SingleNuclei(UserInfoB)
+        # stage 2
+        print('************ stage 2 ************')
+        UserInfoB['gapDilation'] = 3
+        for UserInfoB['simulation'].nucleus_Index in [1.1 , 1.2 , 1.3]:
+            name,_,_ = smallFuncs.NucleiSelection(ind=UserInfoB['simulation'].nucleus_Index)
+            print('      ', name , 'gpu: ',UserInfoB['simulation'].GPU_Index)
+            Run_SingleNuclei(UserInfoB)
 
         print('************ stage 3 ************')
         # stage 3 ; final for now
         # print('index',NucleiIndexes)
         _,FullIndexes ,_ = smallFuncs.NucleiSelection(ind=1)
-        for UserInfoB['nucleus_Index'] in FullIndexes[1:]:
-            name,_,_ = smallFuncs.NucleiSelection(ind=UserInfoB['nucleus_Index'])
-            print('      ', name , 'gpu: ',UserInfoB['GPU_Index'])
+        for UserInfoB['simulation'].nucleus_Index in FullIndexes[1:]:
+            name,_,_ = smallFuncs.NucleiSelection(ind=UserInfoB['simulation'].nucleus_Index)
+            print('      ', name , 'gpu: ',UserInfoB['simulation'].GPU_Index)
             Run_SingleNuclei(UserInfoB)
 
     def CacadeStages(UserInfoB):
 
-        for UserInfoB['nucleus_Index'] in NucleiIndexes:
-            print('    Nucleus:  ', UserInfoB['nucleus_Index']  , 'GPU:  ', UserInfoB['GPU_Index'])
+        for UserInfoB['simulation'].nucleus_Index in NucleiIndexes:
+            print('    Nucleus:  ', UserInfoB['simulation'].nucleus_Index  , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
             Run_SingleNuclei(UserInfoB)
 
     def Run_SingleNuclei(UserInfoB):
 
         for sd in slicingDim:
-            UserInfoB['slicingDim'] = [sd]
+            UserInfoB['simulation'].slicingDim = [sd]
             params = paramFunc.Run(UserInfoB)
             Data, params = datasets.loadDataset(params)
             choosingModel.check_Run(params, Data)
@@ -68,14 +68,32 @@ def Run(UserInfoB):
     elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': CacadeStages(UserInfoB)
     elif params.WhichExperiment.HardParams.Model.Method.Type == 'singleRun': Run_SingleNuclei(UserInfoB)
 
-UserInfoB['nucleus_Index'] = 1
+UserInfoB['simulation'].nucleus_Index = 1
+UserInfoB['Augment_Rotation'].AngleMax = '7_8cnts'
+UserInfoB['dropout'].Value = 0.4
+
 params = paramFunc.Run(UserInfoB)
 
 datasets.movingFromDatasetToExperiments(params)
 applyPreprocess.main(params, 'experiment')
-
 K = gpuSetting(params)
 
-Run(UserInfoB)
+try:
+    UserInfoB['ReadMain'].Mode = True
+    UserInfoB['readAugmentsMode'] = True
+    UserInfoB['Read3T'].Mode = False
+    UserInfoB['InputPadding'].Automatic = False
+    Run(UserInfoB)
+except:
+    print('failed')
+
+# try:
+#     UserInfoB['ReadMain'].Mode = False
+#     UserInfoB['readAugments'].Mode = False
+#     UserInfoB['Read3T'].Mode = True
+#     UserInfoB['InputPadding'].Automatic = False
+#     Run(UserInfoB)
+# except:
+#     print('failed')
 
 K.clear_session()

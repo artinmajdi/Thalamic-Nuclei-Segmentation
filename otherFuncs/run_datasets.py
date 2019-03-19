@@ -14,8 +14,8 @@ mode = 'experiment'
 
 #! reading the user input parameters via terminal
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
-UserInfoB['slicingDim'] = [0]
-UserInfoB['nucleus_Index'] = [1]
+UserInfoB['simulation'].slicingDim = [0]
+UserInfoB['simulation'].nucleus_Index = [1]
 params = paramFunc.Run(UserInfoB)
 # params.WhichExperiment.Dataset.CreatingTheExperiment = True
 
