@@ -32,7 +32,7 @@ class simulation:
 
 
 
-Model_Method = 'Cascade' # 'Hierarchical_Cascade' # 
+Model_Method =  'Hierarchical_Cascade' # 'Cascade'
 
 class SubExperiment:
     Index = 6

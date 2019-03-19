@@ -69,8 +69,8 @@ def Run(UserInfoB):
     elif params.WhichExperiment.HardParams.Model.Method.Type == 'singleRun': Run_SingleNuclei(UserInfoB)
 
 UserInfoB['simulation'].nucleus_Index = 1
-UserInfoB['Augment_Rotation'].AngleMax = '7_8cnts'
-UserInfoB['dropout'].Value = 0.4
+UserInfoB['Augment_Rotation'].AngleMax = '7_4cnts'
+UserInfoB['dropout'].Value = 0.3
 
 params = paramFunc.Run(UserInfoB)
 
@@ -83,6 +83,13 @@ try:
     UserInfoB['readAugmentsMode'] = True
     UserInfoB['Read3T'].Mode = False
     UserInfoB['InputPadding'].Automatic = False
+    Run(UserInfoB)
+except:
+    print('failed')
+
+try:
+    UserInfoB['InputPadding'].Automatic = True
+    UserInfoB['SubExperiment'].Tag += '_AutoPadding'
     Run(UserInfoB)
 except:
     print('failed')
