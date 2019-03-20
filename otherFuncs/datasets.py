@@ -14,34 +14,39 @@ from shutil import copyfile
 import h5py
 import pickle
 
-class ImageLabel:
-    Image = np.zeros(3)
-    Mask = ''
+def ClassesFunc():
+    class ImageLabel:
+        Image = np.zeros(3)
+        Mask = ''
 
-class info:
-    Height = ''
-    Width = ''
+    class info:
+        Height = ''
+        Width = ''
 
-class data:
-    Train = ImageLabel()
-    Train_ForTest = ""
-    Test = ""
-    Validation = ImageLabel()
-    Info = info()
+    class data:
+        Train = ImageLabel()
+        Train_ForTest = ""
+        Test = ""
+        Validation = ImageLabel()
+        Info = info()
 
-class trainCase:
-    def __init__(self, Image, Mask):
-        self.Image = Image
-        self.Mask  = Mask
+    class trainCase:
+        def __init__(self, Image, Mask):
+            self.Image = Image
+            self.Mask  = Mask
 
-class testCase:
-    def __init__(self, Image, Mask, OrigMask, Affine, Header, original_Shape):
-        self.Image = Image
-        self.Mask = Mask
-        self.OrigMask  = OrigMask
-        self.Affine = Affine
-        self.Header = Header
-        self.original_Shape = original_Shape
+    class testCase:
+        def __init__(self, Image, Mask, OrigMask, Affine, Header, original_Shape):
+            self.Image = Image
+            self.Mask = Mask
+            self.OrigMask  = OrigMask
+            self.Affine = Affine
+            self.Header = Header
+            self.original_Shape = original_Shape
+
+    return ImageLabel, data, trainCase, testCase
+
+ImageLabel, data, trainCase, testCase = ClassesFunc()
 
 def DatasetsInfo(DatasetIx):
     switcher = {
@@ -137,22 +142,10 @@ def paddingNegativeFix(sz, Padding):
 
     return padding, crd
 
-# def fix25D_sd0(Image):
-#     return Image[:int(Image.shape[2]/2+5) , : , :]
-
-def readingWithTranpose(Dirr , params):
-    ImageF = nib.load( Dirr)
-    Image = ImageF.get_data()
-    # if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0: Image = fix25D_sd0(Image)
-    
-    return ImageF, np.transpose(Image, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
-
-# TODO: add the saving images with the format mahesh said
-# TODO: maybe add the ability to crop the test cases with bigger sizes than network input dimention accuired from train datas
 def readingFromExperiments(params):
 
     NameCascadeMask = params.WhichExperiment.HardParams.Model.Method.ReferenceMask
-
+        
     def inputPreparationForUnet(im,subject2, params):
 
         def CroppingInput(im, Padding2):
@@ -178,6 +171,11 @@ def readingFromExperiments(params):
 
     def readingImage(params, subject2, mode):
 
+        def readingWithTranpose(Dirr , params):
+            ImageF = nib.load( Dirr)
+            Image = ImageF.get_data()   
+            return ImageF, np.transpose(Image, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
+            
         # TODO remove this after couple of runs
         # if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1) and os.path.isfile(subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
         #     copyfile( subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz' , subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
@@ -367,7 +365,7 @@ def readingFromExperiments(params):
 
             HardParams = params.WhichExperiment.HardParams
 
-            if params.WhichExperiment.Dataset.InputPadding.Automatic and params.WhichExperiment.Dataset.HDf5.mode_saveTrue_LoadFalse:
+            if params.WhichExperiment.Dataset.InputPadding.Automatic: # and params.WhichExperiment.Dataset.HDf5.mode_saveTrue_LoadFalse:
                 MinInputSize = np.min(params.directories.Train.Input.inputSizes, axis=0)
             else:
                 MinInputSize = params.WhichExperiment.Dataset.InputPadding.HardDimensions
@@ -391,11 +389,32 @@ def readingFromExperiments(params):
 
         return params
 
+    def saveHDf5(Data):
+        data_dict = Data.__dict__
+
+        smallFuncs.mkDir(params.directories.Test.Result)
+        with h5py.File(params.directories.Test.Result + '/Data.hdf5','w') as f:
+            for mode in list(data_dict):
+                if mode == 'Train' or mode == 'Validation':
+                    f.create_group(mode)
+                    f[mode].create_dataset(name='Image',data=data_dict[mode].Image)
+                    f[mode].create_dataset(name='Mask',data=data_dict[mode].Mask)
+                else:
+                    
+                    Input = params.directories.Test.Input if mode == 'Test' else params.directories.Train.Input                                            
+
+                    for subject in list(data_dict[mode]):
+                        g = f.create_group('%s/%s'%(mode,subject))
+                        g.create_dataset(name='Image'    ,data=data_dict[mode][subject].Image)
+                        g.create_dataset(name='Mask'     ,data=data_dict[mode][subject].Mask)
+                        g.create_dataset(name='OrigMask' ,data=data_dict[mode][subject].OrigMask)
+                        g.attrs['original_Shape'] = data_dict[mode][subject].original_Shape
+                        g.attrs['Affine'] = data_dict[mode][subject].Affine
+                        g.attrs['address'] = Input.Subjects[subject].address
+                        # g.attrs['Header'] = data_dict['Test'][subject].Header
+                        
     def main_ReadingDataset(params):
-
-        if params.WhichExperiment.Dataset.HDf5.mode:
-            f = h5py.File(params.WhichExperiment.Experiment.address + '/' + params.WhichExperiment.Nucleus.name + '.h5py' , 'w')
-
+          
         def trainFlag():
             Flag_TestOnly = params.preprocess.TestOnly
             Flag_TrainDice = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
@@ -460,17 +479,6 @@ def readingFromExperiments(params):
                 origMsk , msk = readingNuclei(params, Subjects[nameSubject], imF.shape)
 
                 if im[...,0].shape == msk[...,0].shape:
-
-                    if params.WhichExperiment.Dataset.HDf5.mode:
-                        f["/%s/%s/Image"%(mode,nameSubject)] = im
-                        f["/%s/%s/Mask"%(mode,nameSubject)] = msk>Th
-                        # f["/%s/%s"%(mode,nameSubject)].attrs["Affine"] = imF.get_affine()
-                        # f["/%s/%s"%(mode,nameSubject)].attrs["Header"] = imF.get_header()
-                        f["/%s/%s"%(mode,nameSubject)].attrs["original_Shape"] = imF.shape
-                        f['/%s/%s'%(mode,nameSubject)].attrs["Padding"] = Subjects[nameSubject].Padding
-                        f['/%s/%s'%(mode,nameSubject)].attrs["NewCropInfo/OriginalBoundingBox"] = Subjects[nameSubject].NewCropInfo.OriginalBoundingBox
-                        f['/%s/%s'%(mode,nameSubject)].attrs["NewCropInfo/PadSizeBackToOrig"]   = Subjects[nameSubject].NewCropInfo.PadSizeBackToOrig
-
                     Data[nameSubject] = testCase(Image=im, Mask=msk>Th ,OrigMask=(origMsk>Th).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
                 else:
                     Error_MisMatch_In_Dim_ImageMask(Subjects[nameSubject] , mode, nameSubject)
@@ -482,24 +490,19 @@ def readingFromExperiments(params):
         DataAll = data()
         if trainFlag():
             DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
-            # if not params.WhichExperiment.Dataset.HDf5.mode:
             DataAll.Train, DataAll.Validation = separateTrainVal_and_concatenateTrain( DataAll.Train_ForTest )
 
         if params.directories.Test.Input.Subjects: DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
 
-        # DataAll.Info.Height, DataAll.Info.Width = params.WhichExperiment.HardParams.Model.InputDimensions[:2]
-        # params.WhichExperiment.HardParams.Model.imageInfo = DataAll.Info
-        # with h5py.File(params.WhichExperiment.Experiment.address + '/' + params.WhichExperiment.Nucleus.name + '.h5py' , 'w') as f:
-        #     f.create_dataset('%s/%s/Image'%(mode_TrainVal,nameSubject)  , data=im)
-
-        return DataAll, params
+        return DataAll
 
     params = preAnalysis(params)
 
-    if params.WhichExperiment.Dataset.HDf5.mode_saveTrue_LoadFalse:
-        Data, params = main_ReadingDataset(params)
+    if 1:
+        Data = main_ReadingDataset(params)
+        saveHDf5(Data)
     else:
-        print('load HDF5')
+        Data = {}
 
     return Data, params
 
@@ -537,30 +540,12 @@ def percentageDivide(percentage, subjectsList, randomFlag):
 
 def movingFromDatasetToExperiments(params):
 
-    # def checkAugmentedData(params):
-    #     def listAugmentationFolders(mode, params):
-    #         Dir_Aug1 = params.WhichExperiment.Dataset.address + '/Augments/' + mode
-    #         flag_Aug = os.path.exists(Dir_Aug1)
-    #         ListAugments = smallFuncs.listSubFolders(Dir_Aug1, params) if flag_Aug else list('')
-    #         return flag_Aug, {'address': Dir_Aug1 , 'list': ListAugments , 'mode':mode}
-    #     flagAg, AugDataL = np.zeros(3), list(np.zeros(3))
-    #     if params.Augment.Mode:
-    #         if params.Augment.Linear.Rotation.Mode:     flagAg[0], AugDataL[0] = listAugmentationFolders('Linear_Rotation', params)
-    #         if params.Augment.Linear.Shift.Mode:        flagAg[1], AugDataL[1] = listAugmentationFolders('Linear_Shift', params)
-    #         if params.Augment.NonLinear.Mode: flagAg[2], AugDataL[2] = listAugmentationFolders('NonLinear', params)
-    #     return flagAg, AugDataL
-    # def copyAugmentData(DirOut, AugDataL, subject):
-    #     if 'NonLinear' in AugDataL['mode']: AugDataL['list'] = [i for i in AugDataL['list'] if subject in i.split('Ref_')[0]]
-    #     for subjectsAgm in AugDataL['list']:
-    #         if subject in subjectsAgm: shutil.copytree(AugDataL['address'] + '/' + subjectsAgm  ,  DirOut + '/' + subjectsAgm)
-
     if len(os.listdir(params.directories.Train.address)) != 0 or len(os.listdir(params.directories.Test.address)) != 0:
         print('*** DATASET ALREADY EXIST; PLEASE REMOVE \'train\' & \'test\' SUBFOLDERS ***')
         sys.exit
 
     else:
         List = smallFuncs.listSubFolders(params.WhichExperiment.Dataset.address, params)
-        # flagAg, AugDataL = checkAugmentedData(params)
 
         TestParams  = params.WhichExperiment.Dataset.Test
         _, TestList = percentageDivide(TestParams.percentage, List, params.WhichExperiment.Dataset.randomFlag) if 'percentage' in TestParams.mode else TestParams.subjects
@@ -571,10 +556,5 @@ def movingFromDatasetToExperiments(params):
             if not os.path.exists(DirOut + '/' + subject):
                 shutil.copytree(params.WhichExperiment.Dataset.address + '/' + subject  ,  DirOut + '/' + subject)
 
-            # if 'train' in mode:
-            #     for AgIx in range(len(AugDataL)):
-            #         if flagAg[AgIx]: copyAugmentData(DirOut, AugDataL[AgIx], subject)
-
-        # params = smallFuncs.inputNamesCheck(params, 'experiment')
-
     return True
+

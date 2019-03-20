@@ -155,7 +155,7 @@ def testingExeriment(model, Data, params):
     def loopOver_Predicting_TestSubjects(DataTest):
         prediction = {}
         ResultDir = params.directories.Test.Result
-        for name in DataTest:
+        for name in tqdm(DataTest,desc='predicting test subjects'):
             prediction[name] = predictingTestSubject(DataTest[name], params.directories.Test.Input.Subjects[name] , ResultDir)
 
         return prediction
@@ -164,7 +164,7 @@ def testingExeriment(model, Data, params):
         prediction = {}
         if (params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) or ( 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1)):
             ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
-            for name in DataTrain:
+            for name in tqdm(DataTrain,desc='predicting train subjects'):
                 prediction[name] = predictingTestSubject(DataTrain[name], params.directories.Train.Input.Subjects[name] , ResultDir)
 
         return prediction
@@ -227,33 +227,40 @@ def trainingExperiment(Data, params):
 
             return model2
 
+        def modelFit(params):
+
+            def RunGenerator(params):
+                f = h5py.File(params.directories.Test.Result + '/Data.hdf5','r')
+                    
+                infoDG = {'dim': tuple(f['Train/Image'].shape[1:3]),'batch_size': ModelParam.batch_size,
+                        'n_classes': ModelParam.MultiClass.num_classes, 'n_channels': f['Train/Image'].shape[3]}
+                                
+                training_generator   = DataGenerator( f['Train'], **infoDG )
+                validation_generator = DataGenerator( f['Validation'], **infoDG )
+
+                hist = model.fit_generator(generator=training_generator, validation_data=validation_generator, verbose=1)   # , use_multiprocessing=True, workers=20
+                f.close()
+                return hist
+
+            if not params.WhichExperiment.HardParams.Model.ManualDataGenerator:
+                if params.WhichExperiment.Dataset.Validation.fromKeras:
+                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=1) # , callbacks=[TQDMCallback()])
+                else:
+                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=1) # , callbacks=[TQDMCallback()])        
+            else:                             
+                hist = RunGenerator(params)
+
+            return hist
+
         model = modelInitialize(model)
 
-        if len(params.WhichExperiment.HardParams.Machine.GPU_Index) > 1:
-            # inputTensors = keras.layers.Input( tuple(params.WhichExperiment.HardParams.Model.InputDimensions[:2]) + (1,) )
-            # model_singleGPU = keras.models.clone_model(model, input_tensors=inputTensors)
-            # model_singleGPU.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
-            model = multi_gpu_model(model)
-            
+        if len(params.WhichExperiment.HardParams.Machine.GPU_Index) > 1:   model = multi_gpu_model(model)
 
         model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
 
+        hist = modelFit(params)
 
-
-        # if the shuffle argument in model.fit is set to True (which is the default), the training data will be randomly shuffled at each epoch.
-        # class_weights = params.WhichExperiment.HardParams.Model.class_weight
-        if params.WhichExperiment.Dataset.Validation.fromKeras:
-            hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=1) # , callbacks=[TQDMCallback()])
-        else:
-            hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=1) # , callbacks=[TQDMCallback()])
-
-        # if len(params.WhichExperiment.HardParams.Machine.GPU_Index) == 1:
         saveModel_h5(model, params)
-        # else:
-        #     model_singleGPU.set_weights(model.get_weights())
-        #     saveModel_h5(model_singleGPU, params)
-
-        # model.fit_generator()
         if ModelParam.showHistory: print(hist.history)
 
         return model, hist
@@ -410,3 +417,27 @@ def architecture(params):
     model.summary()
 
     return model
+
+class DataGenerator(keras.utils.Sequence):
+    def __init__(self, h, batch_size=100, dim=(32,32), n_channels=1, n_classes=2):
+        'Initialization'
+        self.dim = dim
+        self.batch_size = batch_size
+        self.h = h
+        self.n_channels = n_channels
+        self.n_classes = n_classes
+        self.on_epoch_end()
+
+    def __len__(self):
+        return int(np.floor(self.h['Image'].shape[0] / self.batch_size))
+
+    def __getitem__(self, index):
+        indexes = self.indexes[ index*self.batch_size : (index+1)*self.batch_size ]
+        return self.__data_generation(indexes)
+
+    def on_epoch_end(self):
+        self.indexes = np.arange(self.h['Image'].shape[0])
+        np.random.shuffle(self.indexes)
+
+    def __data_generation(self, list_IDs_temp):
+        return self.h['Image'][list_IDs_temp,...] , self.h['Mask'][list_IDs_temp,...]

@@ -6,7 +6,7 @@ import modelFuncs.Optimizers as Optimizers
 # from Parameters import Classes
 import otherFuncs.smallFuncs as smallFuncs
 import otherFuncs.datasets as datasets
-
+import pickle
 from copy import deepcopy
 import pandas as pd
           
@@ -112,10 +112,12 @@ def Run(UserInfo):
 
 
     if preprocess.TestOnly:
-        hist_params = pd.read_csv(directories.Train.Model + '/hist_params.csv').head()
+        # hist_params = pd.read_csv(directories.Train.Model + '/hist_params.csv').head()
+        with open(directories.Train.Model + '/hist_params.pkl','rb') as f:
+            hist_params = pickle.load(f)
 
-        params.WhichExperiment.HardParams.Model.InputDimensions = [hist_params['InputDimensionsX'][0], hist_params['InputDimensionsY'][0],0]
-        params.WhichExperiment.HardParams.Model.num_Layers = hist_params['simulation'].num_Layers[0]
+        params.WhichExperiment.HardParams.Model.InputDimensions = [hist_params['InputDimensionsX'], hist_params['InputDimensionsY'],0]
+        params.WhichExperiment.HardParams.Model.num_Layers = hist_params['num_Layers']
 
     return params
 
@@ -272,6 +274,7 @@ def Classes():
         Method = method()
         paddingErrorPatience = 20
         Transfer_Learning = transfer_Learning()
+        ManualDataGenerator = False
         
     class machine:
         WhichMachine = 'server'

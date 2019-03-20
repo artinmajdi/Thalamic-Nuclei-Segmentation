@@ -68,39 +68,17 @@ def Run(UserInfoB):
     elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': CacadeStages(UserInfoB)
     elif params.WhichExperiment.HardParams.Model.Method.Type == 'singleRun': Run_SingleNuclei(UserInfoB)
 
-UserInfoB['simulation'].nucleus_Index = 1
-UserInfoB['Augment_Rotation'].AngleMax = '7_4cnts'
-UserInfoB['dropout'].Value = 0.3
-
+UserInfoB['ReadMain'].Mode = False
+UserInfoB['readAugmentsMode'] = False
+UserInfoB['Read3T'].Mode = True
+UserInfoB['Model_Method'] =  'Cascade' # 'Hierarchical_Cascade' #
+UserInfoB['InputPadding'].Automatic = False
 params = paramFunc.Run(UserInfoB)
 
 datasets.movingFromDatasetToExperiments(params)
 applyPreprocess.main(params, 'experiment')
 K = gpuSetting(params)
 
-try:
-    UserInfoB['ReadMain'].Mode = True
-    UserInfoB['readAugmentsMode'] = True
-    UserInfoB['Read3T'].Mode = False
-    UserInfoB['InputPadding'].Automatic = False
-    Run(UserInfoB)
-except:
-    print('failed')
-
-try:
-    UserInfoB['InputPadding'].Automatic = True
-    UserInfoB['SubExperiment'].Tag += '_AutoPadding'
-    Run(UserInfoB)
-except:
-    print('failed')
-
-# try:
-#     UserInfoB['ReadMain'].Mode = False
-#     UserInfoB['readAugments'].Mode = False
-#     UserInfoB['Read3T'].Mode = True
-#     UserInfoB['InputPadding'].Automatic = False
-#     Run(UserInfoB)
-# except:
-#     print('failed')
+Run(UserInfoB)
 
 K.clear_session()

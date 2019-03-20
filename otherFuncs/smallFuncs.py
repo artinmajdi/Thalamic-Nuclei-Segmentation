@@ -290,6 +290,7 @@ def search_ExperimentDirectory(whichExperiment):
 
             return Inputt
 
+        Input = LoopReadingData(Input, Dir)
         if whichExperiment.Dataset.ReadMain.Mode and 'Main' in os.listdir(Dir):
             Input = LoopReadingData(Input, Dir + '/Main')
 

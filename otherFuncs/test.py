@@ -9,17 +9,14 @@ params = paramFunc.Run(UserInfo.__dict__)
 import pandas as pd
 import h5py
 import pickle
+from tqdm import tqdm
+import keras
+
+subj = params.directories.Train.Input.Subjects['vimp2_A']
+
+keras.utils.Sequence()
+f = h5py.File(params.directories.Test.Result + '/Data.hdf5','r')
 
 
-Dir = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/models/sE555_Hierarchical_CascadewRot7_sd2_Dt0.3/1-THALAMUS'
-
-
-
-
-with open(Dir + '/UserInfoB.pkl', 'rb') as f:
-    a = pickle.load(f)
-class InputDimensions:
-    WoAug = [104, 108, 72]
-    wAug = [116, 124, 80]
-    wAug_SRI = [116,144,84]
-a['InputDimensions']
+f['Train/Image'].shape
+import numpy as np

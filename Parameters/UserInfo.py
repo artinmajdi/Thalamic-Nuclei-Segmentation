@@ -18,8 +18,8 @@ class Transfer_Learning:
 
 class simulation:
     TestOnly      = False
-    epochs        = 20
-    GPU_Index     = "4"
+    epochs        = 5
+    GPU_Index     = "6"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
@@ -32,7 +32,7 @@ class simulation:
 
 
 
-Model_Method =  'Hierarchical_Cascade' # 'Cascade'
+Model_Method =  'Hierarchical_Cascade' # 'Cascade' #
 
 class SubExperiment:
     Index = 6
@@ -95,7 +95,7 @@ Augment_LinearMode = True
 
 class Augment_Rotation:
     Mode = True
-    AngleMax = 7 # 15
+    AngleMax = '7_4cnts' # 15
 
 class Augment_Shear:
     Mode = False
