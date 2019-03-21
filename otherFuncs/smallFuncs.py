@@ -291,15 +291,15 @@ def search_ExperimentDirectory(whichExperiment):
             return Inputt
 
         Input = LoopReadingData(Input, Dir)
-        if whichExperiment.Dataset.ReadMain.Mode and 'Main' in os.listdir(Dir):
-            Input = LoopReadingData(Input, Dir + '/Main')
+        if whichExperiment.Dataset.ReadTrain.Main and os.path.exists( Dir + '/Main' ): Input = LoopReadingData(Input, Dir + '/Main')
+        if whichExperiment.Dataset.ReadTrain.ET   and os.path.exists( Dir + '/ET' ):   Input = LoopReadingData(Input, Dir + '/ET')            
+        if whichExperiment.Dataset.ReadTrain.SRI  and os.path.exists( Dir + '/SRI' ):  Input = LoopReadingData(Input, Dir + '/SRI')
 
-        if whichExperiment.Dataset.ReadAugments.Mode and 'Augments' in os.listdir(Dir):
-            Input = LoopReadingData(Input, Dir + '/Augments/' + whichExperiment.Dataset.ReadAugments.Tag)
-
-        if whichExperiment.Dataset.Read3T.Mode and whichExperiment.Dataset.Read3T.Tag in os.listdir(Dir):
-            Input = LoopReadingData(Input, Dir + '/' + whichExperiment.Dataset.Read3T.Tag )
-
+        DirAug = Dir + '/Augments/' + whichExperiment.Dataset.ReadTrain.ReadAugments.Tag 
+        if whichExperiment.Dataset.ReadTrain.ReadAugments.Mode:
+            if whichExperiment.Dataset.ReadTrain.Main and os.path.exists( DirAug + '/Main' ): Input = LoopReadingData( Input, DirAug + '/Main'  )
+            if whichExperiment.Dataset.ReadTrain.ET   and os.path.exists( DirAug + '/ET' ):   Input = LoopReadingData( Input, DirAug + '/ET'  )
+                
         return Input
 
     class train:

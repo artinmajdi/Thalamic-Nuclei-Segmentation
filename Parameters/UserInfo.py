@@ -1,11 +1,20 @@
 
-readAugmentsMode = True
 
-class ReadMain:
+Model_Method =  'HCascade' # 'Cascade' #
+
+class SubExperiment:
+    Index = 7
+    Tag   = Model_Method
+
+class readAugments:
     Mode = True
-class Read3T:
-    Mode = False
-    Tag = 'SRI'
+    Tag = ''
+
+class ReadTrain:
+    SRI = False
+    ET = False
+    Main = True
+    ReadAugments = readAugments()
 
 class InputPadding:
     Automatic = False
@@ -18,12 +27,12 @@ class Transfer_Learning:
 
 class simulation:
     TestOnly      = False
-    epochs        = 5
-    GPU_Index     = "6"
+    epochs        = 100
+    GPU_Index     = "5"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1]
+    nucleus_Index = [2]
     slicingDim    = [2]
     batch_size    = 100
 
@@ -32,38 +41,19 @@ class simulation:
 
 
 
-Model_Method =  'Hierarchical_Cascade' # 'Cascade' #
-
-class SubExperiment:
-    Index = 6
-    Tag   = Model_Method
-
 mode_saveTrue_LoadFalse = True
-
-class dropout:
-    Mode = True
-    Value = 0.3
-    
-DatasetIx = 4
-
-lossFunctionIx = 5
+DropoutValue = 0.3
 havingBackGround_AsExtraDimension = True
-
-
 
 class Experiments:
     Index = '7'
-    Tag = 'cascadeV1' 
+    Tag = 'cascadeV1'
 
 gapDilation = 5
 
 class Template:
     Image = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/origtemplate.nii.gz'
     Mask = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/CropMaskV3.nii.gz'  # MyCrop_Template2_Gap20
-
-
-#! MultiClass
-MultiClass_mode = False
 
 
 #! metric function
@@ -99,8 +89,8 @@ class Augment_Rotation:
 
 class Augment_Shear:
     Mode = False
-    ShearMax = 4   
-    
+    ShearMax = 4
+
 Augment_NonLinearMode = False
 
 SaveReportMethod = 'pickle'

@@ -1,6 +1,7 @@
 import numpy as np
 import nibabel as nib
 import os, sys
+import skimage
 import csv
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 import Parameters.UserInfo as UserInfo
@@ -20,3 +21,5 @@ f = h5py.File(params.directories.Test.Result + '/Data.hdf5','r')
 
 f['Train/Image'].shape
 import numpy as np
+
+np.arange(4,6)

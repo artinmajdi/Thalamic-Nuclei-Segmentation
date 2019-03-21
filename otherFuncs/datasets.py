@@ -13,6 +13,7 @@ from scipy import ndimage
 from shutil import copyfile
 import h5py
 import pickle
+import skimage
 
 def ClassesFunc():
     class ImageLabel:
@@ -145,7 +146,7 @@ def paddingNegativeFix(sz, Padding):
 def readingFromExperiments(params):
 
     NameCascadeMask = params.WhichExperiment.HardParams.Model.Method.ReferenceMask
-        
+
     def inputPreparationForUnet(im,subject2, params):
 
         def CroppingInput(im, Padding2):
@@ -173,9 +174,9 @@ def readingFromExperiments(params):
 
         def readingWithTranpose(Dirr , params):
             ImageF = nib.load( Dirr)
-            Image = ImageF.get_data()   
+            Image = ImageF.get_data()
             return ImageF, np.transpose(Image, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
-            
+
         # TODO remove this after couple of runs
         # if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1) and os.path.isfile(subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
         #     copyfile( subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz' , subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
@@ -223,7 +224,7 @@ def readingFromExperiments(params):
             origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape)
             origMsk1N = smallFuncs.fixMaskMinMax(origMsk1N)
 
-            
+
 
             return np.expand_dims(origMsk1N ,axis=3)
 
@@ -270,7 +271,7 @@ def readingFromExperiments(params):
 
                 def findingPaddedInputSize(params):
                     new_inputSize = np.max(Input.inputSizes, axis=0)
-                    # new_inputSize = MaxInputSize
+                    # new_inputSize = [  a * np.ceil(s / a) if s % a != 0 else s for s in np.max(Input.inputSizes, axis=0) ]
 
                     a = 2**(params.WhichExperiment.HardParams.Model.num_Layers - 1)
                     for dim in range(3):
@@ -400,8 +401,8 @@ def readingFromExperiments(params):
                     f[mode].create_dataset(name='Image',data=data_dict[mode].Image)
                     f[mode].create_dataset(name='Mask',data=data_dict[mode].Mask)
                 else:
-                    
-                    Input = params.directories.Test.Input if mode == 'Test' else params.directories.Train.Input                                            
+
+                    Input = params.directories.Test.Input if mode == 'Test' else params.directories.Train.Input
 
                     for subject in list(data_dict[mode]):
                         g = f.create_group('%s/%s'%(mode,subject))
@@ -412,9 +413,9 @@ def readingFromExperiments(params):
                         g.attrs['Affine'] = data_dict[mode][subject].Affine
                         g.attrs['address'] = Input.Subjects[subject].address
                         # g.attrs['Header'] = data_dict['Test'][subject].Header
-                        
+
     def main_ReadingDataset(params):
-          
+
         def trainFlag():
             Flag_TestOnly = params.preprocess.TestOnly
             Flag_TrainDice = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
@@ -433,13 +434,15 @@ def readingFromExperiments(params):
                 for ix, nameSubject in enumerate(sjList):
                     im, msk = TrainData[nameSubject].Image  , TrainData[nameSubject].Mask
 
-                    if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0: 
+                    if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
                         im = im[:int(im.shape[0]/2+5),...]
                         msk = msk[:int(msk.shape[0]/2+5),...]
 
 
                     images = im     if ix == 0 else np.concatenate((images,im    ),axis=0)
                     masks  = msk>Th if ix == 0 else np.concatenate((masks,msk>Th ),axis=0)
+
+
 
                 return trainCase(Image=images, Mask=masks.astype('float32'))
 
@@ -472,7 +475,7 @@ def readingFromExperiments(params):
 
             Data = {}
             for nameSubject in tqdm(ListSubjects, desc='Loading Dataset: ' + mode):
-                
+
                 if ErrorInPaddingCheck(Subjects[nameSubject]): continue
 
                 im, imF = readingImage(params, Subjects[nameSubject], mode)
@@ -498,11 +501,8 @@ def readingFromExperiments(params):
 
     params = preAnalysis(params)
 
-    if 1:
-        Data = main_ReadingDataset(params)
-        saveHDf5(Data)
-    else:
-        Data = {}
+    Data = main_ReadingDataset(params)
+    # saveHDf5(Data)
 
     return Data, params
 
@@ -557,4 +557,3 @@ def movingFromDatasetToExperiments(params):
                 shutil.copytree(params.WhichExperiment.Dataset.address + '/' + subject  ,  DirOut + '/' + subject)
 
     return True
-

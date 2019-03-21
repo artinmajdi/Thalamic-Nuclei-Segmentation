@@ -8,9 +8,6 @@ import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 import preprocess.applyPreprocess as applyPreprocess
 
-# TODO:  add a fixed seed number for random numbers
-# TODO:  write the name of test and train subjects in model and results and dataset  to have it for the future
-# TODO : look for a way to see epoch inside my loss function and use BCE initially and tyhen add Dice for higher epochs
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 NucleiIndexes = UserInfoB['simulation'].nucleus_Index
 slicingDim = UserInfoB['simulation'].slicingDim
@@ -64,15 +61,10 @@ def Run(UserInfoB):
             Data, params = datasets.loadDataset(params)
             choosingModel.check_Run(params, Data)
 
-    if params.WhichExperiment.HardParams.Model.Method.Type == 'Hierarchical_Cascade': HierarchicalStages(UserInfoB)
+    if params.WhichExperiment.HardParams.Model.Method.Type == 'HCascade': HierarchicalStages(UserInfoB)
     elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': CacadeStages(UserInfoB)
     elif params.WhichExperiment.HardParams.Model.Method.Type == 'singleRun': Run_SingleNuclei(UserInfoB)
 
-UserInfoB['ReadMain'].Mode = False
-UserInfoB['readAugmentsMode'] = False
-UserInfoB['Read3T'].Mode = True
-UserInfoB['Model_Method'] =  'Cascade' # 'Hierarchical_Cascade' #
-UserInfoB['InputPadding'].Automatic = False
 params = paramFunc.Run(UserInfoB)
 
 datasets.movingFromDatasetToExperiments(params)

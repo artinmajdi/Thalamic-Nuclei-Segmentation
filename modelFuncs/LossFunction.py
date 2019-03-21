@@ -6,12 +6,6 @@ from keras import losses # optimizers, metrics
 import keras.backend as Keras_Backend
 
 
-
-
-
-
-    
-
 def LossInfo(loss_Index):
     switcher = {
         1: (Loss_Dice, 'Loss_Dice'),
