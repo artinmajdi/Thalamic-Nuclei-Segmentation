@@ -482,6 +482,13 @@ def readingFromExperiments(params):
                 origMsk , msk = readingNuclei(params, Subjects[nameSubject], imF.shape)
 
                 if im[...,0].shape == msk[...,0].shape:
+
+                    if params.WhichExperiment.HardParams.Model.Method.Upsample.Mode:
+                        sc = params.WhichExperiment.HardParams.Model.Method.Upsample.Scale
+                        im  = skimage.transform.rescale(image=im , scale=(1,sc,sc,1), order=3)
+                        msk = skimage.transform.rescale(image=msk, scale=(1,sc,sc,1), order=1)
+
+
                     Data[nameSubject] = testCase(Image=im, Mask=msk>Th ,OrigMask=(origMsk>Th).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
                 else:
                     Error_MisMatch_In_Dim_ImageMask(Subjects[nameSubject] , mode, nameSubject)

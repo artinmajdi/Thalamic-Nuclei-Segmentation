@@ -33,6 +33,7 @@ def Run(UserInfo):
 
     WhichExperiment.HardParams.Machine.GPU_Index = str(UserInfo['simulation'].GPU_Index)
     # print('GPU_Index:  ',WhichExperiment.HardParams.Machine.GPU_Index)
+    WhichExperiment.HardParams.Model.Method.Upsample = UserInfo['upsample']()
 
     if WhichExperiment.HardParams.Model.InitializeFromThalamus and WhichExperiment.HardParams.Model.InitializeFromOlderModel:
         print('WARNING:   initilization can only happen from one source')
@@ -55,8 +56,6 @@ def Run(UserInfo):
     WhichExperiment.Dataset.InputPadding = UserInfo['InputPadding']
     WhichExperiment.Dataset.ReadTrain  = UserInfo['ReadTrain']()
 
-    WhichExperiment = subExperimentName(UserInfo, WhichExperiment)
-
     # TODO I need to fix this to count for multiple nuclei
     WhichExperiment.Nucleus.Index = UserInfo['simulation'].nucleus_Index if isinstance(UserInfo['simulation'].nucleus_Index,list) else [UserInfo['simulation'].nucleus_Index]
     # print('nucleus_Index', WhichExperiment.Nucleus.Index)
@@ -73,8 +72,12 @@ def Run(UserInfo):
     else:
         WhichExperiment.HardParams.Model.MultiClass.num_classes = len(WhichExperiment.Nucleus.Index) if WhichExperiment.HardParams.Model.MultiClass.mode else 1
 
+    WhichExperiment.HardParams.Model.Dropout.Value = UserInfo['DropoutValue']
 
-
+    AAA = ReferenceForCascadeMethod(WhichExperiment.HardParams.Model.Method.Type)
+    WhichExperiment.HardParams.Model.Method.ReferenceMask = AAA[WhichExperiment.Nucleus.Index[0]]
+    WhichExperiment.HardParams.Model.Transfer_Learning = UserInfo['Transfer_Learning']()
+    WhichExperiment = subExperimentName(UserInfo, WhichExperiment)
 
     directories = smallFuncs.search_ExperimentDirectory(WhichExperiment)
 
@@ -91,13 +94,6 @@ def Run(UserInfo):
     Augment.Linear.Rotation = UserInfo['Augment_Rotation']()
     Augment.Linear.Shear    = UserInfo['Augment_Shear']()
     Augment.NonLinear.Mode  = UserInfo['Augment_NonLinearMode']
-
-    WhichExperiment.HardParams.Model.Dropout.Value = UserInfo['DropoutValue']
-
-    AAA = ReferenceForCascadeMethod(WhichExperiment.HardParams.Model.Method.Type)
-    WhichExperiment.HardParams.Model.Method.ReferenceMask = AAA[WhichExperiment.Nucleus.Index[0]]
-
-    WhichExperiment.HardParams.Model.Transfer_Learning = UserInfo['Transfer_Learning']()
 
     params.WhichExperiment = WhichExperiment
     params.preprocess      = preprocess
@@ -146,6 +142,10 @@ def subExperimentName(UserInfo, WhichExperiment):
     WhichExperiment.SubExperiment.tag += '_Dt' + str(UserInfo['DropoutValue'])
     WhichExperiment.SubExperiment.tag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
     print('Learning_Rate', UserInfo['simulation'].Learning_Rate)
+
+    if WhichExperiment.HardParams.Model.Method.Upsample.Mode:
+        sc = WhichExperiment.HardParams.Model.Method.Upsample.Scale
+        WhichExperiment.SubExperiment.tag += '_US' + str(sc)
 
     if UserInfo['ReadTrain'].SRI: WhichExperiment.SubExperiment.tag += '_SRI'
     WhichExperiment.SubExperiment.name = 'sE' + str(WhichExperiment.SubExperiment.index) +  '_' + WhichExperiment.SubExperiment.tag
@@ -231,12 +231,16 @@ def Classes():
                     strides = (2,2)
                     pool_size = (2,2)
 
+                class upsample:
+                    Scale = 1
+                    Mode = False
 
                 class method:
                     Type = ''
                     InitializeFromReference = True # from 3T or WMn for CSFn
                     ReferenceMask = ''
                     havingBackGround_AsExtraDimension = True
+                    Upsample = upsample()
 
                 return dropout, kernel_size, activation, convLayer, multiclass, maxPooling, method
 
@@ -273,6 +277,7 @@ def Classes():
                 paddingErrorPatience = 20
                 Transfer_Learning = transfer_Learning()
                 ManualDataGenerator = False
+                
 
             lossFunctionIx = 5
             model.loss, _ = LossFunction.LossInfo(lossFunctionIx)

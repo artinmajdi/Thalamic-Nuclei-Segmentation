@@ -82,6 +82,11 @@ def testingExeriment(model, Data, params):
         def savingOutput(pred1N_BtO, NucleiIndex):
             dirSave = smallFuncs.mkDir(ResultDir + '/' + subject.subjectName)
             nucleusName, _ , _ = smallFuncs.NucleiSelection(NucleiIndex)
+
+            if params.WhichExperiment.HardParams.Model.Method.Upsample.Mode:
+                sc = params.WhichExperiment.HardParams.Model.Method.Upsample.Scale
+                pred1N_BtO = skimage.transform.rescale(image=pred1N_BtO, scale=(1,1/sc,1/sc,1), order=1)
+
             smallFuncs.saveImage( pred1N_BtO , DataSubj.Affine, DataSubj.Header, dirSave + '/' + nucleusName + '.nii.gz')
             return dirSave, nucleusName
 
@@ -137,9 +142,6 @@ def testingExeriment(model, Data, params):
 
             # score = model.evaluate(DataSubj.Image, DataSubj.Mask)
             pred = predF[...,:num_classes-1]
-
-
-
 
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
             pred = np.transpose(pred,[1,2,0,3])
