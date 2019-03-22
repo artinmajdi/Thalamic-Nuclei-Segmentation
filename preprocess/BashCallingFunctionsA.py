@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
-from otherFuncs import smallFuncs
+import otherFuncs.smallFuncs as smallFuncs
 from shutil import copyfile
 
 def RigidRegistration(subject , Template , preprocess):
@@ -12,10 +12,11 @@ def RigidRegistration(subject , Template , preprocess):
     outP = subject.Temp.address + '/CropMask.nii.gz'
     LinearAffine = subject.Temp.Deformation.address + '/linearAffine.txt'
     if preprocess.Mode and preprocess.Cropping.Mode:
-        if not os.path.isfile(LinearAffine):
-            os.system("ANTS 3 -m CC[%s, %s ,1,5] -o %s -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false" %(processed , Template.Image , subject.Temp.Deformation.address + '/linear') )
 
         if not os.path.isfile(outP):
+            if not os.path.isfile(LinearAffine):
+                os.system("ANTS 3 -m CC[%s, %s ,1,5] -o %s -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false" %(processed , Template.Image , subject.Temp.Deformation.address + '/linear') )
+
             os.system("WarpImageMultiTransform 3 %s %s -R %s %s"%(Template.Mask , outP , processed , LinearAffine) )
 
 def BiasCorrection(subject , params):
@@ -52,7 +53,7 @@ def BiasCorrection(subject , params):
 
 #         # Cropping the Label
 #         for ind in params.WhichExperiment.Nucleus.FullIndexes:
-#             NucleusName, _ , _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
+#             NucleusName, _ , _ = smallFuncs.NucleiSelection(ind )
 
 #             inP  = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
 #             outP = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
@@ -83,8 +84,7 @@ def Bash_AugmentNonLinear(subject , subjectRef , outputAddress): # Image , Mask 
         os.system("ANTS 3 -m CC[%s, %s,1,5] -t SyN[0.25] -r Gauss[3,0] -o %s -i 30x90x20 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000"%(ImageOrig , ImageRef , deformationAddr + '/test') )
         os.system("antsApplyTransforms -d 3 -i %s -o %s -r %s -t %s"%(ImageOrig , OutputImage , ImageOrig , deformationAddr + '/testWarp.nii.gz') )
 
-    _, indexes, names = smallFuncs.NucleiSelection(ind = 1,organ = 'THALAMUS')
-    # names = smallFuncs.AllNucleiNames(indexes)
+    _, _, names = smallFuncs.NucleiSelection(ind = 1)
     for name in names:
         MaskOrig  = subject.Label.address + '/' + name + '_PProcessed.nii.gz'
         OutputMask  = labelAdd + '/' + name + '_PProcessed.nii.gz'

@@ -3,9 +3,9 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
 from shutil import copyfile
-from otherFuncs import smallFuncs
+import otherFuncs.smallFuncs as smallFuncs
 import nibabel as nib
-
+from skimage import measure
 
 def main(subject , params):
 
@@ -18,14 +18,15 @@ def main(subject , params):
 def func_cropImage(params, subject):
 
     def cropImage_FromCoordinates(CropMask , Gap): 
-        ss = np.sum(CropMask,axis=2)
-        c1 = np.where(np.sum(ss,axis=1) > 10)[0]
-        c2 = np.where(np.sum(ss,axis=0) > 10)[0]
+        # ss = np.sum(CropMask,axis=2)
+        # c1 = np.where(np.sum(ss,axis=1) > 0)[0]
+        # c2 = np.where(np.sum(ss,axis=0) > 0)[0]
 
-        ss = np.sum(CropMask,axis=1)
-        c3 = np.where(np.sum(ss,axis=0) > 10)[0]
+        # ss = np.sum(CropMask,axis=1)
+        # c3 = np.where(np.sum(ss,axis=0) > 0)[0]
 
-        BBCord = [   [c1[0],c1[-1]]  ,  [c2[0],c2[-1]]  , [c3[0],c3[-1]]  ]
+        # BBCord = [   [c1[0],c1[-1]]  ,  [c2[0],c2[-1]]  , [c3[0],c3[-1]]  ]
+        BBCord = smallFuncs.findBoundingBox(CropMask>0.5)
 
         d = np.zeros((3,2),dtype=np.int)
         for ix in range(len(BBCord)):
@@ -35,9 +36,8 @@ def func_cropImage(params, subject):
         return d
             
     crop = subject.Temp.address + '/CropMask.nii.gz' 
-    CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0]) if 'python' in params.preprocess.Cropping.Method else ''
-
-    def check_crop(inP, outP, outDebug):
+    
+    def check_crop(inP, outP, outDebug, CropCoordinates):
 
         def applyCropping(image):
             d = CropCoordinates
@@ -61,15 +61,18 @@ def func_cropImage(params, subject):
         return inP, outP, outDebug 
 
     def directoriesNuclei(subject, ind):
-        NucleusName, _, _ = smallFuncs.NucleiSelection(ind , params.WhichExperiment.Nucleus.Organ)
+        NucleusName, _, _ = smallFuncs.NucleiSelection(ind )
         inP = outP = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
         outDebug = subject.Label.Temp.address + '/' + NucleusName + '_Cropped.nii.gz'
         return inP, outP, outDebug
 
-    inP, outP, outDebug = directoriesImage(subject)        
-    check_crop(inP, outP, outDebug)
+    inP, outP, outDebug = directoriesImage(subject)          
+    CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  if not os.path.isfile(outDebug) and 'python' in params.preprocess.Cropping.Method else ''
+
+    check_crop(inP, outP, outDebug, CropCoordinates)
 
     for ind in params.WhichExperiment.Nucleus.FullIndexes:
         inP, outP, outDebug = directoriesNuclei(subject, ind)
-        check_crop(inP, outP, outDebug)
+        if not os.path.isfile(outDebug) and 'python' in params.preprocess.Cropping.Method and CropCoordinates == '': CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  
+        check_crop(inP, outP, outDebug, CropCoordinates)
 
