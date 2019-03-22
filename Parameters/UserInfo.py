@@ -62,7 +62,7 @@ class Template:
 #          3: 'Dice & Accuracy'
 MetricIx = 3
 OptimizerIx = 1
-# Learning_Rate = 1e-3
+Learning_Rate = 1e-3
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 

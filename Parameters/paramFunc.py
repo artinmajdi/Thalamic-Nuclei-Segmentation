@@ -144,8 +144,8 @@ def subExperimentName(UserInfo, WhichExperiment):
     # if int(UserInfo['simulation'].slicingDim[0]) != 2:
     WhichExperiment.SubExperiment.tag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
     WhichExperiment.SubExperiment.tag += '_Dt' + str(UserInfo['DropoutValue'])
-    WhichExperiment.SubExperiment.tag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
-    print('Learning_Rate', UserInfo['simulation'].Learning_Rate)
+    # WhichExperiment.SubExperiment.tag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
+    # print('Learning_Rate', UserInfo['simulation'].Learning_Rate)
 
     if UserInfo['ReadTrain'].SRI: WhichExperiment.SubExperiment.tag += '_SRI'
     WhichExperiment.SubExperiment.name = 'sE' + str(WhichExperiment.SubExperiment.index) +  '_' + WhichExperiment.SubExperiment.tag
