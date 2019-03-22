@@ -40,12 +40,15 @@ def Run(UserInfoB):
 
         print('************ stage 3 ************')
         # stage 3 ; final for now
-        # print('index',NucleiIndexes)
+        print('index',NucleiIndexes)
         _,FullIndexes ,_ = smallFuncs.NucleiSelection(ind=1)
         for UserInfoB['simulation'].nucleus_Index in FullIndexes[1:]:
-            name,_,_ = smallFuncs.NucleiSelection(ind=UserInfoB['simulation'].nucleus_Index)
-            print('      ', name , 'gpu: ',UserInfoB['simulation'].GPU_Index)
-            Run_SingleNuclei(UserInfoB)
+            try:
+                name,_,_ = smallFuncs.NucleiSelection(ind=UserInfoB['simulation'].nucleus_Index)
+                print('      ', name , 'gpu: ',UserInfoB['simulation'].GPU_Index)
+                Run_SingleNuclei(UserInfoB)
+            except:
+                print('failed')
 
     def CacadeStages(UserInfoB):
 

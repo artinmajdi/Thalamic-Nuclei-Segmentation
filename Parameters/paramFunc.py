@@ -32,7 +32,7 @@ def Run(UserInfo):
 
 
     WhichExperiment.HardParams.Machine.GPU_Index = str(UserInfo['simulation'].GPU_Index)
-    print('GPU_Index:  ',WhichExperiment.HardParams.Machine.GPU_Index)
+    # print('GPU_Index:  ',WhichExperiment.HardParams.Machine.GPU_Index)
 
     if WhichExperiment.HardParams.Model.InitializeFromThalamus and WhichExperiment.HardParams.Model.InitializeFromOlderModel:
         print('WARNING:   initilization can only happen from one source')
@@ -59,7 +59,7 @@ def Run(UserInfo):
 
     # TODO I need to fix this to count for multiple nuclei
     WhichExperiment.Nucleus.Index = UserInfo['simulation'].nucleus_Index if isinstance(UserInfo['simulation'].nucleus_Index,list) else [UserInfo['simulation'].nucleus_Index]
-    print('nucleus_Index', WhichExperiment.Nucleus.Index)
+    # print('nucleus_Index', WhichExperiment.Nucleus.Index)
 
     WhichExperiment.Nucleus.name_Thalamus, WhichExperiment.Nucleus.FullIndexes, _ = smallFuncs.NucleiSelection( 1 )
     if len(WhichExperiment.Nucleus.Index) == 1 or not WhichExperiment.HardParams.Model.MultiClass.mode:
@@ -117,7 +117,7 @@ def Run(UserInfo):
     return params
 
 def slicingInfoFunc(slicingInfo, slicingDim):
-    print('slicingDim:  ',slicingDim[0])
+    # print('slicingDim:  ',slicingDim[0])
     slicingInfo.slicingDim = slicingDim[0]
     if slicingDim[0] == 0:
         slicingInfo.slicingOrder         = [1,2,0]
@@ -144,10 +144,14 @@ def subExperimentName(UserInfo, WhichExperiment):
     # if int(UserInfo['simulation'].slicingDim[0]) != 2:
     WhichExperiment.SubExperiment.tag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
     WhichExperiment.SubExperiment.tag += '_Dt' + str(UserInfo['DropoutValue'])
+    WhichExperiment.SubExperiment.tag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
+    print('Learning_Rate', UserInfo['simulation'].Learning_Rate)
+
     if UserInfo['ReadTrain'].SRI: WhichExperiment.SubExperiment.tag += '_SRI'
     WhichExperiment.SubExperiment.name = 'sE' + str(WhichExperiment.SubExperiment.index) +  '_' + WhichExperiment.SubExperiment.tag
 
     # readAugmentTag = 'sE6_CascadewRot7_4cnts_sd2_Dt0.3'
+
 
     WhichExperiment.Dataset.ReadTrain.ReadAugments.Tag = readAugmentTag
     return WhichExperiment
@@ -260,7 +264,7 @@ def Classes():
                 showHistory = True
                 LabelMaxValue = 1
                 class_weight = {}
-                Measure_Dice_on_Train_Data = False
+                Measure_Dice_on_Train_Data = True
                 MultiClass = multiclass()
                 #! only one of these two can be true at the same time
                 InitializeFromThalamus = ''

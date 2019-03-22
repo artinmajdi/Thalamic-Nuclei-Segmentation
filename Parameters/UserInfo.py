@@ -28,12 +28,12 @@ class Transfer_Learning:
 class simulation:
     TestOnly      = False
     epochs        = 100
-    GPU_Index     = "5"
-    Learning_Rate = 1e-3
+    GPU_Index     = "7"
+    Learning_Rate = 1e-4
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
     nucleus_Index = [2]
-    slicingDim    = [2]
+    slicingDim    = [0]
     batch_size    = 100
 
     Initialize_FromThalamus   = False
