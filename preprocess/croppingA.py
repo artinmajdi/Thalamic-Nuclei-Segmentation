@@ -1,11 +1,14 @@
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-import numpy as np
 from shutil import copyfile
-import otherFuncs.smallFuncs as smallFuncs
+
 import nibabel as nib
+import numpy as np
 from skimage import measure
+
+import otherFuncs.smallFuncs as smallFuncs
+
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 def main(subject , params):
 
@@ -75,4 +78,3 @@ def func_cropImage(params, subject):
         inP, outP, outDebug = directoriesNuclei(subject, ind)
         if not os.path.isfile(outDebug) and 'python' in params.preprocess.Cropping.Method and CropCoordinates == '': CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  
         check_crop(inP, outP, outDebug, CropCoordinates)
-

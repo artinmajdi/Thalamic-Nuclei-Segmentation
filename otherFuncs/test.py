@@ -3,33 +3,54 @@ import nibabel as nib
 import os, sys
 import skimage
 import csv
-sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-import Parameters.UserInfo as UserInfo
-import Parameters.paramFunc as paramFunc
-params = paramFunc.Run(UserInfo.__dict__)
+# sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+sys.path.append( os.path.dirname(os.path.dirname(__file__)) )
+# import Parameters.UserInfo as UserInfo
+# import Parameters.paramFunc as paramFunc
+# params = paramFunc.Run(UserInfo.__dict__)
 import pandas as pd
-import h5py
-import pickle
-from tqdm import tqdm
 import keras
+import skimage
+import nilearn
 
-subj = params.directories.Train.Input.Subjects['vimp2_A']
+dir = '/home/artinl/Documents/research/dataset/7T/'
+subject = 'vimp2_943_07242013_PA_MS/'
+# im = nilearn.image.load_img(dir + subject + 'WMnMPRAGE_bias_corr.nii.gz')
+# msk = nilearn.image.load_img(dir + subject + 'vtk_rois/1-THALAMUS.nii.gz')
+cropMask = nilearn.image.load_img(dir + subject + 'temp/CropMask.nii.gz')
 
-keras.utils.Sequence()
-f = h5py.File(params.directories.Test.Result + '/Data.hdf5','r')
+subject = 'vimp2_972_08152013_DC_MS/'
+cropMask2 = nilearn.image.load_img(dir + subject + 'temp/CropMask.nii.gz')
 
+# ! (1)
+# def func_upsample(fileAddress, scale):
+#     im = nilearn.image.load_img(fileAddress)
+#     affine = im.affine.copy()
+#     for i in range(3): affine[i,i] /= scale
+#     im_US = nilearn.image.resample_img(img=im , target_affine=affine,interpolation='nearest')
+#     nib.save(im_US, fileAddress.split('.nii,gz')[0] + '_US.nii.gz')
+#     return im_US
 
-f['Train/Image'].shape
-import numpy as np
+# im_US = func_upsample(dir + 'PProcessed.nii.gz', 2)
+# msk_US = func_upsample(dir + 'vtk_rois/1-THALAMUS_PProcessed.nii.gz', 2)
 
-np.arange(4,6)
+# imCrop = nilearn.image.threshold_img(img=im, mask_img=msk)
 
+# ! (2)
+# mskCroped = nilearn.image.crop_img(msk)
+# imCropped = nilearn.image.resample_to_img(im,mskCroped)
+# nib.save(imCropped,dir + 'PProcessed_Cropped.nii.gz')
+# nib.save(mskCroped,dir + 'vtk_rois/1-THALAMUS_PProcessed_Cropped.nii.gz')
 
-a = 'sE6_CascadewRot7_4cnts_sd2_Dt0'
+# ! (3)
+# subjectList = [ s for s in os.listdir(dir) if 'vimp' in s]
+# imList = [ nilearn.image.load_img(dir + subject + '/PProcessed.nii.gz') for subject in subjectList ]
+# imF = nilearn.image.concat_imgs(imList, auto_resample=True)
 
-a = [2,3,4,]
+# obj = skimage.measure.regionprops(skimage.measure.label(cropMask.get_data()))
+cropMaskN = nilearn.image.resample_img(cropMask2, target_affine=cropMask.affine)
 
-b = np.zeros((5,20))
+subject = 'vimp2_943_07242013_PA_MS/'
+nib.save(cropMaskN,dir + subject + 'temp/CropMaskB.nii.gz')
+print('---')
 
-a = ['1','5435', 'fgd']
-np.append(['b'],a)
