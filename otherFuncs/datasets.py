@@ -371,7 +371,7 @@ def readingFromExperiments(params):
             else:
                 MinInputSize = params.WhichExperiment.Dataset.InputPadding.HardDimensions
 
-            kernel_size = HardParams.Model.ConvLayer.Kernel_size.conv
+            kernel_size = HardParams.Model.Layer_Params.Layer_Params.ConvLayer.Kernel_size.conv
             num_Layers  = HardParams.Model.num_Layers
 
             if np.min(MinInputSize[:2] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0:  # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size

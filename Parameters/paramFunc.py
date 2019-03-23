@@ -10,198 +10,20 @@ import pickle
 from copy import deepcopy
 import pandas as pd
 
-def Run(UserInfo):
+def Run(UserInfoB):
 
     class params:
-        WhichExperiment, preprocess, Augment, directories = Classes()
-        UserInfo = ''
-
-    WhichExperiment, preprocess, Augment, directories = Classes()
-
-    WhichExperiment.address = UserInfo['Experiments_Address']
-
-    WhichExperiment.HardParams.Template = UserInfo['Template']()
-    WhichExperiment.HardParams.Model.Method.Type  = UserInfo['Model_Method']
-    WhichExperiment.HardParams.Model.metrics, _   = Metrics.MetricInfo(UserInfo['MetricIx'])
-    WhichExperiment.HardParams.Model.optimizer, _ = Optimizers.OptimizerInfo(UserInfo['OptimizerIx'], UserInfo['simulation'].Learning_Rate)
-    WhichExperiment.HardParams.Model.num_Layers   = UserInfo['simulation'].num_Layers
-    WhichExperiment.HardParams.Model.batch_size   = UserInfo['simulation'].batch_size
-    WhichExperiment.HardParams.Model.epochs       = UserInfo['simulation'].epochs
-    WhichExperiment.HardParams.Model.InitializeFromThalamus = UserInfo['simulation'].Initialize_FromThalamus
-    WhichExperiment.HardParams.Model.InitializeFromOlderModel = UserInfo['simulation'].Initialize_FromOlderModel
-
-
-    WhichExperiment.HardParams.Machine.GPU_Index = str(UserInfo['simulation'].GPU_Index)
-    # print('GPU_Index:  ',WhichExperiment.HardParams.Machine.GPU_Index)
-
-    if WhichExperiment.HardParams.Model.InitializeFromThalamus and WhichExperiment.HardParams.Model.InitializeFromOlderModel:
-        print('WARNING:   initilization can only happen from one source')
-        WhichExperiment.HardParams.Model.InitializeFromThalamus = False
-        WhichExperiment.HardParams.Model.InitializeFromOlderModel = False
-
-    WhichExperiment.Dataset.gapDilation = UserInfo['gapDilation']
-    # WhichExperiment.Dataset.name, WhichExperiment.Dataset.address = datasets.DatasetsInfo(UserInfo['DatasetIx'])
-    WhichExperiment.Dataset.HDf5.mode_saveTrue_LoadFalse = UserInfo['mode_saveTrue_LoadFalse']
-
-    WhichExperiment.Dataset.slicingInfo = slicingInfoFunc(WhichExperiment.Dataset.slicingInfo, UserInfo['simulation'].slicingDim)
-
-    WhichExperiment.SubExperiment.index = UserInfo['SubExperiment'].Index
-    WhichExperiment.Experiment.index   = UserInfo['Experiments'].Index
-    WhichExperiment.Experiment.tag     = UserInfo['Experiments'].Tag
-    WhichExperiment.Experiment.name    = 'exp' + str(UserInfo['Experiments'].Index) + '_' + WhichExperiment.Experiment.tag if WhichExperiment.Experiment.tag else 'exp' + str(WhichExperiment.Experiment.index)
-    WhichExperiment.Experiment.address = smallFuncs.mkDir(WhichExperiment.address + '/' + WhichExperiment.Experiment.name)
-    # _, B = LossFunction.LossInfo(UserInfo['lossFunctionIx'])
-
-    WhichExperiment.Dataset.InputPadding = UserInfo['InputPadding']
-    WhichExperiment.Dataset.ReadTrain  = UserInfo['ReadTrain']()
-
-    WhichExperiment = subExperimentName(UserInfo, WhichExperiment)
-
-    # TODO I need to fix this to count for multiple nuclei
-    WhichExperiment.Nucleus.Index = UserInfo['simulation'].nucleus_Index if isinstance(UserInfo['simulation'].nucleus_Index,list) else [UserInfo['simulation'].nucleus_Index]
-    # print('nucleus_Index', WhichExperiment.Nucleus.Index)
-
-    WhichExperiment.Nucleus.name_Thalamus, WhichExperiment.Nucleus.FullIndexes, _ = smallFuncs.NucleiSelection( 1 )
-    if len(WhichExperiment.Nucleus.Index) == 1 or not WhichExperiment.HardParams.Model.MultiClass.mode:
-        WhichExperiment.Nucleus.name , _, _ = smallFuncs.NucleiSelection( WhichExperiment.Nucleus.Index[0] )
-    else:
-        WhichExperiment.Nucleus.name = ('MultiClass_' + str(WhichExperiment.Nucleus.Index)).replace(', ','_').replace('[','').replace(']','')
-
-    WhichExperiment.HardParams.Model.Method.havingBackGround_AsExtraDimension = UserInfo['havingBackGround_AsExtraDimension']
-    if UserInfo['havingBackGround_AsExtraDimension']:
-        WhichExperiment.HardParams.Model.MultiClass.num_classes = len(WhichExperiment.Nucleus.Index) + 1 if WhichExperiment.HardParams.Model.MultiClass.mode else 2
-    else:
-        WhichExperiment.HardParams.Model.MultiClass.num_classes = len(WhichExperiment.Nucleus.Index) if WhichExperiment.HardParams.Model.MultiClass.mode else 1
-
-
-
-
-    directories = smallFuncs.search_ExperimentDirectory(WhichExperiment)
-
-
-
-    preprocess.Mode                = UserInfo['preprocess'].Mode
-    preprocess.BiasCorrection.Mode = UserInfo['preprocess'].BiasCorrection
-    preprocess.Normalize.Mode      = UserInfo['preprocess'].Normalize
-    preprocess.Normalize.Method    = UserInfo['simulation'].NormalizaeMethod
-    preprocess.TestOnly            = UserInfo['simulation'].TestOnly
-    preprocess.Cropping            = UserInfo['cropping']
-
-    Augment.Mode            = UserInfo['AugmentMode']
-    Augment.Linear.Rotation = UserInfo['Augment_Rotation']()
-    Augment.Linear.Shear    = UserInfo['Augment_Shear']()
-    Augment.NonLinear.Mode  = UserInfo['Augment_NonLinearMode']
-
-    WhichExperiment.HardParams.Model.Dropout.Value = UserInfo['DropoutValue']
-
-    AAA = ReferenceForCascadeMethod(WhichExperiment.HardParams.Model.Method.Type)
-    WhichExperiment.HardParams.Model.Method.ReferenceMask = AAA[WhichExperiment.Nucleus.Index[0]]
-
-    WhichExperiment.HardParams.Model.Transfer_Learning = UserInfo['Transfer_Learning']()
-
-    params.WhichExperiment = WhichExperiment
-    params.preprocess      = preprocess
-    params.directories     = directories
-    params.UserInfo        = UserInfo
-    params.Augment         = Augment
-
-
-    if preprocess.TestOnly:
-        # hist_params = pd.read_csv(directories.Train.Model + '/hist_params.csv').head()
-        with open(directories.Train.Model + '/hist_params.pkl','rb') as f:
-            hist_params = pickle.load(f)
-
-        params.WhichExperiment.HardParams.Model.InputDimensions = [hist_params['InputDimensionsX'], hist_params['InputDimensionsY'],0]
-        params.WhichExperiment.HardParams.Model.num_Layers = hist_params['num_Layers']
+        WhichExperiment = func_WhichExperiment(UserInfoB)
+        preprocess      = func_preprocess(UserInfoB)
+        Augment         = func_Augment(UserInfoB) 
+        directories     = smallFuncs.search_ExperimentDirectory(WhichExperiment)
+        UserInfo        = UserInfoB
 
     return params
 
-def slicingInfoFunc(slicingInfo, slicingDim):
-    # print('slicingDim:  ',slicingDim[0])
-    slicingInfo.slicingDim = slicingDim[0]
-    if slicingDim[0] == 0:
-        slicingInfo.slicingOrder         = [1,2,0]
-        slicingInfo.slicingOrder_Reverse = [2,0,1]
-    elif slicingDim[0] == 1:
-        slicingInfo.slicingOrder         = [2,0,1]
-        slicingInfo.slicingOrder_Reverse = [1,2,0]
-    else:
-        slicingInfo.slicingOrder         = [0,1,2]
-        slicingInfo.slicingOrder_Reverse = [0,1,2]
-
-    return slicingInfo
-
-def subExperimentName(UserInfo, WhichExperiment):
-
-    WhichExperiment.SubExperiment.tag = UserInfo['SubExperiment'].Tag
-
-    readAugmentTag = ''
-    if UserInfo['Augment_Rotation'].Mode: readAugmentTag = 'wRot'   + str(UserInfo['Augment_Rotation'].AngleMax)
-    elif UserInfo['Augment_Shear'].Mode:  readAugmentTag = 'wShear' + str(UserInfo['Augment_Shear'].ShearMax)
-
-    if readAugmentTag: WhichExperiment.SubExperiment.tag += readAugmentTag
-
-    # if int(UserInfo['simulation'].slicingDim[0]) != 2:
-    WhichExperiment.SubExperiment.tag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
-    WhichExperiment.SubExperiment.tag += '_Dt' + str(UserInfo['DropoutValue'])
-    # WhichExperiment.SubExperiment.tag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
-    # print('Learning_Rate', UserInfo['simulation'].Learning_Rate)
-
-    if UserInfo['ReadTrain'].SRI: WhichExperiment.SubExperiment.tag += '_SRI'
-    WhichExperiment.SubExperiment.name = 'sE' + str(WhichExperiment.SubExperiment.index) +  '_' + WhichExperiment.SubExperiment.tag
-
-    # readAugmentTag = 'sE6_CascadewRot7_4cnts_sd2_Dt0.3'
-
-
-    WhichExperiment.Dataset.ReadTrain.ReadAugments.Tag = readAugmentTag
-    return WhichExperiment
-
-def ReferenceForCascadeMethod(ModelIdea):
-
-    _ , fullIndexes, _ = smallFuncs.NucleiSelection(ind=1)
-    referenceLabel = {}
-
-    if ModelIdea == 'HCascade':
-
-        Name, Indexes = {}, {}
-        for i in [1.1, 1.2, 1.3]:
-            Name[i], Indexes[i], _ = smallFuncs.NucleiSelection(ind=i)
-
-        for ixf in tuple(fullIndexes) + tuple([1.1, 1.2, 1.3]):
-
-            if ixf in Indexes[1.1]: referenceLabel[ixf] = Name[1.1]
-            elif ixf in Indexes[1.2]: referenceLabel[ixf] = Name[1.2]
-            elif ixf in Indexes[1.3]: referenceLabel[ixf] = Name[1.3]
-            elif ixf == 1: referenceLabel[ixf] = 'None'
-            else: referenceLabel[ixf] = '1-THALAMUS'
-
-
-    elif ModelIdea == 'Cascade':
-        for ix in fullIndexes: referenceLabel[ix] = '1-THALAMUS' if ix != 1 else 'None'
-
-    else:
-        for ix in fullIndexes: referenceLabel[ix] = 'None'
-
-    return referenceLabel
-
-def Classes():
-
-    def DirectoriesFunc():
-        class input:
-            address , Subjects = '', {}
-        class train:
-            address , Model, Model_Thalamus, Input   = '' , '' , '' , input()
-
-        class test:
-            address, Result, Input = '' , '', input()
-
-        class Directories:
-            Train, Test = train(), test()
-
-        return Directories()
-    Directories = DirectoriesFunc()
-
-    def WhichExperimentFunc():
+def func_WhichExperiment(UserInfo):
+    
+    def WhichExperiment_Class():
 
         def HardParamsFuncs():
             def ArchtiectureParams():
@@ -237,6 +59,7 @@ def Classes():
                     InitializeFromReference = True # from 3T or WMn for CSFn
                     ReferenceMask = ''
                     havingBackGround_AsExtraDimension = True
+                    InputImage2Dvs3D = 2
 
                 return dropout, kernel_size, activation, convLayer, multiclass, maxPooling, method
 
@@ -247,6 +70,15 @@ def Classes():
                 Stage = 0 # 1
                 FrozenLayers = [0,1]
 
+            class layer_Params:
+                FirstLayer_FeatureMap_Num = 64
+                batchNormalization = True
+                ConvLayer = convLayer()
+                MaxPooling = maxPooling()
+                Dropout = dropout()
+                Activitation = activation()
+                class_weight = {}
+
             class model:
                 architectureType = 'U-Net'
                 epochs = ''
@@ -254,16 +86,12 @@ def Classes():
                 loss = ''
                 metrics = ''
                 optimizer = ''  # adamax Nadam Adadelta Adagrad  optimizers.adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
+                
                 num_Layers = ''
                 InputDimensions = ''
-                batchNormalization = True # True
-                ConvLayer = convLayer()
-                MaxPooling = maxPooling()
-                Dropout = dropout()
-                Activitation = activation()
+                Layer_Params = layer_Params()
                 showHistory = True
-                LabelMaxValue = 1
-                class_weight = {}
+                LabelMaxValue = 1                
                 Measure_Dice_on_Train_Data = True
                 MultiClass = multiclass()
                 #! only one of these two can be true at the same time
@@ -383,9 +211,259 @@ def Classes():
             Dataset = dataset()
 
         return WhichExperiment()
-    WhichExperiment = WhichExperimentFunc()
+    WhichExperiment = WhichExperiment_Class()
 
-    def AugmentFunc():
+    def func_Nucleus(MultiClassMode):
+        def Experiment_Nucleus_Name_MClass(NucleusIndex, MultiClassMode):
+            if len(NucleusIndex) == 1 or not MultiClassMode:
+                NucleusName , _, _ = smallFuncs.NucleiSelection( NucleusIndex[0] )
+            else:
+                NucleusName = ('MultiClass_' + str(NucleusIndex)).replace(', ','_').replace('[','').replace(']','')
+
+            return NucleusName
+
+        nucleus_Index = UserInfo['simulation'].nucleus_Index if isinstance(UserInfo['simulation'].nucleus_Index,list) else [UserInfo['simulation'].nucleus_Index]
+        class nucleus:
+            Organ = 'THALAMUS'
+            name = Experiment_Nucleus_Name_MClass(nucleus_Index , MultiClassMode )
+            name_Thalamus, FullIndexes, _ = smallFuncs.NucleiSelection( 1 )
+            Index = nucleus_Index
+
+        return nucleus
+
+    def func_Dataset(ReadAugmentsTag):
+        Dataset = WhichExperiment.Dataset
+        def slicingInfoFunc():
+            class slicingInfo:
+                slicingOrder = ''
+                slicingOrder_Reverse = ''
+                slicingDim = UserInfo['simulation'].slicingDim[0]
+
+            if slicingInfo.slicingDim == 0:
+                slicingInfo.slicingOrder         = [1,2,0]
+                slicingInfo.slicingOrder_Reverse = [2,0,1]
+            elif slicingInfo.slicingDim == 1:
+                slicingInfo.slicingOrder         = [2,0,1]
+                slicingInfo.slicingOrder_Reverse = [1,2,0]
+            else:
+                slicingInfo.slicingOrder         = [0,1,2]
+                slicingInfo.slicingOrder_Reverse = [0,1,2]
+
+            return slicingInfo
+
+        Dataset.InputPadding = UserInfo['InputPadding']()
+        Dataset.ReadTrain  = UserInfo['ReadTrain']()
+        Dataset.ReadTrain.ReadAugments.Tag = ReadAugmentsTag
+
+        Dataset.gapDilation = UserInfo['gapDilation']
+        Dataset.HDf5.mode_saveTrue_LoadFalse = UserInfo['mode_saveTrue_LoadFalse']
+        Dataset.slicingInfo = slicingInfoFunc()
+        
+        return Dataset
+
+    def func_Experiment_SubExp():
+        def subExperimentName(UserInfo):
+
+            SubExperimentTag = UserInfo['SubExperiment'].Tag
+
+            readAugmentTag = ''
+            if UserInfo['Augment_Rotation'].Mode: readAugmentTag = 'wRot'   + str(UserInfo['Augment_Rotation'].AngleMax)
+            elif UserInfo['Augment_Shear'].Mode:  readAugmentTag = 'wShear' + str(UserInfo['Augment_Shear'].ShearMax)
+
+            if readAugmentTag: SubExperimentTag += readAugmentTag
+
+            # if int(UserInfo['simulation'].slicingDim[0]) != 2:
+            SubExperimentTag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
+            SubExperimentTag += '_Dt' + str(UserInfo['DropoutValue'])
+            # SubExperimentTag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
+
+            if UserInfo['ReadTrain'].SRI: SubExperimentTag += '_SRI'    
+
+            return SubExperimentTag, readAugmentTag
+
+        class experiment:
+            index = UserInfo['Experiments'].Index
+            tag = UserInfo['Experiments'].Tag
+            name = 'exp' + str(UserInfo['Experiments'].Index) + '_' + UserInfo['Experiments'].Tag if UserInfo['Experiments'].Tag else 'exp' + str(UserInfo['Experiments'].Index)
+            address = smallFuncs.mkDir(UserInfo['Experiments_Address'] + '/' + name)
+ 
+        SubExperimentTag, ReadAugments = subExperimentName(UserInfo)  
+        class subExperiment:
+            index = UserInfo['SubExperiment'].Index
+            tag = SubExperimentTag
+            name = 'sE' + str(UserInfo['SubExperiment'].Index) +  '_' + SubExperimentTag
+            name_thalamus = ''
+
+        return experiment, subExperiment, ReadAugments
+
+    def func_ModelParams():
+
+        HardParams = WhichExperiment.HardParams
+        def ReferenceForCascadeMethod(ModelIdea):
+
+            _ , fullIndexes, _ = smallFuncs.NucleiSelection(ind=1)
+            referenceLabel = {}
+
+            if ModelIdea == 'HCascade':
+
+                Name, Indexes = {}, {}
+                for i in [1.1, 1.2, 1.3]:
+                    Name[i], Indexes[i], _ = smallFuncs.NucleiSelection(ind=i)
+
+                for ixf in tuple(fullIndexes) + tuple([1.1, 1.2, 1.3]):
+
+                    if ixf in Indexes[1.1]: referenceLabel[ixf] = Name[1.1]
+                    elif ixf in Indexes[1.2]: referenceLabel[ixf] = Name[1.2]
+                    elif ixf in Indexes[1.3]: referenceLabel[ixf] = Name[1.3]
+                    elif ixf == 1: referenceLabel[ixf] = 'None'
+                    else: referenceLabel[ixf] = '1-THALAMUS'
+
+
+            elif ModelIdea == 'Cascade':
+                for ix in fullIndexes: referenceLabel[ix] = '1-THALAMUS' if ix != 1 else 'None'
+
+            else:
+                for ix in fullIndexes: referenceLabel[ix] = 'None'
+
+            return referenceLabel
+
+        def func_NumClasses():
+
+            num_classes = len(nucleus_Index) if HardParams.Model.MultiClass.mode else 1
+            if HardParams.Model.Method.havingBackGround_AsExtraDimension: num_classes += 1 
+                
+            return num_classes
+
+        def func_Initialize(UserInfo):
+            Initialize_From_Thalamus, Initialize_From_OlderModel = UserInfo['simulation'].Initialize_FromThalamus , UserInfo['simulation'].Initialize_FromOlderModel
+            if Initialize_From_Thalamus and Initialize_From_OlderModel:
+                print('WARNING:   initilization can only happen from one source')
+                Initialize_From_Thalamus, Initialize_From_OlderModel = False , False
+
+            return Initialize_From_Thalamus, Initialize_From_OlderModel
+
+        def fixing_NetworkParams_BasedOn_InputDim(dim):
+            class kernel_size: 
+                conv          = tuple([3]*dim)
+                convTranspose = tuple([2]*dim)
+                output        = tuple([1]*dim)
+
+            class maxPooling: 
+                strides   = tuple([2]*dim)
+                pool_size = tuple([2]*dim)
+
+
+            return kernel_size, maxPooling
+
+        def func_Layer_Params(UserInfo):
+
+            Layer_Params = HardParams.Model.Layer_Params
+            
+            kernel_size, maxPooling = fixing_NetworkParams_BasedOn_InputDim(UserInfo['simulation'].InputImage2Dvs3D)
+
+            Layer_Params.FirstLayer_FeatureMap_Num = UserInfo['simulation'].FirstLayer_FeatureMap_Num
+            Layer_Params.ConvLayer.Kernel_size = kernel_size()
+            Layer_Params.MaxPooling = maxPooling()
+            Layer_Params.Dropout.Value = UserInfo['DropoutValue']
+            return Layer_Params
+
+        HardParams.Template = UserInfo['Template']()
+        HardParams.Machine.GPU_Index = str(UserInfo['simulation'].GPU_Index)
+
+        HardParams.Model.Method.Type  = UserInfo['Model_Method']
+        HardParams.Model.metrics, _   = Metrics.MetricInfo(UserInfo['MetricIx'])
+        HardParams.Model.optimizer, _ = Optimizers.OptimizerInfo(1, UserInfo['simulation'].Learning_Rate)
+        HardParams.Model.num_Layers   = UserInfo['simulation'].num_Layers
+        HardParams.Model.batch_size   = UserInfo['simulation'].batch_size
+        HardParams.Model.epochs       = UserInfo['simulation'].epochs
+
+        Initialize_From_Thalamus, Initialize_From_OlderModel = func_Initialize(UserInfo)
+        HardParams.Model.InitializeFromThalamus = Initialize_From_Thalamus
+        HardParams.Model.InitializeFromOlderModel = Initialize_From_OlderModel
+
+        HardParams.Model.Method.InputImage2Dvs3D = UserInfo['simulation'].InputImage2Dvs3D
+        HardParams.Model.Method.havingBackGround_AsExtraDimension = UserInfo['havingBackGround_AsExtraDimension']
+
+        HardParams.Model.MultiClass.num_classes = func_NumClasses()
+        HardParams.Model.Layer_Params = func_Layer_Params(UserInfo)
+
+        nucleus_Index = UserInfo['simulation'].nucleus_Index if isinstance(UserInfo['simulation'].nucleus_Index,list) else [UserInfo['simulation'].nucleus_Index]
+
+        # AAA = ReferenceForCascadeMethod(HardParams.Model.Method.Type)
+        # HardParams.Model.Method.ReferenceMask = AAA[nucleus_Index[0]]
+
+        HardParams.Model.Method.ReferenceMask = ReferenceForCascadeMethod(HardParams.Model.Method.Type)[nucleus_Index[0]]
+        HardParams.Model.Transfer_Learning = UserInfo['Transfer_Learning']()
+
+        return HardParams
+
+    def ReadInputDimensions_NLayers(TrainModel_Address):
+        with open(TrainModel_Address + '/hist_params.pkl','rb') as f:   hist_params = pickle.load(f)
+
+        InputDimensions = [hist_params['InputDimensionsX'], hist_params['InputDimensionsY'], hist_params['InputDimensionsZ']]
+        num_Layers = hist_params['num_Layers']
+
+        return InputDimensions, num_Layers
+        
+    experiment, subExperiment , ReadAugments = func_Experiment_SubExp()  
+
+    WhichExperiment.Experiment    = experiment()
+    WhichExperiment.SubExperiment = subExperiment()
+    WhichExperiment.address       = UserInfo['Experiments_Address']         
+    WhichExperiment.HardParams    = func_ModelParams()
+    WhichExperiment.Nucleus       = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.mode)
+    WhichExperiment.Dataset       = func_Dataset(ReadAugments)
+        
+    if UserInfo['simulation'].TestOnly: 
+        InputDimensions, num_Layers = ReadInputDimensions_NLayers(experiment.address + '/models/' + subExperiment.name + '/' + WhichExperiment.Nucleus.name)
+        WhichExperiment.HardParams.Model.InputDimensions
+        WhichExperiment.HardParams.Model.num_Layers
+
+    return WhichExperiment
+    
+def func_preprocess(UserInfo):
+
+    def preprocess_Class():
+
+        class normalize:
+            Mode = True
+            Method = 'MinMax'
+
+
+        class cropping:
+            Mode = True
+            Method = 'python'
+
+        class biasCorrection:
+            Mode = ''
+
+        # TODO fix the justfornow
+        class debug:
+            doDebug = True
+            PProcessExist = False  # rename it to preprocess exist
+            justForNow = True # it checks the intermediate steps and if it existed don't reproduce it
+
+        class preprocess:
+            Mode = ''
+            TestOnly = ''
+            Debug = debug()
+            # Augment = augment()
+            Cropping = cropping()
+            Normalize = normalize()
+            BiasCorrection = biasCorrection()
+
+        return preprocess()
+    preprocess = preprocess_Class()
+
+    preprocess.Mode                = UserInfo['preprocess'].Mode
+    preprocess.BiasCorrection.Mode = UserInfo['preprocess'].BiasCorrection
+    preprocess.Normalize           = UserInfo['normalize']()
+    preprocess.TestOnly            = UserInfo['simulation'].TestOnly
+    return preprocess
+
+def func_Augment(UserInfo):
+
+    def Augment_Class():
         class rotation:
             Mode = False
             AngleMax = 6
@@ -414,43 +492,25 @@ def Classes():
             NonLinear = nonlinearAug()
 
         return augment()
-    augment = AugmentFunc()
+    Augment = Augment_Class()
 
-    def preprocessFunc():
+    Augment.Mode            = UserInfo['AugmentMode']
+    Augment.Linear.Rotation = UserInfo['Augment_Rotation']()
+    Augment.Linear.Shear    = UserInfo['Augment_Shear']()
+    Augment.NonLinear.Mode  = UserInfo['Augment_NonLinearMode']
+    return Augment
+    
+# def Directories_Class():
+#     class input:
+#         address , Subjects = '', {}
+#     class train:
+#         address , Model, Model_Thalamus, Input   = '' , '' , '' , input()
 
-        class normalize:
-            Mode = True
-            Method = 'MinMax'
+#     class test:
+#         address, Result, Input = '' , '', input()
 
+#     class Directories:
+#         Train, Test = train(), test()
 
-        class cropping:
-            Mode = ''
-            Method = ''
+#     return Directories()
 
-        class biasCorrection:
-            Mode = ''
-
-        # TODO fix the justfornow
-        class debug:
-            doDebug = True
-            PProcessExist = False  # rename it to preprocess exist
-            justForNow = True # it checks the intermediate steps and if it existed don't reproduce it
-
-        class preprocess:
-            Mode = ''
-            TestOnly = ''
-            Debug = debug()
-            # Augment = augment()
-            Cropping = cropping()
-            Normalize = normalize()
-            BiasCorrection = biasCorrection()
-
-        return preprocess()
-    preprocess = preprocessFunc()
-
-    return WhichExperiment, preprocess, augment, Directories
-
-    # class trainCase:
-    #     def __init__(self, Image, Mask):
-    #         self.Image = Image
-    #         self.Mask  = Mask

@@ -35,6 +35,8 @@ class simulation:
     nucleus_Index = [2]
     slicingDim    = [0]
     batch_size    = 100
+    InputImage2Dvs3D = 3
+    FirstLayer_FeatureMap_Num = 64
 
     Initialize_FromThalamus   = False
     Initialize_FromOlderModel = False
@@ -61,23 +63,18 @@ class Template:
 #          2: 'Accuracy'
 #          3: 'Dice & Accuracy'
 MetricIx = 3
-OptimizerIx = 1
 Learning_Rate = 1e-3
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
-
-
-class cropping:
-    Mode = True
-    method = 'python' # 'ANTs' 'python'
 
 
 #! Preprocessing
 class preprocess:
     Mode = True
     BiasCorrection = False
-    Cropping = cropping()
-    Normalize = True
 
+class normalize:
+    Mode = True
+    Method = 'MinMax'
 
 AugmentMode = False
 Augment_LinearMode = True

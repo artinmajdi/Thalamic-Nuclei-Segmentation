@@ -192,6 +192,7 @@ def trainingExperiment(Data, params):
         hist.params['trainingTime']     = time() - a
         hist.params['InputDimensionsX'] = params.WhichExperiment.HardParams.Model.InputDimensions[0]
         hist.params['InputDimensionsY'] = params.WhichExperiment.HardParams.Model.InputDimensions[1]
+        hist.params['InputDimensionsZ'] = params.WhichExperiment.HardParams.Model.InputDimensions[2]
         hist.params['num_Layers']       = params.WhichExperiment.HardParams.Model.num_Layers
 
         saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
@@ -337,74 +338,89 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
 
 def architecture(params):
 
-    NumberFM = 64
+    
     def UNet(Modelparam):
+
+        NumberFM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
 
         def Unet_sublayer_Contracting(inputs, nL, Modelparam):
 
             Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
-            if Modelparam.batchNormalization:  inputs = layers.BatchNormalization()(inputs)
-            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(inputs)
-            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(conv)
-            pool = layers.MaxPooling2D( pool_size=Modelparam.MaxPooling.pool_size)(conv)
-            if Modelparam.Dropout.Mode and Trainable: pool = layers.Dropout(Modelparam.Dropout.Value)(pool)
+            if Modelparam.Layer_Params.Layer_Params.batchNormalization:  inputs = layers.Layer_Params.Layer_Params.batchNormalization()(inputs)
+            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(inputs)
+            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
+            pool = layers.Layer_Params.Layer_Params.MaxPooling2D( pool_size=Modelparam.Layer_Params.Layer_Params.MaxPooling.pool_size)(conv)
+            if Modelparam.Layer_Params.Dropout.Mode and Trainable: pool = layers.Layer_Params.Dropout(Modelparam.Layer_Params.Dropout.Value)(pool)
             return pool, conv
 
         def Unet_sublayer_Expanding(inputs, nL, Modelparam, contractingInfo):
 
             Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
-            if Modelparam.batchNormalization:  inputs = layers.BatchNormalization()(inputs)
-            UP = layers.Conv2DTranspose(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.convTranspose, strides=(2,2), padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(inputs)
+            if Modelparam.Layer_Params.Layer_Params.batchNormalization:  inputs = layers.Layer_Params.Layer_Params.batchNormalization()(inputs)
+            UP = layers.Conv2DTranspose(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.Layer_Params.ConvLayer.Kernel_size.convTranspose, strides=(2,2), padding=Modelparam.Layer_Params.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(inputs)
             UP = layers.merge.concatenate([UP,contractingInfo[nL+1]],axis=3)
-            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(UP)
-            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(conv)
-            if Modelparam.Dropout.Mode and Trainable: conv = layers.Dropout(Modelparam.Dropout.Value)(conv)
+            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(UP)
+            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
+            if Modelparam.Layer_Params.Dropout.Mode and Trainable: conv = layers.Layer_Params.Dropout(Modelparam.Layer_Params.Dropout.Value)(conv)
             return conv
 
+        def Unet_MiddleLayer(WeightBiases, nL, Modelparam):
+            Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
+            WeightBiases = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(WeightBiases)
+            WeightBiases = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(WeightBiases)
+            if Modelparam.Layer_Params.Dropout.Mode and Trainable: WeightBiases = layers.Layer_Params.Dropout(Modelparam.Layer_Params.Dropout.Value)(WeightBiases)
+            return WeightBiases
 
         inputs = layers.Input( tuple(Modelparam.InputDimensions[:2]) + (1,) )
-        # inputs = layers.Input( (Modelparam.imageInfo.Height, Modelparam.imageInfo.Width, 1) )
-        WeightBiases = inputs
-
+        
         # ! contracting layer
         ConvOutputs = {}
+        WeightBiases = inputs
         for nL in range(Modelparam.num_Layers -1):
             WeightBiases, ConvOutputs[nL+1] = Unet_sublayer_Contracting(WeightBiases, nL, Modelparam)
 
         # ! middle layer
-        nL = Modelparam.num_Layers - 1
-        Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
-        WeightBiases = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(WeightBiases)
-        WeightBiases = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.ConvLayer.Kernel_size.conv, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.layers, trainable=Trainable)(WeightBiases)
-        if Modelparam.Dropout.Mode and Trainable: WeightBiases = layers.Dropout(Modelparam.Dropout.Value)(WeightBiases)
+        WeightBiases = Unet_MiddleLayer(WeightBiases , Modelparam.num_Layers-1 , Modelparam)
 
         # ! expanding layer
         for nL in reversed(range(Modelparam.num_Layers -1)):
             WeightBiases = Unet_sublayer_Expanding(WeightBiases, nL, Modelparam, ConvOutputs)
 
-        # ! final outputing the data
-        final = layers.Conv2D(Modelparam.MultiClass.num_classes, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(WeightBiases)
-        # final = layers.Conv2D(1, kernel_size=Modelparam.ConvLayer.Kernel_size.output, padding=Modelparam.ConvLayer.padding, activation=Modelparam.Activitation.output)(WeightBiases)
-        model = kerasmodels.Model(inputs=[inputs], outputs=[final])
+        # ! Final layer
+        final = layers.Conv2D(Modelparam.MultiClass.num_classes, kernel_size=Modelparam.Layer_Params.Layer_Params.ConvLayer.Kernel_size.output, padding=Modelparam.Layer_Params.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.output)(WeightBiases)
 
-        return model
+        return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
     def CNN_Classifier(Modelparam):
         model = kerasmodels.Sequential()
         model.add(layers.Conv2D(filters=16, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape= tuple(Modelparam.InputDimensions[:2]) + (1,)  ))
-        model.add(layers.MaxPooling2D(pool_size=Modelparam.MaxPooling.pool_size))
-        model.add(layers.Dropout(Modelparam.Dropout.Value))
+        model.add(layers.Layer_Params.Layer_Params.MaxPooling2D(pool_size=Modelparam.Layer_Params.Layer_Params.MaxPooling.pool_size))
+        model.add(layers.Layer_Params.Dropout(Modelparam.Layer_Params.Dropout.Value))
 
         model.add(layers.Conv2D(filters=8, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=tuple(Modelparam.InputDimensions[:2]) + (1,) ))
-        model.add(layers.MaxPooling2D(pool_size=Modelparam.MaxPooling.pool_size))
-        model.add(layers.Dropout(Modelparam.Dropout.Value))
+        model.add(layers.Layer_Params.Layer_Params.MaxPooling2D(pool_size=Modelparam.Layer_Params.Layer_Params.MaxPooling.pool_size))
+        model.add(layers.Layer_Params.Dropout(Modelparam.Layer_Params.Dropout.Value))
 
         model.add(layers.Flatten())
-        model.add(layers.Dense(128 , activation=Modelparam.Activitation.layers))
-        model.add(layers.Dropout(Modelparam.Dropout.Value))
-        model.add(layers.Dense(Modelparam.MultiClass.num_classes , activation=Modelparam.Activitation.output))
+        model.add(layers.Dense(128 , activation=Modelparam.Layer_Params.Activitation.layers))
+        model.add(layers.Layer_Params.Dropout(Modelparam.Layer_Params.Dropout.Value))
+        model.add(layers.Dense(Modelparam.MultiClass.num_classes , activation=Modelparam.Layer_Params.Activitation.output))
 
         return model
+
+    def FCN(Modelparam):
+
+        inputs = layers.Input( tuple(Modelparam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,) )
+
+        conv = inputs
+        for nL in range(Modelparam.num_Layers -1):
+            Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
+            conv = layers.Conv3D(filters=ModelParam.Layer_Params.FirstLayer_FeatureMap_Num*(2**nL), kernel_size=Modelparam.Layer_Params.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
+            if Modelparam.Layer_Params.Dropout.Mode and Trainable: conv = layers.Layer_Params.Dropout(Modelparam.Layer_Params.Dropout)(conv)
+
+        final  = layers.Conv3D(filters=Modelparam.MultiClass.num_classes, kernel_size=Modelparam.Layer_Params.Layer_Params.ConvLayer.Kernel_size.output, padding=Modelparam.Layer_Params.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.output)(conv)
+
+        return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
     # params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
     ModelParam = params.WhichExperiment.HardParams.Model
