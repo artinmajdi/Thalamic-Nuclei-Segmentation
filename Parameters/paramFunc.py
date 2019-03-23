@@ -53,6 +53,9 @@ def func_WhichExperiment(UserInfo):
                     strides = (2,2)
                     pool_size = (2,2)
 
+                class upsample:
+                    Scale = 1
+                    Mode = False
 
                 class method:
                     Type = ''
@@ -101,6 +104,7 @@ def func_WhichExperiment(UserInfo):
                 paddingErrorPatience = 20
                 Transfer_Learning = transfer_Learning()
                 ManualDataGenerator = False
+                
 
             lossFunctionIx = 5
             model.loss, _ = LossFunction.LossInfo(lossFunctionIx)
