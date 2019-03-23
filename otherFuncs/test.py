@@ -18,7 +18,7 @@ subj = params.directories.Train.Input.Subjects['vimp2_A']
 keras.utils.Sequence()
 f = h5py.File(params.directories.Test.Result + '/Data.hdf5','r')
 
-[]*4
+
 f['Train/Image'].shape
 import numpy as np
 
