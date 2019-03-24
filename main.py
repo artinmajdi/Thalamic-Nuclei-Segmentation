@@ -11,6 +11,7 @@ import preprocess.applyPreprocess as applyPreprocess
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 NucleiIndexes = UserInfoB['simulation'].nucleus_Index
 slicingDim = UserInfoB['simulation'].slicingDim
+print('slicingDim' , slicingDim)
 
 def gpuSetting(params):
     
