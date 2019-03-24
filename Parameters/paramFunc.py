@@ -53,10 +53,6 @@ def func_WhichExperiment(UserInfo):
                     strides = (2,2)
                     pool_size = (2,2)
 
-                class upsample:
-                    Scale = 2
-                    Mode = False
-
                 class method:
                     Type = ''
                     InitializeFromReference = True # from 3T or WMn for CSFn
@@ -64,9 +60,9 @@ def func_WhichExperiment(UserInfo):
                     havingBackGround_AsExtraDimension = True
                     InputImage2Dvs3D = 2
 
-                return dropout, kernel_size, activation, convLayer, multiclass, maxPooling, method
+                return dropout, activation, convLayer, multiclass, maxPooling, method
 
-            dropout, kernel_size, activation, convLayer, multiclass, maxPooling, method = ArchtiectureParams()
+            dropout, activation, convLayer, multiclass, maxPooling, method = ArchtiectureParams()
 
             class transfer_Learning:
                 Mode = False
@@ -422,8 +418,8 @@ def func_WhichExperiment(UserInfo):
         
     if UserInfo['simulation'].TestOnly: 
         InputDimensions, num_Layers = ReadInputDimensions_NLayers(experiment.address + '/models/' + subExperiment.name + '/' + WhichExperiment.Nucleus.name)
-        WhichExperiment.HardParams.Model.InputDimensions
-        WhichExperiment.HardParams.Model.num_Layers
+        WhichExperiment.HardParams.Model.InputDimensions = InputDimensions
+        WhichExperiment.HardParams.Model.num_Layers = num_Layers
 
     return WhichExperiment
     
