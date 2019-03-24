@@ -16,13 +16,13 @@ class readAugments:
 
 class ReadTrain:
     SRI = True
-    ET = False
-    Main = False
+    ET = True
+    Main = True
     ReadAugments = readAugments()
 
 class InputPadding:
-    Automatic = False
-    HardDimensions = [116,144,84]
+    Automatic = True
+    HardDimensions = [116,144,84] # sd2
 
 if Experiments.Index == '8': InputPadding.HardDimensions = [228,288,168]
 
