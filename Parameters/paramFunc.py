@@ -259,6 +259,9 @@ def func_WhichExperiment(UserInfo):
         Dataset.slicingInfo = slicingInfoFunc()
 
         Dataset.InputPadding.Automatic = UserInfo['InputPadding'].Automatic
+        print('slicingOrder' , Dataset.slicingInfo.slicingOrder)
+        print('HardDimensions' , UserInfo['InputPadding'].HardDimensions)
+        print('---------------------------------------------------------------------------')
         Dataset.InputPadding.HardDimensions = UserInfo['InputPadding'].HardDimensions[ Dataset.slicingInfo.slicingOrder ]
 
         return Dataset
