@@ -82,7 +82,7 @@ def trainModel(trainData, params):
 
         for nL in range(Modelparam.num_Layers -1):
             conv = layers.Conv3D(filters=64*(2**nL), kernel_size=(3,3,3), padding='SAME', activation='relu')(conv)
-            conv = layers.Layer_Params.Dropout(Modelparam.Layer_Params.Dropout)(conv)
+            conv = layers.Dropout(Modelparam.Layer_Params.Dropout)(conv)
 
         final  = layers.Conv3D(filters=2, kernel_size=(3,3,3), padding='SAME', activation='relu')(conv)
 

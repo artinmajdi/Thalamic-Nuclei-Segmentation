@@ -20,7 +20,8 @@ model.load_weights('/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/models/s
 
 def main(nl):
     print(model.layers[12].output)
-    inputs = keras.layers.Input( tuple(params.WhichExperiment.HardParams.Model.InputDimensions[:2]) + (1,) )
+    dim = HardParams.Model.Method.InputImage2Dvs3D
+    inputs = keras.layers.Input( tuple(params.WhichExperiment.HardParams.Model.InputDimensions[:dim]) + (1,) )
     model2 = keras.models.Model(inputs=[model.layers[0].output], outputs=[model.layers[nl].output, model.layers[-1].output])
 
     subject = Data.Test[list(Data.Test)[0]]

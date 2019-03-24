@@ -54,7 +54,7 @@ def func_WhichExperiment(UserInfo):
                     pool_size = (2,2)
 
                 class upsample:
-                    Scale = 1
+                    Scale = 2
                     Mode = False
 
                 class method:

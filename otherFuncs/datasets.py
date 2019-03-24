@@ -5,6 +5,8 @@ from tqdm import tqdm, trange
 import nibabel as nib
 import shutil
 import os, sys
+# sys.path.append(os.path.dirname(__file__))
+sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 import otherFuncs.smallFuncs as smallFuncs
 import preprocess.normalizeA as normalizeA
 import preprocess.applyPreprocess as applyPreprocess
@@ -69,66 +71,6 @@ def loadDataset(params):
         Data, params = readingFromExperiments(params)
 
     return Data, params
-
-def fashionMnist(params):
-
-    def one_hot(a, num_classes):
-        return np.eye(num_classes)[a]
-
-    from keras.datasets import fashion_mnist
-
-    fullData  = fashion_mnist.load_data()
-
-    images = (np.expand_dims(fullData[0][0],axis=3)).astype('float32') / 255
-    masks  = one_hot(fullData[0][1],10)
-
-    if params.WhichExperiment.Dataset.Validation.fromKeras:
-        data.Train.Image = images
-        data.Train.Mask = masks
-    else:
-        data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage, images, masks, params.WhichExperiment.Dataset.randomFlag)
-
-    data.Test.Image = (np.expand_dims(fullData[1][0],axis=3)).astype('float32') / 255
-    data.Test.Label = one_hot(fullData[1][1],10)
-    return data, '_'
-
-def kaggleCompetition(params):
-
-    subF = next(os.walk(params.WhichExperiment.Dataset.address))
-
-    for ind in trange(min(len(subF[1]),50), desc='Loading Dataset'):
-
-        imDir = subF[0] + '/' + subF[1][ind] + '/images'
-        imMsk = subF[0] + '/' + subF[1][ind] + '/masks'
-        a = next(os.walk(imMsk))
-        b = next(os.walk(imDir))
-
-        im = np.squeeze(imread(imDir + '/' + b[2][0])[:256,:256,0])
-        # im = ndimage.zoom(im,(1,1,2),order=3)
-
-        im = np.expand_dims(im,axis=0)
-        im = (np.expand_dims(im,axis=3)).astype('float32') / 255
-        images = im if ind == 0 else np.concatenate((images,im),axis=0)
-
-        msk = imread(imMsk + '/' + a[2][0]) if len(a[2]) > 0 else np.zeros(im.shape)
-        if len(a[2]) > 1:
-            for sF in range(1,len(a[2])):
-                msk = msk + imread(imMsk + '/' + a[2][sF])
-
-        msk = np.expand_dims(msk[:256,:256],axis=0)
-        msk = (np.expand_dims(msk,axis=3)).astype('float32') / 255
-        masks = msk>0.5 if ind == 0 else np.concatenate((masks,msk>0.5 ),axis=0)
-
-    masks = np.concatenate((masks,1-masks),axis=3)
-
-    if params.WhichExperiment.Dataset.Validation.fromKeras:
-        data.Train.Image = images
-        data.Train.Mask = masks
-    else:
-        data.Train, data.Validation = TrainValSeperate(params.WhichExperiment.Dataset.Validation.percentage ,images, masks, params.WhichExperiment.Dataset.randomFlag)
-
-    data.Test = data.Train
-    return data, '_'
 
 def paddingNegativeFix(sz, Padding):
     padding = np.array([list(x) for x in Padding])
@@ -267,46 +209,41 @@ def readingFromExperiments(params):
 
         def find_PaddingValues(params):
 
+            def findingPaddedInputSize(params):
+                inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)    
+                a = 2**(params.WhichExperiment.HardParams.Model.num_Layers - 1)
+                # new_inputSize = [  a * np.ceil(s / a) if s % a != 0 else s for s in np.max(inputSizes, axis=0) ]
+
+                # new_inputSize = np.max(inputSizes, axis=0)
+                # for dim in range(3):
+                #     if new_inputSize[dim] % a != 0: new_inputSize[dim] = a * np.ceil(new_inputSize[dim] / a)
+
+                return [  int(a * np.ceil(s / a)) if s % a != 0 else s for s in np.max(inputSizes, axis=0) ]
+                
             def findingSubjectsFinalPaddingAmount(wFolder, Input, params):
 
-                def findingPaddedInputSize(params):
-                    new_inputSize = np.max(Input.inputSizes, axis=0)
-                    # new_inputSize = [  a * np.ceil(s / a) if s % a != 0 else s for s in np.max(Input.inputSizes, axis=0) ]
-
-                    a = 2**(params.WhichExperiment.HardParams.Model.num_Layers - 1)
-                    for dim in range(3):
-                        if new_inputSize[dim] % a != 0: new_inputSize[dim] = a * np.ceil(new_inputSize[dim] / a)
-
-                    return new_inputSize
-
-                def applyingPaddingDimOnSubjects(params, Subjects):
+                def applyingPaddingDimOnSubjects(params, Input):
                     fullpadding = params.WhichExperiment.HardParams.Model.InputDimensions - Input.inputSizes
                     md = np.mod(fullpadding,2)
-                    for sn, name in enumerate(list(Subjects)):
+                    for sn, name in enumerate(list(Input.Subjects)):
                         padding = [tuple([0,0])]*4
-                        for dim in range(2): # params.WhichExperiment.Dataset.slicingInfo.slicingOrder[:2]:
+                        
+                        for dim in range(params.WhichExperiment.HardParams.Model.Method.InputImage2Dvs3D): # params.WhichExperiment.Dataset.slicingInfo.slicingOrder[:2]:
                             if md[sn, dim] == 0:
                                 padding[dim] = tuple([int(fullpadding[sn,dim]/2)]*2)
                             else:
                                 padding[dim] = tuple([int(np.floor(fullpadding[sn,dim]/2) + 1) , int(np.floor(fullpadding[sn,dim]/2))])
 
-                        Subjects[name].Padding = tuple(padding)
+                        if np.min(tuple(padding)) < 0:
+                            print('---')
+                        Input.Subjects[name].Padding = tuple(padding)
 
-                    return Subjects
+                    return Input
 
-                # TODO check ehjy this works for test only cases even though i am not feeding teh dimension for padding; check where im adding dimension to the params
+                return applyingPaddingDimOnSubjects(params, Input)
 
-                if 'Train' in wFolder:
-                    if params.WhichExperiment.Dataset.InputPadding.Automatic:
-                        params.WhichExperiment.HardParams.Model.InputDimensions = findingPaddedInputSize( params )
-                    else:
-                        params.WhichExperiment.HardParams.Model.InputDimensions = params.WhichExperiment.Dataset.InputPadding.HardDimensions
-
-
-                #! finding the amount of padding for each subject in each direction
-                Input.Subjects = applyingPaddingDimOnSubjects(params, Input.Subjects)
-
-                return Input
+            AA = findingPaddedInputSize( params ) if params.WhichExperiment.Dataset.InputPadding.Automatic else params.WhichExperiment.Dataset.InputPadding.HardDimensions
+            params.WhichExperiment.HardParams.Model.InputDimensions = AA
 
             if params.directories.Train.Input.Subjects: params.directories.Train.Input = findingSubjectsFinalPaddingAmount('Train', params.directories.Train.Input, params)
             if params.directories.Test.Input.Subjects:  params.directories.Test.Input  = findingSubjectsFinalPaddingAmount('Test', params.directories.Test.Input, params)
@@ -365,18 +302,19 @@ def readingFromExperiments(params):
         def find_correctNumLayers(params):
 
             HardParams = params.WhichExperiment.HardParams
-
-            if params.WhichExperiment.Dataset.InputPadding.Automatic: # and params.WhichExperiment.Dataset.HDf5.mode_saveTrue_LoadFalse:
-                MinInputSize = np.min(params.directories.Train.Input.inputSizes, axis=0)
+            
+            if params.WhichExperiment.Dataset.InputPadding.Automatic: 
+                inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
+                MinInputSize = np.min(inputSizes, axis=0)
             else:
                 MinInputSize = params.WhichExperiment.Dataset.InputPadding.HardDimensions
 
-            kernel_size = HardParams.Model.Layer_Params.Layer_Params.ConvLayer.Kernel_size.conv
+            kernel_size = HardParams.Model.Layer_Params.ConvLayer.Kernel_size.conv
             num_Layers  = HardParams.Model.num_Layers
-
-            if np.min(MinInputSize[:2] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0:  # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size
+            dim = HardParams.Model.Method.InputImage2Dvs3D
+            if np.min(MinInputSize[:dim] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0:  # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size
                 print('WARNING: INPUT IMAGE SIZE IS TOO SMALL FOR THE NUMBER OF LAYERS')
-                num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:2],kernel_size) )) + 1))
+                num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:dim],kernel_size) )) + 1))
                 print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
 
             params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
@@ -431,18 +369,27 @@ def readingFromExperiments(params):
         def separateTrainVal_and_concatenateTrain(TrainData):
 
             def separatingConcatenatingIndexes(sjList):
-                for ix, nameSubject in enumerate(sjList):
+
+                Sz0 = 0
+                for nameSubject in sjList: Sz0 += TrainData[nameSubject].Image.shape[0]
+                images = np.zeros(  (  tuple([Sz0]) + TrainData[list(TrainData)[0]].Image.shape[1:] )  )
+                masks = np.zeros(  (  tuple([Sz0]) + TrainData[list(TrainData)[0]].Mask.shape[1:] )  )
+
+                d1 = 0
+                for ix, nameSubject in enumerate(tqdm(sjList,desc='concatenating train images')):
                     im, msk = TrainData[nameSubject].Image  , TrainData[nameSubject].Mask
 
                     if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
                         im = im[:int(im.shape[0]/2+5),...]
                         msk = msk[:int(msk.shape[0]/2+5),...]
+                    
 
+                    images[d1:d1+im.shape[0] ,...] = im
+                    masks[d1:d1+im.shape[0] ,...]  = msk
+                    d1 += im.shape[0]
 
-                    images = im     if ix == 0 else np.concatenate((images,im    ),axis=0)
-                    masks  = msk>Th if ix == 0 else np.concatenate((masks,msk>Th ),axis=0)
-
-
+                    # images = im     if ix == 0 else np.concatenate((images,im    ),axis=0)
+                    # masks  = msk>Th if ix == 0 else np.concatenate((masks,msk>Th ),axis=0)
 
                 return trainCase(Image=images, Mask=masks.astype('float32'))
 
@@ -482,13 +429,6 @@ def readingFromExperiments(params):
                 origMsk , msk = readingNuclei(params, Subjects[nameSubject], imF.shape)
 
                 if im[...,0].shape == msk[...,0].shape:
-
-                    if params.WhichExperiment.HardParams.Model.Method.Upsample.Mode:
-                        sc = params.WhichExperiment.HardParams.Model.Method.Upsample.Scale
-                        im  = skimage.transform.rescale(image=im , scale=(1,sc,sc,1), order=3)
-                        msk = skimage.transform.rescale(image=msk, scale=(1,sc,sc,1), order=1)
-
-
                     Data[nameSubject] = testCase(Image=im, Mask=msk>Th ,OrigMask=(origMsk>Th).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
                 else:
                     Error_MisMatch_In_Dim_ImageMask(Subjects[nameSubject] , mode, nameSubject)
@@ -512,22 +452,6 @@ def readingFromExperiments(params):
     # saveHDf5(Data)
 
     return Data, params
-
-def TrainValSeperate(percentage, images, masks, randomFlag):
-
-    subjectsList = list(range(images.shape[0]))
-    TrainList, ValList = percentageDivide(percentage, subjectsList, randomFlag)
-
-
-    Validation = ImageLabel()
-    Validation.Image = images[ValList, ...]
-    Validation.Mask = masks[ValList, ...]
-
-    Train = ImageLabel()
-    Train.Image = images[TrainList, ...]
-    Train.Mask = masks[TrainList, ...]
-
-    return Train, Validation
 
 def percentageDivide(percentage, subjectsList, randomFlag):
 

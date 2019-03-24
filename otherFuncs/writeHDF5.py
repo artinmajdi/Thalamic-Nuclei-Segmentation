@@ -30,7 +30,8 @@ def saving_OriginalDataset_AsHDF5(Input):
                 Image = [s for s in allFiles if 'PProcessed' in s]
                 if len(Image) == 1:
                     imF = nib.load( k.attrs['address'] + '/' + Image[0])
-                    k.create_dataset(name='imData',data=imF.get_data() ,chunks=tuple(imF.shape[:2]) + (1,) ) # compression='gzip',
+                    dim = params.WhichExperiment.HardParams.Model.Method.InputImage2Dvs3D
+                    k.create_dataset(name='imData',data=imF.get_data() ,chunks=tuple(imF.shape[:dim]) + (1,) ) # compression='gzip',
                     k.attrs['name'] = Image[0]
 
                     k.create_group('Label').attrs['address'] = k.attrs['address'] + '/Label'

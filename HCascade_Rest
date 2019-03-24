@@ -314,7 +314,7 @@ Loading Dataset: train:  50%|█████     | 53/105 [01:07<00:55,  1.06s/i
 Loading Dataset: train:  51%|█████▏    | 54/105 [01:08<00:55,  1.09s/it]
 Loading Dataset: train:  52%|█████▏    | 55/105 [01:09<00:54,  1.09s/it]
 Loading Dataset: train:  53%|█████▎    | 56/105 [01:10<00:54,  1.11s/it]
-Loading Dataset: Layer_Params.Layer_Params.MaxPooling%|█████▍    | 57/105 [01:11<00:53,  1.12s/it]
+Loading Dataset: Layer_Params.MaxPooling%|█████▍    | 57/105 [01:11<00:53,  1.12s/it]
 Loading Dataset: train:  55%|█████▌    | 58/105 [01:12<00:51,  1.09s/it]
 Loading Dataset: train:  56%|█████▌    | 59/105 [01:13<00:48,  1.06s/it]
 Loading Dataset: train:  57%|█████▋    | 60/105 [01:14<00:47,  1.05s/it]
@@ -324,7 +324,7 @@ Loading Dataset: train:  60%|██████    | 63/105 [01:18<00:47,  1.13s
 Loading Dataset: train:  61%|██████    | 64/105 [01:19<00:47,  1.16s/it]
 Loading Dataset: train:  62%|██████▏   | 65/105 [01:20<00:46,  1.16s/it]
 Loading Dataset: train:  63%|██████▎   | 66/105 [01:21<00:44,  1.14s/it]
-Loading Dataset: Layer_Params.Layer_Params.MaxPooling%|██████▍   | 67/105 [01:22<00:42,  1.13s/it]
+Loading Dataset: Layer_Params.MaxPooling%|██████▍   | 67/105 [01:22<00:42,  1.13s/it]
 Loading Dataset: train:  65%|██████▍   | 68/105 [01:23<00:42,  1.15s/it]
 Loading Dataset: train:  66%|██████▌   | 69/105 [01:24<00:39,  1.10s/it]
 Loading Dataset: train:  67%|██████▋   | 70/105 [01:25<00:34,  1.03it/s]
@@ -1486,7 +1486,7 @@ Epoch 91/100
 848/848 [==============================] - 5s 6ms/step - loss: 0.0018 - acc: 0.9993 - Dice_Calculator: 0.8073 - val_loss: 0.0037 - val_acc: 0.9989 - val_Dice_Calculator: 0.7257
 Epoch 92/100
 
-100/848 [==>.....Layer_Params.Layer_Params.MaxPooling............] - ETA: 4s - loss: 0.0019 - acc: 0.9992 - Dice_Calculator: 0.8181
+100/848 [==>.....Layer_Params.MaxPooling............] - ETA: 4s - loss: 0.0019 - acc: 0.9992 - Dice_Calculator: 0.8181
 200/848 [======>.......................] - ETA: 3s - loss: 0.0018 - acc: 0.9993 - Dice_Calculator: 0.8170
 300/848 [=========>....................] - ETA: 2s - loss: 0.0018 - acc: 0.9993 - Dice_Calculator: 0.8164
 400/848 [=============>................] - ETA: 2s - loss: 0.0018 - acc: 0.9993 - Dice_Calculator: 0.8160
@@ -1496,7 +1496,7 @@ Epoch 92/100
 800/848 [===========================>..] - ETA: 0s - loss: 0.0018 - acc: 0.9993 - Dice_Calculator: 0.8129
 848/848 [==============================] - 5s 6ms/step - loss: 0.0018 - acc: 0.9993 - Dice_Calculator: 0.8130 - val_loss: 0.0047 - val_acc: 0.9988 - val_Dice_Calculator: 0.7087
 Epoch 93/100
-Layer_Params.Layer_Params.MaxPooling
+Layer_Params.MaxPooling
 100/848 [==>...........................] - ETA: 4s - loss: 0.0021 - acc: 0.9992 - Dice_Calculator: 0.7888
 200/848 [======>.......................] - ETA: 3s - loss: 0.0021 - acc: 0.9991 - Dice_Calculator: 0.7945
 300/848 [=========>....................] - ETA: 2s - loss: 0.0021 - acc: 0.9992 - Dice_Calculator: 0.7972
@@ -2658,7 +2658,7 @@ Epoch 81/100
 200/848 [======>.......................] - ETA: 3s - loss: 0.0037 - acc: 0.9991 - Dice_Calculator: 0.6119
 300/848 [=========>....................] - ETA: 3s - loss: 0.0037 - acc: 0.9991 - Dice_Calculator: 0.6097
 400/848 [=============>................] - ETA: 2s - loss: 0.0037 - acc: 0.9991 - Dice_Calculator: 0.6104
-500/848 [========Layer_Params.Layer_Params.MaxPooling............] - ETA: 1s - loss: 0.0037 - acc: 0.9991 - Dice_Calculator: 0.6104
+500/848 [========Layer_Params.MaxPooling............] - ETA: 1s - loss: 0.0037 - acc: 0.9991 - Dice_Calculator: 0.6104
 600/848 [====================>.........] - ETA: 1s - loss: 0.0036 - acc: 0.9991 - Dice_Calculator: 0.6113
 700/848 [=======================>......] - ETA: 0s - loss: 0.0035 - acc: 0.9991 - Dice_Calculator: 0.6071
 800/848 [===========================>..] - ETA: 0s - loss: 0.0034 - acc: 0.9991 - Dice_Calculator: 0.6065
@@ -2668,7 +2668,7 @@ Epoch 82/100
 100/848 [==>...........................] - ETA: 4s - loss: 0.0034 - acc: 0.9991 - Dice_Calculator: 0.6149
 200/848 [======>.......................] - ETA: 3s - loss: 0.0035 - acc: 0.9991 - Dice_Calculator: 0.6175
 300/848 [=========>....................] - ETA: 2s - loss: 0.0033 - acc: 0.9991 - Dice_Calculator: 0.6122
-400/848 [========Layer_Params.Layer_Params.MaxPooling............] - ETA: 2s - loss: 0.0034 - acc: 0.9991 - Dice_Calculator: 0.6141
+400/848 [========Layer_Params.MaxPooling............] - ETA: 2s - loss: 0.0034 - acc: 0.9991 - Dice_Calculator: 0.6141
 500/848 [================>.............] - ETA: 1s - loss: 0.0033 - acc: 0.9991 - Dice_Calculator: 0.6120
 600/848 [====================>.........] - ETA: 1s - loss: 0.0034 - acc: 0.9991 - Dice_Calculator: 0.6121
 700/848 [=======================>......] - ETA: 0s - loss: 0.0033 - acc: 0.9991 - Dice_Calculator: 0.6094
@@ -3830,7 +3830,7 @@ Epoch 70/100
 600/848 [====================>.........] - ETA: 1s - loss: 1.4255e-07 - acc: 1.0000 - Dice_Calculator: 0.0000e+00
 700/848 [=======================>......] - ETA: 0s - loss: 1.3955e-07 - acc: 1.0000 - Dice_Calculator: 0.0000e+00
 800/848 [===========================>..] - ETA: 0s - loss: 1.3967e-07 - acc: 1.0000 - Dice_Calculator: 0.0000e+00
-848/848 [========Layer_Params.Layer_Params.MaxPooling============] - 5s 6ms/step - loss: 1.4078e-07 - acc: 1.0000 - Dice_Calculator: 0.0000e+00 - val_loss: 1.0960e-07 - val_acc: 1.0000 - val_Dice_Calculator: 0.0000e+00
+848/848 [========Layer_Params.MaxPooling============] - 5s 6ms/step - loss: 1.4078e-07 - acc: 1.0000 - Dice_Calculator: 0.0000e+00 - val_loss: 1.0960e-07 - val_acc: 1.0000 - val_Dice_Calculator: 0.0000e+00
 Epoch 71/100
 
 100/848 [==>...........................] - ETA: 4s - loss: 1.1503e-07 - acc: 1.0000 - Dice_Calculator: 0.0000e+00
@@ -3840,7 +3840,7 @@ Epoch 71/100
 500/848 [================>.............] - ETA: 1s - loss: 1.3367e-07 - acc: 1.0000 - Dice_Calculator: 0.0000e+00
 600/848 [====================>.........] - ETA: 1s - loss: 1.3647e-07 - acc: 1.0000 - Dice_Calculator: 0.0000e+00
 700/848 [=======================>......] - ETA: 0s - loss: 1.3325e-07 - acc: 1.0000 - Dice_Calculator: 0.0000e+00
-800/848 [========Layer_Params.Layer_Params.MaxPooling=========>..] - ETA: 0s - loss: 1.3285e-07 - acc: 1.0000 - Dice_Calculator: 0.0000e+00
+800/848 [========Layer_Params.MaxPooling=========>..] - ETA: 0s - loss: 1.3285e-07 - acc: 1.0000 - Dice_Calculator: 0.0000e+00
 848/848 [==============================] - 5s 6ms/step - loss: 1.3166e-07 - acc: 1.0000 - Dice_Calculator: 0.0000e+00 - val_loss: 1.0960e-07 - val_acc: 1.0000 - val_Dice_Calculator: 0.0000e+00
 Epoch 72/100
 
@@ -6401,7 +6401,7 @@ Epoch 82/100
 2200/2230 [============================>.] - ETA: 0s - loss: 3.0426e-04 - acc: 1.0000 - Dice_Calculator: 2.1437e-18
 2230/2230 [==============================] - 13s 6ms/step - loss: 3.1394e-04 - acc: 1.0000 - Dice_Calculator: 2.1148e-18 - val_loss: 6.4373e-05 - val_acc: 1.0000 - val_Dice_Calculator: 1.7091e-26
 Epoch 83/100
-Layer_Params.Layer_Params.MaxPooling
+Layer_Params.MaxPooling
  100/2230 [>.............................] - ETA: 11s - loss: 2.4967e-04 - acc: 1.0000 - Dice_Calculator: 2.0843e-25
  200/2230 [=>............................] - ETA: 11s - loss: 1.2505e-04 - acc: 1.0000 - Dice_Calculator: 1.0421e-25
  300/2230 [===>..........................] - ETA: 10s - loss: 3.1074e-04 - acc: 1.0000 - Dice_Calculator: 9.1114e-21
@@ -6411,7 +6411,7 @@ Layer_Params.Layer_Params.MaxPooling
  700/2230 [========>.....................] - ETA: 8s - loss: 2.1005e-04 - acc: 1.0000 - Dice_Calculator: 4.4602e-19
  800/2230 [=========>....................] - ETA: 7s - loss: 2.2599e-04 - acc: 1.0000 - Dice_Calculator: 3.5203e-16
  900/2230 [===========>..................] - ETA: 7s - loss: 2.6064e-04 - acc: 1.0000 - Dice_Calculator: 3.1291e-16
-1000/2230 [=======Layer_Params.Layer_Params.MaxPooling.............] - ETA: 6s - loss: 2.7489e-04 - acc: 1.0000 - Dice_Calculator: 2.8162e-16
+1000/2230 [=======Layer_Params.MaxPooling.............] - ETA: 6s - loss: 2.7489e-04 - acc: 1.0000 - Dice_Calculator: 2.8162e-16
 1100/2230 [=============>................] - ETA: 6s - loss: 3.2757e-04 - acc: 1.0000 - Dice_Calculator: 2.5695e-16
 1200/2230 [===============>..............] - ETA: 5s - loss: 3.2508e-04 - acc: 1.0000 - Dice_Calculator: 2.3554e-16
 1300/2230 [================>.............] - ETA: 5s - loss: 3.2370e-04 - acc: 1.0000 - Dice_Calculator: 2.1742e-16
@@ -12672,7 +12672,7 @@ Epoch 90/100
 1100/5970 [====>.........................] - ETA: 27s - loss: 6.4947e-05 - acc: 1.0000 - Dice_Calculator: 0.8968
 1200/5970 [=====>........................] - ETA: 26s - loss: 6.7910e-05 - acc: 1.0000 - Dice_Calculator: 0.8958
 1300/5970 [=====>........................] - ETA: 25s - loss: 7.0440e-05 - acc: 1.0000 - Dice_Calculator: 0.8944
-1400/5970 [======>Layer_Params.Layer_Params.MaxPooling.............] - ETA: 25s - loss: 7.3107e-05 - acc: 1.0000 - Dice_Calculator: 0.8946
+1400/5970 [======>Layer_Params.MaxPooling.............] - ETA: 25s - loss: 7.3107e-05 - acc: 1.0000 - Dice_Calculator: 0.8946
 1500/5970 [======>.......................] - ETA: 24s - loss: 7.2217e-05 - acc: 1.0000 - Dice_Calculator: 0.8945
 1600/5970 [=======>......................] - ETA: 24s - loss: 7.3744e-05 - acc: 1.0000 - Dice_Calculator: 0.8933
 1700/5970 [=======>......................] - ETA: 23s - loss: 7.3700e-05 - acc: 1.0000 - Dice_Calculator: 0.8932
@@ -12682,7 +12682,7 @@ Epoch 90/100
 2100/5970 [=========>....................] - ETA: 21s - loss: 7.4302e-05 - acc: 1.0000 - Dice_Calculator: 0.8927
 2200/5970 [==========>...................] - ETA: 21s - loss: 7.3212e-05 - acc: 1.0000 - Dice_Calculator: 0.8919
 2300/5970 [==========>...................] - ETA: 20s - loss: 7.5638e-05 - acc: 1.0000 - Dice_Calculator: 0.8907
-2400/5970 [=======Layer_Params.Layer_Params.MaxPooling.............] - ETA: 20s - loss: 7.5908e-05 - acc: 1.0000 - Dice_Calculator: 0.8901
+2400/5970 [=======Layer_Params.MaxPooling.............] - ETA: 20s - loss: 7.5908e-05 - acc: 1.0000 - Dice_Calculator: 0.8901
 2500/5970 [===========>..................] - ETA: 19s - loss: 7.7323e-05 - acc: 1.0000 - Dice_Calculator: 0.8903
 2600/5970 [============>.................] - ETA: 18s - loss: 7.6877e-05 - acc: 1.0000 - Dice_Calculator: 0.8904
 2700/5970 [============>.................] - ETA: 18s - loss: 7.6848e-05 - acc: 1.0000 - Dice_Calculator: 0.8902

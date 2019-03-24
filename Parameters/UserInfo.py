@@ -1,28 +1,30 @@
 
 
-Model_Method =  'HCascade' # 'Cascade' #
+Model_Method =  'Cascade' #'HCascade' # 
 
 class SubExperiment:
-    Index = 7
+    Index = 8
     Tag   = Model_Method
-
-class upsample:
-    Scale = 2
-    Mode = True
     
+class Experiments:
+    Index = '8'
+    Tag = 'cascadeV1'
+
 class readAugments:
     Mode = True
     Tag = ''
 
 class ReadTrain:
-    SRI = False
+    SRI = True
     ET = False
-    Main = True
+    Main = False
     ReadAugments = readAugments()
 
 class InputPadding:
     Automatic = False
     HardDimensions = [116,144,84]
+
+if Experiments.Index == '8': InputPadding.HardDimensions = [228,288,168]
 
 class Transfer_Learning:
     Mode = False
@@ -32,14 +34,14 @@ class Transfer_Learning:
 class simulation:
     TestOnly      = False
     epochs        = 100
-    GPU_Index     = "7"
+    GPU_Index     = "1"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [2]
+    nucleus_Index = [1,2,8]
     slicingDim    = [2]
     batch_size    = 100
-    InputImage2Dvs3D = 3
+    InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 64
 
     Initialize_FromThalamus   = False
@@ -50,10 +52,6 @@ class simulation:
 mode_saveTrue_LoadFalse = True
 DropoutValue = 0.3
 havingBackGround_AsExtraDimension = True
-
-class Experiments:
-    Index = '7'
-    Tag = 'cascadeV1'
 
 gapDilation = 5
 
@@ -73,7 +71,7 @@ Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 #! Preprocessing
 class preprocess:
-    Mode = True
+    Mode = False
     BiasCorrection = False
 
 class normalize:
