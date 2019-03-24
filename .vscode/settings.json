@@ -1,6 +1,6 @@
 {
     "python.linting.pylintEnabled": true,
-    "python.pythonPath": "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/bin/python",
+    "python.pythonPath": "/home/artinl/anaconda3/envs/myKeras/bin/python",
     "python.linting.enabled": true,
     "python.linting.banditEnabled": false,
     "python.linting.mypyEnabled": false

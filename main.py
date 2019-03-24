@@ -10,7 +10,7 @@ import preprocess.applyPreprocess as applyPreprocess
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 NucleiIndexes = UserInfoB['simulation'].nucleus_Index
-slicingDim = UserInfoB['simulation'].slicingDim
+slicingDim    = UserInfoB['simulation'].slicingDim
 print('slicingDim' , slicingDim)
 
 def gpuSetting(params):
@@ -69,6 +69,24 @@ def Run(UserInfoB):
     elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': CacadeStages(UserInfoB)
     elif params.WhichExperiment.HardParams.Model.Method.Type == 'singleRun': Run_SingleNuclei(UserInfoB)
 
+def Finding_InputDimension(UserInfoB):
+    UserInfoC = UserInfoB.copy()
+
+    UserInfoC['readAugments'].Mode = True
+    UserInfoC['ReadTrain'].SRI = True
+    UserInfoC['ReadTrain'].ET = True
+    UserInfoC['ReadTrain'].Main = True
+    UserInfoC['InputPadding'].Automatic = True
+    paramsB = paramFunc.Run(UserInfoC)
+    paramsB = datasets.preAnalysis(paramsB)
+
+
+    UserInfoB['InputPadding'].Automatic = False
+    UserInfoB['InputPadding'].HardDimensions = paramsB.WhichExperiment.HardParams.Model.InputDimensions
+    return UserInfoB
+
+
+UserInfoB = Finding_InputDimension(UserInfoB)
 params = paramFunc.Run(UserInfoB)
 
 datasets.movingFromDatasetToExperiments(params)

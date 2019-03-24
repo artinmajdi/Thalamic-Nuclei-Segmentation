@@ -63,12 +63,9 @@ def DatasetsInfo(DatasetIx):
 
 def loadDataset(params):
 
-    if 'fashionMnist' in params.WhichExperiment.Dataset.name:
-        Data, _ = fashionMnist(params)
-    elif 'kaggleCompetition' in params.WhichExperiment.Dataset.name:
-        Data, _ = kaggleCompetition(params)
-    else:
-        Data, params = readingFromExperiments(params)
+    # if 'fashionMnist' in params.WhichExperiment.Dataset.name:
+    #     Data, _ = fashionMnist(params)
+    Data, params = readingFromExperiments(params)
 
     return Data, params
 
@@ -86,8 +83,6 @@ def paddingNegativeFix(sz, Padding):
     return padding, crd
 
 def readingFromExperiments(params):
-
-    NameCascadeMask = params.WhichExperiment.HardParams.Model.Method.ReferenceMask
 
     def inputPreparationForUnet(im,subject2, params):
 
@@ -119,10 +114,6 @@ def readingFromExperiments(params):
             Image = ImageF.get_data()
             return ImageF, np.transpose(Image, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
-        # TODO remove this after couple of runs
-        # if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1) and os.path.isfile(subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz'):
-        #     copyfile( subject2.Temp.address + '/' + subject2.ImageProcessed + '_BeforeThalamsMultiply.nii.gz' , subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
-
         def apply_Cascade_PreFinalStageMask_OnImage(imm):
 
             def dilateMask(mask):
@@ -133,11 +124,9 @@ def readingFromExperiments(params):
             Dirr = params.directories.Test.Result
             if 'train' in mode: Dirr += '/TrainData_Output'
 
-            _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + NameCascadeMask + '.nii.gz' , params)
-            # _, manualLabel = readingWithTranpose(subject2.Label.address + '/' + NameCascadeMask + '_PProcessed.nii.gz' , params)
+            _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.nii.gz' , params)
 
             Cascade_Mask_Dilated = dilateMask(Cascade_Mask)
-            # imm2 = imm.copy() + 400*Cascade_Mask
             imm[Cascade_Mask_Dilated == 0] = 0
             return imm
 
@@ -191,142 +180,6 @@ def readingFromExperiments(params):
         AA = subject.address.split(os.path.dirname(subject.address) + '/')
         shutil.move(subject.address, os.path.dirname(subject.address) + '/' + 'ERROR_' + AA[1])
         print('WARNING:', mode , nameSubject, ' image and mask have different shape sizes')
-
-    def preAnalysis(params):
-
-        def saveUserParams(params):
-            params.UserInfo['simulation'].num_Layers = params.WhichExperiment.HardParams.Model.num_Layers
-            params.UserInfo['InputDimensions'] = params.WhichExperiment.HardParams.Model.InputDimensions
-            print('InputDimensions', params.WhichExperiment.HardParams.Model.InputDimensions)
-            print('num_Layers', params.WhichExperiment.HardParams.Model.num_Layers)
-
-            for sf in list(params.UserInfo):
-                if '__' in sf: params.UserInfo.__delitem__(sf)
-
-            smallFuncs.mkDir(params.directories.Train.Model)
-            with open(params.directories.Train.Model + '/UserInfoB.pkl' , 'wb') as f:
-                pickle.dump(params.UserInfo , f)
-
-        def find_PaddingValues(params):
-
-            def findingPaddedInputSize(params):
-                inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)    
-                a = 2**(params.WhichExperiment.HardParams.Model.num_Layers - 1)
-                # new_inputSize = [  a * np.ceil(s / a) if s % a != 0 else s for s in np.max(inputSizes, axis=0) ]
-
-                # new_inputSize = np.max(inputSizes, axis=0)
-                # for dim in range(3):
-                #     if new_inputSize[dim] % a != 0: new_inputSize[dim] = a * np.ceil(new_inputSize[dim] / a)
-
-                return [  int(a * np.ceil(s / a)) if s % a != 0 else s for s in np.max(inputSizes, axis=0) ]
-                
-            def findingSubjectsFinalPaddingAmount(wFolder, Input, params):
-
-                def applyingPaddingDimOnSubjects(params, Input):
-                    fullpadding = params.WhichExperiment.HardParams.Model.InputDimensions - Input.inputSizes
-                    md = np.mod(fullpadding,2)
-                    for sn, name in enumerate(list(Input.Subjects)):
-                        padding = [tuple([0,0])]*4
-                        
-                        for dim in range(params.WhichExperiment.HardParams.Model.Method.InputImage2Dvs3D): # params.WhichExperiment.Dataset.slicingInfo.slicingOrder[:2]:
-                            if md[sn, dim] == 0:
-                                padding[dim] = tuple([int(fullpadding[sn,dim]/2)]*2)
-                            else:
-                                padding[dim] = tuple([int(np.floor(fullpadding[sn,dim]/2) + 1) , int(np.floor(fullpadding[sn,dim]/2))])
-
-                        if np.min(tuple(padding)) < 0:
-                            print('---')
-                        Input.Subjects[name].Padding = tuple(padding)
-
-                    return Input
-
-                return applyingPaddingDimOnSubjects(params, Input)
-
-            AA = findingPaddedInputSize( params ) if params.WhichExperiment.Dataset.InputPadding.Automatic else params.WhichExperiment.Dataset.InputPadding.HardDimensions
-            params.WhichExperiment.HardParams.Model.InputDimensions = AA
-
-            if params.directories.Train.Input.Subjects: params.directories.Train.Input = findingSubjectsFinalPaddingAmount('Train', params.directories.Train.Input, params)
-            if params.directories.Test.Input.Subjects:  params.directories.Test.Input  = findingSubjectsFinalPaddingAmount('Test', params.directories.Test.Input, params)
-
-            return params
-
-        def find_AllInputSizes(params):
-
-            def newCropedSize(subject, params, mode):
-
-                def readingCascadeCropSizes(subject):
-                    dirr = params.directories.Test.Result
-                    if 'train' in mode: dirr += '/TrainData_Output'
-
-                    BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_' + NameCascadeMask + '.txt',dtype=int)
-                    BB = BBf[:,:2]
-                    BBd = BBf[:,2:]
-
-                    #! because on the slicing direction we don't want the extra dilated effect to be considered
-                    BBd[params.WhichExperiment.Dataset.slicingInfo.slicingDim] = BB[params.WhichExperiment.Dataset.slicingInfo.slicingDim]
-                    BBd = BBd[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
-                    return BBd
-
-                if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
-                    BB = readingCascadeCropSizes(subject)
-
-                    origSize = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
-                    origSize = origSize[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
-
-
-                    subject.NewCropInfo.OriginalBoundingBox = BB
-                    subject.NewCropInfo.PadSizeBackToOrig   = tuple([ tuple([BB[d][0] , origSize[d]-BB[d][1]]) for d in range(3) ])
-
-                    Shape = np.array([BB[d][1]-BB[d][0] for d  in range(3)])
-                else:
-                    Shape = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
-                    Shape = Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
-
-                # Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
-                return Shape, subject
-
-            def loopOverAllSubjects(Input, mode):
-                inputSize = []
-                for sj in Input.Subjects:
-                    Shape, Input.Subjects[sj] = newCropedSize(Input.Subjects[sj], params, mode)
-                    inputSize.append(Shape)
-
-                Input.inputSizes = np.array(inputSize)
-                return Input
-
-            if params.directories.Train.Input.Subjects: params.directories.Train.Input = loopOverAllSubjects(params.directories.Train.Input, 'train')
-            if params.directories.Test.Input.Subjects: params.directories.Test.Input  = loopOverAllSubjects(params.directories.Test.Input, 'test')
-
-            return params
-
-        def find_correctNumLayers(params):
-
-            HardParams = params.WhichExperiment.HardParams
-            
-            if params.WhichExperiment.Dataset.InputPadding.Automatic: 
-                inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
-                MinInputSize = np.min(inputSizes, axis=0)
-            else:
-                MinInputSize = params.WhichExperiment.Dataset.InputPadding.HardDimensions
-
-            kernel_size = HardParams.Model.Layer_Params.ConvLayer.Kernel_size.conv
-            num_Layers  = HardParams.Model.num_Layers
-            dim = HardParams.Model.Method.InputImage2Dvs3D
-            if np.min(MinInputSize[:dim] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0:  # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size
-                print('WARNING: INPUT IMAGE SIZE IS TOO SMALL FOR THE NUMBER OF LAYERS')
-                num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:dim],kernel_size) )) + 1))
-                print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
-
-            params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
-            return params
-
-        params = find_AllInputSizes(params)
-        params = find_correctNumLayers(params)
-        params = find_PaddingValues(params)
-
-        saveUserParams(params)
-
-        return params
 
     def saveHDf5(Data):
         data_dict = Data.__dict__
@@ -488,3 +341,139 @@ def movingFromDatasetToExperiments(params):
                 shutil.copytree(params.WhichExperiment.Dataset.address + '/' + subject  ,  DirOut + '/' + subject)
 
     return True
+
+def preAnalysis(params):
+
+    def saveUserParams(params):
+        params.UserInfo['simulation'].num_Layers = params.WhichExperiment.HardParams.Model.num_Layers
+        params.UserInfo['InputDimensions'] = params.WhichExperiment.HardParams.Model.InputDimensions
+        print('InputDimensions', params.WhichExperiment.HardParams.Model.InputDimensions)
+        print('num_Layers', params.WhichExperiment.HardParams.Model.num_Layers)
+
+        for sf in list(params.UserInfo):
+            if '__' in sf: params.UserInfo.__delitem__(sf)
+
+        smallFuncs.mkDir(params.directories.Train.Model)
+        with open(params.directories.Train.Model + '/UserInfoB.pkl' , 'wb') as f:
+            pickle.dump(params.UserInfo , f)
+
+    def find_PaddingValues(params):
+
+        def findingPaddedInputSize(params):
+            inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)    
+            a = 2**(params.WhichExperiment.HardParams.Model.num_Layers - 1)
+            # new_inputSize = [  a * np.ceil(s / a) if s % a != 0 else s for s in np.max(inputSizes, axis=0) ]
+
+            # new_inputSize = np.max(inputSizes, axis=0)
+            # for dim in range(3):
+            #     if new_inputSize[dim] % a != 0: new_inputSize[dim] = a * np.ceil(new_inputSize[dim] / a)
+
+            return [  int(a * np.ceil(s / a)) if s % a != 0 else s for s in np.max(inputSizes, axis=0) ]
+            
+        def findingSubjectsFinalPaddingAmount(wFolder, Input, params):
+
+            def applyingPaddingDimOnSubjects(params, Input):
+                fullpadding = params.WhichExperiment.HardParams.Model.InputDimensions - Input.inputSizes
+                md = np.mod(fullpadding,2)
+                for sn, name in enumerate(list(Input.Subjects)):
+                    padding = [tuple([0,0])]*4
+                    
+                    for dim in range(params.WhichExperiment.HardParams.Model.Method.InputImage2Dvs3D): # params.WhichExperiment.Dataset.slicingInfo.slicingOrder[:2]:
+                        if md[sn, dim] == 0:
+                            padding[dim] = tuple([int(fullpadding[sn,dim]/2)]*2)
+                        else:
+                            padding[dim] = tuple([int(np.floor(fullpadding[sn,dim]/2) + 1) , int(np.floor(fullpadding[sn,dim]/2))])
+
+                    if np.min(tuple(padding)) < 0:
+                        print('---')
+                    Input.Subjects[name].Padding = tuple(padding)
+
+                return Input
+
+            return applyingPaddingDimOnSubjects(params, Input)
+
+        AA = findingPaddedInputSize( params ) if params.WhichExperiment.Dataset.InputPadding.Automatic else params.WhichExperiment.Dataset.InputPadding.HardDimensions
+        params.WhichExperiment.HardParams.Model.InputDimensions = AA
+
+        if params.directories.Train.Input.Subjects: params.directories.Train.Input = findingSubjectsFinalPaddingAmount('Train', params.directories.Train.Input, params)
+        if params.directories.Test.Input.Subjects:  params.directories.Test.Input  = findingSubjectsFinalPaddingAmount('Test', params.directories.Test.Input, params)
+
+        return params
+
+    def find_AllInputSizes(params):
+
+        def newCropedSize(subject, params, mode):
+
+            def readingCascadeCropSizes(subject):
+                dirr = params.directories.Test.Result
+                if 'train' in mode: dirr += '/TrainData_Output'
+
+                BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.txt',dtype=int)
+                BB = BBf[:,:2]
+                BBd = BBf[:,2:]
+
+                #! because on the slicing direction we don't want the extra dilated effect to be considered
+                BBd[params.WhichExperiment.Dataset.slicingInfo.slicingDim] = BB[params.WhichExperiment.Dataset.slicingInfo.slicingDim]
+                BBd = BBd[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
+                return BBd
+
+            if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
+                BB = readingCascadeCropSizes(subject)
+
+                origSize = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
+                origSize = origSize[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
+
+
+                subject.NewCropInfo.OriginalBoundingBox = BB
+                subject.NewCropInfo.PadSizeBackToOrig   = tuple([ tuple([BB[d][0] , origSize[d]-BB[d][1]]) for d in range(3) ])
+
+                Shape = np.array([BB[d][1]-BB[d][0] for d  in range(3)])
+            else:
+                Shape = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
+                Shape = Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
+
+            # Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
+            return Shape, subject
+
+        def loopOverAllSubjects(Input, mode):
+            inputSize = []
+            for sj in Input.Subjects:
+                Shape, Input.Subjects[sj] = newCropedSize(Input.Subjects[sj], params, mode)
+                inputSize.append(Shape)
+
+            Input.inputSizes = np.array(inputSize)
+            return Input
+
+        if params.directories.Train.Input.Subjects: params.directories.Train.Input = loopOverAllSubjects(params.directories.Train.Input, 'train')
+        if params.directories.Test.Input.Subjects: params.directories.Test.Input  = loopOverAllSubjects(params.directories.Test.Input, 'test')
+
+        return params
+
+    def find_correctNumLayers(params):
+
+        HardParams = params.WhichExperiment.HardParams
+        
+        if params.WhichExperiment.Dataset.InputPadding.Automatic: 
+            inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
+            MinInputSize = np.min(inputSizes, axis=0)
+        else:
+            MinInputSize = params.WhichExperiment.Dataset.InputPadding.HardDimensions
+
+        kernel_size = HardParams.Model.Layer_Params.ConvLayer.Kernel_size.conv
+        num_Layers  = HardParams.Model.num_Layers
+        dim = HardParams.Model.Method.InputImage2Dvs3D
+        if np.min(MinInputSize[:dim] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0:  # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size
+            print('WARNING: INPUT IMAGE SIZE IS TOO SMALL FOR THE NUMBER OF LAYERS')
+            num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:dim],kernel_size) )) + 1))
+            print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
+
+        params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
+        return params
+
+    params = find_AllInputSizes(params)
+    params = find_correctNumLayers(params)
+    params = find_PaddingValues(params)
+
+    saveUserParams(params)
+
+    return params
