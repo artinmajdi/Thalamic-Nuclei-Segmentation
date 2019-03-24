@@ -1,0 +1,103 @@
+2019-03-24 00:31:19.327668: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-03-24 00:31:21.348421: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:05:00.0
+totalMemory: 15.89GiB freeMemory: 15.60GiB
+2019-03-24 00:31:21.644613: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 1 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:84:00.0
+totalMemory: 15.89GiB freeMemory: 15.60GiB
+2019-03-24 00:31:21.644739: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0, 1
+2019-03-24 00:31:22.379762: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-03-24 00:31:22.379829: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 1 
+2019-03-24 00:31:22.379842: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N N 
+2019-03-24 00:31:22.379851: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 1:   N N 
+2019-03-24 00:31:22.380705: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:05:00.0, compute capability: 6.0)
+2019-03-24 00:31:22.382132: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 15123 MB memory) -> physical GPU (device: 1, name: Tesla P100-PCIE-16GB, pci bus id: 0000:84:00.0, compute capability: 6.0)
+Using TensorFlow backend.
+Loading Dataset: train:   0%|          | 0/9 [00:00<?, ?it/s]Loading Dataset: train:  11%|█         | 1/9 [00:01<00:10,  1.25s/it]Loading Dataset: train:  22%|██▏       | 2/9 [00:02<00:08,  1.27s/it]Loading Dataset: train:  33%|███▎      | 3/9 [00:03<00:07,  1.25s/it]Loading Dataset: train:  44%|████▍     | 4/9 [00:04<00:06,  1.23s/it]Loading Dataset: train:  56%|█████▌    | 5/9 [00:06<00:05,  1.31s/it]Loading Dataset: train:  67%|██████▋   | 6/9 [00:07<00:03,  1.24s/it]Loading Dataset: train:  78%|███████▊  | 7/9 [00:08<00:02,  1.30s/it]Loading Dataset: train:  89%|████████▉ | 8/9 [00:10<00:01,  1.33s/it]Loading Dataset: train: 100%|██████████| 9/9 [00:11<00:00,  1.34s/it]
+concatenating train images:   0%|          | 0/8 [00:00<?, ?it/s]concatenating train images:  12%|█▎        | 1/8 [00:00<00:00,  7.55it/s]concatenating train images:  38%|███▊      | 3/8 [00:00<00:00,  7.86it/s]concatenating train images:  62%|██████▎   | 5/8 [00:00<00:00,  8.69it/s]concatenating train images:  88%|████████▊ | 7/8 [00:00<00:00,  9.29it/s]concatenating train images: 100%|██████████| 8/8 [00:00<00:00,  9.97it/s]
+concatenating train images:   0%|          | 0/1 [00:00<?, ?it/s]concatenating train images: 100%|██████████| 1/1 [00:00<00:00,  9.77it/s]
+Loading Dataset: test:   0%|          | 0/9 [00:00<?, ?it/s]Loading Dataset: test:  11%|█         | 1/9 [00:01<00:09,  1.14s/it]Loading Dataset: test:  22%|██▏       | 2/9 [00:02<00:08,  1.15s/it]Loading Dataset: test:  33%|███▎      | 3/9 [00:03<00:06,  1.14s/it]Loading Dataset: test:  44%|████▍     | 4/9 [00:04<00:05,  1.12s/it]Loading Dataset: test:  56%|█████▌    | 5/9 [00:05<00:04,  1.18s/it]Loading Dataset: test:  67%|██████▋   | 6/9 [00:07<00:03,  1.22s/it]Loading Dataset: test:  78%|███████▊  | 7/9 [00:08<00:02,  1.18s/it]
+slicingDim [0, 1, 2]
+*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
+(0/9) train vimp2_A
+     Bias Correction
+     Rigid Registration
+(1/9) train vimp2_B
+     Bias Correction
+     Rigid Registration
+(2/9) train vimp2_C
+     Bias Correction
+     Rigid Registration
+(3/9) train vimp2_D
+     Bias Correction
+     Rigid Registration
+(4/9) train vimp2_F
+     Bias Correction
+     Rigid Registration
+(5/9) train vimp2_G
+     Bias Correction
+     Rigid Registration
+(6/9) train vimp2_H
+     Bias Correction
+     Rigid Registration
+(7/9) train vimp2_I
+     Bias Correction
+     Rigid Registration
+(8/9) train vimp2_J
+     Bias Correction
+     Rigid Registration
+(0/9) test vimp2_869_06142013_BL_MS
+     Bias Correction
+     Rigid Registration
+(1/9) test vimp2_ctrl_911_07082013_TTO
+     Bias Correction
+     Rigid Registration
+(2/9) test vimp2_K
+     Bias Correction
+     Rigid Registration
+(3/9) test vimp2_915_07112013_LC_MS
+     Bias Correction
+     Rigid Registration
+(4/9) test vimp2_L
+     Bias Correction
+     Rigid Registration
+(5/9) test vimp2_988_08302013_CB_MS
+     Bias Correction
+     Rigid Registration
+(6/9) test vimp2_M
+     Bias Correction
+     Rigid Registration
+(7/9) test vimp2_ANON624_20130117_control
+     Bias Correction
+     Rigid Registration
+(8/9) test vimp2_ANON714_03222013_control
+     Bias Correction
+     Rigid Registration
+    Nucleus:   1 GPU:   1,4
+InputDimensions [288, 168, 228]
+num_Layers 3
+InputDimensions [288, 168, 228]
+Traceback (most recent call last):
+  File "main.py", line 80, in <module>
+    Run(UserInfoB)
+  File "main.py", line 69, in Run
+    elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': CacadeStages(UserInfoB)
+  File "main.py", line 58, in CacadeStages
+    Run_SingleNuclei(UserInfoB)
+  File "main.py", line 65, in Run_SingleNuclei
+    Data, params = datasets.loadDataset(params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 68, in loadDataset
+    Data, params = readingFromExperiments(params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 305, in readingFromExperiments
+    Data = main_ReadingDataset(params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 298, in main_ReadingDataset
+    if params.directories.Test.Input.Subjects: DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 282, in readingAllSubjects
+    origMsk , msk = readingNuclei(params, Subjects[nameSubject], imF.shape)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 174, in readingNuclei
+    background = backgroundDetector(msk)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 147, in backgroundDetector
+    background[np.where(a == 0)] = 1
+KeyboardInterrupt

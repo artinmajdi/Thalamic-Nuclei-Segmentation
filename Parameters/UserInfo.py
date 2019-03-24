@@ -7,7 +7,7 @@ class SubExperiment:
     Tag   = Model_Method
     
 class Experiments:
-    Index = '8'
+    Index = '7'
     Tag = 'cascadeV1'
 
 class readAugments:
@@ -43,7 +43,7 @@ class simulation:
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
     nucleus_Index = [1,2,8]
     slicingDim    = [2]
-    batch_size    = 100
+    batch_size    = 50
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 64
 

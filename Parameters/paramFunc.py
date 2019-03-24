@@ -9,6 +9,7 @@ import otherFuncs.datasets as datasets
 import pickle
 from copy import deepcopy
 import pandas as pd
+import numpy as np
 
 def Run(UserInfoB):
 
@@ -259,10 +260,8 @@ def func_WhichExperiment(UserInfo):
         Dataset.slicingInfo = slicingInfoFunc()
 
         Dataset.InputPadding.Automatic = UserInfo['InputPadding'].Automatic
-        print('slicingOrder' , Dataset.slicingInfo.slicingOrder)
-        print('HardDimensions' , UserInfo['InputPadding'].HardDimensions)
-        print('---------------------------------------------------------------------------')
-        Dataset.InputPadding.HardDimensions = UserInfo['InputPadding'].HardDimensions[ Dataset.slicingInfo.slicingOrder ]
+        Dataset.InputPadding.HardDimensions = list( np.array(UserInfo['InputPadding'].HardDimensions)[ Dataset.slicingInfo.slicingOrder ] )
+
 
         return Dataset
 
