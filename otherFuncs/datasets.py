@@ -300,7 +300,8 @@ def readingFromExperiments(params):
         return DataAll
 
     params = preAnalysis(params)
-
+    print( 'InputDimensions' , paramsB.WhichExperiment.HardParams.Model.InputDimensions )
+    
     Data = main_ReadingDataset(params)
     # saveHDf5(Data)
 
