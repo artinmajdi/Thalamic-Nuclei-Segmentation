@@ -229,7 +229,7 @@ def readingFromExperiments(params):
                 masks = np.zeros(  (  tuple([Sz0]) + TrainData[list(TrainData)[0]].Mask.shape[1:] )  )
 
                 d1 = 0
-                for ix, nameSubject in enumerate(tqdm(sjList,desc='concatenating train images')):
+                for _, nameSubject in enumerate(tqdm(sjList,desc='concatenating train images')):
                     im, msk = TrainData[nameSubject].Image  , TrainData[nameSubject].Mask
 
                     if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
