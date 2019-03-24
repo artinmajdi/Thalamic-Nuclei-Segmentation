@@ -255,14 +255,16 @@ def func_WhichExperiment(UserInfo):
 
             return slicingInfo
 
-        Dataset.InputPadding = UserInfo['InputPadding']()
         Dataset.ReadTrain  = UserInfo['ReadTrain']()
         Dataset.ReadTrain.ReadAugments.Tag = ReadAugmentsTag
 
         Dataset.gapDilation = UserInfo['gapDilation']
         Dataset.HDf5.mode_saveTrue_LoadFalse = UserInfo['mode_saveTrue_LoadFalse']
         Dataset.slicingInfo = slicingInfoFunc()
-        
+
+        Dataset.InputPadding.Automatic = UserInfo['InputPadding'].Automatic
+        Dataset.InputPadding.HardDimensions = UserInfo['InputPadding'].HardDimensions[ Dataset.slicingInfo.slicingOrder ]
+
         return Dataset
 
     def func_Experiment_SubExp():
