@@ -9,9 +9,11 @@ import Parameters.paramFunc as paramFunc
 import preprocess.applyPreprocess as applyPreprocess
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
-NucleiIndexes = UserInfoB['simulation'].nucleus_Index
-slicingDim    = UserInfoB['simulation'].slicingDim
-print('slicingDim' , slicingDim)
+class InitValues:
+    Nuclei_Indexes = UserInfoB['simulation'].nucleus_Index.copy()
+    slicingDim     = UserInfoB['simulation'].slicingDim.copy()
+
+print('slicingDim' , InitValues.slicingDim , 'Nuclei_Indexes' , InitValues.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
 
 def gpuSetting(params):
     
@@ -25,51 +27,52 @@ def Run(UserInfoB):
 
     def HierarchicalStages(UserInfoB):
 
-        # stage 1
-        print('************ stage 1 ************')
-        UserInfoB['simulation'].nucleus_Index = [1]
-        UserInfoB['gapDilation'] = 5
-        Run_SingleNuclei(UserInfoB)
+        def HCascade_Parents_Identifier(InitValues):
+            b = smallFuncs.NucleiIndex(1,'HCascade')
+            list_HC = []
+            for ix in b.child:
+                c = smallFuncs.NucleiIndex(ix,'HCascade')
+                if c.child and bool(set(InitValues.Nuclei_Indexes) & set(c.child)): list_HC.append(ix)
+            return list_HC
 
-        # stage 2
-        print('************ stage 2 ************')
-        UserInfoB['gapDilation'] = 3
-        for UserInfoB['simulation'].nucleus_Index in [1.1 , 1.2 , 1.3]:
-            name,_,_ = smallFuncs.NucleiSelection(ind=UserInfoB['simulation'].nucleus_Index)
-            print('      ', name , 'gpu: ',UserInfoB['simulation'].GPU_Index)
+        def remove_Thalamus_From_List(InitValues):
+            Nuclei_Indexes = InitValues.Nuclei_Indexes.copy()
+            if 1 in Nuclei_Indexes: Nuclei_Indexes.remove(1)
+            return Nuclei_Indexes
+
+        print('************ stage 1 ************')
+        for UserInfoB['simulation'].nucleus_Index in [1]:
+            Run_SingleNuclei(UserInfoB)
+
+        print('************ stage 2 ************')               
+        for UserInfoB['simulation'].nucleus_Index in HCascade_Parents_Identifier(InitValues):
             Run_SingleNuclei(UserInfoB)
 
         print('************ stage 3 ************')
-        # stage 3 ; final for now
-        print('index',NucleiIndexes)
-        _,FullIndexes ,_ = smallFuncs.NucleiSelection(ind=1)
-        for UserInfoB['simulation'].nucleus_Index in FullIndexes[1:]:
-            try:
-                name,_,_ = smallFuncs.NucleiSelection(ind=UserInfoB['simulation'].nucleus_Index)
-                print('      ', name , 'gpu: ',UserInfoB['simulation'].GPU_Index)
-                Run_SingleNuclei(UserInfoB)
-            except:
-                print('failed')
+        for UserInfoB['simulation'].nucleus_Index in remove_Thalamus_From_List(InitValues):
+            Run_SingleNuclei(UserInfoB)
 
     def CacadeStages(UserInfoB):
 
-        for UserInfoB['simulation'].nucleus_Index in NucleiIndexes:
-            print('    Nucleus:  ', UserInfoB['simulation'].nucleus_Index  , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
+        for UserInfoB['simulation'].nucleus_Index in InitValues.Nuclei_Indexes:
             Run_SingleNuclei(UserInfoB)
 
     def Run_SingleNuclei(UserInfoB):
 
-        for sd in slicingDim:
+        for sd in InitValues.slicingDim:
+
+            print(' Nucleus:  ', UserInfoB['simulation'].nucleus_Index  , 'GPU:  ', UserInfoB['simulation'].GPU_Index , 'slicingDim',sd)
             UserInfoB['simulation'].slicingDim = [sd]
-            params = paramFunc.Run(UserInfoB)
+
+            params       = paramFunc.Run(UserInfoB)
             Data, params = datasets.loadDataset(params)
+            
             choosingModel.check_Run(params, Data)
 
-    if params.WhichExperiment.HardParams.Model.Method.Type == 'HCascade': HierarchicalStages(UserInfoB)
-    elif params.WhichExperiment.HardParams.Model.Method.Type == 'Cascade': CacadeStages(UserInfoB)
-    elif params.WhichExperiment.HardParams.Model.Method.Type == 'singleRun': Run_SingleNuclei(UserInfoB)
-
-
+    MethodType = params.WhichExperiment.HardParams.Model.Method.Type
+    if   MethodType == 'HCascade':  HierarchicalStages(UserInfoB)
+    elif MethodType == 'Cascade':   CacadeStages(UserInfoB)
+    elif MethodType == 'singleRun': Run_SingleNuclei(UserInfoB)
 
 params = paramFunc.Run(UserInfoB)
 

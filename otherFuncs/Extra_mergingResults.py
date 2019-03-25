@@ -1,139 +1,166 @@
 import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+# sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
 import pandas as pd
 import otherFuncs.smallFuncs as smallFuncs
 import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
-import pickle 
+import pickle
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 params = paramFunc.Run(UserInfoB)
-# NucleiIndexes = UserInfoB['simulation'].nucleus_Index
-_, NucleiIndexes , _ = smallFuncs.NucleiSelection(ind=1)
 
-def savingHistory_AsExcel(params):
+def init_Params():
+    _, NucleiIndexes , _ = smallFuncs.NucleiSelection(ind=1)
+    NucleiIndexes = tuple(NucleiIndexes) + tuple([1.1,1.2,1.3])
 
-    Dir = params.WhichExperiment.Experiment.address + '/models'
+    NumColumns = 27
     n_epochsMax = 300
+    AllExp_Address = params.WhichExperiment.address
 
-    List_subExperiments = [a for a in os.listdir(Dir) if ('subExp' in a) or ('sE' in a) ]
-    
-    TagsInfo = {}
-    for ix, subEx in enumerate(List_subExperiments): TagsInfo[subEx] = 'Tag' + str(ix)
-        
-    TagsList = [np.append( ['Tag' + str(ix)], subEx.split('_') ) for ix, subEx in enumerate(List_subExperiments) ]
+    return NucleiIndexes , NumColumns , n_epochsMax , AllExp_Address
+NucleiIndexes , NumColumns , n_epochsMax , AllExp_Address = init_Params()
 
+def func_Nuclei_Names():
+    names = np.append( ['subjects'] , list(np.zeros(NumColumns-1))  )
+    names[3] = ''
+    for nIx in NucleiIndexes:
+        if nIx in range(16): ind = nIx
+        elif nIx == 1.1:     ind = 15
+        elif nIx == 1.2:     ind = 16
+        elif nIx == 1.3:     ind = 17
 
-    writer = pd.ExcelWriter(  params.WhichExperiment.Experiment.address + '/results/All_LossAccForEpochs.xlsx', engine='xlsxwriter')
-    for IxNu in tuple(NucleiIndexes) + tuple([1.1,1.2,1.3]):                
-        nucleus, _ , _ = smallFuncs.NucleiSelection(IxNu)
-        print('Learning Curves: ', nucleus)
-        # dir_save = smallFuncs.mkDir((params.directories.Test.Result).split('/subExp')[0] + '/Train_Output')
-        AllNucleusInfo = []
-        ind = -1
-        for subExperiment in List_subExperiments:
-            try:
-                subDir = Dir + '/' + subExperiment + '/' + nucleus
-                if os.path.exists(subDir):
-                    ind = ind + 1
-                    a  = open(subDir + '/hist_history.pkl' , 'rb')
-                    history = pickle.load(a)
-                    a.close()
-                    keys = list(history.keys())
-                    
-                    nucleusInfo = np.zeros((n_epochsMax,len(keys)+2))
-                    for ix, key in enumerate(keys):
-                        A = history[key]                                        
-                        nucleusInfo[:len(A),ix+2] = np.transpose(A)
+        names[ind], _ , _ = smallFuncs.NucleiSelection(nIx)
 
-                    if ind == 0:
-                        nucleusInfo[:len(A),0] = np.array(range(len(A)))
-                        AllNucleusInfo = nucleusInfo
-                        FullNamesLA = np.append([ 'Epochs', TagsInfo[subExperiment]] ,  keys )
-                    else:
-                        AllNucleusInfo = np.concatenate((AllNucleusInfo, nucleusInfo) , axis=1)
-                        namesLA = np.append([ '', TagsInfo[subExperiment] ],  keys )
-                        FullNamesLA = np.append(FullNamesLA, namesLA)
+    return names
 
-                    # df = pd.DataFrame(data=nucleusInfo, columns=np.append(['Epochs', subExperiment],  keys ))
-                    # df.to_csv(subDir + '/history.csv', index=False)
-            except:
-                    print('failed',nucleus)
+class savingHistory_AsExcel:
 
-        if len(AllNucleusInfo) != 0:
-            df = pd.DataFrame(data=AllNucleusInfo, columns=FullNamesLA)
-            # df.to_csv(Dir + '/history_AllSubExperiments_' + nucleus + '.csv', index=False)                        
-            df.to_excel(writer, sheet_name=nucleus)
-    
+    def __init__(self, Info):
 
-    
-    df = pd.DataFrame(data=TagsList)
-    df.to_excel(writer, sheet_name='TagsList')
-    
-    writer.close()
+        self.Info = Info
+        def Load_subDir_History(self):
+                      
+            if os.path.isfile( self.subDir + '/hist_history.pkl' ):
+                self.ind += 1                
+                def load_NucleusHisotry(self):
+                    with  open(self.subDir + '/hist_history.pkl' , 'rb') as a:  
+                        history = pickle.load(a)
 
-def mergingDiceValues(Dir):
+                    self.keys = list(history.keys())
+                    self.nucleusInfo = np.zeros((n_epochsMax,len(self.keys)+2))
+                    for ix, key in enumerate(self.keys):
+                        self.N_Eps = len(history[key])
+                        self.nucleusInfo[:self.N_Eps,ix+2] = history[key]
+                load_NucleusHisotry(self)
+
+                columnsList = np.append([ 'Epochs', self.TagLst[0] ] ,  self.keys )
+                self.FullNamesLA = np.append(self.FullNamesLA , columnsList)
+
+                if self.ind == 0:
+                    self.nucleusInfo[:self.N_Eps ,0] = np.array(range( self.N_Eps ))
+                    self.AllNucleusInfo = self.nucleusInfo
+                else:
+                    self.AllNucleusInfo = np.concatenate((self.AllNucleusInfo, self.nucleusInfo) , axis=1)     
+
+        writer = pd.ExcelWriter(  Info.Address + '/results/All_LossAccForEpochs.xlsx', engine='xlsxwriter')
+
+        pd.DataFrame(data=self.Info.TagsList).to_excel(writer, sheet_name='TagsList')
+        for IxNu in NucleiIndexes:
+            self.nucleus, _ , _ = smallFuncs.NucleiSelection(IxNu)
+            print('Learning Curves: ', self.nucleus)
+
+            self.AllNucleusInfo , self.FullNamesLA , self.ind = [] , [] , -1
+
+            for ix_sE , self.subExperiment in enumerate(self.Info.List_subExperiments):
+                self.TagLst = self.Info.TagsList[ix_sE]
+                self.subDir = self.Info.Address + '/models/' + self.subExperiment + '/' + self.nucleus                  
+                if os.path.isdir(self.subDir): Load_subDir_History(self)
+
+            if len(self.AllNucleusInfo) != 0: pd.DataFrame(data=self.AllNucleusInfo, columns=self.FullNamesLA).to_excel(writer, sheet_name=self.nucleus)
+
+        writer.close()
+
+class mergingDiceValues:
+
+    def __init__(self, Info):
+
+        self.Info = Info
+        self.writer = pd.ExcelWriter(self.Info.Address + '/results/All_Dice.xlsx', engine='xlsxwriter')
+        def mergingDiceValues_ForOneSubExperiment(self):
+
+            print('Dices: ', str(self.subIx) + '/' + str(len(self.Info.List_subExperiments)), self.subExperiment)
+            self.TgLst = self.Info.TagsList[self.subIx]
+
+            def subject_List(self):
+                subjectsList = [a for a in os.listdir(self.subExperiment_Address) if 'vimp' in a]
+                subjectsList.sort()
+                return subjectsList
+            
+            def func_Load_AllNuclei_Dices(self):
                 
-    def mergingDiceValues_ForOneSubExperiment(Dir, TagList):
+                Dice_Single = np.append(self.subject, list(np.zeros(NumColumns-1)))
+                
+                for ind, name in enumerate( self.Nuclei_Names ):
+                    Dir_subject = self.subExperiment_Address + '/' + self.subject + '/Dice_' + name +'.txt'
+                    if os.path.isfile(Dir_subject): Dice_Single[ind] = np.loadtxt(Dir_subject)[1]
 
-        NumColumns = 27
-        subF = [a for a in os.listdir(Dir) if 'vimp' in a]
-        subF.sort()
-        
-        Dice_Test = []
-        names = np.append( ['subjects'] , list(np.zeros(NumColumns-1))  )
-        names[3] = ''
+                # self.Dice_Test.append(Dice_Single)
+                return Dice_Single
+                
+            self.Nuclei_Names = func_Nuclei_Names()
+            self.Dice_Test    = [  func_Load_AllNuclei_Dices(self)  for self.subject in subject_List(self)  ]
+            
+            self.df_AD[self.TgLst[0]] = np.array(self.Dice_Test)[:,1:].astype(np.float16).mean(axis=0)[:17]
+            def save_subExp_DiceCSV(self):
+                self.Dice_Test[0][19:19+len(self.TgLst)] = self.TgLst
+                df = pd.DataFrame(data=self.Dice_Test, columns=self.Nuclei_Names)
+                df.to_csv(self.subExperiment_Address + '/Dices.csv', index=False)
+                df.to_excel(  self.writer, sheet_name=self.TgLst[0] )
+            save_subExp_DiceCSV(self)            
 
-        for subject in subF:
-            Dir_subject = Dir + '/' + subject
-            a = os.listdir(Dir_subject)
-            a = [i for i in a if 'Dice_' in i]
+        def save_TagList_AllDice(self):
+            pd.DataFrame(data=self.Info.TagsList).to_excel(self.writer, sheet_name='TagsList')
 
-            Dice_Single = list(np.zeros(NumColumns))
-            Dice_Single[0] = subject
+            self.df_AD = pd.DataFrame()
+            self.df_AD['Nuclei'] = func_Nuclei_Names()[1:18]
+            self.df_AD.to_excel(self.writer, sheet_name='AllDices')        
+        save_TagList_AllDice(self)
 
+        for self.subIx, self.subExperiment in enumerate(self.Info.List_subExperiments):
+            self.subExperiment_Address = self.Info.Address + '/results/' + self.subExperiment            
+            if os.path.isdir(self.subExperiment_Address): mergingDiceValues_ForOneSubExperiment(self)            
+            
+        self.df_AD.to_excel(self.writer, sheet_name='AllDices')
+        self.writer.close()
 
-            for ix in tuple(NucleiIndexes) + tuple([1.1,1.2,1.3]):
-                if ix in range(16): ind = ix                                 
-                elif ix == 1.1:     ind = 15
-                elif ix == 1.2:     ind = 16
-                elif ix == 1.3:     ind = 17                                        
+class Info_Search():
+    
+    def __init__(self, All_Experiments_Address=AllExp_Address , Experiment_Name = ''):
+                   
+        def func_List_subExperiments(self):
+            List_subExperiments_Results = [a for a in os.listdir(self.Address + '/results') if ('subExp' in a) or ('sE' in a)]
+            List_subExperiments_Models = [a for a in os.listdir(self.Address + '/models') if ('subExp' in a) or ('sE' in a)]
+            self.List_subExperiments = list(set(List_subExperiments_Results).union(List_subExperiments_Models))
+            self.List_subExperiments.sort()
 
-                names[ind], _ , _ = smallFuncs.NucleiSelection(ix)
-                if os.path.isfile(Dir_subject + '/Dice_' + names[ind]+'.txt'):
-                    b = np.loadtxt(Dir_subject + '/Dice_' + names[ind]+'.txt')
-                    Dice_Single[ind] = b[1]
+            self.TagsList = [np.append( ['Tag' + str(ixSE)], subEx.split('_') ) for ixSE, subEx in enumerate(self.List_subExperiments) ]
+            
+        self.All_Experiments_Address = All_Experiments_Address
+        if All_Experiments_Address: self.All_Experiments_List = [s for s in os.listdir(All_Experiments_Address) if 'exp' in s]
+    
+        if Experiment_Name:
+            self.subExperiment_Address = ''
+            self.Experiment_Name = Experiment_Name  
+            self.Address = self.All_Experiments_Address + '/' + self.Experiment_Name
+            func_List_subExperiments(self)
 
-            Dice_Test.append(Dice_Single)
+for expName in Info_Search().All_Experiments_List:
 
-        Dice_Test[0][19:19+len(TagList)] = TagList
-        df = pd.DataFrame(data=Dice_Test, columns=names)
-        df.to_csv(Dir + '/Dices.csv', index=False)
+    Info = Info_Search(Experiment_Name=expName )
 
-        return df
-
-    writer = pd.ExcelWriter(Dir + '/All_Dice.xlsx', engine='xlsxwriter')
-    List_subExperiments = [a for a in os.listdir(Dir) if ('subExp' in a) or ('sE' in a)]
-
-    TagsList = [np.append( ['Tag' + str(ixSE)], subEx.split('_') ) for ixSE, subEx in enumerate(List_subExperiments) ]
-
-    for ixSE, subExperiment in enumerate(List_subExperiments):
-        try:                                    
-            df = mergingDiceValues_ForOneSubExperiment( Dir + '/' + subExperiment , TagsList[ixSE])
-            df.to_excel(  writer, sheet_name=subExperiment.split('_')[0] + '_Tag' + str(ixSE)  )
-            print('Dices: ', str(ixSE) + '/' + str(len(List_subExperiments)), subExperiment)
-        except:
-            print('Dices: ', str(ixSE) + '/' + str(len(List_subExperiments)), subExperiment ,'failed')  
-
-    df = pd.DataFrame(data=TagsList)
-    df.to_excel(writer, sheet_name='TagsList')
-
-    writer.close()
-
-
-mergingDiceValues(params.WhichExperiment.Experiment.address + '/results')
-
-savingHistory_AsExcel(params)
+    mergingDiceValues(Info)
+    savingHistory_AsExcel(Info)
 
 os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash')

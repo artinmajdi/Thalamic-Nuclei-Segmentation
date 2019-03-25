@@ -87,6 +87,7 @@ def func_WhichExperiment(UserInfo):
                 metrics = ''
                 optimizer = ''  # adamax Nadam Adadelta Adagrad  optimizers.adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
                 
+                verbose = 1
                 num_Layers = ''
                 InputDimensions = ''
                 Layer_Params = layer_Params()
@@ -380,7 +381,8 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.num_Layers   = UserInfo['simulation'].num_Layers
         HardParams.Model.batch_size   = UserInfo['simulation'].batch_size
         HardParams.Model.epochs       = UserInfo['simulation'].epochs
-
+        HardParams.Model.verbose      = UserInfo['simulation'].verbose
+        
         Initialize_From_Thalamus, Initialize_From_OlderModel = func_Initialize(UserInfo)
         HardParams.Model.InitializeFromThalamus = Initialize_From_Thalamus
         HardParams.Model.InitializeFromOlderModel = Initialize_From_OlderModel

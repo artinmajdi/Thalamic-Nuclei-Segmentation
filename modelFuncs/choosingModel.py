@@ -228,6 +228,16 @@ def trainingExperiment(Data, params):
 
         def modelFit(params):
 
+            def func_modelParams():
+                batch_size       = params.WhichExperiment.HardParams.Model.batch_size
+                epochs           = params.WhichExperiment.HardParams.Model.epochs 
+                valSplit_Per = params.WhichExperiment.Dataset.Validation.percentage
+                verbose          = params.WhichExperiment.HardParams.Model.verbose
+                ManualDataGenerator = params.WhichExperiment.HardParams.Model.ManualDataGenerator
+                Validation_fromKeras = params.WhichExperiment.Dataset.Validation.fromKeras
+                return batch_size, epochs, valSplit_Per, verbose , ManualDataGenerator , Validation_fromKeras
+            batch_size, epochs, valSplit_Per, verbose , ManualDataGenerator, Validation_fromKeras = func_modelParams()
+
             def RunGenerator(params):
                 f = h5py.File(params.directories.Test.Result + '/Data.hdf5','r')
                     
@@ -241,14 +251,11 @@ def trainingExperiment(Data, params):
                 f.close()
                 return hist
 
-            if not params.WhichExperiment.HardParams.Model.ManualDataGenerator:
-                if params.WhichExperiment.Dataset.Validation.fromKeras:
-                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=1) # , callbacks=[TQDMCallback()])
-                else:
-                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=1) # , callbacks=[TQDMCallback()])        
-            else:                             
-                hist = RunGenerator(params)
-
+            if ManualDataGenerator: hist = RunGenerator(params)
+            else:
+                if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per, verbose=verbose) # , callbacks=[TQDMCallback()])
+                else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose) # , callbacks=[TQDMCallback()])        
+                
             return hist
 
         model = modelInitialize(model)

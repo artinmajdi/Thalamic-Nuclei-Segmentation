@@ -1,9 +1,9 @@
-# import numpy as np
+import numpy as np
 # import nibabel as nib
-# import os, sys
+import os, sys
 # import skimage
 # import csv
-# # sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 # sys.path.append( os.path.dirname(os.path.dirname(__file__)) )
 # import Parameters.UserInfo as UserInfo
 # import Parameters.paramFunc as paramFunc
@@ -12,13 +12,21 @@
 # import keras
 # import skimage
 # from nilearn import image as imageNilearn
-# import otherFuncs.smallFuncs as smallFuncs
+import otherFuncs.smallFuncs as smallFuncs
+
+a = smallFuncs.NucleiIndex(1,'Cascade')
+FullIndex = np.append([1] , a.child)
+
+b = smallFuncs.NucleiIndex(1,'HCascade')
+list_HC = []
+for ix in b.child:
+    c = smallFuncs.NucleiIndex(ix,'HCascade')
+    if c.child and bool(set(FullIndex) & set(c.child)): list_HC.append(ix)
 
 
-slicingOrder = [1, 2, 0]
-HardDimensions = tuple([228, 288, 168])
-
-HardDimensions[slicingOrder]
+a = np.zeros((7,3))
+np.insert(a,obj=[0,0] , values=np.array([6]),axis=0)
+np.insert
 
 print('----')
 # # ! (2)
@@ -38,4 +46,3 @@ print('----')
 # subject = 'vimp2_943_07242013_PA_MS/'
 # nib.save(cropMaskN,dir + subject + 'temp/CropMaskB.nii.gz')
 # print('---')
-

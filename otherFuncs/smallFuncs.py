@@ -77,6 +77,68 @@ def NucleiSelection(ind = 1):
 
     return name, FullIndexes, Full_Names
 
+# TODO: repalce all NucleiSelection()  with NucleiIndex class
+class NucleiIndex:
+    def __init__(self, index=1, method=''):
+        self.index       = index
+        self.method      = method
+        self.child       = None
+        self.parent      = None
+        self.grandParent = None
+        
+        def Name_of_Nucleus(self):
+            NucleusName = {
+                1: '1-THALAMUS',
+                2: '2-AV',
+                4: '4-VA',
+                5: '5-VLa',
+                6: '6-VLP',
+                7: '7-VPL',
+                8: '8-Pul',
+                9: '9-LGN',
+                10: '10-MGN',
+                11: '11-CM',
+                12: '12-MD-Pf',
+                13: '13-Hb',
+                14: '14-MTT',
+                1.1: 'lateral_ImClosed',
+                1.2: 'posterior_ImClosed',
+                1.3: 'Medial_ImClosed',
+                1.4: 'Anterior_ImClosed',
+                1.9: 'HierarchicalCascade' }
+            self.name = NucleusName.get(self.index, 'Wrong Nucleus Index')
+
+        def func_Parent_child(self):
+
+            def func_Cascade(self):
+                if self.index  == 1: self.parent , self.child = ( None , [2,4,5,6,7,8,9,10,11,12,13,14] )
+                else:                self.parent , self.child = ( 1    , None )
+
+            def func_HCascade(self):
+                switcher_Parent = {
+                    1: (None, [1.1 , 1.2 , 1.3 , 2]), # parent, child
+                    1.1: (1, [4,5,6,7]),
+                    1.2: (1, [8,9,10]), 
+                    1.3: (1, [11,12,13]), 
+                    1.4: (1, None), 
+                    2:   (1, None) }                                                                                         
+                if switcher_Parent.get(self.index): self.parent , self.child = switcher_Parent.get(self.index)
+                else: 
+                    _ , TH_child = switcher_Parent.get(1)
+                    for ix in TH_child:
+                        HC_parent, HC_child = switcher_Parent.get(ix)
+                        if HC_child and self.index in HC_child: self.grandParent , self.parent , self.child = (HC_parent , ix , None)
+
+
+            if   self.method == 'Cascade':  func_Cascade(self)
+            elif self.method == 'HCascade': func_HCascade(self) 
+
+        Name_of_Nucleus(self)
+        func_Parent_child(self)
+
+# a = NucleiIndex(6,'HCascade')
+
+
 def listSubFolders(Dir, params):
 
     subFolders = [s for s in next(os.walk(Dir))[1] if 'ERROR' not in s]
@@ -125,6 +187,8 @@ def terminalEntries(UserInfo):
             a = int(sys.argv[en+1])
             UserInfo['AugmentMode'] = True if a > 0 else False
 
+        elif entry in ('-v','--verbose'):
+            UserInfo['verbose'] = int(sys.argv[en+1])
 
         elif entry.lower() in ('-n','--nuclei'):  # nuclei index
             if sys.argv[en+1].lower() == 'all':

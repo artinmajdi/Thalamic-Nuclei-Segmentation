@@ -46,7 +46,8 @@ class simulation:
     batch_size    = 50
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 64
-
+    verbose = 1
+    
     Initialize_FromThalamus   = False
     Initialize_FromOlderModel = False
 
