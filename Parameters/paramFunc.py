@@ -56,10 +56,11 @@ def func_WhichExperiment(UserInfo):
 
                 class method:
                     Type = ''
-                    InitializeFromReference = True # from 3T or WMn for CSFn
+                    # InitializeFromReference = True # from 3T or WMn for CSFn
                     ReferenceMask = ''
                     havingBackGround_AsExtraDimension = True
                     InputImage2Dvs3D = 2
+                    Multiply_By_Thalmaus = True
 
                 return dropout, activation, convLayer, multiclass, maxPooling, method
 
@@ -96,8 +97,9 @@ def func_WhichExperiment(UserInfo):
                 Measure_Dice_on_Train_Data = True
                 MultiClass = multiclass()
                 #! only one of these two can be true at the same time
-                InitializeFromThalamus = ''
-                InitializeFromOlderModel = ''
+                InitializeFromThalamus = False
+                InitializeFromOlderModel = False
+                Initialize_From_3T = False
                 Method = method()
                 paddingErrorPatience = 20
                 Transfer_Learning = transfer_Learning()
@@ -280,10 +282,18 @@ def func_WhichExperiment(UserInfo):
             # if int(UserInfo['simulation'].slicingDim[0]) != 2:
             SubExperimentTag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
             SubExperimentTag += '_Dt' + str(UserInfo['DropoutValue'])
-            # SubExperimentTag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
+            SubExperimentTag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
 
             if UserInfo['ReadTrain'].SRI: SubExperimentTag += '_SRI'    
+            if UserInfo['simulation'].Multiply_By_Thalmaus: SubExperimentTag += '_MpByTH'  
+            # else: SubExperimentTag += '_notMpByTH'  
 
+            if UserInfo['ReadTrain'].Main:
+                if UserInfo['ReadTrain'].ET: SubExperimentTag += '_WET' 
+                else: SubExperimentTag += '_WoET'                               
+
+            if UserInfo['simulation'].Initialize_From_3T: SubExperimentTag += '_Init_From_3T' 
+            
             return SubExperimentTag, readAugmentTag
 
         class experiment:
@@ -340,12 +350,12 @@ def func_WhichExperiment(UserInfo):
             return num_classes
 
         def func_Initialize(UserInfo):
-            Initialize_From_Thalamus, Initialize_From_OlderModel = UserInfo['simulation'].Initialize_FromThalamus , UserInfo['simulation'].Initialize_FromOlderModel
-            if Initialize_From_Thalamus and Initialize_From_OlderModel:
+            Initialize_From_Thalamus, Initialize_From_OlderModel, Initialize_From_3T = UserInfo['simulation'].Initialize_FromThalamus , UserInfo['simulation'].Initialize_FromOlderModel , UserInfo['simulation'].Initialize_From_3T
+            if Initialize_From_Thalamus + Initialize_From_OlderModel + Initialize_From_3T > 1:
                 print('WARNING:   initilization can only happen from one source')
-                Initialize_From_Thalamus, Initialize_From_OlderModel = False , False
+                Initialize_From_Thalamus, Initialize_From_OlderModel, Initialize_From_3T = False , False , False
 
-            return Initialize_From_Thalamus, Initialize_From_OlderModel
+            return Initialize_From_Thalamus, Initialize_From_OlderModel, Initialize_From_3T
 
         def fixing_NetworkParams_BasedOn_InputDim(dim):
             class kernel_size: 
@@ -383,12 +393,14 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.epochs       = UserInfo['simulation'].epochs
         HardParams.Model.verbose      = UserInfo['simulation'].verbose
         
-        Initialize_From_Thalamus, Initialize_From_OlderModel = func_Initialize(UserInfo)
+        Initialize_From_Thalamus, Initialize_From_OlderModel , Initialize_From_3T = func_Initialize(UserInfo)
+        HardParams.Model.Initialize_From_3T = Initialize_From_3T
         HardParams.Model.InitializeFromThalamus = Initialize_From_Thalamus
         HardParams.Model.InitializeFromOlderModel = Initialize_From_OlderModel
 
         HardParams.Model.Method.InputImage2Dvs3D = UserInfo['simulation'].InputImage2Dvs3D
         HardParams.Model.Method.havingBackGround_AsExtraDimension = UserInfo['havingBackGround_AsExtraDimension']
+        HardParams.Model.Method.Multiply_By_Thalmaus = UserInfo['simulation'].Multiply_By_Thalmaus
 
         HardParams.Model.MultiClass.num_classes = func_NumClasses()
         HardParams.Model.Layer_Params = func_Layer_Params(UserInfo)
@@ -503,6 +515,7 @@ def func_Augment(UserInfo):
     Augment.Mode            = UserInfo['AugmentMode']
     Augment.Linear.Rotation = UserInfo['Augment_Rotation']()
     Augment.Linear.Shear    = UserInfo['Augment_Shear']()
+    Augment.Linear.Length   = UserInfo['Augment_Linear_Length']
     Augment.NonLinear.Mode  = UserInfo['Augment_NonLinearMode']
     return Augment
     

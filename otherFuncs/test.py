@@ -23,7 +23,12 @@ for ix in b.child:
     c = smallFuncs.NucleiIndex(ix,'HCascade')
     if c.child and bool(set(FullIndex) & set(c.child)): list_HC.append(ix)
 
+a = True
+b = False
+c = True
 
+if any(a,b,c): print('yes')
+else: print('no')
 a = np.zeros((7,3))
 np.insert(a,obj=[0,0] , values=np.array([6]),axis=0)
 np.insert

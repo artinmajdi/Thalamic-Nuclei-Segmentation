@@ -25,10 +25,10 @@ def funcScaling(Image, Scale):
         Image[...,i] = skimage.transform.AffineTransform(Image[...,i] , scale=Scale) 
     return Image 
 
-def funcRotating(Image , angle):
+def funcRotating(Image , angle , order):
     for i in range(Image.shape[2]):
-        Image[...,i] = imrotate(Image[...,i],angle)        
-
+        Image[...,i] = skimage.transform.rotate(Image[...,i] ,angle, order=order, preserve_range=True)
+        # Image[...,i] = imrotate(Image[...,i],angle)        
     return Image
 
 def funcShifting(Image , shift):
@@ -68,33 +68,36 @@ def LinearFunc(params, mode):
             shift = [ np.random.random_integers(-shiftMax,shiftMax) , np.random.random_integers(-shiftMax,shiftMax)]
             Shear = np.random.random_integers(-ShearMax,ShearMax)
 
+        if InputThreshs.angle == 0: InputThreshs.angle = np.random.random_integers(-angleMax,angleMax)
+        if InputThreshs.Shear == 0: InputThreshs.Shear = np.random.random_integers(-ShearMax,ShearMax)
+
         return InputThreshs
             
     def applyLinearAugment(im, InputThreshs, mode):
-        if params.Augment.Linear.Rotation.Mode: im = funcRotating(im , InputThreshs.angle)
+        if params.Augment.Linear.Rotation.Mode: im = funcRotating(im , InputThreshs.angle, mode)
         if params.Augment.Linear.Shift.Mode:    im = funcShifting(im , InputThreshs.shift)
         if params.Augment.Linear.Shear.Mode:    im = funcShearing(im , InputThreshs.Shear, mode)
         return im
                 
     Subjects = params.directories.Train.Input.Subjects
     SubjectNames = list(Subjects.keys())
-    L = len(SubjectNames)
+    # L = len(SubjectNames)
 
-    for imInd in range(L):
-        nameSubject = SubjectNames[imInd]
+    for imInd, nameSubject in enumerate(SubjectNames):
+        # nameSubject = SubjectNames[imInd]
         subject  = Subjects[nameSubject]
-
+        print(nameSubject)
         for AugIx in range(params.Augment.Linear.Length):
-            print('image',imInd,'/',L,'augment',AugIx,'/',params.Augment.Linear.Length)
+            print('image',imInd,'/',len(SubjectNames),'augment',AugIx,'/',params.Augment.Linear.Length)
 
             imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image
-            im = normalizeA.main_normalize(params.preprocess.Normalize ,  imF.get_data())
-            
+            # im = normalizeA.main_normalize(params.preprocess.Normalize ,  imF.get_data())
+            im = imF.get_data()
             
             InputThreshs = inputThresholds()
             nameSubject2 = nameOutput(nameSubject, InputThreshs, AugIx)
 
-            Image = applyLinearAugment(im, InputThreshs, 3)
+            Image = applyLinearAugment(im.copy(), InputThreshs, 5)
 
             class outDirectory:
                 Image = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject2)
@@ -106,11 +109,12 @@ def LinearFunc(params, mode):
             subF = [s for s in os.listdir(subject.Label.address) if 'PProcessed' in s]
             for NucleusName in subF: 
 
-                Mask = nib.load(subject.Label.address + '/' + NucleusName).get_data() 
+                MaskF = nib.load(subject.Label.address + '/' + NucleusName)
+                Mask = MaskF.get_data() 
                 Mask = smallFuncs.fixMaskMinMax(Mask)
-                Mask = applyLinearAugment(Mask, InputThreshs, 1)
-
-                smallFuncs.saveImage( np.float32(Mask > 0.5) , imF.affine , imF.header ,  outDirectory.Mask  + '/' + NucleusName  )
+                Mask  = applyLinearAugment(Mask.copy(), InputThreshs, 1)
+                # Mask = np.float32(Mask > 0.5)
+                smallFuncs.saveImage(Mask  , MaskF.affine , MaskF.header ,  outDirectory.Mask  + '/' + NucleusName  )
 
 def NonLinearFunc(Input, Augment, mode):
 

@@ -126,8 +126,11 @@ def readingFromExperiments(params):
 
             _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.nii.gz' , params)
 
-            Cascade_Mask_Dilated = dilateMask(Cascade_Mask)
-            imm[Cascade_Mask_Dilated == 0] = 0
+            
+            if params.WhichExperiment.HardParams.Model.Method.Multiply_By_Thalmaus: 
+                Cascade_Mask_Dilated = dilateMask(Cascade_Mask)
+                imm[Cascade_Mask_Dilated == 0] = 0
+            
             return imm
 
         imF, im = readingWithTranpose(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz' , params)

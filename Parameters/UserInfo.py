@@ -3,7 +3,7 @@
 Model_Method =  'Cascade' #'HCascade' # 
 
 class SubExperiment:
-    Index = 8
+    Index = 10
     Tag   = Model_Method
     
 class Experiments:
@@ -15,9 +15,9 @@ class readAugments:
     Tag = ''
 
 class ReadTrain:
-    SRI = True
+    SRI = False
     ET = False
-    Main = False
+    Main = True
     ReadAugments = readAugments()
 
 class InputPadding:
@@ -41,15 +41,17 @@ class simulation:
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1,2,8]
-    slicingDim    = [2]
-    batch_size    = 50
+    nucleus_Index = [1,2,8,9]
+    slicingDim    = [0,1,2]
+    batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 64
     verbose = 1
-    
+    Multiply_By_Thalmaus = True
+
     Initialize_FromThalamus   = False
     Initialize_FromOlderModel = False
+    Initialize_From_3T = False
 
 
 
@@ -84,11 +86,11 @@ class normalize:
 
 AugmentMode = False
 Augment_LinearMode = True
-
+Augment_Linear_Length = 6
 
 class Augment_Rotation:
     Mode = True
-    AngleMax = '7_4cnts' # 15
+    AngleMax = '7_6cnts' # '7' # 7_4cnts
 
 class Augment_Shear:
     Mode = False

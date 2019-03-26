@@ -157,8 +157,15 @@ def saveImage(Image , Affine , Header , outDirectory):
     out.get_header = Header
     nib.save(out , outDirectory)
 
+def nibShow(im1,im2):
+    a = nib.viewers.OrthoSlicer3D(im1,title='1')
+    b = nib.viewers.OrthoSlicer3D(im2,title='2')
+    a.link_to(b)
+    a.show()
+
 def fixMaskMinMax(Image):
     if Image.max() != 1 or Image.min() != 0:
+        print('error in label values')
         Image = np.float32(Image)
         Image = ( Image-Image.min() )/( Image.max() - Image.min() )
         
@@ -367,11 +374,13 @@ def search_ExperimentDirectory(whichExperiment):
         return Input
 
     class train:
-        address = whichExperiment.Experiment.address + '/train'
-        Model   = whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name + '/' + whichExperiment.Nucleus.name
-        Model_Thalamus   = whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name + '/1-THALAMUS'
+        address = whichExperiment.Experiment.address        + '/train'
+        Model   = whichExperiment.Experiment.address        + '/models/' + whichExperiment.SubExperiment.name           + '/' + whichExperiment.Nucleus.name
+        Model_Thalamus = whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name                 + '/1-THALAMUS'
+        Model_3T       = whichExperiment.Experiment.address + '/models/' + 'sE8_CascadewRot7_4cnts_sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim) + '_Dt0.3_SRI/' + whichExperiment.Nucleus.name
         Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
 
+    
     class test:
         address = whichExperiment.Experiment.address + '/test'
         Result  = whichExperiment.Experiment.address + '/results/' + whichExperiment.SubExperiment.name

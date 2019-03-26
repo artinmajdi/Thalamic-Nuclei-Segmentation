@@ -61,10 +61,18 @@ def Run(UserInfoB):
 
         for sd in InitValues.slicingDim:
 
-            print(' Nucleus:  ', UserInfoB['simulation'].nucleus_Index  , 'GPU:  ', UserInfoB['simulation'].GPU_Index , 'slicingDim',sd)
-            UserInfoB['simulation'].slicingDim = [sd]
+            UserInfoB['simulation'].slicingDim = [sd]     
+                   
+            UserInfoB['simulation'].epochs = 30 if UserInfoB['simulation'].nucleus_Index == 1 else 70
+            params = paramFunc.Run(UserInfoB)
 
-            params       = paramFunc.Run(UserInfoB)
+            print('---------------------------------------------------------------')
+            print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | slicingDim',sd, \
+                ' | Dropout', UserInfoB['DropoutValue'] , ' | Learning_Rate' , UserInfoB['simulation'].Learning_Rate,\
+                ' | Multiply_By_Thalmaus',UserInfoB['simulation'].Multiply_By_Thalmaus )
+
+            print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
+            print('---------------------------------------------------------------')
             Data, params = datasets.loadDataset(params)
             
             choosingModel.check_Run(params, Data)
@@ -75,11 +83,62 @@ def Run(UserInfoB):
     elif MethodType == 'singleRun': Run_SingleNuclei(UserInfoB)
 
 params = paramFunc.Run(UserInfoB)
-
 datasets.movingFromDatasetToExperiments(params)
 applyPreprocess.main(params, 'experiment')
 K = gpuSetting(params)
 
-Run(UserInfoB)
+
+
+# # 1 & 2)
+# UserInfoB['nucleus_Index'] = [1,2,8,9]
+# UserInfoB['simulation'].Learning_Rate = 1e-3
+# UserInfoB['simulation'].Multiply_By_Thalmaus = True
+# for UserInfoB['DropoutValue'] in [0.3 , 0.4]:
+#     try: Run(UserInfoB)
+#     except: print('failed dropout' , UserInfoB['DropoutValue'])
+
+# # 3 & 4)
+# UserInfoB['nucleus_Index'] = [1,2,8,9]
+# UserInfoB['DropoutValue'] = 0.3
+# UserInfoB['simulation'].Multiply_By_Thalmaus = True
+# for UserInfoB['simulation'].Learning_Rate in [1e-2 , 1e-3]:
+#     try: Run(UserInfoB)
+#     except: print('failed Learning_Rate' , UserInfoB['simulation'].Learning_Rate)
+
+# # 5)
+# UserInfoB['nucleus_Index'] = [1,2,8,9]
+# UserInfoB['DropoutValue'] = 0.3
+# UserInfoB['simulation'].Multiply_By_Thalmaus = True
+# for UserInfoB['simulation'].Learning_Rate in [1e-4]:
+#     try: Run(UserInfoB)
+#     except: print('failed Learning_Rate' , UserInfoB['simulation'].Learning_Rate)
+
+# # 6)
+# UserInfoB['nucleus_Index'] = [1,2,8,9]
+# UserInfoB['simulation'].Multiply_By_Thalmaus = False
+# UserInfoB['DropoutValue'] = 0.3
+# UserInfoB['simulation'].Learning_Rate = 1e-3
+# try: Run(UserInfoB)
+# except: print('failed Multiply_By_Thalmaus')
+
+# 7)
+UserInfoB['nucleus_Index'] = [1,2,8]
+UserInfoB['simulation'].Multiply_By_Thalmaus = True
+UserInfoB['DropoutValue'] = 0.3
+UserInfoB['simulation'].Learning_Rate = 1e-3
+UserInfoB['simulation'].Initialize_From_3T = True
+try: Run(UserInfoB)
+except: print('failed Initialize_From_3T')
+
+
+
+
+# # Need to fix ET cases first)
+# UserInfoB['ReadTrain'].ET = True
+# UserInfoB['DropoutValue'] = 0.3
+# UserInfoB['simulation'].Learning_Rate = 1e-3
+# try: Run(UserInfoB)
+# except: print('failed wET')
+# Learning_Rate
 
 K.clear_session()

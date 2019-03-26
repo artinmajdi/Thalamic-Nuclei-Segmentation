@@ -91,6 +91,8 @@ class mergingDiceValues:
         def mergingDiceValues_ForOneSubExperiment(self):
 
             print('Dices: ', str(self.subIx) + '/' + str(len(self.Info.List_subExperiments)), self.subExperiment)
+
+            self.df_IndSubj = pd.DataFrame()
             self.TgLst = self.Info.TagsList[self.subIx]
 
             def subject_List(self):
@@ -104,21 +106,25 @@ class mergingDiceValues:
                 
                 for ind, name in enumerate( self.Nuclei_Names ):
                     Dir_subject = self.subExperiment_Address + '/' + self.subject + '/Dice_' + name +'.txt'
-                    if os.path.isfile(Dir_subject): Dice_Single[ind] = np.loadtxt(Dir_subject)[1]
+                    if os.path.isfile(Dir_subject): 
+                        Dice_Single[ind] = np.loadtxt(Dir_subject)[1].astype(np.float16)
 
                 # self.Dice_Test.append(Dice_Single)
                 return Dice_Single
                 
             self.Nuclei_Names = func_Nuclei_Names()
-            self.Dice_Test    = [  func_Load_AllNuclei_Dices(self)  for self.subject in subject_List(self)  ]
+            self.Ind_Data = np.array([  func_Load_AllNuclei_Dices(self)  for self.subject in subject_List(self)  ]) 
+
+            self.df_IndSubj[self.Nuclei_Names[0]] = self.Ind_Data[:,0]
+            for nIx, nucleus in enumerate(self.Nuclei_Names[1:]): 
+                self.df_IndSubj[nucleus] = self.Ind_Data[:,nIx+1].astype(np.float16)
             
-            self.df_AD[self.TgLst[0]] = np.array(self.Dice_Test)[:,1:].astype(np.float16).mean(axis=0)[:17]
-            def save_subExp_DiceCSV(self):
-                self.Dice_Test[0][19:19+len(self.TgLst)] = self.TgLst
-                df = pd.DataFrame(data=self.Dice_Test, columns=self.Nuclei_Names)
-                df.to_csv(self.subExperiment_Address + '/Dices.csv', index=False)
-                df.to_excel(  self.writer, sheet_name=self.TgLst[0] )
-            save_subExp_DiceCSV(self)            
+            self.df_AD[self.TgLst[0]] = self.Ind_Data[:,1:].astype(np.float16).mean(axis=0)[:17]
+            # def save_subExp_DiceCSV(self):
+                # self.df_IndSubj.to_excel(  self.writer, sheet_name=self.TgLst[0] )
+                # self.df_AD.to_excel(  self.writer, sheet_name=self.TgLst[0] )
+            # save_subExp_DiceCSV(self)   
+            self.df_IndSubj.to_excel(  self.writer, sheet_name=self.TgLst[0] )         
 
         def save_TagList_AllDice(self):
             pd.DataFrame(data=self.Info.TagsList).to_excel(self.writer, sheet_name='TagsList')
