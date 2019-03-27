@@ -11,7 +11,7 @@ import preprocess.applyPreprocess as applyPreprocess
 UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 class InitValues:
     Nuclei_Indexes = UserInfoB['simulation'].nucleus_Index.copy()
-    slicingDim     = UserInfoB['simulation'].slicingDim.copy()
+    slicingDim     = [2] # UserInfoB['simulation'].slicingDim.copy()
 
 print('slicingDim' , InitValues.slicingDim , 'Nuclei_Indexes' , InitValues.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
 
@@ -121,17 +121,31 @@ K = gpuSetting(params)
 # try: Run(UserInfoB)
 # except: print('failed Multiply_By_Thalmaus')
 
-# 7)
-UserInfoB['nucleus_Index'] = [1,2,8]
-UserInfoB['simulation'].Multiply_By_Thalmaus = True
-UserInfoB['DropoutValue'] = 0.3
-UserInfoB['simulation'].Learning_Rate = 1e-3
-UserInfoB['simulation'].Initialize_From_3T = True
+# # 7)
+# UserInfoB['nucleus_Index'] = [1,2,8]
+# UserInfoB['simulation'].Multiply_By_Thalmaus = True
+# UserInfoB['DropoutValue'] = 0.3
+# UserInfoB['simulation'].Learning_Rate = 1e-3
+# UserInfoB['simulation'].Initialize_From_3T = True
+# try: Run(UserInfoB)
+# except: print('failed Initialize_From_3T')
+
+# # 8)
+# UserInfoB['nucleus_Index'] = [4,5,6,7,9,10,11,12,13,14]
+# UserInfoB['ReadTrain'].ET   = False
+# UserInfoB['ReadTrain'].Main = False
+# UserInfoB['ReadTrain'].SRI  = True
+# UserInfoB['SubExperiment'].Index = 8
+# try: Run(UserInfoB)
+# except: print('failed 3T')
+
+# 9) HCascade
+UserInfoB['ReadTrain'].ET   = False
+UserInfoB['ReadTrain'].Main = False
+UserInfoB['ReadTrain'].SRI  = True
+UserInfoB['SubExperiment'].Index = 8
 try: Run(UserInfoB)
-except: print('failed Initialize_From_3T')
-
-
-
+except: print('failed 3T')
 
 # # Need to fix ET cases first)
 # UserInfoB['ReadTrain'].ET = True

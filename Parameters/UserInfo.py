@@ -1,6 +1,6 @@
 
 
-Model_Method =  'Cascade' #'HCascade' # 
+Model_Method =  'Cascade' # 'HCascade' #
 
 class SubExperiment:
     Index = 10
@@ -37,7 +37,7 @@ class Transfer_Learning:
 class simulation:
     TestOnly      = False
     epochs        = 100
-    GPU_Index     = "1"
+    GPU_Index     = "6"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #

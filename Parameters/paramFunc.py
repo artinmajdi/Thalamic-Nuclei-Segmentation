@@ -284,8 +284,9 @@ def func_WhichExperiment(UserInfo):
             SubExperimentTag += '_Dt' + str(UserInfo['DropoutValue'])
             SubExperimentTag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
 
-            if UserInfo['ReadTrain'].SRI: SubExperimentTag += '_SRI'    
+            
             if UserInfo['simulation'].Multiply_By_Thalmaus: SubExperimentTag += '_MpByTH'  
+            if UserInfo['ReadTrain'].SRI: SubExperimentTag += '_SRI'    
             # else: SubExperimentTag += '_notMpByTH'  
 
             if UserInfo['ReadTrain'].Main:

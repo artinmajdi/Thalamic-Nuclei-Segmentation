@@ -156,6 +156,7 @@ def readingFromExperiments(params):
             inputMsk = subject.Label.address + '/' + nameNuclei + '_PProcessed.nii.gz'
 
             origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape)
+            if origMsk1N.max() != 1 or origMsk1N.min() != 0: print('error in label values',nameNuclei, subject.subjectName)
             origMsk1N = smallFuncs.fixMaskMinMax(origMsk1N)
 
 
@@ -215,7 +216,7 @@ def readingFromExperiments(params):
             Flag_TrainDice = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
             Flag_cascadeMethod = 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and int(params.WhichExperiment.Nucleus.Index[0]) == 1
             Flag_notEmpty = params.directories.Train.Input.Subjects
-            return ( (not Flag_TestOnly) or Flag_TrainDice or Flag_cascadeMethod ) and Flag_notEmpty
+            return (not Flag_TestOnly) and ( Flag_TrainDice or Flag_cascadeMethod ) and Flag_notEmpty
 
         if trainFlag():
             TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage, list(params.directories.Train.Input.Subjects), params.WhichExperiment.Dataset.randomFlag)
