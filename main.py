@@ -8,10 +8,13 @@ import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 import preprocess.applyPreprocess as applyPreprocess
 
-UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
+UserInfo = UserInfo.__dict__
+# _ , UserInfo['simulation'].nucleus_Index,_ = smallFuncs.NucleiSelection(ind = 1)
+UserInfoB = smallFuncs.terminalEntries(UserInfo)
+
 class InitValues:
     Nuclei_Indexes = UserInfoB['simulation'].nucleus_Index.copy()
-    slicingDim     = [2] # UserInfoB['simulation'].slicingDim.copy()
+    slicingDim     = UserInfoB['simulation'].slicingDim.copy()
 
 print('slicingDim' , InitValues.slicingDim , 'Nuclei_Indexes' , InitValues.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
 
@@ -41,8 +44,8 @@ def Run(UserInfoB):
             return Nuclei_Indexes
 
         print('************ stage 1 ************')
-        for UserInfoB['simulation'].nucleus_Index in [1]:
-            Run_SingleNuclei(UserInfoB)
+        #for UserInfoB['simulation'].nucleus_Index in [1]:
+        #    Run_SingleNuclei(UserInfoB)
 
         print('************ stage 2 ************')               
         for UserInfoB['simulation'].nucleus_Index in HCascade_Parents_Identifier(InitValues):
@@ -68,7 +71,7 @@ def Run(UserInfoB):
 
             print('---------------------------------------------------------------')
             print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | slicingDim',sd, \
-                ' | Dropout', UserInfoB['DropoutValue'] , ' | Learning_Rate' , UserInfoB['simulation'].Learning_Rate,\
+                ' | Dropout', UserInfoB['DropoutValue'] , ' | Learning_Rate' , UserInfoB['simulation'].Learning_Rate, ' | num_Layers' , UserInfoB['simulation'].num_Layers,\
                 ' | Multiply_By_Thalmaus',UserInfoB['simulation'].Multiply_By_Thalmaus )
 
             print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
@@ -140,12 +143,13 @@ K = gpuSetting(params)
 # except: print('failed 3T')
 
 # 9) HCascade
-UserInfoB['ReadTrain'].ET   = False
-UserInfoB['ReadTrain'].Main = False
-UserInfoB['ReadTrain'].SRI  = True
-UserInfoB['SubExperiment'].Index = 8
-try: Run(UserInfoB)
-except: print('failed 3T')
+#UserInfoB['ReadTrain'].ET   = False
+#UserInfoB['ReadTrain'].Main = False
+#UserInfoB['ReadTrain'].SRI  = True
+#UserInfoB['SubExperiment'].Index = 8
+#try: 
+Run(UserInfoB)
+#except: print('failed 3T')
 
 # # Need to fix ET cases first)
 # UserInfoB['ReadTrain'].ET = True

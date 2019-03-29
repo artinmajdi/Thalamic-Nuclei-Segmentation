@@ -16,7 +16,7 @@ class readAugments:
 
 class ReadTrain:
     SRI = False
-    ET = False
+    ET = True
     Main = True
     ReadAugments = readAugments()
 
@@ -41,9 +41,9 @@ class simulation:
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1,2,8,9]
+    nucleus_Index = [1]
     slicingDim    = [0,1,2]
-    batch_size    = 100
+    batch_size    = 50
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 64
     verbose = 1
@@ -51,7 +51,7 @@ class simulation:
 
     Initialize_FromThalamus   = False
     Initialize_FromOlderModel = False
-    Initialize_From_3T = False
+    Initialize_From_3T = True
 
 
 

@@ -277,12 +277,13 @@ def func_WhichExperiment(UserInfo):
             if UserInfo['Augment_Rotation'].Mode: readAugmentTag = 'wRot'   + str(UserInfo['Augment_Rotation'].AngleMax)
             elif UserInfo['Augment_Shear'].Mode:  readAugmentTag = 'wShear' + str(UserInfo['Augment_Shear'].ShearMax)
 
-            if readAugmentTag: SubExperimentTag += readAugmentTag
+            if readAugmentTag and (UserInfo['ReadTrain'].ET or UserInfo['ReadTrain'].Main): SubExperimentTag += readAugmentTag
 
             # if int(UserInfo['simulation'].slicingDim[0]) != 2:
             SubExperimentTag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
             SubExperimentTag += '_Dt' + str(UserInfo['DropoutValue'])
             SubExperimentTag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
+            SubExperimentTag += '_NL' + str(UserInfo['simulation'].num_Layers)
 
             
             if UserInfo['simulation'].Multiply_By_Thalmaus: SubExperimentTag += '_MpByTH'  
