@@ -4,7 +4,7 @@ Model_Method =  'Cascade' # 'HCascade' #
 
 class SubExperiment:
     Index = 8
-    Tag   = Model_Method
+    Tag   = ''
     
 class Experiments:
     Index = '7'

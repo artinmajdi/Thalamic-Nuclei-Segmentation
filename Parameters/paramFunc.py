@@ -22,6 +22,49 @@ def Run(UserInfoB):
 
     return params
 
+def subExperimentName(UserInfo):
+
+    SubExperimentTag = UserInfo['SubExperiment'].Tag
+    SubExperimentTag += UserInfo['Model_Method']
+    
+    
+    # whichExperiment.Experiment.address + '/models/' + 'sE8_Cascade_sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim) + '_Dt0.3_LR0.001_NL' + str(whichExperiment.HardParams.Model.num_Layers) + '_MpByTH_SRI/' + whichExperiment.Nucleus.name    
+
+    readAugmentTag = ''
+    if UserInfo['Augment_Rotation'].Mode: readAugmentTag = 'wRot'   + str(UserInfo['Augment_Rotation'].AngleMax)
+    elif UserInfo['Augment_Shear'].Mode:  readAugmentTag = 'wShear' + str(UserInfo['Augment_Shear'].ShearMax)
+
+    if readAugmentTag and (UserInfo['ReadTrain'].ET or UserInfo['ReadTrain'].Main): SubExperimentTag += readAugmentTag
+
+    # if int(UserInfo['simulation'].slicingDim[0]) != 2:
+    SubExperimentTag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
+    SubExperimentTag += '_Dt' + str(UserInfo['DropoutValue'])
+    SubExperimentTag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
+    SubExperimentTag += '_NL' + str(UserInfo['simulation'].num_Layers)
+    SubExperimentTag += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
+      
+    if UserInfo['simulation'].Multiply_By_Thalmaus: SubExperimentTag += '_MpByTH'  
+    if UserInfo['ReadTrain'].SRI: SubExperimentTag += '_SRI'    
+    # else: SubExperimentTag += '_notMpByTH'  
+
+    SubExperimentTag_ModelInit  = 'sE8_'
+    SubExperimentTag_ModelInit += UserInfo['Model_Method']
+    SubExperimentTag_ModelInit += '_sd' + str(UserInfo['simulation'].slicingDim[0])
+    SubExperimentTag_ModelInit += '_Dt' + '0.3'
+    SubExperimentTag_ModelInit += '_LR' + '0.001'    
+    SubExperimentTag_ModelInit += '_NL' + str(UserInfo['simulation'].num_Layers)
+    SubExperimentTag_ModelInit += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
+    SubExperimentTag_ModelInit += '_MpByTH' 
+    SubExperimentTag_ModelInit += '_SRI' 
+
+    if UserInfo['ReadTrain'].Main:
+        if UserInfo['ReadTrain'].ET: SubExperimentTag += '_WET' 
+        else: SubExperimentTag += '_WoET'                               
+
+    if UserInfo['simulation'].Initialize_From_3T: SubExperimentTag += '_Init_From_3T' 
+    
+    return SubExperimentTag, readAugmentTag , SubExperimentTag_ModelInit
+
 def func_WhichExperiment(UserInfo):
     
     def WhichExperiment_Class():
@@ -269,48 +312,20 @@ def func_WhichExperiment(UserInfo):
         return Dataset
 
     def func_Experiment_SubExp():
-        def subExperimentName(UserInfo):
-
-            SubExperimentTag = UserInfo['SubExperiment'].Tag
-
-            readAugmentTag = ''
-            if UserInfo['Augment_Rotation'].Mode: readAugmentTag = 'wRot'   + str(UserInfo['Augment_Rotation'].AngleMax)
-            elif UserInfo['Augment_Shear'].Mode:  readAugmentTag = 'wShear' + str(UserInfo['Augment_Shear'].ShearMax)
-
-            if readAugmentTag and (UserInfo['ReadTrain'].ET or UserInfo['ReadTrain'].Main): SubExperimentTag += readAugmentTag
-
-            # if int(UserInfo['simulation'].slicingDim[0]) != 2:
-            SubExperimentTag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
-            SubExperimentTag += '_Dt' + str(UserInfo['DropoutValue'])
-            SubExperimentTag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
-            SubExperimentTag += '_NL' + str(UserInfo['simulation'].num_Layers)
-            SubExperimentTag += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
-
-            
-            if UserInfo['simulation'].Multiply_By_Thalmaus: SubExperimentTag += '_MpByTH'  
-            if UserInfo['ReadTrain'].SRI: SubExperimentTag += '_SRI'    
-            # else: SubExperimentTag += '_notMpByTH'  
-
-            if UserInfo['ReadTrain'].Main:
-                if UserInfo['ReadTrain'].ET: SubExperimentTag += '_WET' 
-                else: SubExperimentTag += '_WoET'                               
-
-            if UserInfo['simulation'].Initialize_From_3T: SubExperimentTag += '_Init_From_3T' 
-            
-            return SubExperimentTag, readAugmentTag
-
         class experiment:
             index = UserInfo['Experiments'].Index
             tag = UserInfo['Experiments'].Tag
             name = 'exp' + str(UserInfo['Experiments'].Index) + '_' + UserInfo['Experiments'].Tag if UserInfo['Experiments'].Tag else 'exp' + str(UserInfo['Experiments'].Index)
             address = smallFuncs.mkDir(UserInfo['Experiments_Address'] + '/' + name)
+            
  
-        SubExperimentTag, ReadAugments = subExperimentName(UserInfo)  
+        SubExperimentTag, ReadAugments , SubExperiment_Init = subExperimentName(UserInfo)  
         class subExperiment:
             index = UserInfo['SubExperiment'].Index
             tag = SubExperimentTag
             name = 'sE' + str(UserInfo['SubExperiment'].Index) +  '_' + SubExperimentTag
             name_thalamus = ''
+            name_Init_3T = SubExperiment_Init
 
         return experiment, subExperiment, ReadAugments
 

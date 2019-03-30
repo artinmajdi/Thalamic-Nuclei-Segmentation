@@ -400,7 +400,7 @@ def architecture(params):
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
     def CNN_Classifier(Modelparam):
-        dim = HardParams.Model.Method.InputImage2Dvs3D
+        dim = Modelparam.Method.InputImage2Dvs3D
         model = kerasmodels.Sequential()
         model.add(layers.Conv2D(filters=16, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape= tuple(Modelparam.InputDimensions[:dim]) + (1,)  ))
         model.add(layers.MaxPooling2D(pool_size=Modelparam.Layer_Params.MaxPooling.pool_size))
