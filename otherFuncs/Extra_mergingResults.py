@@ -115,6 +115,8 @@ class mergingDiceValues:
             self.Nuclei_Names = func_Nuclei_Names()
             self.Ind_Data = np.array([  func_Load_AllNuclei_Dices(self)  for self.subject in subject_List(self)  ]) 
 
+            # print(self.df_IndSubj)
+
             self.df_IndSubj[self.Nuclei_Names[0]] = self.Ind_Data[:,0]
             for nIx, nucleus in enumerate(self.Nuclei_Names[1:]): 
                 self.df_IndSubj[nucleus] = self.Ind_Data[:,nIx+1].astype(np.float16)
@@ -135,9 +137,11 @@ class mergingDiceValues:
         save_TagList_AllDice(self)
 
         for self.subIx, self.subExperiment in enumerate(self.Info.List_subExperiments):
-            self.subExperiment_Address = self.Info.Address + '/results/' + self.subExperiment            
-            if os.path.isdir(self.subExperiment_Address): mergingDiceValues_ForOneSubExperiment(self)            
-            
+            self.subExperiment_Address = self.Info.Address + '/results/' + self.subExperiment   
+            try:         
+                if os.path.isdir(self.subExperiment_Address): mergingDiceValues_ForOneSubExperiment(self)            
+            except:
+                print('failed' ,self.subExperiment )            
         self.df_AD.to_excel(self.writer, sheet_name='AllDices')
         self.writer.close()
 

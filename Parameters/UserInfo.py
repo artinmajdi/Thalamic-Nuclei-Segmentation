@@ -3,7 +3,7 @@
 Model_Method =  'Cascade' # 'HCascade' #
 
 class SubExperiment:
-    Index = 10
+    Index = 8
     Tag   = Model_Method
     
 class Experiments:
@@ -15,9 +15,9 @@ class readAugments:
     Tag = ''
 
 class ReadTrain:
-    SRI = False
-    ET = True
-    Main = True
+    SRI = True
+    ET = False
+    Main = False
     ReadAugments = readAugments()
 
 class InputPadding:
@@ -51,7 +51,7 @@ class simulation:
 
     Initialize_FromThalamus   = False
     Initialize_FromOlderModel = False
-    Initialize_From_3T = True
+    Initialize_From_3T = False
 
 
 

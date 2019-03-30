@@ -284,6 +284,7 @@ def func_WhichExperiment(UserInfo):
             SubExperimentTag += '_Dt' + str(UserInfo['DropoutValue'])
             SubExperimentTag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
             SubExperimentTag += '_NL' + str(UserInfo['simulation'].num_Layers)
+            SubExperimentTag += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
 
             
             if UserInfo['simulation'].Multiply_By_Thalmaus: SubExperimentTag += '_MpByTH'  
