@@ -1,6 +1,7 @@
 
 
 Model_Method =  'HCascade' # 'HCascade' #
+Local_Flag = True
 
 class SubExperiment:
     Index = 8
@@ -53,8 +54,6 @@ class simulation:
     Initialize_FromOlderModel = False
     Initialize_From_3T = False
 
-
-
 mode_saveTrue_LoadFalse = True
 DropoutValue = 0.3
 havingBackGround_AsExtraDimension = True
@@ -72,7 +71,9 @@ class Template:
 #          3: 'Dice & Accuracy'
 MetricIx = 3
 Learning_Rate = 1e-3
-Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
+
+if Local_Flag: Experiments_Address = '/home/artinl/Documents/research'
+else: Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 
 #! Preprocessing
