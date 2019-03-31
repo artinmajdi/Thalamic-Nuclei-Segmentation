@@ -35,8 +35,8 @@ def Run(UserInfoB,InitValues):
             return Nuclei_Indexes
 
         print('************ stage 1 ************')
-        for UserInfoB['simulation'].nucleus_Index in [1]:
-            Run_SingleNuclei(UserInfoB)
+        # for UserInfoB['simulation'].nucleus_Index in [1]:
+        #    Run_SingleNuclei(UserInfoB)
 
         print('************ stage 2 ************')               
         for UserInfoB['simulation'].nucleus_Index in HCascade_Parents_Identifier(InitValues):
@@ -55,6 +55,7 @@ def Run(UserInfoB,InitValues):
 
         for sd in InitValues.slicingDim:
 
+            try:
             UserInfoB['simulation'].slicingDim = [sd]     
                    
             UserInfoB['simulation'].epochs = 30 if UserInfoB['simulation'].nucleus_Index == 1 else 70
@@ -71,64 +72,50 @@ def Run(UserInfoB,InitValues):
             
             choosingModel.check_Run(params, Data)
 
-    MethodType = params.WhichExperiment.HardParams.Model.Method.Type
-    if   MethodType == 'HCascade':  HierarchicalStages(UserInfoB)
-    elif MethodType == 'Cascade':   CacadeStages(UserInfoB)
-    elif MethodType == 'singleRun': Run_SingleNuclei(UserInfoB)
+
+    if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages(UserInfoB)
+    elif UserInfoB['Model_Method'] == 'Cascade' :  CacadeStages(UserInfoB)
+    elif UserInfoB['Model_Method'] == 'singleRun': Run_SingleNuclei(UserInfoB)
+
+
+def preMode(UserInfo):
+    UserInfoB = smallFuncs.terminalEntries(UserInfo)
+    params = paramFunc.Run(UserInfoB)
+    datasets.movingFromDatasetToExperiments(params)
+    applyPreprocess.main(params, 'experiment')
+    K = gpuSetting(params)
+
+    class InitValues:
+        Nuclei_Indexes = UserInfoB['simulation'].nucleus_Index.copy()
+        slicingDim     = UserInfoB['simulation'].slicingDim.copy()
+
+    return UserInfoB, K, InitValues
+
+UserInfoB, K, InitValues = preMode(UserInfo.__dict__)
 
 
 
-UserInfo = UserInfo.__dict__
-# _ , UserInfo['simulation'].nucleus_Index,_ = smallFuncs.NucleiSelection(ind = 1)
-UserInfoB = smallFuncs.terminalEntries(UserInfo)
-
-
-class InitValues:
-    Nuclei_Indexes = UserInfoB['simulation'].nucleus_Index.copy()
-    slicingDim     = UserInfoB['simulation'].slicingDim.copy()
-
-
-
-
-params = paramFunc.Run(UserInfoB)
-datasets.movingFromDatasetToExperiments(params)
-applyPreprocess.main(params, 'experiment')
-K = gpuSetting(params)
-
-
-# 1) GPU: 4  |  sE8_HCascade_sd2_Dt0.3_LR0.001_NL3_FM64_MpByTH_SRI   |   Nuclei_Indexes All 
-
-# 2) gpu: 5  |  
-
-# InitValues.Nuclei_Indexes = [4,5,6,7,9,10,11,12,13]
-# InitValues.slicingDim = [0]
-# print('slicingDim' , InitValues.slicingDim , 'Nuclei_Indexes' , InitValues.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
-# UserInfoB['Model_Method'] =  'Cascade' # 'HCascade' #
-# UserInfoB['SubExperiment'].Index = 8
-# UserInfoB['SubExperiment'].Tag   = UserInfoB['Model_Method']
-# try: Run(UserInfoB,InitValues)
-# except: print('failed 3T')
-
-
-
-# 2) gpu: 5  |    
-
-# InitValues.Nuclei_Indexes = [4,5,6,7,9,10,11,12,13]
-# InitValues.slicingDim = [1]
-# print('slicingDim' , InitValues.slicingDim , 'Nuclei_Indexes' , InitValues.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
-# UserInfoB['Model_Method'] =  'Cascade' # 'HCascade' #
-# UserInfoB['SubExperiment'].Index = 8
-# UserInfoB['SubExperiment'].Tag   = UserInfoB['Model_Method']
-# try: Run(UserInfoB,InitValues)
-# except: print('failed 3T')
-
-# 3) gpu: 7    
-
-InitValues.slicingDim = [1]
+# 2)
 print('slicingDim' , InitValues.slicingDim , 'Nuclei_Indexes' , InitValues.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
-UserInfoB['Model_Method'] =  'HCascade' # 'HCascade' #
 UserInfoB['SubExperiment'].Index = 8
-Run(UserInfoB, InitValues)
+UserInfoB['Model_Method'] = 'Cascade'
+UserInfoB['simulation'].slicingDim = [0,1]
+UserInfoB['simulation'].nucleus_Index = [11,12,13]
+InitValues.Nuclei_Indexes = UserInfoB['simulation'].nucleus_Index.copy()
+InitValues.slicingDim = UserInfoB['simulation'].slicingDim.copy()
+try: Run(UserInfoB, InitValues)
+except: print('failed')
+
+# 1)
+print('slicingDim' , InitValues.slicingDim , 'Nuclei_Indexes' , InitValues.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
+UserInfoB['SubExperiment'].Index = 8
+UserInfoB['Model_Method'] = 'HCascade'
+UserInfoB['simulation'].slicingDim = [1,0]
+InitValues.slicingDim = UserInfoB['simulation'].slicingDim.copy()
+InitValues.Nuclei_Indexes = UserInfoB['simulation'].nucleus_Index.copy()
+try: Run(UserInfoB, InitValues)
+except: print('failed')
+
 
 
 
