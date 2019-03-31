@@ -23,43 +23,50 @@ def gpuSetting(params):
     return K
     
 
-UserInfoB = UserInfo.__dict__
-if not UserInfoB['Local_Flag']:    
-    UserInfoB['simulation'].TestOnly = True
-    params = paramFunc.Run(UserInfoB)
-    K = gpuSetting(params)
-    Data, params = datasets.loadDataset(params)
-    params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data = False
+# UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
+# params = paramFunc.Run(UserInfoB)
 
-    dir = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/models/sE10_CascadewRot7_6cnts_sd1_Dt0.3_LR0.001_MpByTH_WoET/'
-    model = choosingModel.architecture(params)
-    model.load_weights(dir + '1-THALAMUS/model_weights.h5')
-    # model.load_weights(params.directories.Train.Model + '/model_weights.h5')
 
-    def main(nl):
-        print(model.layers[12].output)
-        dim = params.WhichExperiment.HardParams.Model.Method.InputImage2Dvs3D
-        inputs = keras.layers.Input( tuple(params.WhichExperiment.HardParams.Model.InputDimensions[:dim]) + (1,) )
-        model2 = keras.models.Model(inputs=[model.layers[0].output], outputs=[model.layers[nl].output, model.layers[-1].output])
+# if not UserInfoB['Local_Flag']:    
+#     UserInfoB['simulation'].TestOnly = True
+#     params = paramFunc.Run(UserInfoB)
+#     K = gpuSetting(params)
+#     Data, params = datasets.loadDataset(params)
+#     params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data = False
 
-        subject = Data.Test[list(Data.Test)[0]]
+#     dir = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/models/sE10_CascadewRot7_6cnts_sd1_Dt0.3_LR0.001_MpByTH_WoET/'
+#     model = choosingModel.architecture(params)
+#     model.load_weights(dir + '1-THALAMUS/model_weights.h5')
+#     # model.load_weights(params.directories.Train.Model + '/model_weights.h5')
 
-        pred, final = model2.predict(subject.Image)
-        aa = np.ceil(np.sqrt(pred.shape[3]))
-        imm = np.squeeze(pred[:,:,10,:])
-        newshape = tuple([int(np.ceil(np.sqrt(imm.shape[2]))*np.array(imm.shape[i])) for i in range(2)])
-        imm2 = imm.transpose(2,0,1).reshape(-1, imm.shape[1])
-        plt.imshow(imm2,[])
-        plt.show()
+#     def main(nl):
+#         print(model.layers[12].output)
+#         dim = params.WhichExperiment.HardParams.Model.Method.InputImage2Dvs3D
+#         inputs = keras.layers.Input( tuple(params.WhichExperiment.HardParams.Model.InputDimensions[:dim]) + (1,) )
+#         model2 = keras.models.Model(inputs=[model.layers[0].output], outputs=[model.layers[nl].output, model.layers[-1].output])
+
+#         subject = Data.Test[list(Data.Test)[0]]
+
+#         pred, final = model2.predict(subject.Image)
+#         aa = np.ceil(np.sqrt(pred.shape[3]))
+#         imm = np.squeeze(pred[:,:,10,:])
+#         newshape = tuple([int(np.ceil(np.sqrt(imm.shape[2]))*np.array(imm.shape[i])) for i in range(2)])
+#         imm2 = imm.transpose(2,0,1).reshape(-1, imm.shape[1])
+#         plt.imshow(imm2,[])
+#         plt.show()
         
         
-    main(24)
-else:
-    dir = '/home/artinl/Documents/research/sE8_Cascade_sd2_Dt0.3_LR0.001_NL3_FM64_MpByTH_SRI/'
-    model = kerasmodels.load_model(dir + '10-MGN/model.h5')
+#     main(24)
+# else:
 
-    print('---')
-    keras.utils.plot_model(model,to_file=dir+'10-MGN/FeatureMaps.png',show_layer_names=True,show_shapes=True)
+# dir = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/models/sE10_CascadewRot7_6cnts_sd1_Dt0.3_LR0.001_MpByTH_WoET/'
+dir = params.directories.Train.Model
+print(dir)
+# dir = '/home/artinl/Documents/research/sE8_Cascade_sd2_Dt0.3_LR0.001_NL3_FM64_MpByTH_SRI/'
+model = kerasmodels.load_model(dir + '10-MGN/model.h5')
+
+print('---')
+keras.utils.plot_model(model,to_file=dir+'10-MGN/FeatureMaps.png',show_layer_names=True,show_shapes=True)
 
 
 
