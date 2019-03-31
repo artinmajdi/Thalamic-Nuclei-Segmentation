@@ -164,7 +164,7 @@ def nibShow(im1,im2):
     a.show()
 
 def fixMaskMinMax(Image):
-    if Image.max() != 1 or Image.min() != 0:
+    if Image.max() > 1 or Image.min() < 0:
         print('smallFuncs','error in label values', 'min',Image.min() , 'max', Image.max() )
         Image = np.float32(Image)
         Image = ( Image-Image.min() )/( Image.max() - Image.min() )

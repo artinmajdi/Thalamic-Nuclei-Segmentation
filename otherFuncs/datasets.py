@@ -156,7 +156,7 @@ def readingFromExperiments(params):
             inputMsk = subject.Label.address + '/' + nameNuclei + '_PProcessed.nii.gz'
 
             origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape)
-            if origMsk1N.max() != 1 or origMsk1N.min() != 0: 
+            if origMsk1N.max() > 1 or origMsk1N.min() < 0: 
                 print('dataset','error in label values',nameNuclei, 'min',origMsk1N.min() , 'max', origMsk1N.max() , subject.subjectName)
             origMsk1N = smallFuncs.fixMaskMinMax(origMsk1N)
 
