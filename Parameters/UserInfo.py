@@ -43,7 +43,7 @@ class simulation:
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
     nucleus_Index = [1]
     slicingDim    = [0,1,2]
-    batch_size    = 50
+    batch_size    = 80
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 64
     verbose = 1

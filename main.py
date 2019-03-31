@@ -55,9 +55,7 @@ def Run(UserInfoB,InitValues):
 
         for sd in InitValues.slicingDim:
 
-            try:
-            UserInfoB['simulation'].slicingDim = [sd]     
-                   
+            UserInfoB['simulation'].slicingDim = [sd]                       
             UserInfoB['simulation'].epochs = 30 if UserInfoB['simulation'].nucleus_Index == 1 else 70
             params = paramFunc.Run(UserInfoB)
 
