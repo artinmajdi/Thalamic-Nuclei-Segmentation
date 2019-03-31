@@ -13,9 +13,10 @@ class InitValues:
         self.Nuclei_Indexes = Nuclei_Indexes.copy()
         self.slicingDim     = slicingDim.copy()
 
-        if nucleus_Index == 'all':  InitValues.Nuclei_Indexes = UserInfoB['simulation'].nucleus_Index.copy()
-        else:zzzzzzzzzzzz
-            InitValues.Nuclei_Indexes  _, nucleus_Index,_ = smallFuncs.NucleiSelection(ind = 1)        
+        if Nuclei_Indexes == 'all':  
+            self.Nuclei_Indexes = Nuclei_Indexes.copy()
+        else: 
+            _, self.Nuclei_Indexes,_ = smallFuncs.NucleiSelection(ind = 1)        
 
 def gpuSetting(params):
     
@@ -109,7 +110,6 @@ print('------GGGssss--------')
 
 
 # 2b)
-print('slicingDim' , InitValues.slicingDim , 'Nuclei_Indexes' , InitValues.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
 UserInfoB['SubExperiment'].Index = 8
 UserInfoB['Model_Method'] = 'HCascade'
 UserInfoB['simulation'].slicingDim = [1,0]
