@@ -1,7 +1,7 @@
 
 
-Model_Method =  'HCascade' # 'HCascade' #
-Local_Flag = True
+Model_Method =  'Cascade' # 'HCascade' #
+Local_Flag = False
 
 class SubExperiment:
     Index = 8
@@ -16,9 +16,9 @@ class readAugments:
     Tag = ''
 
 class ReadTrain:
-    SRI = True
+    SRI = False
     ET = False
-    Main = False
+    Main = True
     ReadAugments = readAugments()
 
 class InputPadding:
@@ -52,7 +52,7 @@ class simulation:
 
     Initialize_FromThalamus   = False
     Initialize_FromOlderModel = False
-    Initialize_From_3T = False
+    Initialize_From_3T = True
 
 mode_saveTrue_LoadFalse = True
 DropoutValue = 0.3

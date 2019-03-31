@@ -100,25 +100,27 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 
 
 # 2a)
-UserInfoB['SubExperiment'].Index = 8
-UserInfoB['Model_Method'] = 'Cascade'
-UserInfoB['simulation'].slicingDim = [0,1]
-UserInfoB['simulation'].nucleus_Index = [11,12,13,14]
-IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
-Run(UserInfoB, IV)
-print('------GGGssss--------')
+# UserInfoB['SubExperiment'].Index = 8
+# UserInfoB['Model_Method'] = 'Cascade'
+# UserInfoB['simulation'].slicingDim = [0,1]
+# UserInfoB['simulation'].nucleus_Index = [11,12,13,14]
+# IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+# print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
+# Run(UserInfoB, IV)
+# print('------GGGssss--------')
 
 
 # 2b)
-UserInfoB['SubExperiment'].Index = 8
-UserInfoB['Model_Method'] = 'HCascade'
-UserInfoB['simulation'].slicingDim = [1,0]
-UserInfoB['simulation'].nucleus_Index = 'all'
+# UserInfoB['SubExperiment'].Index = 8
+# UserInfoB['Model_Method'] = 'HCascade'
+# UserInfoB['simulation'].slicingDim = [1,0]
+# UserInfoB['simulation'].nucleus_Index = 'all'
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
 Run(UserInfoB, IV)
 
+
+K.clear_session()
 
 
 
