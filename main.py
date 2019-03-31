@@ -10,13 +10,14 @@ import preprocess.applyPreprocess as applyPreprocess
 
 class InitValues:
     def __init__(self, Nuclei_Indexes=1 , slicingDim=2):
-        self.Nuclei_Indexes = Nuclei_Indexes.copy()
         self.slicingDim     = slicingDim.copy()
 
         if Nuclei_Indexes == 'all':  
+             _, self.Nuclei_Indexes,_ = smallFuncs.NucleiSelection(ind = 1)
+        else:
             self.Nuclei_Indexes = Nuclei_Indexes.copy()
-        else: 
-            _, self.Nuclei_Indexes,_ = smallFuncs.NucleiSelection(ind = 1)        
+        
+           
 
 def gpuSetting(params):
     
