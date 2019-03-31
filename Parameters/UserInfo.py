@@ -37,7 +37,7 @@ class Transfer_Learning:
 class simulation:
     TestOnly      = False
     epochs        = 100
-    GPU_Index     = "6"
+    GPU_Index     = "7"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #

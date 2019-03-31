@@ -124,13 +124,12 @@ K = gpuSetting(params)
 
 # 3) gpu: 7    
 
-InitValues.slicingDim = [1,0]
+InitValues.slicingDim = [1]
 print('slicingDim' , InitValues.slicingDim , 'Nuclei_Indexes' , InitValues.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
 UserInfoB['Model_Method'] =  'HCascade' # 'HCascade' #
 UserInfoB['SubExperiment'].Index = 8
-UserInfoB['SubExperiment'].Tag   = UserInfoB['Model_Method']
-try: Run(UserInfoB,InitValues)
-except: print('failed 3T')
-Learning_Rate
+Run(UserInfoB, InitValues)
+
+
 
 K.clear_session()
