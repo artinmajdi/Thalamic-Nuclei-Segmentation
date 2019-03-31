@@ -106,7 +106,7 @@ UserInfoB['simulation'].slicingDim = [0,1]
 UserInfoB['simulation'].nucleus_Index = [11,12,13,14]
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
-# Run(UserInfoB, IV)
+Run(UserInfoB, IV)
 print('------GGGssss--------')
 
 
