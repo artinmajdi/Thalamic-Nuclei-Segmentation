@@ -423,7 +423,10 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.MultiClass.num_classes = func_NumClasses()
         HardParams.Model.Layer_Params = func_Layer_Params(UserInfo)
 
-        nucleus_Index = UserInfo['simulation'].nucleus_Index if isinstance(UserInfo['simulation'].nucleus_Index,list) else [UserInfo['simulation'].nucleus_Index]
+        if UserInfo['simulation'].nucleus_Index == 'all': 
+            _, nucleus_Index,_ = smallFuncs.NucleiSelection(ind = 1)
+        else:
+            nucleus_Index = UserInfo['simulation'].nucleus_Index if isinstance(UserInfo['simulation'].nucleus_Index,list) else [UserInfo['simulation'].nucleus_Index]
 
         # AAA = ReferenceForCascadeMethod(HardParams.Model.Method.Type)
         # HardParams.Model.Method.ReferenceMask = AAA[nucleus_Index[0]]
