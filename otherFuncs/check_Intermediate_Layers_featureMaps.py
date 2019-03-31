@@ -23,10 +23,10 @@ def gpuSetting(params):
     return K
     
 
-# UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
-# params = paramFunc.Run(UserInfoB)
+UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
+params = paramFunc.Run(UserInfoB)
 
-
+K = gpuSetting(params)
 # if not UserInfoB['Local_Flag']:    
 #     UserInfoB['simulation'].TestOnly = True
 #     params = paramFunc.Run(UserInfoB)
@@ -63,14 +63,14 @@ def gpuSetting(params):
 dir = params.directories.Train.Model
 print(dir)
 # dir = '/home/artinl/Documents/research/sE8_Cascade_sd2_Dt0.3_LR0.001_NL3_FM64_MpByTH_SRI/'
-model = kerasmodels.load_model(dir + '10-MGN/model.h5')
+model = kerasmodels.load_model(dir + '/model.h5')
 
 print('---')
-keras.utils.plot_model(model,to_file=dir+'10-MGN/FeatureMaps.png',show_layer_names=True,show_shapes=True)
+keras.utils.plot_model(model,to_file=dir+'/FeatureMaps.png',show_layer_names=True,show_shapes=True)
 
 
 
-
+K.clear_session()
 
 print('----')
 
