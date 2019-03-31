@@ -112,8 +112,14 @@ UserInfoB, K, InitValues = preMode(UserInfo.__dict__)
 # InitValues.slicingDim = UserInfoB['simulation'].slicingDim.copy()
 # InitValues.Nuclei_Indexes = UserInfoB['simulation'].nucleus_Index.copy()
 
+ # 3a)
+print('slicingDim' , InitValues.slicingDim , 'Nuclei_Indexes' , InitValues.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
+UserInfoB['SubExperiment'].Index = 8
 UserInfoB['Model_Method'] = 'Cascade'
-UserInfoB['simulation'].slicingDim = [1]
+UserInfoB['simulation'].slicingDim = [0,1,2]
+UserInfoB['simulation'].nucleus_Index = [14]
+InitValues.Nuclei_Indexes = UserInfoB['simulation'].nucleus_Index.copy()
+InitValues.slicingDim = UserInfoB['simulation'].slicingDim.copy()
 Run(UserInfoB, InitValues)
 
 
