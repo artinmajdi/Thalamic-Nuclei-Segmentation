@@ -35,8 +35,8 @@ def Run(UserInfoB,InitValues):
             return Nuclei_Indexes
 
         print('************ stage 1 ************')
-        # for UserInfoB['simulation'].nucleus_Index in [1]:
-        #    Run_SingleNuclei(UserInfoB)
+        for UserInfoB['simulation'].nucleus_Index in [1]:
+            Run_SingleNuclei(UserInfoB)
 
         print('************ stage 2 ************')               
         for UserInfoB['simulation'].nucleus_Index in HCascade_Parents_Identifier(InitValues):
@@ -69,8 +69,8 @@ def Run(UserInfoB,InitValues):
             print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
             print('---------------------------------------------------------------')
             Data, params = datasets.loadDataset(params)
-            
-            choosingModel.check_Run(params, Data)
+            try: choosingModel.check_Run(params, Data)
+            except: print('failed')
 
 
     if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages(UserInfoB)
@@ -103,8 +103,8 @@ UserInfoB['simulation'].slicingDim = [0,1]
 UserInfoB['simulation'].nucleus_Index = [11,12,13]
 InitValues.Nuclei_Indexes = UserInfoB['simulation'].nucleus_Index.copy()
 InitValues.slicingDim = UserInfoB['simulation'].slicingDim.copy()
-try: Run(UserInfoB, InitValues)
-except: print('failed')
+Run(UserInfoB, InitValues)
+
 
 # 1)
 print('slicingDim' , InitValues.slicingDim , 'Nuclei_Indexes' , InitValues.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
@@ -113,8 +113,8 @@ UserInfoB['Model_Method'] = 'HCascade'
 UserInfoB['simulation'].slicingDim = [1,0]
 InitValues.slicingDim = UserInfoB['simulation'].slicingDim.copy()
 InitValues.Nuclei_Indexes = UserInfoB['simulation'].nucleus_Index.copy()
-try: Run(UserInfoB, InitValues)
-except: print('failed')
+Run(UserInfoB, InitValues)
+
 
 
 
