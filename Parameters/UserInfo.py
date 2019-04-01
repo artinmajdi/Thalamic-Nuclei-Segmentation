@@ -5,7 +5,7 @@ Local_Flag = False
 
 class SubExperiment:
     Index = 10
-    Tag   = '' # 'WoFixedCrop'
+    Tag   = ''
     
 class Experiments:
     Index = '7'
@@ -22,9 +22,10 @@ class ReadTrain:
     ReadAugments = readAugments()
 
 class InputPadding:
-    Automatic = False
+    Automatic = True
     HardDimensions = [116,144,84]
 
+if InputPadding.Automatic: SubExperiment.Tag += 'WoFixedCrop'
 # sd0:  [288, 168, 228]
 # sd1:  [168, 228, 288]
 # sd2:  [228, 288, 168]

@@ -100,12 +100,10 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 
 
 # 1)
-# UserInfoB['simulation'].Learning_Rate = 1e-2
-# UserInfoB['simulation'].slicingDim = [2]
+UserInfoB['SubExperiment'].Index = 11
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
 Run(UserInfoB, IV)
-# try: Run(UserInfoB, IV)
-# except: print('failed')
+
 
 K.clear_session()
