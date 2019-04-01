@@ -66,7 +66,7 @@ def Run(UserInfoB,InitValues):
         for sd in InitValues.slicingDim:
 
             UserInfoB['simulation'].slicingDim = [sd]                       
-            UserInfoB['simulation'].epochs = 30 if UserInfoB['simulation'].nucleus_Index == 1 else 70
+            # UserInfoB['simulation'].epochs = 30  if UserInfoB['simulation'].nucleus_Index == 1 else 70
             params = paramFunc.Run(UserInfoB)
 
             print('---------------------------------------------------------------')
@@ -99,11 +99,20 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 
 
 
-# 2b)
-# UserInfoB['Model_Method'] = 'HCascade'
+# 1)
+UserInfoB['simulation'].Learning_Rate = 1e-2
+UserInfoB['simulation'].slicingDim = [2]
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
-Run(UserInfoB, IV)
+try: Run(UserInfoB, IV)
+except: print('failed')
 
+# 2)
+UserInfoB['simulation'].Learning_Rate = 1e-4
+UserInfoB['simulation'].slicingDim = [2]
+IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
+try: Run(UserInfoB, IV)
+except: print('failed')
 
 K.clear_session()
