@@ -8,6 +8,7 @@ import numpy as np
 import otherFuncs.smallFuncs as smallFuncs
 import otherFuncs.datasets as datasets
 import preprocess.croppingA as croppingA
+import modelFuncs.Metrics as Metrics
 from tqdm import tqdm
 from time import time
 import nibabel as nib
@@ -21,6 +22,7 @@ import keras
 import keras.preprocessing
 from keras.utils import multi_gpu_model, multi_gpu_utils
 import h5py
+from keras.callbacks import ModelCheckpoint
 
 # keras.preprocessing.utils.multi_gpu_model
 def check_Run(params, Data):
@@ -199,10 +201,17 @@ def trainingExperiment(Data, params):
 
     def modelTrain_Unet(Data, params, model):
         ModelParam = params.WhichExperiment.HardParams.Model
+        tagTF = '_TF' if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
 
         def saveModel_h5(model2, params):       
             smallFuncs.mkDir(params.directories.Train.Model)
-            tagTF = '_TF' if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
+
+            if params.WhichExperiment.HardParams.Model.Method.save_Best_Epoch_Model:
+                model2.load_weights(params.directories.Train.Model + '/best_model_weights' + tagTF + '.h5')
+                prnit('&&&&&&&&&&--------------------%$$$$$$$$############')
+                prnit('&&&&&&&&&&--------------------%$$$$$$$$############')
+                prnit('&&&&&&&&&&--------------------%$$$$$$$$############')
+
             model2.save(params.directories.Train.Model + '/model' + tagTF + '.h5', overwrite=True, include_optimizer=False )
             model2.save_weights(params.directories.Train.Model + '/model_weights' + tagTF + '.h5', overwrite=True )
 
@@ -211,6 +220,9 @@ def trainingExperiment(Data, params):
 
             keras.utils.plot_model(model,to_file=params.directories.Train.Model+'/Architecture.png',show_layer_names=True,show_shapes=True)
             
+
+            
+
         def modelInitialize(model2):
 
             # with open(params.directories.Train.Model + '/model' + tagTF + '.json', 'r') as json_file:
@@ -237,12 +249,19 @@ def trainingExperiment(Data, params):
             def func_modelParams():
                 batch_size       = params.WhichExperiment.HardParams.Model.batch_size
                 epochs           = params.WhichExperiment.HardParams.Model.epochs 
-                valSplit_Per = params.WhichExperiment.Dataset.Validation.percentage
+                valSplit_Per     = params.WhichExperiment.Dataset.Validation.percentage
                 verbose          = params.WhichExperiment.HardParams.Model.verbose
                 ManualDataGenerator = params.WhichExperiment.HardParams.Model.ManualDataGenerator
                 Validation_fromKeras = params.WhichExperiment.Dataset.Validation.fromKeras
-                return batch_size, epochs, valSplit_Per, verbose , ManualDataGenerator , Validation_fromKeras
-            batch_size, epochs, valSplit_Per, verbose , ManualDataGenerator, Validation_fromKeras = func_modelParams()
+
+                
+                checkpointer = ModelCheckpoint(filepath=params.directories.Train.Model + '/best_model_weights' + tagTF + '.h5', 
+                                            monitor = 'val_Dice_Calculator', #Metrics.Dice_Calculator, # 'val_acc', #
+                                            verbose=1, save_best_only=True)
+
+                # model2.save_weights(params.directories.Train.Model + '/model_weights' + tagTF + '.h5', overwrite=True )
+                return checkpointer, batch_size, epochs, valSplit_Per, verbose , ManualDataGenerator , Validation_fromKeras
+            checkpointer, batch_size, epochs, valSplit_Per, verbose , ManualDataGenerator, Validation_fromKeras = func_modelParams()
 
             def RunGenerator(params):
                 f = h5py.File(params.directories.Test.Result + '/Data.hdf5','r')
@@ -259,8 +278,8 @@ def trainingExperiment(Data, params):
 
             if ManualDataGenerator: hist = RunGenerator(params)
             else:
-                if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per, verbose=verbose) # , callbacks=[TQDMCallback()])
-                else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose) # , callbacks=[TQDMCallback()])        
+                if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=[checkpointer]) # , callbacks=[TQDMCallback()])
+                else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=[checkpointer]) # , callbacks=[TQDMCallback()])        
                 
             return hist
 

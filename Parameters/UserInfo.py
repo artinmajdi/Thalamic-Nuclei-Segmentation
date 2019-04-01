@@ -1,6 +1,6 @@
 
 
-Model_Method =  'FCN_2D' # HCascade' # 'HCascade' #
+Model_Method =  'HCascade' #'FCN_2D' # HCascade' # 
 Local_Flag = False
 
 class SubExperiment:
@@ -53,6 +53,8 @@ class simulation:
     Initialize_FromThalamus   = False
     Initialize_FromOlderModel = False
     Initialize_From_3T = True
+
+    save_Best_Epoch_Model = True
 
 mode_saveTrue_LoadFalse = True
 DropoutValue = 0.3

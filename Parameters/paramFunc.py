@@ -104,6 +104,7 @@ def func_WhichExperiment(UserInfo):
                     havingBackGround_AsExtraDimension = True
                     InputImage2Dvs3D = 2
                     Multiply_By_Thalmaus = True
+                    save_Best_Epoch_Model = False
 
                 return dropout, activation, convLayer, multiclass, maxPooling, method
 
@@ -403,7 +404,7 @@ def func_WhichExperiment(UserInfo):
         HardParams.Template = UserInfo['Template']()
         HardParams.Machine.GPU_Index = str(UserInfo['simulation'].GPU_Index)
 
-        HardParams.Model.Method.Type  = UserInfo['Model_Method']
+     
         HardParams.Model.metrics, _   = Metrics.MetricInfo(UserInfo['MetricIx'])
         HardParams.Model.optimizer, _ = Optimizers.OptimizerInfo(1, UserInfo['simulation'].Learning_Rate)
         HardParams.Model.num_Layers   = UserInfo['simulation'].num_Layers
@@ -416,9 +417,11 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.InitializeFromThalamus = Initialize_From_Thalamus
         HardParams.Model.InitializeFromOlderModel = Initialize_From_OlderModel
 
-        HardParams.Model.Method.InputImage2Dvs3D = UserInfo['simulation'].InputImage2Dvs3D
+        HardParams.Model.Method.Type                  = UserInfo['Model_Method']
+        HardParams.Model.Method.save_Best_Epoch_Model = UserInfo['simulation'].save_Best_Epoch_Model   
+        HardParams.Model.Method.InputImage2Dvs3D      = UserInfo['simulation'].InputImage2Dvs3D
         HardParams.Model.Method.havingBackGround_AsExtraDimension = UserInfo['havingBackGround_AsExtraDimension']
-        HardParams.Model.Method.Multiply_By_Thalmaus = UserInfo['simulation'].Multiply_By_Thalmaus
+        HardParams.Model.Method.Multiply_By_Thalmaus  = UserInfo['simulation'].Multiply_By_Thalmaus
 
         HardParams.Model.MultiClass.num_classes = func_NumClasses()
         HardParams.Model.Layer_Params = func_Layer_Params(UserInfo)
