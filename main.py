@@ -100,7 +100,6 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 
 
 # 1)
-UserInfoB['SubExperiment'].Index = 11
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
 Run(UserInfoB, IV)

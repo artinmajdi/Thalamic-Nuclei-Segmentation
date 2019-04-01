@@ -208,9 +208,9 @@ def trainingExperiment(Data, params):
 
             if params.WhichExperiment.HardParams.Model.Method.save_Best_Epoch_Model:
                 model2.load_weights(params.directories.Train.Model + '/best_model_weights' + tagTF + '.h5')
-                prnit('&&&&&&&&&&--------------------%$$$$$$$$############')
-                prnit('&&&&&&&&&&--------------------%$$$$$$$$############')
-                prnit('&&&&&&&&&&--------------------%$$$$$$$$############')
+                print('&&&&&&&&&&--------------------%$$$$$$$$############')
+                print('&&&&&&&&&&--------------------%$$$$$$$$############')
+                print('&&&&&&&&&&--------------------%$$$$$$$$############')
 
             model2.save(params.directories.Train.Model + '/model' + tagTF + '.h5', overwrite=True, include_optimizer=False )
             model2.save_weights(params.directories.Train.Model + '/model_weights' + tagTF + '.h5', overwrite=True )
