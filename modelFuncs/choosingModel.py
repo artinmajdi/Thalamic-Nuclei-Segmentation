@@ -233,7 +233,9 @@ def trainingExperiment(Data, params):
                     model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
                 elif params.WhichExperiment.HardParams.Model.Initialize_From_3T and os.path.exists(params.directories.Train.Model_3T + '/model_weights.h5'):
                     model2.load_weights(params.directories.Train.Model_3T + '/model_weights.h5')
-                    print('Model_3T' , params.directories.Train.Model_3T)
+                    print('------------------------------------------')
+                    print('initialized from Model_3T' , params.directories.Train.Model_3T)
+                    print('------------------------------------------')
 
                 if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode:
                     model2.load_weights(params.directories.Train.Model + '/model_weights.h5')

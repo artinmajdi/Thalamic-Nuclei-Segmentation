@@ -26,8 +26,6 @@ def subExperimentName(UserInfo):
 
     SubExperimentTag = UserInfo['SubExperiment'].Tag
 
-    if UserInfo['InputPadding'].Automatic: SubExperimentTag += 'AutoDim_'
-    if UserInfo['simulation'].save_Best_Epoch_Model: SubExperimentTag += 'BestEpch_'
     SubExperimentTag += UserInfo['Model_Method']
     
     
@@ -37,7 +35,7 @@ def subExperimentName(UserInfo):
     if UserInfo['Augment_Rotation'].Mode: readAugmentTag = 'wRot'   + str(UserInfo['Augment_Rotation'].AngleMax)
     elif UserInfo['Augment_Shear'].Mode:  readAugmentTag = 'wShear' + str(UserInfo['Augment_Shear'].ShearMax)
 
-    if readAugmentTag and (UserInfo['ReadTrain'].ET or UserInfo['ReadTrain'].Main): SubExperimentTag += readAugmentTag
+    if readAugmentTag and (UserInfo['ReadTrain'].ET or UserInfo['ReadTrain'].Main): SubExperimentTag += '_' + readAugmentTag
 
     # if int(UserInfo['simulation'].slicingDim[0]) != 2:
     SubExperimentTag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
@@ -64,7 +62,9 @@ def subExperimentName(UserInfo):
         if UserInfo['ReadTrain'].ET: SubExperimentTag += '_WET' 
         else: SubExperimentTag += '_WoET'                               
 
-    if UserInfo['simulation'].Initialize_From_3T: SubExperimentTag += '_Init_From_3T' 
+    if UserInfo['simulation'].Initialize_From_3T:    SubExperimentTag += '_Init_From_3T' 
+    if UserInfo['InputPadding'].Automatic:           SubExperimentTag += '_AutoDim'
+    if UserInfo['simulation'].save_Best_Epoch_Model: SubExperimentTag += '_BestEpch'
     
     return SubExperimentTag, readAugmentTag , SubExperimentTag_ModelInit
 
