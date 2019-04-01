@@ -257,8 +257,9 @@ def trainingExperiment(Data, params):
                 
                 checkpointer = ModelCheckpoint(filepath=params.directories.Train.Model + '/best_model_weights' + tagTF + '.h5', 
                                             monitor = 'val_Dice_Calculator', #Metrics.Dice_Calculator, # 'val_acc', #
-                                            verbose=1, save_best_only=True)
+                                            verbose=1, save_best_only=True, mode='max')
 
+                
                 # model2.save_weights(params.directories.Train.Model + '/model_weights' + tagTF + '.h5', overwrite=True )
                 return checkpointer, batch_size, epochs, valSplit_Per, verbose , ManualDataGenerator , Validation_fromKeras
             checkpointer, batch_size, epochs, valSplit_Per, verbose , ManualDataGenerator, Validation_fromKeras = func_modelParams()
