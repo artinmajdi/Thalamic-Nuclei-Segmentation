@@ -459,21 +459,22 @@ def preAnalysis(params):
 
         HardParams = params.WhichExperiment.HardParams
         
-        if params.WhichExperiment.Dataset.InputPadding.Automatic: 
-            inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
-            MinInputSize = np.min(inputSizes, axis=0)
-        else:
-            MinInputSize = params.WhichExperiment.Dataset.InputPadding.HardDimensions
+        if 'Cascade' in HardParams.Model.Method.Type:          
+            if params.WhichExperiment.Dataset.InputPadding.Automatic: 
+                inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
+                MinInputSize = np.min(inputSizes, axis=0)
+            else:
+                MinInputSize = params.WhichExperiment.Dataset.InputPadding.HardDimensions
 
-        kernel_size = HardParams.Model.Layer_Params.ConvLayer.Kernel_size.conv
-        num_Layers  = HardParams.Model.num_Layers
-        dim = HardParams.Model.Method.InputImage2Dvs3D
-        if np.min(MinInputSize[:dim] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0:  # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size
-            print('WARNING: INPUT IMAGE SIZE IS TOO SMALL FOR THE NUMBER OF LAYERS')
-            num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:dim],kernel_size) )) + 1))
-            print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
+            kernel_size = HardParams.Model.Layer_Params.ConvLayer.Kernel_size.conv
+            num_Layers  = HardParams.Model.num_Layers
+            dim = HardParams.Model.Method.InputImage2Dvs3D
+            if np.min(MinInputSize[:dim] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0:  # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size
+                print('WARNING: INPUT IMAGE SIZE IS TOO SMALL FOR THE NUMBER OF LAYERS')
+                num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:dim],kernel_size) )) + 1))
+                print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
 
-        params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
+            params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
         return params
 
     params = find_AllInputSizes(params)

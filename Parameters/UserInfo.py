@@ -22,7 +22,7 @@ class ReadTrain:
     ReadAugments = readAugments()
 
 class InputPadding:
-    Automatic = True
+    Automatic = False
     HardDimensions = [116,144,84]
 
 # sd0:  [288, 168, 228]
