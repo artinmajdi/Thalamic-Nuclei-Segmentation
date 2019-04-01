@@ -100,16 +100,8 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 
 
 # 1)
-UserInfoB['simulation'].Learning_Rate = 1e-2
-UserInfoB['simulation'].slicingDim = [2]
-IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
-try: Run(UserInfoB, IV)
-except: print('failed')
-
-# 2)
-UserInfoB['simulation'].Learning_Rate = 1e-4
-UserInfoB['simulation'].slicingDim = [2]
+# UserInfoB['simulation'].Learning_Rate = 1e-2
+# UserInfoB['simulation'].slicingDim = [2]
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
 try: Run(UserInfoB, IV)
