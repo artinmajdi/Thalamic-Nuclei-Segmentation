@@ -421,19 +421,38 @@ def architecture(params):
 
         return model
 
-    def FCN(Modelparam):
+    def FCN_3D(Modelparam):
+
+        NumberFM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
         dim = Modelparam.Method.InputImage2Dvs3D
         inputs = layers.Input( tuple(Modelparam.InputDimensions[:dim]) + (1,) )
 
         conv = inputs
         for nL in range(Modelparam.num_Layers -1):
             Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
-            conv = layers.Conv3D(filters=ModelParam.Layer_Params.FirstLayer_FeatureMap_Num*(2**nL), kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
+            conv = layers.Conv3D(filters=NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
             if Modelparam.Layer_Params.Dropout.Mode and Trainable: conv = layers.Dropout(Modelparam.Layer_Params.Dropout)(conv)
 
         final  = layers.Conv3D(filters=Modelparam.MultiClass.num_classes, kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.output, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.output)(conv)
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
+
+    def FCN_2D(Modelparam):
+
+        NumberFM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
+        dim = Modelparam.Method.InputImage2Dvs3D
+        inputs = layers.Input( tuple(Modelparam.InputDimensions[:dim]) + (1,) )
+
+        conv = inputs
+        for nL in range(Modelparam.num_Layers -1):
+            Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
+            conv = layers.Conv2D(filters=NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
+            if Modelparam.Layer_Params.Dropout.Mode and Trainable: conv = layers.Dropout(Modelparam.Layer_Params.Dropout)(conv)
+
+        final  = layers.Conv2D(filters=Modelparam.MultiClass.num_classes, kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.output, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.output)(conv)
+
+        return kerasmodels.Model(inputs=[inputs], outputs=[final])
+
 
     # params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
     ModelParam = params.WhichExperiment.HardParams.Model
@@ -442,6 +461,9 @@ def architecture(params):
 
     elif 'CNN_Classifier' in ModelParam.architectureType:
         model = CNN_Classifier(ModelParam)
+
+    elif 'FCN_2D' in ModelParam.architectureType:
+        model = FCN_2D(ModelParam)
 
     model.summary()
 

@@ -1,11 +1,11 @@
 
 
-Model_Method =  'HCascade' # 'HCascade' #
+Model_Method =  'FCN_2D' # HCascade' # 'HCascade' #
 Local_Flag = False
 
 class SubExperiment:
     Index = 10
-    Tag   = 'WoFixedCrop'
+    Tag   = '' # 'WoFixedCrop'
     
 class Experiments:
     Index = '7'
