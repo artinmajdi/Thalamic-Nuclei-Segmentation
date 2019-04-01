@@ -226,8 +226,8 @@ def trainingExperiment(Data, params):
             #     model2 = keras.models.model_from_json(json_file.read())
 
             # model2.load_weights("model.h5")
-            print('address': params.directories.Train.Model_3T + '/model_weights.h5')
-            print('exist': os.path.exists(params.directories.Train.Model_3T + '/model_weights.h5'))
+            print('address', params.directories.Train.Model_3T + '/model_weights.h5')
+            print('exist', os.path.exists(params.directories.Train.Model_3T + '/model_weights.h5'))
             try:
                 if params.WhichExperiment.Nucleus.Index[0] != 1 and params.WhichExperiment.HardParams.Model.InitializeFromThalamus and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
                     model2.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
