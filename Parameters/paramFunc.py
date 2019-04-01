@@ -26,8 +26,8 @@ def subExperimentName(UserInfo):
 
     SubExperimentTag = UserInfo['SubExperiment'].Tag
 
-    if UserInfo['InputPadding'].Automatic: SubExperimentTag += 'AutoDim'
-    if UserInfo['simulation'].save_Best_Epoch_Model: SubExperimentTag += 'BestEpch'
+    if UserInfo['InputPadding'].Automatic: SubExperimentTag += 'AutoDim_'
+    if UserInfo['simulation'].save_Best_Epoch_Model: SubExperimentTag += 'BestEpch_'
     SubExperimentTag += UserInfo['Model_Method']
     
     
