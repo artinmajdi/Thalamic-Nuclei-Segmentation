@@ -60,13 +60,13 @@ K = gpuSetting(params)
 # else:
 
 # dir = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/models/sE10_CascadewRot7_6cnts_sd1_Dt0.3_LR0.001_MpByTH_WoET/'
-dir = params.directories.Train.Model
+
 print(dir)
 # dir = '/home/artinl/Documents/research/sE8_Cascade_sd2_Dt0.3_LR0.001_NL3_FM64_MpByTH_SRI/'
 model = kerasmodels.load_model(dir + '/model.h5')
 
 print('---')
-keras.utils.plot_model(model,to_file=dir+'/FeatureMaps.png',show_layer_names=True,show_shapes=True)
+keras.utils.plot_model(model,to_file=params.directories.Train.Model+'/Architecture.png',show_layer_names=True,show_shapes=True)
 
 
 

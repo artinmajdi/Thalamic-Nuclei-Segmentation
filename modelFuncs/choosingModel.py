@@ -208,25 +208,28 @@ def trainingExperiment(Data, params):
 
             with open(params.directories.Train.Model + '/model' + tagTF + '.json', "w") as json_file:
                 json_file.write(model2.to_json())
-                                    
+
+            keras.utils.plot_model(model,to_file=params.directories.Train.Model+'/Architecture.png',show_layer_names=True,show_shapes=True)
+            
         def modelInitialize(model2):
 
             # with open(params.directories.Train.Model + '/model' + tagTF + '.json', 'r') as json_file:
             #     model2 = keras.models.model_from_json(json_file.read())
 
             # model2.load_weights("model.h5")
-                                     
-            if params.WhichExperiment.Nucleus.Index[0] != 1 and params.WhichExperiment.HardParams.Model.InitializeFromThalamus and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
-                model2.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
-            elif params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
-                model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
-            elif params.WhichExperiment.HardParams.Model.Initialize_From_3T and os.path.exists(params.directories.Train.Model_3T + '/model_weights.h5'):
-                model2.load_weights(params.directories.Train.Model_3T + '/model_weights.h5')
-                print('Model_3T' , params.directories.Train.Model_3T)
+            try:
+                if params.WhichExperiment.Nucleus.Index[0] != 1 and params.WhichExperiment.HardParams.Model.InitializeFromThalamus and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
+                    model2.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
+                elif params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
+                    model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
+                elif params.WhichExperiment.HardParams.Model.Initialize_From_3T and os.path.exists(params.directories.Train.Model_3T + '/model_weights.h5'):
+                    model2.load_weights(params.directories.Train.Model_3T + '/model_weights.h5')
+                    print('Model_3T' , params.directories.Train.Model_3T)
 
-            if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode:
-                model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
-
+                if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode:
+                    model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
+            except: 
+                print('loading Initial Weights Failed')
             return model2
 
         def modelFit(params):
