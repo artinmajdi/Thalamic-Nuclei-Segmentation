@@ -201,6 +201,10 @@ def terminalEntries(UserInfo):
             if sys.argv[en+1].lower() == 'all':
                 _, UserInfo['simulation'].nucleus_Index,_ = NucleiSelection(ind = 1)
 
+            elif sys.argv[en+1].lower() == 'allh':
+                _, NucleiIndexes ,_ = NucleiSelection(ind = 1) 
+                UserInfo['simulation'].nucleus_Index = tuple(NucleiIndexes) + tuple([1.1,1.2,1.3])
+
             elif sys.argv[en+1][0] == '[':
                 B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
                 UserInfo['simulation'].nucleus_Index = [int(k) for k in B]

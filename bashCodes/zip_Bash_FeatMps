@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+
+cd /array/ssd/msmajdi/experiments/keras/
+# tar -cvzf All.zip exp*/results/All_*
+
+
+tar -cvzf FeatureMaps.zip exp*/models/sE*/*/FeatureMaps

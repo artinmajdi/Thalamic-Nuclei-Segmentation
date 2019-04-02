@@ -12,6 +12,9 @@ import keras.models as kerasmodels
 import keras
 import matplotlib.pyplot as plt
 import skimage
+import PIL
+from tqdm import tqdm
+
 class LoadingData:
     def __init__(self): pass
         
@@ -29,14 +32,15 @@ class LoadingData:
             from keras import backend as K
             K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
             self.K = K
-
             
         self.UserInfoB = smallFuncs.terminalEntries(self.UserInfoB)
         self.UserInfoB['simulation'].TestOnly = True
         self.params = paramFunc.Run(self.UserInfoB)
+
         return gpuSetting(self)
         
     def ReadData(self):
+        self.params = paramFunc.Run(self.UserInfoB)
         self.Data, self.params = datasets.loadDataset(self.params)
         self.params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data = False
         return self.Data
@@ -55,7 +59,6 @@ class LoadingData:
         self.Layers = Layers()
 
         self.model_wAllLayers = keras.models.Model(inputs=self.Layers.Input, outputs=self.Layers.Outputs)
-import PIL
 
 class Visualize_FeatureMaps(LoadingData):
 
@@ -117,30 +120,38 @@ class Visualize_FeatureMaps(LoadingData):
             return image.astype(np.uint8)
 
         image = normalize(self.oneLayerInfo.Image)
-        print(self.subject.name, self.subject.Slice , 'saving layer:',self.oneLayerInfo.layer_name)
+        # print(self.subject.name, self.subject.Slice , 'saving layer:',self.oneLayerInfo.layer_name)
         smallFuncs.mkDir(self.params.directories.Train.Model + '/FeatureMaps/' + self.subject.name + '/' + str(self.subject.Slice) )
         im = PIL.Image.fromarray(image).save(self.params.directories.Train.Model + '/FeatureMaps/' + self.subject.name + '/' + str(self.subject.Slice) + '/' + str(self.oneLayerInfo.layer_num) + '_' + self.oneLayerInfo.layer_name + '.png')
         
     def save_All_Layers(self):
-        for layer_num in range(len(self.Layers.Names)):
+        for layer_num in tqdm(range(len(self.Layers.Names)),desc='saving All Layers ' + self.subject.name + ' Slice ' + str(self.subject.Slice)):
             self.concatenate_pred(layer_num)
             self.save_OneLayer()
-        
+       
 VFM = Visualize_FeatureMaps()
-VFM.PreMode(UserInfo,('GPU',"5"))
-VFM.ReadData()
-VFM.LoadModel()
+VFM.PreMode(UserInfo,('GPU',"5"))  
+Nuclei_Indexes = VFM.UserInfoB['simulation'].nucleus_Index.copy()
 
-for subject_Index in range(len(list(VFM.Data.Test))):
-    for slice in [10,45,70]:
-        VFM.predict(subject_Index=subject_Index , slice=slice)
-        # VFM.concatenate_pred(layer_num=6)
-        # VFM.show('gray')
-        VFM.save_All_Layers()
+print('address',VFM.params.directories.Train.Model)
+for VFM.UserInfoB['simulation'].nucleus_Index in Nuclei_Indexes:  
+    print('nucleus' , VFM.UserInfoB['simulation'].nucleus_Index )    
+    VFM.ReadData()
+    VFM.LoadModel()
+
+    for subject_Index in range(len(list(VFM.Data.Test))):
+        a = VFM.Data.Test[list(VFM.Data.Test)[subject_Index]].Image.shape[0]
+        for slice in [7,int(a/2),a-7]:
+            VFM.predict(subject_Index=subject_Index , slice=slice)
+            # VFM.concatenate_pred(layer_num=6)
+            # VFM.show('gray')
+            VFM.save_All_Layers()
 
 
 
 print('---')
+
+os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_FeatMps')
 
 # keras.utils.plot_model(model,to_file=params.directories.Train.Model+'/Architecture.png',show_layer_names=True,show_shapes=True)
 VFM.K.clear_session()

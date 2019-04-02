@@ -33,23 +33,26 @@ def runOneExperiment(UserInfoB):
             nucleusNm, _,_ = smallFuncs.NucleiSelection(ind = nucleiIx)            
             if os.path.isfile(params.directories.Test.Result + '/' + sj + '/' + nucleusNm + '.nii.gz'):
                 
-                print(subject.subjectName, nucleusNm)                
-                for slicingDim in range(3):
-                    UserInfoB['simulation'].slicingDim = [slicingDim]
-                    params = paramFunc.Run(UserInfoB)   
-                    pred = nib.load(params.directories.Test.Result + '/' + sj + '/' + nucleusNm + '.nii.gz').get_data()[...,np.newaxis]
-                    ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
-                    
-                    pred3Dims = pred if slicingDim == 0 else np.concatenate((pred3Dims,pred),axis=3)
+                print(subject.subjectName, nucleusNm)    
+                try:            
+                    for slicingDim in range(3):
+                        UserInfoB['simulation'].slicingDim = [slicingDim]
+                        params = paramFunc.Run(UserInfoB)   
+                        pred = nib.load(params.directories.Test.Result + '/' + sj + '/' + nucleusNm + '.nii.gz').get_data()[...,np.newaxis]
+                        ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
+                        
+                        pred3Dims = pred if slicingDim == 0 else np.concatenate((pred3Dims,pred),axis=3)
 
-                Image1 = pred3Dims[...,1:].sum(axis=3) >= 1
-                saveImageDice(Image1, ManualLabel, dirSave + '_1.5D_Sum', sj, nucleusNm, nucleiIx)
+                    Image1 = pred3Dims[...,1:].sum(axis=3) >= 1
+                    saveImageDice(Image1, ManualLabel, dirSave + '_1.5D_Sum', sj, nucleusNm, nucleiIx)
 
-                Image1 = pred3Dims.sum(axis=3) >= 2
-                saveImageDice(Image1, ManualLabel, dirSave + '_2.5D_MV', sj, nucleusNm, nucleiIx)
+                    Image1 = pred3Dims.sum(axis=3) >= 2
+                    saveImageDice(Image1, ManualLabel, dirSave + '_2.5D_MV', sj, nucleusNm, nucleiIx)
 
-                Image2 = pred3Dims.sum(axis=3) >= 1
-                saveImageDice(Image2, ManualLabel, dirSave + '_2.5D_Sum', sj, nucleusNm, nucleiIx)
+                    Image2 = pred3Dims.sum(axis=3) >= 1
+                    saveImageDice(Image2, ManualLabel, dirSave + '_2.5D_Sum', sj, nucleusNm, nucleiIx)
+                except:
+                    print('failed')
                 
     return dirSave
 

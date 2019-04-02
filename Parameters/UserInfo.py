@@ -4,7 +4,7 @@ Model_Method =  'HCascade' #'FCN_2D' # HCascade' #
 Local_Flag = False
 
 class SubExperiment:
-    Index = 10
+    Index = 8
     Tag   = ''
     
 class Experiments:
@@ -12,7 +12,7 @@ class Experiments:
     Tag = 'cascadeV1'
 
 class readAugments:
-    Mode = False
+    Mode = True
     Tag = ''
 
 class ReadTrain:
@@ -43,8 +43,8 @@ class simulation:
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1]
-    slicingDim    = [2] # [0,1,2]
+    nucleus_Index = [11]
+    slicingDim    = [0] # [0,1,2]
     batch_size    = 80
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 64
@@ -54,9 +54,9 @@ class simulation:
     Initialize_FromThalamus   = False
     Initialize_FromOlderModel = False
     Initialize_From_3T = True
-    Weighted_Class_Mode = True
+    Weighted_Class_Mode = False
 
-    save_Best_Epoch_Model = True
+    save_Best_Epoch_Model = False
 
 mode_saveTrue_LoadFalse = True
 DropoutValue = 0.3

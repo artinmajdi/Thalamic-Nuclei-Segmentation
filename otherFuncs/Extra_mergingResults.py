@@ -83,7 +83,6 @@ class savingHistory_AsExcel:
         writer.close()
 
 class mergingDiceValues:
-
     def __init__(self, Info):
 
         self.Info = Info
@@ -115,17 +114,11 @@ class mergingDiceValues:
             self.Nuclei_Names = func_Nuclei_Names()
             self.Ind_Data = np.array([  func_Load_AllNuclei_Dices(self)  for self.subject in subject_List(self)  ]) 
 
-            # print(self.df_IndSubj)
-
             self.df_IndSubj[self.Nuclei_Names[0]] = self.Ind_Data[:,0]
             for nIx, nucleus in enumerate(self.Nuclei_Names[1:]): 
                 self.df_IndSubj[nucleus] = self.Ind_Data[:,nIx+1].astype(np.float16)
             
-            self.df_AD[self.TgLst[0]] = self.Ind_Data[:,1:].astype(np.float16).mean(axis=0)[:17]
-            # def save_subExp_DiceCSV(self):
-                # self.df_IndSubj.to_excel(  self.writer, sheet_name=self.TgLst[0] )
-                # self.df_AD.to_excel(  self.writer, sheet_name=self.TgLst[0] )
-            # save_subExp_DiceCSV(self)   
+            self.df_AD[self.TgLst[0]] = np.median(self.Ind_Data[:,1:].astype(np.float16),axis=0)[:17] 
             self.df_IndSubj.to_excel(  self.writer, sheet_name=self.TgLst[0] )         
 
         def save_TagList_AllDice(self):
@@ -173,4 +166,4 @@ for expName in Info_Search().All_Experiments_List:
     mergingDiceValues(Info)
     savingHistory_AsExcel(Info)
 
-os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash')
+os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
