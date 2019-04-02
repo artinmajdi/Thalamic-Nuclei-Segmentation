@@ -46,6 +46,7 @@ def subExperimentName(UserInfo):
       
     if UserInfo['simulation'].Multiply_By_Thalmaus: SubExperimentTag += '_MpByTH'  
     if UserInfo['ReadTrain'].SRI: SubExperimentTag += '_SRI'    
+    if UserInfo['simulation'].Weighted_Class_Mode: SubExperimentTag += '_WeightedClass' 
     # else: SubExperimentTag += '_notMpByTH'  
 
     SubExperimentTag_ModelInit  = 'sE8_'
@@ -118,6 +119,10 @@ def func_WhichExperiment(UserInfo):
                 Stage = 0 # 1
                 FrozenLayers = [0,1]
 
+            
+            class classWeight:
+                Weight = {0:1 , 1:1}
+                Mode = False
             class layer_Params:
                 FirstLayer_FeatureMap_Num = 64
                 batchNormalization = True
@@ -125,7 +130,7 @@ def func_WhichExperiment(UserInfo):
                 MaxPooling = maxPooling()
                 Dropout = dropout()
                 Activitation = activation()
-                class_weight = {}
+                class_weight = classWeight()
 
             class model:
                 architectureType = 'U-Net'
@@ -402,6 +407,8 @@ def func_WhichExperiment(UserInfo):
             Layer_Params.ConvLayer.Kernel_size = kernel_size()
             Layer_Params.MaxPooling = maxPooling()
             Layer_Params.Dropout.Value = UserInfo['DropoutValue']
+            Layer_Params.class_weight.Mode = UserInfo['simulation'].Weighted_Class_Mode
+
             return Layer_Params
 
         HardParams.Template = UserInfo['Template']()

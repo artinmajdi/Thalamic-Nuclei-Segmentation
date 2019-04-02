@@ -12,7 +12,7 @@ class Experiments:
     Tag = 'cascadeV1'
 
 class readAugments:
-    Mode = True
+    Mode = False
     Tag = ''
 
 class ReadTrain:
@@ -37,14 +37,14 @@ class Transfer_Learning:
     Stage = 0
 
 class simulation:
-    TestOnly      = True
+    TestOnly      = False
     epochs        = 100
-    GPU_Index     = "7"
+    GPU_Index     = "3"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
     nucleus_Index = [1]
-    slicingDim    = [0,1,2]
+    slicingDim    = [2] # [0,1,2]
     batch_size    = 80
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 64
@@ -54,6 +54,7 @@ class simulation:
     Initialize_FromThalamus   = False
     Initialize_FromOlderModel = False
     Initialize_From_3T = True
+    Weighted_Class_Mode = True
 
     save_Best_Epoch_Model = True
 

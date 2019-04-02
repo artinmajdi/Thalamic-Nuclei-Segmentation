@@ -283,6 +283,17 @@ def trainingExperiment(Data, params):
                 return hist
             if ManualDataGenerator: hist = RunGenerator(params)
             else:
+
+                def func_classWeights():
+
+                    if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode:
+                        Sz = Data.Train.Mask.shape
+                        a = np.sum(Data.Train.Mask[...,0] < 0.5) / (Sz[0]*Sz[1]*Sz[2])
+                        return {0:1-a , 1:a}
+                    else:
+                        return {0:1 , 1:1}
+                class_weight = func_classWeights()
+                # add this to model.fit  class_weight=class_weight
                 if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=[checkpointer]) # , callbacks=[TQDMCallback()])
                 else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=[checkpointer]) # , callbacks=[TQDMCallback()])        
                 
@@ -291,7 +302,7 @@ def trainingExperiment(Data, params):
         model = modelInitialize(model)
 
         if len(params.WhichExperiment.HardParams.Machine.GPU_Index) > 1:   model = multi_gpu_model(model)
-
+        
         model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
 
         hist = modelFit(params)
