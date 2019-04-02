@@ -53,6 +53,11 @@ def loadModel(params):
 
 def testingExeriment(model, Data, params):
 
+    # To Do ; should remove it after running it for all trained networks so fat
+    if params.WhichExperiment.HardParams.Model.Method.save_Best_Epoch_Model:
+        tagTF = '_TF' if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
+        model.load_weights(params.directories.Train.Model + '/best_model_weights' + tagTF + '.h5')
+        
     class prediction:
         Test = ''
         Train = ''
@@ -216,10 +221,9 @@ def trainingExperiment(Data, params):
                 json_file.write(model2.to_json())
 
             keras.utils.plot_model(model,to_file=params.directories.Train.Model+'/Architecture.png',show_layer_names=True,show_shapes=True)
-            
 
-            
-
+            return model2
+                    
         def modelInitialize(model2):
 
             # with open(params.directories.Train.Model + '/model' + tagTF + '.json', 'r') as json_file:
@@ -277,7 +281,6 @@ def trainingExperiment(Data, params):
                 hist = model.fit_generator(generator=training_generator, validation_data=validation_generator, verbose=1)   # , use_multiprocessing=True, workers=20
                 f.close()
                 return hist
-
             if ManualDataGenerator: hist = RunGenerator(params)
             else:
                 if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=[checkpointer]) # , callbacks=[TQDMCallback()])
@@ -293,7 +296,7 @@ def trainingExperiment(Data, params):
 
         hist = modelFit(params)
 
-        saveModel_h5(model, params)
+        model = saveModel_h5(model, params)
         if ModelParam.showHistory: print(hist.history)
 
         return model, hist
@@ -373,7 +376,7 @@ def architecture(params):
     
     def UNet(Modelparam):
 
-        NumberFM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
+        NumberFM = Modelparam.Layer_Params.FirstLayer_FeatureMap_Num
 
         def Unet_sublayer_Contracting(inputs, nL, Modelparam):
 

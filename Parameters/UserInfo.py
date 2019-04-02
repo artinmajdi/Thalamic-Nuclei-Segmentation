@@ -37,7 +37,7 @@ class Transfer_Learning:
     Stage = 0
 
 class simulation:
-    TestOnly      = False
+    TestOnly      = True
     epochs        = 100
     GPU_Index     = "7"
     Learning_Rate = 1e-3

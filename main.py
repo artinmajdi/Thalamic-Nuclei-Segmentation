@@ -16,9 +16,7 @@ class InitValues:
              _, self.Nuclei_Indexes,_ = smallFuncs.NucleiSelection(ind = 1)
         else:
             self.Nuclei_Indexes = Nuclei_Indexes.copy()
-        
-           
-
+                
 def gpuSetting(params):
     
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
@@ -85,21 +83,16 @@ def Run(UserInfoB,InitValues):
     elif UserInfoB['Model_Method'] == 'Cascade' :  CacadeStages(UserInfoB)
     elif UserInfoB['Model_Method'] == 'singleRun': Run_SingleNuclei(UserInfoB)
 
-
 def preMode(UserInfo):
     UserInfoB = smallFuncs.terminalEntries(UserInfo)
     params = paramFunc.Run(UserInfoB)
     datasets.movingFromDatasetToExperiments(params)
     applyPreprocess.main(params, 'experiment')
     K = gpuSetting(params)
-
     return UserInfoB, K
-
 UserInfoB, K = preMode(UserInfo.__dict__)
 
 
-
-# 1)
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
 Run(UserInfoB, IV)
