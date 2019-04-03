@@ -390,7 +390,6 @@ def search_ExperimentDirectory(whichExperiment):
     class test:
         address = whichExperiment.Experiment.address + '/test'
         Result  = whichExperiment.Experiment.address + '/results/' + whichExperiment.SubExperiment.name
-        Result_Coronal = whichExperiment.Experiment.address + '/results/' + whichExperiment.SubExperiment.name_Coronal
         Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
 
     class Directories:

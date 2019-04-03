@@ -1,10 +1,10 @@
 
 
-Model_Method =  'HCascade' #'FCN_2D' # HCascade' # 
+Model_Method =  'Cascade' #'FCN_2D' # HCascade' # 
 Local_Flag = False
 
 class SubExperiment:
-    Index = 8
+    Index = 11
     Tag   = ''
     
 class Experiments:
@@ -12,18 +12,18 @@ class Experiments:
     Tag = 'cascadeV1'
 
 class readAugments:
-    Mode = False
+    Mode = True
     Tag = ''
 
 class ReadTrain:
     SRI = False
-    ET = True
-    Main = False
+    ET = False
+    Main = True
     ReadAugments = readAugments()
 
 class InputPadding:
-    Automatic = False
-    HardDimensions = [116,144,84]
+    Automatic = True
+    HardDimensions = [1,1,1] # [116,144,84]
 
 
 # sd0:  [288, 168, 228]
@@ -38,14 +38,14 @@ class Transfer_Learning:
 
 class simulation:
     TestOnly      = False
-    epochs        = 100
+    epochs        = 70
     GPU_Index     = "3"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [11]
-    slicingDim    = [0] # [0,1,2]
-    batch_size    = 80
+    nucleus_Index = [1]
+    slicingDim    = [2] # [0,1,2]
+    batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 64
     verbose = 1
@@ -56,7 +56,7 @@ class simulation:
     Initialize_From_3T = True
     Weighted_Class_Mode = False
 
-    save_Best_Epoch_Model = False
+    save_Best_Epoch_Model = True
     Use_Coronal_Thalamus_InSagittal = True
 
 mode_saveTrue_LoadFalse = True
@@ -96,7 +96,7 @@ Augment_Linear_Length = 6
 
 class Augment_Rotation:
     Mode = True
-    AngleMax = 7 # '7_6cnts' # '7' # 7_4cnts
+    AngleMax = '7_6cnts' # '7' # 7_4cnts
 
 class Augment_Shear:
     Mode = False

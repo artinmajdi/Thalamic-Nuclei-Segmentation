@@ -52,8 +52,8 @@ def subExperimentName(UserInfo):
     SubExperimentTag_ModelInit  = 'sE8_'
     SubExperimentTag_ModelInit += UserInfo['Model_Method']
     SubExperimentTag_ModelInit += '_sd' + str(UserInfo['simulation'].slicingDim[0])
-    SubExperimentTag_ModelInit += '_Dt' + '0.3'
-    SubExperimentTag_ModelInit += '_LR' + '0.001'    
+    # SubExperimentTag_ModelInit += '_Dt' + '0.3'
+    # SubExperimentTag_ModelInit += '_LR' + '0.001'    
     SubExperimentTag_ModelInit += '_NL' + str(UserInfo['simulation'].num_Layers)
     SubExperimentTag_ModelInit += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
     SubExperimentTag_ModelInit += '_MpByTH' 
