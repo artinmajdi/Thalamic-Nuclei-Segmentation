@@ -369,11 +369,12 @@ def search_ExperimentDirectory(whichExperiment):
         if whichExperiment.Dataset.ReadTrain.Main and os.path.exists( Dir + '/Main' ): Input = LoopReadingData(Input, Dir + '/Main')
         if whichExperiment.Dataset.ReadTrain.ET   and os.path.exists( Dir + '/ET' ):   Input = LoopReadingData(Input, Dir + '/ET')            
         if whichExperiment.Dataset.ReadTrain.SRI  and os.path.exists( Dir + '/SRI' ):  Input = LoopReadingData(Input, Dir + '/SRI')
-
-        DirAug = Dir + '/Augments/' + whichExperiment.Dataset.ReadTrain.ReadAugments.Tag 
+        
         if whichExperiment.Dataset.ReadTrain.ReadAugments.Mode:
-            if whichExperiment.Dataset.ReadTrain.Main and os.path.exists( DirAug + '/Main' ): Input = LoopReadingData( Input, DirAug + '/Main'  )
-            if whichExperiment.Dataset.ReadTrain.ET   and os.path.exists( DirAug + '/ET' ):   Input = LoopReadingData( Input, DirAug + '/ET'  )
+            DirAug = Dir + '/Augments/' + whichExperiment.Dataset.ReadTrain.ReadAugments.Tag 
+            sdTag = '/sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim)
+            if whichExperiment.Dataset.ReadTrain.Main and os.path.exists( DirAug + '/Main' + sdTag):  Input = LoopReadingData( Input, DirAug + '/Main' + sdTag  )
+            if whichExperiment.Dataset.ReadTrain.ET   and os.path.exists( DirAug + '/ET'   + sdTag ): Input = LoopReadingData( Input, DirAug + '/ET'   + sdTag  )
                 
         return Input
 
@@ -385,7 +386,6 @@ def search_ExperimentDirectory(whichExperiment):
         Model_3T       = whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name_Init_3T  + '/' + whichExperiment.Nucleus.name
 
         Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
-
     
     class test:
         address = whichExperiment.Experiment.address + '/test'
