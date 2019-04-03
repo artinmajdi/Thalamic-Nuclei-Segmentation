@@ -12,7 +12,7 @@ class Experiments:
     Tag = 'cascadeV1'
 
 class readAugments:
-    Mode = True
+    Mode = False
     Tag = ''
 
 class ReadTrain:
