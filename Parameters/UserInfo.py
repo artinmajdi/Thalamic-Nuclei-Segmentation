@@ -49,7 +49,7 @@ class simulation:
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 64
     verbose = 1
-    Multiply_By_Thalmaus = True
+    Multiply_By_Thalmaus = False
 
     Initialize_FromThalamus   = False
     Initialize_FromOlderModel = False
@@ -57,6 +57,7 @@ class simulation:
     Weighted_Class_Mode = False
 
     save_Best_Epoch_Model = False
+    Use_Coronal_Thalamus_InSagittal = True
 
 mode_saveTrue_LoadFalse = True
 DropoutValue = 0.3

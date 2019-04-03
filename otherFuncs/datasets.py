@@ -121,13 +121,17 @@ def loadDataset(params):
                 struc = ndimage.iterate_structure(struc, params.WhichExperiment.Dataset.gapDilation )
                 return ndimage.binary_dilation(mask, structure=struc)
 
-            Dirr = params.directories.Test.Result
-            if 'train' in mode: Dirr += '/TrainData_Output'
-
-            _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.nii.gz' , params)
-
-            
             if params.WhichExperiment.HardParams.Model.Method.Multiply_By_Thalmaus: 
+
+                sd , Method = params.WhichExperiment.Dataset.slicingInfo.slicingDim  ,  params.WhichExperiment.HardParams.Model.Method
+                if sd == 0 and Method.Use_Coronal_Thalamus_InSagittal and Method.ReferenceMask == '1-THALAMUS':                    
+                    Dirr = params.directories.Test.Result.replace('_sd0', '_sd2')
+                else:
+                    Dirr = params.directories.Test.Result
+                    
+                if 'train' in mode: Dirr += '/TrainData_Output'
+                                
+                _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.nii.gz' , params)
                 Cascade_Mask_Dilated = dilateMask(Cascade_Mask)
                 imm[Cascade_Mask_Dilated == 0] = 0
             
@@ -413,11 +417,11 @@ def preAnalysis(params):
             # '_sd' + str(UserInfo['simulation'].slicingDim[0])
             def readingCascadeCropSizes(subject):
 
-                # if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0 and params.WhichExperiment.HardParams.Model.Method.Use_Coronal_For_Thalamus:                    
-                #     tag = '_sd' + params.WhichExperiment.Dataset.slicingInfo.slicingDim
-                #     dirr = params.directories.Test.Result.replace(tag, '_sd2')
-                # else:
-                dirr = params.directories.Test.Result
+                sd , Method = params.WhichExperiment.Dataset.slicingInfo.slicingDim  ,  params.WhichExperiment.HardParams.Model.Method
+                if sd == 0 and Method.Use_Coronal_Thalamus_InSagittal and Method.ReferenceMask == '1-THALAMUS':                    
+                    dirr = params.directories.Test.Result.replace('_sd0' , '_sd2')
+                else:
+                    dirr = params.directories.Test.Result
 
                 if 'train' in mode: dirr += '/TrainData_Output'
 

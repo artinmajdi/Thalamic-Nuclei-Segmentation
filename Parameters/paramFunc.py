@@ -109,6 +109,7 @@ def func_WhichExperiment(UserInfo):
                     InputImage2Dvs3D = 2
                     Multiply_By_Thalmaus = True
                     save_Best_Epoch_Model = False
+                    Use_Coronal_Thalamus_InSagittal = False
 
                 return dropout, activation, convLayer, multiclass, maxPooling, method
 
@@ -156,6 +157,7 @@ def func_WhichExperiment(UserInfo):
                 paddingErrorPatience = 20
                 Transfer_Learning = transfer_Learning()
                 ManualDataGenerator = False
+                
                 
 
             lossFunctionIx = 5
@@ -432,6 +434,7 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.Method.InputImage2Dvs3D      = UserInfo['simulation'].InputImage2Dvs3D
         HardParams.Model.Method.havingBackGround_AsExtraDimension = UserInfo['havingBackGround_AsExtraDimension']
         HardParams.Model.Method.Multiply_By_Thalmaus  = UserInfo['simulation'].Multiply_By_Thalmaus
+        HardParams.Model.Method.Use_Coronal_Thalamus_InSagittal = UserInfo['simulation'].Use_Coronal_Thalamus_InSagittal
 
         HardParams.Model.MultiClass.num_classes = func_NumClasses()
         HardParams.Model.Layer_Params = func_Layer_Params(UserInfo)
