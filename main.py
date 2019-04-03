@@ -63,20 +63,21 @@ def Run(UserInfoB,InitValues):
 
         for sd in InitValues.slicingDim:
 
-            UserInfoB['simulation'].slicingDim = [sd]                       
-            # UserInfoB['simulation'].epochs = 30  if UserInfoB['simulation'].nucleus_Index == 1 else 70
-            params = paramFunc.Run(UserInfoB)
+            if not (sd == 0 and UserInfoB['nucleus_Index'] == 1):
+                UserInfoB['simulation'].slicingDim = [sd]                       
+                # UserInfoB['simulation'].epochs = 30  if UserInfoB['simulation'].nucleus_Index == 1 else 70
+                params = paramFunc.Run(UserInfoB)
 
-            print('---------------------------------------------------------------')
-            print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | slicingDim',sd, \
-                ' | Dropout', UserInfoB['DropoutValue'] , ' | Learning_Rate' , UserInfoB['simulation'].Learning_Rate, ' | num_Layers' , UserInfoB['simulation'].num_Layers,\
-                ' | Multiply_By_Thalmaus',UserInfoB['simulation'].Multiply_By_Thalmaus )
+                print('---------------------------------------------------------------')
+                print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | slicingDim',sd, \
+                    ' | Dropout', UserInfoB['DropoutValue'] , ' | Learning_Rate' , UserInfoB['simulation'].Learning_Rate, ' | num_Layers' , UserInfoB['simulation'].num_Layers,\
+                    ' | Multiply_By_Thalmaus',UserInfoB['simulation'].Multiply_By_Thalmaus )
 
-            print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
-            print('---------------------------------------------------------------')
-            Data, params = datasets.loadDataset(params)
-            try: choosingModel.check_Run(params, Data)
-            except: print('failed')
+                print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
+                print('---------------------------------------------------------------')
+                Data, params = datasets.loadDataset(params)
+                try: choosingModel.check_Run(params, Data)
+                except: print('failed')
 
 
     if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages(UserInfoB)

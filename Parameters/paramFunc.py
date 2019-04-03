@@ -371,7 +371,7 @@ def func_WhichExperiment(UserInfo):
 
         def func_NumClasses():
 
-            num_classes = len(nucleus_Index) if HardParams.Model.MultiClass.mode else 1
+            num_classes = len(UserInfo['nucleus_Index']) if HardParams.Model.MultiClass.mode else 1
             if HardParams.Model.Method.havingBackGround_AsExtraDimension: num_classes += 1 
                 
             return num_classes

@@ -17,8 +17,8 @@ class readAugments:
 
 class ReadTrain:
     SRI = False
-    ET = False
-    Main = True
+    ET = True
+    Main = False
     ReadAugments = readAugments()
 
 class InputPadding:
@@ -95,7 +95,7 @@ Augment_Linear_Length = 6
 
 class Augment_Rotation:
     Mode = True
-    AngleMax = '7_6cnts' # '7' # 7_4cnts
+    AngleMax = 7 # '7_6cnts' # '7' # 7_4cnts
 
 class Augment_Shear:
     Mode = False

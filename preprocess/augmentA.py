@@ -9,34 +9,6 @@ import otherFuncs.smallFuncs as smallFuncs
 import os
 import skimage
 import numpy as np
-import preprocess.normalizeA as normalizeA
-
-def funcShearing(Image, Shear, Order):    
-    inverse_map = skimage.transform.AffineTransform(shear= np.deg2rad(Shear)) #  * 0.01745   # 0.01745 = pi/180
-
-    if np.random.randint(low=0, high=2) == 1: inverse_map = inverse_map.inverse
-    for i in range(Image.shape[2]):        
-        Image[...,i] = skimage.transform.warp(Image[...,i], inverse_map=inverse_map, order=Order, clip=True, preserve_range=True,output_shape=tuple(Image.shape[:2]))
-        
-    return Image   
-
-def funcScaling(Image, Scale):    
-    for i in range(Image.shape[2]):
-        Image[...,i] = skimage.transform.AffineTransform(Image[...,i] , scale=Scale) 
-    return Image 
-
-def funcRotating(Image , angle , order):
-    for i in range(Image.shape[2]):
-        Image[...,i] = skimage.transform.rotate(Image[...,i] ,angle, order=order, preserve_range=True)
-        # Image[...,i] = imrotate(Image[...,i],angle)        
-    return Image
-
-def funcShifting(Image , shift):
-
-    Image = np.roll(Image,shift[0],axis=0)
-    Image = np.roll(Image,shift[1],axis=1)
-
-    return Image
 
 def indexFunc(L,AugmentLength, ind):
 
@@ -51,70 +23,104 @@ def indexFunc(L,AugmentLength, ind):
 
 def LinearFunc(params, mode):
 
-    def nameOutput(nameSubject, InputThreshs, AugIx):
-        nameSubject2 = nameSubject + '_Aug' + str(AugIx)
-        if params.Augment.Linear.Rotation.Mode: nameSubject2 += '_Rot_'   + str(InputThreshs.angle) 
-        if params.Augment.Linear.Shift.Mode:    nameSubject2 += '_shift_' + str(InputThreshs.shift[0]) + '-' + str(InputThreshs.shift[1])
-        if params.Augment.Linear.Shear.Mode:    nameSubject2 += '_Shear_' + str(InputThreshs.Shear) 
-        return nameSubject2
-        
-    def inputThresholds():
-        angleMax = params.Augment.Linear.Rotation.AngleMax
-        shiftMax = params.Augment.Linear.Shift.ShiftMax              
-        ShearMax = params.Augment.Linear.Shear.ShearMax
+    class linearFuncs_Class():    
+        def __init__(self, params, nameSubject, AugIx , subject):
+            self.params = params
+            self.subject = subject
 
-        class InputThreshs:
-            angle = np.random.random_integers(-angleMax,angleMax)
-            shift = [ np.random.random_integers(-shiftMax,shiftMax) , np.random.random_integers(-shiftMax,shiftMax)]
-            Shear = np.random.random_integers(-ShearMax,ShearMax)
+            def inputThresholds(self):
+                angleMax = self.params.Augment.Linear.Rotation.AngleMax
+                shiftMax = self.params.Augment.Linear.Shift.ShiftMax              
+                ShearMax = self.params.Augment.Linear.Shear.ShearMax
 
-        if InputThreshs.angle == 0: InputThreshs.angle = np.random.random_integers(-angleMax,angleMax)
-        if InputThreshs.Shear == 0: InputThreshs.Shear = np.random.random_integers(-ShearMax,ShearMax)
+                class InputThreshs:
+                    angle = np.random.random_integers(-angleMax,angleMax)
+                    shift = [ np.random.random_integers(-shiftMax,shiftMax) , np.random.random_integers(-shiftMax,shiftMax)]
+                    Shear = np.random.random_integers(-ShearMax,ShearMax)
 
-        return InputThreshs
-            
-    def applyLinearAugment(im, InputThreshs, mode):
-        if params.Augment.Linear.Rotation.Mode: im = funcRotating(im , InputThreshs.angle, mode)
-        if params.Augment.Linear.Shift.Mode:    im = funcShifting(im , InputThreshs.shift)
-        if params.Augment.Linear.Shear.Mode:    im = funcShearing(im , InputThreshs.Shear, mode)
-        return im
+                if InputThreshs.angle == 0: InputThreshs.angle = np.random.random_integers(-angleMax,angleMax)
+                if InputThreshs.Shear == 0: InputThreshs.Shear = np.random.random_integers(-ShearMax,ShearMax)
+
+                self.InputThreshs = InputThreshs()
+            inputThresholds(self)
+
+            def nameOutput(self, nameSubject, AugIx):
+                nameSubject2 = nameSubject + '_Aug' + str(AugIx)
+                if self.params.Augment.Linear.Rotation.Mode: nameSubject2 += '_Rot_'   + str(self.InputThreshs.angle) 
+                if self.params.Augment.Linear.Shift.Mode:    nameSubject2 += '_shift_' + str(self.InputThreshs.shift[0]) + '-' + str(self.InputThreshs.shift[1])
+                if self.params.Augment.Linear.Shear.Mode:    nameSubject2 += '_Shear_' + str(self.InputThreshs.Shear) 
+                self.nameSubject2 = nameSubject2
+            nameOutput(self, nameSubject, AugIx)
                 
+            class outDirectory:
+                Image = smallFuncs.mkDir( self.params.directories.Train.Input.address + '/' + self.nameSubject2)
+                Mask = smallFuncs.mkDir( self.params.directories.Train.Input.address + '/' + self.nameSubject2 + '/Labels')
+            self.outDirectory = outDirectory()
+
+            smallFuncs.mkDir(self.outDirectory.Image + '/temp/')
+
+        def main(self, Image, order):
+            # apply_linear = linearFuncs_Class(im).
+            self.Image = Image
+            self.order = order
+            
+            def funcShearing(self):
+                inverse_map = skimage.transform.AffineTransform(shear=np.deg2rad(self.InputThreshs.Shear)) #  * 0.01745   # 0.01745 = pi/180
+
+                if np.random.randint(low=0, high=2) == 1: inverse_map = inverse_map.inverse
+                for i in range(self.Image.shape[2]):        
+                    self.Image[...,i] = skimage.transform.warp(self.Image[...,i], inverse_map=inverse_map, order=self.order, clip=True, preserve_range=True,output_shape=tuple(self.Image.shape[:2]))
+                
+            def funcScaling(self):    
+                for i in range(self.Image.shape[2]):
+                    self.Image[...,i] = skimage.transform.AffineTransform(self.Image[...,i] , scale=self.InputThreshs.Scale) 
+
+            def funcRotating(self):
+                for i in range(self.Image.shape[2]): 
+                    self.Image[...,i] = skimage.transform.rotate(self.Image[...,i] ,self.InputThreshs.angle, order=self.order, preserve_range=True)
+                                    
+            def funcShifting(self):
+                self.Image = np.roll(self.Image,self.InputThreshs.shift[0],axis=0)
+                self.Image = np.roll(self.Image,self.InputThreshs.shift[1],axis=1)
+
+            # for slicingDim in params.WhichExperiment.Dataset.slicingInfo.slicingDim:
+            self.Image = np.transpose(self.Image, self.params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
+
+            if self.params.Augment.Linear.Rotation.Mode: funcRotating(self)  # im = funcRotating(im , InputThreshs.angle, mode)
+            if self.params.Augment.Linear.Shift.Mode:    funcShifting(self)  # im = funcShifting(im , InputThreshs.shift)
+            if self.params.Augment.Linear.Shear.Mode:    funcShearing(self)  # im = funcShearing(im , InputThreshs.Shear, mode)
+
+            self.Image = np.transpose(self.Image, self.params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
+
+            return self.Image
+
     Subjects = params.directories.Train.Input.Subjects
     SubjectNames = list(Subjects.keys())
-    # L = len(SubjectNames)
 
     for imInd, nameSubject in enumerate(SubjectNames):
-        # nameSubject = SubjectNames[imInd]
         subject  = Subjects[nameSubject]
-        print(nameSubject)
         for AugIx in range(params.Augment.Linear.Length):
-            print('image',imInd,'/',len(SubjectNames),'augment',AugIx,'/',params.Augment.Linear.Length)
+            linearCls = linearFuncs_Class(params, nameSubject, AugIx , subject)
 
-            imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image
-            # im = normalizeA.main_normalize(params.preprocess.Normalize ,  imF.get_data())
-            im = imF.get_data()
-            
-            InputThreshs = inputThresholds()
-            nameSubject2 = nameOutput(nameSubject, InputThreshs, AugIx)
+            print('image',imInd,'/',len(SubjectNames),'augment',AugIx,'/',params.Augment.Linear.Length , nameSubject , \
+                'sd' , params.WhichExperiment.Dataset.slicingInfo.slicingDim , 'angle' , linearCls.InputThreshs.angle)            
 
-            Image = applyLinearAugment(im.copy(), InputThreshs, 5)
+            def apply_OnImage():
+                imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image                        
+                Image = linearCls.main( imF.get_data() , 5)
+                smallFuncs.saveImage(Image , imF.affine , imF.header , linearCls.outDirectory.Image + '/' + subject.ImageProcessed + '.nii.gz' )            
+            apply_OnImage()
 
-            class outDirectory:
-                Image = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject2)
-                Mask = smallFuncs.mkDir( params.directories.Train.Input.address + '/' + nameSubject2 + '/Labels')
+            def loopOver_AllNuclei():
+                subF = [s for s in os.listdir(subject.Label.address) if 'PProcessed' in s]
+                for NucleusName in subF: 
 
-            smallFuncs.saveImage(Image , imF.affine , imF.header , outDirectory.Image + '/' + subject.ImageProcessed + '.nii.gz' )
-            smallFuncs.mkDir(outDirectory.Image + '/temp/')
+                    MaskF = nib.load(subject.Label.address + '/' + NucleusName)
+                    Mask  = smallFuncs.fixMaskMinMax(MaskF.get_data())
 
-            subF = [s for s in os.listdir(subject.Label.address) if 'PProcessed' in s]
-            for NucleusName in subF: 
-
-                MaskF = nib.load(subject.Label.address + '/' + NucleusName)
-                Mask = MaskF.get_data() 
-                Mask = smallFuncs.fixMaskMinMax(Mask)
-                Mask  = applyLinearAugment(Mask.copy(), InputThreshs, 1)
-                # Mask = np.float32(Mask > 0.5)
-                smallFuncs.saveImage(Mask  , MaskF.affine , MaskF.header ,  outDirectory.Mask  + '/' + NucleusName  )
+                    Mask = linearCls.main( Mask , 1)  # applyLinearAugment(Mask.copy(), InputThreshs, 1)
+                    smallFuncs.saveImage(Mask  , MaskF.affine , MaskF.header ,  linearCls.outDirectory.Mask  + '/' + NucleusName  )
+            loopOver_AllNuclei()
 
 def NonLinearFunc(Input, Augment, mode):
 
