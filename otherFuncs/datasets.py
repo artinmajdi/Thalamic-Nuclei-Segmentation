@@ -61,13 +61,13 @@ def DatasetsInfo(DatasetIx):
     }
     return switcher.get(DatasetIx, 'WARNING: Invalid dataset index')
 
-def loadDataset(params):
+# def readingFromExperiments(params):
 
-    # if 'fashionMnist' in params.WhichExperiment.Dataset.name:
-    #     Data, _ = fashionMnist(params)
-    Data, params = readingFromExperiments(params)
+#     # if 'fashionMnist' in params.WhichExperiment.Dataset.name:
+#     #     Data, _ = fashionMnist(params)
+#     Data, params = loadDataset(params)
 
-    return Data, params
+#     return Data, params
 
 def paddingNegativeFix(sz, Padding):
     padding = np.array([list(x) for x in Padding])
@@ -82,7 +82,7 @@ def paddingNegativeFix(sz, Padding):
 
     return padding, crd
 
-def readingFromExperiments(params):
+def loadDataset(params):
 
     def inputPreparationForUnet(im,subject2, params):
 
@@ -409,9 +409,16 @@ def preAnalysis(params):
     def find_AllInputSizes(params):
 
         def newCropedSize(subject, params, mode):
-
+            
+            # '_sd' + str(UserInfo['simulation'].slicingDim[0])
             def readingCascadeCropSizes(subject):
+
+                # if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0 and params.WhichExperiment.HardParams.Model.Method.Use_Coronal_For_Thalamus:                    
+                #     tag = '_sd' + params.WhichExperiment.Dataset.slicingInfo.slicingDim
+                #     dirr = params.directories.Test.Result.replace(tag, '_sd2')
+                # else:
                 dirr = params.directories.Test.Result
+
                 if 'train' in mode: dirr += '/TrainData_Output'
 
                 BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.txt',dtype=int)
