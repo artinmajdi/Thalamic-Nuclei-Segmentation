@@ -382,7 +382,6 @@ def search_ExperimentDirectory(whichExperiment):
         address = whichExperiment.Experiment.address        + '/train'
         Model   = whichExperiment.Experiment.address        + '/models/' + whichExperiment.SubExperiment.name           + '/' + whichExperiment.Nucleus.name
         Model_Thalamus = whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name                 + '/1-THALAMUS'
-        # Model_3T       = whichExperiment.Experiment.address + '/models/' + 'sE8_Cascade_sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim) + '_Dt0.3_LR0.001_NL' + str(whichExperiment.HardParams.Model.num_Layers) + '_MpByTH_SRI/' + whichExperiment.Nucleus.name
         Model_3T       = whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name_Init_3T  + '/' + whichExperiment.Nucleus.name
 
         Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)

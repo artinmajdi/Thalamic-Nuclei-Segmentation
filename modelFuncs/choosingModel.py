@@ -223,6 +223,7 @@ def trainingExperiment(Data, params):
 
     def saveTrainInfo(hist,a, params):
 
+        # if hist:
         hist.params['trainingTime']     = time() - a
         hist.params['InputDimensionsX'] = params.WhichExperiment.HardParams.Model.InputDimensions[0]
         hist.params['InputDimensionsY'] = params.WhichExperiment.HardParams.Model.InputDimensions[1]
@@ -237,9 +238,11 @@ def trainingExperiment(Data, params):
         ModelParam = params.WhichExperiment.HardParams.Model
         tagTF = '_TF' if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
 
+        # def sagittal_flag(params):
+        #     return (params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0 and 1 in params.WhichExperiment.Nucleus.Index)
         def saveModel_h5(model2, params):       
             smallFuncs.mkDir(params.directories.Train.Model)
-
+            
             if params.WhichExperiment.HardParams.Model.Method.save_Best_Epoch_Model:
                 model2.load_weights(params.directories.Train.Model + '/best_model_weights' + tagTF + '.h5')
 
@@ -255,25 +258,27 @@ def trainingExperiment(Data, params):
                     
         def modelInitialize(model2):
             
-            try:
-
-                if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode:
+            # try:
+            if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode:
+                model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
+            # elif sagittal_flag(params):
+            #     model2.load_weights( (params.directories.Train.Model).replace('sd0','sd2') + '/model_weights.h5')
+            #     model2.save_weights(params.directories.Train.Model + '/best_model_weights' + tagTF + '.h5', overwrite=True )
+                                
+            else:
+                if params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
                     model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
-                else:
-                    if params.WhichExperiment.Nucleus.Index[0] != 1 and params.WhichExperiment.HardParams.Model.InitializeFromThalamus and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
-                        model2.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
-                        print(' --- initialized from Thalamus --- ')
+                    print(' --- initialized from older Model --- ')
 
-                    elif params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
-                        model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
-                        print(' --- initialized from older Model --- ')
-                    elif params.WhichExperiment.HardParams.Model.Initialize_From_3T and os.path.exists(params.directories.Train.Model_3T + '/model_weights.h5'):
-                        model2.load_weights(params.directories.Train.Model_3T + '/model_weights.h5')
-                        print(' --- initialized from Model_3T' , params.directories.Train.Model_3T)
+                elif params.WhichExperiment.Nucleus.Index[0] != 1 and params.WhichExperiment.HardParams.Model.InitializeFromThalamus and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
+                    model2.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
+                    print(' --- initialized from Thalamus --- ')
 
-
-            except: 
-                print('loading Initial Weights Failed')
+                elif params.WhichExperiment.HardParams.Model.Initialize_From_3T and os.path.exists(params.directories.Train.Model_3T + '/model_weights.h5'):
+                    model2.load_weights(params.directories.Train.Model_3T + '/model_weights.h5')
+                    print(' --- initialized from Model_3T' , params.directories.Train.Model_3T)
+            # except: 
+            #     print('loading Initial Weights Failed')
             return model2
 
         def modelFit(params):
@@ -321,18 +326,20 @@ def trainingExperiment(Data, params):
                 else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
                 
             return hist
-
+        
         model = modelInitialize(model)
 
         if len(params.WhichExperiment.HardParams.Machine.GPU_Index) > 1:   model = multi_gpu_model(model)
         
         model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
 
+        # if not sagittal_flag(params):
         hist = modelFit(params)
+        if ModelParam.showHistory: print(hist.history)
+        # else: hist = ''
 
         model = saveModel_h5(model, params)
-        if ModelParam.showHistory: print(hist.history)
-
+        
         return model, hist
 
     def modelTrain_Cropping(Data, params, model):

@@ -7,6 +7,7 @@ import modelFuncs.choosingModel as choosingModel
 import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 import preprocess.applyPreprocess as applyPreprocess
+from shutil import copyfile , copytree
 
 class InitValues:
     def __init__(self, Nuclei_Indexes=1 , slicingDim=2):
@@ -22,7 +23,8 @@ def gpuSetting(params):
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
     import tensorflow as tf
     from keras import backend as K
-    K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
+    # K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
+    K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True )   ))
     return K
 
 def Run(UserInfoB,InitValues):
@@ -63,26 +65,44 @@ def Run(UserInfoB,InitValues):
     def Run_SingleNuclei(UserInfoB):
 
         for sd in InitValues.slicingDim:
+            
+            UserInfoB['simulation'].slicingDim = [sd]                       
+            params = paramFunc.Run(UserInfoB)
 
-            if not (sd == 0 and 1 == UserInfoB['simulation'].nucleus_Index):
-                UserInfoB['simulation'].slicingDim = [sd]                       
-                # UserInfoB['simulation'].epochs = 30  if UserInfoB['simulation'].nucleus_Index == 1 else 70
-                params = paramFunc.Run(UserInfoB)
+            print('---------------------------------------------------------------')
+            print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | slicingDim',sd, \
+                ' | Dropout', UserInfoB['DropoutValue'] , ' | Learning_Rate' , UserInfoB['simulation'].Learning_Rate, ' | num_Layers' , UserInfoB['simulation'].num_Layers,\
+                ' | Multiply_By_Thalmaus',UserInfoB['simulation'].Multiply_By_Thalmaus )
 
-                print('---------------------------------------------------------------')
-                print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | slicingDim',sd, \
-                    ' | Dropout', UserInfoB['DropoutValue'] , ' | Learning_Rate' , UserInfoB['simulation'].Learning_Rate, ' | num_Layers' , UserInfoB['simulation'].num_Layers,\
-                    ' | Multiply_By_Thalmaus',UserInfoB['simulation'].Multiply_By_Thalmaus )
+            print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
+            print('---------------------------------------------------------------')
+              
 
-                print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
-                print('---------------------------------------------------------------')
-                Data, params = datasets.loadDataset(params)        
-                # try: 
-                choosingModel.check_Run(params, Data)
-                # except: print('failed')
-            # else:
-                # params.directories.Train.Model + '/mode.h5'
+            # # try: 
+            # if sd == 0 and UserInfoB['simulation'].nucleus_Index == 1: 
+                
+            #     os.system("mkdir %s"%())
 
+            #     UserInfoC = UserInfoB.copy()  
+                
+            #     UserInfoC['simulation'].slicingDim = [2]
+            #     paramsC = paramFunc.Run(UserInfoC)
+            #     Data, paramsC = datasets.loadDataset(params) 
+
+            #     UserInfoC['simulation'].TestOnly = True
+            #     UserInfoC['simulation'].slicingDim = [0]
+            #     paramsC = paramFunc.Run(UserInfoC)
+            #     paramsC.directories.Train.Model          = paramsC.directories.Train.Model.replace('sd0','sd2')
+            #     paramsC.directories.Train.Model_Thalamus = paramsC.directories.Train.Model_Thalamus.replace('sd0','sd2')
+            #     paramsC.directories.Train.Model_3T       = paramsC.directories.Train.Model_3T.replace('sd0','sd2')
+            #     choosingModel.check_Run(paramsC, Data)        
+            
+            
+            Data, params = datasets.loadDataset(params)                
+            choosingModel.check_Run(params, Data)  
+            
+            # except: print('failed')
+ 
 
     if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages(UserInfoB)
     elif UserInfoB['Model_Method'] == 'Cascade' :  CacadeStages(UserInfoB)

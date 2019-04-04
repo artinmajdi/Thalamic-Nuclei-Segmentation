@@ -230,7 +230,7 @@ def loadDataset(params):
 
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
 
-        def separatingConcatenatingIndexes(Data, sjList):
+        def separatingConcatenatingIndexes(Data, sjList, mode):
 
             Sz0 = 0
             for nameSubject in sjList: Sz0 += Data[nameSubject].Image.shape[0]
@@ -248,17 +248,17 @@ def loadDataset(params):
                 images[d1:d1+im.shape[0] ,...] = im
                 masks[d1:d1+im.shape[0] ,...]  = msk
                 d1 += im.shape[0]
-
+            
             return trainCase(Image=images, Mask=masks.astype('float32'))
             
         def separateTrainVal_and_concatenateTrain(TrainData):
 
             if params.WhichExperiment.Dataset.Validation.fromKeras or params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
-                Train = separatingConcatenatingIndexes(TrainData, list(TrainData))
+                Train = separatingConcatenatingIndexes(TrainData, list(TrainData),'train')
                 Validation = ''
             else:
-                Train = separatingConcatenatingIndexes(TrainData, TrainList)
-                Validation = separatingConcatenatingIndexes(TrainData, ValList)
+                Train = separatingConcatenatingIndexes(TrainData, TrainList,'train')
+                Validation = separatingConcatenatingIndexes(TrainData, ValList,'validation')
 
             return Train, Validation
 
@@ -297,7 +297,11 @@ def loadDataset(params):
 
             return Data
 
+        # def sagittal_flag(params):
+        #     return (params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0 and 1 in params.WhichExperiment.Nucleus.Index)
+
         DataAll = data()
+        
         if trainFlag():
             DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
             DataAll.Train, DataAll.Validation = separateTrainVal_and_concatenateTrain( DataAll.Train_ForTest )
@@ -305,8 +309,8 @@ def loadDataset(params):
         if params.directories.Test.Input.Subjects: 
             DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
             if params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
-                DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, list(DataAll.Test))
-
+                DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, list(DataAll.Test), 'validation')
+    
         return DataAll
 
     params = preAnalysis(params)
@@ -418,11 +422,11 @@ def preAnalysis(params):
             # '_sd' + str(UserInfo['simulation'].slicingDim[0])
             def readingCascadeCropSizes(subject):
 
-                sd , Method = params.WhichExperiment.Dataset.slicingInfo.slicingDim  ,  params.WhichExperiment.HardParams.Model.Method
-                if sd == 0 and Method.Use_Coronal_Thalamus_InSagittal and Method.ReferenceMask == '1-THALAMUS':                    
-                    dirr = params.directories.Test.Result.replace('_sd0' , '_sd2')
-                else:
-                    dirr = params.directories.Test.Result
+                # sd , Method = params.WhichExperiment.Dataset.slicingInfo.slicingDim  ,  params.WhichExperiment.HardParams.Model.Method
+                # if sd == 0 and Method.Use_Coronal_Thalamus_InSagittal and Method.ReferenceMask == '1-THALAMUS':                    
+                #     dirr = params.directories.Test.Result.replace('_sd0' , '_sd2')
+                # else:
+                dirr = params.directories.Test.Result
 
                 if 'train' in mode: dirr += '/TrainData_Output'
                 
