@@ -396,7 +396,7 @@ def search_ExperimentDirectory(whichExperiment):
         Train = train
         Test  = test
 
-    return Directories
+    return Directories()
 
 def imShow(*args):
     _, axes = plt.subplots(1,len(args))

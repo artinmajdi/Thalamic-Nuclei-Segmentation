@@ -190,6 +190,7 @@ def loadDataset(params):
         shutil.move(subject.address, os.path.dirname(subject.address) + '/' + 'ERROR_' + AA[1])
         print('WARNING:', mode , nameSubject, ' image and mask have different shape sizes')
 
+    """
     def saveHDf5(Data):
         data_dict = Data.__dict__
 
@@ -213,7 +214,8 @@ def loadDataset(params):
                         g.attrs['Affine'] = data_dict[mode][subject].Affine
                         g.attrs['address'] = Input.Subjects[subject].address
                         # g.attrs['Header'] = data_dict['Test'][subject].Header
-
+    """
+    
     def main_ReadingDataset(params):
 
         def trainFlag():
@@ -221,46 +223,42 @@ def loadDataset(params):
             Flag_TrainDice = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
             Flag_cascadeMethod = 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and int(params.WhichExperiment.Nucleus.Index[0]) == 1
             Flag_notEmpty = params.directories.Train.Input.Subjects
-            return (not Flag_TestOnly) and ( Flag_TrainDice or Flag_cascadeMethod ) and Flag_notEmpty
+            return (not Flag_TestOnly  or Flag_TrainDice or Flag_cascadeMethod ) and Flag_notEmpty
 
         if trainFlag():
             TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage, list(params.directories.Train.Input.Subjects), params.WhichExperiment.Dataset.randomFlag)
 
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
 
+        def separatingConcatenatingIndexes(Data, sjList):
+
+            Sz0 = 0
+            for nameSubject in sjList: Sz0 += Data[nameSubject].Image.shape[0]
+            images = np.zeros(  (  tuple([Sz0]) + Data[list(Data)[0]].Image.shape[1:] )  )
+            masks = np.zeros(  (  tuple([Sz0]) + Data[list(Data)[0]].Mask.shape[1:] )  )
+
+            d1 = 0
+            for _, nameSubject in enumerate(tqdm(sjList,desc='concatenating train images')):
+                im, msk = Data[nameSubject].Image  , Data[nameSubject].Mask
+
+                # if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
+                #     im = im[:int(im.shape[0]/2+5),...]
+                #     msk = msk[:int(msk.shape[0]/2+5),...]
+                
+                images[d1:d1+im.shape[0] ,...] = im
+                masks[d1:d1+im.shape[0] ,...]  = msk
+                d1 += im.shape[0]
+
+            return trainCase(Image=images, Mask=masks.astype('float32'))
+            
         def separateTrainVal_and_concatenateTrain(TrainData):
 
-            def separatingConcatenatingIndexes(sjList):
-
-                Sz0 = 0
-                for nameSubject in sjList: Sz0 += TrainData[nameSubject].Image.shape[0]
-                images = np.zeros(  (  tuple([Sz0]) + TrainData[list(TrainData)[0]].Image.shape[1:] )  )
-                masks = np.zeros(  (  tuple([Sz0]) + TrainData[list(TrainData)[0]].Mask.shape[1:] )  )
-
-                d1 = 0
-                for _, nameSubject in enumerate(tqdm(sjList,desc='concatenating train images')):
-                    im, msk = TrainData[nameSubject].Image  , TrainData[nameSubject].Mask
-
-                    if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
-                        im = im[:int(im.shape[0]/2+5),...]
-                        msk = msk[:int(msk.shape[0]/2+5),...]
-                    
-
-                    images[d1:d1+im.shape[0] ,...] = im
-                    masks[d1:d1+im.shape[0] ,...]  = msk
-                    d1 += im.shape[0]
-
-                    # images = im     if ix == 0 else np.concatenate((images,im    ),axis=0)
-                    # masks  = msk>Th if ix == 0 else np.concatenate((masks,msk>Th ),axis=0)
-
-                return trainCase(Image=images, Mask=masks.astype('float32'))
-
-            if params.WhichExperiment.Dataset.Validation.fromKeras:
-                Train = separatingConcatenatingIndexes(list(TrainData))
+            if params.WhichExperiment.Dataset.Validation.fromKeras or params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
+                Train = separatingConcatenatingIndexes(TrainData, list(TrainData))
                 Validation = ''
             else:
-                Train = separatingConcatenatingIndexes(TrainList)
-                Validation = separatingConcatenatingIndexes(ValList)
+                Train = separatingConcatenatingIndexes(TrainData, TrainList)
+                Validation = separatingConcatenatingIndexes(TrainData, ValList)
 
             return Train, Validation
 
@@ -304,7 +302,10 @@ def loadDataset(params):
             DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
             DataAll.Train, DataAll.Validation = separateTrainVal_and_concatenateTrain( DataAll.Train_ForTest )
 
-        if params.directories.Test.Input.Subjects: DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
+        if params.directories.Test.Input.Subjects: 
+            DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
+            if params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
+                DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, list(DataAll.Test))
 
         return DataAll
 
@@ -424,7 +425,7 @@ def preAnalysis(params):
                     dirr = params.directories.Test.Result
 
                 if 'train' in mode: dirr += '/TrainData_Output'
-
+                
                 BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.txt',dtype=int)
                 BB = BBf[:,:2]
                 BBd = BBf[:,2:]

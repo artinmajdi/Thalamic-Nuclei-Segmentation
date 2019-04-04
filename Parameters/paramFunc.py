@@ -110,6 +110,8 @@ def func_WhichExperiment(UserInfo):
                     Multiply_By_Thalmaus = True
                     save_Best_Epoch_Model = False
                     Use_Coronal_Thalamus_InSagittal = False
+                    Use_TestCases_For_Validation = False
+                    ImClosePrediction = False
 
                 return dropout, activation, convLayer, multiclass, maxPooling, method
 
@@ -239,7 +241,7 @@ def func_WhichExperiment(UserInfo):
                 Validation = validation()
                 Test = testDs()
                 check_vimp_SubjectName = True
-                randomFlag = False
+                randomFlag = True
                 slicingInfo = slicingDirection()
                 gapDilation = 5
                 gapOnSlicingDimention = 2
@@ -433,8 +435,10 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.Method.save_Best_Epoch_Model = UserInfo['simulation'].save_Best_Epoch_Model   
         HardParams.Model.Method.InputImage2Dvs3D      = UserInfo['simulation'].InputImage2Dvs3D
         HardParams.Model.Method.havingBackGround_AsExtraDimension = UserInfo['havingBackGround_AsExtraDimension']
-        HardParams.Model.Method.Multiply_By_Thalmaus  = UserInfo['simulation'].Multiply_By_Thalmaus
-        HardParams.Model.Method.Use_Coronal_Thalamus_InSagittal = UserInfo['simulation'].Use_Coronal_Thalamus_InSagittal
+        HardParams.Model.Method.Multiply_By_Thalmaus              = UserInfo['simulation'].Multiply_By_Thalmaus
+        HardParams.Model.Method.Use_Coronal_Thalamus_InSagittal   = UserInfo['simulation'].Use_Coronal_Thalamus_InSagittal
+        HardParams.Model.Method.Use_TestCases_For_Validation      = UserInfo['simulation'].Use_TestCases_For_Validation
+        HardParams.Model.Method.ImClosePrediction                 = UserInfo['simulation'].ImClosePrediction
 
         HardParams.Model.MultiClass.num_classes = func_NumClasses()
         HardParams.Model.Layer_Params = func_Layer_Params(UserInfo)

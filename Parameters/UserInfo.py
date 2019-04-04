@@ -38,26 +38,28 @@ class Transfer_Learning:
 
 class simulation:
     TestOnly      = False
-    epochs        = 70
-    GPU_Index     = "3"
+    epochs        = 40
+    GPU_Index     = "5,6"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1]
+    nucleus_Index = [6]
     slicingDim    = [2] # [0,1,2]
     batch_size    = 100
     InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 64
-    verbose = 1
+    FirstLayer_FeatureMap_Num = 20
+    verbose = 2
     Multiply_By_Thalmaus = False
 
     Initialize_FromThalamus   = False
     Initialize_FromOlderModel = False
-    Initialize_From_3T = True
+    Initialize_From_3T = False
     Weighted_Class_Mode = False
 
     save_Best_Epoch_Model = True
     Use_Coronal_Thalamus_InSagittal = True
+    Use_TestCases_For_Validation = True
+    ImClosePrediction = True
 
 mode_saveTrue_LoadFalse = True
 DropoutValue = 0.3

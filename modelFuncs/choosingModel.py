@@ -19,12 +19,11 @@ import mat4py
 import pickle
 import skimage
 import keras
-import keras.preprocessing
 from keras.utils import multi_gpu_model, multi_gpu_utils
 import h5py
-from keras.callbacks import ModelCheckpoint
+# import tensorflow as tf
+# from tensorflow.python import debug as tf_debug
 
-# keras.preprocessing.utils.multi_gpu_model
 def check_Run(params, Data):
 
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
@@ -77,8 +76,15 @@ def testingExeriment(model, Data, params):
                     # im = im[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
                 return im
 
-            pred1N = binarizing( np.squeeze(pred1Class) )
+            def closeMask(mask):
+                struc = ndimage.generate_binary_structure(3,2)
+                return ndimage.binary_closing(mask, structure=struc)
 
+            pred1N = binarizing( np.squeeze(pred1Class) )
+            
+            if params.WhichExperiment.HardParams.Model.Method.ImClosePrediction: 
+                pred1N = closeMask(pred1N)
+            
             pred1N_origShape = cascade_paddingToOrigSize(pred1N)
             pred1N_origShape = np.transpose(pred1N_origShape,params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
 
@@ -131,16 +137,16 @@ def testingExeriment(model, Data, params):
                 return im
 
             im = DataSubj.Image.copy()
-            if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
-                class cropSD0:
-                    crop = int(im.shape[0]/2+5)
-                    padBackToOrig = im.shape[0] - int(im.shape[0]/2+5)
-                im = im[:cropSD0.crop,...]
+            # if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
+            #     class cropSD0:
+            #         crop = int(im.shape[0]/2+5)
+            #         padBackToOrig = im.shape[0] - int(im.shape[0]/2+5)
+            #     im = im[:cropSD0.crop,...]
 
             predF = model.predict(im)
 
-            if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
-                predF = np.pad(predF,((0,cropSD0.padBackToOrig),(0,0),(0,0),(0,0)),mode='constant')
+            # if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
+            #     predF = np.pad(predF,((0,cropSD0.padBackToOrig),(0,0),(0,0),(0,0)),mode='constant')
 
 
             # score = model.evaluate(DataSubj.Image, DataSubj.Mask)
@@ -181,6 +187,29 @@ def testingExeriment(model, Data, params):
 
 def trainingExperiment(Data, params):
 
+    def func_CallBacks(params):
+        batch_size  = params.WhichExperiment.HardParams.Model.batch_size
+        Dir_Save = params.directories.Train.Model
+        mode = 'max'
+        monitor = 'val_Dice_Calculator'
+
+        tagTF = '_TF' if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
+        checkpointer = keras.callbacks.ModelCheckpoint(filepath= Dir_Save + '/best_model_weights' + tagTF + '.h5', \
+            monitor = monitor, verbose=1, save_best_only=True, mode=mode)
+
+        Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = monitor, factor=0.5, min_delta=0.005 , patience=5, verbose=1, \
+            save_best_only=True, mode=mode , min_lr=0.9e-4 , )
+        
+        # Progbar = keras.callbacks.Progba
+        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=15, verbose=1, mode=mode, \
+            baseline=0, restore_best_weights=True)
+
+        TensorBoard = keras.callbacks.TensorBoard(log_dir= Dir_Save + '/logs', histogram_freq=1, batch_size=batch_size, \
+            write_graph=False, write_grads=False, write_images=False, embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None, \
+                embeddings_data=None, update_freq='epoch')
+
+        return [checkpointer , Reduce_LR , EarlyStopping , TensorBoard]
+        
     def saveReport(DirSave, name , data, method):
 
         def savePickle(Dir, data):
@@ -225,26 +254,24 @@ def trainingExperiment(Data, params):
             return model2
                     
         def modelInitialize(model2):
-
-            # with open(params.directories.Train.Model + '/model' + tagTF + '.json', 'r') as json_file:
-            #     model2 = keras.models.model_from_json(json_file.read())
-
-            # model2.load_weights("model.h5")
-            print('address', params.directories.Train.Model_3T + '/model_weights.h5')
-            print('exist', os.path.exists(params.directories.Train.Model_3T + '/model_weights.h5'))
+            
             try:
-                if params.WhichExperiment.Nucleus.Index[0] != 1 and params.WhichExperiment.HardParams.Model.InitializeFromThalamus and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
-                    model2.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
-                elif params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
-                    model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
-                elif params.WhichExperiment.HardParams.Model.Initialize_From_3T and os.path.exists(params.directories.Train.Model_3T + '/model_weights.h5'):
-                    model2.load_weights(params.directories.Train.Model_3T + '/model_weights.h5')
-                    print('------------------------------------------')
-                    print('initialized from Model_3T' , params.directories.Train.Model_3T)
-                    print('------------------------------------------')
 
                 if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode:
                     model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
+                else:
+                    if params.WhichExperiment.Nucleus.Index[0] != 1 and params.WhichExperiment.HardParams.Model.InitializeFromThalamus and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
+                        model2.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
+                        print(' --- initialized from Thalamus --- ')
+
+                    elif params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
+                        model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
+                        print(' --- initialized from older Model --- ')
+                    elif params.WhichExperiment.HardParams.Model.Initialize_From_3T and os.path.exists(params.directories.Train.Model_3T + '/model_weights.h5'):
+                        model2.load_weights(params.directories.Train.Model_3T + '/model_weights.h5')
+                        print(' --- initialized from Model_3T' , params.directories.Train.Model_3T)
+
+
             except: 
                 print('loading Initial Weights Failed')
             return model2
@@ -252,23 +279,19 @@ def trainingExperiment(Data, params):
         def modelFit(params):
 
             def func_modelParams():
+                callbacks = func_CallBacks(params)
+                                
                 batch_size       = params.WhichExperiment.HardParams.Model.batch_size
                 epochs           = params.WhichExperiment.HardParams.Model.epochs 
                 valSplit_Per     = params.WhichExperiment.Dataset.Validation.percentage
                 verbose          = params.WhichExperiment.HardParams.Model.verbose
-                ManualDataGenerator = params.WhichExperiment.HardParams.Model.ManualDataGenerator
+                ManualDataGenerator  = params.WhichExperiment.HardParams.Model.ManualDataGenerator
                 Validation_fromKeras = params.WhichExperiment.Dataset.Validation.fromKeras
-
-                
-                checkpointer = ModelCheckpoint(filepath=params.directories.Train.Model + '/best_model_weights' + tagTF + '.h5', 
-                                            monitor = 'val_Dice_Calculator', #Metrics.Dice_Calculator, # 'val_acc', #
-                                            verbose=1, save_best_only=True, mode='max')
-
-                
+            
                 # model2.save_weights(params.directories.Train.Model + '/model_weights' + tagTF + '.h5', overwrite=True )
-                return checkpointer, batch_size, epochs, valSplit_Per, verbose , ManualDataGenerator , Validation_fromKeras
-            checkpointer, batch_size, epochs, valSplit_Per, verbose , ManualDataGenerator, Validation_fromKeras = func_modelParams()
-
+                return callbacks , batch_size, epochs, valSplit_Per, verbose , ManualDataGenerator , Validation_fromKeras
+            callbacks , batch_size, epochs, valSplit_Per, verbose , ManualDataGenerator, Validation_fromKeras = func_modelParams()
+                          
             def RunGenerator(params):
                 f = h5py.File(params.directories.Test.Result + '/Data.hdf5','r')
                     
@@ -283,7 +306,7 @@ def trainingExperiment(Data, params):
                 return hist
             if ManualDataGenerator: hist = RunGenerator(params)
             else:
-
+                # keras.backend.set_session(tf_debug.TensorBoardDebugWrapperSession(tf.Session(), "engr-bilgin01s:6064"))
                 def func_classWeights():
 
                     if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode:
@@ -292,10 +315,10 @@ def trainingExperiment(Data, params):
                         return {0:1-a , 1:a}
                     else:
                         return {0:1 , 1:1}
-                class_weight = func_classWeights()
+                # class_weight = func_classWeights()
                 # add this to model.fit  class_weight=class_weight
-                if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=[checkpointer]) # , callbacks=[TQDMCallback()])
-                else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=[checkpointer]) # , callbacks=[TQDMCallback()])        
+                if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])
+                else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
                 
             return hist
 
@@ -333,7 +356,8 @@ def trainingExperiment(Data, params):
         UserInfo['InputDimensions'] = str(params.WhichExperiment.HardParams.Model.InputDimensions)
         UserInfo['simulation'].num_Layers      = params.WhichExperiment.HardParams.Model.num_Layers
 
-        saveReport(DirSave, 'UserInfo', UserInfo , UserInfo['SaveReportMethod'])
+        # TODO this was UserInfo but I changed it to UserInfoB to replace the other one Im saving in dataset; make sure it didn not ruin things
+        saveReport(DirSave, 'UserInfoB', UserInfo , UserInfo['SaveReportMethod'])
 
     a = time()
     Saving_UserInfo(params.directories.Train.Model, params, params.UserInfo)
@@ -384,121 +408,121 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
 
 def architecture(params):
 
-    
-    def UNet(Modelparam):
+    ModelParam = params.WhichExperiment.HardParams.Model
+    def UNet():
 
-        NumberFM = Modelparam.Layer_Params.FirstLayer_FeatureMap_Num
+        NumberFM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
 
-        def Unet_sublayer_Contracting(inputs, nL, Modelparam):
+        def Unet_sublayer_Contracting(inputs, nL):
 
-            Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
-            if Modelparam.Layer_Params.batchNormalization:  inputs = layers.BatchNormalization()(inputs)
-            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(inputs)
-            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
-            pool = layers.MaxPooling2D( pool_size=Modelparam.Layer_Params.MaxPooling.pool_size)(conv)
-            if Modelparam.Layer_Params.Dropout.Mode and Trainable: pool = layers.Dropout(Modelparam.Layer_Params.Dropout.Value)(pool)
+            Trainable = False if ModelParam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
+            if ModelParam.Layer_Params.batchNormalization:  inputs = layers.BatchNormalization()(inputs)
+            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=ModelParam.Layer_Params.ConvLayer.Kernel_size.conv, padding=ModelParam.Layer_Params.ConvLayer.padding, activation=ModelParam.Layer_Params.Activitation.layers, trainable=Trainable)(inputs)
+            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=ModelParam.Layer_Params.ConvLayer.Kernel_size.conv, padding=ModelParam.Layer_Params.ConvLayer.padding, activation=ModelParam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
+            pool = layers.MaxPooling2D( pool_size=ModelParam.Layer_Params.MaxPooling.pool_size)(conv)
+            if ModelParam.Layer_Params.Dropout.Mode and Trainable: pool = layers.Dropout(ModelParam.Layer_Params.Dropout.Value)(pool)
             return pool, conv
 
-        def Unet_sublayer_Expanding(inputs, nL, Modelparam, contractingInfo):
+        def Unet_sublayer_Expanding(inputs, nL, contractingInfo):
 
-            Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
-            if Modelparam.Layer_Params.batchNormalization:  inputs = layers.BatchNormalization()(inputs)
-            UP = layers.Conv2DTranspose(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.convTranspose, strides=(2,2), padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(inputs)
+            Trainable = False if ModelParam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
+            if ModelParam.Layer_Params.batchNormalization:  inputs = layers.BatchNormalization()(inputs)
+            UP = layers.Conv2DTranspose(NumberFM*(2**nL), kernel_size=ModelParam.Layer_Params.ConvLayer.Kernel_size.convTranspose, strides=(2,2), padding=ModelParam.Layer_Params.ConvLayer.padding, activation=ModelParam.Layer_Params.Activitation.layers, trainable=Trainable)(inputs)
             UP = layers.merge.concatenate([UP,contractingInfo[nL+1]],axis=3)
-            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(UP)
-            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
-            if Modelparam.Layer_Params.Dropout.Mode and Trainable: conv = layers.Dropout(Modelparam.Layer_Params.Dropout.Value)(conv)
+            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=ModelParam.Layer_Params.ConvLayer.Kernel_size.conv, padding=ModelParam.Layer_Params.ConvLayer.padding, activation=ModelParam.Layer_Params.Activitation.layers, trainable=Trainable)(UP)
+            conv = layers.Conv2D(NumberFM*(2**nL), kernel_size=ModelParam.Layer_Params.ConvLayer.Kernel_size.conv, padding=ModelParam.Layer_Params.ConvLayer.padding, activation=ModelParam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
+            if ModelParam.Layer_Params.Dropout.Mode and Trainable: conv = layers.Dropout(ModelParam.Layer_Params.Dropout.Value)(conv)
             return conv
 
-        def Unet_MiddleLayer(WeightBiases, nL, Modelparam):
-            Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
-            WeightBiases = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(WeightBiases)
-            WeightBiases = layers.Conv2D(NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(WeightBiases)
-            if Modelparam.Layer_Params.Dropout.Mode and Trainable: WeightBiases = layers.Dropout(Modelparam.Layer_Params.Dropout.Value)(WeightBiases)
+        def Unet_MiddleLayer(WeightBiases, nL):
+            Trainable = False if ModelParam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
+            WeightBiases = layers.Conv2D(NumberFM*(2**nL), kernel_size=ModelParam.Layer_Params.ConvLayer.Kernel_size.conv, padding=ModelParam.Layer_Params.ConvLayer.padding, activation=ModelParam.Layer_Params.Activitation.layers, trainable=Trainable)(WeightBiases)
+            WeightBiases = layers.Conv2D(NumberFM*(2**nL), kernel_size=ModelParam.Layer_Params.ConvLayer.Kernel_size.conv, padding=ModelParam.Layer_Params.ConvLayer.padding, activation=ModelParam.Layer_Params.Activitation.layers, trainable=Trainable)(WeightBiases)
+            if ModelParam.Layer_Params.Dropout.Mode and Trainable: WeightBiases = layers.Dropout(ModelParam.Layer_Params.Dropout.Value)(WeightBiases)
             return WeightBiases
 
         dim = params.WhichExperiment.HardParams.Model.Method.InputImage2Dvs3D
-        inputs = layers.Input( tuple(Modelparam.InputDimensions[:dim]) + (1,) )
+        inputs = layers.Input( tuple(ModelParam.InputDimensions[:dim]) + (1,) )
         
         # ! contracting layer
         ConvOutputs = {}
         WeightBiases = inputs
-        for nL in range(Modelparam.num_Layers -1):
-            WeightBiases, ConvOutputs[nL+1] = Unet_sublayer_Contracting(WeightBiases, nL, Modelparam)
+        for nL in range(ModelParam.num_Layers -1):
+            WeightBiases, ConvOutputs[nL+1] = Unet_sublayer_Contracting(WeightBiases, nL)
 
         # ! middle layer
-        WeightBiases = Unet_MiddleLayer(WeightBiases , Modelparam.num_Layers-1 , Modelparam)
+        WeightBiases = Unet_MiddleLayer(WeightBiases , ModelParam.num_Layers-1)
 
         # ! expanding layer
-        for nL in reversed(range(Modelparam.num_Layers -1)):
-            WeightBiases = Unet_sublayer_Expanding(WeightBiases, nL, Modelparam, ConvOutputs)
+        for nL in reversed(range(ModelParam.num_Layers -1)):
+            WeightBiases = Unet_sublayer_Expanding(WeightBiases, nL, ConvOutputs)
 
         # ! Final layer
-        final = layers.Conv2D(Modelparam.MultiClass.num_classes, kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.output, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.output)(WeightBiases)
+        final = layers.Conv2D(ModelParam.MultiClass.num_classes, kernel_size=ModelParam.Layer_Params.ConvLayer.Kernel_size.output, padding=ModelParam.Layer_Params.ConvLayer.padding, activation=ModelParam.Layer_Params.Activitation.output)(WeightBiases)
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
-    def CNN_Classifier(Modelparam):
-        dim = Modelparam.Method.InputImage2Dvs3D
+    def CNN_Classifier():
+        dim = ModelParam.Method.InputImage2Dvs3D
         model = kerasmodels.Sequential()
-        model.add(layers.Conv2D(filters=16, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape= tuple(Modelparam.InputDimensions[:dim]) + (1,)  ))
-        model.add(layers.MaxPooling2D(pool_size=Modelparam.Layer_Params.MaxPooling.pool_size))
-        model.add(layers.Dropout(Modelparam.Layer_Params.Dropout.Value))
+        model.add(layers.Conv2D(filters=16, kernel_size=ModelParam.kernel_size, padding=ModelParam.padding, activation=ModelParam.activitation, input_shape= tuple(ModelParam.InputDimensions[:dim]) + (1,)  ))
+        model.add(layers.MaxPooling2D(pool_size=ModelParam.Layer_Params.MaxPooling.pool_size))
+        model.add(layers.Dropout(ModelParam.Layer_Params.Dropout.Value))
 
-        model.add(layers.Conv2D(filters=8, kernel_size=Modelparam.kernel_size, padding=Modelparam.padding, activation=Modelparam.activitation, input_shape=tuple(Modelparam.InputDimensions[:dim]) + (1,) ))
-        model.add(layers.MaxPooling2D(pool_size=Modelparam.Layer_Params.MaxPooling.pool_size))
-        model.add(layers.Dropout(Modelparam.Layer_Params.Dropout.Value))
+        model.add(layers.Conv2D(filters=8, kernel_size=ModelParam.kernel_size, padding=ModelParam.padding, activation=ModelParam.activitation, input_shape=tuple(ModelParam.InputDimensions[:dim]) + (1,) ))
+        model.add(layers.MaxPooling2D(pool_size=ModelParam.Layer_Params.MaxPooling.pool_size))
+        model.add(layers.Dropout(ModelParam.Layer_Params.Dropout.Value))
 
         model.add(layers.Flatten())
-        model.add(layers.Dense(128 , activation=Modelparam.Layer_Params.Activitation.layers))
-        model.add(layers.Dropout(Modelparam.Layer_Params.Dropout.Value))
-        model.add(layers.Dense(Modelparam.MultiClass.num_classes , activation=Modelparam.Layer_Params.Activitation.output))
+        model.add(layers.Dense(128 , activation=ModelParam.Layer_Params.Activitation.layers))
+        model.add(layers.Dropout(ModelParam.Layer_Params.Dropout.Value))
+        model.add(layers.Dense(ModelParam.MultiClass.num_classes , activation=ModelParam.Layer_Params.Activitation.output))
 
         return model
 
-    def FCN_3D(Modelparam):
+    def FCN_3D():
 
         NumberFM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
-        dim = Modelparam.Method.InputImage2Dvs3D
-        inputs = layers.Input( tuple(Modelparam.InputDimensions[:dim]) + (1,) )
+        dim = ModelParam.Method.InputImage2Dvs3D
+        inputs = layers.Input( tuple(ModelParam.InputDimensions[:dim]) + (1,) )
 
         conv = inputs
-        for nL in range(Modelparam.num_Layers -1):
-            Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
-            conv = layers.Conv3D(filters=NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
-            if Modelparam.Layer_Params.Dropout.Mode and Trainable: conv = layers.Dropout(Modelparam.Layer_Params.Dropout)(conv)
+        for nL in range(ModelParam.num_Layers -1):
+            Trainable = False if ModelParam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
+            conv = layers.Conv3D(filters=NumberFM*(2**nL), kernel_size=ModelParam.Layer_Params.ConvLayer.Kernel_size.conv, padding=ModelParam.Layer_Params.ConvLayer.padding, activation=ModelParam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
+            if ModelParam.Layer_Params.Dropout.Mode and Trainable: conv = layers.Dropout(ModelParam.Layer_Params.Dropout)(conv)
 
-        final  = layers.Conv3D(filters=Modelparam.MultiClass.num_classes, kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.output, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.output)(conv)
+        final  = layers.Conv3D(filters=ModelParam.MultiClass.num_classes, kernel_size=ModelParam.Layer_Params.ConvLayer.Kernel_size.output, padding=ModelParam.Layer_Params.ConvLayer.padding, activation=ModelParam.Layer_Params.Activitation.output)(conv)
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
-    def FCN_2D(Modelparam):
+    def FCN_2D():
 
         NumberFM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
-        dim = Modelparam.Method.InputImage2Dvs3D
-        inputs = layers.Input( tuple(Modelparam.InputDimensions[:dim]) + (1,) )
+        dim = ModelParam.Method.InputImage2Dvs3D
+        inputs = layers.Input( tuple(ModelParam.InputDimensions[:dim]) + (1,) )
 
         conv = inputs
-        for nL in range(Modelparam.num_Layers -1):
-            Trainable = False if Modelparam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
-            conv = layers.Conv2D(filters=NumberFM*(2**nL), kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.conv, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
-            if Modelparam.Layer_Params.Dropout.Mode and Trainable: conv = layers.Dropout(Modelparam.Layer_Params.Dropout)(conv)
+        for nL in range(ModelParam.num_Layers -1):
+            Trainable = False if ModelParam.Transfer_Learning.Mode and nL in ModelParam.Transfer_Learning.FrozenLayers else True
+            conv = layers.Conv2D(filters=NumberFM*(2**nL), kernel_size=ModelParam.Layer_Params.ConvLayer.Kernel_size.conv, padding=ModelParam.Layer_Params.ConvLayer.padding, activation=ModelParam.Layer_Params.Activitation.layers, trainable=Trainable)(conv)
+            if ModelParam.Layer_Params.Dropout.Mode and Trainable: conv = layers.Dropout(ModelParam.Layer_Params.Dropout)(conv)
 
-        final  = layers.Conv2D(filters=Modelparam.MultiClass.num_classes, kernel_size=Modelparam.Layer_Params.ConvLayer.Kernel_size.output, padding=Modelparam.Layer_Params.ConvLayer.padding, activation=Modelparam.Layer_Params.Activitation.output)(conv)
+        final  = layers.Conv2D(filters=ModelParam.MultiClass.num_classes, kernel_size=ModelParam.Layer_Params.ConvLayer.Kernel_size.output, padding=ModelParam.Layer_Params.ConvLayer.padding, activation=ModelParam.Layer_Params.Activitation.output)(conv)
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
 
     # params.WhichExperiment.HardParams.Model.imageInfo = Data.Info
-    ModelParam = params.WhichExperiment.HardParams.Model
+    
     if 'U-Net' in ModelParam.architectureType:
-        model = UNet(ModelParam)
+        model = UNet()
 
     elif 'CNN_Classifier' in ModelParam.architectureType:
-        model = CNN_Classifier(ModelParam)
+        model = CNN_Classifier()
 
     elif 'FCN_2D' in ModelParam.architectureType:
-        model = FCN_2D(ModelParam)
+        model = FCN_2D()
 
     model.summary()
 

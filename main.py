@@ -43,8 +43,9 @@ def Run(UserInfoB,InitValues):
             return Nuclei_Indexes
 
         print('************ stage 1 ************')
-        for UserInfoB['simulation'].nucleus_Index in [1]:
-            Run_SingleNuclei(UserInfoB)
+        if 1 in InitValues.Nuclei_Indexes: 
+            for UserInfoB['simulation'].nucleus_Index in [1]:
+                Run_SingleNuclei(UserInfoB)
 
         print('************ stage 2 ************')               
         for UserInfoB['simulation'].nucleus_Index in HCascade_Parents_Identifier(InitValues):
@@ -63,7 +64,7 @@ def Run(UserInfoB,InitValues):
 
         for sd in InitValues.slicingDim:
 
-            if not (sd == 0 and UserInfoB['nucleus_Index'] == 1):
+            if not (sd == 0 and 1 == UserInfoB['simulation'].nucleus_Index):
                 UserInfoB['simulation'].slicingDim = [sd]                       
                 # UserInfoB['simulation'].epochs = 30  if UserInfoB['simulation'].nucleus_Index == 1 else 70
                 params = paramFunc.Run(UserInfoB)
@@ -75,9 +76,12 @@ def Run(UserInfoB,InitValues):
 
                 print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
                 print('---------------------------------------------------------------')
-                Data, params = datasets.loadDataset(params)
-                try: choosingModel.check_Run(params, Data)
-                except: print('failed')
+                Data, params = datasets.loadDataset(params)        
+                # try: 
+                choosingModel.check_Run(params, Data)
+                # except: print('failed')
+            # else:
+                # params.directories.Train.Model + '/mode.h5'
 
 
     if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages(UserInfoB)
@@ -92,6 +96,7 @@ def preMode(UserInfo):
     K = gpuSetting(params)
     return UserInfoB, K
 UserInfoB, K = preMode(UserInfo.__dict__)
+UserInfoB['simulation'].verbose = 1
 
 
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
