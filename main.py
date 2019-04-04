@@ -119,9 +119,22 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 UserInfoB['simulation'].verbose = 1
 
 
+# try: 
+#     UserInfoB['simulation'].nucleus_Index = [1]
+#     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+#     print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
+#     Run(UserInfoB, IV)
+# except:
+#     print('----')
+
+
+# try: 
+    # UserInfoB['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index)
 Run(UserInfoB, IV)
+# except:
+    # print('----')
 
 
 K.clear_session()

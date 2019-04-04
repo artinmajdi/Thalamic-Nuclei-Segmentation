@@ -382,6 +382,8 @@ def func_WhichExperiment(UserInfo):
 
         def func_Initialize(UserInfo):
             Initialize_From_Thalamus, Initialize_From_OlderModel, Initialize_From_3T = UserInfo['simulation'].Initialize_FromThalamus , UserInfo['simulation'].Initialize_FromOlderModel , UserInfo['simulation'].Initialize_From_3T
+
+
             # if Initialize_From_Thalamus + Initialize_From_OlderModel + Initialize_From_3T > 1:
             #     print('WARNING:   initilization can only happen from one source')
             #     Initialize_From_Thalamus, Initialize_From_OlderModel, Initialize_From_3T = False , False , False

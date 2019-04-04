@@ -266,13 +266,13 @@ def trainingExperiment(Data, params):
             #     model2.save_weights(params.directories.Train.Model + '/best_model_weights' + tagTF + '.h5', overwrite=True )
                                 
             else:
-                if params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
-                    model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
-                    print(' --- initialized from older Model --- ')
-
-                elif params.WhichExperiment.Nucleus.Index[0] != 1 and params.WhichExperiment.HardParams.Model.InitializeFromThalamus and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
+                if params.WhichExperiment.HardParams.Model.InitializeFromThalamus and params.WhichExperiment.Nucleus.Index[0] != 1 and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
                     model2.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
                     print(' --- initialized from Thalamus --- ')
+
+                elif params.WhichExperiment.HardParams.Model.InitializeFromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
+                    model2.load_weights(params.directories.Train.Model + '/model_weights.h5')
+                    print(' --- initialized from older Model --- ')
 
                 elif params.WhichExperiment.HardParams.Model.Initialize_From_3T and os.path.exists(params.directories.Train.Model_3T + '/model_weights.h5'):
                     model2.load_weights(params.directories.Train.Model_3T + '/model_weights.h5')

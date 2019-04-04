@@ -2,6 +2,7 @@
 
 Model_Method =  'Cascade' #'FCN_2D' # HCascade' # 
 Local_Flag = False
+mode3T_7T = '7T'
 
 class SubExperiment:
     Index = 11
@@ -39,11 +40,11 @@ class Transfer_Learning:
 class simulation:
     TestOnly      = False
     epochs        = 40
-    GPU_Index     = "5"
+    GPU_Index     = "3"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1,2]
+    nucleus_Index = [2]
     slicingDim    = [2,1] # [0,1,2]
     batch_size    = 100
     InputImage2Dvs3D = 2
@@ -51,7 +52,7 @@ class simulation:
     verbose = 2
     Multiply_By_Thalmaus = False
 
-    Initialize_FromThalamus   = False
+    Initialize_FromThalamus   = True
     Initialize_FromOlderModel = True
     Initialize_From_3T = True
     Weighted_Class_Mode = False
@@ -61,6 +62,13 @@ class simulation:
     Use_TestCases_For_Validation = True
     ImClosePrediction = True
 
+if mode3T_7T == '3T':
+    simulation.Initialize_From_3T = False
+    ReadTrain.SRI = True
+    ReadTrain.Main = False
+    SubExperiment.Index = 8
+
+    
 mode_saveTrue_LoadFalse = True
 DropoutValue = 0.3
 havingBackGround_AsExtraDimension = True
