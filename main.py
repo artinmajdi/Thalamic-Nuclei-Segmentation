@@ -8,6 +8,8 @@ import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 import preprocess.applyPreprocess as applyPreprocess
 from shutil import copyfile , copytree
+import tensorflow as tf
+from keras import backend as K
 
 class InitValues:
     def __init__(self, Nuclei_Indexes=1 , slicingDim=2):
@@ -66,6 +68,8 @@ def Run(UserInfoB,InitValues):
 
         for sd in InitValues.slicingDim:
             
+            K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
+
             UserInfoB['simulation'].slicingDim = [sd]                       
             params = paramFunc.Run(UserInfoB)
 
@@ -100,6 +104,8 @@ def Run(UserInfoB,InitValues):
             
             Data, params = datasets.loadDataset(params)                
             choosingModel.check_Run(params, Data)  
+            
+            K.clear_session()
             
             # except: print('failed')
  
@@ -137,4 +143,4 @@ Run(UserInfoB, IV)
     # print('----')
 
 
-K.clear_session()
+# K.clear_session()
