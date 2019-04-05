@@ -37,24 +37,28 @@ class Transfer_Learning:
     FrozenLayers = [0]
     Stage = 0
 
+if Transfer_Learning.Mode:
+    ReadTrain.Main = False
+    ReadTrain.ET   = True
+
 class simulation:
     TestOnly      = False
-    epochs        = 40
-    GPU_Index     = "3"
+    epochs        = 5
+    GPU_Index     = "2"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [2]
-    slicingDim    = [2,1] # [0,1,2]
+    nucleus_Index = [1]
+    slicingDim    = [2] # [0,1,2]
     batch_size    = 100
     InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 20
+    FirstLayer_FeatureMap_Num = 40
     verbose = 2
     Multiply_By_Thalmaus = False
 
-    Initialize_FromThalamus   = True
-    Initialize_FromOlderModel = True
-    Initialize_From_3T = True
+    Initialize_FromThalamus   = False
+    Initialize_FromOlderModel = False
+    Initialize_From_3T = False
     Weighted_Class_Mode = False
 
     save_Best_Epoch_Model = True

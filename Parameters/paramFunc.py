@@ -39,10 +39,10 @@ def subExperimentName(UserInfo):
 
     # if int(UserInfo['simulation'].slicingDim[0]) != 2:
     SubExperimentTag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
-    SubExperimentTag += '_Dt' + str(UserInfo['DropoutValue'])
-    SubExperimentTag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
-    SubExperimentTag += '_NL' + str(UserInfo['simulation'].num_Layers)
-    SubExperimentTag += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
+    # SubExperimentTag += '_Dt' + str(UserInfo['DropoutValue'])
+    # SubExperimentTag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
+    # SubExperimentTag += '_NL' + str(UserInfo['simulation'].num_Layers)
+    # SubExperimentTag += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
       
     if UserInfo['simulation'].Multiply_By_Thalmaus: SubExperimentTag += '_MpByTH'  
     if UserInfo['ReadTrain'].SRI: SubExperimentTag += '_SRI'    
@@ -54,18 +54,18 @@ def subExperimentName(UserInfo):
     SubExperimentTag_ModelInit += '_sd' + str(UserInfo['simulation'].slicingDim[0])
     # SubExperimentTag_ModelInit += '_Dt' + '0.3'
     # SubExperimentTag_ModelInit += '_LR' + '0.001'    
-    SubExperimentTag_ModelInit += '_NL' + str(UserInfo['simulation'].num_Layers)
-    SubExperimentTag_ModelInit += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
-    SubExperimentTag_ModelInit += '_MpByTH' 
+    # SubExperimentTag_ModelInit += '_NL' + str(UserInfo['simulation'].num_Layers)
+    # SubExperimentTag_ModelInit += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
+    # SubExperimentTag_ModelInit += '_MpByTH' 
     SubExperimentTag_ModelInit += '_SRI' 
 
-    if UserInfo['ReadTrain'].Main:
-        if UserInfo['ReadTrain'].ET: SubExperimentTag += '_WET' 
-        else: SubExperimentTag += '_WoET'                               
+    # if UserInfo['ReadTrain'].Main:
+    #     if UserInfo['ReadTrain'].ET: SubExperimentTag += '_WET' 
+    #     else: SubExperimentTag += '_WoET'                               
 
-    if UserInfo['simulation'].Initialize_From_3T:    SubExperimentTag += '_Init_From_3T' 
-    if UserInfo['InputPadding'].Automatic:           SubExperimentTag += '_AutoDim'
-    if UserInfo['simulation'].save_Best_Epoch_Model: SubExperimentTag += '_BestEpch'
+    # if UserInfo['simulation'].Initialize_From_3T:    SubExperimentTag += '_Init_From_3T' 
+    # if UserInfo['InputPadding'].Automatic:           SubExperimentTag += '_AutoDim'
+    # if UserInfo['simulation'].save_Best_Epoch_Model: SubExperimentTag += '_BestEpch'
     
     return SubExperimentTag, readAugmentTag , SubExperimentTag_ModelInit
 

@@ -197,11 +197,11 @@ def trainingExperiment(Data, params):
         checkpointer = keras.callbacks.ModelCheckpoint(filepath= Dir_Save + '/best_model_weights' + tagTF + '.h5', \
             monitor = monitor, verbose=1, save_best_only=True, mode=mode)
 
-        Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = monitor, factor=0.5, min_delta=0.005 , patience=5, verbose=1, \
+        Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = monitor, factor=0.5, min_delta=0.005 , patience=4, verbose=1, \
             save_best_only=True, mode=mode , min_lr=0.9e-4 , )
         
         # Progbar = keras.callbacks.Progba
-        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=15, verbose=1, mode=mode, \
+        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=10, verbose=1, mode=mode, \
             baseline=0, restore_best_weights=True)
 
         TensorBoard = keras.callbacks.TensorBoard(log_dir= Dir_Save + '/logs', histogram_freq=1, batch_size=batch_size, \
@@ -275,10 +275,11 @@ def trainingExperiment(Data, params):
                     print(' --- initialized from older Model --- ')
 
                 elif params.WhichExperiment.HardParams.Model.Initialize_From_3T and os.path.exists(params.directories.Train.Model_3T + '/model_weights.h5'):
-                    model2.load_weights(params.directories.Train.Model_3T + '/model_weights.h5')
-                    print(' --- initialized from Model_3T' , params.directories.Train.Model_3T)
+                        model2.load_weights(params.directories.Train.Model_3T + '/model_weights.h5')
+                        print(' --- initialized from Model_3T' , params.directories.Train.Model_3T)
             # except: 
             #     print('loading Initial Weights Failed')
+
             return model2
 
         def modelFit(params):

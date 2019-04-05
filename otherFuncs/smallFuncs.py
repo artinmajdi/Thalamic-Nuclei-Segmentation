@@ -227,6 +227,15 @@ def terminalEntries(UserInfo):
         elif entry.lower() in ('-nl','--num_Layers'):
             UserInfo['simulation'].num_Layers = int(sys.argv[en+1])
 
+        elif entry.lower() in ('-FM','--FirstLayer_FeatureMap_Num'):
+            UserInfo['simulation'].FirstLayer_FeatureMap_Num = int(sys.argv[en+1])
+
+        elif entry.lower() in ('-m','--Model_Method'):
+            if int(sys.argv[en+1]) == 1:
+                UserInfo['Model_Method'] = 'Cascade' 
+            elif int(sys.argv[en+1]) == 2: #'FCN_2D' 
+                UserInfo['Model_Method'] = 'HCascade' 
+            
 
     return UserInfo
 

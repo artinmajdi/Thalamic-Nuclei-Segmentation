@@ -1,6 +1,6 @@
 import os, sys
-# sys.path.append(os.path.dirname(__file__))
-sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+sys.path.append(os.path.dirname(__file__))
+# sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 import otherFuncs.smallFuncs as smallFuncs
 import otherFuncs.datasets as datasets
 import modelFuncs.choosingModel as choosingModel
@@ -23,8 +23,8 @@ def gpuSetting(params):
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
     import tensorflow as tf
     from keras import backend as K
-    # K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
-    K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True )   ))
+    K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
+    # K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True )   ))
     return K
 
 def Run(UserInfoB,InitValues):
@@ -50,8 +50,8 @@ def Run(UserInfoB,InitValues):
                 Run_SingleNuclei(UserInfoB)
 
         print('************ stage 2 ************')               
-        for UserInfoB['simulation'].nucleus_Index in HCascade_Parents_Identifier(InitValues):
-            Run_SingleNuclei(UserInfoB)
+        # for UserInfoB['simulation'].nucleus_Index in HCascade_Parents_Identifier(InitValues):
+        #     Run_SingleNuclei(UserInfoB)
 
         print('************ stage 3 ************')
         for UserInfoB['simulation'].nucleus_Index in remove_Thalamus_From_List(InitValues):
@@ -116,7 +116,7 @@ def preMode(UserInfo):
     K = gpuSetting(params)
     return UserInfoB, K
 UserInfoB, K = preMode(UserInfo.__dict__)
-UserInfoB['simulation'].verbose = 1
+UserInfoB['simulation'].verbose = 2
 
 
 # try: 
