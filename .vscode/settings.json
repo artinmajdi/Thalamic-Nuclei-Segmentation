@@ -1,11 +1,12 @@
 {
-    "python.linting.pylintEnabled": true,
+    "python.linting.pylintEnabled": false,
     "python.pythonPath": "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/bin/python",
     "python.linting.enabled": true,
-    "python.linting.banditEnabled": false,
+    "python.linting.banditEnabled": true,
     "python.linting.mypyEnabled": false,
     "python.linting.pylamaEnabled": false,
     "python.jediEnabled": false,
     "editor.tabCompletion": "on",
-    "search.quickOpen.includeSymbols": true
+    "search.quickOpen.includeSymbols": true,
+    "python.linting.pep8Enabled": false
 }

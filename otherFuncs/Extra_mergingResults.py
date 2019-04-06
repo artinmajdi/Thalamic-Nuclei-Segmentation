@@ -8,6 +8,7 @@ import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 import pickle
 import xlsxwriter
+from tqdm import tqdm
 
 # UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 params = paramFunc.Run(UserInfo.__dict__, terminal=True)
@@ -22,19 +23,6 @@ def init_Params():
 
     return NucleiIndexes , NumColumns , n_epochsMax , AllExp_Address
 NucleiIndexes , NumColumns , n_epochsMax , AllExp_Address = init_Params()
-
-def func_Nuclei_Names():
-    names = np.append( ['subjects'] , list(np.zeros(NumColumns-1))  )
-    names[3] = ''
-    for nIx in NucleiIndexes:
-        if nIx in range(16): ind = nIx
-        elif nIx == 1.1:     ind = 15
-        elif nIx == 1.2:     ind = 16
-        elif nIx == 1.3:     ind = 17
-
-        names[ind], _ , _ = smallFuncs.NucleiSelection(nIx)
-
-    return names
 
 class savingHistory_AsExcel:
 
@@ -65,7 +53,7 @@ class savingHistory_AsExcel:
                 else:
                     self.AllNucleusInfo = np.concatenate((self.AllNucleusInfo, self.nucleusInfo) , axis=1)     
 
-        writer = pd.ExcelWriter(  Info.Address + '/results/All_LossAccForEpochs.xlsx', engine='xlsxwriter')
+        writer = pd.ExcelWriter(  Info.address + '/results/All_LossAccForEpochs.xlsx', engine='xlsxwriter')
         
         pd.DataFrame(data=self.Info.TagsList).to_excel(writer, sheet_name='TagsList')
         for IxNu in NucleiIndexes:
@@ -74,9 +62,9 @@ class savingHistory_AsExcel:
 
             self.AllNucleusInfo , self.FullNamesLA , self.ind = [] , [] , -1
 
-            for ix_sE , self.subExperiment in enumerate(self.Info.List_subExperiments):
+            for ix_sE , (self.subExperiment,_,_) in enumerate(self.Info.List_subExperiments):
                 self.TagLst = self.Info.TagsList[ix_sE]
-                self.subDir = self.Info.Address + '/models/' + self.subExperiment + '/' + self.nucleus                  
+                self.subDir = self.Info.address + '/models/' + self.subExperiment + '/' + self.nucleus                  
                 if os.path.isdir(self.subDir): Load_subDir_History(self)
 
             if len(self.AllNucleusInfo) != 0: pd.DataFrame(data=self.AllNucleusInfo, columns=self.FullNamesLA).to_excel(writer, sheet_name=self.nucleus)
@@ -85,82 +73,124 @@ class savingHistory_AsExcel:
 
 class mergingDiceValues:
     def __init__(self, Info):
-
-        self.Info = Info
-        self.writer = pd.ExcelWriter(self.Info.Address + '/results/All_Dice.xlsx', engine='xlsxwriter')
-        def mergingDiceValues_ForOneSubExperiment(self):
-
-            print('Dices: ', str(self.subIx) + '/' + str(len(self.Info.List_subExperiments)), self.subExperiment)
-
-            self.df_IndSubj = pd.DataFrame()
-            self.TgLst = self.Info.TagsList[self.subIx]
-
-            def subject_List(self):
-                subjectsList = [a for a in os.listdir(self.subExperiment_Address) if 'vimp' in a]
-                subjectsList.sort()
-                return subjectsList
-            
-            def func_Load_AllNuclei_Dices(self):
-                
-                Dice_Single = np.append(self.subject, list(np.zeros(NumColumns-1)))
-                
-                for ind, name in enumerate( self.Nuclei_Names ):
-                    Dir_subject = self.subExperiment_Address + '/' + self.subject + '/Dice_' + name +'.txt'
-                    if os.path.isfile(Dir_subject): 
-                        Dice_Single[ind] = np.loadtxt(Dir_subject)[1].astype(np.float16)
-
-                # self.Dice_Test.append(Dice_Single)
-                return Dice_Single
-                
-            self.Nuclei_Names = func_Nuclei_Names()
-            self.Ind_Data = np.array([  func_Load_AllNuclei_Dices(self)  for self.subject in subject_List(self)  ]) 
-
-            self.df_IndSubj[self.Nuclei_Names[0]] = self.Ind_Data[:,0]
-            for nIx, nucleus in enumerate(self.Nuclei_Names[1:]): 
-                self.df_IndSubj[nucleus] = self.Ind_Data[:,nIx+1].astype(np.float16)
-            
-            self.df_AD[self.TgLst[0]] = np.median(self.Ind_Data[:,1:].astype(np.float16),axis=0)[:17] 
-            self.df_IndSubj.to_excel(  self.writer, sheet_name=self.TgLst[0] )         
-
+        self.Info   = Info
+        self.writer = pd.ExcelWriter(self.Info.Experiment.address + '/results/All_Dice.xlsx', engine='xlsxwriter')
         def save_TagList_AllDice(self):
-            pd.DataFrame(data=self.Info.TagsList).to_excel(self.writer, sheet_name='TagsList')
+            # TODO it might be unnecessary
+            pd.DataFrame(data=self.Info.Experiment.TagList).to_excel(self.writer, sheet_name='TagsList')
 
-            self.df_AD = pd.DataFrame()
-            self.df_AD['Nuclei'] = func_Nuclei_Names()[1:18]
-            self.df_AD.to_excel(self.writer, sheet_name='AllDices')        
+            self.pd_AllNuclei_Dices = pd.DataFrame()
+            self.pd_AllNuclei_Dices['Nuclei'] = self.Info.Nuclei_Names[1:18]
+            self.pd_AllNuclei_Dices.to_excel(self.writer, sheet_name='AllDices')        
         save_TagList_AllDice(self)
 
-        for self.subIx, self.subExperiment in enumerate(self.Info.List_subExperiments):
-            self.subExperiment_Address = self.Info.Address + '/results/' + self.subExperiment   
-            try:         
-                if os.path.isdir(self.subExperiment_Address): mergingDiceValues_ForOneSubExperiment(self)            
-            except:
-                print('failed' ,self.subExperiment )            
-        self.df_AD.to_excel(self.writer, sheet_name='AllDices')
-        self.writer.close()
-
-class Info_Search():
-    
-    def __init__(self, All_Experiments_Address=AllExp_Address , Experiment_Name = ''):
-                   
-        def func_List_subExperiments(self):
-            List_subExperiments_Results = [a for a in os.listdir(self.Address + '/results') if ('subExp' in a) or ('sE' in a)]
-            List_subExperiments_Models = [a for a in os.listdir(self.Address + '/models') if ('subExp' in a) or ('sE' in a)]
-            self.List_subExperiments = list(set(List_subExperiments_Results).union(List_subExperiments_Models))
-            self.List_subExperiments.sort()
-
-            self.TagsList = [np.append( ['Tag' + str(ixSE)], subEx.split('_') ) for ixSE, subEx in enumerate(self.List_subExperiments) ]
+        def func_Load_Subexperiment(self):
             
-        self.All_Experiments_Address = All_Experiments_Address
-        if All_Experiments_Address: self.All_Experiments_List = [s for s in os.listdir(All_Experiments_Address) if 'exp' in s]
-    
-        if Experiment_Name:
-            self.subExperiment_Address = ''
-            self.Experiment_Name = Experiment_Name  
-            self.Address = self.All_Experiments_Address + '/' + self.Experiment_Name
-            func_List_subExperiments(self)
+            if self.plane.mode:
 
-for expName in Info_Search().All_Experiments_List:
+                self.subExperiment.address = self.Info.Experiment.address + '/results/' + self.subExperiment.name +'/'+ self.plane.name
+              
+                def func_1subject_Dices(self):
+                    
+                    Dice_Single = np.append(self.subject, list(np.zeros(NumColumns-1)))
+                    
+                    for ind, name in enumerate( self.Info.Nuclei_Names ):
+                        Dir_subject = self.subExperiment.address + '/' + self.subject + '/Dice_' + name +'.txt'
+                        if os.path.isfile(Dir_subject): Dice_Single[ind] = np.loadtxt(Dir_subject)[1].astype(np.float16)
+                    # self.Dice_Test.append(Dice_Single)
+                    return Dice_Single                    
+                # func_Nuclei_Names(self)
+                sE_Dices = np.array([  func_1subject_Dices(self)  for self.subject in self.plane.subject_List  ]) 
+
+                def save_Dices_subExp_In_ExcelFormat(self , sE_Dices):
+                    pd_sE = pd.DataFrame()
+                    for nIx, nucleus in enumerate(self.Info.Nuclei_Names): 
+                        if nIx == 0 : pd_sE[nucleus] = sE_Dices[:,nIx]
+                        else:         pd_sE[nucleus] = sE_Dices[:,nIx].astype(np.float16)
+                    pd_sE.to_excel(  self.writer, sheet_name=self.plane.tagList[0] )    
+                save_Dices_subExp_In_ExcelFormat(self , sE_Dices)
+
+                self.pd_AllNuclei_Dices[self.plane.tagList[0]] = np.median(sE_Dices[:,1:].astype(np.float16),axis=0)[:17] 
+                     
+        def loopOver_Subexperiments(self):
+            for self.subExperiment in tqdm( self.Info.Experiment.List_subExperiments , desc='Dices:'):
+                for self.plane in self.subExperiment.multiPlanar:
+                    
+                    try: func_Load_Subexperiment(self)
+                    except: print('failed' ,self.subExperiment )            
+                
+            self.pd_AllNuclei_Dices.to_excel(self.writer, sheet_name='AllDices')
+            self.writer.close()
+        loopOver_Subexperiments(self)
+
+class Info_Search():    
+    def __init__(self, General_Address=AllExp_Address , Experiment_Name = ''):
+       
+        class All_Experiments:
+            address = General_Address
+            List = [s for s in os.listdir(General_Address) if 'exp' in s] if General_Address else []
+        self.All_Experiments = All_Experiments()
+                 
+        class Experiment:
+            name                = Experiment_Name
+            address             = self.All_Experiments.address + '/' + Experiment_Name
+            List_subExperiments = ''
+            TagList             = []
+        self.Experiment = Experiment()                                        
+        
+        def func_List_subExperiments(self, mode):
+            
+            class SD:
+                def __init__(self, mode = False , name='' , sdx='' , TgC=0 , address=''):
+                    self.mode = mode                        
+                    if self.mode: 
+                        self.tagList = np.append( ['Tag' + str(TgC) + '_' + sdx], name.split('_') ) 
+                        # self.address = address
+                        self.subject_List = [a for a in os.listdir(address) if 'vimp' in a]
+                        self.subject_List.sort()
+                        self.name = sdx
+            class subExp():
+                def __init__(self, name , address , TgC):
+                    self.name = name  
+                    # self.address = address + '/' + self.name
+
+                    sdx = os.listdir(address + '/' + self.name)
+                    sd0 = SD(True, name , 'sd0',TgC , address + '/' + name+'/sd0') if 'sd0' in sdx else SD() 
+                    sd1 = SD(True, name , 'sd1',TgC , address + '/' + name+'/sd1') if 'sd1' in sdx else SD() 
+                    sd2 = SD(True, name , 'sd2',TgC , address + '/' + name+'/sd2') if 'sd2' in sdx else SD() 
+
+                    self.multiPlanar = [sd0 , sd1 , sd2]  
+            
+            List_subExps = [a for a in os.listdir(self.Experiment.address + '/' + mode) if ('subExp' in a) or ('sE' in a)]   
+
+            self.Experiment.List_subExperiments , self.Experiment.TagList = [] , []
+            for Ix, name in enumerate(List_subExps):
+                self.Experiment.List_subExperiments.append(subExp(name , self.Experiment.address + '/' + mode , Ix))
+                self.Experiment.TagList.append( np.append(['Tag' + str(Ix)],  name.split('_')) )
+
+            # np.append( ['Tag' + str(TgC) + '_' + sdx], name.split('_') 
+            # return [  for Ix, name in enumerate(List_subExps) ]        
+        
+        if self.Experiment.name:
+            func_List_subExperiments(self, 'results')
+            # self.Experiment.List_subExperiments = func_List_subExperiments(self, 'results')
+
+        def func_Nuclei_Names():
+            Nuclei_Names = np.append( ['subjects'] , list(np.zeros(NumColumns-1))  )
+            Nuclei_Names[3] = ''
+            def nuclei_Index(nIx):
+                if nIx in range(15): return nIx
+                elif nIx == 1.1:     return 15
+                elif nIx == 1.2:     return 16
+                elif nIx == 1.3:     return 17
+
+            for nIx in NucleiIndexes:
+                Nuclei_Names[nuclei_Index(nIx)] = smallFuncs.NucleiIndex(index=nIx).name
+
+            return Nuclei_Names
+        self.Nuclei_Names = func_Nuclei_Names()
+
+for expName in Info_Search().All_Experiments.List:
 
     Info = Info_Search(Experiment_Name=expName )
 

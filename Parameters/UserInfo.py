@@ -8,7 +8,7 @@ class TypeExperimentFuncs():
 
         class ReadTrainC:
             def __init__(self, SRI=0 , ET=0 , Main=1):   
-                class readAugments: Mode, Tag = False, ''
+                class readAugments: Mode, Tag = True, ''
                 self.SRI  = SRI  > 0.5
                 self.ET   = ET   > 0.5
                 self.Main = Main > 0.5

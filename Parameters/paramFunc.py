@@ -40,7 +40,7 @@ def subExperimentName(UserInfo):
     if readAugmentTag and (UserInfo['ReadTrain'].ET or UserInfo['ReadTrain'].Main): SubExperimentTag += '_' + readAugmentTag
 
     # if int(UserInfo['simulation'].slicingDim[0]) != 2:
-    SubExperimentTag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
+    # SubExperimentTag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
     # SubExperimentTag += '_Dt' + str(UserInfo['DropoutValue'])
     # SubExperimentTag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
     SubExperimentTag += '_NL' + str(UserInfo['simulation'].num_Layers)
@@ -53,7 +53,7 @@ def subExperimentName(UserInfo):
 
     SubExperimentTag_ModelInit  = 'sE8_'
     SubExperimentTag_ModelInit += UserInfo['Model_Method']
-    SubExperimentTag_ModelInit += '_sd' + str(UserInfo['simulation'].slicingDim[0])
+    # SubExperimentTag_ModelInit += '_sd' + str(UserInfo['simulation'].slicingDim[0])
     # SubExperimentTag_ModelInit += '_Dt' + '0.3'
     # SubExperimentTag_ModelInit += '_LR' + '0.001'    
     SubExperimentTag_ModelInit += '_NL' + str(UserInfo['simulation'].num_Layers)
