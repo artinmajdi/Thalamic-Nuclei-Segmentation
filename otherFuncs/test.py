@@ -8,16 +8,8 @@ import keras
 import h5py
 import nibabel as nib
 
-def gpuSetting(params):
-    
-    os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
-    import tensorflow as tf
-    from keras import backend as K
-    K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
-    return K
-
-params = paramFunc.Run(UserInfo.__dict__)
-K = gpuSetting(params)
+params = paramFunc.Run(UserInfo.__dict__, terminal=True)
+K = smallFuncs.gpuSetting(params.WhichExperiment.HardParams.Machine.GPU_Index)
 
 # model = keras.models.load_model(params.directories.Train.Model + '/model.h5')
 # subject = '/vimp2_869_06142013_BL_MS/'

@@ -7,9 +7,10 @@ import otherFuncs.smallFuncs as smallFuncs
 import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 import pickle
+import xlsxwriter
 
-UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
-params = paramFunc.Run(UserInfoB)
+# UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
+params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 
 def init_Params():
     _, NucleiIndexes , _ = smallFuncs.NucleiSelection(ind=1)
@@ -65,7 +66,7 @@ class savingHistory_AsExcel:
                     self.AllNucleusInfo = np.concatenate((self.AllNucleusInfo, self.nucleusInfo) , axis=1)     
 
         writer = pd.ExcelWriter(  Info.Address + '/results/All_LossAccForEpochs.xlsx', engine='xlsxwriter')
-
+        
         pd.DataFrame(data=self.Info.TagsList).to_excel(writer, sheet_name='TagsList')
         for IxNu in NucleiIndexes:
             self.nucleus, _ , _ = smallFuncs.NucleiSelection(IxNu)

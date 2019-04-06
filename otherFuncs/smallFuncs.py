@@ -1,5 +1,3 @@
-
-
 import nibabel as nib
 import numpy as np
 from shutil import copyfile
@@ -8,9 +6,7 @@ import os, sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 from skimage import measure
 from copy import deepcopy
-import pandas as pd
-import pickle
-# import mat4py
+import json
 
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
 def NucleiSelection(ind = 1):
@@ -82,7 +78,7 @@ class NucleiIndex:
     def __init__(self, index=1, method=''):
         self.index       = index
         self.method      = method
-        self.child       = None
+        self.child       = ()
         self.parent      = None
         self.grandParent = None
         
@@ -136,7 +132,30 @@ class NucleiIndex:
         Name_of_Nucleus(self)
         func_Parent_child(self)
 
+    def HCascade_Parents_Identifier(self, Nuclei_List):
+        List_of_Parents = []
+
+        b = NucleiIndex(1,'HCascade')        
+        for ix in b.child:
+            c = NucleiIndex(ix,'HCascade')
+            if c.child and bool(set(Nuclei_List ) & set(c.child)): List_of_Parents.append(ix)
+
+        return List_of_Parents
+        
+    def remove_Thalamus_From_List(self, Nuclei_List):
+        if 1 in Nuclei_List: Nuclei_List.remove(1)
+        return Nuclei_List
+            
 # a = NucleiIndex(6,'HCascade')
+
+def gpuSetting(GPU_Index):
+    
+    os.environ["CUDA_VISIBLE_DEVICES"] = GPU_Index
+    import tensorflow as tf
+    from keras import backend as K
+    K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))    
+    # K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True )   ))
+    return K
 
 
 def listSubFolders(Dir, params):
@@ -241,6 +260,7 @@ def terminalEntries(UserInfo):
 
 def search_ExperimentDirectory(whichExperiment):
 
+    sdTag = '/sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim)
     def Search_ImageFolder(Dir, NucleusName):
 
         def splitNii(s):
@@ -374,35 +394,39 @@ def search_ExperimentDirectory(whichExperiment):
 
             return Inputt
 
+        Read = whichExperiment.Dataset.ReadTrain
         Input = LoopReadingData(Input, Dir)
-        if whichExperiment.Dataset.ReadTrain.Main and os.path.exists( Dir + '/Main' ): Input = LoopReadingData(Input, Dir + '/Main')
-        if whichExperiment.Dataset.ReadTrain.ET   and os.path.exists( Dir + '/ET' ):   Input = LoopReadingData(Input, Dir + '/ET')            
-        if whichExperiment.Dataset.ReadTrain.SRI  and os.path.exists( Dir + '/SRI' ):  Input = LoopReadingData(Input, Dir + '/SRI')
+        if Read.Main and os.path.exists( Dir + '/Main'): Input = LoopReadingData(Input, Dir + '/Main')
+        if Read.ET   and os.path.exists( Dir + '/ET'  ): Input = LoopReadingData(Input, Dir + '/ET')            
+        if Read.SRI  and os.path.exists( Dir + '/SRI' ): Input = LoopReadingData(Input, Dir + '/SRI')
         
-        if whichExperiment.Dataset.ReadTrain.ReadAugments.Mode:
-            DirAug = Dir + '/Augments/' + whichExperiment.Dataset.ReadTrain.ReadAugments.Tag 
-            sdTag = '/sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim)
-            if whichExperiment.Dataset.ReadTrain.Main and os.path.exists( DirAug + '/Main' + sdTag):  Input = LoopReadingData( Input, DirAug + '/Main' + sdTag  )
-            if whichExperiment.Dataset.ReadTrain.ET   and os.path.exists( DirAug + '/ET'   + sdTag ): Input = LoopReadingData( Input, DirAug + '/ET'   + sdTag  )
+        if Read.ReadAugments.Mode:
+            DirAug = Dir + '/Augments/' + Read.ReadAugments.Tag 
+            
+            if Read.Main and os.path.exists( DirAug + '/Main' + sdTag):  Input = LoopReadingData( Input, DirAug + '/Main' + sdTag  )
+            if Read.ET   and os.path.exists( DirAug + '/ET'   + sdTag ): Input = LoopReadingData( Input, DirAug + '/ET'   + sdTag  )
                 
         return Input
 
-    class train:
-        address = whichExperiment.Experiment.address        + '/train'
-        Model   = whichExperiment.Experiment.address        + '/models/' + whichExperiment.SubExperiment.name           + '/' + whichExperiment.Nucleus.name
-        Model_Thalamus = whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name                 + '/1-THALAMUS'
-        Model_3T       = whichExperiment.Experiment.address + '/models/' + whichExperiment.SubExperiment.name_Init_3T  + '/' + whichExperiment.Nucleus.name
+    Exp_address = whichExperiment.Experiment.address
+    SE      = whichExperiment.SubExperiment
+    NucleusName = whichExperiment.Nucleus.name
 
-        Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
+    class train:
+        address        = Exp_address + '/train'
+        Model          = Exp_address + '/models/' + SE.name          + '/' + NucleusName  + sdTag
+        Model_Thalamus = Exp_address + '/models/' + SE.name          + '/' + '1-THALAMUS' + sdTag
+        Model_3T       = Exp_address + '/models/' + SE.name_Init_3T  + '/' + NucleusName  + sdTag
+        Input   = checkInputDirectory(address, NucleusName)
     
     class test:
-        address = whichExperiment.Experiment.address + '/test'
-        Result  = whichExperiment.Experiment.address + '/results/' + whichExperiment.SubExperiment.name
-        Input   = checkInputDirectory(address, whichExperiment.Nucleus.name)
+        address = Exp_address + '/test'
+        Result  = Exp_address + '/results/' + SE.name + sdTag
+        Input   = checkInputDirectory(address, NucleusName)
 
     class Directories:
-        Train = train
-        Test  = test
+        Train = train()
+        Test  = test()
 
     return Directories()
 
@@ -417,10 +441,11 @@ def imShow(*args):
 
     return True
 
-def Dice_Calculator(msk1,msk2):
+def mDice(msk1,msk2):
     intersection = msk1*msk2
     return intersection.sum()*2/(msk1.sum()+msk2.sum() + np.finfo(float).eps)
 
+"""
 def Loading_UserInfo(DirLoad, method):
 
     def loadReport(DirSave, name, method):
@@ -454,6 +479,7 @@ def Loading_UserInfo(DirLoad, method):
     a = UserInfo['InputDimensions'].replace(',' ,'').split('[')[1].split(']')[0].split(' ')
     UserInfo['InputDimensions'] = [int(ai) for ai in a]
     return UserInfo
+"""
 
 def findBoundingBox(PreStageMask):
     objects = measure.regionprops(measure.label(PreStageMask))
@@ -472,3 +498,35 @@ def findBoundingBox(PreStageMask):
     BB = [ [bbox[d] , bbox[L + d] ] for d in range(L)]
 
     return BB
+
+def Saving_UserInfo(DirSave, params):
+                            
+    # DirSave = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/models/sE11_Cascade_wRot7_6cnts_sd2/4-VA'
+    User_Info = {            
+        'num_Layers'     : int(params.WhichExperiment.HardParams.Model.num_Layers),
+        'Trained_SRI'    : params.UserInfo['ReadTrain'].SRI,
+        'Trained_ET'     : params.UserInfo['ReadTrain'].ET,
+        'Trained_Main'   : params.UserInfo['ReadTrain'].Main,
+        'Model_Method'   : params.UserInfo['Model_Method'],
+        'FromThalamus'   : params.UserInfo['InitializeB'].FromThalamus,
+        'FromOlderModel' : params.UserInfo['InitializeB'].FromOlderModel,
+        'From_3T'        : params.UserInfo['InitializeB'].From_3T,
+        'Learning_Rate'  : params.UserInfo['simulation'].Learning_Rate,
+        'Normalizae'     : params.UserInfo['simulation'].NormalizaeMethod,
+        'slicing_Dim'    : params.UserInfo['simulation'].slicingDim[0],
+        'batch'          : int(params.UserInfo['simulation'].batch_size),
+        'FeatureMaps'    : int(params.UserInfo['simulation'].FirstLayer_FeatureMap_Num),
+        'Mult_Thalmaus'  : params.UserInfo['simulation'].Multiply_By_Thalmaus,
+        'Weighted_Class' : params.UserInfo['simulation'].Weighted_Class_Mode,
+        'Dropout'        : params.UserInfo['DropoutValue'],
+        'gapDilation'    : int(params.UserInfo['gapDilation']),
+        'ImClosePrediction' : params.UserInfo['simulation'].ImClosePrediction,
+        'InputPadding_Mode' : params.UserInfo['InputPadding'].Automatic,
+        'InputPadding_Dims' : [int(s) for s in params.WhichExperiment.HardParams.Model.InputDimensions],
+    }
+
+    with open(DirSave + '/UserInfo.json', "w") as j:
+        j.write(json.dumps(User_Info))
+
+    # with open(DirSave + '/UserInfo.json', "r") as j:
+    #     data = json.load(j)

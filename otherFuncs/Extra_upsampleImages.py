@@ -12,7 +12,7 @@ UserInfoB['readAugments'].Mode = True
 UserInfoB['ReadTrain'].SRI     = True
 UserInfoB['ReadTrain'].ET      = True
 UserInfoB['ReadTrain'].Main    = True
-params = paramFunc.Run(UserInfoB)
+params = paramFunc.Run(UserInfoB, terminal=False)
 
 
 def loopOver_AllSubjects(subjects):

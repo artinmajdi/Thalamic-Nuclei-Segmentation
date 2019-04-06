@@ -61,14 +61,6 @@ def DatasetsInfo(DatasetIx):
     }
     return switcher.get(DatasetIx, 'WARNING: Invalid dataset index')
 
-# def readingFromExperiments(params):
-
-#     # if 'fashionMnist' in params.WhichExperiment.Dataset.name:
-#     #     Data, _ = fashionMnist(params)
-#     Data, params = loadDataset(params)
-
-#     return Data, params
-
 def paddingNegativeFix(sz, Padding):
     padding = np.array([list(x) for x in Padding])
     crd = -1*padding
@@ -362,15 +354,13 @@ def preAnalysis(params):
     def saveUserParams(params):
         params.UserInfo['simulation'].num_Layers = params.WhichExperiment.HardParams.Model.num_Layers
         params.UserInfo['InputDimensions'] = params.WhichExperiment.HardParams.Model.InputDimensions
-        print('InputDimensions', params.WhichExperiment.HardParams.Model.InputDimensions)
-        print('num_Layers', params.WhichExperiment.HardParams.Model.num_Layers)
+        # print('InputDimensions', params.WhichExperiment.HardParams.Model.InputDimensions)
+        # print('num_Layers', params.WhichExperiment.HardParams.Model.num_Layers)
 
         for sf in list(params.UserInfo):
             if '__' in sf: params.UserInfo.__delitem__(sf)
 
         smallFuncs.mkDir(params.directories.Train.Model)
-        with open(params.directories.Train.Model + '/UserInfoB.pkl' , 'wb') as f:
-            pickle.dump(params.UserInfo , f)
 
     def find_PaddingValues(params):
 
@@ -427,7 +417,7 @@ def preAnalysis(params):
                 #     dirr = params.directories.Test.Result.replace('_sd0' , '_sd2')
                 # else:
                 dirr = params.directories.Test.Result
-
+                
                 if 'train' in mode: dirr += '/TrainData_Output'
                 
                 BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.txt',dtype=int)

@@ -1,78 +1,83 @@
+class TypeExperimentFuncs():
+    def __init__(self):            
+        class SubExperimentC: 
+            def __init__(self, Index=11, Tag=''):
+                self.Index = Index
+                self.Tag   = Tag
+        self.SubExperimentC = SubExperimentC
 
+        class ReadTrainC:
+            def __init__(self, SRI=0 , ET=0 , Main=1):   
+                class readAugments: Mode, Tag = False, ''
+                self.SRI  = SRI  > 0.5
+                self.ET   = ET   > 0.5
+                self.Main = Main > 0.5
+                self.ReadAugments = readAugments
+        self.ReadTrainC = ReadTrainC
 
-Model_Method =  'Cascade' #'FCN_2D' # HCascade' # 
-Local_Flag = False
+        class Transfer_LearningC:
+            def __init__(self, Mode=False , FrozenLayers = [0] , Stage = 0):
+                self.Mode         = Mode
+                self.FrozenLayers = FrozenLayers
+                self.Stage        = Stage
+        self.Transfer_LearningC = Transfer_LearningC
+
+    def main(self, TypeExperiment = 1):
+        switcher = {
+            1:  (self.SubExperimentC(Index=11)  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
+            2:  (self.SubExperimentC(Index=11)  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC(Mode=True  , FrozenLayers=[0]) ),
+            3:  (self.SubExperimentC(Index=8)   ,   self.ReadTrainC(SRI=1 , ET=0 , Main=0)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),          
+            }
+        return switcher.get(TypeExperiment , 'wrong Index')
+
+Model_Method =  'HCascade' #'FCN_2D' # HCascade' # 
 mode3T_7T = '7T'
 
-class SubExperiment:
-    Index = 11
-    Tag   = ''
-    
-class Experiments:
-    Index = '7'
-    Tag = 'cascadeV1'
+# TypeExperiment == 1: #  Main
+# TypeExperiment == 2: # Transfer Learn ET
+# TypeExperiment == 3: # SRI
+SubExperiment , ReadTrain , Transfer_Learning = TypeExperimentFuncs().main(1)
 
-class readAugments:
-    Mode = True
-    Tag = ''
-
-class ReadTrain:
-    SRI = False
-    ET = False
-    Main = True
-    ReadAugments = readAugments()
-
-class InputPadding:
-    Automatic = True
-    HardDimensions = [1,1,1] # [116,144,84]
-
-
-# sd0:  [288, 168, 228]
-# sd1:  [168, 228, 288]
-# sd2:  [228, 288, 168]
-if Experiments.Index == '8': InputPadding.HardDimensions = [228,288,168]
-
-class Transfer_Learning:
-    Mode = False
-    FrozenLayers = [0]
-    Stage = 0
-
-if Transfer_Learning.Mode:
-    ReadTrain.Main = False
-    ReadTrain.ET   = True
+class InitializeB:
+    FromThalamus   = True
+    FromOlderModel = True
+    From_3T        = True
 
 class simulation:
     TestOnly      = False
-    epochs        = 5
+    epochs        = 100
     GPU_Index     = "2"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1]
+    nucleus_Index = [1,4,8] # ,2,4]
     slicingDim    = [2] # [0,1,2]
     batch_size    = 100
     InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 40
+    FirstLayer_FeatureMap_Num = 20
     verbose = 2
     Multiply_By_Thalmaus = False
 
-    Initialize_FromThalamus   = False
-    Initialize_FromOlderModel = False
-    Initialize_From_3T = False
     Weighted_Class_Mode = False
-
+    Initialize = InitializeB()
     save_Best_Epoch_Model = True
     Use_Coronal_Thalamus_InSagittal = True
     Use_TestCases_For_Validation = True
     ImClosePrediction = True
 
-if mode3T_7T == '3T':
-    simulation.Initialize_From_3T = False
-    ReadTrain.SRI = True
-    ReadTrain.Main = False
-    SubExperiment.Index = 8
+
 
     
+class InputPadding:
+    Automatic = True
+    HardDimensions = [1,1,1] # [116,144,84]
+
+class Experiments:
+    Index , Tag = '7' , 'cascadeV1'
+
+if Experiments.Index == '8': InputPadding.HardDimensions = [228,288,168]
+
+
 mode_saveTrue_LoadFalse = True
 DropoutValue = 0.3
 havingBackGround_AsExtraDimension = True
@@ -91,8 +96,10 @@ class Template:
 MetricIx = 3
 Learning_Rate = 1e-3
 
-if Local_Flag: Experiments_Address = '/home/artinl/Documents/research'
-else: Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
+# if Local_Flag: 
+#     Experiments_Address = '/home/artinl/Documents/research'
+# else: 
+Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 
 #! Preprocessing
@@ -119,3 +126,4 @@ class Augment_Shear:
 Augment_NonLinearMode = False
 
 SaveReportMethod = 'pickle'
+

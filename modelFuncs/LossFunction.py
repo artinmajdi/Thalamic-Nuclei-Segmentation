@@ -27,7 +27,7 @@ def MyLoss_binary_crossentropy(y_true,y_pred):
     return tf.divide(loss,tf.cast(nmCl,tf.float32))
 
 def Loss_Dice(y_true,y_pred):
-    return 1 - Metrics.Dice_Calculator(y_true,y_pred)
+    return 1 - Metrics.mDice(y_true,y_pred)
 
 def Loss_binary_And_Dice(y_true,y_pred):
     return losses.binary_crossentropy(y_true,y_pred) + 0.01*Loss_Dice(y_true,y_pred)

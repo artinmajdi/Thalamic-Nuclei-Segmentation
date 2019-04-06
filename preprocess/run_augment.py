@@ -6,8 +6,8 @@ import otherFuncs.smallFuncs as smallFuncs
 import Parameters.paramFunc as paramFunc
 import Parameters.UserInfo as UserInfo
 
-UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
-params = paramFunc.Run(UserInfoB)
+# UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
+params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 params.Augment.Mode = True
 
 

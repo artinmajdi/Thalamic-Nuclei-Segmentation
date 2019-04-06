@@ -33,14 +33,14 @@ class LoadingData:
             K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
             self.K = K
             
-        self.UserInfoB = smallFuncs.terminalEntries(self.UserInfoB)
+        # self.UserInfoB = smallFuncs.terminalEntries(self.UserInfoB)
         self.UserInfoB['simulation'].TestOnly = True
-        self.params = paramFunc.Run(self.UserInfoB)
+        self.params = paramFunc.Run(self.UserInfoB, terminal=True)
 
         return gpuSetting(self)
         
     def ReadData(self):
-        self.params = paramFunc.Run(self.UserInfoB)
+        self.params = paramFunc.Run(self.UserInfoB, terminal=False)
         self.Data, self.params = datasets.loadDataset(self.params)
         self.params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data = False
         return self.Data

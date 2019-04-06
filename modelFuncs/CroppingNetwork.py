@@ -45,7 +45,7 @@ def func_params():
         depth = ''
 
     class modelparam:
-        Layer_Params.Dropout = 0.2
+        Dropout = 0.2
         ImageInfo = imageInfo
         num_Layers = 3
         FinalDimension = ''
@@ -53,7 +53,7 @@ def func_params():
         epochs = 10
         optimizer = optimizers.adam()
         loss = losses.binary_crossentropy
-        metrics = ['acc',Dice_Calculator]
+        metrics = ['acc',mDice]
         downsampleFactor = 3
 
     class dataClass:
@@ -65,7 +65,7 @@ def func_params():
         Test = dataClass()
 
     class params:
-        Input = dataClass()
+        Input = trainTest()
         Address = '/array/ssd/msmajdi/experiments/keras/exp_cropping'
         Modelparam = modelparam
 
@@ -118,7 +118,7 @@ def testModel(model, testData, params):
 
     return Prediction
 
-def Dice_Calculator(y_true,y_pred):
+def mDice(y_true,y_pred):
 
     import tensorflow as tf
     return tf.reduce_sum(tf.multiply(y_true,y_pred))*2/( tf.reduce_sum(y_true) + tf.reduce_sum(y_pred) + 1e-5)

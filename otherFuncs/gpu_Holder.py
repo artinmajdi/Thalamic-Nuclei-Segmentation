@@ -9,20 +9,11 @@ import Parameters.paramFunc as paramFunc
 import preprocess.applyPreprocess as applyPreprocess
 
 
-def gpuSetting(params):
-    
-    os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
-    import tensorflow as tf
-    from keras import backend as K
-    K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=False) )   ))
-    return K
+# UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
 
-UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
-
-
-params = paramFunc.Run(UserInfoB)
-K = gpuSetting(params)
+params = paramFunc.Run(UserInfo.__dict__, terminal=True)
+K = smallFuncs.gpuSetting(params.WhichExperiment.HardParams.Machine.GPU_Index)
 
 
 

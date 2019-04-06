@@ -11,8 +11,10 @@ from copy import deepcopy
 import pandas as pd
 import numpy as np
 
-def Run(UserInfoB):
 
+def Run(UserInfoB, terminal=False):
+        
+    if terminal: UserInfoB = smallFuncs.terminalEntries(UserInfoB)
     class params:
         WhichExperiment = func_WhichExperiment(UserInfoB)
         preprocess      = func_preprocess(UserInfoB)
@@ -41,8 +43,8 @@ def subExperimentName(UserInfo):
     SubExperimentTag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
     # SubExperimentTag += '_Dt' + str(UserInfo['DropoutValue'])
     # SubExperimentTag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
-    # SubExperimentTag += '_NL' + str(UserInfo['simulation'].num_Layers)
-    # SubExperimentTag += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
+    SubExperimentTag += '_NL' + str(UserInfo['simulation'].num_Layers)
+    SubExperimentTag += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
       
     if UserInfo['simulation'].Multiply_By_Thalmaus: SubExperimentTag += '_MpByTH'  
     if UserInfo['ReadTrain'].SRI: SubExperimentTag += '_SRI'    
@@ -54,8 +56,8 @@ def subExperimentName(UserInfo):
     SubExperimentTag_ModelInit += '_sd' + str(UserInfo['simulation'].slicingDim[0])
     # SubExperimentTag_ModelInit += '_Dt' + '0.3'
     # SubExperimentTag_ModelInit += '_LR' + '0.001'    
-    # SubExperimentTag_ModelInit += '_NL' + str(UserInfo['simulation'].num_Layers)
-    # SubExperimentTag_ModelInit += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
+    SubExperimentTag_ModelInit += '_NL' + str(UserInfo['simulation'].num_Layers)
+    SubExperimentTag_ModelInit += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
     # SubExperimentTag_ModelInit += '_MpByTH' 
     SubExperimentTag_ModelInit += '_SRI' 
 
@@ -63,7 +65,7 @@ def subExperimentName(UserInfo):
     #     if UserInfo['ReadTrain'].ET: SubExperimentTag += '_WET' 
     #     else: SubExperimentTag += '_WoET'                               
 
-    # if UserInfo['simulation'].Initialize_From_3T:    SubExperimentTag += '_Init_From_3T' 
+    # if UserInfo['simulation'].Initialize.From_3T:    SubExperimentTag += '_Init_From_3T' 
     # if UserInfo['InputPadding'].Automatic:           SubExperimentTag += '_AutoDim'
     # if UserInfo['simulation'].save_Best_Epoch_Model: SubExperimentTag += '_BestEpch'
     
@@ -135,6 +137,11 @@ def func_WhichExperiment(UserInfo):
                 Activitation = activation()
                 class_weight = classWeight()
 
+            class InitializeB:
+                FromThalamus   = False
+                FromOlderModel = False
+                From_3T        = False  
+
             class model:
                 architectureType = 'U-Net'
                 epochs = ''
@@ -151,10 +158,7 @@ def func_WhichExperiment(UserInfo):
                 LabelMaxValue = 1                
                 Measure_Dice_on_Train_Data = True
                 MultiClass = multiclass()
-                #! only one of these two can be true at the same time
-                InitializeFromThalamus = False
-                InitializeFromOlderModel = False
-                Initialize_From_3T = False
+                Initialize = InitializeB()
                 Method = method()
                 paddingErrorPatience = 20
                 Transfer_Learning = transfer_Learning()
@@ -311,7 +315,7 @@ def func_WhichExperiment(UserInfo):
 
             return slicingInfo
 
-        Dataset.ReadTrain  = UserInfo['ReadTrain']()
+        Dataset.ReadTrain  = UserInfo['ReadTrain']
         Dataset.ReadTrain.ReadAugments.Tag = ReadAugmentsTag
 
         Dataset.gapDilation = UserInfo['gapDilation']
@@ -380,15 +384,20 @@ def func_WhichExperiment(UserInfo):
                 
             return num_classes
 
-        def func_Initialize(UserInfo):
-            Initialize_From_Thalamus, Initialize_From_OlderModel, Initialize_From_3T = UserInfo['simulation'].Initialize_FromThalamus , UserInfo['simulation'].Initialize_FromOlderModel , UserInfo['simulation'].Initialize_From_3T
+        def func_Initialize(Init):
+            A, B, C = Init.FromThalamus , Init.FromOlderModel , Init.From_3T
 
-
-            # if Initialize_From_Thalamus + Initialize_From_OlderModel + Initialize_From_3T > 1:
+            class InitializeB:
+                def __init__(self, FromThalamus , FromOlderModel , From_3T):
+                    self.FromThalamus   = FromThalamus
+                    self.FromOlderModel = FromOlderModel
+                    self.From_3T        = From_3T
+                                                
+            # if InitializeB.FromThalamus + InitializeB.FromOlderModel + InitializeB.From_3T > 1:
             #     print('WARNING:   initilization can only happen from one source')
-            #     Initialize_From_Thalamus, Initialize_From_OlderModel, Initialize_From_3T = False , False , False
+            #     InitializeB.FromThalamus , InitializeB.FromOlderModel , InitializeB.From_3T = False , False , False
 
-            return Initialize_From_Thalamus, Initialize_From_OlderModel, Initialize_From_3T
+            return InitializeB(A,B,C)
 
         def fixing_NetworkParams_BasedOn_InputDim(dim):
             class kernel_size: 
@@ -428,10 +437,7 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.epochs       = UserInfo['simulation'].epochs
         HardParams.Model.verbose      = UserInfo['simulation'].verbose
         
-        Initialize_From_Thalamus, Initialize_From_OlderModel , Initialize_From_3T = func_Initialize(UserInfo)
-        HardParams.Model.Initialize_From_3T = Initialize_From_3T
-        HardParams.Model.InitializeFromThalamus = Initialize_From_Thalamus
-        HardParams.Model.InitializeFromOlderModel = Initialize_From_OlderModel
+        HardParams.Model.Initialize = func_Initialize(UserInfo['simulation'].Initialize)
 
         HardParams.Model.Method.Type                  = UserInfo['Model_Method']
         HardParams.Model.Method.save_Best_Epoch_Model = UserInfo['simulation'].save_Best_Epoch_Model   
@@ -454,7 +460,7 @@ def func_WhichExperiment(UserInfo):
         # HardParams.Model.Method.ReferenceMask = AAA[nucleus_Index[0]]
 
         HardParams.Model.Method.ReferenceMask = ReferenceForCascadeMethod(HardParams.Model.Method.Type)[nucleus_Index[0]]
-        HardParams.Model.Transfer_Learning = UserInfo['Transfer_Learning']()
+        HardParams.Model.Transfer_Learning = UserInfo['Transfer_Learning']
 
         return HardParams
 

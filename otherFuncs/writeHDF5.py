@@ -5,7 +5,7 @@ import csv
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
-params = paramFunc.Run(UserInfo.__dict__)
+params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 import pandas as pd
 import h5py
 import pickle

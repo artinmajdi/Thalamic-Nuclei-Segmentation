@@ -14,7 +14,7 @@ from skimage import measure
 # from skimage import feature
 
 
-param = paramFunc.Run(UserInfo.__dict__)
+param = paramFunc.Run(UserInfo.__dict__, terminal=True)
 subejcts = param.directories.Test.Input.Subjects
 
 def showw(label):

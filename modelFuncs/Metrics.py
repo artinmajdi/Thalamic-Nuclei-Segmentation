@@ -4,14 +4,14 @@ import tensorflow as tf
 
 def MetricInfo(Metric_Index):
     switcher = {
-        1: (Dice_Calculator, 'Dice'),
+        1: (mDice, 'Dice'),
         2: ('acc', 'Acc'),
-        3: (['acc',Dice_Calculator], 'Acc_N_Dice')
+        3: (['acc',mDice], 'Acc_N_Dice')
     }
     return switcher.get(Metric_Index, 'WARNING: Invalid metric index')
 
 
-def Dice_Calculator(y_true,y_pred):
+def mDice(y_true,y_pred):
 
     Dice = 0    
     # TODO I need to remove max if i wanted to do multi class without the concatenate(msk,1-msk)
@@ -22,7 +22,7 @@ def Dice_Calculator(y_true,y_pred):
     return tf.divide(Dice,tf.cast(nmCl,tf.float32))
 
 
-# def Dice_Calculator_works(y_true,y_pred):
+# def mDice_works(y_true,y_pred):
 #     d = y_pred.shape[3] - 1
 #     y_true2 = y_true[...,:d]
 #     y_pred2 = y_pred[...,:d]

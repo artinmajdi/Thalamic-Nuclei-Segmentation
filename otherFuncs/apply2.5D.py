@@ -14,7 +14,7 @@ def runOneExperiment(UserInfoB):
     _, FullIndexes,_ = smallFuncs.NucleiSelection(ind = 1)
 
     UserInfoB['simulation'].slicingDim = [2]
-    params = paramFunc.Run(UserInfoB)
+    params = paramFunc.Run(UserInfoB, terminal=False)
 
     dirSave = params.directories.Test.Result 
     dirSave = dirSave.replace('_sd2','')
@@ -37,7 +37,7 @@ def runOneExperiment(UserInfoB):
                 try:            
                     for slicingDim in range(3):
                         UserInfoB['simulation'].slicingDim = [slicingDim]
-                        params = paramFunc.Run(UserInfoB)   
+                        params = paramFunc.Run(UserInfoB, terminal=False)   
                         pred = nib.load(params.directories.Test.Result + '/' + sj + '/' + nucleusNm + '.nii.gz').get_data()[...,np.newaxis]
                         ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
                         
@@ -58,7 +58,7 @@ def runOneExperiment(UserInfoB):
 
 def saveImageDice(Image1, ManualLabel, dirSave, sj, nucleusNm, nucleiIx):
     smallFuncs.saveImage( Image1 , ManualLabel.affine, ManualLabel.header, dirSave + '/' + sj + '/' + nucleusNm + '.nii.gz')
-    Dice = [ nucleiIx , smallFuncs.Dice_Calculator(Image1 , ManualLabel.get_data()) ]
+    Dice = [ nucleiIx , smallFuncs.mDice(Image1 , ManualLabel.get_data()) ]
     np.savetxt(dirSave + '/' + sj + '/Dice_' + nucleusNm + '.txt' ,Dice)
 
 
