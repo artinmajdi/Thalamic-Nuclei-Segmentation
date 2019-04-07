@@ -8,62 +8,68 @@ import numpy as np
 import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 from tqdm import tqdm
+from otherFuncs.smallFuncs import Experiment_Folder_Search
+import matplotlib.pylab as plt
+def runOneExperiment(Info , params):
 
-def runOneExperiment(UserInfoB):
+    def saveImageDice(InfoSave, ManualLabel):
+        smallFuncs.saveImage( InfoSave.Image , ManualLabel.affine, ManualLabel.header, InfoSave.address  + InfoSave.nucleus.name + '.nii.gz')
+        Dice = np.zeros((1,2))
+        Dice[0,0] , Dice[0,1] = InfoSave.nucleus.index , smallFuncs.mDice(InfoSave.Image  , ManualLabel.get_data())
+        np.savetxt( InfoSave.address+ 'Dice_' + InfoSave.nucleus.name + '.txt' ,Dice , fmt='%1.1f %1.4f')
+             
 
-    _, FullIndexes,_ = smallFuncs.NucleiSelection(ind = 1)
+    Info.subExperiment.address = Info.Experiment.address + '/results/' + Info.subExperiment.name + '/'
+    class nucleus:
+        def __init__(self,name='', index=0):
+            self.name = name
+            self.index = index
+            
+    class infoSave:
+        def __init__(self, Image = [] , subject = '', nucleus='' , mode = '' , address=''):                
+            self.subject = subject
+            self.nucleus = nucleus
+            self.mode = mode
+            self.address = smallFuncs.mkDir(address + self.mode + '/' + self.subject.subjectName + '/')
+            self.Image = Image
 
-    UserInfoB['simulation'].slicingDim = [2]
-    params = paramFunc.Run(UserInfoB, terminal=False)
 
-    dirSave = params.directories.Test.Result 
-    dirSave = dirSave.replace('_sd2','')
-    smallFuncs.mkDir(dirSave + '_2.5D_MV')
-    smallFuncs.mkDir(dirSave + '_2.5D_Sum')
-    smallFuncs.mkDir(dirSave + '_1.5D_Sum')
-
-    # Dirr = Fparams[2].WhichExperiment.Experiment.address + '/' + Fparams[2].WhichExperiment.SubExperiment.name
     subjects = [sj for sj in params.directories.Test.Input.Subjects if 'ERROR' not in sj]
-
     for sj in tqdm(subjects):
         subject = params.directories.Test.Input.Subjects[sj]
-        
-        for nucleiIx in tuple(FullIndexes) + (1.1, 1.2, 1.3):
-            
-            nucleusNm, _,_ = smallFuncs.NucleiSelection(ind = nucleiIx)            
-            if os.path.isfile(params.directories.Test.Result + '/' + sj + '/' + nucleusNm + '.nii.gz'):
-                
-                print(subject.subjectName, nucleusNm)    
-                try:            
-                    for slicingDim in range(3):
-                        UserInfoB['simulation'].slicingDim = [slicingDim]
-                        params = paramFunc.Run(UserInfoB, terminal=False)   
-                        pred = nib.load(params.directories.Test.Result + '/' + sj + '/' + nucleusNm + '.nii.gz').get_data()[...,np.newaxis]
-                        ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
+        Info.subject = subject()
+
+        a = smallFuncs.NucleiIndex().All_Nuclei
+        for nucleusNm , nucleiIx in zip(a.Names , a.Indexes):
+            Info.nucleus = nucleus(nucleusNm , nucleiIx)
+
+            ix , pred3Dims = 0 , ''
+            ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
+            for sdInfo in Info.subExperiment.multiPlanar:
+                if sdInfo.mode:
+                    address = Info.subExperiment.address + sdInfo.name + '/' + sj + '/' + nucleusNm + '.nii.gz'
+                    if os.path.isfile(address):
                         
-                        pred3Dims = pred if slicingDim == 0 else np.concatenate((pred3Dims,pred),axis=3)
+                        pred = nib.load(address).get_data()[...,np.newaxis]                                                
+                        pred3Dims = pred if ix == 0 else np.concatenate((pred3Dims,pred),axis=3)
+                        ix += 1
 
-                    Image1 = pred3Dims[...,1:].sum(axis=3) >= 1
-                    saveImageDice(Image1, ManualLabel, dirSave + '_1.5D_Sum', sj, nucleusNm, nucleiIx)
+            if ix > 0:
+                InfoSave = infoSave(Image = pred3Dims[...,1:].sum(axis=3) >= 1 , subject = subject() , nucleus=nucleus(nucleusNm , nucleiIx) , mode = '1.5D_Sum' , address=Info.subExperiment.address) 
+                saveImageDice(InfoSave, ManualLabel)
 
-                    Image1 = pred3Dims.sum(axis=3) >= 2
-                    saveImageDice(Image1, ManualLabel, dirSave + '_2.5D_MV', sj, nucleusNm, nucleiIx)
+                InfoSave = infoSave(Image = pred3Dims.sum(axis=3) >= 2 , subject = subject() , nucleus=nucleus(nucleusNm , nucleiIx) , mode = '2.5D_MV' , address=Info.subExperiment.address) 
+                saveImageDice(InfoSave, ManualLabel)
 
-                    Image2 = pred3Dims.sum(axis=3) >= 1
-                    saveImageDice(Image2, ManualLabel, dirSave + '_2.5D_Sum', sj, nucleusNm, nucleiIx)
-                except:
-                    print('failed')
-                
-    return dirSave
+                InfoSave = infoSave(Image = pred3Dims.sum(axis=3) >= 1  , subject = subject() , nucleus=nucleus(nucleusNm , nucleiIx) , mode = '2.5D_Sum' , address=Info.subExperiment.address) 
+                saveImageDice(InfoSave, ManualLabel)
 
-def saveImageDice(Image1, ManualLabel, dirSave, sj, nucleusNm, nucleiIx):
-    smallFuncs.saveImage( Image1 , ManualLabel.affine, ManualLabel.header, dirSave + '/' + sj + '/' + nucleusNm + '.nii.gz')
-    Dice = [ nucleiIx , smallFuncs.mDice(Image1 , ManualLabel.get_data()) ]
-    np.savetxt(dirSave + '/' + sj + '/Dice_' + nucleusNm + '.txt' ,Dice)
+            
 
+UserInfoB = UserInfo.__dict__
 
-UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
-
-dirSave = runOneExperiment(UserInfoB)
-
-# Extra_mergingResults()
+for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade']:
+    params = paramFunc.Run(UserInfoB, terminal=True)
+    InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
+    runOneExperiment(InfoS , params)
+    print(params.WhichExperiment.SubExperiment.name)

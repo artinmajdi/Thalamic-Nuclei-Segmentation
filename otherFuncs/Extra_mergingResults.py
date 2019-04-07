@@ -3,7 +3,7 @@ sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 # sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
 import pandas as pd
-import otherFuncs.smallFuncs as smallFuncs
+from otherFuncs.smallFuncs import Experiment_Folder_Search
 import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 import pickle
@@ -11,19 +11,9 @@ import xlsxwriter
 from tqdm import tqdm
 import shutil
 
-# UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 
-def init_Params():
-    _, NucleiIndexes , _ = smallFuncs.NucleiSelection(ind=1)
-    NucleiIndexes = tuple(NucleiIndexes) + tuple([1.1,1.2,1.3])
-
-    NumColumns = 27
-    n_epochsMax = 300
-    AllExp_Address = params.WhichExperiment.address
-
-    return NucleiIndexes , NumColumns , n_epochsMax , AllExp_Address
-NucleiIndexes , NumColumns , n_epochsMax , AllExp_Address = init_Params()
+NumColumns , n_epochsMax = 19 , 300
 
 class savingHistory_AsExcel:
     def __init__(self, Info):
@@ -57,7 +47,6 @@ class savingHistory_AsExcel:
         
         pd.DataFrame(data=self.Info.Experiment.TagsList).to_excel(writer, sheet_name='TagsList')
         for self.nucleus in Info.Nuclei_Names[1:17]:
-            # self.nucleus, _ , _ = smallFuncs.NucleiSelection(IxNu)
             print('Learning Curves: ', self.nucleus)
 
             self.AllNucleusInfo , self.FullNamesLA , self.ind = [] , [] , -1
@@ -122,76 +111,10 @@ class mergingDiceValues:
             self.writer.close()
         loopOver_Subexperiments(self)
 
-class Info_Search():    
-    def __init__(self, General_Address=AllExp_Address , Experiment_Name = ''):
-       
-        class All_Experiments:
-            address = General_Address
-            List = [s for s in os.listdir(General_Address) if 'exp' in s] if General_Address else []
-        self.All_Experiments = All_Experiments()
-                 
-        class Experiment:
-            name                = Experiment_Name
-            address             = self.All_Experiments.address + '/' + Experiment_Name
-            List_subExperiments = ''
-            TagsList             = []
-        self.Experiment = Experiment()                                        
-        
-        def func_List_subExperiments(self, mode):
-            
-            class SD:
-                def __init__(self, mode = False , name='' , sdx='' , TgC=0 , address=''):
-                    self.mode = mode                        
-                    if self.mode: 
-                        self.tagList = np.append( ['Tag' + str(TgC) + '_' + sdx], name.split('_') ) 
-                        # self.address = address
-                        self.subject_List = [a for a in os.listdir(address) if 'vimp' in a]
-                        self.subject_List.sort()
-                        self.name = sdx
-            class subExp():
-                def __init__(self, name , address , TgC):
-                    self.name = name  
-                    # self.address = address + '/' + self.name
 
-                    sdx = os.listdir(address + '/' + self.name)
-                    sd0 = SD(True, name , 'sd0',TgC , address + '/' + name+'/sd0') if 'sd0' in sdx else SD() 
-                    sd1 = SD(True, name , 'sd1',TgC , address + '/' + name+'/sd1') if 'sd1' in sdx else SD() 
-                    sd2 = SD(True, name , 'sd2',TgC , address + '/' + name+'/sd2') if 'sd2' in sdx else SD() 
+for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List:
 
-                    self.multiPlanar = [sd0 , sd1 , sd2]  
-            
-            List_subExps = [a for a in os.listdir(self.Experiment.address + '/' + mode) if ('subExp' in a) or ('sE' in a)]   
-
-            self.Experiment.List_subExperiments , self.Experiment.TagsList = [] , []
-            for Ix, name in enumerate(List_subExps):
-                self.Experiment.List_subExperiments.append(subExp(name , self.Experiment.address + '/' + mode , Ix))
-                self.Experiment.TagsList.append( np.append(['Tag' + str(Ix)],  name.split('_')) )
-
-            # np.append( ['Tag' + str(TgC) + '_' + sdx], name.split('_') 
-            # return [  for Ix, name in enumerate(List_subExps) ]        
-        
-        if self.Experiment.name:
-            func_List_subExperiments(self, 'results')
-            # self.Experiment.List_subExperiments = func_List_subExperiments(self, 'results')
-
-        def func_Nuclei_Names():
-            Nuclei_Names = np.append( ['subjects'] , list(np.zeros(NumColumns-1))  )
-            Nuclei_Names[3] = ''
-            def nuclei_Index(nIx):
-                if nIx in range(15): return nIx
-                elif nIx == 1.1:     return 15
-                elif nIx == 1.2:     return 16
-                elif nIx == 1.3:     return 17
-
-            for nIx in NucleiIndexes:
-                Nuclei_Names[nuclei_Index(nIx)] = smallFuncs.NucleiIndex(index=nIx).name
-
-            return Nuclei_Names
-        self.Nuclei_Names = func_Nuclei_Names()
-
-for expName in Info_Search().All_Experiments.List:
-
-    Info = Info_Search(Experiment_Name=expName )
+    Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name)
 
     mergingDiceValues(Info)
     savingHistory_AsExcel(Info)

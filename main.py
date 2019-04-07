@@ -66,7 +66,7 @@ def Run(UserInfoB,InitValues):
                                         
                 Data, params = datasets.loadDataset(params)                
                 choosingModel.check_Run(params, Data)              
-                # K.clear_session()
+                K.clear_session()
                  
     if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages(UserInfoB)
     elif UserInfoB['Model_Method'] == 'Cascade' :  CacadeStages(UserInfoB)

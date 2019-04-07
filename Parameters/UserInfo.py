@@ -1,42 +1,12 @@
-class TypeExperimentFuncs():
-    def __init__(self):            
-        class SubExperimentC: 
-            def __init__(self, Index=11, Tag=''):
-                self.Index = Index
-                self.Tag   = Tag
-        self.SubExperimentC = SubExperimentC
 
-        class ReadTrainC:
-            def __init__(self, SRI=0 , ET=0 , Main=1):   
-                class readAugments: Mode, Tag = True, ''
-                self.SRI  = SRI  > 0.5
-                self.ET   = ET   > 0.5
-                self.Main = Main > 0.5
-                self.ReadAugments = readAugments
-        self.ReadTrainC = ReadTrainC
-
-        class Transfer_LearningC:
-            def __init__(self, Mode=False , FrozenLayers = [0] , Stage = 0):
-                self.Mode         = Mode
-                self.FrozenLayers = FrozenLayers
-                self.Stage        = Stage
-        self.Transfer_LearningC = Transfer_LearningC
-
-    def main(self, TypeExperiment = 1):
-        switcher = {
-            1:  (self.SubExperimentC(Index=11)  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
-            2:  (self.SubExperimentC(Index=11)  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC(Mode=True  , FrozenLayers=[0]) ),
-            3:  (self.SubExperimentC(Index=8)   ,   self.ReadTrainC(SRI=1 , ET=0 , Main=0)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),          
-            }
-        return switcher.get(TypeExperiment , 'wrong Index')
-
-Model_Method =  'Cascade' #'FCN_2D' # HCascade' # 
+Model_Method =  'HCascade' #'FCN_2D' # HCascade' # 
 mode3T_7T = '7T'
 
 # TypeExperiment == 1: #  Main
 # TypeExperiment == 2: # Transfer Learn ET
 # TypeExperiment == 3: # SRI
-SubExperiment , ReadTrain , Transfer_Learning = TypeExperimentFuncs().main(1)
+TypeExperiment = 1
+
 
 class InitializeB:
     FromThalamus   = True

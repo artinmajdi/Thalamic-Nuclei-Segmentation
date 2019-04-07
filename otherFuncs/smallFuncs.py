@@ -82,27 +82,7 @@ class NucleiIndex:
         self.parent      = None
         self.grandParent = None
         
-        def Name_of_Nucleus(self):
-            NucleusName = {
-                1: '1-THALAMUS',
-                2: '2-AV',
-                4: '4-VA',
-                5: '5-VLa',
-                6: '6-VLP',
-                7: '7-VPL',
-                8: '8-Pul',
-                9: '9-LGN',
-                10: '10-MGN',
-                11: '11-CM',
-                12: '12-MD-Pf',
-                13: '13-Hb',
-                14: '14-MTT',
-                1.1: 'lateral_ImClosed',
-                1.2: 'posterior_ImClosed',
-                1.3: 'Medial_ImClosed',
-                1.4: 'Anterior_ImClosed',
-                1.9: 'HierarchicalCascade' }
-            self.name = NucleusName.get(self.index, 'Wrong Nucleus Index')
+
 
         def func_Parent_child(self):
 
@@ -129,8 +109,36 @@ class NucleiIndex:
             if   self.method == 'Cascade':  func_Cascade(self)
             elif self.method == 'HCascade': func_HCascade(self) 
 
-        Name_of_Nucleus(self)
+        
         func_Parent_child(self)
+
+        def Name_of_Nucleus(index):
+            NucleusName = {
+                1: '1-THALAMUS',
+                2: '2-AV',
+                4: '4-VA',
+                5: '5-VLa',
+                6: '6-VLP',
+                7: '7-VPL',
+                8: '8-Pul',
+                9: '9-LGN',
+                10: '10-MGN',
+                11: '11-CM',
+                12: '12-MD-Pf',
+                13: '13-Hb',
+                14: '14-MTT',
+                1.1: 'lateral_ImClosed',
+                1.2: 'posterior_ImClosed',
+                1.3: 'Medial_ImClosed',
+                1.4: 'Anterior_ImClosed',
+                1.9: 'HierarchicalCascade' }
+            return NucleusName.get(index, 'Wrong Nucleus Index')
+        self.name = Name_of_Nucleus(self.index)
+
+        class All_Nuclei_Cls:
+            Indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14]) + tuple([1.1,1.2,1.3])
+            Names   = [Name_of_Nucleus(index) for index in Indexes]
+        self.All_Nuclei = All_Nuclei_Cls()
 
     def HCascade_Parents_Identifier(self, Nuclei_List):
         List_of_Parents = []
@@ -146,8 +154,84 @@ class NucleiIndex:
         if 1 in Nuclei_List: Nuclei_List.remove(1)
         return Nuclei_List
             
-# a = NucleiIndex(6,'HCascade')
 
+class Experiment_Folder_Search():    
+    def __init__(self, General_Address='' , Experiment_Name = '' , subExperiment_Name=''):
+       
+        class All_Experiments:
+            address = General_Address
+            List = [s for s in os.listdir(General_Address) if 'exp' in s] if General_Address else []
+        self.All_Experiments = All_Experiments()
+                 
+        class Experiment:
+            name                = Experiment_Name
+            address             = self.All_Experiments.address + '/' + Experiment_Name
+            List_subExperiments = ''
+            TagsList             = []
+        self.Experiment = Experiment()                                        
+        
+        def func_List_subExperiments(self, mode):
+            
+            class SD:
+                def __init__(self, mode = False , name='' , sdx='' , TgC=0 , address=''):
+                    self.mode = mode                        
+                    if self.mode: 
+                        self.tagList = np.append( ['Tag' + str(TgC) + '_' + sdx], name.split('_') ) 
+                        # self.address = address
+                        self.subject_List = [a for a in os.listdir(address) if 'vimp' in a]
+                        self.subject_List.sort()
+                        self.name = sdx
+            class subExp():
+                def __init__(self, name , address , TgC):
+                    self.name = name  
+                    # self.address = address + '/' + self.name
+
+                    sdx = os.listdir(address + '/' + self.name)
+
+                    self.multiPlanar = []
+                    for sd in ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:
+                        self.multiPlanar.append( SD(True, name , sd,TgC , address + '/' + name+'/' + sd) if sd in sdx else SD() )
+
+                    # sd1 = SD(True, name , 'sd1',TgC , address + '/' + name+'/sd1') if 'sd1' in sdx else SD() 
+                    # sd2 = SD(True, name , 'sd2',TgC , address + '/' + name+'/sd2') if 'sd2' in sdx else SD() 
+                    # self.multiPlanar = [sd0 , sd1 , sd2]  
+            
+            List_subExps = [a for a in os.listdir(self.Experiment.address + '/' + mode) if ('subExp' in a) or ('sE' in a)]   
+
+            self.Experiment.List_subExperiments , self.Experiment.TagsList = [] , []
+            for Ix, name in enumerate(List_subExps):
+                self.Experiment.List_subExperiments.append(subExp(name , self.Experiment.address + '/' + mode , Ix))
+                self.Experiment.TagsList.append( np.append(['Tag' + str(Ix)],  name.split('_')) )
+
+            # np.append( ['Tag' + str(TgC) + '_' + sdx], name.split('_') 
+            # return [  for Ix, name in enumerate(List_subExps) ]        
+        
+        if self.Experiment.name:
+            func_List_subExperiments(self, 'results')
+            # self.Experiment.List_subExperiments = func_List_subExperiments(self, 'results')
+
+        def func_Nuclei_Names():
+            NumColumns = 19
+            Nuclei_Names = np.append( ['subjects'] , list(np.zeros(NumColumns-1))  )
+            Nuclei_Names[3] = ''
+            def nuclei_Index_Integer(nIx):
+                if nIx in range(15): return nIx
+                elif nIx == 1.1:     return 15
+                elif nIx == 1.2:     return 16
+                elif nIx == 1.3:     return 17
+
+            for nIx in NucleiIndex().All_Nuclei.Indexes:
+                Nuclei_Names[nuclei_Index_Integer(nIx)] = NucleiIndex(index=nIx).name
+
+            return Nuclei_Names
+        self.Nuclei_Names = func_Nuclei_Names()
+
+        if subExperiment_Name:
+            for a in self.Experiment.List_subExperiments:
+                if a.name == subExperiment_Name: 
+                    self.subExperiment = a
+                    break
+            
 def gpuSetting(GPU_Index):
     
     os.environ["CUDA_VISIBLE_DEVICES"] = GPU_Index
