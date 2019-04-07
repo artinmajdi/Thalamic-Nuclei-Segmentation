@@ -30,7 +30,7 @@ class TypeExperimentFuncs():
             }
         return switcher.get(TypeExperiment , 'wrong Index')
 
-Model_Method =  'HCascade' #'FCN_2D' # HCascade' # 
+Model_Method =  'Cascade' #'FCN_2D' # HCascade' # 
 mode3T_7T = '7T'
 
 # TypeExperiment == 1: #  Main
@@ -46,12 +46,12 @@ class InitializeB:
 class simulation:
     TestOnly      = False
     epochs        = 100
-    GPU_Index     = "2"
+    GPU_Index     = "0,1,2,3"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1,4,8] # ,2,4]
-    slicingDim    = [2] # [0,1,2]
+    nucleus_Index = [8] # ,2,4]
+    slicingDim    = [0] # [0,1,2]
     batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20

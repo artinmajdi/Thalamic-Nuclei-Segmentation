@@ -10,7 +10,7 @@ import pickle
 from copy import deepcopy
 import pandas as pd
 import numpy as np
-
+import json
 
 def Run(UserInfoB, terminal=False):
         
@@ -37,17 +37,18 @@ def subExperimentName(UserInfo):
     if UserInfo['Augment_Rotation'].Mode: readAugmentTag = 'wRot'   + str(UserInfo['Augment_Rotation'].AngleMax)
     elif UserInfo['Augment_Shear'].Mode:  readAugmentTag = 'wShear' + str(UserInfo['Augment_Shear'].ShearMax)
 
-    if readAugmentTag and (UserInfo['ReadTrain'].ET or UserInfo['ReadTrain'].Main): SubExperimentTag += '_' + readAugmentTag
+    # if readAugmentTag and (UserInfo['ReadTrain'].ET or UserInfo['ReadTrain'].Main): SubExperimentTag += '_' + readAugmentTag
 
     # if int(UserInfo['simulation'].slicingDim[0]) != 2:
     # SubExperimentTag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
     # SubExperimentTag += '_Dt' + str(UserInfo['DropoutValue'])
     # SubExperimentTag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
-    SubExperimentTag += '_NL' + str(UserInfo['simulation'].num_Layers)
+    # SubExperimentTag += '_NL' + str(UserInfo['simulation'].num_Layers)
     SubExperimentTag += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
       
     if UserInfo['simulation'].Multiply_By_Thalmaus: SubExperimentTag += '_MpByTH'  
-    if UserInfo['ReadTrain'].SRI: SubExperimentTag += '_SRI'    
+    if UserInfo['ReadTrain'].SRI:  SubExperimentTag += '_3T'    
+    if UserInfo['ReadTrain'].Main: SubExperimentTag += '_7T'    
     if UserInfo['simulation'].Weighted_Class_Mode: SubExperimentTag += '_WeightedClass' 
     # else: SubExperimentTag += '_notMpByTH'  
 
@@ -56,10 +57,10 @@ def subExperimentName(UserInfo):
     # SubExperimentTag_ModelInit += '_sd' + str(UserInfo['simulation'].slicingDim[0])
     # SubExperimentTag_ModelInit += '_Dt' + '0.3'
     # SubExperimentTag_ModelInit += '_LR' + '0.001'    
-    SubExperimentTag_ModelInit += '_NL' + str(UserInfo['simulation'].num_Layers)
+    # SubExperimentTag_ModelInit += '_NL' + str(UserInfo['simulation'].num_Layers)
     SubExperimentTag_ModelInit += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
     # SubExperimentTag_ModelInit += '_MpByTH' 
-    SubExperimentTag_ModelInit += '_SRI' 
+    SubExperimentTag_ModelInit += '_3T' 
 
     # if UserInfo['ReadTrain'].Main:
     #     if UserInfo['ReadTrain'].ET: SubExperimentTag += '_WET' 
@@ -465,12 +466,9 @@ def func_WhichExperiment(UserInfo):
         return HardParams
 
     def ReadInputDimensions_NLayers(TrainModel_Address):
-        with open(TrainModel_Address + '/hist_params.pkl','rb') as f:   hist_params = pickle.load(f)
-
-        InputDimensions = [hist_params['InputDimensionsX'], hist_params['InputDimensionsY'], hist_params['InputDimensionsZ']]
-        num_Layers = hist_params['num_Layers']
-
-        return InputDimensions, num_Layers
+        with open(TrainModel_Address + '/UserInfo.json','rb') as f:   
+            UserInfo_Load = json.load(f)            
+        return UserInfo_Load['InputPadding_Dims'], UserInfo_Load['num_Layers']
         
     experiment, subExperiment , ReadAugments = func_Experiment_SubExp()  
 
@@ -482,7 +480,7 @@ def func_WhichExperiment(UserInfo):
     WhichExperiment.Dataset       = func_Dataset(ReadAugments)
         
     if UserInfo['simulation'].TestOnly: 
-        InputDimensions, num_Layers = ReadInputDimensions_NLayers(experiment.address + '/models/' + subExperiment.name + '/' + WhichExperiment.Nucleus.name)
+        InputDimensions, num_Layers = ReadInputDimensions_NLayers(experiment.address + '/models/' + subExperiment.name + '/' + WhichExperiment.Nucleus.name + '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim) )
         WhichExperiment.HardParams.Model.InputDimensions = InputDimensions
         WhichExperiment.HardParams.Model.num_Layers = num_Layers
 

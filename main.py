@@ -23,7 +23,6 @@ class InitValues:
         else:
             self.Nuclei_Indexes = Nuclei_Indexes.copy()
                 
-
 def Run(UserInfoB,InitValues):
 
     def HierarchicalStages(UserInfoB):
@@ -52,40 +51,23 @@ def Run(UserInfoB,InitValues):
 
         for sd in InitValues.slicingDim:
             
-            # K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))
+            if not(sd == 0 and UserInfoB['simulation'].nucleus_Index) == 1:
 
-            UserInfoB['simulation'].slicingDim = [sd]                       
-            params = paramFunc.Run(UserInfoB, terminal=False)
+                UserInfoB['simulation'].slicingDim = [sd]                       
+                params = paramFunc.Run(UserInfoB, terminal=False)
 
-            print('---------------------------------------------------------------')
-            print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | slicingDim',sd, \
-                ' | Dropout', UserInfoB['DropoutValue'] , ' | Learning_Rate' , UserInfoB['simulation'].Learning_Rate, ' | num_Layers' , UserInfoB['simulation'].num_Layers,\
-                ' | MultThalmaus',UserInfoB['simulation'].Multiply_By_Thalmaus , ' | ', UserInfoB['Model_Method'])
+                print('---------------------------------------------------------------')
+                print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | slicingDim',sd, \
+                    ' | Dropout', UserInfoB['DropoutValue'] , ' | Learning_Rate' , UserInfoB['simulation'].Learning_Rate, ' | num_Layers' , UserInfoB['simulation'].num_Layers,\
+                    ' | MultThalmaus',UserInfoB['simulation'].Multiply_By_Thalmaus , ' | ', UserInfoB['Model_Method'])
 
-            print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
-            print('---------------------------------------------------------------')
-                          
-            # # try: 
-            # if sd == 0 and UserInfoB['simulation'].nucleus_Index == 1: 
-            #     UserInfoC = UserInfoB.copy()                 
-            #     UserInfoC['simulation'].slicingDim = [2]
-            #     paramsC = paramFunc.Run(UserInfoC, terminal=False)
-            #     Data, paramsC = datasets.loadDataset(params) 
-
-            #     UserInfoC['simulation'].TestOnly = True
-            #     UserInfoC['simulation'].slicingDim = [0]
-            #     paramsC = paramFunc.Run(UserInfoC, terminal=False)
-            #     paramsC.directories.Train.Model          = paramsC.directories.Train.Model.replace('sd0','sd2')
-            #     paramsC.directories.Train.Model_Thalamus = paramsC.directories.Train.Model_Thalamus.replace('sd0','sd2')
-            #     paramsC.directories.Train.Model_3T       = paramsC.directories.Train.Model_3T.replace('sd0','sd2')
-            #     choosingModel.check_Run(paramsC, Data)                    
-            
-            Data, params = datasets.loadDataset(params)                
-            choosingModel.check_Run(params, Data)              
-            K.clear_session()
-            
-            # except: print('failed')
- 
+                print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
+                print('---------------------------------------------------------------')
+                                        
+                Data, params = datasets.loadDataset(params)                
+                choosingModel.check_Run(params, Data)              
+                # K.clear_session()
+                 
     if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages(UserInfoB)
     elif UserInfoB['Model_Method'] == 'Cascade' :  CacadeStages(UserInfoB)
     elif UserInfoB['Model_Method'] == 'singleRun': Run_SingleNuclei(UserInfoB)
@@ -96,15 +78,21 @@ def preMode(UserInfoB):
     datasets.movingFromDatasetToExperiments(params)
     applyPreprocess.main(params, 'experiment')
     K = smallFuncs.gpuSetting(params.WhichExperiment.HardParams.Machine.GPU_Index)
-
-
     return UserInfoB, K
 UserInfoB, K = preMode(UserInfo.__dict__)
 UserInfoB['simulation'].verbose = 2
 
 
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+# UserInfoB['Model_Method'] =  'Cascade'
+# print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'])
+# Run(UserInfoB, IV)
+
+
+# UserInfoB['Model_Method'] =  'HCascade'
 print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'])
 Run(UserInfoB, IV)
 
-# K.clear_session()
+
+K.clear_session()

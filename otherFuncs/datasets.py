@@ -116,10 +116,10 @@ def loadDataset(params):
             if params.WhichExperiment.HardParams.Model.Method.Multiply_By_Thalmaus: 
 
                 sd , Method = params.WhichExperiment.Dataset.slicingInfo.slicingDim  ,  params.WhichExperiment.HardParams.Model.Method
-                if sd == 0 and Method.Use_Coronal_Thalamus_InSagittal and Method.ReferenceMask == '1-THALAMUS':                    
-                    Dirr = params.directories.Test.Result.replace('_sd0', '_sd2')
-                else:
-                    Dirr = params.directories.Test.Result
+                # if sd == 0 and Method.Use_Coronal_Thalamus_InSagittal and Method.ReferenceMask == '1-THALAMUS':                    
+                #     Dirr = params.directories.Test.Result.replace('_sd0', '_sd2')
+                # else:
+                Dirr = params.directories.Test.Result
                     
                 if 'train' in mode: Dirr += '/TrainData_Output'
                                 
@@ -285,8 +285,6 @@ def loadDataset(params):
                 else:
                     Error_MisMatch_In_Dim_ImageMask(Subjects[nameSubject] , mode, nameSubject)
 
-            # if params.WhichExperiment.Dataset.HDf5.mode:  f.close()
-
             return Data
 
         # def sagittal_flag(params):
@@ -303,6 +301,10 @@ def loadDataset(params):
             if params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
                 DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, list(DataAll.Test), 'validation')
     
+        if params.WhichExperiment.Nucleus.Index[0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2:
+            DataAll.Sagittal_Train_ForTest = readingAllSubjects(params.directories.Train.Input_Sagittal.Subjects, 'train')
+            DataAll.Sagittal_Test          = readingAllSubjects(params.directories.Test.Input_Sagittal.Subjects , 'test' )               
+                
         return DataAll
 
     params = preAnalysis(params)
@@ -403,6 +405,12 @@ def preAnalysis(params):
         if params.directories.Train.Input.Subjects: params.directories.Train.Input = findingSubjectsFinalPaddingAmount('Train', params.directories.Train.Input, params)
         if params.directories.Test.Input.Subjects:  params.directories.Test.Input  = findingSubjectsFinalPaddingAmount('Test', params.directories.Test.Input, params)
 
+        if params.WhichExperiment.Nucleus.Index[0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2:
+            if params.directories.Train.Input_Sagittal.Subjects: params.directories.Train.Input_Sagittal = findingSubjectsFinalPaddingAmount('Train', params.directories.Train.Input_Sagittal, params)
+            if params.directories.Test.Input_Sagittal.Subjects:  params.directories.Test.Input_Sagittal  = findingSubjectsFinalPaddingAmount('Test', params.directories.Test.Input_Sagittal, params)
+                            
+                
+
         return params
 
     def find_AllInputSizes(params):
@@ -458,6 +466,11 @@ def preAnalysis(params):
 
         if params.directories.Train.Input.Subjects: params.directories.Train.Input = loopOverAllSubjects(params.directories.Train.Input, 'train')
         if params.directories.Test.Input.Subjects: params.directories.Test.Input  = loopOverAllSubjects(params.directories.Test.Input, 'test')
+
+        if params.WhichExperiment.Nucleus.Index[0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2:
+            if params.directories.Train.Input_Sagittal.Subjects: params.directories.Train.Input_Sagittal = loopOverAllSubjects(params.directories.Train.Input_Sagittal, 'train')
+            if params.directories.Test.Input_Sagittal.Subjects:  params.directories.Test.Input_Sagittal  = loopOverAllSubjects(params.directories.Test.Input_Sagittal, 'test')
+                            
 
         return params
 

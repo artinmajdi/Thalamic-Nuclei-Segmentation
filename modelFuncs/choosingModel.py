@@ -31,29 +31,21 @@ def check_Run(params, Data):
     prediction = testingExeriment(model, Data, params)
 
     if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1):
-        savePreFinalStageBBs(params, prediction)
+        save_BoundingBox_Hierarchy(params, prediction)
 
     return True
 
 def loadModel(params):
-    # model = architecture(params.WhichExperiment.HardParams.Model)
-    # model.load_weights(params.directories.Train.Model + '/model_weights.h5')
-    # with open(params.directories.Train.Model + '/model' + tagTF + '.json', 'r') as json_file:
-    #     model2 = keras.models.model_from_json(json_file.read())
-    # model2.load_weights("model.h5")
+    model = architecture(params.WhichExperiment.HardParams.Model)
+    model.load_weights(params.directories.Train.Model + '/model_weights.h5')
     
-    model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')
+    # model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')
     ModelParam = params.WhichExperiment.HardParams.Model
     model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
     return model
 
 def testingExeriment(model, Data, params):
-
-    # # To Do ; should remove it after running it for all trained networks so fat
-    # if params.WhichExperiment.HardParams.Model.Method.save_Best_Epoch_Model:
-    #     tagTF = '_TF' if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
-    #     model.load_weights(params.directories.Train.Model + '/best_model_weights' + tagTF + '.h5')
-        
+       
     class prediction:
         Test = ''
         Train = ''
@@ -134,18 +126,7 @@ def testingExeriment(model, Data, params):
                 return im
 
             im = DataSubj.Image.copy()
-            # if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
-            #     class cropSD0:
-            #         crop = int(im.shape[0]/2+5)
-            #         padBackToOrig = im.shape[0] - int(im.shape[0]/2+5)
-            #     im = im[:cropSD0.crop,...]
-
             predF = model.predict(im)
-
-            # if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
-            #     predF = np.pad(predF,((0,cropSD0.padBackToOrig),(0,0),(0,0),(0,0)),mode='constant')
-
-
             # score = model.evaluate(DataSubj.Image, DataSubj.Mask)
             pred = predF[...,:num_classes-1]
 
@@ -153,8 +134,6 @@ def testingExeriment(model, Data, params):
             pred = np.transpose(pred,[1,2,0,3])
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
 
-            # paddingTp = [ subject.Padding[p] for p in params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
-            # if len(paddingTp) == 3: paddingTp.append((0,0))
             pred = unPadding(pred, subject.Padding)
             return loopOver_AllClasses_postProcessing(pred)
 
@@ -168,6 +147,15 @@ def testingExeriment(model, Data, params):
 
         return prediction
 
+    def loopOver_Predicting_TestSubjects_Sagittal(DataTest):
+        prediction = {}
+        ResultDir = params.directories.Test.Result.replace('/sd2','/sd0')
+        for name in tqdm(DataTest,desc='predicting test subjects sagittal'):
+            prediction[name] = predictingTestSubject(DataTest[name], params.directories.Test.Input_Sagittal.Subjects[name] , ResultDir)
+
+        return prediction
+
+
     def loopOver_Predicting_TrainSubjects(DataTrain):
         prediction = {}
         if (params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) or ( 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1)):
@@ -177,8 +165,21 @@ def testingExeriment(model, Data, params):
 
         return prediction
 
+    def loopOver_Predicting_TrainSubjects_Sagittal(DataTrain):
+        prediction = {}
+        if (params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) or ( 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1)):
+            ResultDir = smallFuncs.mkDir(params.directories.Test.Result.replace('/sd2','/sd0') + '/TrainData_Output')
+            for name in tqdm(DataTrain,desc='predicting train subjects sagittal'):
+                prediction[name] = predictingTestSubject(DataTrain[name], params.directories.Train.Input_Sagittal.Subjects[name] , ResultDir)
+
+        return prediction
+
     prediction.Test  = loopOver_Predicting_TestSubjects(Data.Test)
     prediction.Train = loopOver_Predicting_TrainSubjects(Data.Train_ForTest)
+
+    if params.WhichExperiment.Nucleus.Index[0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2:
+        prediction.Sagittal_Test  = loopOver_Predicting_TestSubjects_Sagittal(Data.Sagittal_Test)
+        prediction.Sagittal_Train = loopOver_Predicting_TrainSubjects_Sagittal(Data.Sagittal_Train_ForTest)
 
     return prediction
 
@@ -371,12 +372,12 @@ def trainingExperiment(Data, params):
 
     return model
 
-def savePreFinalStageBBs(params, CascadePreStageMasks):
+def save_BoundingBox_Hierarchy(params, PRED):
 
     params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
-    def ApplyPreFinalStageMask(PreStageMask, subject, mode):
+    def save_BoundingBox(PreStageMask, subject, mode , dirr):
 
-        def cropBoundingBoxes(PreStageMask):
+        def cropBoundingBoxes(PreStageMask, dirr):
 
             def checkBordersOnBoundingBox(Sz , BB , gapS):
                 return [   [   np.max([BB[d][0]-gapS,0])  ,   np.min( [BB[d][1]+gapS,Sz[d]])   ]  for d in range(3) ]
@@ -389,22 +390,30 @@ def savePreFinalStageBBs(params, CascadePreStageMasks):
             gapDilation = params.WhichExperiment.Dataset.gapDilation
             BBd = [  [BB[ii][0] - gapDilation , BB[ii][1] + gapDilation] for ii in range(len(BB))]
             BBd = checkBordersOnBoundingBox(imF.shape , BBd , 0)
-
-            dirr = params.directories.Test.Result
+            
             if 'train' in mode: dirr += '/TrainData_Output'
 
             np.savetxt(dirr + '/' + subject.subjectName + '/BB_' + params.WhichExperiment.Nucleus.name + '.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')
 
-        cropBoundingBoxes(PreStageMask)
+        cropBoundingBoxes(PreStageMask, dirr)
 
-    def loopOverSubjects(CascadePreStageMasks, mode):
-        Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
-        string = 'Thalamus' if 1 in params.WhichExperiment.Nucleus.Index else 'stage2 ' + params.WhichExperiment.Nucleus.name
-        for sj in tqdm(Subjects ,desc='applying ' + string + ' for cascade method: ' + mode):
-            ApplyPreFinalStageMask(CascadePreStageMasks[sj] , Subjects[sj] , mode)
+    nucleus = params.WhichExperiment.Nucleus.name
+    def loop_Subjects(PRED, mode):
+        Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects        
+        for sj in tqdm(Subjects ,desc='saving BB ' + ' ' + mode + nucleus):
+            save_BoundingBox(PRED[sj] , Subjects[sj] , mode , params.directories.Test.Result)
 
-    loopOverSubjects(CascadePreStageMasks.Test, 'test')
-    loopOverSubjects(CascadePreStageMasks.Train, 'train')
+    def loop_Subjects_Sagittal(PRED, mode):
+        Subjects = params.directories.Train.Input_Sagittal.Subjects if 'train' in mode else params.directories.Test.Input_Sagittal.Subjects
+        for sj in tqdm(Subjects ,desc='saving BB ' + ' ' + mode + nucleus + ' Sagittal'):
+            save_BoundingBox(PRED[sj] , Subjects[sj] , mode , params.directories.Test.Result.replace('/sd2','/sd0'))
+
+    loop_Subjects(PRED.Test, 'test')
+    loop_Subjects(PRED.Train, 'train')
+
+    if params.WhichExperiment.Nucleus.Index[0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2:
+        loop_Subjects_Sagittal(PRED.Sagittal_Test, 'test')
+        loop_Subjects_Sagittal(PRED.Sagittal_Train, 'train')        
 
 def architecture(ModelParam):
 

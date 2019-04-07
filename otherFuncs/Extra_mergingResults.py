@@ -9,6 +9,7 @@ import Parameters.paramFunc as paramFunc
 import pickle
 import xlsxwriter
 from tqdm import tqdm
+import shutil
 
 # UserInfoB = smallFuncs.terminalEntries(UserInfo=UserInfo.__dict__)
 params = paramFunc.Run(UserInfo.__dict__, terminal=True)
@@ -25,12 +26,11 @@ def init_Params():
 NucleiIndexes , NumColumns , n_epochsMax , AllExp_Address = init_Params()
 
 class savingHistory_AsExcel:
-
     def __init__(self, Info):
 
         self.Info = Info
         def Load_subDir_History(self):
-                      
+            self.subDir = self.Info.Experiment.address + '/models/' + self.subExperiment.name + '/' + self.nucleus + '/' + self.plane.name
             if os.path.isfile( self.subDir + '/hist_history.pkl' ):
                 self.ind += 1                
                 def load_NucleusHisotry(self):
@@ -44,7 +44,7 @@ class savingHistory_AsExcel:
                         self.nucleusInfo[:self.N_Eps,ix+2] = history[key]
                 load_NucleusHisotry(self)
 
-                columnsList = np.append([ 'Epochs', self.TagLst[0] ] ,  self.keys )
+                columnsList = np.append([ 'Epochs', self.plane.tagList[0] ] ,  self.keys )
                 self.FullNamesLA = np.append(self.FullNamesLA , columnsList)
 
                 if self.ind == 0:
@@ -53,19 +53,18 @@ class savingHistory_AsExcel:
                 else:
                     self.AllNucleusInfo = np.concatenate((self.AllNucleusInfo, self.nucleusInfo) , axis=1)     
 
-        writer = pd.ExcelWriter(  Info.address + '/results/All_LossAccForEpochs.xlsx', engine='xlsxwriter')
+        writer = pd.ExcelWriter(  Info.Experiment.address + '/results/All_LossAccForEpochs.xlsx', engine='xlsxwriter')
         
-        pd.DataFrame(data=self.Info.TagsList).to_excel(writer, sheet_name='TagsList')
-        for IxNu in NucleiIndexes:
-            self.nucleus, _ , _ = smallFuncs.NucleiSelection(IxNu)
+        pd.DataFrame(data=self.Info.Experiment.TagsList).to_excel(writer, sheet_name='TagsList')
+        for self.nucleus in Info.Nuclei_Names[1:17]:
+            # self.nucleus, _ , _ = smallFuncs.NucleiSelection(IxNu)
             print('Learning Curves: ', self.nucleus)
 
             self.AllNucleusInfo , self.FullNamesLA , self.ind = [] , [] , -1
 
-            for ix_sE , (self.subExperiment,_,_) in enumerate(self.Info.List_subExperiments):
-                self.TagLst = self.Info.TagsList[ix_sE]
-                self.subDir = self.Info.address + '/models/' + self.subExperiment + '/' + self.nucleus                  
-                if os.path.isdir(self.subDir): Load_subDir_History(self)
+            for self.subExperiment in self.Info.Experiment.List_subExperiments:
+                for self.plane in self.subExperiment.multiPlanar:
+                    if self.plane.mode: Load_subDir_History(self)
 
             if len(self.AllNucleusInfo) != 0: pd.DataFrame(data=self.AllNucleusInfo, columns=self.FullNamesLA).to_excel(writer, sheet_name=self.nucleus)
 
@@ -77,7 +76,7 @@ class mergingDiceValues:
         self.writer = pd.ExcelWriter(self.Info.Experiment.address + '/results/All_Dice.xlsx', engine='xlsxwriter')
         def save_TagList_AllDice(self):
             # TODO it might be unnecessary
-            pd.DataFrame(data=self.Info.Experiment.TagList).to_excel(self.writer, sheet_name='TagsList')
+            pd.DataFrame(data=self.Info.Experiment.TagsList).to_excel(self.writer, sheet_name='TagsList')
 
             self.pd_AllNuclei_Dices = pd.DataFrame()
             self.pd_AllNuclei_Dices['Nuclei'] = self.Info.Nuclei_Names[1:18]
@@ -135,7 +134,7 @@ class Info_Search():
             name                = Experiment_Name
             address             = self.All_Experiments.address + '/' + Experiment_Name
             List_subExperiments = ''
-            TagList             = []
+            TagsList             = []
         self.Experiment = Experiment()                                        
         
         def func_List_subExperiments(self, mode):
@@ -163,10 +162,10 @@ class Info_Search():
             
             List_subExps = [a for a in os.listdir(self.Experiment.address + '/' + mode) if ('subExp' in a) or ('sE' in a)]   
 
-            self.Experiment.List_subExperiments , self.Experiment.TagList = [] , []
+            self.Experiment.List_subExperiments , self.Experiment.TagsList = [] , []
             for Ix, name in enumerate(List_subExps):
                 self.Experiment.List_subExperiments.append(subExp(name , self.Experiment.address + '/' + mode , Ix))
-                self.Experiment.TagList.append( np.append(['Tag' + str(Ix)],  name.split('_')) )
+                self.Experiment.TagsList.append( np.append(['Tag' + str(Ix)],  name.split('_')) )
 
             # np.append( ['Tag' + str(TgC) + '_' + sdx], name.split('_') 
             # return [  for Ix, name in enumerate(List_subExps) ]        
@@ -198,3 +197,6 @@ for expName in Info_Search().All_Experiments.List:
     savingHistory_AsExcel(Info)
 
 os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
+
+
+# shutil.make_archive(base_name='All',format='zip',root_dir='/array/ssd/msmajdi/experiments/keras/exp*/results/All_*',)

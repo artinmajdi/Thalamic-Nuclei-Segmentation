@@ -378,7 +378,7 @@ def search_ExperimentDirectory(whichExperiment):
 
         return Files
 
-    def checkInputDirectory(Dir, NucleusName):
+    def checkInputDirectory(Dir, NucleusName, sag_In_Cor):
         class Input:
             address = os.path.abspath(Dir)
             Subjects = {}
@@ -403,13 +403,14 @@ def search_ExperimentDirectory(whichExperiment):
         if Read.ReadAugments.Mode:
             DirAug = Dir + '/Augments/' + Read.ReadAugments.Tag 
             
-            if Read.Main and os.path.exists( DirAug + '/Main' + sdTag):  Input = LoopReadingData( Input, DirAug + '/Main' + sdTag  )
-            if Read.ET   and os.path.exists( DirAug + '/ET'   + sdTag ): Input = LoopReadingData( Input, DirAug + '/ET'   + sdTag  )
-                
+            sdTag2 = '/sd0' if sag_In_Cor else sdTag
+            if Read.Main and os.path.exists( DirAug + '/Main' + sdTag2):  Input = LoopReadingData( Input, DirAug + '/Main' + sdTag2  )
+            if Read.ET   and os.path.exists( DirAug + '/ET'   + sdTag2 ): Input = LoopReadingData( Input, DirAug + '/ET'   + sdTag2  )
+                            
         return Input
 
     Exp_address = whichExperiment.Experiment.address
-    SE      = whichExperiment.SubExperiment
+    SE          = whichExperiment.SubExperiment
     NucleusName = whichExperiment.Nucleus.name
 
     class train:
@@ -417,12 +418,16 @@ def search_ExperimentDirectory(whichExperiment):
         Model          = Exp_address + '/models/' + SE.name          + '/' + NucleusName  + sdTag
         Model_Thalamus = Exp_address + '/models/' + SE.name          + '/' + '1-THALAMUS' + sdTag
         Model_3T       = Exp_address + '/models/' + SE.name_Init_3T  + '/' + NucleusName  + sdTag
-        Input   = checkInputDirectory(address, NucleusName)
+        Input   = checkInputDirectory(address, NucleusName,False)
     
     class test:
         address = Exp_address + '/test'
         Result  = Exp_address + '/results/' + SE.name + sdTag
-        Input   = checkInputDirectory(address, NucleusName)
+        Input   = checkInputDirectory(address, NucleusName,False)
+
+    if whichExperiment.Nucleus.Index[0] == 1 and whichExperiment.Dataset.slicingInfo.slicingDim == 2:
+        train.Input_Sagittal = checkInputDirectory(train.address, NucleusName, True) 
+        test.Input_Sagittal  = checkInputDirectory(test.address , NucleusName, True) 
 
     class Directories:
         Train = train()
