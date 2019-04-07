@@ -1,11 +1,10 @@
 
 Model_Method =  'HCascade' #'FCN_2D' # HCascade' # 
-mode3T_7T = '7T'
 
 # TypeExperiment == 1: #  Main
 # TypeExperiment == 2: # Transfer Learn ET
 # TypeExperiment == 3: # SRI
-TypeExperiment = 1
+TypeExperiment = 3
 
 
 class InitializeB:
@@ -24,7 +23,7 @@ class simulation:
     slicingDim    = [0] # [0,1,2]
     batch_size    = 100
     InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 20
+    FirstLayer_FeatureMap_Num = 30
     verbose = 2
     Multiply_By_Thalmaus = False
 
