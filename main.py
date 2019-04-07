@@ -54,7 +54,7 @@ def Run(UserInfoB,InitValues):
             if not(sd == 0 and UserInfoB['simulation'].nucleus_Index) == 1:
 
                 UserInfoB['simulation'].slicingDim = [sd]                       
-                params = paramFunc.Run(UserInfoB, terminal=False)
+                params = paramFunc.Run(UserInfoB, terminal=True)
 
                 print('---------------------------------------------------------------')
                 print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | slicingDim',sd, \
@@ -90,9 +90,9 @@ IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation']
 # Run(UserInfoB, IV)
 
 
-for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade']:
-    print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'])
-    Run(UserInfoB, IV)
+# for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade']:
+print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'])
+Run(UserInfoB, IV)
 
 
 K.clear_session()
