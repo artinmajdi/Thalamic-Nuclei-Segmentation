@@ -284,7 +284,7 @@ def terminalEntries(UserInfo):
 
         elif entry.lower() in ('-sd','--slicingdim'):
             if sys.argv[en+1].lower() == 'all':
-                UserInfo['simulation'].slicingDim = [0,1,2]
+                UserInfo['simulation'].slicingDim = [2,1,0]
 
             elif sys.argv[en+1][0] == '[':
                 B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
@@ -499,11 +499,17 @@ def search_ExperimentDirectory(whichExperiment):
 
     class train:
         address        = Exp_address + '/train'
-        Model          = Exp_address + '/models/' + SE.name          + '/' + NucleusName  + sdTag
-        Model_Thalamus = Exp_address + '/models/' + SE.name          + '/' + '1-THALAMUS' + sdTag
-        Model_3T       = Exp_address + '/models/' + SE.name_Init_3T  + '/' + NucleusName  + sdTag
+        Model          = Exp_address + '/models/' + SE.name                   + '/' + NucleusName  + sdTag
+        Model_Thalamus = Exp_address + '/models/' + SE.name                   + '/' + '1-THALAMUS' + sdTag
+        Model_3T       = Exp_address + '/models/' + SE.name_Init_from_3T      + '/' + NucleusName  + sdTag
+        Model_InitTF   = Exp_address + '/models/' + SE.name.split('_TF_')[0]  + '/' + NucleusName  + sdTag
+        model_Tag = ''
         Input   = checkInputDirectory(address, NucleusName,False)
     
+    if whichExperiment.HardParams.Model.Transfer_Learning.Mode: train.model_Tag += '_TF'
+    if whichExperiment.Dataset.ReadTrain.ET:                    train.model_Tag += '_ET'
+    if whichExperiment.Dataset.ReadTrain.CSFn:                  train.model_Tag += '_CSFn'
+        
     class test:
         address = Exp_address + '/test'
         Result  = Exp_address + '/results/' + SE.name + sdTag
@@ -613,7 +619,7 @@ def Saving_UserInfo(DirSave, params):
         'InputPadding_Mode' : params.UserInfo['InputPadding'].Automatic,
         'InputPadding_Dims' : [int(s) for s in params.WhichExperiment.HardParams.Model.InputDimensions],
     }
-
+    mkDir(DirSave)
     with open(DirSave + '/UserInfo.json', "w") as j:
         j.write(json.dumps(User_Info))
 

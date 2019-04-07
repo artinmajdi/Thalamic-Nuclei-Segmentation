@@ -1,10 +1,13 @@
 
-Model_Method =  'HCascade' #'FCN_2D' # HCascade' # 
+Model_Method =  'Cascade' #'FCN_2D' # HCascade' # 
 
 # TypeExperiment == 1: #  Main
 # TypeExperiment == 2: # Transfer Learn ET
 # TypeExperiment == 3: # SRI
-TypeExperiment = 1
+# TypeExperiment == 4: # Predict ET from MS&Ctrl
+# TypeExperiment == 5: # Train ET Initialized from MS&Ctrl
+# TypeExperiment == 6: # Train ET without Initialization
+TypeExperiment = 2
 
 
 class InitializeB:
@@ -19,8 +22,8 @@ class simulation:
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1,2,8] # ,2,4]
-    slicingDim    = [0] # [0,1,2]
+    nucleus_Index = [1] # ,2,4]
+    slicingDim    = [2,1,0] # [0,1,2]
     batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20

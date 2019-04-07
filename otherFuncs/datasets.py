@@ -353,16 +353,16 @@ def movingFromDatasetToExperiments(params):
 
 def preAnalysis(params):
 
-    def saveUserParams(params):
-        params.UserInfo['simulation'].num_Layers = params.WhichExperiment.HardParams.Model.num_Layers
-        params.UserInfo['InputDimensions'] = params.WhichExperiment.HardParams.Model.InputDimensions
-        # print('InputDimensions', params.WhichExperiment.HardParams.Model.InputDimensions)
-        # print('num_Layers', params.WhichExperiment.HardParams.Model.num_Layers)
+    # def saveUserParams(params):
+    #     params.UserInfo['simulation'].num_Layers = params.WhichExperiment.HardParams.Model.num_Layers
+    #     params.UserInfo['InputDimensions'] = params.WhichExperiment.HardParams.Model.InputDimensions
+    #     # print('InputDimensions', params.WhichExperiment.HardParams.Model.InputDimensions)
+    #     # print('num_Layers', params.WhichExperiment.HardParams.Model.num_Layers)
 
-        for sf in list(params.UserInfo):
-            if '__' in sf: params.UserInfo.__delitem__(sf)
+    #     for sf in list(params.UserInfo):
+    #         if '__' in sf: params.UserInfo.__delitem__(sf)
 
-        smallFuncs.mkDir(params.directories.Train.Model)
+    #     smallFuncs.mkDir(params.directories.Train.Model)
 
     def find_PaddingValues(params):
 
@@ -420,12 +420,7 @@ def preAnalysis(params):
             # '_sd' + str(UserInfo['simulation'].slicingDim[0])
             def readingCascadeCropSizes(subject):
 
-                # sd , Method = params.WhichExperiment.Dataset.slicingInfo.slicingDim  ,  params.WhichExperiment.HardParams.Model.Method
-                # if sd == 0 and Method.Use_Coronal_Thalamus_InSagittal and Method.ReferenceMask == '1-THALAMUS':                    
-                #     dirr = params.directories.Test.Result.replace('_sd0' , '_sd2')
-                # else:
-                dirr = params.directories.Test.Result
-                
+                dirr = params.directories.Test.Result                
                 if 'train' in mode: dirr += '/TrainData_Output'
                 
                 BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.txt',dtype=int)
@@ -500,6 +495,6 @@ def preAnalysis(params):
     params = find_correctNumLayers(params)
     params = find_PaddingValues(params)
 
-    saveUserParams(params)
+    # saveUserParams(params)
 
     return params

@@ -185,14 +185,18 @@ def testingExeriment(model, Data, params):
 
 def trainingExperiment(Data, params):
 
+    model_Tag = params.directories.Train.model_Tag
+
     def func_CallBacks(params):
         batch_size  = params.WhichExperiment.HardParams.Model.batch_size
         Dir_Save = params.directories.Train.Model
         mode = 'max'
         monitor = 'val_mDice'
 
-        tagTF = '_TF' if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
-        checkpointer = keras.callbacks.ModelCheckpoint(filepath= Dir_Save + '/best_model_weights' + tagTF + '.h5', \
+        # if params.WhicExperiment
+        
+        
+        checkpointer = keras.callbacks.ModelCheckpoint(filepath= Dir_Save + '/best_model_weights' + params.directories.Train.model_Tag + '.h5', \
             monitor = monitor, verbose=1, save_best_only=True, mode=mode)
 
         Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = monitor, factor=0.5, min_delta=0.005 , patience=4, verbose=1, \
@@ -234,7 +238,6 @@ def trainingExperiment(Data, params):
 
     def modelTrain_Unet(Data, params, modelS):
         ModelParam = params.WhichExperiment.HardParams.Model
-        tagTF = '_TF' if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
                     
         def modelInitialize(model):            
             
@@ -274,13 +277,13 @@ def trainingExperiment(Data, params):
             smallFuncs.mkDir(params.directories.Train.Model)
             
             if params.WhichExperiment.HardParams.Model.Method.save_Best_Epoch_Model:
-                model.load_weights(params.directories.Train.Model + '/best_model_weights' + tagTF + '.h5')
+                model.load_weights(params.directories.Train.Model + '/best_model_weights' + params.directories.Train.model_Tag + '.h5')
 
-            # model.save(params.directories.Train.Model + '/model' + tagTF + '.h5', overwrite=True, include_optimizer=False )
-            # model.save_weights(params.directories.Train.Model + '/model_weights' + tagTF + '.h5', overwrite=True )
+            # model.save(params.directories.Train.Model + '/model' + params.directories.Train.model_Tag + '.h5', overwrite=True, include_optimizer=False )
+            # model.save_weights(params.directories.Train.Model + '/model_weights' + params.directories.Train.model_Tag + '.h5', overwrite=True )
 
-            modelS.save(params.directories.Train.Model + '/model' + tagTF + '.h5', overwrite=True, include_optimizer=False )
-            modelS.save_weights(params.directories.Train.Model + '/model_weights' + tagTF + '.h5', overwrite=True )
+            modelS.save(params.directories.Train.Model + '/model' + params.directories.Train.model_Tag + '.h5', overwrite=True, include_optimizer=False )
+            modelS.save_weights(params.directories.Train.Model + '/model_weights' + params.directories.Train.model_Tag + '.h5', overwrite=True )
 
             keras.utils.plot_model(modelS,to_file=params.directories.Train.Model+'/Architecture.png',show_layer_names=True,show_shapes=True)
 
@@ -299,7 +302,7 @@ def trainingExperiment(Data, params):
                 verbose          = params.WhichExperiment.HardParams.Model.verbose                
                 Validation_fromKeras = params.WhichExperiment.Dataset.Validation.fromKeras
             
-                # model2.save_weights(params.directories.Train.Model + '/model_weights' + tagTF + '.h5', overwrite=True )
+                # model2.save_weights(params.directories.Train.Model + '/model_weights' + params.directories.Train.model_Tag + '.h5', overwrite=True )
                 return callbacks , batch_size, epochs, valSplit_Per, verbose , Validation_fromKeras
             callbacks , batch_size, epochs, valSplit_Per, verbose , Validation_fromKeras = func_modelParams()
                           
