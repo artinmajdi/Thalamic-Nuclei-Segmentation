@@ -65,11 +65,10 @@ def runOneExperiment(Info , params):
                 saveImageDice(InfoSave, ManualLabel)
 
             
-
-UserInfoB = UserInfo.__dict__
+UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
 for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade']:
-    params = paramFunc.Run(UserInfoB, terminal=True)
+    params = paramFunc.Run(UserInfoB, terminal=False)
     InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
     runOneExperiment(InfoS , params)
     print(params.WhichExperiment.SubExperiment.name)

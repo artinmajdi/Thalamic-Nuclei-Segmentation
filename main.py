@@ -54,7 +54,7 @@ def Run(UserInfoB,InitValues):
             if not(sd == 0 and UserInfoB['simulation'].nucleus_Index) == 1:
 
                 UserInfoB['simulation'].slicingDim = [sd]                       
-                params = paramFunc.Run(UserInfoB, terminal=True)
+                params = paramFunc.Run(UserInfoB, terminal=False)
 
                 print('---------------------------------------------------------------')
                 print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | slicingDim',sd, \
@@ -64,7 +64,8 @@ def Run(UserInfoB,InitValues):
                 print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
                 print('---------------------------------------------------------------')
                                         
-                Data, params = datasets.loadDataset(params)                
+                Data, params = datasets.loadDataset(params) 
+                print(Data.Train.Image.shape)               
                 choosingModel.check_Run(params, Data)              
                 K.clear_session()
                  
@@ -73,8 +74,8 @@ def Run(UserInfoB,InitValues):
     elif UserInfoB['Model_Method'] == 'singleRun': Run_SingleNuclei(UserInfoB)
 
 def preMode(UserInfoB):
-    # UserInfoB = smallFuncs.terminalEntries(UserInfoB)
-    params = paramFunc.Run(UserInfoB, terminal=True)   
+    UserInfoB = smallFuncs.terminalEntries(UserInfoB)
+    params = paramFunc.Run(UserInfoB, terminal=False)   
     datasets.movingFromDatasetToExperiments(params)
     applyPreprocess.main(params, 'experiment')
     K = smallFuncs.gpuSetting(params.WhichExperiment.HardParams.Machine.GPU_Index)

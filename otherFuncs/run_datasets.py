@@ -13,10 +13,8 @@ import matplotlib.pyplot as plt
 mode = 'experiment'
 
 #! reading the user input parameters via terminal
-UserInfoB = UserInfo.__dict__ # smallFuncs.terminalEntries(UserInfo.__dict__)
-UserInfoB['simulation'].slicingDim = [2]
-UserInfoB['simulation'].nucleus_Index = [2]
-params = paramFunc.Run(UserInfoB, terminal=True)
+UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
+params = paramFunc.Run(UserInfoB, terminal=False)
 # params.WhichExperiment.Dataset.CreatingTheExperiment = True
 
 #! copying the dataset into the experiment folder

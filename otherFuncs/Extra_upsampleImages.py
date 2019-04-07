@@ -7,7 +7,8 @@ from nilearn import image as imageNilearn
 import otherFuncs.smallFuncs as smallFuncs
 import nibabel as nib
 
-UserInfoB = UserInfo.__dict__
+UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
+
 UserInfoB['readAugments'].Mode = True
 UserInfoB['ReadTrain'].SRI     = True
 UserInfoB['ReadTrain'].ET      = True
