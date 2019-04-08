@@ -1,12 +1,12 @@
 
-Model_Method =  'FCN_25D' # 'HCascade' # HCascade' # 
+Model_Method =  'HCascade' #'FCN_25D' #  HCascade' # 
 
 # TypeExperiment == 1: # Main
 # TypeExperiment == 2: # Transfer Learn ET
 # TypeExperiment == 3: # SRI
 # TypeExperiment == 4: # Predict ET from MS&Ctrl
-# TypeExperiment == 5: # Train ET Initialized from MS&Ctrl
-TypeExperiment = 2
+# TypeExperiment == 5: # Train ET Initialized from 3T
+TypeExperiment = 5
 
 class SubExperiment: 
         Index = 11

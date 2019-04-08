@@ -57,8 +57,8 @@ def PreSet_Experiment_Info(UserInfoB):
 
     if UserInfoB['TypeExperiment'] == 5: 
         UserInfoB['InitializeB'].FromThalamus   = False
-        UserInfoB['InitializeB'].FromOlderModel = True
-        UserInfoB['InitializeB'].From_3T        = False  
+        UserInfoB['InitializeB'].FromOlderModel = False
+        UserInfoB['InitializeB'].From_3T        = True  
         UserInfoB['simulation'].TestOnly        = False  
 
     return UserInfoB
@@ -104,6 +104,7 @@ def subExperimentName(UserInfo):
         if UserInfo['simulation'].Multiply_By_Thalmaus: SubExp_Tag += '_MpByTH'  
         if UserInfo['ReadTrain'].SRI:  SubExp_Tag += '_3T'    
         if UserInfo['ReadTrain'].Main or UserInfo['ReadTrain'].ET: SubExp_Tag += '_7T'    
+        if UserInfo['ReadTrain'].ET and not UserInfo['Transfer_Learning'].Mode: SubExp_Tag += '_pureET' 
         if UserInfo['simulation'].Weighted_Class_Mode: SubExp_Tag += '_WeightedClass' 
         # if UserInfo['Transfer_Learning'].Mode and UserInfo['ReadTrain'].ET: SubExp_Tag += '_TF_ET' 
         # if UserInfo['Transfer_Learning'].Mode and UserInfo['ReadTrain'].CSFn: SubExp_Tag += '_TF_CSFn' 

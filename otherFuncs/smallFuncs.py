@@ -197,7 +197,8 @@ class Experiment_Folder_Search():
                     # self.multiPlanar = [sd0 , sd1 , sd2]  
             
             List_subExps = [a for a in os.listdir(self.Experiment.address + '/' + mode) if ('subExp' in a) or ('sE' in a)]   
-
+            List_subExps.sort()
+            
             self.Experiment.List_subExperiments , self.Experiment.TagsList = [] , []
             for Ix, name in enumerate(List_subExps):
                 self.Experiment.List_subExperiments.append(subExp(name , self.Experiment.address + '/' + mode , Ix))
