@@ -8,6 +8,9 @@ Model_Method =  'FCN_25D' # 'HCascade' # HCascade' #
 # TypeExperiment == 5: # Train ET Initialized from MS&Ctrl
 TypeExperiment = 2
 
+class SubExperiment: 
+        Index = 11
+        Tag   = ''
 
 class InitializeB:
     FromThalamus   = True

@@ -16,11 +16,11 @@ def PreSet_Experiment_Info(UserInfoB):
 
     class TypeExperimentFuncs():
         def __init__(self):            
-            class SubExperimentC: 
-                def __init__(self, Index=11, Tag=''):
-                    self.Index = Index
-                    self.Tag   = Tag
-            self.SubExperimentC = SubExperimentC
+            # class SubExperimentC: 
+            #     def __init__(self, Index=11, Tag=''):
+            #         self.Index = Index
+            #         self.Tag   = Tag
+            # self.SubExperimentC = SubExperimentC
 
             class ReadTrainC:
                 def __init__(self, SRI=0 , ET=0 , Main=1 , CSFn=0):   
@@ -44,15 +44,15 @@ def PreSet_Experiment_Info(UserInfoB):
 
         def main(self, TypeExperiment = 1):
             switcher = {
-                1:  (self.SubExperimentC(Index=11)  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
-                2:  (self.SubExperimentC(Index=11)  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC(Mode=True  , FrozenLayers=[0] , Tag = '_TF') ),
-                3:  (self.SubExperimentC(Index=8)   ,   self.ReadTrainC(SRI=1 , ET=0 , Main=0)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
-                4:  (self.SubExperimentC(Index=11)  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
-                5:  (self.SubExperimentC(Index=11)  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
+                1:  (11  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
+                2:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC(Mode=True  , FrozenLayers=[0] , Tag = '_TF') ),
+                3:  (8   ,   self.ReadTrainC(SRI=1 , ET=0 , Main=0)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
+                4:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
+                5:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 
-    UserInfoB['SubExperiment'] , UserInfoB['ReadTrain'] , UserInfoB['Transfer_Learning'] = TypeExperimentFuncs().main(UserInfoB['TypeExperiment'])
+    UserInfoB['SubExperiment'].Index , UserInfoB['ReadTrain'] , UserInfoB['Transfer_Learning'] = TypeExperimentFuncs().main(UserInfoB['TypeExperiment'])
     if UserInfoB['TypeExperiment'] == 4: UserInfoB['simulation'].TestOnly = True
 
     if UserInfoB['TypeExperiment'] == 5: 
@@ -80,54 +80,55 @@ def Run(UserInfoB, terminal=False):
 
 def subExperimentName(UserInfo):
 
-    SubExp_Tag = UserInfo['SubExperiment'].Tag
+    if 'FCN_25D' == UserInfo['Model_Method']:
+        return UserInfo['SubExperiment'].Tag, '' , ''
+    else:
+        SubExp_Tag = UserInfo['SubExperiment'].Tag
+        SubExp_Tag += UserInfo['Model_Method']
+        
+        # whichExperiment.Experiment.address + '/models/' + 'sE8_Cascade_sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim) + '_Dt0.3_LR0.001_NL' + str(whichExperiment.HardParams.Model.num_Layers) + '_MpByTH_SRI/' + whichExperiment.Nucleus.name    
 
-    SubExp_Tag += UserInfo['Model_Method']
+        readAugmentTag = ''
+        if UserInfo['Augment_Rotation'].Mode: readAugmentTag = 'wRot'   + str(UserInfo['Augment_Rotation'].AngleMax)
+        elif UserInfo['Augment_Shear'].Mode:  readAugmentTag = 'wShear' + str(UserInfo['Augment_Shear'].ShearMax)
+
+        # if readAugmentTag and (UserInfo['ReadTrain'].ET or UserInfo['ReadTrain'].Main): SubExp_Tag += '_' + readAugmentTag
+
+        # if int(UserInfo['simulation'].slicingDim[0]) != 2:
+        # SubExp_Tag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
+        # SubExp_Tag += '_Dt' + str(UserInfo['DropoutValue'])
+        # SubExp_Tag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
+        # SubExp_Tag += '_NL' + str(UserInfo['simulation'].num_Layers)
+        SubExp_Tag += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
+        
+        if UserInfo['simulation'].Multiply_By_Thalmaus: SubExp_Tag += '_MpByTH'  
+        if UserInfo['ReadTrain'].SRI:  SubExp_Tag += '_3T'    
+        if UserInfo['ReadTrain'].Main or UserInfo['ReadTrain'].ET: SubExp_Tag += '_7T'    
+        if UserInfo['simulation'].Weighted_Class_Mode: SubExp_Tag += '_WeightedClass' 
+        # if UserInfo['Transfer_Learning'].Mode and UserInfo['ReadTrain'].ET: SubExp_Tag += '_TF_ET' 
+        # if UserInfo['Transfer_Learning'].Mode and UserInfo['ReadTrain'].CSFn: SubExp_Tag += '_TF_CSFn' 
+        
+        # else: SubExp_Tag += '_notMpByTH'  
+
+        SubExp_Tag_Init_From_3T  = 'sE8_'
+        SubExp_Tag_Init_From_3T += UserInfo['Model_Method']
+        # SubExp_Tag_Init_From_3T += '_sd' + str(UserInfo['simulation'].slicingDim[0])
+        # SubExp_Tag_Init_From_3T += '_Dt' + '0.3'
+        # SubExp_Tag_Init_From_3T += '_LR' + '0.001'    
+        # SubExp_Tag_Init_From_3T += '_NL' + str(UserInfo['simulation'].num_Layers)
+        SubExp_Tag_Init_From_3T += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
+        # SubExp_Tag_Init_From_3T += '_MpByTH' 
+        SubExp_Tag_Init_From_3T += '_3T' 
+
+        # if UserInfo['ReadTrain'].Main:
+        #     if UserInfo['ReadTrain'].ET: SubExp_Tag += '_WET' 
+        #     else: SubExp_Tag += '_WoET'                               
+
+        # if UserInfo['simulation'].Initialize.From_3T:    SubExp_Tag += '_Init_From_3T' 
+        # if UserInfo['InputPadding'].Automatic:           SubExp_Tag += '_AutoDim'
+        # if UserInfo['simulation'].save_Best_Epoch_Model: SubExp_Tag += '_BestEpch'
     
-    
-    # whichExperiment.Experiment.address + '/models/' + 'sE8_Cascade_sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim) + '_Dt0.3_LR0.001_NL' + str(whichExperiment.HardParams.Model.num_Layers) + '_MpByTH_SRI/' + whichExperiment.Nucleus.name    
-
-    readAugmentTag = ''
-    if UserInfo['Augment_Rotation'].Mode: readAugmentTag = 'wRot'   + str(UserInfo['Augment_Rotation'].AngleMax)
-    elif UserInfo['Augment_Shear'].Mode:  readAugmentTag = 'wShear' + str(UserInfo['Augment_Shear'].ShearMax)
-
-    # if readAugmentTag and (UserInfo['ReadTrain'].ET or UserInfo['ReadTrain'].Main): SubExp_Tag += '_' + readAugmentTag
-
-    # if int(UserInfo['simulation'].slicingDim[0]) != 2:
-    # SubExp_Tag += '_sd' + str(UserInfo['simulation'].slicingDim[0])
-    # SubExp_Tag += '_Dt' + str(UserInfo['DropoutValue'])
-    # SubExp_Tag += '_LR' + str(UserInfo['simulation'].Learning_Rate)
-    # SubExp_Tag += '_NL' + str(UserInfo['simulation'].num_Layers)
-    SubExp_Tag += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
-      
-    if UserInfo['simulation'].Multiply_By_Thalmaus: SubExp_Tag += '_MpByTH'  
-    if UserInfo['ReadTrain'].SRI:  SubExp_Tag += '_3T'    
-    if UserInfo['ReadTrain'].Main or UserInfo['ReadTrain'].ET: SubExp_Tag += '_7T'    
-    if UserInfo['simulation'].Weighted_Class_Mode: SubExp_Tag += '_WeightedClass' 
-    # if UserInfo['Transfer_Learning'].Mode and UserInfo['ReadTrain'].ET: SubExp_Tag += '_TF_ET' 
-    # if UserInfo['Transfer_Learning'].Mode and UserInfo['ReadTrain'].CSFn: SubExp_Tag += '_TF_CSFn' 
-    
-    # else: SubExp_Tag += '_notMpByTH'  
-
-    SubExp_Tag_Init_From_3T  = 'sE8_'
-    SubExp_Tag_Init_From_3T += UserInfo['Model_Method']
-    # SubExp_Tag_Init_From_3T += '_sd' + str(UserInfo['simulation'].slicingDim[0])
-    # SubExp_Tag_Init_From_3T += '_Dt' + '0.3'
-    # SubExp_Tag_Init_From_3T += '_LR' + '0.001'    
-    # SubExp_Tag_Init_From_3T += '_NL' + str(UserInfo['simulation'].num_Layers)
-    SubExp_Tag_Init_From_3T += '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
-    # SubExp_Tag_Init_From_3T += '_MpByTH' 
-    SubExp_Tag_Init_From_3T += '_3T' 
-
-    # if UserInfo['ReadTrain'].Main:
-    #     if UserInfo['ReadTrain'].ET: SubExp_Tag += '_WET' 
-    #     else: SubExp_Tag += '_WoET'                               
-
-    # if UserInfo['simulation'].Initialize.From_3T:    SubExp_Tag += '_Init_From_3T' 
-    # if UserInfo['InputPadding'].Automatic:           SubExp_Tag += '_AutoDim'
-    # if UserInfo['simulation'].save_Best_Epoch_Model: SubExp_Tag += '_BestEpch'
-    
-    return SubExp_Tag, readAugmentTag , SubExp_Tag_Init_From_3T
+        return SubExp_Tag, readAugmentTag , SubExp_Tag_Init_From_3T
 
 def func_WhichExperiment(UserInfo):
     

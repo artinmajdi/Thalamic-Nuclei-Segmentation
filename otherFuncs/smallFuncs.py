@@ -334,135 +334,150 @@ def terminalEntries(UserInfo):
             UserInfo['simulation'].FirstLayer_FeatureMap_Num = int(sys.argv[en+1])
 
         elif entry.lower() in ('-m','--Model_Method'):
-            if int(sys.argv[en+1]) == 1:
+            if int(sys.argv[en+1]) == 0:
+                UserInfo['Model_Method'] = 'FCN_25D' 
+            elif int(sys.argv[en+1]) == 1:
                 UserInfo['Model_Method'] = 'Cascade' 
-            elif int(sys.argv[en+1]) == 2: #'FCN_2D' 
+            elif int(sys.argv[en+1]) == 2: 
                 UserInfo['Model_Method'] = 'HCascade' 
+
+                
             
 
     return UserInfo
 
 def search_ExperimentDirectory(whichExperiment):
 
+    def func_model_Tag(whichExperiment):
+        model_Tag = ''
+        if whichExperiment.HardParams.Model.Transfer_Learning.Mode: model_Tag += '_TF'
+        if whichExperiment.Dataset.ReadTrain.ET:                    model_Tag += '_ET'
+        if whichExperiment.Dataset.ReadTrain.CSFn:                  model_Tag += '_CSFn'
+        return model_Tag
+
     sdTag = '/sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim)
-    def Search_ImageFolder(Dir, NucleusName):
+    Exp_address = whichExperiment.Experiment.address
+    SE          = whichExperiment.SubExperiment
+    NucleusName = whichExperiment.Nucleus.name
 
-        def splitNii(s):
-            return s.split('.nii.gz')[0]
-
-        def Classes_Local(Dir):
-            class deformation:
-                address = ''
-                testWarp = ''
-                testInverseWarp = ''
-                testAffine = ''
-
-            class temp:
-                CropMask = ''
-                Cropped = ''
-                BiasCorrected = ''
-                Deformation = deformation
-                address = ''
-
-            class tempLabel:
-                address = ''
-                Cropped = ''
-
-            class label:
-                LabelProcessed = ''
-                LabelOriginal = ''
-                Temp = tempLabel
-                address = ''
-
-            class newCropInfo:
-                OriginalBoundingBox = ''
-                PadSizeBackToOrig = ''
-
-            class Files:
-                ImageOriginal = ''
-                ImageProcessed = ''
-                Label = label
-                Temp = temp
-                address = Dir
-                NewCropInfo = newCropInfo
-                subjectName = ''
-
-            return Files
-
-        def Look_Inside_Label_SF(Files, NucleusName):
-            Files.Label.Temp.address = mkDir(Files.Label.address + '/temp')
-            A = next(os.walk(Files.Label.address))
-            for s in A[2]:
-                if NucleusName + '_PProcessed.nii.gz' in s: Files.Label.LabelProcessed = splitNii(s)
-                if NucleusName + '.nii.gz' in s: Files.Label.LabelOriginal = splitNii(s)
-
-            if Files.Label.LabelOriginal and not Files.Label.LabelProcessed:
-                Files.Label.LabelProcessed = NucleusName + '_PProcessed'
-                _, _, FullNames = NucleiSelection(ind=1)
-                for name in FullNames: copyfile(Files.Label.address + '/' + name + '.nii.gz' , Files.Label.address + '/' + name + '_PProcessed.nii.gz')
-
-
-            for s in A[1]:
-                if 'temp' in s:
-                    Files.Label.Temp.address = Files.Label.address + '/' + s
-
-                    for d in os.listdir(Files.Label.Temp.address):
-                        if '_Cropped.nii.gz' in d: Files.Label.Temp.Cropped = splitNii(d)
-
-                    # Files.Label.Temp.Cropped = [ d.split('.nii.gz')[0] for d in os.listdir(Files.Label.Temp.address) if '_Cropped.nii.gz' in d]
-                elif 'Label' in s: Files.Label.address = Dir + '/' + s
-
-            return Files
-
-        def Look_Inside_Temp_SF(Files):
-            A = next(os.walk(Files.Temp.address))
-            for s in A[2]:
-                if 'CropMask.nii.gz' in s: Files.Temp.CropMask = splitNii(s)
-                elif 'bias_corr.nii.gz' in s: Files.Temp.BiasCorrected = splitNii(s)
-                elif 'bias_corr_Cropped.nii.gz' in s: Files.Temp.Cropped = splitNii(s)
-                else: Files.Temp.origImage = splitNii(s)
-
-            if 'deformation' in A[1]:
-                Files.Temp.Deformation.address = Files.Temp.address + '/deformation'
-                B = next(os.walk(Files.Temp.Deformation.address))
-                for s in B[2]:
-                    if 'testWarp.nii.gz' in s: Files.Temp.Deformation.testWarp = splitNii(s)
-                    elif 'testInverseWarp.nii.gz' in s: Files.Temp.Deformation.testInverseWarp = splitNii(s)
-                    elif 'testAffine.txt' in s: Files.Temp.Deformation.testAffine = splitNii(s)
-
-            if not Files.Temp.Deformation.address: Files.Temp.Deformation.address = mkDir(Files.Temp.address + '/deformation')
-
-            return Files
-
-        def check_IfImageFolder(Files):
-            A = next(os.walk(Files.address))
-            for s in A[2]:
-                if 'PProcessed.nii.gz' in s: Files.ImageProcessed = splitNii(s)
-                if '.nii.gz' in s and 'PProcessed.nii.gz' not in s: Files.ImageOriginal = splitNii(s)
-
-            if Files.ImageOriginal or Files.ImageProcessed:
-                for s in A[1]:
-                    if 'temp' in s: Files.Temp.address = mkDir(Dir + '/' + s)
-                    elif 'Label' in s: Files.Label.address = Dir + '/' + s
-
-                if Files.ImageOriginal and not Files.ImageProcessed:
-                    Files.ImageProcessed = 'PProcessed'
-                    copyfile(Dir + '/' + Files.ImageOriginal + '.nii.gz' , Dir + '/' + Files.ImageProcessed + '.nii.gz')
-
-            if not Files.Temp.address: Files.Temp.address = mkDir(Dir + '/temp')
-
-            return Files
-
-        Files = Classes_Local(Dir)
-        Files = check_IfImageFolder(Files)
-
-        if Files.ImageOriginal or Files.ImageProcessed:
-            if os.path.exists(Files.Label.address): Files = Look_Inside_Label_SF(Files, NucleusName)
-            if os.path.exists(Files.Temp.address):  Files = Look_Inside_Temp_SF(Files)
-
-        return Files
 
     def checkInputDirectory(Dir, NucleusName, sag_In_Cor):
+        def Search_ImageFolder(Dir, NucleusName):
+
+            def splitNii(s):
+                return s.split('.nii.gz')[0]
+
+            def Classes_Local(Dir):
+                class deformation:
+                    address = ''
+                    testWarp = ''
+                    testInverseWarp = ''
+                    testAffine = ''
+
+                class temp:
+                    CropMask = ''
+                    Cropped = ''
+                    BiasCorrected = ''
+                    Deformation = deformation
+                    address = ''
+
+                class tempLabel:
+                    address = ''
+                    Cropped = ''
+
+                class label:
+                    LabelProcessed = ''
+                    LabelOriginal = ''
+                    Temp = tempLabel
+                    address = ''
+
+                class newCropInfo:
+                    OriginalBoundingBox = ''
+                    PadSizeBackToOrig = ''
+
+                class Files:
+                    ImageOriginal = ''
+                    ImageProcessed = ''
+                    Label = label
+                    Temp = temp
+                    address = Dir
+                    NewCropInfo = newCropInfo
+                    subjectName = ''
+
+                return Files
+
+            def Look_Inside_Label_SF(Files, NucleusName):
+                Files.Label.Temp.address = mkDir(Files.Label.address + '/temp')
+                A = next(os.walk(Files.Label.address))
+                for s in A[2]:
+                    if NucleusName + '_PProcessed.nii.gz' in s: Files.Label.LabelProcessed = splitNii(s)
+                    if NucleusName + '.nii.gz' in s: Files.Label.LabelOriginal = splitNii(s)
+
+                if Files.Label.LabelOriginal and not Files.Label.LabelProcessed:
+                    Files.Label.LabelProcessed = NucleusName + '_PProcessed'
+                    _, _, FullNames = NucleiSelection(ind=1)
+                    for name in FullNames: copyfile(Files.Label.address + '/' + name + '.nii.gz' , Files.Label.address + '/' + name + '_PProcessed.nii.gz')
+
+
+                for s in A[1]:
+                    if 'temp' in s:
+                        Files.Label.Temp.address = Files.Label.address + '/' + s
+
+                        for d in os.listdir(Files.Label.Temp.address):
+                            if '_Cropped.nii.gz' in d: Files.Label.Temp.Cropped = splitNii(d)
+
+                        # Files.Label.Temp.Cropped = [ d.split('.nii.gz')[0] for d in os.listdir(Files.Label.Temp.address) if '_Cropped.nii.gz' in d]
+                    elif 'Label' in s: Files.Label.address = Dir + '/' + s
+
+                return Files
+
+            def Look_Inside_Temp_SF(Files):
+                A = next(os.walk(Files.Temp.address))
+                for s in A[2]:
+                    if 'CropMask.nii.gz' in s: Files.Temp.CropMask = splitNii(s)
+                    elif 'bias_corr.nii.gz' in s: Files.Temp.BiasCorrected = splitNii(s)
+                    elif 'bias_corr_Cropped.nii.gz' in s: Files.Temp.Cropped = splitNii(s)
+                    else: Files.Temp.origImage = splitNii(s)
+
+                if 'deformation' in A[1]:
+                    Files.Temp.Deformation.address = Files.Temp.address + '/deformation'
+                    B = next(os.walk(Files.Temp.Deformation.address))
+                    for s in B[2]:
+                        if 'testWarp.nii.gz' in s: Files.Temp.Deformation.testWarp = splitNii(s)
+                        elif 'testInverseWarp.nii.gz' in s: Files.Temp.Deformation.testInverseWarp = splitNii(s)
+                        elif 'testAffine.txt' in s: Files.Temp.Deformation.testAffine = splitNii(s)
+
+                if not Files.Temp.Deformation.address: Files.Temp.Deformation.address = mkDir(Files.Temp.address + '/deformation')
+
+                return Files
+
+            def check_IfImageFolder(Files):
+                A = next(os.walk(Files.address))
+                for s in A[2]:
+                    if 'PProcessed.nii.gz' in s: Files.ImageProcessed = splitNii(s)
+                    if '.nii.gz' in s and 'PProcessed.nii.gz' not in s: Files.ImageOriginal = splitNii(s)
+
+                if Files.ImageOriginal or Files.ImageProcessed:
+                    for s in A[1]:
+                        if 'temp' in s: Files.Temp.address = mkDir(Dir + '/' + s)
+                        elif 'Label' in s: Files.Label.address = Dir + '/' + s
+
+                    if Files.ImageOriginal and not Files.ImageProcessed:
+                        Files.ImageProcessed = 'PProcessed'
+                        copyfile(Dir + '/' + Files.ImageOriginal + '.nii.gz' , Dir + '/' + Files.ImageProcessed + '.nii.gz')
+
+                if not Files.Temp.address: Files.Temp.address = mkDir(Dir + '/temp')
+
+                return Files
+
+            Files = Classes_Local(Dir)
+            Files = check_IfImageFolder(Files)
+
+            if Files.ImageOriginal or Files.ImageProcessed:
+                if os.path.exists(Files.Label.address): Files = Look_Inside_Label_SF(Files, NucleusName)
+                if os.path.exists(Files.Temp.address):  Files = Look_Inside_Temp_SF(Files)
+
+            return Files                
         class Input:
             address = os.path.abspath(Dir)
             Subjects = {}
@@ -493,31 +508,28 @@ def search_ExperimentDirectory(whichExperiment):
                             
         return Input
 
-    Exp_address = whichExperiment.Experiment.address
-    SE          = whichExperiment.SubExperiment
-    NucleusName = whichExperiment.Nucleus.name
-
+    def add_Sagittal_Cases(whichExperiment , train , test , NucleusName):
+        if whichExperiment.Nucleus.Index[0] == 1 and whichExperiment.Dataset.slicingInfo.slicingDim == 2:
+            train.Input_Sagittal = checkInputDirectory(train.address, NucleusName, True) 
+            test.Input_Sagittal  = checkInputDirectory(test.address , NucleusName, True) 
+        return train , test
+    
     class train:
         address        = Exp_address + '/train'
         Model          = Exp_address + '/models/' + SE.name                   + '/' + NucleusName  + sdTag
         Model_Thalamus = Exp_address + '/models/' + SE.name                   + '/' + '1-THALAMUS' + sdTag
         Model_3T       = Exp_address + '/models/' + SE.name_Init_from_3T      + '/' + NucleusName  + sdTag
         Model_InitTF   = Exp_address + '/models/' + SE.name.split('_TF_')[0]  + '/' + NucleusName  + sdTag
-        model_Tag = ''
-        Input   = checkInputDirectory(address, NucleusName,False)
+        model_Tag = func_model_Tag(whichExperiment)
+        Input     = checkInputDirectory(address, NucleusName,False)
     
-    if whichExperiment.HardParams.Model.Transfer_Learning.Mode: train.model_Tag += '_TF'
-    if whichExperiment.Dataset.ReadTrain.ET:                    train.model_Tag += '_ET'
-    if whichExperiment.Dataset.ReadTrain.CSFn:                  train.model_Tag += '_CSFn'
-        
     class test:
         address = Exp_address + '/test'
         Result  = Exp_address + '/results/' + SE.name + sdTag
         Input   = checkInputDirectory(address, NucleusName,False)
 
-    if whichExperiment.Nucleus.Index[0] == 1 and whichExperiment.Dataset.slicingInfo.slicingDim == 2:
-        train.Input_Sagittal = checkInputDirectory(train.address, NucleusName, True) 
-        test.Input_Sagittal  = checkInputDirectory(test.address , NucleusName, True) 
+
+    train , test = add_Sagittal_Cases(whichExperiment , train , test , NucleusName)
 
     class Directories:
         Train = train()

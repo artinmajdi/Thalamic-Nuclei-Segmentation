@@ -42,7 +42,7 @@ def Run(UserInfoB,InitValues):
         for UserInfoB['simulation'].nucleus_Index in BB.remove_Thalamus_From_List(InitValues.Nuclei_Indexes):
             Run_SingleNuclei(UserInfoB)
 
-    def CacadeStages(UserInfoB):
+    def Loop_All_Nuclei(UserInfoB):
 
         for UserInfoB['simulation'].nucleus_Index in InitValues.Nuclei_Indexes:
             Run_SingleNuclei(UserInfoB)
@@ -70,8 +70,11 @@ def Run(UserInfoB,InitValues):
                 K.clear_session()
                  
     if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages(UserInfoB)
-    elif UserInfoB['Model_Method'] == 'Cascade' :  CacadeStages(UserInfoB)
+    elif UserInfoB['Model_Method'] == 'Cascade' :  Loop_All_Nuclei(UserInfoB)
+    elif UserInfoB['Model_Method'] == 'FCN_25D':   Loop_All_Nuclei(UserInfoB)
     elif UserInfoB['Model_Method'] == 'singleRun': Run_SingleNuclei(UserInfoB)
+
+        
 
 def preMode(UserInfoB):
     UserInfoB = smallFuncs.terminalEntries(UserInfoB)
@@ -85,11 +88,6 @@ UserInfoB['simulation'].verbose = 2
 
 
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-
-# UserInfoB['Model_Method'] =  'Cascade'
-# print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'])
-# Run(UserInfoB, IV)
-
 
 # for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade']:
 print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'])
