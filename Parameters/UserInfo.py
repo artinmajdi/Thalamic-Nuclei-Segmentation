@@ -47,7 +47,7 @@ class InputPadding:
     HardDimensions = [1,1,1] # [116,144,84]
 
 class Experiments:
-    Index , Tag = '7' , 'cascadeV1'
+    Index , Tag = '1' , '' # , 'cascadeV1'
 
 if Experiments.Index == '8': InputPadding.HardDimensions = [228,288,168]
 

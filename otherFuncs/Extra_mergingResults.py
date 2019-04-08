@@ -10,7 +10,7 @@ import pickle
 import xlsxwriter
 from tqdm import tqdm
 import shutil
-
+import math
 params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 
 NumColumns , n_epochsMax = 19 , 300
@@ -63,13 +63,25 @@ class mergingDiceValues:
     def __init__(self, Info):
         self.Info   = Info
         self.writer = pd.ExcelWriter(self.Info.Experiment.address + '/results/All_Dice.xlsx', engine='xlsxwriter')
+        
         def save_TagList_AllDice(self):
-            # TODO it might be unnecessary
             pd.DataFrame(data=self.Info.Experiment.TagsList).to_excel(self.writer, sheet_name='TagsList')
+            class All_Subjs_Ns:
+                def insertNuclei_Excel(self, sheetName):
+                    A = pd.DataFrame()
+                    A['Nuclei'] = self.Info.Nuclei_Names[1:18]
+                    A.to_excel(self.writer, sheet_name=sheetName)
 
-            self.pd_AllNuclei_Dices = pd.DataFrame()
-            self.pd_AllNuclei_Dices['Nuclei'] = self.Info.Nuclei_Names[1:18]
-            self.pd_AllNuclei_Dices.to_excel(self.writer, sheet_name='AllDices')        
+                    class out:
+                        pd = A
+                        sheet_name = sheetName
+                    return out()
+                                    
+                ET   = insertNuclei_Excel(self, 'AllDices_ET')
+                Main = insertNuclei_Excel(self, 'AllDices_Main')
+                CSFn = insertNuclei_Excel(self, 'AllDices_CSFn')
+
+            self.All_Subjs_Ns = All_Subjs_Ns()
         save_TagList_AllDice(self)
 
         def func_Load_Subexperiment(self):
@@ -80,15 +92,12 @@ class mergingDiceValues:
               
                 def func_1subject_Dices(self):
                     
-                    Dice_Single = np.append(self.subject, list(np.zeros(NumColumns-1)))
-                    
+                    Dice_Single = np.append(self.subject, list(np.zeros(NumColumns-1)))                    
                     for ind, name in enumerate( self.Info.Nuclei_Names ):
                         Dir_subject = self.subExperiment.address + '/' + self.subject + '/Dice_' + name +'.txt'
-                        if os.path.isfile(Dir_subject): Dice_Single[ind] = np.loadtxt(Dir_subject)[1].astype(np.float16)
-                    # self.Dice_Test.append(Dice_Single)
-                    return Dice_Single                    
-                # func_Nuclei_Names(self)
-                sE_Dices = np.array([  func_1subject_Dices(self)  for self.subject in self.plane.subject_List  ]) 
+                        if os.path.isfile(Dir_subject): Dice_Single[ind] = math.ceil( np.loadtxt(Dir_subject)[1] *1e4)/1e4
+                    return Dice_Single                                    
+                sE_Dices = np.array([  func_1subject_Dices(self)  for self.subject in self.plane.subject_List  ])
 
                 def save_Dices_subExp_In_ExcelFormat(self , sE_Dices):
                     pd_sE = pd.DataFrame()
@@ -97,17 +106,46 @@ class mergingDiceValues:
                         else:         pd_sE[nucleus] = sE_Dices[:,nIx].astype(np.float16)
                     pd_sE.to_excel(  self.writer, sheet_name=self.plane.tagList[0] )    
                 save_Dices_subExp_In_ExcelFormat(self , sE_Dices)
+                
+                def divideSubjects_BasedOnModality(self, sE_Dices):
+                    class subjectDice:
+                        ET   = []
+                        Main = []
+                        CSfn = []
 
-                self.pd_AllNuclei_Dices[self.plane.tagList[0]] = np.median(sE_Dices[:,1:].astype(np.float16),axis=0)[:17] 
-                     
+                    for sIx , subject in enumerate(sE_Dices[:,0]):
+                        # a = np.median(sE_Dices[subject,1:].astype(np.float),axis=0)[:17]
+                        if len(subject) == 7:   subjectDice.ET.append(sIx)
+                        elif 'CSFn' in subject: subjectDice.CSfn.append(sIx)
+                        else:                   subjectDice.Main.append(sIx)
+
+                    if len(subjectDice.ET) > 0:   self.All_Subjs_Ns.ET.pd[  self.plane.tagList[0]] = np.average(sE_Dices[subjectDice.ET, 1:18].astype(np.float) , axis=0)
+                    if len(subjectDice.Main) > 0: self.All_Subjs_Ns.Main.pd[self.plane.tagList[0]] = np.median(sE_Dices[subjectDice.Main,1:18].astype(np.float) , axis=0)
+                    if len(subjectDice.CSfn) > 0: self.All_Subjs_Ns.CSFn.pd[self.plane.tagList[0]] = np.median(sE_Dices[subjectDice.CSFn,1:18].astype(np.float) , axis=0)                        
+                divideSubjects_BasedOnModality(self, sE_Dices)
+
         def loopOver_Subexperiments(self):
+            class smallActions():                                                                                              
+                def add_space(self):
+                    self.All_Subjs_Ns.ET.pd[self.subExperiment.name]   = np.zeros(17)
+                    self.All_Subjs_Ns.Main.pd[self.subExperiment.name] = np.zeros(17)
+                    self.All_Subjs_Ns.CSFn.pd[self.subExperiment.name] = np.zeros(17)
+
+                def save_All_Dices(PD):
+                    PD.ET.pd.to_excel(self.writer , sheet_name=PD.ET.sheet_name)
+                    PD.Main.pd.to_excel(self.writer, sheet_name=PD.Main.sheet_name)
+                    PD.CSFn.pd.to_excel(self.writer, sheet_name=PD.CSFn.sheet_name)
+
             for self.subExperiment in tqdm( self.Info.Experiment.List_subExperiments , desc='Dices:'):
+
+                smallActions.add_space(self)
                 for self.plane in self.subExperiment.multiPlanar:
                     
                     try: func_Load_Subexperiment(self)
-                    except: print('failed' ,self.subExperiment )            
-                
-            self.pd_AllNuclei_Dices.to_excel(self.writer, sheet_name='AllDices')
+                    except: print('failed' ,self.subExperiment )                                            
+
+            smallActions.save_All_Dices(self.All_Subjs_Ns)
+
             self.writer.close()
         loopOver_Subexperiments(self)
 
@@ -117,7 +155,7 @@ for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExpe
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name)
 
     mergingDiceValues(Info)
-    savingHistory_AsExcel(Info)
+    # savingHistory_AsExcel(Info)
 
 os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
 

@@ -20,11 +20,8 @@ def runOneExperiment(Info , params):
 
         Dice = np.zeros((1,2))
         Dice[0,0] , Dice[0,1] = InfoSave.nucleus.index , smallFuncs.mDice(InfoSave.Image  , Label)
-        if Dice[0,1] > 1:
-            print('0---------')
         np.savetxt( InfoSave.address+ 'Dice_' + InfoSave.nucleus.name + '.txt' ,Dice , fmt='%1.1f %1.4f')
              
-
     Info.subExperiment.address = Info.Experiment.address + '/results/' + Info.subExperiment.name + '/'
     class nucleus:
         def __init__(self,name='', index=0):
