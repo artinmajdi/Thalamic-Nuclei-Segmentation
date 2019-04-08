@@ -10,12 +10,18 @@ import Parameters.paramFunc as paramFunc
 from tqdm import tqdm
 from otherFuncs.smallFuncs import Experiment_Folder_Search
 import matplotlib.pylab as plt
+
 def runOneExperiment(Info , params):
 
     def saveImageDice(InfoSave, ManualLabel):
         smallFuncs.saveImage( InfoSave.Image , ManualLabel.affine, ManualLabel.header, InfoSave.address  + InfoSave.nucleus.name + '.nii.gz')
+        
+        Label = smallFuncs.fixMaskMinMax(ManualLabel.get_data()) > 0.5
+
         Dice = np.zeros((1,2))
-        Dice[0,0] , Dice[0,1] = InfoSave.nucleus.index , smallFuncs.mDice(InfoSave.Image  , ManualLabel.get_data())
+        Dice[0,0] , Dice[0,1] = InfoSave.nucleus.index , smallFuncs.mDice(InfoSave.Image  , Label)
+        if Dice[0,1] > 1:
+            print('0---------')
         np.savetxt( InfoSave.address+ 'Dice_' + InfoSave.nucleus.name + '.txt' ,Dice , fmt='%1.1f %1.4f')
              
 

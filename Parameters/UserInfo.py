@@ -1,12 +1,11 @@
 
-Model_Method =  'Cascade' #'FCN_2D' # HCascade' # 
+Model_Method =  'HCascade' #'FCN_2D' # HCascade' # 
 
-# TypeExperiment == 1: #  Main
+# TypeExperiment == 1: # Main
 # TypeExperiment == 2: # Transfer Learn ET
 # TypeExperiment == 3: # SRI
 # TypeExperiment == 4: # Predict ET from MS&Ctrl
 # TypeExperiment == 5: # Train ET Initialized from MS&Ctrl
-# TypeExperiment == 6: # Train ET without Initialization
 TypeExperiment = 2
 
 
