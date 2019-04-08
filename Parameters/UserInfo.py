@@ -1,5 +1,5 @@
 
-Model_Method =  'HCascade' #'FCN_2D' # HCascade' # 
+Model_Method =  'FCN_25D' # 'HCascade' # HCascade' # 
 
 # TypeExperiment == 1: # Main
 # TypeExperiment == 2: # Transfer Learn ET
