@@ -57,9 +57,9 @@ def Run(UserInfoB,InitValues):
                 params = paramFunc.Run(UserInfoB, terminal=False)
 
                 print('---------------------------------------------------------------')
-                print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | slicingDim',sd, \
-                    ' | Dropout', UserInfoB['DropoutValue'] , ' | Learning_Rate' , UserInfoB['simulation'].Learning_Rate, ' | num_Layers' , UserInfoB['simulation'].num_Layers,\
-                    ' | MultThalmaus',UserInfoB['simulation'].Multiply_By_Thalmaus , ' | ', UserInfoB['Model_Method'] , 'FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num)
+                print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',sd, \
+                    ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
+                    ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num)
 
                 print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
                 print('---------------------------------------------------------------')
