@@ -6,11 +6,13 @@ Model_Method =  'HCascade' #'FCN_25D' #  HCascade' #
 # TypeExperiment == 3: # SRI
 # TypeExperiment == 4: # Predict ET from MS&Ctrl
 # TypeExperiment == 5: # Train ET Initialized from 3T
-TypeExperiment = 5
+# TypeExperiment == 6: # Train Main+ET
+TypeExperiment = 1
 
 class SubExperiment: 
         Index = 11
-        Tag   = ''
+        Tag   = 'MainPlusET' # Cascade_FM20_7T'
+        Mode_JustThis = False
 
 class InitializeB:
     FromThalamus   = True
@@ -24,7 +26,7 @@ class simulation:
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1] # ,2,4]
+    nucleus_Index = [1,2,4] # ,2,4]
     slicingDim    = [2,1,0] # [0,1,2]
     batch_size    = 100
     InputImage2Dvs3D = 2
