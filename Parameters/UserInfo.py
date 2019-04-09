@@ -20,13 +20,13 @@ class InitializeB:
     From_3T        = True
 
 class simulation:
-    TestOnly      = False
+    TestOnly      = True
     epochs        = 100
     GPU_Index     = "5,6"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1,2,4] # ,2,4]
+    nucleus_Index = [1] # ,2,4]
     slicingDim    = [2,1,0] # [0,1,2]
     batch_size    = 100
     InputImage2Dvs3D = 2
