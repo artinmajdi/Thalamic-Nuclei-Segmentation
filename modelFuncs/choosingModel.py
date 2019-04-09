@@ -199,7 +199,7 @@ def trainingExperiment(Data, params):
         checkpointer = keras.callbacks.ModelCheckpoint(filepath= Dir_Save + '/best_model_weights' + params.directories.Train.model_Tag + '.h5', \
             monitor = monitor, verbose=1, save_best_only=True, mode=mode)
 
-        Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = monitor, factor=0.5, min_delta=0.005 , patience=4, verbose=1, \
+        Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = 'mDice', factor=0.5, min_delta=0.005 , patience=4, verbose=1, \
             save_best_only=True, mode=mode , min_lr=0.9e-4 , )
         
         # Progbar = keras.callbacks.Progba

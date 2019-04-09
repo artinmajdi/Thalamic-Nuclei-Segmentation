@@ -7,7 +7,7 @@ Model_Method =  'HCascade' #'FCN_25D' #  HCascade' #
 # TypeExperiment == 4: # Predict ET from MS&Ctrl
 # TypeExperiment == 5: # Train ET Initialized from 3T
 # TypeExperiment == 6: # Train Main+ET
-TypeExperiment = 1
+TypeExperiment = 6
 
 class SubExperiment: 
         Index = 11
@@ -22,7 +22,7 @@ class InitializeB:
 class simulation:
     TestOnly      = False
     epochs        = 100
-    GPU_Index     = "0,1,2,3"
+    GPU_Index     = "5,6"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
