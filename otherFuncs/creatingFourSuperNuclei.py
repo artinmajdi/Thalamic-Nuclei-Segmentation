@@ -43,6 +43,17 @@ def applyMain(Dir,mode):
                 smallFuncs.saveImage( Mask > 0 , im.affine , im.header, Directory + 'Hierarchical/' + superNuclei + mode + '.nii.gz')
                 smallFuncs.saveImage( closeMask(Mask > 0) , im.affine , im.header, Directory + superNuclei + '_ImClosed' + mode + '.nii.gz')
 
+        def saving4SuperNuclei_WithDifferentLabels():
+            print('    saving 4 Super Nuclei')
+            for superNuclei in HierarchicalNames:
+                for cnt, subNuclei in enumerate(Names[superNuclei].FullNames):
+                    msk = nib.load(Directory + subNuclei + mode + '.nii.gz').get_data()
+                    Mask = msk if cnt == 0 else Mask + (cnt+1)*msk
+
+                smallFuncs.saveImage( Mask , im.affine , im.header, Directory + superNuclei + mode + '_DifferentLabels.nii.gz')
+                # smallFuncs.saveImage( closeMask(Mask) , im.affine , im.header, Directory + superNuclei + '_ImClosed' + mode + '_DifferentLabels.nii.gz')
+
+
         def creatingFullMaskWithAll4Supernuclei():
             print('    creating Full Mask With All 4 Super Nuclei')
             for cnt, superNuclei in enumerate(HierarchicalNames):
@@ -62,11 +73,13 @@ def applyMain(Dir,mode):
                 msk = nib.load(Directory + name + mode + '.nii.gz').get_data()            
                 smallFuncs.saveImage( closeMask(msk > 0) , im.affine , im.header, Directory + 'ImClosed/' + name + '_ImClosed' + mode + '.nii.gz')
                 
-        saving4SuperNuclei()
+        # saving4SuperNuclei()
 
-        creatingFullMaskWithAll4Supernuclei()
+        saving4SuperNuclei_WithDifferentLabels()
 
-        ImClosingAllNuclei()
+        # creatingFullMaskWithAll4Supernuclei()
+
+        # ImClosingAllNuclei()
 
     Subjects = [sub for sub in os.listdir(Dir) if 'vimp' in sub]
 
@@ -76,7 +89,7 @@ def applyMain(Dir,mode):
 
 
 
-Dir = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/train/SRI'
+Dir = '/array/ssd/msmajdi/experiments/keras/exp1/test/Main/'
 
 mode = '_PProcessed'
 applyMain(Dir ,mode)

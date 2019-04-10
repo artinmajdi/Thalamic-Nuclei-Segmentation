@@ -90,6 +90,18 @@ def loadDataset(params):
             BB = subject2.NewCropInfo.OriginalBoundingBox
             im = im[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]
 
+            # im = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
+            # msk = nib.load(subject2.Label.address + '/' + subject2.Label.LabelProcessed.replace('ImClosed_','') + '_DifferentLabels.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
+            a = smallFuncs.NucleiIndex(1,'HCascade').HCascade_Parents_Identifier([params.UserInfo['simulation'].nucleus_Index])
+            b = smallFuncs.NucleiIndex(a[0],'HCascade').name
+            im = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
+            msk = nib.load(subject2.Label.address + '/' + b.replace('_ImClosed','') + '_PProcessed_DifferentLabels.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
+
+            nib.save(im,'/array/ssd/msmajdi/experiments/'  + 'Image_' + subject2.Label.LabelProcessed.split('_ImClosed_PProcessed')[0] + '_Stage2.nii.gz' )
+            nib.save(msk,'/array/ssd/msmajdi/experiments/' + 'Mask_'  + subject2.Label.LabelProcessed.split('_ImClosed_PProcessed')[0] + '_DiffLabels_Stage2.nii.gz' )
+            print('----')
+            
+            
         # aa = subject.address.split('train/') if len(subject2.address.split('train/')) == 2 else subject.address.split('test/')
 
         im = CroppingInput(im, subject2.Padding)
@@ -292,9 +304,9 @@ def loadDataset(params):
 
         DataAll = data()
         
-        if trainFlag():
-            DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
-            DataAll.Train, DataAll.Validation = separateTrainVal_and_concatenateTrain( DataAll.Train_ForTest )
+        # if trainFlag():
+        #     DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
+        #     DataAll.Train, DataAll.Validation = separateTrainVal_and_concatenateTrain( DataAll.Train_ForTest )
 
         if params.directories.Test.Input.Subjects: 
             DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')

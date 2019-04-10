@@ -56,11 +56,11 @@ def NucleiSelection(ind = 1):
     def func_FullIndexes(ind):
         if ind in range(20):
             return [1,2,4,5,6,7,8,9,10,11,12,13,14]
-        elif ind == 1.1:
+        elif ind == 1.1: # lateral
             return [4,5,6,7]
-        elif ind == 1.2:
+        elif ind == 1.2: # posterior
             return [8,9,10]
-        elif ind == 1.3:
+        elif ind == 1.3: # 'Medial'
             return [11,12,13]
         elif ind == 1.4:
             return [2]
