@@ -7,14 +7,14 @@ Model_Method =  'HCascade' #'FCN_25D' #  HCascade' #
 # TypeExperiment == 4: # Predict ET from MS&Ctrl
 # TypeExperiment == 5: # Train ET Initialized from 3T
 # TypeExperiment == 6: # Train Main+ET
-TypeExperiment = 6
+TypeExperiment = 1
 
 class dataGenerator:
     Mode = False
     NumSubjects_Per_batch = 5
 class SubExperiment: 
         Index = 11
-        Tag   = '_Main_PlusET' # Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
+        Tag   = '_Main' # Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
         Mode_JustThis = False
 
 class InitializeB:
@@ -33,7 +33,7 @@ class simulation:
     slicingDim    = [1] # [0,1,2]
     batch_size    = 100
     InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 20
+    FirstLayer_FeatureMap_Num = 30
     verbose = 1
     Multiply_By_Thalmaus = False
 

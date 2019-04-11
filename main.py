@@ -90,9 +90,9 @@ UserInfoB['simulation'].verbose = 2
 
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-# for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade']:
-print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'])
-Run(UserInfoB, IV)
+for UserInfoB['Model_Method'] in ['HCascade'  ,  'Cascade' ]:
+    print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'])
+    Run(UserInfoB, IV)
 
 
 K.clear_session()
