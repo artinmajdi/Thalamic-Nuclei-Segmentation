@@ -73,47 +73,14 @@ def NucleiSelection(ind = 1):
 
     return name, FullIndexes, Full_Names
 
-# TODO: repalce all NucleiSelection()  with NucleiIndex class
-class NucleiIndex:
-    def __init__(self, index=1, method=''):
-        self.index       = index
-        self.method      = method
-        self.child       = ()
-        self.parent      = None
-        self.grandParent = None
+# TODO: repalce all NucleiSelection()  with Nuclei_Class class       
+                        
+class Nuclei_Class():        
         
+    def __init__(self, index=1, method = 'HCascade'):
 
-
-        def func_Parent_child(self):
-
-            def func_Cascade(self):
-                if self.index  == 1: self.parent , self.child = ( None , [2,4,5,6,7,8,9,10,11,12,13,14] )
-                else:                self.parent , self.child = ( 1    , None )
-
-            def func_HCascade(self):
-                switcher_Parent = {
-                    1: (None, [1.1 , 1.2 , 1.3 , 2]), # parent, child
-                    1.1: (1, [4,5,6,7]),
-                    1.2: (1, [8,9,10]), 
-                    1.3: (1, [11,12,13]), 
-                    1.4: (1, None), 
-                    2:   (1, None) }                                                                                         
-                if switcher_Parent.get(self.index): self.parent , self.child = switcher_Parent.get(self.index)
-                else: 
-                    _ , TH_child = switcher_Parent.get(1)
-                    for ix in TH_child:
-                        HC_parent, HC_child = switcher_Parent.get(ix)
-                        if HC_child and self.index in HC_child: self.grandParent , self.parent , self.child = (HC_parent , ix , None)
-
-
-            if   self.method == 'Cascade':  func_Cascade(self)
-            elif self.method == 'HCascade': func_HCascade(self) 
-
-        
-        func_Parent_child(self)
-
-        def Name_of_Nucleus(index):
-            NucleusName = {
+        def dic_Name(index):
+            switcher = {
                 1: '1-THALAMUS',
                 2: '2-AV',
                 4: '4-VA',
@@ -131,28 +98,64 @@ class NucleiIndex:
                 1.2: 'posterior_ImClosed',
                 1.3: 'Medial_ImClosed',
                 1.4: 'Anterior_ImClosed',
-                1.9: 'HierarchicalCascade' }
-            return NucleusName.get(index, 'Wrong Nucleus Index')
-        self.name = Name_of_Nucleus(self.index)
+                1.9: 'HierarchicalCascade' }  
+            return switcher.get(index, 'wrong index')
+        self.name = dic_Name(index)
 
-        class All_Nuclei_Cls:
-            Indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14]) + tuple([1.1,1.2,1.3])
-            Names   = [Name_of_Nucleus(index) for index in Indexes]
-        self.All_Nuclei = All_Nuclei_Cls()
-
-    def HCascade_Parents_Identifier(self, Nuclei_List):
-        List_of_Parents = []
-
-        b = NucleiIndex(1,'HCascade')        
-        for ix in b.child:
-            c = NucleiIndex(ix,'HCascade')
-            if c.child and bool(set(Nuclei_List ) & set(c.child)): List_of_Parents.append(ix)
-
-        return List_of_Parents
+        self.dic_Name = dic_Name
+        self.method      = method
+        self.child       = ()
+        self.parent      = None
+        self.grandparent = None
+        self.index = index
         
-    def remove_Thalamus_From_List(self, Nuclei_List):
-        if 1 in Nuclei_List: Nuclei_List.remove(1)
-        return Nuclei_List
+
+        def find_Parent_child(self):
+            def parent_child(index):
+                if self.method == 'HCascade':
+                    switcher_Parent = {
+                        1:   (None, [1.1 , 1.2 , 1.3 , 2]),
+                        1.1: (1,    [4,5,6,7]),
+                        1.2: (1,    [8,9,10]), 
+                        1.3: (1,    [11,12,13]), 
+                        1.4: (1,     None), 
+                        2:   (1,     None) }              
+                    return switcher_Parent.get(index)
+                else:
+                    return ( None, [2,4,5,6,7,8,9,10,11,12,13,14] ) if index == 1 else (1,None)                               
+
+            def func_HCascade(self):
+                                                                                       
+                if parent_child(self.index): 
+                    self.parent , self.child = parent_child(self.index)
+                else: 
+                    for ix in parent_child(1)[1]:
+                        HC_parent, HC_child = parent_child(ix)
+                        if HC_child and self.index in HC_child: self.grandparent , self.parent , self.child = (HC_parent , ix , None)
+
+            if   self.method == 'Cascade':  self.grandparent , self.parent , self.child = (None,) + parent_child(self.index)
+            elif self.method == 'HCascade': func_HCascade(self)         
+        find_Parent_child(self)
+        
+    def All_Nuclei(self):
+        if self.method == 'HCascade': indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14]) + tuple([1.1,1.2,1.3])
+        else:                         indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14])
+                
+        class All_Nuclei:
+            Indexes = indexes[:]
+            Names  = [self.dic_Name(index) for index in Indexes]
+
+        return All_Nuclei()    
+    
+    def HCascade_Parents_Identifier(self, Nuclei_List):
+  
+        def fchild(ix): return Nuclei_Class(ix , self.method).child
+        return [ix for ix in fchild(1) if fchild(ix) and bool(set(Nuclei_List) & set(fchild(ix))) ]  if self.method == 'HCascade' else [1]
+        
+    def remove_Thalamus_From_List(self , Nuclei_List):
+        nuLs = Nuclei_List.copy()
+        if 1 in nuLs: nuLs.remove(1)
+        return nuLs
             
 
 class Experiment_Folder_Search():    
@@ -221,8 +224,8 @@ class Experiment_Folder_Search():
                 elif nIx == 1.2:     return 16
                 elif nIx == 1.3:     return 17
 
-            for nIx in NucleiIndex().All_Nuclei.Indexes:
-                Nuclei_Names[nuclei_Index_Integer(nIx)] = NucleiIndex(index=nIx).name
+            for nIx in Nuclei_Class().All_Nuclei.Indexes:
+                Nuclei_Names[nuclei_Index_Integer(nIx)] = Nuclei_Class(index=nIx).name
 
             return Nuclei_Names
         self.Nuclei_Names = func_Nuclei_Names()

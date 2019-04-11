@@ -42,7 +42,7 @@ def runOneExperiment(Info , params):
         subject = params.directories.Test.Input.Subjects[sj]
         Info.subject = subject()
 
-        a = smallFuncs.NucleiIndex().All_Nuclei
+        a = smallFuncs.Nuclei_Class().All_Nuclei()
         for nucleusNm , nucleiIx in zip(a.Names , a.Indexes):
             Info.nucleus = nucleus(nucleusNm , nucleiIx)
 

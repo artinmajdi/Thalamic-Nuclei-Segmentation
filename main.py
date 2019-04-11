@@ -17,19 +17,15 @@ import json
 import nibabel as nib
 class InitValues:
     def __init__(self, Nuclei_Indexes=1 , slicingDim=2):
-        self.slicingDim     = slicingDim.copy()
-
-        if Nuclei_Indexes == 'all':  
-             _, self.Nuclei_Indexes,_ = smallFuncs.NucleiSelection(ind = 1)
-        else:
-            self.Nuclei_Indexes = Nuclei_Indexes.copy()
+        self.slicingDim     = slicingDim 
+        self.Nuclei_Indexes = smallFuncs.Nuclei_Class(1,'Cascade').All_Nuclei().Indexes if Nuclei_Indexes == 'all' else Nuclei_Indexes
                 
 def Run(UserInfoB,InitValues):
 
     def HierarchicalStages(UserInfoB):
 
-        BB = smallFuncs.NucleiIndex(1,'HCascade')
-        
+        BB = smallFuncs.Nuclei_Class(1,'HCascade')
+
         print('************ stage 1 ************')
         if 1 in InitValues.Nuclei_Indexes: 
             UserInfoB['simulation'].nucleus_Index = 1
@@ -90,7 +86,11 @@ UserInfoB['simulation'].verbose = 2
 
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-for UserInfoB['Model_Method'] in ['HCascade'  ,  'Cascade' ]:
+print('-----------------------------')
+print('-----------------------------')
+print('-----------------------------')
+print('-----------------------------')
+for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [30 , 40]: # 10 , 15]: # , 30 , 40]:  # UserInfoB['Model_Method'] in ['HCascade'  ,  'Cascade' ]:
     print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'])
     Run(UserInfoB, IV)
 

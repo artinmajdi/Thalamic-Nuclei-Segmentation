@@ -93,8 +93,8 @@ def loadDataset(params):
             # def save_4Nuclei_CroppedMask():
             # im = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
             # msk = nib.load(subject2.Label.address + '/' + subject2.Label.LabelProcessed.replace('ImClosed_','') + '_DifferentLabels.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
-            # a = smallFuncs.NucleiIndex(1,'HCascade').HCascade_Parents_Identifier([params.UserInfo['simulation'].nucleus_Index])
-            # b = smallFuncs.NucleiIndex(a[0],'HCascade').name
+            # a = smallFuncs.Nuclei_Class(1,'HCascade').HCascade_Parents_Identifier([params.UserInfo['simulation'].nucleus_Index])
+            # b = smallFuncs.Nuclei_Class(a[0],'HCascade').name
             # im = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
             # msk = nib.load(subject2.Label.address + '/' + b.replace('_ImClosed','') + '_PProcessed_DifferentLabels.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
 
