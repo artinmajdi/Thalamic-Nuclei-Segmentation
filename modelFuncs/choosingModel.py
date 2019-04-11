@@ -23,6 +23,7 @@ from keras.utils import multi_gpu_model, multi_gpu_utils
 import h5py
 import keras.layers as KLayers
 import json
+from keras.preprocessing.image import ImageDataGenerator
 
 def check_Run(params, Data):
 
@@ -240,30 +241,31 @@ def trainingExperiment(Data, params):
         ModelParam = params.WhichExperiment.HardParams.Model
                     
         def modelInitialize(model):            
-            
+            TP = params.directories.Train
             if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode:
-                model.load_weights(params.directories.Train.Model + '/model_weights.h5')
+                model.load_weights(TP.Model + '/model_weights.h5')
                 print(' --- initialized from older Model <- -> Transfer Learning ')                                
             else:
                 
                 Initialize = params.WhichExperiment.HardParams.Model.Initialize
-                if Initialize.FromThalamus and params.WhichExperiment.Nucleus.Index[0] != 1 and os.path.exists(params.directories.Train.Model_Thalamus + '/model_weights.h5'):
+                                        
+                if Initialize.FromOlderModel and os.path.exists(TP.Model + '/model_weights.h5'):
                     try: 
-                        model.load_weights(params.directories.Train.Model_Thalamus + '/model_weights.h5')
-                        print(' --- initialized from Thalamus  ')
-                    except: print('initialized from Thalamus failed')
-                        
-                        
-                elif Initialize.FromOlderModel and os.path.exists(params.directories.Train.Model + '/model_weights.h5'):
-                    try: 
-                        model.load_weights(params.directories.Train.Model + '/model_weights.h5')
+                        model.load_weights(TP.Model + '/model_weights.h5')
                         print(' --- initialized from older Model  ')
                     except: print('initialized from older Model failed')
 
-                elif Initialize.From_3T and os.path.exists(params.directories.Train.Model_3T + '/model_weights.h5'):
+                elif Initialize.FromThalamus and params.WhichExperiment.Nucleus.Index[0] != 1 and os.path.exists(TP.Model_Thalamus + '/model_weights.h5'):
+                    try: 
+                        model.load_weights(TP.Model_Thalamus + '/model_weights.h5')
+                        print(' --- initialized from Thalamus  ')
+                    except: print('initialized from Thalamus failed')
+                        
+
+                elif Initialize.From_3T and os.path.exists(TP.Model_3T + '/model_weights.h5'):
                     try:
-                        model.load_weights(params.directories.Train.Model_3T + '/model_weights.h5')
-                        print(' --- initialized from Model_3T' , params.directories.Train.Model_3T)
+                        model.load_weights(TP.Model_3T + '/model_weights.h5')
+                        print(' --- initialized from Model_3T' , TP.Model_3T)
                     except: print('initialized from From_3T failed')
 
             print('------------------------------------------------------------------')
@@ -306,36 +308,26 @@ def trainingExperiment(Data, params):
                 return callbacks , batch_size, epochs, valSplit_Per, verbose , Validation_fromKeras
             callbacks , batch_size, epochs, valSplit_Per, verbose , Validation_fromKeras = func_modelParams()
                           
-            # ManualDataGenerator  = params.WhichExperiment.HardParams.Model.ManualDataGenerator
-            # def RunGenerator(params):
-            #     f = h5py.File(params.directories.Test.Result + '/Data.hdf5','r')
-                    
-            #     infoDG = {'dim': tuple(f['Train/Image'].shape[1:3]),'batch_size': ModelParam.batch_size,
-            #             'n_classes': ModelParam.MultiClass.num_classes, 'n_channels': f['Train/Image'].shape[3]}
-                                
-            #     training_generator   = DataGenerator( f['Train'], **infoDG )
-            #     validation_generator = DataGenerator( f['Validation'], **infoDG )
+            def func_RunGenerator():
+                
+                info = {'mode': 'train',  'params': params}
+                trainGenerator = DataGenerator_Class(**info)
+                
+                # info = {'mode': 'validation',  'params': params}
+                # valGenerator = DataGenerator_Class(**info)
+                                    
+                hist = model.fit_generator(trainGenerator, epochs=epochs, verbose=verbose, callbacks=callbacks,\
+                     validation_data=(Data.Validation.Image, Data.Validation.Mask), use_multiprocessing=False, shuffle=True, initial_epoch=0) # workers=10, 
 
-            #     hist = model.fit_generator(generator=training_generator, validation_data=validation_generator, verbose=1)   # , use_multiprocessing=True, workers=20
-            #     f.close()
-            #     return hist
-            # if ManualDataGenerator: hist = RunGenerator(params)
-            # else:
-            # keras.backend.set_session(tf_debug.TensorBoardDebugWrapperSession(tf.Session(), "engr-bilgin01s:6064"))
-            def func_classWeights():
+                return hist
 
-                if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode:
-                    Sz = Data.Train.Mask.shape
-                    a = np.sum(Data.Train.Mask[...,0] < 0.5) / (Sz[0]*Sz[1]*Sz[2])
-                    return {0:1-a , 1:a}
-                else: return {0:1 , 1:1}
-            # class_weight = func_classWeights()
-            # add this to model.fit  class_weight=class_weight
-            
-            if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])
-            else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
-                        
-            if ModelParam.showHistory: print(hist.history)
+            if params.WhichExperiment.HardParams.Model.DataGenerator.Mode: hist = func_RunGenerator()
+            else:
+                # keras.backend.set_session(tf_debug.TensorBoardDebugWrapperSession(tf.Session(), "engr-bilgin01s:6064"))                
+                if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])
+                else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
+                            
+                if ModelParam.showHistory: print(hist.history)
 
             return model, hist                         
         model, hist = modelFit(model)
@@ -574,26 +566,68 @@ def architecture(ModelParam):
 
     return model
 
-class DataGenerator(keras.utils.Sequence):
-    def __init__(self, h, batch_size=100, dim=(32,32), n_channels=1, n_classes=2):
-        'Initialization'
-        self.dim = dim
-        self.batch_size = batch_size
-        self.h = h
-        self.n_channels = n_channels
-        self.n_classes = n_classes
+def func_classWeights(params , Data):
+
+    if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode:
+        Sz = Data.Train.Mask.shape
+        a = np.sum(Data.Train.Mask[...,0] < 0.5) / (Sz[0]*Sz[1]*Sz[2])
+        return {0:1-a , 1:a}
+    else: return {0:1 , 1:1}
+   
+class DataGenerator_Class(keras.utils.Sequence):
+
+    # ! source: https://stanford.edu/~shervine/blog/keras-how-to-generate-data-on-the-fly
+    
+    # Note : batch_size in this class means the number of subjects rather than number of 2D images 
+
+    def __init__(self, params , mode = 'train' , shuffle=True):
+        
+        
+        def func_list_subjects(self):
+            TrainList, ValList = datasets.percentageDivide(self.params.WhichExperiment.Dataset.Validation.percentage, list(self.params.directories.Train.Input.Subjects), self.params.WhichExperiment.Dataset.randomFlag)            
+
+            with h5py.File(self.address + '/Data.hdf5','r') as f: 
+                switcher = {
+                    'train':      list(f['train']) if self.TestForVal else TrainList, 
+                    'validation': list(f['test'])  if self.TestForVal else ValList, 
+                }
+                return switcher.get(self.mode, 'wrong mode')
+        self.params     = params
+        self.TestForVal = self.params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation
+        self.shuffle    = shuffle
+        self.mode       = mode
+        if mode == 'validation': self.DataMode = 'test' if self.TestForVal else 'train'
+        else: self.DataMode = mode
+
+        
+        self.address = self.params.directories.Test.Result
+        self.batch_size = self.params.WhichExperiment.HardParams.Model.DataGenerator.NumSubjects_Per_batch
+        self.list_subjects = func_list_subjects(self)
         self.on_epoch_end()
 
     def __len__(self):
-        return int(np.floor(self.h['Image'].shape[0] / self.batch_size))
+        'Denotes the number of batches per epoch'
+        return int(np.floor(len(self.list_subjects) / self.batch_size))
 
     def __getitem__(self, index):
-        indexes = self.indexes[ index*self.batch_size : (index+1)*self.batch_size ]
-        return self.__data_generation(indexes)
+        'Generate one batch of data'
+        list_subjects_oneBatch = self.list_subjects[index*self.batch_size:(index+1)*self.batch_size]
+
+        return self.__data_generation(list_subjects_oneBatch)
 
     def on_epoch_end(self):
-        self.indexes = np.arange(self.h['Image'].shape[0])
-        np.random.shuffle(self.indexes)
+        'Updates indexes after each epoch'
+        if self.shuffle == True: np.random.shuffle(self.list_subjects)
 
-    def __data_generation(self, list_IDs_temp):
-        return self.h['Image'][list_IDs_temp,...] , self.h['Mask'][list_IDs_temp,...]
+    def __data_generation(self, list_subjects_oneBatch):
+        # Generate data
+        with h5py.File(self.address + '/Data.hdf5','r') as Data:
+            for cnt , ID in enumerate(list_subjects_oneBatch):
+                
+                im  = np.array(list(  Data['%s/%s/Image'%(self.DataMode,ID)] ))  
+                msk = np.array(list(  Data['%s/%s/Mask'%( self.DataMode,ID)] ))
+
+                Image = im if cnt == 0 else np.concatenate((Image , im) , axis=0)
+                Mask = msk if cnt == 0 else np.concatenate((Mask , msk) , axis=0)
+
+        return Image , Mask

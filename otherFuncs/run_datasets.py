@@ -10,6 +10,7 @@ import numpy as np
 import nibabel as nib
 import skimage
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 mode = 'experiment'
 
 #! reading the user input parameters via terminal
@@ -20,6 +21,11 @@ params = paramFunc.Run(UserInfoB, terminal=False)
 #! copying the dataset into the experiment folder
 datasets.movingFromDatasetToExperiments(params)
 
+with h5py.File(params.directories.Test.Result + '/Data.hdf5','r') as g:
+    for ID , subject in params.directories.Train.Input.Subjects.items():
+        im  = np.array(list(  g['train/%s/Image'%(ID)] ))      
+        msk = np.array(list(  g['train/%s/Mask'%(ID )] ))
+            
 # params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
 # params = smallFuncs.inputNamesCheck(params, mode)
 # #! needs to run preprocess first to add the PPRocessed.nii.gz files

@@ -59,13 +59,17 @@ def temp_Experiments_preSet(UserInfoB):
     
     
     if UserInfoB['TypeExperiment'] == 4: UserInfoB['simulation'].TestOnly = True
-
-    if UserInfoB['TypeExperiment'] == 5: 
+    elif UserInfoB['TypeExperiment'] == 5: 
         UserInfoB['InitializeB'].FromThalamus   = False
         UserInfoB['InitializeB'].FromOlderModel = False
         UserInfoB['InitializeB'].From_3T        = True  
         UserInfoB['simulation'].TestOnly        = False  
 
+    elif UserInfoB['TypeExperiment'] == 3:
+        UserInfoB['InitializeB'].FromThalamus   = True
+        UserInfoB['InitializeB'].FromOlderModel = True
+        UserInfoB['InitializeB'].From_3T        = False  
+    
     return UserInfoB
 
 def Run(UserInfoB, terminal=False):
@@ -193,6 +197,10 @@ def func_WhichExperiment(UserInfo):
                 FromOlderModel = False
                 From_3T        = False  
 
+            class dataGenerator:
+                mode = False
+                NumSubjects_Per_batch = 5
+
             class model:
                 architectureType = 'U-Net'
                 epochs = ''
@@ -213,7 +221,7 @@ def func_WhichExperiment(UserInfo):
                 Method = method()
                 paddingErrorPatience = 20
                 Transfer_Learning = transfer_Learning()
-                ManualDataGenerator = False
+                DataGenerator = dataGenerator()
                 
                 
 
@@ -479,6 +487,8 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.batch_size   = UserInfo['simulation'].batch_size
         HardParams.Model.epochs       = UserInfo['simulation'].epochs
         HardParams.Model.verbose      = UserInfo['simulation'].verbose
+        HardParams.Model.DataGenerator = UserInfo['dataGenerator']()
+        
         
         HardParams.Model.Initialize = func_Initialize(UserInfo['simulation'].Initialize)
 

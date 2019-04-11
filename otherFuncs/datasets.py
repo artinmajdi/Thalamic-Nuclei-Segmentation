@@ -90,20 +90,18 @@ def loadDataset(params):
             BB = subject2.NewCropInfo.OriginalBoundingBox
             im = im[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]
 
+            # def save_4Nuclei_CroppedMask():
             # im = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
             # msk = nib.load(subject2.Label.address + '/' + subject2.Label.LabelProcessed.replace('ImClosed_','') + '_DifferentLabels.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
-            a = smallFuncs.NucleiIndex(1,'HCascade').HCascade_Parents_Identifier([params.UserInfo['simulation'].nucleus_Index])
-            b = smallFuncs.NucleiIndex(a[0],'HCascade').name
-            im = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
-            msk = nib.load(subject2.Label.address + '/' + b.replace('_ImClosed','') + '_PProcessed_DifferentLabels.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
+            # a = smallFuncs.NucleiIndex(1,'HCascade').HCascade_Parents_Identifier([params.UserInfo['simulation'].nucleus_Index])
+            # b = smallFuncs.NucleiIndex(a[0],'HCascade').name
+            # im = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
+            # msk = nib.load(subject2.Label.address + '/' + b.replace('_ImClosed','') + '_PProcessed_DifferentLabels.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
 
-            nib.save(im,'/array/ssd/msmajdi/experiments/'  + 'Image_' + subject2.Label.LabelProcessed.split('_ImClosed_PProcessed')[0] + '_Stage2.nii.gz' )
-            nib.save(msk,'/array/ssd/msmajdi/experiments/' + 'Mask_'  + subject2.Label.LabelProcessed.split('_ImClosed_PProcessed')[0] + '_DiffLabels_Stage2.nii.gz' )
-            print('----')
-            
-            
-        # aa = subject.address.split('train/') if len(subject2.address.split('train/')) == 2 else subject.address.split('test/')
-
+            # nib.save(im,'/array/ssd/msmajdi/experiments/'  + 'Image_' + subject2.Label.LabelProcessed.split('_ImClosed_PProcessed')[0] + '_Stage2.nii.gz' )
+            # nib.save(msk,'/array/ssd/msmajdi/experiments/' + 'Mask_'  + subject2.Label.LabelProcessed.split('_ImClosed_PProcessed')[0] + '_DiffLabels_Stage2.nii.gz' )
+            # print('----')
+                        
         im = CroppingInput(im, subject2.Padding)
         # im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
         im = np.transpose(im,[2,0,1])
@@ -118,33 +116,33 @@ def loadDataset(params):
             Image = ImageF.get_data()
             return ImageF, np.transpose(Image, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
-        def apply_Cascade_PreFinalStageMask_OnImage(imm):
+        def func_Multiply_By_Thalmaus(imm):
 
             def dilateMask(mask):
                 struc = ndimage.generate_binary_structure(3,2)
                 struc = ndimage.iterate_structure(struc, params.WhichExperiment.Dataset.gapDilation )
                 return ndimage.binary_dilation(mask, structure=struc)
 
-            if params.WhichExperiment.HardParams.Model.Method.Multiply_By_Thalmaus: 
+            # if params.WhichExperiment.HardParams.Model.Method.Multiply_By_Thalmaus: 
 
-                sd , Method = params.WhichExperiment.Dataset.slicingInfo.slicingDim  ,  params.WhichExperiment.HardParams.Model.Method
-                # if sd == 0 and Method.Use_Coronal_Thalamus_InSagittal and Method.ReferenceMask == '1-THALAMUS':                    
-                #     Dirr = params.directories.Test.Result.replace('_sd0', '_sd2')
-                # else:
-                Dirr = params.directories.Test.Result
-                    
-                if 'train' in mode: Dirr += '/TrainData_Output'
-                                
-                _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.nii.gz' , params)
-                Cascade_Mask_Dilated = dilateMask(Cascade_Mask)
-                imm[Cascade_Mask_Dilated == 0] = 0
+            sd , Method = params.WhichExperiment.Dataset.slicingInfo.slicingDim  ,  params.WhichExperiment.HardParams.Model.Method
+            # if sd == 0 and Method.Use_Coronal_Thalamus_InSagittal and Method.ReferenceMask == '1-THALAMUS':                    
+            #     Dirr = params.directories.Test.Result.replace('_sd0', '_sd2')
+            # else:
+            Dirr = params.directories.Test.Result
+                
+            if 'train' in mode: Dirr += '/TrainData_Output'
+                            
+            _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.nii.gz' , params)
+            Cascade_Mask_Dilated = dilateMask(Cascade_Mask)
+            imm[Cascade_Mask_Dilated == 0] = 0
             
             return imm
 
         imF, im = readingWithTranpose(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz' , params)
 
-        if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
-            im = apply_Cascade_PreFinalStageMask_OnImage( im)
+        if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index and params.WhichExperiment.HardParams.Model.Method.Multiply_By_Thalmaus:
+            im = func_Multiply_By_Thalmaus(im)
 
         im = inputPreparationForUnet(im, subject2, params)
         im = normalizeA.main_normalize(params.preprocess.Normalize , im)
@@ -194,46 +192,35 @@ def loadDataset(params):
         shutil.move(subject.address, os.path.dirname(subject.address) + '/' + 'ERROR_' + AA[1])
         print('WARNING:', mode , nameSubject, ' image and mask have different shape sizes')
 
-    """
-    def saveHDf5(Data):
-        data_dict = Data.__dict__
-
-        smallFuncs.mkDir(params.directories.Test.Result)
-        with h5py.File(params.directories.Test.Result + '/Data.hdf5','w') as f:
-            for mode in list(data_dict):
-                if mode == 'Train' or mode == 'Validation':
-                    f.create_group(mode)
-                    f[mode].create_dataset(name='Image',data=data_dict[mode].Image)
-                    f[mode].create_dataset(name='Mask',data=data_dict[mode].Mask)
-                else:
-
-                    Input = params.directories.Test.Input if mode == 'Test' else params.directories.Train.Input
-
-                    for subject in list(data_dict[mode]):
-                        g = f.create_group('%s/%s'%(mode,subject))
-                        g.create_dataset(name='Image'    ,data=data_dict[mode][subject].Image)
-                        g.create_dataset(name='Mask'     ,data=data_dict[mode][subject].Mask)
-                        g.create_dataset(name='OrigMask' ,data=data_dict[mode][subject].OrigMask)
-                        g.attrs['original_Shape'] = data_dict[mode][subject].original_Shape
-                        g.attrs['Affine'] = data_dict[mode][subject].Affine
-                        g.attrs['address'] = Input.Subjects[subject].address
-                        # g.attrs['Header'] = data_dict['Test'][subject].Header
-    """
     
+    def saveHDf5(g1 , im , msk , origMsk , imF , subject):
+        g = g1.create_group(subject.subjectName)
+        g.create_dataset(name='Image'    ,data=im)
+        g.create_dataset(name='Mask'     ,data=msk )
+        g.create_dataset(name='OrigMask' ,data=(origMsk).astype('float32') )
+        g.attrs['original_Shape'] = imF.shape
+        g.attrs['Affine'] = imF.get_affine()
+        g.attrs['address'] = subject.address   
+   
     def main_ReadingDataset(params):
 
+        def sagittalFlag():
+            return params.WhichExperiment.Nucleus.Index[0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2
+        
         def trainFlag():
             Flag_TestOnly = params.preprocess.TestOnly
             Flag_TrainDice = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
             Flag_cascadeMethod = 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and int(params.WhichExperiment.Nucleus.Index[0]) == 1
             Flag_notEmpty = params.directories.Train.Input.Subjects
             return (not Flag_TestOnly  or Flag_TrainDice or Flag_cascadeMethod ) and Flag_notEmpty
-
-        if trainFlag():
-            TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage, list(params.directories.Train.Input.Subjects), params.WhichExperiment.Dataset.randomFlag)
+        if trainFlag(): TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage, list(params.directories.Train.Input.Subjects), params.WhichExperiment.Dataset.randomFlag)
 
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
 
+        def save_hdf5_subject_List(h , Tag , List):
+            List = [n.encode("ascii", "ignore") for n in List]
+            h.create_dataset(Tag ,(len(List),1) , 'S10', List)  
+            
         def separatingConcatenatingIndexes(Data, sjList, mode):
 
             Sz0 = 0
@@ -244,10 +231,6 @@ def loadDataset(params):
             d1 = 0
             for _, nameSubject in enumerate(tqdm(sjList,desc='concatenating train images')):
                 im, msk = Data[nameSubject].Image  , Data[nameSubject].Mask
-
-                # if params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0:
-                #     im = im[:int(im.shape[0]/2+5),...]
-                #     msk = msk[:int(msk.shape[0]/2+5),...]
                 
                 images[d1:d1+im.shape[0] ,...] = im
                 masks[d1:d1+im.shape[0] ,...]  = msk
@@ -256,13 +239,16 @@ def loadDataset(params):
             return trainCase(Image=images, Mask=masks.astype('float32'))
             
         def separateTrainVal_and_concatenateTrain(TrainData):
+            save_hdf5_subject_List(params.h5 , 'trainList' , TrainList )
 
             if params.WhichExperiment.Dataset.Validation.fromKeras or params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
                 Train = separatingConcatenatingIndexes(TrainData, list(TrainData),'train')
-                Validation = ''
+                Validation = ''            
             else:
                 Train = separatingConcatenatingIndexes(TrainData, TrainList,'train')
                 Validation = separatingConcatenatingIndexes(TrainData, ValList,'validation')
+
+                save_hdf5_subject_List(params.h5 , 'valList' , ValList )
 
             return Train, Validation
 
@@ -282,47 +268,55 @@ def loadDataset(params):
                         print('WARNING: subject: ',subject.subjectName,' padding error patience activated, Error:', np.min(subject.Padding))
                 return ErrorFlag
 
-            ListSubjects = list(Subjects)
-
             Data = {}
-            for nameSubject in tqdm(ListSubjects, desc='Loading Dataset: ' + mode):
+            g1 = params.h5.create_group(mode)
+            for nameSubject, subject in tqdm(Subjects.items(), desc='Loading Dataset: ' + mode):
 
-                if ErrorInPaddingCheck(Subjects[nameSubject]): continue
+                if ErrorInPaddingCheck(subject): continue
 
-                im, imF = readingImage(params, Subjects[nameSubject], mode)
-                origMsk , msk = readingNuclei(params, Subjects[nameSubject], imF.shape)
+                im, imF = readingImage(params, subject, mode)
+                origMsk , msk = readingNuclei(params, subject, imF.shape)
+
+                msk = msk>Th
+                origMsk = origMsk>Th
 
                 if im[...,0].shape == msk[...,0].shape:
-                    Data[nameSubject] = testCase(Image=im, Mask=msk>Th ,OrigMask=(origMsk>Th).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-                else:
-                    Error_MisMatch_In_Dim_ImageMask(Subjects[nameSubject] , mode, nameSubject)
+                    Data[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=(origMsk).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
+                    saveHDf5(g1 , im , msk , origMsk , imF , subject)
+                                        
+                else: Error_MisMatch_In_Dim_ImageMask(subject , mode, nameSubject)
+
 
             return Data
 
-        # def sagittal_flag(params):
-        #     return (params.WhichExperiment.Dataset.slicingInfo.slicingDim == 0 and 1 in params.WhichExperiment.Nucleus.Index)
-
         DataAll = data()
         
-        # if trainFlag():
-        #     DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
-        #     DataAll.Train, DataAll.Validation = separateTrainVal_and_concatenateTrain( DataAll.Train_ForTest )
+        if trainFlag():
+            DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
+            DataAll.Train, DataAll.Validation = separateTrainVal_and_concatenateTrain( DataAll.Train_ForTest )
 
         if params.directories.Test.Input.Subjects: 
             DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
+
+            save_hdf5_subject_List(params.h5 , 'testList' , list(DataAll.Test))
             if params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
-                DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, list(DataAll.Test), 'validation')
+                DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, list(DataAll.Test), 'validation')                
+                save_hdf5_subject_List(params.h5 , 'valList' , list(DataAll.Test))
+
     
-        if params.WhichExperiment.Nucleus.Index[0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2:
-            DataAll.Sagittal_Train_ForTest = readingAllSubjects(params.directories.Train.Input_Sagittal.Subjects, 'train')
-            DataAll.Sagittal_Test          = readingAllSubjects(params.directories.Test.Input_Sagittal.Subjects , 'test' )               
+        if sagittalFlag():
+            DataAll.Sagittal_Train_ForTest = readingAllSubjects(params.directories.Train.Input_Sagittal.Subjects, 'trainS')
+            DataAll.Sagittal_Test          = readingAllSubjects(params.directories.Test.Input_Sagittal.Subjects , 'testS' )               
                 
         return DataAll
 
     params = preAnalysis(params)
     print( 'InputDimensions' , params.WhichExperiment.HardParams.Model.InputDimensions )
     
+    smallFuncs.mkDir(params.directories.Test.Result)
+    params.h5 = h5py.File(params.directories.Test.Result + '/Data.hdf5','w')
     Data = main_ReadingDataset(params)
+    params.h5.close()
     # saveHDf5(Data)
 
     return Data, params

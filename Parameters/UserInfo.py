@@ -7,11 +7,14 @@ Model_Method =  'HCascade' #'FCN_25D' #  HCascade' #
 # TypeExperiment == 4: # Predict ET from MS&Ctrl
 # TypeExperiment == 5: # Train ET Initialized from 3T
 # TypeExperiment == 6: # Train Main+ET
-TypeExperiment = 6
+TypeExperiment = 1
 
+class dataGenerator:
+    Mode = True
+    NumSubjects_Per_batch = 5
 class SubExperiment: 
         Index = 11
-        Tag   = 'MainPlusET' # Cascade_FM20_7T'
+        Tag   = '_hdf5' # '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
         Mode_JustThis = False
 
 class InitializeB:
@@ -20,29 +23,26 @@ class InitializeB:
     From_3T        = True
 
 class simulation:
-    TestOnly      = True
+    TestOnly      = False
     epochs        = 100
-    GPU_Index     = "5,6"
+    GPU_Index     = "3,4"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [12] # ,2,4]
-    slicingDim    = [2,1,0] # [0,1,2]
+    nucleus_Index = [1] # ,2,4]
+    slicingDim    = [1] # [0,1,2]
     batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20
-    verbose = 2
+    verbose = 1
     Multiply_By_Thalmaus = False
 
     Weighted_Class_Mode = False
     Initialize = InitializeB()
     save_Best_Epoch_Model = True
     Use_Coronal_Thalamus_InSagittal = True
-    Use_TestCases_For_Validation = True
+    Use_TestCases_For_Validation = False
     ImClosePrediction = True
-
-
-
     
 class InputPadding:
     Automatic = True
