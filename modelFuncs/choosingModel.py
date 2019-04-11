@@ -192,10 +192,7 @@ def trainingExperiment(Data, params):
         batch_size  = params.WhichExperiment.HardParams.Model.batch_size
         Dir_Save = params.directories.Train.Model
         mode = 'max'
-        monitor = 'val_mDice'
-
-        # if params.WhicExperiment
-        
+        monitor = 'val_mDice'       
         
         checkpointer = keras.callbacks.ModelCheckpoint(filepath= Dir_Save + '/best_model_weights' + params.directories.Train.model_Tag + '.h5', \
             monitor = monitor, verbose=1, save_best_only=True, mode=mode)
@@ -211,7 +208,7 @@ def trainingExperiment(Data, params):
             write_graph=False, write_grads=False, write_images=False, embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None, \
                 embeddings_data=None, update_freq='epoch')
 
-        return [checkpointer , Reduce_LR , EarlyStopping , TensorBoard]
+        return [checkpointer , Reduce_LR , EarlyStopping , TensorBoard] # , TQDMCallback()
         
     def saveReport(DirSave, name , data, method):
 
@@ -317,7 +314,7 @@ def trainingExperiment(Data, params):
                 # valGenerator = DataGenerator_Class(**info)
                                     
                 hist = model.fit_generator(trainGenerator, epochs=epochs, verbose=verbose, callbacks=callbacks,\
-                     validation_data=(Data.Validation.Image, Data.Validation.Mask), use_multiprocessing=False, shuffle=True, initial_epoch=0) # workers=10, 
+                     validation_data=(Data.Validation.Image, Data.Validation.Mask), workers=10, use_multiprocessing=False, shuffle=True, initial_epoch=0) # 
 
                 return hist
 
