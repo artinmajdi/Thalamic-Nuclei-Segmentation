@@ -224,7 +224,7 @@ class Experiment_Folder_Search():
                 elif nIx == 1.2:     return 16
                 elif nIx == 1.3:     return 17
 
-            for nIx in Nuclei_Class().All_Nuclei.Indexes:
+            for nIx in Nuclei_Class().All_Nuclei().Indexes:
                 Nuclei_Names[nuclei_Index_Integer(nIx)] = Nuclei_Class(index=nIx).name
 
             return Nuclei_Names
@@ -334,7 +334,7 @@ def terminalEntries(UserInfo):
         elif entry.lower() in ('-nl','--num_Layers'):
             UserInfo['simulation'].num_Layers = int(sys.argv[en+1])
 
-        elif entry.lower() in ('-FM','--FirstLayer_FeatureMap_Num'):
+        elif entry.lower() in ('-fm','--FirstLayer_FeatureMap_Num'):
             UserInfo['simulation'].FirstLayer_FeatureMap_Num = int(sys.argv[en+1])
 
         elif entry.lower() in ('-m','--Model_Method'):

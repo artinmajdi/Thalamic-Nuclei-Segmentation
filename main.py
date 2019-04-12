@@ -86,11 +86,7 @@ UserInfoB['simulation'].verbose = 2
 
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-print('-----------------------------')
-print('-----------------------------')
-print('-----------------------------')
-print('-----------------------------')
-for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [30 , 40]: # 10 , 15]: # , 30 , 40]:  # UserInfoB['Model_Method'] in ['HCascade'  ,  'Cascade' ]:
+for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15 , 30]: # UserInfoB['Model_Method'] in ['HCascade'  ,  'Cascade' ]:
     print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'])
     Run(UserInfoB, IV)
 
