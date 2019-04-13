@@ -4,8 +4,17 @@ import matplotlib.pyplot as plt
 import os, sys
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 # sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+import Parameters.UserInfo as UserInfo
+import Parameters.paramFunc as paramFunc
 import otherFuncs.smallFuncs as smallFuncs
 from scipy import ndimage
+from skimage.feature import canny
+
+def sliceDim(SD):
+    if   SD == 0: return ([1,2,0] , [2,0,1])
+    elif SD == 1: return ([2,0,1] , [1,2,0])
+    elif SD == 2: return ([0,1,2] , [0,1,2])
+    
 
 def applyMain(Dir,mode):
     
@@ -72,10 +81,31 @@ def applyMain(Dir,mode):
             for name in AllNames:
                 msk = nib.load(Directory + name + mode + '.nii.gz').get_data()            
                 smallFuncs.saveImage( closeMask(msk > 0) , im.affine , im.header, Directory + 'ImClosed/' + name + '_ImClosed' + mode + '.nii.gz')
-                
-        # saving4SuperNuclei()
 
-        saving4SuperNuclei_WithDifferentLabels()
+        def Save_AllNuclei_inOne():
+            def edgeDetect(msk,SD):    
+                print('---')            
+                for i in range(msk.shape[2]): 
+                    msk[...,i] = canny(msk[...,i] , low_threshold=0.1 , high_threshold=0.9)
+                return msk
+
+            for cnt , name in enumerate(smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names):                
+                msk = nib.load( Directory + 'ImClosed/' + name + '_ImClosed' + mode + '.nii.gz' ).get_data()  
+                if cnt != 0:
+                    Mask = (cnt+1)*msk if cnt == 1 else Mask + (cnt+1)*msk   
+                else:
+                    mskTh = msk.copy() # 
+                
+            for SD in range(3):
+                a , b = sliceDim(SD)
+                msk2 = mskTh.copy()
+                msk2 = edgeDetect(msk2.transpose(a) , SD).transpose(b)
+                smallFuncs.saveImage( Mask + msk2 , im.affine , im.header, Directory + 'AllLabels' + str(SD) + '.nii.gz')
+        
+        # saving4SuperNuclei()
+        Save_AllNuclei_inOne()
+
+        # saving4SuperNuclei_WithDifferentLabels()
 
         # creatingFullMaskWithAll4Supernuclei()
 
@@ -88,11 +118,11 @@ def applyMain(Dir,mode):
         RunAllFunctions(Dir + '/' + nameSubject + '/Label/')
 
 
-
-Dir = '/array/ssd/msmajdi/experiments/keras/exp1/test/Main/'
+# params = paramFunc.Run(UserInfo.__dict__, terminal=True)
+Dir = '/array/ssd/msmajdi/experiments/keras/exp1/test/Main/' # params.directories.Test.Input.Subjects  + '/' # 
 
 mode = '_PProcessed'
 applyMain(Dir ,mode)
 # applyMain(Dir + '/train/Augments',mode)
 
-applyMain(Dir + '/test',mode)
+# applyMain(Dir + '/test',mode)

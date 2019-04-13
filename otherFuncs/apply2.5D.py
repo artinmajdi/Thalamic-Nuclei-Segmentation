@@ -22,6 +22,7 @@ def runOneExperiment(Info , params):
         Dice[0,0] , Dice[0,1] = InfoSave.nucleus.index , smallFuncs.mDice(InfoSave.Image  , Label)
         np.savetxt( InfoSave.address+ 'Dice_' + InfoSave.nucleus.name + '.txt' ,Dice , fmt='%1.1f %1.4f')
              
+    print('subExperiment:' , Info.subExperiment.name)
     Info.subExperiment.address = Info.Experiment.address + '/results/' + Info.subExperiment.name + '/'
     class nucleus:
         def __init__(self,name='', index=0):
@@ -49,7 +50,7 @@ def runOneExperiment(Info , params):
             ix , pred3Dims = 0 , ''
             ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
             for sdInfo in Info.subExperiment.multiPlanar:
-                if sdInfo.mode:
+                if sdInfo.mode and 'sd' in sdInfo.name:
                     address = Info.subExperiment.address + sdInfo.name + '/' + sj + '/' + nucleusNm + '.nii.gz'
                     if os.path.isfile(address):
                         

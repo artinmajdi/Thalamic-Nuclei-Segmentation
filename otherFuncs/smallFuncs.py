@@ -73,8 +73,7 @@ def NucleiSelection(ind = 1):
 
     return name, FullIndexes, Full_Names
 
-# TODO: repalce all NucleiSelection()  with Nuclei_Class class       
-                        
+# TODO: repalce all NucleiSelection()  with Nuclei_Class class                       
 class Nuclei_Class():        
         
     def __init__(self, index=1, method = 'HCascade'):
@@ -157,7 +156,6 @@ class Nuclei_Class():
         if 1 in nuLs: nuLs.remove(1)
         return nuLs
             
-
 class Experiment_Folder_Search():    
     def __init__(self, General_Address='' , Experiment_Name = '' , subExperiment_Name=''):
        
@@ -244,7 +242,6 @@ def gpuSetting(GPU_Index):
     K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True , gpu_options=tf.GPUOptions(allow_growth=True) )   ))    
     # K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True )   ))
     return K
-
 
 def listSubFolders(Dir, params):
 
