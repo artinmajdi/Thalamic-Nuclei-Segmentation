@@ -7,6 +7,7 @@ import os, sys
 from skimage import measure
 from copy import deepcopy
 import json
+from scipy import ndimage
 
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
 def NucleiSelection(ind = 1):
@@ -55,7 +56,7 @@ def NucleiSelection(ind = 1):
 
     def func_FullIndexes(ind):
         if ind in range(20):
-            return [1,2,4,5,6,7,8,9,10,11,12,13,14]
+            return [1,4,5,6,7,8,9,10,11,12,13,14,2]
         elif ind == 1.1: # lateral
             return [4,5,6,7]
         elif ind == 1.2: # posterior
@@ -114,14 +115,14 @@ class Nuclei_Class():
                 if self.method == 'HCascade':
                     switcher_Parent = {
                         1:   (None, [1.1 , 1.2 , 1.3 , 2]),
-                        1.1: (1,    [4,5,6,7]),
-                        1.2: (1,    [8,9,10]), 
-                        1.3: (1,    [11,12,13]), 
-                        1.4: (1,     None), 
+                        1.1: (1,    [4,5,6,7]),   # Lateral
+                        1.2: (1,    [8,9,10]),    # Posterior
+                        1.3: (1,    [11,12,13]),  # Medial
+                        1.4: (1,     None),       # Anterior
                         2:   (1,     None) }              
                     return switcher_Parent.get(index)
                 else:
-                    return ( None, [2,4,5,6,7,8,9,10,11,12,13,14] ) if index == 1 else (1,None)                               
+                    return ( None, [4,5,6,7,8,9,10,11,12,13,14,2] ) if index == 1 else (1,None)                               
 
             def func_HCascade(self):
                                                                                        
@@ -137,8 +138,8 @@ class Nuclei_Class():
         find_Parent_child(self)
         
     def All_Nuclei(self):
-        if self.method == 'HCascade': indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14]) + tuple([1.1,1.2,1.3])
-        else:                         indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14])
+        if self.method == 'HCascade': indexes = tuple([1,4,5,6,7,8,9,10,11,12,13,14,2]) + tuple([1.1,1.2,1.3])
+        else:                         indexes = tuple([1,4,5,6,7,8,9,10,11,12,13,14,2])
                 
         class All_Nuclei:
             Indexes = indexes[:]
@@ -638,3 +639,9 @@ def Saving_UserInfo(DirSave, params):
 
     # with open(DirSave + '/UserInfo.json', "r") as j:
     #     data = json.load(j)
+
+
+def closeMask(mask,cnt):
+    struc = ndimage.generate_binary_structure(3,2)
+    if cnt > 1: struc = ndimage.iterate_structure(struc, cnt)
+    return ndimage.binary_closing(mask, structure=struc)  

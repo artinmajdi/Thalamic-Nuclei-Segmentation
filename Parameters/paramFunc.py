@@ -163,7 +163,8 @@ def func_WhichExperiment(UserInfo):
                     ReferenceMask = ''
                     havingBackGround_AsExtraDimension = True
                     InputImage2Dvs3D = 2
-                    Multiply_By_Thalmaus = True
+                    Multiply_By_Thalmaus = False
+                    Multiply_By_Rest_For_AV = False
                     save_Best_Epoch_Model = False
                     Use_Coronal_Thalamus_InSagittal = False
                     Use_TestCases_For_Validation = False
@@ -497,6 +498,8 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.Method.InputImage2Dvs3D      = UserInfo['simulation'].InputImage2Dvs3D
         HardParams.Model.Method.havingBackGround_AsExtraDimension = UserInfo['havingBackGround_AsExtraDimension']
         HardParams.Model.Method.Multiply_By_Thalmaus              = UserInfo['simulation'].Multiply_By_Thalmaus
+        HardParams.Model.Method.Multiply_By_Rest_For_AV           = UserInfo['simulation'].Multiply_By_Rest_For_AV
+
         HardParams.Model.Method.Use_Coronal_Thalamus_InSagittal   = UserInfo['simulation'].Use_Coronal_Thalamus_InSagittal
         HardParams.Model.Method.Use_TestCases_For_Validation      = UserInfo['simulation'].Use_TestCases_For_Validation
         HardParams.Model.Method.ImClosePrediction                 = UserInfo['simulation'].ImClosePrediction

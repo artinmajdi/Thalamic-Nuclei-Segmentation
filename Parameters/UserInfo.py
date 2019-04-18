@@ -12,9 +12,10 @@ TypeExperiment = 1
 class dataGenerator:
     Mode = False
     NumSubjects_Per_batch = 5
+
 class SubExperiment: 
         Index = 11
-        Tag   = '' # _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
+        Tag   = '_Main_MultAV' # _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
         Mode_JustThis = False
 
 class InitializeB:
@@ -25,17 +26,18 @@ class InitializeB:
 class simulation:
     TestOnly      = False
     epochs        = 100
-    GPU_Index     = "0,1"
+    GPU_Index     = "0,5,7"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1,8] # ,2,4]
-    slicingDim    = [1] # [0,1,2]
+    nucleus_Index = [2] # ,2,4]
+    slicingDim    = [2] # [0,1,2]
     batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20
     verbose = 1
     Multiply_By_Thalmaus = False
+    Multiply_By_Rest_For_AV = True
 
     Weighted_Class_Mode = False
     Initialize = InitializeB()
