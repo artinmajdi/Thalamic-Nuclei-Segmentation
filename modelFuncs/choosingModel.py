@@ -201,7 +201,7 @@ def trainingExperiment(Data, params):
             save_best_only=True, mode=mode , min_lr=0.9e-4 , )
         
         # Progbar = keras.callbacks.Progba
-        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=10, verbose=1, mode=mode, \
+        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=20, verbose=1, mode=mode, \
             baseline=0, restore_best_weights=True)
 
         TensorBoard = keras.callbacks.TensorBoard(log_dir= Dir_Save + '/logs', histogram_freq=1, batch_size=batch_size, \

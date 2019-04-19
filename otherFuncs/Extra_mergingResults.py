@@ -90,8 +90,7 @@ class mergingDiceValues:
 
                 self.subExperiment.address = self.Info.Experiment.address + '/results/' + self.subExperiment.name +'/'+ self.plane.name
               
-                def func_1subject_Dices(self):
-                    
+                def func_1subject_Dices(self):                    
                     Dice_Single = np.append(self.subject, list(np.zeros(NumColumns-1)))                    
                     for ind, name in enumerate( self.Info.Nuclei_Names ):
                         Dir_subject = self.subExperiment.address + '/' + self.subject + '/Dice_' + name +'.txt'

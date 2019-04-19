@@ -7,7 +7,8 @@ Model_Method =  'HCascade' #'FCN_25D' #  HCascade' #
 # TypeExperiment == 4: # Predict ET from MS&Ctrl
 # TypeExperiment == 5: # Train ET Initialized from 3T
 # TypeExperiment == 6: # Train Main+ET
-TypeExperiment = 1
+# TypeExperiment == 7: # Train Main+ET+SRI
+TypeExperiment = 3
 
 class dataGenerator:
     Mode = False
@@ -15,29 +16,29 @@ class dataGenerator:
 
 class SubExperiment: 
         Index = 11
-        Tag   = '_Main_MultAV' # _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
+        Tag   = '' # _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
         Mode_JustThis = False
 
 class InitializeB:
     FromThalamus   = False
-    FromOlderModel = True
-    From_3T        = True
+    FromOlderModel = False
+    From_3T        = False
 
 class simulation:
     TestOnly      = False
     epochs        = 100
-    GPU_Index     = "0,5,7"
+    GPU_Index     = "3,4,5"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [2] # ,2,4]
-    slicingDim    = [2] # [0,1,2]
+    nucleus_Index = [1,2] # ,2,4]
+    slicingDim    = [2,1]
     batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20
-    verbose = 1
+    verbose = 2
     Multiply_By_Thalmaus = False
-    Multiply_By_Rest_For_AV = True
+    Multiply_By_Rest_For_AV = False
 
     Weighted_Class_Mode = False
     Initialize = InitializeB()

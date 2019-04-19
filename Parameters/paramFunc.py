@@ -16,12 +16,6 @@ def temp_Experiments_preSet(UserInfoB):
 
     class TypeExperimentFuncs():
         def __init__(self):            
-            # class SubExperimentC: 
-            #     def __init__(self, Index=11, Tag=''):
-            #         self.Index = Index
-            #         self.Tag   = Tag
-            # self.SubExperimentC = SubExperimentC
-
             class ReadTrainC:
                 def __init__(self, SRI=0 , ET=0 , Main=1 , CSFn=0):   
                     class readAugments: Mode, Tag = True, ''
@@ -43,12 +37,13 @@ def temp_Experiments_preSet(UserInfoB):
 
         def main(self, TypeExperiment = 1):
             switcher = {
-                1:  (11  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
+                1:  (11  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
                 2:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC(Mode=True  , FrozenLayers=[0] , Tag = '_TF') ),
-                3:  (8   ,   self.ReadTrainC(SRI=1 , ET=0 , Main=0)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
-                4:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
-                5:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
-                6:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=1)  ,  self.Transfer_LearningC(Mode=False , FrozenLayers=[0]) ),
+                3:  (8   ,   self.ReadTrainC(SRI=1 , ET=0 , Main=0)  ,  self.Transfer_LearningC() ),
+                4:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC() ),
+                5:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC() ),
+                6:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=1)  ,  self.Transfer_LearningC() ),
+                7:  (11  ,   self.ReadTrainC(SRI=1 , ET=1 , Main=1)  ,  self.Transfer_LearningC() ),
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 
@@ -58,7 +53,8 @@ def temp_Experiments_preSet(UserInfoB):
     UserInfoB['Transfer_Learning']   = c
     
     
-    if UserInfoB['TypeExperiment'] == 4: UserInfoB['simulation'].TestOnly = True
+    if UserInfoB['TypeExperiment'] == 4: 
+        UserInfoB['simulation'].TestOnly = True
     elif UserInfoB['TypeExperiment'] == 5: 
         UserInfoB['InitializeB'].FromThalamus   = False
         UserInfoB['InitializeB'].FromOlderModel = False
@@ -70,6 +66,9 @@ def temp_Experiments_preSet(UserInfoB):
         UserInfoB['InitializeB'].FromOlderModel = True
         UserInfoB['InitializeB'].From_3T        = False  
     
+    # elif UserInfoB['TypeExperiment'] == 7:
+    #     UserInfoB['SubExperiment'].Tag += '_Main_PlusET_PlusSRI'
+
     return UserInfoB
 
 def Run(UserInfoB, terminal=False):
@@ -93,8 +92,7 @@ def func_Exp_subExp_Names(UserInfo):
         
         FM = UserInfo['simulation'].FirstLayer_FeatureMap_Num
         SE = UserInfo['SubExperiment']
-        method = UserInfo['Model_Method']
-        
+        method = UserInfo['Model_Method']        
         def field_Strength_Tag():
             if UserInfo['ReadTrain'].SRI:                                 return '_3T'    
             elif UserInfo['ReadTrain'].Main or UserInfo['ReadTrain'].ET:  return '_7T' 
@@ -107,9 +105,9 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
                 self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM) + '_3T' 
 
-        if SE.Mode_JustThis  or method == 'FCN_25D': tag = SE.Tag 
+        if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
         else: tag = method + '_FM' + str(FM) + field_Strength_Tag() + SE.Tag 
-            
+
         a = subExperiment(tag)
         return a
 
@@ -122,7 +120,7 @@ def func_Exp_subExp_Names(UserInfo):
             address = smallFuncs.mkDir(UserInfo['Experiments_Address'] + '/' + name)
             PreSet_Experiment_Info_Index = UserInfo['TypeExperiment']
         return Experiment()
-        
+
     return func_Experiment(), func_subExperiment()  
 
 def func_WhichExperiment(UserInfo):

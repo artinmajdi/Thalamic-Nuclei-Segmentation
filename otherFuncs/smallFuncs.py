@@ -56,7 +56,7 @@ def NucleiSelection(ind = 1):
 
     def func_FullIndexes(ind):
         if ind in range(20):
-            return [1,4,5,6,7,8,9,10,11,12,13,14,2]
+            return [1,2,4,5,6,7,8,9,10,11,12,13,14]
         elif ind == 1.1: # lateral
             return [4,5,6,7]
         elif ind == 1.2: # posterior
@@ -122,7 +122,7 @@ class Nuclei_Class():
                         2:   (1,     None) }              
                     return switcher_Parent.get(index)
                 else:
-                    return ( None, [4,5,6,7,8,9,10,11,12,13,14,2] ) if index == 1 else (1,None)                               
+                    return ( None, [2,4,5,6,7,8,9,10,11,12,13,14] ) if index == 1 else (1,None)                               
 
             def func_HCascade(self):
                                                                                        
@@ -138,9 +138,9 @@ class Nuclei_Class():
         find_Parent_child(self)
         
     def All_Nuclei(self):
-        if self.method == 'HCascade': indexes = tuple([1,4,5,6,7,8,9,10,11,12,13,14,2]) + tuple([1.1,1.2,1.3])
-        else:                         indexes = tuple([1,4,5,6,7,8,9,10,11,12,13,14,2])
-                
+        if self.method == 'HCascade': indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14]) + tuple([1.1,1.2,1.3])
+        else:                         indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14])
+
         class All_Nuclei:
             Indexes = indexes[:]
             Names  = [self.dic_Name(index) for index in Indexes]
