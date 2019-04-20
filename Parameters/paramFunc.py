@@ -91,6 +91,7 @@ def func_Exp_subExp_Names(UserInfo):
     def func_subExperiment():
         
         FM = UserInfo['simulation'].FirstLayer_FeatureMap_Num
+        DO = UserInfo['DropoutValue']
         SE = UserInfo['SubExperiment']
         method = UserInfo['Model_Method']        
         def field_Strength_Tag():
@@ -103,10 +104,11 @@ def func_Exp_subExp_Names(UserInfo):
                 self.tag = tag
                 self.name_thalamus = ''            
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
-                self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM) + '_3T' 
+                self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM) # + '_3T' 
 
         if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
-        else: tag = method + '_FM' + str(FM) + field_Strength_Tag() + SE.Tag 
+        # else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag # + field_Strength_Tag()
+        else: tag = method + '_FM' + str(FM) + SE.Tag 
 
         a = subExperiment(tag)
         return a

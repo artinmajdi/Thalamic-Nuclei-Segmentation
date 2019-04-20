@@ -59,19 +59,19 @@ def runOneExperiment(Info , params):
                         ix += 1
 
             if ix > 0:
-                InfoSave = infoSave(Image = pred3Dims[...,1:].sum(axis=3) >= 1 , subject = subject() , nucleus=nucleus(nucleusNm , nucleiIx) , mode = '1.5D_Sum' , address=Info.subExperiment.address) 
-                saveImageDice(InfoSave, ManualLabel)
+                # InfoSave = infoSave(Image = pred3Dims[...,1:].sum(axis=3) >= 1 , subject = subject() , nucleus=nucleus(nucleusNm , nucleiIx) , mode = '1.5D_Sum' , address=Info.subExperiment.address) 
+                # saveImageDice(InfoSave, ManualLabel)
 
                 InfoSave = infoSave(Image = pred3Dims.sum(axis=3) >= 2 , subject = subject() , nucleus=nucleus(nucleusNm , nucleiIx) , mode = '2.5D_MV' , address=Info.subExperiment.address) 
                 saveImageDice(InfoSave, ManualLabel)
 
-                InfoSave = infoSave(Image = pred3Dims.sum(axis=3) >= 1  , subject = subject() , nucleus=nucleus(nucleusNm , nucleiIx) , mode = '2.5D_Sum' , address=Info.subExperiment.address) 
-                saveImageDice(InfoSave, ManualLabel)
+                # InfoSave = infoSave(Image = pred3Dims.sum(axis=3) >= 1  , subject = subject() , nucleus=nucleus(nucleusNm , nucleiIx) , mode = '2.5D_Sum' , address=Info.subExperiment.address) 
+                # saveImageDice(InfoSave, ManualLabel)
 
             
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
-for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade']:
+for UserInfoB['Model_Method'] in ['Cascade' ]: # , 'HCascade']:
     params = paramFunc.Run(UserInfoB, terminal=False)
     InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
     runOneExperiment(InfoS , params)

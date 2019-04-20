@@ -8,5 +8,7 @@
     "python.jediEnabled": false,
     "editor.tabCompletion": "on",
     "search.quickOpen.includeSymbols": true,
-    "python.linting.pep8Enabled": false
+    "python.linting.pep8Enabled": false,
+    "python.linting.flake8Enabled": false,
+    "python.linting.prospectorEnabled": false
 }

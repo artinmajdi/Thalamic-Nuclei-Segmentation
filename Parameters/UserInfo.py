@@ -1,5 +1,5 @@
 
-Model_Method =  'HCascade' #'FCN_25D' #  HCascade' # 
+Model_Method =  'Cascade' #'FCN_25D' #  HCascade' # 
 
 # TypeExperiment == 1: # Main
 # TypeExperiment == 2: # Transfer Learn ET
@@ -8,21 +8,23 @@ Model_Method =  'HCascade' #'FCN_25D' #  HCascade' #
 # TypeExperiment == 5: # Train ET Initialized from 3T
 # TypeExperiment == 6: # Train Main+ET
 # TypeExperiment == 7: # Train Main+ET+SRI
-TypeExperiment = 3
+TypeExperiment = 1
+
+DropoutValue = 0.3
 
 class dataGenerator:
     Mode = False
     NumSubjects_Per_batch = 5
 
 class SubExperiment: 
-        Index = 11
-        Tag   = '' # _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
-        Mode_JustThis = False
+    Index = 11
+    Tag   = '' # _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
+    Mode_JustThis = False
 
 class InitializeB:
     FromThalamus   = False
     FromOlderModel = False
-    From_3T        = False
+    From_3T        = True
 
 class simulation:
     TestOnly      = False
@@ -31,11 +33,11 @@ class simulation:
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1,2] # ,2,4]
-    slicingDim    = [2,1]
+    nucleus_Index = [2] # ,2,4]
+    slicingDim    = [2]
     batch_size    = 100
     InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 20
+    FirstLayer_FeatureMap_Num = 30
     verbose = 2
     Multiply_By_Thalmaus = False
     Multiply_By_Rest_For_AV = False
@@ -54,11 +56,11 @@ class InputPadding:
 class Experiments:
     Index , Tag = '1' , '' # , 'cascadeV1'
 
-if Experiments.Index == '8': InputPadding.HardDimensions = [228,288,168]
+if Experiments.Index == '8': 
+    InputPadding.HardDimensions = [228,288,168]
 
 
 mode_saveTrue_LoadFalse = True
-DropoutValue = 0.3
 havingBackGround_AsExtraDimension = True
 
 gapDilation = 5

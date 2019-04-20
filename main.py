@@ -1,13 +1,12 @@
-import os, sys
-sys.path.append(os.path.dirname(__file__))
-# sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+import os
+import sys
+sys.path.append(os.path.dirname(__file__))  # sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 import otherFuncs.smallFuncs as smallFuncs
 import otherFuncs.datasets as datasets
 import modelFuncs.choosingModel as choosingModel
 import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 import preprocess.applyPreprocess as applyPreprocess
-from shutil import copyfile , copytree
 import tensorflow as tf
 from keras import backend as K
 import pandas as pd
@@ -15,6 +14,8 @@ import xlsxwriter
 import csv
 import json
 import nibabel as nib
+# from shutil import copyfile , copytree
+
 class InitValues:
     def __init__(self, Nuclei_Indexes=1 , slicingDim=2):
         self.slicingDim     = slicingDim 
@@ -48,7 +49,7 @@ def Run(UserInfoB,InitValues):
 
         for sd in InitValues.slicingDim:
             
-            if not(sd == 0 and UserInfoB['simulation'].nucleus_Index) == 1:
+            if not (sd == 0 and UserInfoB['simulation'].nucleus_Index == 1):
 
                 UserInfoB['simulation'].slicingDim = [sd]                       
                 params = paramFunc.Run(UserInfoB, terminal=False)
@@ -86,8 +87,8 @@ IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation']
 
 # for UserInfoB['SubExperiment'].Tag in ['_test1' , '_test2']:
 # for UserInfoB['Model_Method'] in ['HCascade'  ,  'Cascade' ]:
-for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [50 , 60]:
-    print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'])
-    Run(UserInfoB, IV)
+# for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [50 , 60]:
+print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'])
+Run(UserInfoB, IV)
 
 K.clear_session()

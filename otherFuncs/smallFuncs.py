@@ -328,7 +328,10 @@ def terminalEntries(UserInfo):
 
         elif entry.lower() in ('-lr','--Learning_Rate'):
             UserInfo['simulation'].Learning_Rate = float(sys.argv[en+1])
-            
+
+        elif entry.lower() in ('-do','--DropoutValue'):
+            UserInfo['DropoutValue'] = float(sys.argv[en+1])
+
         elif entry.lower() in ('-nl','--num_Layers'):
             UserInfo['simulation'].num_Layers = int(sys.argv[en+1])
 
