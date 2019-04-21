@@ -44,6 +44,7 @@ def temp_Experiments_preSet(UserInfoB):
                 5:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC() ),
                 6:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=1)  ,  self.Transfer_LearningC() ),
                 7:  (11  ,   self.ReadTrainC(SRI=1 , ET=1 , Main=1)  ,  self.Transfer_LearningC() ),
+                8:  (11  ,   self.ReadTrainC(SRI=1 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 

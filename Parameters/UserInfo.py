@@ -8,7 +8,8 @@ Model_Method =  'Cascade' #'FCN_25D' #  HCascade' #
 # TypeExperiment == 5: # Train ET Initialized from 3T
 # TypeExperiment == 6: # Train Main+ET
 # TypeExperiment == 7: # Train Main+ET+SRI
-TypeExperiment = 1
+# TypeExperiment == 8: # Train Main+SRI
+TypeExperiment = 8
 
 DropoutValue = 0.3
 
@@ -24,20 +25,20 @@ class SubExperiment:
 class InitializeB:
     FromThalamus   = False
     FromOlderModel = False
-    From_3T        = True
+    From_3T        = False
 
 class simulation:
     TestOnly      = False
-    epochs        = 100
+    epochs        = 150
     GPU_Index     = "3,4,5"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [2] # ,2,4]
-    slicingDim    = [2]
+    nucleus_Index = [1] # ,2,4]
+    slicingDim    = [2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 30
+    FirstLayer_FeatureMap_Num = 20
     verbose = 2
     Multiply_By_Thalmaus = False
     Multiply_By_Rest_For_AV = False

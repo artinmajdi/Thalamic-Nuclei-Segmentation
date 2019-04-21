@@ -79,9 +79,8 @@ def preMode(UserInfoB):
     applyPreprocess.main(params, 'experiment')
     K = smallFuncs.gpuSetting(params.WhichExperiment.HardParams.Machine.GPU_Index)
     return UserInfoB, K
-UserInfoB, K = preMode(UserInfo.__dict__)
-UserInfoB['simulation'].verbose = 2
 
+UserInfoB, K = preMode(UserInfo.__dict__)
 
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
