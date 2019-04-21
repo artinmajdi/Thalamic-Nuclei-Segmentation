@@ -13,7 +13,7 @@ import math
 # import shutil
 params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 
-NumColumns , n_epochsMax = 19 , 100
+NumColumns , n_epochsMax = 19 , 150
 
 class savingHistory_AsExcel:
     def __init__(self, Info):
