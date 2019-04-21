@@ -366,7 +366,7 @@ def search_ExperimentDirectory(whichExperiment):
     NucleusName = whichExperiment.Nucleus.name
 
 
-    def checkInputDirectory(Dir, NucleusName, sag_In_Cor):
+    def checkInputDirectory(Dir, NucleusName, sag_In_Cor,modeData):
         def Search_ImageFolder(Dir, NucleusName):
 
             def splitNii(s):
@@ -500,9 +500,12 @@ def search_ExperimentDirectory(whichExperiment):
 
         Read = whichExperiment.Dataset.ReadTrain
         Input = LoopReadingData(Input, Dir)
+
+        SRI_flag_test = False if (Read.Main or Read.ET) and Read.SRI and modeData == 'test' else True
+
         if Read.Main and os.path.exists( Dir + '/Main'): Input = LoopReadingData(Input, Dir + '/Main')
         if Read.ET   and os.path.exists( Dir + '/ET'  ): Input = LoopReadingData(Input, Dir + '/ET')            
-        if Read.SRI  and os.path.exists( Dir + '/SRI' ): Input = LoopReadingData(Input, Dir + '/SRI')
+        if Read.SRI  and os.path.exists( Dir + '/SRI' ) and SRI_flag_test: Input = LoopReadingData(Input, Dir + '/SRI')
         
         if Read.ReadAugments.Mode:
             DirAug = Dir + '/Augments/' + Read.ReadAugments.Tag 
@@ -515,8 +518,8 @@ def search_ExperimentDirectory(whichExperiment):
 
     def add_Sagittal_Cases(whichExperiment , train , test , NucleusName):
         if whichExperiment.Nucleus.Index[0] == 1 and whichExperiment.Dataset.slicingInfo.slicingDim == 2:
-            train.Input_Sagittal = checkInputDirectory(train.address, NucleusName, True) 
-            test.Input_Sagittal  = checkInputDirectory(test.address , NucleusName, True) 
+            train.Input_Sagittal = checkInputDirectory(train.address, NucleusName, True, 'train') 
+            test.Input_Sagittal  = checkInputDirectory(test.address , NucleusName, True, 'test') 
         return train , test
     
     class train:
@@ -526,12 +529,12 @@ def search_ExperimentDirectory(whichExperiment):
         Model_3T       = Exp_address + '/models/' + SE.name_Init_from_3T      + '/' + NucleusName  + sdTag
         Model_InitTF   = Exp_address + '/models/' + SE.name.split('_TF_')[0]  + '/' + NucleusName  + sdTag
         model_Tag = func_model_Tag(whichExperiment)
-        Input     = checkInputDirectory(address, NucleusName,False)
+        Input     = checkInputDirectory(address, NucleusName,False,'train')
     
     class test:
         address = Exp_address + '/test'
         Result  = Exp_address + '/results/' + SE.name + sdTag
-        Input   = checkInputDirectory(address, NucleusName,False)
+        Input   = checkInputDirectory(address, NucleusName,False,'test')
 
 
     train , test = add_Sagittal_Cases(whichExperiment , train , test , NucleusName)
