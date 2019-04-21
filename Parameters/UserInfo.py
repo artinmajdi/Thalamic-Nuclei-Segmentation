@@ -19,7 +19,7 @@ class dataGenerator:
 
 class SubExperiment: 
     Index = 11
-    Tag   = '' # _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
+    Tag   = '_Main_PlusSRI' # _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
     Mode_JustThis = False
 
 class InitializeB:
