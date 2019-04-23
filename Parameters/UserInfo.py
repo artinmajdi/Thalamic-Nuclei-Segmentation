@@ -9,6 +9,7 @@ Model_Method =  'Cascade' #'FCN_25D' #  HCascade' #
 # TypeExperiment == 6: # Train Main+ET
 # TypeExperiment == 7: # Train Main+ET+SRI
 # TypeExperiment == 8: # Train Main+SRI
+# TypeExperiment == 9: # Train ET Initialized from Main+SRI
 TypeExperiment = 8
 
 DropoutValue = 0.3
@@ -19,13 +20,15 @@ class dataGenerator:
 
 class SubExperiment: 
     Index = 11
-    Tag   = '_Main_PlusSRI' # _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
+    Tag   = '_Main_PlusSRI' # '_ET_InitFrom_Main_PlusSRI' #  _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
     Mode_JustThis = False
-
+  
 class InitializeB:
     FromThalamus   = False
     FromOlderModel = False
     From_3T        = False
+    # FromArbitrary = True
+    # arbitraryInit = '_Main_PlusSRI'
 
 class simulation:
     TestOnly      = False

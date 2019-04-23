@@ -45,6 +45,7 @@ def temp_Experiments_preSet(UserInfoB):
                 6:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=1)  ,  self.Transfer_LearningC() ),
                 7:  (11  ,   self.ReadTrainC(SRI=1 , ET=1 , Main=1)  ,  self.Transfer_LearningC() ),
                 8:  (11  ,   self.ReadTrainC(SRI=1 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
+                9:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC() ),
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 
@@ -67,8 +68,8 @@ def temp_Experiments_preSet(UserInfoB):
         UserInfoB['InitializeB'].FromOlderModel = True
         UserInfoB['InitializeB'].From_3T        = False  
     
-    # elif UserInfoB['TypeExperiment'] == 7:
-    #     UserInfoB['SubExperiment'].Tag += '_Main_PlusET_PlusSRI'
+    elif UserInfoB['TypeExperiment'] == 9:
+        UserInfoB['InitializeB'].FromOlderModel += True
 
     return UserInfoB
 
@@ -108,8 +109,8 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM) # + '_3T' 
 
         if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
-        # else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag # + field_Strength_Tag()
-        else: tag = method + '_FM' + str(FM) + SE.Tag 
+        else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag # + field_Strength_Tag()
+        # else: tag = method + '_FM' + str(FM) + SE.Tag 
 
         a = subExperiment(tag)
         return a
