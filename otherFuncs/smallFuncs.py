@@ -501,8 +501,8 @@ def search_ExperimentDirectory(whichExperiment):
         Read = whichExperiment.Dataset.ReadTrain
         Input = LoopReadingData(Input, Dir)
 
-        # SRI_flag_test = False if (Read.Main or Read.ET) and Read.SRI and modeData == 'test' else True
-        SRI_flag_test = True
+        SRI_flag_test = False if (Read.Main or Read.ET) and Read.SRI and modeData == 'test' else True
+        # SRI_flag_test = True
         if Read.Main and os.path.exists( Dir + '/Main'): Input = LoopReadingData(Input, Dir + '/Main')
         if Read.ET   and os.path.exists( Dir + '/ET'  ): Input = LoopReadingData(Input, Dir + '/ET')            
         if Read.SRI  and os.path.exists( Dir + '/SRI' ) and SRI_flag_test: Input = LoopReadingData(Input, Dir + '/SRI')
