@@ -120,8 +120,8 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM) # + '_3T' 
 
         if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
-        else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag # + field_Strength_Tag()
-        # else: tag = method + '_FM' + str(FM) + SE.Tag 
+        # else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag # + field_Strength_Tag()
+        else: tag = method + '_FM' + str(FM) + SE.Tag 
 
         a = subExperiment(tag)
         return a
