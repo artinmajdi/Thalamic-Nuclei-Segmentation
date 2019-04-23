@@ -57,19 +57,30 @@ def temp_Experiments_preSet(UserInfoB):
     
     if UserInfoB['TypeExperiment'] == 4: 
         UserInfoB['simulation'].TestOnly = True
-    elif UserInfoB['TypeExperiment'] == 5: 
-        UserInfoB['InitializeB'].FromThalamus   = False
-        UserInfoB['InitializeB'].FromOlderModel = False
-        UserInfoB['InitializeB'].From_3T        = True  
-        UserInfoB['simulation'].TestOnly        = False  
 
     elif UserInfoB['TypeExperiment'] == 3:
         UserInfoB['InitializeB'].FromThalamus   = True
         UserInfoB['InitializeB'].FromOlderModel = True
         UserInfoB['InitializeB'].From_3T        = False  
+
+    elif UserInfoB['TypeExperiment'] == 5: 
+        UserInfoB['InitializeB'].FromThalamus   = False
+        UserInfoB['InitializeB'].FromOlderModel = False
+        UserInfoB['InitializeB'].From_3T        = True  
+        UserInfoB['simulation'].TestOnly        = False  
     
+    elif UserInfoB['TypeExperiment'] == 7:
+        UserInfoB['SubExperiment'].Tag = '_Main_PlusET_PlusSRI'
+
+    elif UserInfoB['TypeExperiment'] == 8:
+        UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI'
+
     elif UserInfoB['TypeExperiment'] == 9:
         UserInfoB['InitializeB'].FromOlderModel += True
+        UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_Main_PlusSRI'        
+
+        
+
 
     return UserInfoB
 
@@ -109,8 +120,8 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM) # + '_3T' 
 
         if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
-        else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag # + field_Strength_Tag()
-        # else: tag = method + '_FM' + str(FM) + SE.Tag 
+        # else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag # + field_Strength_Tag()
+        else: tag = method + '_FM' + str(FM) + SE.Tag 
 
         a = subExperiment(tag)
         return a

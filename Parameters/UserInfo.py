@@ -10,7 +10,7 @@ Model_Method =  'Cascade' #'FCN_25D' #  HCascade' #
 # TypeExperiment == 7: # Train Main+ET+SRI
 # TypeExperiment == 8: # Train Main+SRI
 # TypeExperiment == 9: # Train ET Initialized from Main+SRI
-TypeExperiment = 8
+TypeExperiment = 3
 
 DropoutValue = 0.3
 
@@ -20,7 +20,7 @@ class dataGenerator:
 
 class SubExperiment: 
     Index = 11
-    Tag   = '_Main_PlusSRI' # '_ET_InitFrom_Main_PlusSRI' #  _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
+    Tag   = '' # '_ET_InitFrom_Main_PlusSRI'  _Main_PlusSRI _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
     Mode_JustThis = False
   
 class InitializeB:
@@ -41,7 +41,7 @@ class simulation:
     slicingDim    = [2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 20
+    FirstLayer_FeatureMap_Num = 30
     verbose = 2
     Multiply_By_Thalmaus = False
     Multiply_By_Rest_For_AV = False
