@@ -18,7 +18,7 @@ def temp_Experiments_preSet(UserInfoB):
         def __init__(self):            
             class ReadTrainC:
                 def __init__(self, SRI=0 , ET=0 , Main=1 , CSFn=0):   
-                    class readAugments: Mode, Tag = True, ''
+                    class readAugments: Mode, Tag, LoadAll = True, '', False
                     self.SRI  = SRI  > 0.5
                     self.ET   = ET   > 0.5
                     self.Main = Main > 0.5
@@ -46,6 +46,9 @@ def temp_Experiments_preSet(UserInfoB):
                 7:  (11  ,   self.ReadTrainC(SRI=1 , ET=1 , Main=1)  ,  self.Transfer_LearningC() ),
                 8:  (11  ,   self.ReadTrainC(SRI=1 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
                 9:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC() ),
+                10: (11  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
+                11: (11  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
+                12: (11  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 
@@ -77,10 +80,23 @@ def temp_Experiments_preSet(UserInfoB):
 
     elif UserInfoB['TypeExperiment'] == 9:
         UserInfoB['InitializeB'].FromOlderModel += True
-        UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_Main_PlusSRI'        
-
+        UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_Main_PlusSRI'   
+         
+    elif UserInfoB['TypeExperiment'] == 10:
+        UserInfoB['ReadTrain'].ReadAugments.LoadAll = True 
+        UserInfoB['SubExperiment'].Tag = '_Main_RandomInit_AllAugments'   
         
+    elif UserInfoB['TypeExperiment'] == 11:
+        UserInfoB['SubExperiment'].Tag = '_Main_Init_FromThalamus'  
+        UserInfoB['InitializeB'].FromThalamus   = True
+        UserInfoB['InitializeB'].FromOlderModel = False
+        UserInfoB['InitializeB'].From_3T        = False       
 
+    elif UserInfoB['TypeExperiment'] == 12:
+        UserInfoB['SubExperiment'].Tag = '_Main_Init_FromThalamus'  
+        UserInfoB['InitializeB'].FromThalamus   = False
+        UserInfoB['InitializeB'].FromOlderModel = False
+        UserInfoB['InitializeB'].From_3T        = True  
 
     return UserInfoB
 
@@ -111,6 +127,7 @@ def func_Exp_subExp_Names(UserInfo):
             if UserInfo['ReadTrain'].SRI:                                 return '_3T'    
             elif UserInfo['ReadTrain'].Main or UserInfo['ReadTrain'].ET:  return '_7T' 
             else:                                                         return '_CSFn'                                                                        
+               
         class subExperiment:
             def __init__(self, tag):                
                 self.index = SE.Index
@@ -118,13 +135,15 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_thalamus = ''            
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
                 self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM) # + '_3T' 
+                self.crossVal = UserInfo['CrossVal']()
 
         if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
-        else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag # + field_Strength_Tag()
+        else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag   # + field_Strength_Tag()            
         # else: tag = method + '_FM' + str(FM) + SE.Tag 
 
-        a = subExperiment(tag)
-        return a
+        if UserInfo['CrossVal'].Mode: tag += '_CV_' + UserInfo['CrossVal'].index
+
+        return subExperiment(tag)
 
     def func_Experiment():
         EX = UserInfo['Experiments']
@@ -270,11 +289,17 @@ def func_WhichExperiment(UserInfo):
             name = ''
             address = ''
 
+        
+        class CrossVal:
+            Mode = False
+            index = 'a'
+            All_Indexes = ['a' , 'b']
         class subExperiment:
             index = ''
             tag = ''
             name = ''
             name_thalamus = ''
+            crossVal = CrossVal()
 
         def datasetFunc():
             class validation:
@@ -305,6 +330,7 @@ def func_WhichExperiment(UserInfo):
             class readAugmentFn:
                 Mode = False
                 Tag = ''
+                LoadAll = True
 
             class readTrain:
                 Main = True
@@ -374,7 +400,7 @@ def func_WhichExperiment(UserInfo):
         def Augment_Tag():
             readAugmentTag = ''
             if UserInfo['Augment_Rotation'].Mode: 
-                readAugmentTag = 'wRot'   + str(UserInfo['Augment_Rotation'].AngleMax)
+                readAugmentTag = 'wRot'   + str(UserInfo['Augment_Rotation'].AngleMax) + 'd'
             elif UserInfo['Augment_Shear'].Mode:  
                 readAugmentTag = 'wShear' + str(UserInfo['Augment_Shear'].ShearMax)
             return readAugmentTag

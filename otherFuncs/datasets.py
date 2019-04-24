@@ -232,7 +232,7 @@ def loadDataset(params):
             Flag_cascadeMethod = 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and int(params.WhichExperiment.Nucleus.Index[0]) == 1
             Flag_notEmpty = params.directories.Train.Input.Subjects
             return (not Flag_TestOnly  or Flag_TrainDice or Flag_cascadeMethod ) and Flag_notEmpty
-        if trainFlag(): TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage, list(params.directories.Train.Input.Subjects), params.WhichExperiment.Dataset.randomFlag)
+        
 
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
 
@@ -248,7 +248,7 @@ def loadDataset(params):
             masks = np.zeros(  (  tuple([Sz0]) + Data[list(Data)[0]].Mask.shape[1:] )  )
 
             d1 = 0
-            for _, nameSubject in enumerate(tqdm(sjList,desc='concatenating train images')):
+            for _, nameSubject in enumerate(tqdm(sjList,desc='concatenating: ' + mode)):
                 im, msk = Data[nameSubject].Image  , Data[nameSubject].Mask
                 
                 images[d1:d1+im.shape[0] ,...] = im
@@ -257,19 +257,21 @@ def loadDataset(params):
             
             return trainCase(Image=images, Mask=masks.astype('float32'))
             
-        def separateTrainVal_and_concatenateTrain(TrainData):
+        def separateTrainVal_and_concatenateTrain(DataAll):            
+            TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage, list(params.directories.Train.Input.Subjects), params.WhichExperiment.Dataset.randomFlag)
+
             save_hdf5_subject_List(params.h5 , 'trainList' , TrainList )
 
             if params.WhichExperiment.Dataset.Validation.fromKeras or params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
-                Train = separatingConcatenatingIndexes(TrainData, list(TrainData),'train')
-                Validation = ''            
-            else:
-                Train = separatingConcatenatingIndexes(TrainData, TrainList,'train')
-                Validation = separatingConcatenatingIndexes(TrainData, ValList,'validation')
+                DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, list(DataAll.Train_ForTest),'train')
+                DataAll.Validation = ''            
+            else:                
+                DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, TrainList,'train')
+                DataAll.Validation = separatingConcatenatingIndexes(DataAll.Train_ForTest, ValList,'validation')
 
                 save_hdf5_subject_List(params.h5 , 'valList' , ValList )
 
-            return Train, Validation
+            return DataAll
 
         def readingAllSubjects(Subjects, mode):
 
@@ -289,7 +291,7 @@ def loadDataset(params):
 
             Data = {}
             g1 = params.h5.create_group(mode)
-            for nameSubject, subject in tqdm(Subjects.items(), desc='Loading Dataset: ' + mode):
+            for nameSubject, subject in tqdm(Subjects.items(), desc='Loading ' + mode):
 
                 if ErrorInPaddingCheck(subject): continue
 
@@ -303,26 +305,35 @@ def loadDataset(params):
                     Data[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=(origMsk).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
                     saveHDf5(g1 , im , msk , origMsk , imF , subject)
                                         
-                else: Error_MisMatch_In_Dim_ImageMask(subject , mode, nameSubject)
+                else: 
+                    Error_MisMatch_In_Dim_ImageMask(subject , mode, nameSubject)
 
 
             return Data
 
+        def readValidation(DataAll):
+            if params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
+                Read = params.WhichExperiment.Dataset.ReadTrain
+                Val_Indexes = list(DataAll.Test)
+                if (Read.Main or Read.ET) and Read.SRI: Val_Indexes = [s for s in Val_Indexes if 'SRI' not in s]
+                                
+                DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, Val_Indexes, 'validation')                
+                save_hdf5_subject_List(params.h5 , 'valList' , Val_Indexes)
+            return DataAll
+            
         DataAll = data()
         
         if trainFlag():
             DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
-            DataAll.Train, DataAll.Validation = separateTrainVal_and_concatenateTrain( DataAll.Train_ForTest )
+            DataAll = separateTrainVal_and_concatenateTrain( DataAll )
+
 
         if params.directories.Test.Input.Subjects: 
             DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
-
             save_hdf5_subject_List(params.h5 , 'testList' , list(DataAll.Test))
-            if params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
-                DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, list(DataAll.Test), 'validation')                
-                save_hdf5_subject_List(params.h5 , 'valList' , list(DataAll.Test))
 
-    
+            DataAll = readValidation(DataAll)
+
         if sagittalFlag():
             DataAll.Sagittal_Train_ForTest = readingAllSubjects(params.directories.Train.Input_Sagittal.Subjects, 'trainS')
             DataAll.Sagittal_Test          = readingAllSubjects(params.directories.Test.Input_Sagittal.Subjects , 'testS' )               
@@ -349,12 +360,10 @@ def percentageDivide(percentage, subjectsList, randomFlag):
     per = int( percentage * L )
     if per == 0 and L > 1: per = 1
 
-    # TestValList = subjectsList[indexes[:per]]
-    TestValList = [subjectsList[i] for i in indexes[:per]]
-    # TrainList = subjectsList[indexes[per:]]
-    TrainList = [subjectsList[i] for i in indexes[per:]]
+    TestVal_List = [subjectsList[i] for i in indexes[:per]]
+    Train_List = [subjectsList[i] for i in indexes[per:]]
 
-    return TrainList, TestValList
+    return Train_List, TestVal_List
 
 def movingFromDatasetToExperiments(params):
 

@@ -10,13 +10,20 @@ Model_Method =  'Cascade' #'FCN_25D' #  HCascade' #
 # TypeExperiment == 7: # Train Main+ET+SRI
 # TypeExperiment == 8: # Train Main+SRI
 # TypeExperiment == 9: # Train ET Initialized from Main+SRI
-TypeExperiment = 9
+# TypeExperiment == 10: # Main + All Augments
+# TypeExperiment == 11: # Main + Init from Thalamus
+# TypeExperiment == 12: # Main + Init from 3T
+TypeExperiment = 12
+
+class CrossVal:
+    Mode = True
+    index = 'a'
+    All_Indexes = ['a' , 'b']
+
+class Experiments:
+    Index , Tag = '2' , '' # '1' , '' # , 'cascadeV1'
 
 DropoutValue = 0.3
-
-class dataGenerator:
-    Mode = False
-    NumSubjects_Per_batch = 5
 
 class SubExperiment: 
     Index = 11
@@ -33,7 +40,7 @@ class InitializeB:
 class simulation:
     TestOnly      = False
     epochs        = 150
-    GPU_Index     = "3,4,5"
+    GPU_Index     = "6"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
@@ -53,12 +60,15 @@ class simulation:
     Use_TestCases_For_Validation = True
     ImClosePrediction = True
     
+
+class dataGenerator:
+    Mode = False
+    NumSubjects_Per_batch = 5
+
+
 class InputPadding:
     Automatic = True
-    HardDimensions = [1,1,1] # [116,144,84]
-
-class Experiments:
-    Index , Tag = '1' , '' # , 'cascadeV1'
+    HardDimensions = [116,144,84]
 
 if Experiments.Index == '8': 
     InputPadding.HardDimensions = [228,288,168]
@@ -102,7 +112,7 @@ Augment_Linear_Length = 6
 
 class Augment_Rotation:
     Mode = True
-    AngleMax = '7_6cnts' # '7' # 7_4cnts
+    AngleMax = 7 # '7_6cnts' # '7' # 7_4cnts
 
 class Augment_Shear:
     Mode = False

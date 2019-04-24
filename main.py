@@ -23,6 +23,13 @@ class InitValues:
                 
 def Run(UserInfoB,InitValues):
 
+    def print_FullExp(IV):
+        print('---------------------------------------------------------------')
+        print('Full Experiment Info')
+        print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'] , '\n')
+        print('---------------------------------------------------------------')
+    print_FullExp(InitValues)
+
     def HierarchicalStages(UserInfoB):
 
         BB = smallFuncs.Nuclei_Class(1,'HCascade')
@@ -47,25 +54,26 @@ def Run(UserInfoB,InitValues):
 
     def Run_SingleNuclei(UserInfoB):
 
-        for sd in InitValues.slicingDim:
-            
+        for sd in InitValues.slicingDim:            
             if not (sd == 0 and UserInfoB['simulation'].nucleus_Index == 1):
+                UserInfoB['simulation'].slicingDim = [sd]       
 
-                UserInfoB['simulation'].slicingDim = [sd]                       
-                params = paramFunc.Run(UserInfoB, terminal=False)
+                for UserInfoB['CrossVal'].index in UserInfoB['CrossVal'].All_Indexes:                
+                    params = paramFunc.Run(UserInfoB, terminal=False)
 
-                print('---------------------------------------------------------------')
-                print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',sd, \
-                    ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
-                    ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num)
+                    print('---------------------------------------------------------------')
+                    print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',sd, \
+                        ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
+                        ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num)
 
-                print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
-                print('---------------------------------------------------------------')
-                                        
-                Data, params = datasets.loadDataset(params) 
-                print(Data.Train.Image.shape)               
-                choosingModel.check_Run(params, Data)              
-                K.clear_session()
+                    print('Experiment:', params.WhichExperiment.Experiment.name)                              
+                    print('SubExperiment:', params.WhichExperiment.SubExperiment.name.replace('_','-'))
+                    print('---------------------------------------------------------------')
+                                            
+                    Data, params = datasets.loadDataset(params) 
+                    print(Data.Train.Image.shape)               
+                    choosingModel.check_Run(params, Data)              
+                    K.clear_session()
                  
     if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages(UserInfoB)
     elif UserInfoB['Model_Method'] == 'Cascade' :  Loop_All_Nuclei(UserInfoB)
@@ -84,10 +92,7 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-# for UserInfoB['SubExperiment'].Tag in ['_test1' , '_test2']:
-# for UserInfoB['Model_Method'] in ['HCascade'  ,  'Cascade' ]:
-# for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [50 , 60]:
-print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'])
-Run(UserInfoB, IV)
+for UserInfoB['Model_Method'] in ['HCascade'  ,  'Cascade' ]:
+    Run(UserInfoB, IV)
 
 K.clear_session()

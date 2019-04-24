@@ -115,6 +115,7 @@ def LinearFunc(params, mode):
                 subF = [s for s in os.listdir(subject.Label.address) if 'PProcessed' in s]
                 for NucleusName in subF: 
 
+                    # print(NucleusName)
                     MaskF = nib.load(subject.Label.address + '/' + NucleusName)
                     Mask  = smallFuncs.fixMaskMinMax(MaskF.get_data())
 

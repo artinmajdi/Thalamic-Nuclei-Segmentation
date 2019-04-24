@@ -186,8 +186,6 @@ def testingExeriment(model, Data, params):
 
 def trainingExperiment(Data, params):
 
-    model_Tag = params.directories.Train.model_Tag
-
     def func_CallBacks(params):
         batch_size  = params.WhichExperiment.HardParams.Model.batch_size
         Dir_Save = params.directories.Train.Model
@@ -208,7 +206,7 @@ def trainingExperiment(Data, params):
             write_graph=False, write_grads=False, write_images=False, embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None, \
                 embeddings_data=None, update_freq='epoch')
 
-        return [checkpointer , Reduce_LR , EarlyStopping , TensorBoard] # , TQDMCallback()
+        return [checkpointer , Reduce_LR , EarlyStopping] # , TensorBoard , TQDMCallback()
         
     def saveReport(DirSave, name , data, method):
 
