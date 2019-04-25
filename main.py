@@ -53,27 +53,32 @@ def Run(UserInfoB,InitValues):
             Run_SingleNuclei(UserInfoB)
 
     def Run_SingleNuclei(UserInfoB):
+        def subRun(UserInfoB):             
+            params = paramFunc.Run(UserInfoB, terminal=False)
+
+            print('---------------------------------------------------------------')
+            print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',sd, \
+                ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
+                ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num)
+
+            print('Experiment:', params.WhichExperiment.Experiment.name)                              
+            print('SubExperiment:', params.WhichExperiment.SubExperiment.name.replace('_','-'))
+            print('---------------------------------------------------------------')
+                                    
+            Data, params = datasets.loadDataset(params) 
+            print(Data.Train.Image.shape)               
+            choosingModel.check_Run(params, Data)              
+            K.clear_session()
 
         for sd in InitValues.slicingDim:            
             if not (sd == 0 and UserInfoB['simulation'].nucleus_Index == 1):
                 UserInfoB['simulation'].slicingDim = [sd]       
 
-                for UserInfoB['CrossVal'].index in UserInfoB['CrossVal'].All_Indexes:                
-                    params = paramFunc.Run(UserInfoB, terminal=False)
-
-                    print('---------------------------------------------------------------')
-                    print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',sd, \
-                        ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
-                        ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num)
-
-                    print('Experiment:', params.WhichExperiment.Experiment.name)                              
-                    print('SubExperiment:', params.WhichExperiment.SubExperiment.name.replace('_','-'))
-                    print('---------------------------------------------------------------')
-                                            
-                    Data, params = datasets.loadDataset(params) 
-                    print(Data.Train.Image.shape)               
-                    choosingModel.check_Run(params, Data)              
-                    K.clear_session()
+                if UserInfoB['CrossVal'].Mode:
+                    for UserInfoB['CrossVal'].index in UserInfoB['CrossVal'].All_Indexes:   
+                        subRun(UserInfoB)
+                else:
+                    subRun(UserInfoB)
                  
     if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages(UserInfoB)
     elif UserInfoB['Model_Method'] == 'Cascade' :  Loop_All_Nuclei(UserInfoB)

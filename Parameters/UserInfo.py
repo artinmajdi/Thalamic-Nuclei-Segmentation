@@ -13,11 +13,11 @@ Model_Method =  'Cascade' #'FCN_25D' #  HCascade' #
 # TypeExperiment == 10: # Main + All Augments
 # TypeExperiment == 11: # Main + Init from Thalamus
 # TypeExperiment == 12: # Main + Init from 3T
-TypeExperiment = 12
+TypeExperiment = 8
 
 class CrossVal:
     Mode = True
-    index = 'a'
+    index = 'b'
     All_Indexes = ['a' , 'b']
 
 class Experiments:
@@ -38,7 +38,7 @@ class InitializeB:
     # arbitraryInit = '_Main_PlusSRI'
 
 class simulation:
-    TestOnly      = False
+    TestOnly      = True
     epochs        = 150
     GPU_Index     = "6"
     Learning_Rate = 1e-3

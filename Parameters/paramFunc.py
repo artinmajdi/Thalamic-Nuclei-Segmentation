@@ -93,7 +93,7 @@ def temp_Experiments_preSet(UserInfoB):
         UserInfoB['InitializeB'].From_3T        = False       
 
     elif UserInfoB['TypeExperiment'] == 12:
-        UserInfoB['SubExperiment'].Tag = '_Main_Init_FromThalamus'  
+        UserInfoB['SubExperiment'].Tag = '_Main_Init_From3T'  
         UserInfoB['InitializeB'].FromThalamus   = False
         UserInfoB['InitializeB'].FromOlderModel = False
         UserInfoB['InitializeB'].From_3T        = True  
