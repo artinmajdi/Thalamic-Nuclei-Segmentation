@@ -75,7 +75,7 @@ def Run(UserInfoB,InitValues):
                 UserInfoB['simulation'].slicingDim = [sd]       
 
                 if UserInfoB['CrossVal'].Mode:
-                    for UserInfoB['CrossVal'].index in UserInfoB['CrossVal'].All_Indexes:   
+                    for UserInfoB['CrossVal'].index in ['b']: # UserInfoB['CrossVal'].All_Indexes:   
                         subRun(UserInfoB)
                 else:
                     subRun(UserInfoB)
@@ -84,6 +84,7 @@ def Run(UserInfoB,InitValues):
     elif UserInfoB['Model_Method'] == 'Cascade' :  Loop_All_Nuclei(UserInfoB)
     elif UserInfoB['Model_Method'] == 'FCN_25D':   Loop_All_Nuclei(UserInfoB)
     elif UserInfoB['Model_Method'] == 'singleRun': Run_SingleNuclei(UserInfoB)
+    else: Loop_All_Nuclei(UserInfoB)
      
 def preMode(UserInfoB):
     UserInfoB = smallFuncs.terminalEntries(UserInfoB)
@@ -97,7 +98,7 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-for UserInfoB['Model_Method'] in ['HCascade'  ,  'Cascade' ]:
-    Run(UserInfoB, IV)
+# for UserInfoB['Model_Method'] in ['HCascade'  ,  'Cascade' ]:
+Run(UserInfoB, IV)
 
 K.clear_session()

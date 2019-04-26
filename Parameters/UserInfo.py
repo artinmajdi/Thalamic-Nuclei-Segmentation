@@ -1,5 +1,5 @@
 
-Model_Method =  'Cascade' #'FCN_25D' #  HCascade' # 
+Model_Method =  'mUnet' #'FCN_25D' #  HCascade' # 
 
 # TypeExperiment == 1: # Main
 # TypeExperiment == 2: # Transfer Learn ET
@@ -31,14 +31,14 @@ class SubExperiment:
     Mode_JustThis = False
   
 class InitializeB:
-    FromThalamus   = False
+    FromThalamus   = True
     FromOlderModel = False
     From_3T        = False
     # FromArbitrary = True
     # arbitraryInit = '_Main_PlusSRI'
 
 class simulation:
-    TestOnly      = True
+    TestOnly      = False
     epochs        = 150
     GPU_Index     = "6"
     Learning_Rate = 1e-3

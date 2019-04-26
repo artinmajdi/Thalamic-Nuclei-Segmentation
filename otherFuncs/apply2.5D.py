@@ -132,6 +132,6 @@ UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
 # for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade']:
 params = paramFunc.Run(UserInfoB, terminal=False)
-InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
+InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name='sE11_Cascade_FM20_DO0.3_Main_PlusSRI_CV_a') # params.WhichExperiment.SubExperiment.name)
 func_MajorityVoting(InfoS , params)
 print(params.WhichExperiment.SubExperiment.name)
