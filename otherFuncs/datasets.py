@@ -260,7 +260,7 @@ def loadDataset(params):
         def separateTrainVal_and_concatenateTrain(DataAll):            
             TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage, list(params.directories.Train.Input.Subjects), params.WhichExperiment.Dataset.randomFlag)
 
-            # save_hdf5_subject_List(params.h5 , 'trainList' , TrainList )
+            save_hdf5_subject_List(params.h5 , 'trainList' , TrainList )
 
             if params.WhichExperiment.Dataset.Validation.fromKeras or params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
                 DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, list(DataAll.Train_ForTest),'train')
@@ -269,7 +269,7 @@ def loadDataset(params):
                 DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, TrainList,'train')
                 DataAll.Validation = separatingConcatenatingIndexes(DataAll.Train_ForTest, ValList,'validation')
 
-                # save_hdf5_subject_List(params.h5 , 'valList' , ValList )
+                save_hdf5_subject_List(params.h5 , 'valList' , ValList )
 
             return DataAll
 
@@ -290,7 +290,7 @@ def loadDataset(params):
                 return ErrorFlag
 
             Data = {}
-            # g1 = params.h5.create_group(mode)
+            g1 = params.h5.create_group(mode)
             for nameSubject, subject in tqdm(Subjects.items(), desc='Loading ' + mode):
 
                 if ErrorInPaddingCheck(subject): continue
@@ -303,7 +303,7 @@ def loadDataset(params):
 
                 if im[...,0].shape == msk[...,0].shape:
                     Data[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=(origMsk).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-                    # saveHDf5(g1 , im , msk , origMsk , imF , subject)
+                    saveHDf5(g1 , im , msk , origMsk , imF , subject)
                                         
                 else: 
                     Error_MisMatch_In_Dim_ImageMask(subject , mode, nameSubject)
@@ -317,8 +317,9 @@ def loadDataset(params):
                 Val_Indexes = list(DataAll.Test)
                 if (Read.Main or Read.ET) and Read.SRI: Val_Indexes = [s for s in Val_Indexes if 'SRI' not in s]
                                 
+                print('Val_Indexes',Val_Indexes)
                 DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, Val_Indexes, 'validation')                
-                # save_hdf5_subject_List(params.h5 , 'valList' , Val_Indexes)
+                save_hdf5_subject_List(params.h5 , 'valList' , Val_Indexes)
             return DataAll
             
         DataAll = data()
@@ -330,7 +331,7 @@ def loadDataset(params):
 
         if params.directories.Test.Input.Subjects: 
             DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
-            # save_hdf5_subject_List(params.h5 , 'testList' , list(DataAll.Test))
+            save_hdf5_subject_List(params.h5 , 'testList' , list(DataAll.Test))
 
             DataAll = readValidation(DataAll)
 
@@ -344,9 +345,9 @@ def loadDataset(params):
     print( 'InputDimensions' , params.WhichExperiment.HardParams.Model.InputDimensions )
     
     smallFuncs.mkDir(params.directories.Test.Result)
-    # params.h5 = h5py.File(params.directories.Test.Result + '/Data.hdf5','w')
+    params.h5 = h5py.File(params.directories.Test.Result + '/Data.hdf5','w')
     Data = main_ReadingDataset(params)
-    # params.h5.close()
+    params.h5.close()
     # saveHDf5(Data)
 
     return Data, params
