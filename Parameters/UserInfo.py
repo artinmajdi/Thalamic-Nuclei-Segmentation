@@ -57,7 +57,7 @@ class simulation:
     Initialize = InitializeB()
     save_Best_Epoch_Model = True
     Use_Coronal_Thalamus_InSagittal = True
-    Use_TestCases_For_Validation = True
+    Use_TestCases_For_Validation = False
     ImClosePrediction = True
     
 
