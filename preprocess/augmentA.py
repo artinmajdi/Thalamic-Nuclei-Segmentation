@@ -52,9 +52,10 @@ def LinearFunc(params, mode):
                 self.nameSubject2 = nameSubject2
             nameOutput(self, nameSubject, AugIx)
                 
+            sd = smallFuncs.mkDir('sd' + str(params.WhichExperiment.Dataset.slicingInfo.slicingDim))
             class outDirectory:
-                Image = smallFuncs.mkDir( self.params.directories.Train.Input.address + '/' + self.nameSubject2)
-                Mask = smallFuncs.mkDir( self.params.directories.Train.Input.address + '/' + self.nameSubject2 + '/Labels')
+                Image = smallFuncs.mkDir( self.params.directories.Train.Input.address + '/' + sd + '/' + self.nameSubject2)
+                Mask = smallFuncs.mkDir( self.params.directories.Train.Input.address + '/' + sd + '/' + self.nameSubject2 + '/Labels')
             self.outDirectory = outDirectory()
 
             smallFuncs.mkDir(self.outDirectory.Image + '/temp/')
@@ -161,4 +162,5 @@ def main_augment(params , Flag, mode):
 
     elif params.Augment.Mode and params.Augment.NonLinear.Mode and (Flag == 'NonLinear'):
         NonLinearFunc(params.directories.Train.Input , params.Augment, mode)
+
 

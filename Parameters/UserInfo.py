@@ -13,10 +13,10 @@ Model_Method =  'Cascade' # mUnet' #'FCN_25D' #  HCascade' #
 # TypeExperiment == 10: # Main + All Augments
 # TypeExperiment == 11: # Main + Init from Thalamus
 # TypeExperiment == 12: # Main + Init from 3T
-TypeExperiment = 6
+TypeExperiment = 8
 
 class CrossVal:
-    Mode = False
+    Mode = True
     index = 'a'
     All_Indexes = ['a' , 'b']
 
@@ -27,18 +27,18 @@ DropoutValue = 0.3
 
 class SubExperiment: 
     Index = 11
-    Tag   = '_Main_HighEpochs_InitFrom3T' # '_ET_InitFrom_Main_PlusSRI'  _Main_PlusSRI _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
+    Tag   = '' # _Main_HighEpochs_InitFrom3T '_ET_InitFrom_Main_PlusSRI'  _Main_PlusSRI _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
     Mode_JustThis = False
   
 class InitializeB:
-    FromThalamus   = False
+    FromThalamus   = True
     FromOlderModel = False
-    From_3T        = True
+    From_3T        = False
     # FromArbitrary = True
     # arbitraryInit = '_Main_PlusSRI'
 
 class simulation:
-    TestOnly      = False
+    TestOnly      = True
     epochs        = 100
     GPU_Index     = "6"
     Learning_Rate = 1e-3
