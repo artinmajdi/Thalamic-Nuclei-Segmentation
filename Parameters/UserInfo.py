@@ -21,7 +21,7 @@ class CrossVal:
     All_Indexes = ['a' , 'b']
 
 class Experiments:
-    Index , Tag = '2' , '' # '1' , '' # , 'cascadeV1'
+    Index , Tag = '3' , '' # '1' , '' # , 'cascadeV1'
 
 DropoutValue = 0.3
 
@@ -38,7 +38,7 @@ class InitializeB:
     # arbitraryInit = '_Main_PlusSRI'
 
 class simulation:
-    TestOnly      = True
+    TestOnly      = False
     epochs        = 100
     GPU_Index     = "6"
     Learning_Rate = 1e-3
