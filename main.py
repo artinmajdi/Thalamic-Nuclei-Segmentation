@@ -74,11 +74,11 @@ def Run(UserInfoB,InitValues):
             if not (sd == 0 and UserInfoB['simulation'].nucleus_Index == 1):
                 UserInfoB['simulation'].slicingDim = [sd]       
 
-                if UserInfoB['CrossVal'].Mode:
-                    for UserInfoB['CrossVal'].index in ['b']: # UserInfoB['CrossVal'].All_Indexes:   
-                        subRun(UserInfoB)
-                else:
-                    subRun(UserInfoB)
+                # if UserInfoB['CrossVal'].Mode:
+                #     for UserInfoB['CrossVal'].index in UserInfoB['CrossVal'].All_Indexes:   
+                #         subRun(UserInfoB)
+                # else:
+                subRun(UserInfoB)
                  
     if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages(UserInfoB)
     elif UserInfoB['Model_Method'] == 'Cascade' :  Loop_All_Nuclei(UserInfoB)

@@ -13,7 +13,7 @@ params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 
 
 
-dirr = '/array/ssd/msmajdi/experiments/keras/exp1/results/sE11_HCascade_FM20_7T_Main/sd2/vimp2_915_07112013_LC_MS/'
+dirr = '/array/ssd/msmajdi/experiments/keras/exp2/results/sE11_mUnet_FM20_DO0.3_Main_PlusSRI_CV_a/sd2/vimp2_972_08152013_DC_MS/'
 # def Save_AllNuclei_inOne():
 
 A = smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei()

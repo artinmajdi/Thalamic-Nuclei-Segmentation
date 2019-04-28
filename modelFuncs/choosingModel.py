@@ -193,20 +193,21 @@ def trainingExperiment(Data, params):
         monitor = 'val_mDice'       
         
         checkpointer = keras.callbacks.ModelCheckpoint(filepath= Dir_Save + '/best_model_weights' + params.directories.Train.model_Tag + '.h5', \
-            monitor = monitor, verbose=1, save_best_only=True, mode=mode)
+            monitor = 'val_mDice' , verbose=1, save_best_only=True, mode=mode)
 
-        Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = 'mDice', factor=0.5, min_delta=0.005 , patience=4, verbose=1, \
-            save_best_only=True, mode=mode , min_lr=0.9e-4 , )
+        Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = 'val_loss', factor=0.5, min_delta=0.005 , patience=4, verbose=1, \
+            save_best_only=True, mode='min' , min_lr=0.9e-4 , )
         
         # Progbar = keras.callbacks.Progba
-        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=20, verbose=1, mode=mode, \
-            baseline=0, restore_best_weights=True)
+        # EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=20, verbose=1, mode=mode, \
+        #     baseline=0, restore_best_weights=True)
 
-        TensorBoard = keras.callbacks.TensorBoard(log_dir= Dir_Save + '/logs', histogram_freq=1, batch_size=batch_size, \
-            write_graph=False, write_grads=False, write_images=False, embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None, \
-                embeddings_data=None, update_freq='epoch')
+        # TensorBoard = keras.callbacks.TensorBoard(log_dir= Dir_Save + '/logs', histogram_freq=1, batch_size=batch_size, \
+        #     write_graph=False, write_grads=False, write_images=False, embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None, \
+                # embeddings_data=None, update_freq='epoch')
 
-        return [checkpointer , Reduce_LR , EarlyStopping] # , TensorBoard , TQDMCallback()
+        # if params.UserInfo()
+        return [checkpointer , Reduce_LR] # , EarlyStopping , TensorBoard , TQDMCallback()
         
     def saveReport(DirSave, name , data, method):
 

@@ -7,7 +7,9 @@ import Parameters.paramFunc as paramFunc
 import Parameters.UserInfo as UserInfo
 
 # UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
-params = paramFunc.Run(UserInfo.__dict__, terminal=True)
+UserInfoB = UserInfo.__dict__
+UserInfoB['simulation'].slicingDim = [1]
+params = paramFunc.Run(UserInfoB, terminal=True)
 params.preprocess.Mode = True
 
 applyPreprocess.main(params, 'experiment')

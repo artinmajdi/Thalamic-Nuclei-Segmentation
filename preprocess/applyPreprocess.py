@@ -31,7 +31,7 @@ def apply_On_Individual(params,Info):
 
     subject = Info.Subjects[Info.subjectName]
 
-    if 0: print( '(' + str(Info.ind) + '/'+str(Info.Length) + ')' , Info.mode, Info.subjectName)
+    if 1: print( '(' + str(Info.ind) + '/'+str(Info.Length) + ')' , Info.mode, Info.subjectName)
 
     BashCallingFunctionsA.BiasCorrection( subject , params)
 

@@ -73,27 +73,27 @@ def temp_Experiments_preSet(UserInfoB):
         UserInfoB['simulation'].TestOnly        = False  
     
     elif UserInfoB['TypeExperiment'] == 7:
-        UserInfoB['SubExperiment'].Tag = '_Main_PlusET_PlusSRI'
+        UserInfoB['SubExperiment'].Tag += '_Main_PlusET_PlusSRI'
 
     elif UserInfoB['TypeExperiment'] == 8:
-        UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI'
+        UserInfoB['SubExperiment'].Tag += '_Main_PlusSRI'
 
     elif UserInfoB['TypeExperiment'] == 9:
         UserInfoB['InitializeB'].FromOlderModel += True
-        UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_Main_PlusSRI'   
+        UserInfoB['SubExperiment'].Tag += '_ET_InitFrom_Main_PlusSRI'   
          
     elif UserInfoB['TypeExperiment'] == 10:
         UserInfoB['ReadTrain'].ReadAugments.LoadAll = True 
-        UserInfoB['SubExperiment'].Tag = '_Main_RandomInit_AllAugments'   
+        UserInfoB['SubExperiment'].Tag += '_Main_RandomInit_AllAugments'   
         
     elif UserInfoB['TypeExperiment'] == 11:
-        UserInfoB['SubExperiment'].Tag = '_Main_Init_FromThalamus'  
+        UserInfoB['SubExperiment'].Tag += '_Main_Init_FromThalamus'  
         UserInfoB['InitializeB'].FromThalamus   = True
         UserInfoB['InitializeB'].FromOlderModel = False
         UserInfoB['InitializeB'].From_3T        = False       
 
     elif UserInfoB['TypeExperiment'] == 12:
-        UserInfoB['SubExperiment'].Tag = '_Main_Init_From3T'  
+        UserInfoB['SubExperiment'].Tag += '_Main_Init_From3T'  
         UserInfoB['InitializeB'].FromThalamus   = False
         UserInfoB['InitializeB'].FromOlderModel = False
         UserInfoB['InitializeB'].From_3T        = True  

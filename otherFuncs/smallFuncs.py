@@ -339,12 +339,16 @@ def terminalEntries(UserInfo):
             UserInfo['simulation'].FirstLayer_FeatureMap_Num = int(sys.argv[en+1])
 
         elif entry.lower() in ('-m','--Model_Method'):
-            if int(sys.argv[en+1]) == 0:
-                UserInfo['Model_Method'] = 'FCN_25D' 
+            if int(sys.argv[en+1]) == 3:
+                UserInfo['Model_Method'] = 'mUnet' 
             elif int(sys.argv[en+1]) == 1:
                 UserInfo['Model_Method'] = 'Cascade' 
             elif int(sys.argv[en+1]) == 2: 
                 UserInfo['Model_Method'] = 'HCascade' 
+
+        elif entry.lower() in ('-ci','--CrossVal_Index'):
+            UserInfo['CrossVal'].index = sys.argv[en+1]
+                
 
                 
             
