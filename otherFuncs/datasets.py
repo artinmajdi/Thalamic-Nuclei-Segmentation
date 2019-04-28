@@ -315,9 +315,9 @@ def loadDataset(params):
             if params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
                 Read = params.WhichExperiment.Dataset.ReadTrain
                 Val_Indexes = list(DataAll.Test)
+            
                 if (Read.Main or Read.ET) and Read.SRI: Val_Indexes = [s for s in Val_Indexes if 'SRI' not in s]
-                                
-                print('Val_Indexes',Val_Indexes)
+
                 DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, Val_Indexes, 'validation')                
                 save_hdf5_subject_List(params.h5 , 'valList' , Val_Indexes)
             return DataAll
