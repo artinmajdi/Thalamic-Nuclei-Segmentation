@@ -76,7 +76,7 @@ def temp_Experiments_preSet(UserInfoB):
         UserInfoB['SubExperiment'].Tag += '_Main_PlusET_PlusSRI'
 
     elif UserInfoB['TypeExperiment'] == 8:
-        UserInfoB['SubExperiment'].Tag += '_Main_PlusSRI'
+        UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI'
 
     elif UserInfoB['TypeExperiment'] == 9:
         UserInfoB['InitializeB'].FromOlderModel += True

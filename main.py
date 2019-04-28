@@ -62,6 +62,7 @@ def Run(UserInfoB,InitValues):
                 ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num)
 
             print('Experiment:', params.WhichExperiment.Experiment.name)                              
+            print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
             print('SubExperiment:', params.WhichExperiment.SubExperiment.name.replace('_','-'))
             print('---------------------------------------------------------------')
                                     
