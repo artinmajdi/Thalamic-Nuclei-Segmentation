@@ -170,12 +170,12 @@ class mergingDiceValues:
         loopOver_Subexperiments(self)
 
 
-for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[1:]:
+for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List:
 
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name)
-
+    print('Experiment_Name',Experiment_Name)
     mergingDiceValues(Info)
-    # savingHistory_AsExcel(Info)
+    savingHistory_AsExcel(Info)
 
 os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
 

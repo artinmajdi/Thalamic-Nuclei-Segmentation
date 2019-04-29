@@ -390,14 +390,16 @@ def save_BoundingBox_Hierarchy(params, PRED):
 
     nucleus = params.WhichExperiment.Nucleus.name
     def loop_Subjects(PRED, mode):
-        Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects        
-        for sj in tqdm(Subjects ,desc='saving BB ' + ' ' + mode + nucleus):
-            save_BoundingBox(PRED[sj] , Subjects[sj] , mode , params.directories.Test.Result)
+        if PRED:
+            Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects        
+            for sj in tqdm(Subjects ,desc='saving BB ' + ' ' + mode + nucleus):
+                save_BoundingBox(PRED[sj] , Subjects[sj] , mode , params.directories.Test.Result)
 
     def loop_Subjects_Sagittal(PRED, mode):
-        Subjects = params.directories.Train.Input_Sagittal.Subjects if 'train' in mode else params.directories.Test.Input_Sagittal.Subjects
-        for sj in tqdm(Subjects ,desc='saving BB ' + ' ' + mode + nucleus + ' Sagittal'):
-            save_BoundingBox(PRED[sj] , Subjects[sj] , mode , params.directories.Test.Result.replace('/sd2','/sd0'))
+        if PRED:
+            Subjects = params.directories.Train.Input_Sagittal.Subjects if 'train' in mode else params.directories.Test.Input_Sagittal.Subjects
+            for sj in tqdm(Subjects ,desc='saving BB ' + ' ' + mode + nucleus + ' Sagittal'):
+                save_BoundingBox(PRED[sj] , Subjects[sj] , mode , params.directories.Test.Result.replace('/sd2','/sd0'))
 
     loop_Subjects(PRED.Test, 'test')
     loop_Subjects(PRED.Train, 'train')

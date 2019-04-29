@@ -359,9 +359,9 @@ def search_ExperimentDirectory(whichExperiment):
 
     def func_model_Tag(whichExperiment):
         model_Tag = ''
-        if whichExperiment.HardParams.Model.Transfer_Learning.Mode: model_Tag += '_TF'
-        if whichExperiment.Dataset.ReadTrain.ET:                    model_Tag += '_ET'
-        if whichExperiment.Dataset.ReadTrain.CSFn:                  model_Tag += '_CSFn'
+        if whichExperiment.HardParams.Model.Transfer_Learning.Mode:                             model_Tag += '_TF'
+        if whichExperiment.Dataset.ReadTrain.ET and not whichExperiment.Dataset.ReadTrain.Main: model_Tag += '_ET'
+        if whichExperiment.Dataset.ReadTrain.CSFn:                                              model_Tag += '_CSFn'
         return model_Tag
 
     sdTag = '/sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim)
