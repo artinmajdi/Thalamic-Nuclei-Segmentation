@@ -128,8 +128,8 @@ def func_MajorityVoting(Info , params):
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
-for subExperiment in ['sE11_mUnet_FM20_DO0.3_Main_InitFrom_Th_CV_a' , 'sE11_mUnet_FM20_DO0.3_Main_PlustET_InitFrom_Th_CV_a'] : #UserInfoB['Model_Method'] in ['Cascade' , 'HCascade']:
-    params = paramFunc.Run(UserInfoB, terminal=False)
-    InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=subExperiment) # 'sE11_Cascade_FM20_DO0.3_Main_PlusSRI_CV_a') # params.WhichExperiment.SubExperiment.name)
-    func_MajorityVoting(InfoS , params)
-    print(subExperiment)
+# for subExperiment in ['sE11_mUnet_FM20_DO0.3_Main_InitFrom_Th_CV_a' , 'sE11_mUnet_FM20_DO0.3_Main_PlustET_InitFrom_Th_CV_a'] : #UserInfoB['Model_Method'] in ['Cascade' , 'HCascade']:
+params = paramFunc.Run(UserInfoB, terminal=False)
+InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
+func_MajorityVoting(InfoS , params)
+#    print(subExperiment)

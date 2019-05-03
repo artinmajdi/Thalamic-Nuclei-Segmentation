@@ -84,7 +84,7 @@ def temp_Experiments_preSet(UserInfoB):
          
     elif UserInfoB['TypeExperiment'] == 10:
         UserInfoB['ReadTrain'].ReadAugments.LoadAll = True 
-        UserInfoB['SubExperiment'].Tag += '_Main_RandomInit_AllAugments'   
+        # UserInfoB['SubExperiment'].Tag += '_Main_AllAugments'   
         
     elif UserInfoB['TypeExperiment'] == 11:
         UserInfoB['SubExperiment'].Tag += '_Main_Init_FromThalamus'  

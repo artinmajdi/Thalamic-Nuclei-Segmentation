@@ -104,7 +104,7 @@ class mergingDiceValues:
                     Dice_Single = np.append(self.subject, list(np.nan*np.ones(NumColumns-1)))                    
                     for ind, name in enumerate( self.Info.Nuclei_Names ):
                         Dir_subject = self.subExperiment.address + '/' + self.subject + '/Dice_' + name +'.txt'
-                        if os.path.isfile(Dir_subject): Dice_Single[ind] = math.ceil( np.loadtxt(Dir_subject)[1] *1e4)/1e4
+                        if os.path.isfile(Dir_subject): Dice_Single[ind] = math.ceil( np.loadtxt(Dir_subject)[1] *1e3)/1e3
                     return Dice_Single                                    
                 sE_Dices = np.array([  func_1subject_Dices(self)  for self.subject in self.plane.subject_List  ])
 
@@ -170,12 +170,12 @@ class mergingDiceValues:
         loopOver_Subexperiments(self)
 
 
-for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List:
+for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[:1]:
 
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name)
     print('Experiment_Name',Experiment_Name)
     mergingDiceValues(Info)
-    savingHistory_AsExcel(Info)
+    # savingHistory_AsExcel(Info)
 
 os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
 

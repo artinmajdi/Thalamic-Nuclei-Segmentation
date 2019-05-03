@@ -27,18 +27,18 @@ DropoutValue = 0.3
 
 class SubExperiment: 
     Index = 12
-    Tag   = '_Main_InitFrom_Th' # _Main_PlustET_InitFrom_SRI  _Main_HighEpochs_InitFrom3T '_ET_InitFrom_Main_PlusSRI'  _Main_PlusSRI _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
+    Tag   = '_Main_InitFrom_SRI' # '_InitFrom_SRI_AllAugments' # _Main_PlustET_InitFrom_SRI  _Main_HighEpochs_InitFrom3T '_ET_InitFrom_Main_PlusSRI'  _Main_PlusSRI _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
     Mode_JustThis = False
   
 class InitializeB:
-    FromThalamus   = True
+    FromThalamus   = False
     FromOlderModel = False
-    From_3T        = False
+    From_3T        = True
     # FromArbitrary = True
     # arbitraryInit = '_Main_PlusSRI'
 
 class simulation:
-    TestOnly      = False
+    TestOnly      = True
     epochs        = 100
     GPU_Index     = "6"
     Learning_Rate = 1e-3

@@ -209,14 +209,17 @@ def applyMain(Dir,mode):
             #     msk2 = edgeDetect(msk2.transpose(a) , SD).transpose(b)
             #     smallFuncs.saveImage( Mask + msk2 , im.affine , im.header, Directory + 'AllLabels' + str(SD) + '.nii.gz')
         
-        # saving4SuperNuclei()
-        # Save_AllNuclei_inOne()
-        Save_AllNuclei_inOne_Imclosed_Except_AV()
-        # saving4SuperNuclei_WithDifferentLabels()
-        # saveAV_BB()
-        # creatingFullMaskWithAll4Supernuclei()
+        saving4SuperNuclei()
 
-        # ImClosingAllNuclei()
+        ImClosingAllNuclei()
+
+        Save_AllNuclei_inOne()
+        # Save_AllNuclei_inOne_Imclosed_Except_AV()
+        saving4SuperNuclei_WithDifferentLabels()
+        # saveAV_BB()
+        creatingFullMaskWithAll4Supernuclei()
+
+        
 
     Subjects = [sub for sub in os.listdir(Dir) if 'vimp' in sub]
 
@@ -225,18 +228,49 @@ def applyMain(Dir,mode):
         RunAllFunctions(Dir + nameSubject + '/Label/')
 
 
-for dataset in ['Main/' , 'SRI/' , 'ET/']:
-    Dir = '/array/ssd/msmajdi/experiments/keras/exp1/test/' + dataset # params.directories.Test.Input.Subjects  + '/' # 
-    applyMain(Dir ,'_PProcessed')
-
-for dataset in ['Main/' , 'SRI/' , 'ET/']:
-    Dir = '/array/ssd/msmajdi/experiments/keras/exp1/train/' + dataset
-    applyMain(Dir ,'_PProcessed')
+# for exp in ['exp4' , 'exp3']:
+#     print('\n\n\n  ' + exp + ' Main \n\n\n')
+#     # for dataset in ['Main/' , 'SRI/' , 'ET/']:
+#     Dir = '/array/ssd/msmajdi/experiments/keras/' + exp + '/train/Main/' 
+#     applyMain(Dir ,'_PProcessed')
 
 
-for dataset in ['Main/' , 'ET/']:
-    Dir = '/array/ssd/msmajdi/experiments/keras/exp1/train/Augments/wRot7_6cnts/' + dataset 
-    for sd in ['sd0/' , 'sd1/' , 'sd2/']: applyMain(Dir + sd ,'_PProcessed')
+#     print('\n\n\n  ' + exp + ' Augments \n\n\n')
+#     for sd in ['sd0/' , 'sd1/' , 'sd2/']:
+#         Dir = '/array/ssd/msmajdi/experiments/keras/' + exp + '/train/Augments/wRot7d/Main/' + sd  # params.directories.Test.Input.Subjects  + '/' # 
+#         applyMain(Dir ,'_PProcessed')
 
+
+for exp in ['exp4' , 'exp3']:
+
+    for x in ['a' , 'b']:
+        print('\n\n\n  ' + exp + ' Main \n\n\n')
+        # for dataset in ['Main/' , 'SRI/' , 'ET/']:
+        Dir = '/array/ssd/msmajdi/experiments/keras/' + exp + '/crossVal/' + x + '/train/' 
+        applyMain(Dir ,'_PProcessed')
+
+        print('\n\n\n  ' + exp + ' Augments \n\n\n')
+        for sd in ['sd0/' , 'sd1/' , 'sd2/']:
+            Dir = '/array/ssd/msmajdi/experiments/keras/' + exp + '/crossVal/' + x + '/train/Augments/' + sd  # params.directories.Test.Input.Subjects  + '/' # 
+            applyMain(Dir ,'_PProcessed')
+
+        print('\n\n\n  ' + exp + ' Main \n\n\n')
+        # for dataset in ['Main/' , 'SRI/' , 'ET/']:
+        Dir = '/array/ssd/msmajdi/experiments/keras/' + exp + '/crossVal/' + x + '/test/' 
+        applyMain(Dir ,'_PProcessed')
+
+
+
+
+    for x in ['group1' , 'group2']:
+        print('\n\n\n  ' + exp + '   ' + x + '\n\n\n')
+        # for dataset in ['Main/' , 'SRI/' , 'ET/']:
+        Dir = '/array/ssd/msmajdi/experiments/keras/' + exp + '/crossVal/' + x + '/' 
+        applyMain(Dir ,'_PProcessed')
+
+        print('\n\n\n  ' + exp + '   ' + x + ' Augments \n\n\n')
+        for sd in ['sd0/' , 'sd1/' , 'sd2/']:
+            Dir = '/array/ssd/msmajdi/experiments/keras/' + exp + '/crossVal/' + x + '/Augments/' + sd  # params.directories.Test.Input.Subjects  + '/' # 
+            applyMain(Dir ,'_PProcessed')
 
 

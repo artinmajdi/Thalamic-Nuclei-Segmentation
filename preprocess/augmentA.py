@@ -55,7 +55,7 @@ def LinearFunc(params, mode):
             sd = smallFuncs.mkDir('sd' + str(params.WhichExperiment.Dataset.slicingInfo.slicingDim))
             class outDirectory:
                 Image = smallFuncs.mkDir( self.params.directories.Train.Input.address + '/' + sd + '/' + self.nameSubject2)
-                Mask = smallFuncs.mkDir( self.params.directories.Train.Input.address + '/' + sd + '/' + self.nameSubject2 + '/Labels')
+                Mask = smallFuncs.mkDir( self.params.directories.Train.Input.address + '/' + sd + '/' + self.nameSubject2 + '/Label')
             self.outDirectory = outDirectory()
 
             smallFuncs.mkDir(self.outDirectory.Image + '/temp/')
