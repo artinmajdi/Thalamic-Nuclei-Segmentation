@@ -1,5 +1,5 @@
 
-Model_Method =  'mUnet' #''Cascade' # FCN_25D' #  HCascade' # 
+Model_Method =  'Cascade' # 'mUnet' #' FCN_25D' #  'HCascade' # 
 
 # TypeExperiment == 1: # Main
 # TypeExperiment == 2: # Transfer Learn ET
@@ -17,17 +17,17 @@ TypeExperiment = 1
 
 class CrossVal:
     Mode = True
-    index = 'a'
+    index = 'b'
     All_Indexes = ['a' , 'b']
 
 class Experiments:
-    Index , Tag = '3' , '' # '1' , '' # , 'cascadeV1'
+    Index , Tag = '4' , '' # '1' , '' # , 'cascadeV1'
 
 DropoutValue = 0.3
 
 class SubExperiment: 
     Index = 12
-    Tag   = '_Main_InitFrom_SRI' # '_InitFrom_SRI_AllAugments' # _Main_PlustET_InitFrom_SRI  _Main_HighEpochs_InitFrom3T '_ET_InitFrom_Main_PlusSRI'  _Main_PlusSRI _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
+    Tag   = '_InitFrom_SRI_AllAugments' # '_InitFrom_SRI_AllAugments' # _Main_PlustET_InitFrom_SRI  _Main_HighEpochs_InitFrom3T '_ET_InitFrom_Main_PlusSRI'  _Main_PlusSRI _Main_PlusET_PlusSRI _Main Generator_ '_SRI2' 'MainPlusET' # Cascade_FM20_7T'
     Mode_JustThis = False
   
 class InitializeB:
@@ -40,12 +40,12 @@ class InitializeB:
 class simulation:
     TestOnly      = True
     epochs        = 100
-    GPU_Index     = "6"
+    GPU_Index     = "4"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
     nucleus_Index = [1] # ,2,4]
-    slicingDim    = [2,1,0]
+    slicingDim    = [2] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20

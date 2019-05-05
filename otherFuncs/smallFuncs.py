@@ -262,10 +262,15 @@ def saveImage(Image , Affine , Header , outDirectory):
     out.get_header = Header
     nib.save(out , outDirectory)
 
-def nibShow(im1,im2):
-    a = nib.viewers.OrthoSlicer3D(im1,title='1')
-    b = nib.viewers.OrthoSlicer3D(im2,title='2')
-    a.link_to(b)
+def nibShow(*args):
+    if len(args) > 1:
+        for ax, im in enumerate(args):
+            if ax == 0: a = nib.viewers.OrthoSlicer3D(im,title=str(ax))
+            else: 
+                b = nib.viewers.OrthoSlicer3D(im,title='2')
+                a.link_to(b)
+    else: 
+        a = nib.viewers.OrthoSlicer3D(im)
     a.show()
 
 def fixMaskMinMax(Image):

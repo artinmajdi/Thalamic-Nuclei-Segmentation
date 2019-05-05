@@ -8,22 +8,32 @@ import Parameters.paramFunc as paramFunc
 # import keras
 # import h5py
 import nibabel as nib
+import nilearn 
+from nilearn import image as niImage
 
-params = paramFunc.Run(UserInfo.__dict__, terminal=True)
+# params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 
+def func_reslice(dir1, dir_ref, interpolation):
+    im = niImage.load_img(dir1)
+    min , max = im.get_data().min() , im.get_data().max()
+    print(min , max)
+    if max >1:
+        print('---')
+    ref = niImage.load_img(dir_ref)
+    imRL = niImage.resample_img(img=im , target_affine=ref.affine  , target_shape=im.shape,interpolation=interpolation)    
+    return imRL
 
+dir_ref = '/array/ssd/msmajdi/experiments/keras/exp3/train/Main/vimp2_819_05172013_DS/'
+dir_in  = '/array/ssd/msmajdi/data/preProcessed/7T/vimp2_A/'
+dir_out = '/array/ssd/msmajdi/data/preProcessed/7T/vimp2_A_b/'
+smallFuncs.mkDir(dir_out + 'Label/')
 
-dirr = '/array/ssd/msmajdi/experiments/keras/exp2/results/sE11_mUnet_FM20_DO0.3_Main_PlusSRI_CV_a/sd2/vimp2_972_08152013_DC_MS/'
-# def Save_AllNuclei_inOne():
+imRL = func_reslice(dir_in + 'WMnMPRAGE_bias_corr.nii.gz', dir_ref + 'WMnMPRAGE_bias_corr.nii.gz' , 'continuous')
+nib.save(imRL , dir_out + 'WMnMPRAGE_bias_corr.nii.gz')
 
-A = smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei()
+for label in smallFuncs.Nuclei_Class(method = 'Cascade').All_Nuclei().Names:
+    print(label)
+    imRL = func_reslice(dir_in + 'Label/' + label + '.nii.gz', dir_ref + 'Label/' + label + '.nii.gz' , 'nearest')
+    nib.save(imRL , dir_out + 'Label/' + label + '.nii.gz')
 
-im = nib.load( dirr + '1-THALAMUS.nii.gz')   
-Mask = []
-for cnt , name in zip(A.Indexes , A.Names):                                
-    if cnt != 1:
-        msk = nib.load( dirr + name  + '.nii.gz' ).get_data()  
-        Mask = cnt*msk if Mask == [] else Mask + cnt*msk   
-    
-
-smallFuncs.saveImage( Mask , im.affine , im.header, '/array/ssd/msmajdi/AllLabels.nii.gz')
+print('---')
