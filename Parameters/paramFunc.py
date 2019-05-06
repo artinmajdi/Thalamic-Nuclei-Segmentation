@@ -52,51 +52,56 @@ def temp_Experiments_preSet(UserInfoB):
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 
+    def extra_info(UserInfoB):
+        if UserInfoB['TypeExperiment'] == 4:
+            UserInfoB['simulation'].TestOnly = True
+
+        elif UserInfoB['TypeExperiment'] == 3:
+            UserInfoB['InitializeB'].FromThalamus   = True
+            UserInfoB['InitializeB'].FromOlderModel = True
+            UserInfoB['InitializeB'].From_3T        = False  
+
+        elif UserInfoB['TypeExperiment'] == 5: 
+            UserInfoB['InitializeB'].FromThalamus   = False
+            UserInfoB['InitializeB'].FromOlderModel = False
+            UserInfoB['InitializeB'].From_3T        = True  
+            UserInfoB['simulation'].TestOnly        = False  
+        
+        elif UserInfoB['TypeExperiment'] == 7:
+            UserInfoB['SubExperiment'].Tag += '_Main_PlusET_PlusSRI'
+
+        #elif UserInfoB['TypeExperiment'] == 8:
+        #    UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI'
+
+        elif UserInfoB['TypeExperiment'] == 9:
+            UserInfoB['InitializeB'].FromThalamus   = False
+            UserInfoB['InitializeB'].FromOlderModel = True
+            UserInfoB['InitializeB'].From_3T        = False   
+            UserInfoB['CrossVal'].Mode = False
+            
+        elif UserInfoB['TypeExperiment'] == 10:
+            UserInfoB['ReadTrain'].ReadAugments.LoadAll = True 
+            # UserInfoB['SubExperiment'].Tag += '_Main_AllAugments'   
+            
+        elif UserInfoB['TypeExperiment'] == 11:
+            UserInfoB['SubExperiment'].Tag += '_Main_Init_FromThalamus'  
+            UserInfoB['InitializeB'].FromThalamus   = True
+            UserInfoB['InitializeB'].FromOlderModel = False
+            UserInfoB['InitializeB'].From_3T        = False       
+
+        elif UserInfoB['TypeExperiment'] == 12:
+            UserInfoB['SubExperiment'].Tag += '_Main_Init_From3T'  
+            UserInfoB['InitializeB'].FromThalamus   = False
+            UserInfoB['InitializeB'].FromOlderModel = False
+            UserInfoB['InitializeB'].From_3T        = True  
+
+        return UserInfoB
+
     a,b,c = TypeExperimentFuncs().main(UserInfoB['TypeExperiment'])
     UserInfoB['SubExperiment'].Index = a
     UserInfoB['ReadTrain']           = b
     UserInfoB['Transfer_Learning']   = c
-    
-    
-    if UserInfoB['TypeExperiment'] == 4: 
-        UserInfoB['simulation'].TestOnly = True
-
-    elif UserInfoB['TypeExperiment'] == 3:
-        UserInfoB['InitializeB'].FromThalamus   = True
-        UserInfoB['InitializeB'].FromOlderModel = True
-        UserInfoB['InitializeB'].From_3T        = False  
-
-    elif UserInfoB['TypeExperiment'] == 5: 
-        UserInfoB['InitializeB'].FromThalamus   = False
-        UserInfoB['InitializeB'].FromOlderModel = False
-        UserInfoB['InitializeB'].From_3T        = True  
-        UserInfoB['simulation'].TestOnly        = False  
-    
-    elif UserInfoB['TypeExperiment'] == 7:
-        UserInfoB['SubExperiment'].Tag += '_Main_PlusET_PlusSRI'
-
-    #elif UserInfoB['TypeExperiment'] == 8:
-    #    UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI'
-
-    elif UserInfoB['TypeExperiment'] == 9:
-        UserInfoB['InitializeB'].FromOlderModel += True
-        UserInfoB['SubExperiment'].Tag += '_ET_InitFrom_Main_PlusSRI'   
-         
-    elif UserInfoB['TypeExperiment'] == 10:
-        UserInfoB['ReadTrain'].ReadAugments.LoadAll = True 
-        # UserInfoB['SubExperiment'].Tag += '_Main_AllAugments'   
-        
-    elif UserInfoB['TypeExperiment'] == 11:
-        UserInfoB['SubExperiment'].Tag += '_Main_Init_FromThalamus'  
-        UserInfoB['InitializeB'].FromThalamus   = True
-        UserInfoB['InitializeB'].FromOlderModel = False
-        UserInfoB['InitializeB'].From_3T        = False       
-
-    elif UserInfoB['TypeExperiment'] == 12:
-        UserInfoB['SubExperiment'].Tag += '_Main_Init_From3T'  
-        UserInfoB['InitializeB'].FromThalamus   = False
-        UserInfoB['InitializeB'].FromOlderModel = False
-        UserInfoB['InitializeB'].From_3T        = True  
+    UserInfoB = extra_info(UserInfoB)
 
     return UserInfoB
 

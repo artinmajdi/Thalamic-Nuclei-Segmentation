@@ -27,37 +27,64 @@ def func_FixMinMax(im):
     return im
 
     
-def func_reslice(dir1, dir_ref, interpolation):
 
-    im  = niImage.load_img(dir1)
-    ref = niImage.load_img(dir_ref)
-
-    if (interpolation == 'nearest'): im = func_FixMinMax(im)
-    
-    return niImage.resample_img(img=im , target_affine=ref.affine  , target_shape=im.shape,interpolation=interpolation)  
-
-dir_ref = '/array/ssd/msmajdi/experiments/keras/exp3/train/Main/vimp2_819_05172013_DS/'
-
-dir_ET_in  = '/array/ssd/msmajdi/data/preProcessed/ET_orig/'
-dir_ET_out = smallFuncs.mkDir('/array/ssd/msmajdi/data/preProcessed/ET_Resliced/')
-
-
-for sT in ['7T/' , '3T/']:
+def findingNot01Labels(dir_ET_in , sT):    
     for subj in [s for s in os.listdir(dir_ET_in + sT) if 'vimp' in s]:
         
         dir_in  = dir_ET_in + sT + subj + '/'
-        dir_out = smallFuncs.mkDir(dir_ET_out + sT + subj + '/')
+
+        for label in smallFuncs.Nuclei_Class(method = 'Cascade').All_Nuclei().Names:
+            
+            msk  = nib.load(dir_in + 'Label/' + label + '.nii.gz')
+            
+            print(sT, subj , label, msk.get_data().max()) if msk.get_data().max() > 1 else print(sT, subj , label)
 
 
-        smallFuncs.mkDir(dir_out + 'Label/')
+def loopOverAllSubjects(dir_ET_in , dir_ET_out , dir_ref , sT , MnMx_Flag , RL_Flag , targetShape_Mode):
+    def func_reslice(dir1, dir_ref, interpolation):
+
+
+        im  = niImage.load_img(dir1)
+        ref = niImage.load_img(dir_ref)
+
+        if MnMx_Flag and (interpolation == 'nearest'): im = func_FixMinMax(im)
+
+        if targetShape_Mode == 'ref':     target_shape = ref.shape  
+        elif targetShape_Mode == 'input': target_shape = im.shape
+        if RL_Flag: im = niImage.resample_img(img=im , target_affine=ref.affine  , target_shape=target_shape , interpolation=interpolation) 
+                    
+        return im
+   
+    def func_apply_reslice_perSubj(dir_in ,  dir_out , subj):
 
         imRL = func_reslice(dir_in + 'WMnMPRAGE_bias_corr.nii.gz', dir_ref + 'WMnMPRAGE_bias_corr.nii.gz' , 'continuous')
         nib.save(imRL , dir_out + 'WMnMPRAGE_bias_corr.nii.gz')
 
+        smallFuncs.mkDir(dir_out + 'Label/')
         for label in smallFuncs.Nuclei_Class(method = 'Cascade').All_Nuclei().Names:
-            print(subj , label)
+            print(sT , subj , label)
                             
             imRL = func_reslice(dir_in + 'Label/' + label + '.nii.gz', dir_ref + 'Label/' + label + '.nii.gz' , 'nearest')
             nib.save(imRL , dir_out + 'Label/' + label + '.nii.gz')
+                            
+    for subj in [s for s in os.listdir(dir_ET_in + sT) if 'vimp' in s]:
+        
+        dir_in  = dir_ET_in + sT + subj + '/'
+        dir_out = smallFuncs.mkDir(dir_ET_out + sT + subj + '/')
+        
+        func_apply_reslice_perSubj(dir_in , dir_out , subj)
+        
 
-        print('---')
+        
+dir_ref    = '/array/ssd/msmajdi/experiments/keras/exp3/train/Main/vimp2_819_05172013_DS/'
+dir_ET_in  = '/array/ssd/msmajdi/data/preProcessed/ET_orig/'
+dir_ET_out = smallFuncs.mkDir('/array/ssd/msmajdi/data/preProcessed/ET_Resliced/')
+
+
+# loopOverAllSubjects(dir_ET_in , dir_ET_out , dir_ref , '7T/' , 1 , 1 , 'input')
+loopOverAllSubjects(dir_ET_in , dir_ET_out , dir_ref , '3T/' , 1 , 1 , 'input')
+
+
+# for sT in ['7T/'  , '3T/']:
+#     findingNot01Labels(dir_ET_in , sT)
+#     # findingNot01Labels(dir_ET_out , sT)

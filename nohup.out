@@ -1,0 +1,279 @@
+Using TensorFlow backend.
+image 0 / 84 augment 0 / 6 vimp2_A sd 1 angle -4
+image 0 / 84 augment 1 / 6 vimp2_A sd 1 angle 6
+image 0 / 84 augment 2 / 6 vimp2_A sd 1 angle 6
+image 0 / 84 augment 3 / 6 vimp2_A sd 1 angle 3
+image 0 / 84 augment 4 / 6 vimp2_A sd 1 angle -4
+image 0 / 84 augment 5 / 6 vimp2_A sd 1 angle 2
+image 1 / 84 augment 0 / 6 vimp2_B sd 1 angle 1
+image 1 / 84 augment 1 / 6 vimp2_B sd 1 angle -1
+image 1 / 84 augment 2 / 6 vimp2_B sd 1 angle 2
+image 1 / 84 augment 3 / 6 vimp2_B sd 1 angle -7
+image 1 / 84 augment 4 / 6 vimp2_B sd 1 angle -2
+image 1 / 84 augment 5 / 6 vimp2_B sd 1 angle -2
+image 2 / 84 augment 0 / 6 vimp2_C sd 1 angle 1
+image 2 / 84 augment 1 / 6 vimp2_C sd 1 angle -1
+image 2 / 84 augment 2 / 6 vimp2_C sd 1 angle -1
+image 2 / 84 augment 3 / 6 vimp2_C sd 1 angle -3
+image 2 / 84 augment 4 / 6 vimp2_C sd 1 angle 2
+image 2 / 84 augment 5 / 6 vimp2_C sd 1 angle -4
+image 3 / 84 augment 0 / 6 vimp2_D sd 1 angle 1
+image 3 / 84 augment 1 / 6 vimp2_D sd 1 angle 4
+image 3 / 84 augment 2 / 6 vimp2_D sd 1 angle 7
+image 3 / 84 augment 3 / 6 vimp2_D sd 1 angle 1
+image 3 / 84 augment 4 / 6 vimp2_D sd 1 angle 7
+image 3 / 84 augment 5 / 6 vimp2_D sd 1 angle -2
+image 4 / 84 augment 0 / 6 vimp2_F sd 1 angle 0
+image 4 / 84 augment 1 / 6 vimp2_F sd 1 angle -3
+image 4 / 84 augment 2 / 6 vimp2_F sd 1 angle -4
+image 4 / 84 augment 3 / 6 vimp2_F sd 1 angle 4
+image 4 / 84 augment 4 / 6 vimp2_F sd 1 angle -3
+image 4 / 84 augment 5 / 6 vimp2_F sd 1 angle 5
+image 5 / 84 augment 0 / 6 vimp2_G sd 1 angle -4
+image 5 / 84 augment 1 / 6 vimp2_G sd 1 angle -3
+image 5 / 84 augment 2 / 6 vimp2_G sd 1 angle -3
+image 5 / 84 augment 3 / 6 vimp2_G sd 1 angle -2
+image 5 / 84 augment 4 / 6 vimp2_G sd 1 angle -1
+image 5 / 84 augment 5 / 6 vimp2_G sd 1 angle -2
+image 6 / 84 augment 0 / 6 vimp2_H sd 1 angle 5
+image 6 / 84 augment 1 / 6 vimp2_H sd 1 angle 2
+image 6 / 84 augment 2 / 6 vimp2_H sd 1 angle -1
+image 6 / 84 augment 3 / 6 vimp2_H sd 1 angle 2
+image 6 / 84 augment 4 / 6 vimp2_H sd 1 angle 6
+image 6 / 84 augment 5 / 6 vimp2_H sd 1 angle 6
+image 7 / 84 augment 0 / 6 vimp2_I sd 1 angle 4
+image 7 / 84 augment 1 / 6 vimp2_I sd 1 angle -7
+image 7 / 84 augment 2 / 6 vimp2_I sd 1 angle -6
+image 7 / 84 augment 3 / 6 vimp2_I sd 1 angle -2
+image 7 / 84 augment 4 / 6 vimp2_I sd 1 angle 4
+image 7 / 84 augment 5 / 6 vimp2_I sd 1 angle 5
+image 8 / 84 augment 0 / 6 vimp2_J sd 1 angle 2
+image 8 / 84 augment 1 / 6 vimp2_J sd 1 angle 6
+image 8 / 84 augment 2 / 6 vimp2_J sd 1 angle 6
+image 8 / 84 augment 3 / 6 vimp2_J sd 1 angle -6
+image 8 / 84 augment 4 / 6 vimp2_J sd 1 angle 5
+image 8 / 84 augment 5 / 6 vimp2_J sd 1 angle 3
+image 9 / 84 augment 0 / 6 vimp2_K sd 1 angle 3
+image 9 / 84 augment 1 / 6 vimp2_K sd 1 angle -3
+image 9 / 84 augment 2 / 6 vimp2_K sd 1 angle -1
+image 9 / 84 augment 3 / 6 vimp2_K sd 1 angle 6
+image 9 / 84 augment 4 / 6 vimp2_K sd 1 angle -4
+image 9 / 84 augment 5 / 6 vimp2_K sd 1 angle -4
+image 10 / 84 augment 0 / 6 vimp2_L sd 1 angle -2
+image 10 / 84 augment 1 / 6 vimp2_L sd 1 angle -4
+image 10 / 84 augment 2 / 6 vimp2_L sd 1 angle -1
+image 10 / 84 augment 3 / 6 vimp2_L sd 1 angle -5
+image 10 / 84 augment 4 / 6 vimp2_L sd 1 angle 4
+image 10 / 84 augment 5 / 6 vimp2_L sd 1 angle -2
+image 11 / 84 augment 0 / 6 vimp2_M sd 1 angle -6
+image 11 / 84 augment 1 / 6 vimp2_M sd 1 angle 7
+image 11 / 84 augment 2 / 6 vimp2_M sd 1 angle 1
+image 11 / 84 augment 3 / 6 vimp2_M sd 1 angle 6
+image 11 / 84 augment 4 / 6 vimp2_M sd 1 angle -5
+image 11 / 84 augment 5 / 6 vimp2_M sd 1 angle -5
+image 12 / 84 augment 0 / 6 vimp2_A_Aug0_Rot_4 sd 1 angle 7
+Traceback (most recent call last):
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/loadsave.py", line 40, in load
+    stat_result = os.stat(filename)
+FileNotFoundError: [Errno 2] No such file or directory: '/array/ssd/msmajdi/experiments/keras/exp3/train/Augments/wRot7d/ET/sd1/vimp2_A_Aug0_Rot_4/PProcessed.nii.gz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "preprocess/run_augment.py", line 14, in <module>
+    augmentA.main_augment( params , 'Linear', 'experiment')
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/augmentA.py", line 161, in main_augment
+    LinearFunc(params, mode)
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/augmentA.py", line 113, in LinearFunc
+    apply_OnImage()
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/augmentA.py", line 110, in apply_OnImage
+    imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image                        
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/loadsave.py", line 42, in load
+    raise FileNotFoundError("No such file or no access: '%s'" % filename)
+FileNotFoundError: No such file or no access: '/array/ssd/msmajdi/experiments/keras/exp3/train/Augments/wRot7d/ET/sd1/vimp2_A_Aug0_Rot_4/PProcessed.nii.gz'
+Using TensorFlow backend.
+image 0 / 84 augment 0 / 6 vimp2_A sd 0 angle -6
+image 0 / 84 augment 1 / 6 vimp2_A sd 0 angle 7
+image 0 / 84 augment 2 / 6 vimp2_A sd 0 angle 4
+image 0 / 84 augment 3 / 6 vimp2_A sd 0 angle 1
+image 0 / 84 augment 4 / 6 vimp2_A sd 0 angle -6
+image 0 / 84 augment 5 / 6 vimp2_A sd 0 angle -1
+image 1 / 84 augment 0 / 6 vimp2_B sd 0 angle 3
+image 1 / 84 augment 1 / 6 vimp2_B sd 0 angle 2
+image 1 / 84 augment 2 / 6 vimp2_B sd 0 angle -4
+image 1 / 84 augment 3 / 6 vimp2_B sd 0 angle 6
+image 1 / 84 augment 4 / 6 vimp2_B sd 0 angle 2
+image 1 / 84 augment 5 / 6 vimp2_B sd 0 angle 3
+image 2 / 84 augment 0 / 6 vimp2_C sd 0 angle -5
+image 2 / 84 augment 1 / 6 vimp2_C sd 0 angle -1
+image 2 / 84 augment 2 / 6 vimp2_C sd 0 angle -3
+image 2 / 84 augment 3 / 6 vimp2_C sd 0 angle 6
+image 2 / 84 augment 4 / 6 vimp2_C sd 0 angle -5
+image 2 / 84 augment 5 / 6 vimp2_C sd 0 angle -2
+image 3 / 84 augment 0 / 6 vimp2_D sd 0 angle -1
+image 3 / 84 augment 1 / 6 vimp2_D sd 0 angle 3
+image 3 / 84 augment 2 / 6 vimp2_D sd 0 angle 1
+image 3 / 84 augment 3 / 6 vimp2_D sd 0 angle 6
+image 3 / 84 augment 4 / 6 vimp2_D sd 0 angle -7
+image 3 / 84 augment 5 / 6 vimp2_D sd 0 angle 5
+image 4 / 84 augment 0 / 6 vimp2_F sd 0 angle -4
+image 4 / 84 augment 1 / 6 vimp2_F sd 0 angle -2
+image 4 / 84 augment 2 / 6 vimp2_F sd 0 angle -4
+image 4 / 84 augment 3 / 6 vimp2_F sd 0 angle -1
+image 4 / 84 augment 4 / 6 vimp2_F sd 0 angle 7
+image 4 / 84 augment 5 / 6 vimp2_F sd 0 angle -3
+image 5 / 84 augment 0 / 6 vimp2_G sd 0 angle -1
+image 5 / 84 augment 1 / 6 vimp2_G sd 0 angle -6
+image 5 / 84 augment 2 / 6 vimp2_G sd 0 angle 6
+image 5 / 84 augment 3 / 6 vimp2_G sd 0 angle 5
+image 5 / 84 augment 4 / 6 vimp2_G sd 0 angle 7
+image 5 / 84 augment 5 / 6 vimp2_G sd 0 angle -2
+image 6 / 84 augment 0 / 6 vimp2_H sd 0 angle 6
+image 6 / 84 augment 1 / 6 vimp2_H sd 0 angle -3
+image 6 / 84 augment 2 / 6 vimp2_H sd 0 angle 2
+image 6 / 84 augment 3 / 6 vimp2_H sd 0 angle -4
+image 6 / 84 augment 4 / 6 vimp2_H sd 0 angle -1
+image 6 / 84 augment 5 / 6 vimp2_H sd 0 angle 6
+image 7 / 84 augment 0 / 6 vimp2_I sd 0 angle -2
+image 7 / 84 augment 1 / 6 vimp2_I sd 0 angle 3
+image 7 / 84 augment 2 / 6 vimp2_I sd 0 angle -3
+image 7 / 84 augment 3 / 6 vimp2_I sd 0 angle 3
+image 7 / 84 augment 4 / 6 vimp2_I sd 0 angle 7
+image 7 / 84 augment 5 / 6 vimp2_I sd 0 angle 7
+image 8 / 84 augment 0 / 6 vimp2_J sd 0 angle -7
+image 8 / 84 augment 1 / 6 vimp2_J sd 0 angle 5
+image 8 / 84 augment 2 / 6 vimp2_J sd 0 angle -6
+image 8 / 84 augment 3 / 6 vimp2_J sd 0 angle 7
+image 8 / 84 augment 4 / 6 vimp2_J sd 0 angle -6
+image 8 / 84 augment 5 / 6 vimp2_J sd 0 angle 4
+image 9 / 84 augment 0 / 6 vimp2_K sd 0 angle -4
+image 9 / 84 augment 1 / 6 vimp2_K sd 0 angle 2
+image 9 / 84 augment 2 / 6 vimp2_K sd 0 angle -2
+image 9 / 84 augment 3 / 6 vimp2_K sd 0 angle 5
+image 9 / 84 augment 4 / 6 vimp2_K sd 0 angle -5
+image 9 / 84 augment 5 / 6 vimp2_K sd 0 angle 2
+image 10 / 84 augment 0 / 6 vimp2_L sd 0 angle 3
+image 10 / 84 augment 1 / 6 vimp2_L sd 0 angle -2
+image 10 / 84 augment 2 / 6 vimp2_L sd 0 angle 6
+image 10 / 84 augment 3 / 6 vimp2_L sd 0 angle 1
+image 10 / 84 augment 4 / 6 vimp2_L sd 0 angle -3
+image 10 / 84 augment 5 / 6 vimp2_L sd 0 angle -4
+image 11 / 84 augment 0 / 6 vimp2_M sd 0 angle 6
+image 11 / 84 augment 1 / 6 vimp2_M sd 0 angle 2
+image 11 / 84 augment 2 / 6 vimp2_M sd 0 angle -4
+image 11 / 84 augment 3 / 6 vimp2_M sd 0 angle 6
+image 11 / 84 augment 4 / 6 vimp2_M sd 0 angle 5
+image 11 / 84 augment 5 / 6 vimp2_M sd 0 angle -7
+image 12 / 84 augment 0 / 6 vimp2_A_Aug0_Rot_-3 sd 0 angle -5
+Traceback (most recent call last):
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/loadsave.py", line 40, in load
+    stat_result = os.stat(filename)
+FileNotFoundError: [Errno 2] No such file or directory: '/array/ssd/msmajdi/experiments/keras/exp3/train/Augments/wRot7d/ET/sd0/vimp2_A_Aug0_Rot_-3/PProcessed.nii.gz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "preprocess/run_augment.py", line 14, in <module>
+    augmentA.main_augment( params , 'Linear', 'experiment')
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/augmentA.py", line 161, in main_augment
+    LinearFunc(params, mode)
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/augmentA.py", line 113, in LinearFunc
+    apply_OnImage()
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/augmentA.py", line 110, in apply_OnImage
+    imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image                        
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/loadsave.py", line 42, in load
+    raise FileNotFoundError("No such file or no access: '%s'" % filename)
+FileNotFoundError: No such file or no access: '/array/ssd/msmajdi/experiments/keras/exp3/train/Augments/wRot7d/ET/sd0/vimp2_A_Aug0_Rot_-3/PProcessed.nii.gz'
+Using TensorFlow backend.
+image 0 / 84 augment 0 / 6 vimp2_A sd 2 angle 7
+image 0 / 84 augment 1 / 6 vimp2_A sd 2 angle 1
+image 0 / 84 augment 2 / 6 vimp2_A sd 2 angle 2
+image 0 / 84 augment 3 / 6 vimp2_A sd 2 angle 1
+image 0 / 84 augment 4 / 6 vimp2_A sd 2 angle 6
+image 0 / 84 augment 5 / 6 vimp2_A sd 2 angle -2
+image 1 / 84 augment 0 / 6 vimp2_B sd 2 angle 6
+image 1 / 84 augment 1 / 6 vimp2_B sd 2 angle 4
+image 1 / 84 augment 2 / 6 vimp2_B sd 2 angle 3
+image 1 / 84 augment 3 / 6 vimp2_B sd 2 angle 5
+image 1 / 84 augment 4 / 6 vimp2_B sd 2 angle -3
+image 1 / 84 augment 5 / 6 vimp2_B sd 2 angle -7
+image 2 / 84 augment 0 / 6 vimp2_C sd 2 angle 3
+image 2 / 84 augment 1 / 6 vimp2_C sd 2 angle 3
+image 2 / 84 augment 2 / 6 vimp2_C sd 2 angle 6
+image 2 / 84 augment 3 / 6 vimp2_C sd 2 angle 5
+image 2 / 84 augment 4 / 6 vimp2_C sd 2 angle 3
+image 2 / 84 augment 5 / 6 vimp2_C sd 2 angle -2
+image 3 / 84 augment 0 / 6 vimp2_D sd 2 angle 1
+image 3 / 84 augment 1 / 6 vimp2_D sd 2 angle 1
+image 3 / 84 augment 2 / 6 vimp2_D sd 2 angle 7
+image 3 / 84 augment 3 / 6 vimp2_D sd 2 angle 6
+image 3 / 84 augment 4 / 6 vimp2_D sd 2 angle 4
+image 3 / 84 augment 5 / 6 vimp2_D sd 2 angle -6
+image 4 / 84 augment 0 / 6 vimp2_F sd 2 angle -7
+image 4 / 84 augment 1 / 6 vimp2_F sd 2 angle 6
+image 4 / 84 augment 2 / 6 vimp2_F sd 2 angle -1
+image 4 / 84 augment 3 / 6 vimp2_F sd 2 angle -3
+image 4 / 84 augment 4 / 6 vimp2_F sd 2 angle 5
+image 4 / 84 augment 5 / 6 vimp2_F sd 2 angle -3
+image 5 / 84 augment 0 / 6 vimp2_G sd 2 angle -5
+image 5 / 84 augment 1 / 6 vimp2_G sd 2 angle -3
+image 5 / 84 augment 2 / 6 vimp2_G sd 2 angle 3
+image 5 / 84 augment 3 / 6 vimp2_G sd 2 angle 5
+image 5 / 84 augment 4 / 6 vimp2_G sd 2 angle 4
+image 5 / 84 augment 5 / 6 vimp2_G sd 2 angle 4
+image 6 / 84 augment 0 / 6 vimp2_H sd 2 angle 0
+image 6 / 84 augment 1 / 6 vimp2_H sd 2 angle -2
+image 6 / 84 augment 2 / 6 vimp2_H sd 2 angle -6
+image 6 / 84 augment 3 / 6 vimp2_H sd 2 angle -5
+image 6 / 84 augment 4 / 6 vimp2_H sd 2 angle -3
+image 6 / 84 augment 5 / 6 vimp2_H sd 2 angle 3
+image 7 / 84 augment 0 / 6 vimp2_I sd 2 angle -1
+image 7 / 84 augment 1 / 6 vimp2_I sd 2 angle -6
+image 7 / 84 augment 2 / 6 vimp2_I sd 2 angle -1
+image 7 / 84 augment 3 / 6 vimp2_I sd 2 angle 4
+image 7 / 84 augment 4 / 6 vimp2_I sd 2 angle 5
+image 7 / 84 augment 5 / 6 vimp2_I sd 2 angle 4
+image 8 / 84 augment 0 / 6 vimp2_J sd 2 angle -3
+image 8 / 84 augment 1 / 6 vimp2_J sd 2 angle -7
+image 8 / 84 augment 2 / 6 vimp2_J sd 2 angle 2
+image 8 / 84 augment 3 / 6 vimp2_J sd 2 angle -5
+image 8 / 84 augment 4 / 6 vimp2_J sd 2 angle 4
+image 8 / 84 augment 5 / 6 vimp2_J sd 2 angle 6
+image 9 / 84 augment 0 / 6 vimp2_K sd 2 angle 1
+image 9 / 84 augment 1 / 6 vimp2_K sd 2 angle 6
+image 9 / 84 augment 2 / 6 vimp2_K sd 2 angle -5
+image 9 / 84 augment 3 / 6 vimp2_K sd 2 angle 5
+image 9 / 84 augment 4 / 6 vimp2_K sd 2 angle -4
+image 9 / 84 augment 5 / 6 vimp2_K sd 2 angle 7
+image 10 / 84 augment 0 / 6 vimp2_L sd 2 angle 2
+image 10 / 84 augment 1 / 6 vimp2_L sd 2 angle 2
+image 10 / 84 augment 2 / 6 vimp2_L sd 2 angle 2
+image 10 / 84 augment 3 / 6 vimp2_L sd 2 angle -5
+image 10 / 84 augment 4 / 6 vimp2_L sd 2 angle 4
+image 10 / 84 augment 5 / 6 vimp2_L sd 2 angle 5
+image 11 / 84 augment 0 / 6 vimp2_M sd 2 angle -1
+image 11 / 84 augment 1 / 6 vimp2_M sd 2 angle 4
+image 11 / 84 augment 2 / 6 vimp2_M sd 2 angle -1
+image 11 / 84 augment 3 / 6 vimp2_M sd 2 angle 2
+image 11 / 84 augment 4 / 6 vimp2_M sd 2 angle -1
+image 11 / 84 augment 5 / 6 vimp2_M sd 2 angle 2
+image 12 / 84 augment 0 / 6 vimp2_A_Aug0_Rot_6 sd 2 angle 1
+Traceback (most recent call last):
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/loadsave.py", line 40, in load
+    stat_result = os.stat(filename)
+FileNotFoundError: [Errno 2] No such file or directory: '/array/ssd/msmajdi/experiments/keras/exp3/train/Augments/wRot7d/ET/sd2/vimp2_A_Aug0_Rot_6/PProcessed.nii.gz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "preprocess/run_augment.py", line 14, in <module>
+    augmentA.main_augment( params , 'Linear', 'experiment')
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/augmentA.py", line 161, in main_augment
+    LinearFunc(params, mode)
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/augmentA.py", line 113, in LinearFunc
+    apply_OnImage()
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/augmentA.py", line 110, in apply_OnImage
+    imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image                        
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/loadsave.py", line 42, in load
+    raise FileNotFoundError("No such file or no access: '%s'" % filename)
+FileNotFoundError: No such file or no access: '/array/ssd/msmajdi/experiments/keras/exp3/train/Augments/wRot7d/ET/sd2/vimp2_A_Aug0_Rot_6/PProcessed.nii.gz'
