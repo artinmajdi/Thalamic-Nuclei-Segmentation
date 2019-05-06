@@ -226,7 +226,7 @@ def applyMain(Dir,mode):
         RunAllFunctions(Dir + nameSubject + '/Label/')
 
 
-for exp in ['exp4' , 'exp3']:
+for exp in ['exp3']: #  , 'exp3']:
     for ds in ['ET']: #  , 'ET_3T' , 'ET_7T']:
         print('\n\n\n  ' + exp + ' ET \n\n\n')
         # for dataset in ['Main/' , 'SRI/' , 'ET/']:
@@ -261,15 +261,15 @@ for exp in ['exp4' , 'exp3']:
 
 
 
-    for x in ['group1' , 'group2']:
-        print('\n\n\n  ' + exp + '   ' + x + '\n\n\n')
-        # for dataset in ['Main/' , 'SRI/' , 'ET/']:
-        Dir = '/array/ssd/msmajdi/experiments/keras/' + exp + '/crossVal/' + x + '/' 
-        applyMain(Dir ,'_PProcessed')
+#    for x in ['group1' , 'group2']:
+#        print('\n\n\n  ' + exp + '   ' + x + '\n\n\n')
+#        # for dataset in ['Main/' , 'SRI/' , 'ET/']:
+#        Dir = '/array/ssd/msmajdi/experiments/keras/' + exp + '/crossVal/' + x + '/' 
+#        applyMain(Dir ,'_PProcessed')
 
-        print('\n\n\n  ' + exp + '   ' + x + ' Augments \n\n\n')
-        for sd in ['sd0/' , 'sd1/' , 'sd2/']:
-            Dir = '/array/ssd/msmajdi/experiments/keras/' + exp + '/crossVal/' + x + '/Augments/' + sd  # params.directories.Test.Input.Subjects  + '/' # 
-            applyMain(Dir ,'_PProcessed')
+#        print('\n\n\n  ' + exp + '   ' + x + ' Augments \n\n\n')
+#        for sd in ['sd0/' , 'sd1/' , 'sd2/']:
+#            Dir = '/array/ssd/msmajdi/experiments/keras/' + exp + '/crossVal/' + x + '/Augments/' + sd  # params.directories.Test.Input.Subjects  + '/' # 
+#            applyMain(Dir ,'_PProcessed')
 
 
