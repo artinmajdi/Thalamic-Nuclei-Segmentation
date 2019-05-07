@@ -1,995 +1,0 @@
-*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
-(0/322) train vimp2_B_3T
-(1/322) train vimp2_I_7T
-(2/322) train vimp2_C_3T
-(3/322) train vimp2_J_7T
-(4/322) train vimp2_B_7T
-(5/322) train vimp2_D_3T
-(6/322) train vimp2_K_7T
-(7/322) train vimp2_I_3T
-(8/322) train vimp2_C_7T
-(9/322) train vimp2_F_3T
-(10/322) train vimp2_L_7T
-(11/322) train vimp2_J_3T
-(12/322) train vimp2_D_7T
-(13/322) train vimp2_H_3T
-(14/322) train vimp2_K_3T
-(15/322) train vimp2_F_7T
-(16/322) train vimp2_H_7T
-(17/322) train vimp2_L_3T
-(18/322) train vimp2_B_Aug5_Rot_3_3T
-(19/322) train vimp2_D_Aug5_Rot_-6_3T
-(20/322) train vimp2_H_Aug5_Rot_3_3T
-(21/322) train vimp2_J_Aug4_Rot_4_3T
-(22/322) train vimp2_L_Aug3_Rot_-5_3T
-(23/322) train vimp2_C_Aug3_Rot_5_3T
-(24/322) train vimp2_F_Aug3_Rot_4_3T
-(25/322) train vimp2_I_Aug3_Rot_-2_3T
-(26/322) train vimp2_K_Aug1_Rot_6_3T
-(27/322) train vimp2_D_Aug1_Rot_4_3T
-(28/322) train vimp2_H_Aug1_Rot_-3_3T
-(29/322) train vimp2_B_Aug2_Rot_2_3T
-(30/322) train vimp2_J_Aug0_Rot_-7_3T
-(31/322) train vimp2_L_Aug0_Rot_-2_3T
-(32/322) train vimp2_H_Aug5_Rot_6_3T
-(33/322) train vimp2_B_Aug5_Rot_-7_3T
-(34/322) train vimp2_F_Aug0_Rot_0_3T
-(35/322) train vimp2_J_Aug4_Rot_5_3T
-(36/322) train vimp2_L_Aug4_Rot_-3_3T
-(37/322) train vimp2_C_Aug3_Rot_6_3T
-(38/322) train vimp2_F_Aug4_Rot_-3_3T
-(39/322) train vimp2_I_Aug3_Rot_3_3T
-(40/322) train vimp2_K_Aug2_Rot_-1_3T
-(41/322) train vimp2_L_Aug0_Rot_2_3T
-(42/322) train vimp2_B_Aug2_Rot_3_3T
-(43/322) train vimp2_D_Aug2_Rot_1_3T
-(44/322) train vimp2_H_Aug2_Rot_-1_3T
-(45/322) train vimp2_J_Aug1_Rot_5_3T
-(46/322) train vimp2_C_Aug0_Rot_1_3T
-(47/322) train vimp2_F_Aug0_Rot_-4_3T
-(48/322) train vimp2_I_Aug0_Rot_-1_3T
-(49/322) train vimp2_J_Aug4_Rot_-6_3T
-(50/322) train vimp2_L_Aug4_Rot_4_3T
-(51/322) train vimp2_C_Aug4_Rot_2_3T
-(52/322) train vimp2_F_Aug4_Rot_5_3T
-(53/322) train vimp2_I_Aug3_Rot_4_3T
-(54/322) train vimp2_K_Aug2_Rot_-2_3T
-(55/322) train vimp2_B_Aug2_Rot_-4_3T
-(56/322) train vimp2_D_Aug2_Rot_7_3T
-(57/322) train vimp2_H_Aug2_Rot_2_3T
-(58/322) train vimp2_J_Aug1_Rot_6_3T
-(59/322) train vimp2_L_Aug0_Rot_3_3T
-(60/322) train vimp2_C_Aug0_Rot_3_3T
-(61/322) train vimp2_F_Aug0_Rot_-7_3T
-(62/322) train vimp2_I_Aug0_Rot_-2_3T
-(63/322) train vimp2_J_Aug5_Rot_3_3T
-(64/322) train vimp2_L_Aug5_Rot_-2_3T
-(65/322) train vimp2_C_Aug4_Rot_3_3T
-(66/322) train vimp2_F_Aug4_Rot_7_3T
-(67/322) train vimp2_I_Aug4_Rot_4_3T
-(68/322) train vimp2_K_Aug2_Rot_-5_3T
-(69/322) train vimp2_B_Aug3_Rot_5_3T
-(70/322) train vimp2_D_Aug3_Rot_1_3T
-(71/322) train vimp2_H_Aug2_Rot_-6_3T
-(72/322) train vimp2_J_Aug1_Rot_-7_3T
-(73/322) train vimp2_L_Aug1_Rot_-2_3T
-(74/322) train vimp2_C_Aug0_Rot_-5_3T
-(75/322) train vimp2_F_Aug1_Rot_-2_3T
-(76/322) train vimp2_I_Aug0_Rot_4_3T
-(77/322) train vimp2_J_Aug5_Rot_4_3T
-(78/322) train vimp2_L_Aug5_Rot_-4_3T
-(79/322) train vimp2_C_Aug4_Rot_-5_3T
-(80/322) train vimp2_F_Aug5_Rot_-3_3T
-(81/322) train vimp2_I_Aug4_Rot_5_3T
-(82/322) train vimp2_K_Aug3_Rot_5_3T
-(83/322) train vimp2_B_Aug3_Rot_6_3T
-(84/322) train vimp2_D_Aug3_Rot_6_3T
-(85/322) train vimp2_H_Aug3_Rot_2_3T
-(86/322) train vimp2_J_Aug2_Rot_2_3T
-(87/322) train vimp2_L_Aug1_Rot_2_3T
-(88/322) train vimp2_C_Aug1_Rot_-1_3T
-(89/322) train vimp2_F_Aug1_Rot_-3_3T
-(90/322) train vimp2_I_Aug1_Rot_3_3T
-(91/322) train vimp2_J_Aug5_Rot_6_3T
-(92/322) train vimp2_L_Aug5_Rot_5_3T
-(93/322) train vimp2_C_Aug5_Rot_-2_3T
-(94/322) train vimp2_F_Aug5_Rot_5_3T
-(95/322) train vimp2_I_Aug4_Rot_7_3T
-(96/322) train vimp2_K_Aug3_Rot_6_3T
-(97/322) train vimp2_B_Aug0_Rot_1_3T
-(98/322) train vimp2_B_Aug3_Rot_-7_3T
-(99/322) train vimp2_D_Aug4_Rot_4_3T
-(100/322) train vimp2_H_Aug3_Rot_-4_3T
-(101/322) train vimp2_J_Aug2_Rot_-6_3T
-(102/322) train vimp2_L_Aug1_Rot_-4_3T
-(103/322) train vimp2_F_Aug1_Rot_6_3T
-(104/322) train vimp2_C_Aug1_Rot_3_3T
-(105/322) train vimp2_I_Aug1_Rot_-6_3T
-(106/322) train vimp2_K_Aug0_Rot_1_3T
-(107/322) train vimp2_C_Aug5_Rot_-4_3T
-(108/322) train vimp2_H_Aug0_Rot_0_3T
-(109/322) train vimp2_I_Aug5_Rot_4_3T
-(110/322) train vimp2_B_Aug0_Rot_3_3T
-(111/322) train vimp2_K_Aug4_Rot_-4_3T
-(112/322) train vimp2_B_Aug4_Rot_-2_3T
-(113/322) train vimp2_D_Aug4_Rot_-7_3T
-(114/322) train vimp2_H_Aug3_Rot_-5_3T
-(115/322) train vimp2_J_Aug2_Rot_6_3T
-(116/322) train vimp2_L_Aug2_Rot_-1_3T
-(117/322) train vimp2_C_Aug2_Rot_-1_3T
-(118/322) train vimp2_F_Aug2_Rot_-1_3T
-(119/322) train vimp2_I_Aug1_Rot_-7_3T
-(120/322) train vimp2_K_Aug0_Rot_3_3T
-(121/322) train vimp2_B_Aug0_Rot_6_3T
-(122/322) train vimp2_D_Aug0_Rot_-1_3T
-(123/322) train vimp2_H_Aug0_Rot_5_3T
-(124/322) train vimp2_I_Aug5_Rot_5_3T
-(125/322) train vimp2_K_Aug4_Rot_-5_3T
-(126/322) train vimp2_B_Aug4_Rot_2_3T
-(127/322) train vimp2_D_Aug4_Rot_7_3T
-(128/322) train vimp2_H_Aug4_Rot_-1_3T
-(129/322) train vimp2_J_Aug3_Rot_-5_3T
-(130/322) train vimp2_L_Aug2_Rot_2_3T
-(131/322) train vimp2_C_Aug2_Rot_-3_3T
-(132/322) train vimp2_F_Aug2_Rot_-4_3T
-(133/322) train vimp2_I_Aug2_Rot_-1_3T
-(134/322) train vimp2_K_Aug0_Rot_-4_3T
-(135/322) train vimp2_D_Aug0_Rot_1_3T
-(136/322) train vimp2_H_Aug0_Rot_6_3T
-(137/322) train vimp2_I_Aug5_Rot_7_3T
-(138/322) train vimp2_B_Aug1_Rot_-1_3T
-(139/322) train vimp2_K_Aug5_Rot_2_3T
-(140/322) train vimp2_B_Aug4_Rot_-3_3T
-(141/322) train vimp2_D_Aug5_Rot_-2_3T
-(142/322) train vimp2_H_Aug4_Rot_-3_3T
-(143/322) train vimp2_J_Aug3_Rot_-6_3T
-(144/322) train vimp2_L_Aug2_Rot_6_3T
-(145/322) train vimp2_C_Aug2_Rot_6_3T
-(146/322) train vimp2_F_Aug3_Rot_-1_3T
-(147/322) train vimp2_I_Aug2_Rot_-3_3T
-(148/322) train vimp2_K_Aug1_Rot_2_3T
-(149/322) train vimp2_B_Aug1_Rot_2_3T
-(150/322) train vimp2_D_Aug1_Rot_1_3T
-(151/322) train vimp2_H_Aug1_Rot_-2_3T
-(152/322) train vimp2_J_Aug0_Rot_2_3T
-(153/322) train vimp2_K_Aug5_Rot_-4_3T
-(154/322) train vimp2_B_Aug5_Rot_-2_3T
-(155/322) train vimp2_D_Aug5_Rot_5_3T
-(156/322) train vimp2_H_Aug4_Rot_6_3T
-(157/322) train vimp2_J_Aug3_Rot_7_3T
-(158/322) train vimp2_L_Aug3_Rot_1_3T
-(159/322) train vimp2_C_Aug3_Rot_-3_3T
-(160/322) train vimp2_F_Aug3_Rot_-3_3T
-(161/322) train vimp2_I_Aug2_Rot_-6_3T
-(162/322) train vimp2_K_Aug1_Rot_-3_3T
-(163/322) train vimp2_B_Aug1_Rot_4_3T
-(164/322) train vimp2_D_Aug1_Rot_3_3T
-(165/322) train vimp2_H_Aug1_Rot_2_3T
-(166/322) train vimp2_J_Aug0_Rot_-3_3T
-(167/322) train vimp2_K_Aug5_Rot_7_3T
-(168/322) train vimp2_I_Aug5_Rot_-3_7T
-(169/322) train vimp2_K_Aug4_Rot_3_7T
-(170/322) train vimp2_B_Aug1_Rot_-1_7T
-(171/322) train vimp2_D_Aug0_Rot_2_7T
-(172/322) train vimp2_F_Aug5_Rot_-3_7T
-(173/322) train vimp2_D_Aug4_Rot_-5_7T
-(174/322) train vimp2_H_Aug3_Rot_-7_7T
-(175/322) train vimp2_J_Aug2_Rot_5_7T
-(176/322) train vimp2_L_Aug1_Rot_-7_7T
-(177/322) train vimp2_B_Aug5_Rot_-2_7T
-(178/322) train vimp2_C_Aug3_Rot_-1_7T
-(179/322) train vimp2_F_Aug2_Rot_-1_7T
-(180/322) train vimp2_I_Aug1_Rot_-5_7T
-(181/322) train vimp2_K_Aug0_Rot_-6_7T
-(182/322) train vimp2_L_Aug5_Rot_-6_7T
-(183/322) train vimp2_B_Aug1_Rot_3_7T
-(184/322) train vimp2_D_Aug0_Rot_-4_7T
-(185/322) train vimp2_F_Aug5_Rot_-5_7T
-(186/322) train vimp2_I_Aug5_Rot_-4_7T
-(187/322) train vimp2_K_Aug4_Rot_-4_7T
-(188/322) train vimp2_D_Aug4_Rot_5_7T
-(189/322) train vimp2_H_Aug4_Rot_-3_7T
-(190/322) train vimp2_J_Aug3_Rot_1_7T
-(191/322) train vimp2_L_Aug2_Rot_2_7T
-(192/322) train vimp2_B_Aug5_Rot_5_7T
-(193/322) train vimp2_F_Aug2_Rot_-4_7T
-(194/322) train vimp2_I_Aug1_Rot_7_7T
-(195/322) train vimp2_K_Aug1_Rot_1_7T
-(196/322) train vimp2_C_Aug3_Rot_-4_7T
-(197/322) train vimp2_D_Aug1_Rot_5_7T
-(198/322) train vimp2_H_Aug0_Rot_-2_7T
-(199/322) train vimp2_I_Aug5_Rot_-5_7T
-(200/322) train vimp2_K_Aug4_Rot_7_7T
-(201/322) train vimp2_B_Aug1_Rot_-5_7T
-(202/322) train vimp2_H_Aug4_Rot_-5_7T
-(203/322) train vimp2_J_Aug3_Rot_4_7T
-(204/322) train vimp2_L_Aug2_Rot_-5_7T
-(205/322) train vimp2_B_Aug5_Rot_7_7T
-(206/322) train vimp2_D_Aug5_Rot_-2_7T
-(207/322) train vimp2_K_Aug1_Rot_3_7T
-(208/322) train vimp2_C_Aug3_Rot_4_7T
-(209/322) train vimp2_F_Aug2_Rot_7_7T
-(210/322) train vimp2_I_Aug2_Rot_0_7T
-(211/322) train vimp2_D_Aug1_Rot_6_7T
-(212/322) train vimp2_H_Aug0_Rot_3_7T
-(213/322) train vimp2_J_Aug0_Rot_-3_7T
-(214/322) train vimp2_K_Aug5_Rot_-1_7T
-(215/322) train vimp2_B_Aug2_Rot_-4_7T
-(216/322) train vimp2_J_Aug3_Rot_6_7T
-(217/322) train vimp2_L_Aug2_Rot_7_7T
-(218/322) train vimp2_C_Aug0_Rot_1_7T
-(219/322) 2019-05-06 14:58:28.182697: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
-2019-05-06 14:58:28.568987: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
-name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
-pciBusID: 0000:04:00.0
-totalMemory: 15.89GiB freeMemory: 15.60GiB
-2019-05-06 14:58:29.009274: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 1 with properties: 
-name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
-pciBusID: 0000:05:00.0
-totalMemory: 15.89GiB freeMemory: 15.60GiB
-2019-05-06 14:58:29.011062: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0, 1
-2019-05-06 14:58:29.760750: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
-2019-05-06 14:58:29.760826: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 1 
-2019-05-06 14:58:29.760840: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N Y 
-2019-05-06 14:58:29.760849: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 1:   Y N 
-2019-05-06 14:58:29.761714: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:04:00.0, compute capability: 6.0)
-2019-05-06 14:58:29.763678: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 15123 MB memory) -> physical GPU (device: 1, name: Tesla P100-PCIE-16GB, pci bus id: 0000:05:00.0, compute capability: 6.0)
-Using TensorFlow backend.
-Loading train:   0%|          | 0/322 [00:00<?, ?it/s]Loading train:   0%|          | 1/322 [00:00<00:34,  9.35it/s]Loading train:   1%|          | 3/322 [00:00<00:32,  9.91it/s]Loading train:   1%|          | 4/322 [00:00<00:32,  9.93it/s]Loading train:   2%|▏         | 6/322 [00:00<00:30, 10.45it/s]Loading train:   2%|▏         | 8/322 [00:00<00:29, 10.81it/s]Loading train:   3%|▎         | 10/322 [00:00<00:31, 10.01it/s]Loading train:   3%|▎         | 11/322 [00:01<00:31, 10.00it/s]Loading train:   4%|▍         | 13/322 [00:01<00:29, 10.54it/s]Loading train:   5%|▍         | 15/322 [00:01<00:30, 10.16it/s]Loading train:   5%|▍         | 16/322 [00:01<00:31,  9.65it/s]Loading train:   5%|▌         | 17/322 [00:01<00:31,  9.56it/s]Loading train:   6%|▌         | 18/322 [00:01<00:31,  9.64it/s]Loading train:   6%|▌         | 19/322 [00:01<00:31,  9.68it/s]Loading train:   7%|▋         | 21/322 [00:02<00:31,  9.47it/s]Loading train:   7%|▋         | 23/322 [00:02<00:30,  9.95it/s]Loading train:   8%|▊         | 25/322 [00:02<00:30,  9.61it/s]Loading train:   8%|▊         | 26/322 [00:02<00:31,  9.46it/s]Loading train:   9%|▊         | 28/322 [00:02<00:28, 10.18it/s]Loading train:   9%|▉         | 30/322 [00:02<00:29,  9.84it/s]Loading train:  10%|▉         | 32/322 [00:03<00:29,  9.92it/s]Loading train:  11%|█         | 34/322 [00:03<00:29,  9.67it/s]Loading train:  11%|█         | 35/322 [00:03<00:32,  8.80it/s]Loading train:  11%|█▏        | 37/322 [00:03<00:30,  9.43it/s]Loading train:  12%|█▏        | 39/322 [00:03<00:30,  9.36it/s]Loading train:  13%|█▎        | 41/322 [00:04<00:27, 10.11it/s]Loading train:  13%|█▎        | 43/322 [00:04<00:27,  9.99it/s]Loading train:  14%|█▍        | 45/322 [00:04<00:28,  9.69it/s]Loading train:  15%|█▍        | 47/322 [00:04<00:27, 10.08it/s]Loading train:  15%|█▌        | 49/322 [00:04<00:28,  9.74it/s]Loading train:  16%|█▌        | 51/322 [00:05<00:26, 10.06it/s]Loading train:  16%|█▋        | 53/322 [00:05<00:28,  9.53it/s]Loading train:  17%|█▋        | 55/322 [00:05<00:26, 10.24it/s]Loading train:  18%|█▊        | 57/322 [00:05<00:25, 10.44it/s]Loading train:  18%|█▊        | 59/322 [00:05<00:26,  9.98it/s]Loading train:  19%|█▉        | 61/322 [00:06<00:25, 10.07it/s]Loading train:  20%|█▉        | 63/322 [00:06<00:26,  9.60it/s]Loading train:  20%|██        | 65/322 [00:06<00:25,  9.93it/s]Loading train:  21%|██        | 67/322 [00:06<00:26,  9.45it/s]Loading train:  21%|██▏       | 69/322 [00:06<00:25, 10.09it/s]Loading train:  22%|██▏       | 71/322 [00:07<00:24, 10.13it/s]Loading train:  23%|██▎       | 73/322 [00:07<00:25,  9.88it/s]Loading train:  23%|██▎       | 74/322 [00:07<00:25,  9.73it/s]Loading train:  24%|██▎       | 76/322 [00:07<00:26,  9.40it/s]Loading train:  24%|██▍       | 78/322 [00:07<00:24, 10.01it/s]Loading train:  25%|██▍       | 80/322 [00:08<00:23, 10.13it/s]Loading train:  25%|██▌       | 82/322 [00:08<00:24,  9.74it/s]Loading train:  26%|██▌       | 84/322 [00:08<00:23, 10.19it/s]Loading train:  27%|██▋       | 86/322 [00:08<00:24,  9.82it/s]Loading train:  27%|██▋       | 88/322 [00:08<00:23,  9.99it/s]Loading train:  28%|██▊       | 90/322 [00:09<00:25,  9.16it/s]Loading train:  29%|██▊       | 92/322 [00:09<00:23,  9.86it/s]Loading train:  29%|██▉       | 94/322 [00:09<00:23,  9.54it/s]Loading train:  30%|██▉       | 95/322 [00:09<00:26,  8.59it/s]Loading train:  30%|███       | 97/322 [00:09<00:23,  9.46it/s]Loading train:  31%|███       | 99/322 [00:09<00:22,  9.72it/s]Loading train:  31%|███▏      | 101/322 [00:10<00:22,  9.68it/s]Loading train:  32%|███▏      | 103/322 [00:10<00:22,  9.95it/s]*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
-(0/322) train vimp2_B_3T
-(1/322) train vimp2_I_7T
-(2/322) train vimp2_C_3T
-(3/322) train vimp2_J_7T
-(4/322) train vimp2_B_7T
-(5/322) train vimp2_D_3T
-(6/322) train vimp2_K_7T
-(7/322) train vimp2_I_3T
-(8/322) train vimp2_C_7T
-(9/322) train vimp2_F_3T
-(10/322) train vimp2_L_7T
-(11/322) train vimp2_J_3T
-(12/322) train vimp2_D_7T
-(13/322) train vimp2_H_3T
-(14/322) train vimp2_K_3T
-(15/322) train vimp2_F_7T
-(16/322) train vimp2_H_7T
-(17/322) train vimp2_L_3T
-(18/322) train vimp2_C_Aug3_Rot_-3_3T
-(19/322) train vimp2_F_Aug3_Rot_-3_3T
-(20/322) train vimp2_I_Aug2_Rot_-6_3T
-(21/322) train vimp2_K_Aug1_Rot_-3_3T
-(22/322) train vimp2_B_Aug1_Rot_4_3T
-(23/322) train vimp2_D_Aug1_Rot_3_3T
-(24/322) train vimp2_H_Aug1_Rot_2_3T
-(25/322) train vimp2_J_Aug0_Rot_-3_3T
-(26/322) train vimp2_K_Aug5_Rot_7_3T
-(27/322) train vimp2_B_Aug5_Rot_3_3T
-(28/322) train vimp2_D_Aug5_Rot_-6_3T
-(29/322) train vimp2_H_Aug5_Rot_3_3T
-(30/322) train vimp2_J_Aug4_Rot_4_3T
-(31/322) train vimp2_L_Aug3_Rot_-5_3T
-(32/322) train vimp2_C_Aug3_Rot_5_3T
-(33/322) train vimp2_F_Aug3_Rot_4_3T
-(34/322) train vimp2_I_Aug3_Rot_-2_3T
-(35/322) train vimp2_K_Aug1_Rot_6_3T
-(36/322) train vimp2_B_Aug2_Rot_2_3T
-(37/322) train vimp2_D_Aug1_Rot_4_3T
-(38/322) train vimp2_H_Aug1_Rot_-3_3T
-(39/322) train vimp2_J_Aug0_Rot_-7_3T
-(40/322) train vimp2_L_Aug0_Rot_-2_3T
-(41/322) train vimp2_B_Aug5_Rot_-7_3T
-(42/322) train vimp2_F_Aug0_Rot_0_3T
-(43/322) train vimp2_H_Aug5_Rot_6_3T
-(44/322) train vimp2_J_Aug4_Rot_5_3T
-(45/322) train vimp2_L_Aug4_Rot_-3_3T
-(46/322) train vimp2_C_Aug3_Rot_6_3T
-(47/322) train vimp2_F_Aug4_Rot_-3_3T
-(48/322) train vimp2_I_Aug3_Rot_3_3T
-(49/322) train vimp2_K_Aug2_Rot_-1_3T
-(50/322) train vimp2_B_Aug2_Rot_3_3T
-(51/322) train vimp2_D_Aug2_Rot_1_3T
-(52/322) train vimp2_H_Aug2_Rot_-1_3T
-(53/322) train vimp2_J_Aug1_Rot_5_3T
-(54/322) train vimp2_L_Aug0_Rot_2_3T
-(55/322) train vimp2_C_Aug0_Rot_1_3T
-(56/322) train vimp2_F_Aug0_Rot_-4_3T
-(57/322) train vimp2_I_Aug0_Rot_-1_3T
-(58/322) train vimp2_J_Aug4_Rot_-6_3T
-(59/322) train vimp2_L_Aug4_Rot_4_3T
-(60/322) train vimp2_C_Aug4_Rot_2_3T
-(61/322) train vimp2_F_Aug4_Rot_5_3T
-(62/322) train vimp2_I_Aug3_Rot_4_3T
-(63/322) train vimp2_K_Aug2_Rot_-2_3T
-(64/322) train vimp2_B_Aug2_Rot_-4_3T
-(65/322) train vimp2_D_Aug2_Rot_7_3T
-(66/322) train vimp2_H_Aug2_Rot_2_3T
-(67/322) train vimp2_J_Aug1_Rot_6_3T
-(68/322) train vimp2_L_Aug0_Rot_3_3T
-(69/322) train vimp2_C_Aug0_Rot_3_3T
-(70/322) train vimp2_F_Aug0_Rot_-7_3T
-(71/322) train vimp2_I_Aug0_Rot_-2_3T
-(72/322) train vimp2_J_Aug5_Rot_3_3T
-(73/322) train vimp2_L_Aug5_Rot_-2_3T
-(74/322) train vimp2_C_Aug4_Rot_3_3T
-(75/322) train vimp2_F_Aug4_Rot_7_3T
-(76/322) train vimp2_I_Aug4_Rot_4_3T
-(77/322) train vimp2_K_Aug2_Rot_-5_3T
-(78/322) train vimp2_B_Aug3_Rot_5_3T
-(79/322) train vimp2_D_Aug3_Rot_1_3T
-(80/322) train vimp2_H_Aug2_Rot_-6_3T
-(81/322) train vimp2_J_Aug1_Rot_-7_3T
-(82/322) train vimp2_L_Aug1_Rot_-2_3T
-(83/322) train vimp2_C_Aug0_Rot_-5_3T
-(84/322) train vimp2_F_Aug1_Rot_-2_3T
-(85/322) train vimp2_I_Aug0_Rot_4_3T
-(86/322) train vimp2_J_Aug5_Rot_4_3T
-(87/322) train vimp2_L_Aug5_Rot_-4_3T
-(88/322) train vimp2_C_Aug4_Rot_-5_3T
-(89/322) train vimp2_F_Aug5_Rot_-3_3T
-(90/322) train vimp2_I_Aug4_Rot_5_3T
-(91/322) train vimp2_K_Aug3_Rot_5_3T
-(92/322) train vimp2_B_Aug3_Rot_6_3T
-(93/322) train vimp2_D_Aug3_Rot_6_3T
-(94/322) train vimp2_H_Aug3_Rot_2_3T
-(95/322) train vimp2_J_Aug2_Rot_2_3T
-(96/322) train vimp2_L_Aug1_Rot_2_3T
-(97/322) train vimp2_C_Aug1_Rot_-1_3T
-(98/322) train vimp2_F_Aug1_Rot_-3_3T
-(99/322) train vimp2_I_Aug1_Rot_3_3T
-(100/322) train vimp2_J_Aug5_Rot_6_3T
-(101/322) train vimp2_L_Aug5_Rot_5_3T
-(102/322) train vimp2_B_Aug0_Rot_1_3T
-(103/322) train vimp2_C_Aug5_Rot_-2_3T
-(104/322) train vimp2_F_Aug5_Rot_5_3T
-(105/322) train vimp2_I_Aug4_Rot_7_3T
-(106/322) train vimp2_K_Aug3_Rot_6_3T
-(107/322) train vimp2_B_Aug3_Rot_-7_3T
-(108/322) train vimp2_D_Aug4_Rot_4_3T
-(109/322) train vimp2_H_Aug3_Rot_-4_3T
-(110/322) train vimp2_J_Aug2_Rot_-6_3T
-(111/322) train vimp2_L_Aug1_Rot_-4_3T
-(112/322) train vimp2_C_Aug1_Rot_3_3T
-(113/322) train vimp2_F_Aug1_Rot_6_3T
-(114/322) train vimp2_I_Aug1_Rot_-6_3T
-(115/322) train vimp2_K_Aug0_Rot_1_3T
-(116/322) train vimp2_B_Aug0_Rot_3_3T
-(117/322) train vimp2_C_Aug5_Rot_-4_3T
-(118/322) train vimp2_H_Aug0_Rot_0_3T
-(119/322) train vimp2_I_Aug5_Rot_4_3T
-(120/322) train vimp2_K_Aug4_Rot_-4_3T
-(121/322) train vimp2_B_Aug4_Rot_-2_3T
-(122/322) train vimp2_D_Aug4_Rot_-7_3T
-(123/322) train vimp2_H_Aug3_Rot_-5_3T
-(124/322) train vimp2_J_Aug2_Rot_6_3T
-(125/322) train vimp2_L_Aug2_Rot_-1_3T
-(126/322) train vimp2_C_Aug2_Rot_-1_3T
-(127/322) train vimp2_F_Aug2_Rot_-1_3T
-(128/322) train vimp2_I_Aug1_Rot_-7_3T
-(129/322) train vimp2_K_Aug0_Rot_3_3T
-(130/322) train vimp2_B_Aug0_Rot_6_3T
-(131/322) train vimp2_D_Aug0_Rot_-1_3T
-(132/322) train vimp2_H_Aug0_Rot_5_3T
-(133/322) train vimp2_I_Aug5_Rot_5_3T
-(134/322) train vimp2_K_Aug4_Rot_-5_3T
-(135/322) train vimp2_B_Aug4_Rot_2_3T
-(136/322) train vimp2_D_Aug4_Rot_7_3T
-(137/322) train vimp2_H_Aug4_Rot_-1_3T
-(138/322) train vimp2_J_Aug3_Rot_-5_3T
-(139/322) train vimp2_L_Aug2_Rot_2_3T
-(140/322) train vimp2_C_Aug2_Rot_-3_3T
-(141/322) train vimp2_F_Aug2_Rot_-4_3T
-(142/322) train vimp2_I_Aug2_Rot_-1_3T
-(143/322) train vimp2_K_Aug0_Rot_-4_3T
-(144/322) train vimp2_B_Aug1_Rot_-1_3T
-(145/322) train vimp2_D_Aug0_Rot_1_3T
-(146/322) train vimp2_H_Aug0_Rot_6_3T
-(147/322) train vimp2_I_Aug5_Rot_7_3T
-(148/322) train vimp2_K_Aug5_Rot_2_3T
-(149/322) train vimp2_B_Aug4_Rot_-3_3T
-(150/322) train vimp2_D_Aug5_Rot_-2_3T
-(151/322) train vimp2_H_Aug4_Rot_-3_3T
-(152/322) train vimp2_J_Aug3_Rot_-6_3T
-(153/322) train vimp2_L_Aug2_Rot_6_3T
-(154/322) train vimp2_C_Aug2_Rot_6_3T
-(155/322) train vimp2_F_Aug3_Rot_-1_3T
-(156/322) train vimp2_I_Aug2_Rot_-3_3T
-(157/322) train vimp2_K_Aug1_Rot_2_3T
-(158/322) train vimp2_B_Aug1_Rot_2_3T
-(159/322) train vimp2_D_Aug1_Rot_1_3T
-(160/322) train vimp2_H_Aug1_Rot_-2_3T
-(161/322) train vimp2_J_Aug0_Rot_2_3T
-(162/322) train vimp2_K_Aug5_Rot_-4_3T
-(163/322) train vimp2_B_Aug5_Rot_-2_3T
-(164/322) train vimp2_D_Aug5_Rot_5_3T
-(165/322) train vimp2_H_Aug4_Rot_6_3T
-(166/322) train vimp2_J_Aug3_Rot_7_3T
-(167/322) train vimp2_L_Aug3_Rot_1_3T
-(168/322) train vimp2_B_Aug3_Rot_1_7T
-(169/322) train vimp2_D_Aug2_Rot_-5_7T
-(170/322) train vimp2_H_Aug1_Rot_-7_7T
-(171/322) train vimp2_J_Aug1_Rot_-3_7T
-(172/322) train vimp2_L_Aug0_Rot_-5_7T
-(173/322) train vimp2_C_Aug1_Rot_6_7T
-(174/322) train vimp2_F_Aug0_Rot_6_7T
-(175/322) train vimp2_H_Aug5_Rot_7_7T
-(176/322) train vimp2_J_Aug4_Rot_-6_7T
-(177/322) train vimp2_L_Aug3_Rot_6_7T
-(178/322) train vimp2_C_Aug5_Rot_-1_7T
-(179/322) train vimp2_F_Aug4_Rot_-1_7T
-(180/322) train vimp2_I_Aug3_Rot_2_7T
-(181/322) train vimp2_K_Aug2_Rot_-2_7T
-(182/322) train vimp2_B_Aug3_Rot_-3_7T
-(183/322) train vimp2_D_Aug2_Rot_6_7T
-(184/322) train vimp2_H_Aug2_Rot_3_7T
-(185/322) train vimp2_J_Aug1_Rot_6_7T
-(186/322) train vimp2_L_Aug0_Rot_6_7T
-(187/322) train vimp2_C_Aug1_Rot_7_7T
-(188/322) train vimp2_F_Aug0_Rot_7_7T
-(189/322) train vimp2_I_Aug0_Rot_-2_7T
-(190/322) train vimp2_J_Aug5_Rot_-1_7T
-(191/322) train vimp2_L_Aug4_Rot_0_7T
-(192/322) train vimp2_B_Aug0_Rot_-1_7T
-(193/322) train vimp2_C_Aug5_Rot_-2_7T
-(194/322) train vimp2_F_Aug4_Rot_3_7T
-(195/322) train vimp2_I_Aug3_Rot_-4_7T
-(196/322) train vimp2_K_Aug3_Rot_-1_7T
-(197/322) train vimp2_B_Aug3_Rot_3_7T
-(198/322) train vimp2_D_Aug3_Rot_-1_7T
-(199/322) train vimp2_H_Aug2_Rot_-4_7T
-(200/322) train vimp2_J_Aug1_Rot_-7_7T
-(201/322) train vimp2_L_Aug0_Rot_7_7T
-(202/322) train vimp2_C_Aug2_Rot_3_7T
-(203/322) train vimp2_F_Aug1_Rot_-1_7T
-(204/322) train vimp2_I_Aug0_Rot_2_7T
-(205/322) train vimp2_J_Aug5_Rot_3_7T
-(206/322) train vimp2_L_Aug4_Rot_-4_7T
-(207/322) train vimp2_B_Aug0_Rot_-5_7T
-(208/322) train vimp2_C_Aug5_Rot_6_7T
-(209/322) train vimp2_F_Aug4_Rot_4_7T
-(210/322) train vimp2_I_Aug4_Rot_-4_7T
-(211/322) train vimp2_K_Aug3_Rot_6_7T
-(212/322) train vimp2_B_Aug4_Rot_-1_7T
-(213/322) train vimp2_D_Aug3_Rot_1_7T
-(214/322) train vimp2_H_Aug2_Rot_-6_7T
-(215/322) train vimp2_J_Aug2_Rot_-3_7T
-(216/322) train vimp2_L_Aug1_Rot_0_7T
-(217/322) train vimp2_C_Aug2_Rot_-4_7T
-(218/322) train vimp2_F_Aug1_Rot_2_7T
-(219/322) train2019-05-06 14:58:42.393956: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
-Loading train:  33%|███▎      | 105/322 [00:10<00:22,  9.52it/s]Loading train:  33%|███▎      | 106/322 [00:10<00:22,  9.43it/s]Loading train:  33%|███▎      | 107/322 [00:10<00:23,  9.20it/s]Loading train:  34%|███▎      | 108/322 [00:10<00:25,  8.26it/s]Loading train:  34%|███▍      | 109/322 [00:11<00:26,  7.99it/s]2019-05-06 14:58:42.998066: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
-name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
-pciBusID: 0000:08:00.0
-totalMemory: 15.89GiB freeMemory: 15.60GiB
-2019-05-06 14:58:42.998136: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
-Loading train:  34%|███▍      | 111/322 [00:11<00:24,  8.66it/s]Loading train:  35%|███▌      | 113/322 [00:11<00:22,  9.34it/s]2019-05-06 14:58:43.373764: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
-2019-05-06 14:58:43.373842: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
-2019-05-06 14:58:43.373856: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
-2019-05-06 14:58:43.374380: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:08:00.0, compute capability: 6.0)
-Loading train:  36%|███▌      | 115/322 [00:11<00:22,  9.36it/s]Loading train:  36%|███▋      | 117/322 [00:11<00:21,  9.68it/s]Loading train:  37%|███▋      | 119/322 [00:12<00:21,  9.35it/s]Loading train:  38%|███▊      | 121/322 [00:12<00:20,  9.71it/s]Loading train:  38%|███▊      | 122/322 [00:12<00:22,  8.98it/s]Loading train:  39%|███▊      | 124/322 [00:12<00:21,  9.07it/s]Loading train:  39%|███▉      | 126/322 [00:12<00:19,  9.96it/s]Loading train:  40%|███▉      | 128/322 [00:12<00:18, 10.22it/s]Loading train:  40%|████      | 130/322 [00:13<00:19,  9.96it/s]Loading train:  41%|████      | 132/322 [00:13<00:18, 10.11it/s]Using TensorFlow backend.
-Loading train:   0%|          | 0/322 [00:00<?, ?it/s]Loading train:  42%|████▏     | 134/322 [00:13<00:19,  9.65it/s]Loading train:   0%|          | 1/322 [00:00<00:35,  9.08it/s]Loading train:  42%|████▏     | 136/322 [00:13<00:18, 10.03it/s]Loading train:   1%|          | 3/322 [00:00<00:33,  9.63it/s]Loading train:  43%|████▎     | 138/322 [00:14<00:18,  9.86it/s]Loading train:   2%|▏         | 5/322 [00:00<00:32,  9.88it/s]Loading train:  43%|████▎     | 140/322 [00:14<00:17, 10.24it/s]Loading train:   2%|▏         | 7/322 [00:00<00:30, 10.29it/s]Loading train:  44%|████▍     | 142/322 [00:14<00:17, 10.34it/s]Loading train:   3%|▎         | 9/322 [00:00<00:29, 10.69it/s]Loading train:   3%|▎         | 10/322 [00:00<00:33,  9.31it/s]Loading train:  45%|████▍     | 144/322 [00:14<00:17, 10.08it/s]Loading train:   4%|▎         | 12/322 [00:01<00:31,  9.75it/s]Loading train:  45%|████▌     | 146/322 [00:14<00:17, 10.09it/s]Loading train:   4%|▍         | 14/322 [00:01<00:31,  9.81it/s]Loading train:  46%|████▌     | 148/322 [00:15<00:17,  9.73it/s]Loading train:   5%|▍         | 16/322 [00:01<00:30,  9.99it/s]Loading train:  47%|████▋     | 150/322 [00:15<00:17,  9.67it/s]Loading train:   5%|▌         | 17/322 [00:01<00:31,  9.78it/s]Loading train:  47%|████▋     | 152/322 [00:15<00:18,  9.41it/s]Loading train:   6%|▌         | 19/322 [00:01<00:30,  9.95it/s]Loading train:   6%|▌         | 20/322 [00:01<00:34,  8.84it/s]Loading train:  48%|████▊     | 154/322 [00:15<00:16, 10.19it/s]Loading train:   7%|▋         | 22/322 [00:02<00:31,  9.65it/s]Loading train:  48%|████▊     | 156/322 [00:15<00:15, 10.41it/s]Loading train:   7%|▋         | 24/322 [00:02<00:29,  9.97it/s]Loading train:  49%|████▉     | 158/322 [00:15<00:16, 10.03it/s]Loading train:   8%|▊         | 26/322 [00:02<00:30,  9.76it/s]Loading train:  50%|████▉     | 160/322 [00:16<00:16, 10.08it/s]Loading train:   9%|▊         | 28/322 [00:02<00:29, 10.12it/s]Loading train:  50%|█████     | 162/322 [00:16<00:16,  9.69it/s]Loading train:  51%|█████     | 163/322 [00:16<00:16,  9.68it/s]Loading train:   9%|▉         | 30/322 [00:02<00:29,  9.82it/s]Loading train:  51%|█████     | 164/322 [00:16<00:16,  9.74it/s]Loading train:  10%|▉         | 32/322 [00:03<00:28, 10.12it/s]Loading train:  52%|█████▏    | 166/322 [00:16<00:16,  9.54it/s]Loading train:  11%|█         | 34/322 [00:03<00:29,  9.64it/s]Loading train:  52%|█████▏    | 168/322 [00:16<00:14, 10.27it/s]Loading train:  11%|█         | 36/322 [00:03<00:27, 10.23it/s]Loading train:  53%|█████▎    | 170/322 [00:17<00:14, 10.42it/s]Loading train:  12%|█▏        | 38/322 [00:03<00:27, 10.36it/s]Loading train:  53%|█████▎    | 172/322 [00:17<00:14, 10.34it/s]Loading train:  12%|█▏        | 40/322 [00:03<00:28,  9.96it/s]Loading train:  54%|█████▍    | 174/322 [00:17<00:14, 10.19it/s]Loading train:  13%|█▎        | 42/322 [00:04<00:28, 10.00it/s]Loading train:  55%|█████▍    | 176/322 [00:17<00:14, 10.08it/s]Loading train:  55%|█████▌    | 178/322 [00:17<00:14, 10.15it/s]Loading train:  14%|█▎        | 44/322 [00:04<00:30,  9.05it/s]Loading train:  14%|█▍        | 46/322 [00:04<00:28,  9.52it/s]Loading train:  56%|█████▌    | 180/322 [00:18<00:14,  9.95it/s]Loading train:  57%|█████▋    | 182/322 [00:18<00:13, 10.00it/s]Loading train:  15%|█▍        | 48/322 [00:04<00:29,  9.26it/s]Loading train:  57%|█████▋    | 184/322 [00:18<00:13, 10.12it/s]Loading train:  16%|█▌        | 50/322 [00:04<00:27,  9.87it/s]Loading train:  58%|█████▊    | 186/322 [00:18<00:13, 10.21it/s]Loading train:  16%|█▌        | 52/322 [00:05<00:26, 10.04it/s]Loading train:  58%|█████▊    | 188/322 [00:18<00:12, 10.63it/s]Loading train:  17%|█▋        | 54/322 [00:05<00:27,  9.75it/s]Loading train:  17%|█▋        | 55/322 [00:05<00:27,  9.78it/s]Loading train:  59%|█████▉    | 190/322 [00:19<00:12, 10.77it/s]Loading train:  60%|█████▉    | 192/322 [00:19<00:12, 10.55it/s]Loading train:  18%|█▊        | 57/322 [00:05<00:28,  9.43it/s]Loading train:  18%|█▊        | 59/322 [00:05<00:26,  9.95it/s]Loading train:  60%|██████    | 194/322 [00:19<00:12, 10.15it/s]Loading train:  19%|█▉        | 61/322 [00:06<00:25, 10.06it/s]Loading train:  61%|██████    | 196/322 [00:19<00:11, 10.56it/s]Loading train:  61%|██████▏   | 198/322 [00:19<00:11, 11.07it/s]Loading train:  20%|█▉        | 63/322 [00:06<00:26,  9.60it/s]Loading train:  62%|██████▏   | 200/322 [00:20<00:11, 10.91it/s]Loading train:  20%|██        | 65/322 [00:06<00:25, 10.01it/s]Loading train:  63%|██████▎   | 202/322 [00:20<00:10, 10.97it/s]Loading train:  21%|██        | 67/322 [00:06<00:26,  9.67it/s]Loading train:  63%|██████▎   | 204/322 [00:20<00:11, 10.64it/s]Loading train:  21%|██▏       | 69/322 [00:06<00:25,  9.89it/s]Loading train:  64%|██████▍   | 206/322 [00:20<00:11, 10.14it/s]Loading train:  22%|██▏       | 71/322 [00:07<00:26,  9.39it/s]Loading train:  65%|██████▍   | 208/322 [00:20<00:10, 10.55it/s]Loading train:  23%|██▎       | 73/322 [00:07<00:25,  9.90it/s]Loading train:  65%|██████▌   | 210/322 [00:21<00:10, 10.34it/s]Loading train:  23%|██▎       | 75/322 [00:07<00:24,  9.89it/s]Loading train:  66%|██████▌   | 212/322 [00:21<00:10, 10.92it/s]Loading train:  24%|██▍       | 77/322 [00:07<00:25,  9.48it/s]Loading train:  66%|██████▋   | 214/322 [00:21<00:10, 10.52it/s]Loading train:  25%|██▍       | 79/322 [00:07<00:24,  9.85it/s]Loading train:  67%|██████▋   | 216/322 [00:21<00:10, 10.38it/s]Loading train:  25%|██▌       | 81/322 [00:08<00:25,  9.57it/s]Loading train:  68%|██████▊   | 218/322 [00:21<00:10, 10.28it/s]Loading train:  26%|██▌       | 83/322 [00:08<00:23,  9.96it/s]Loading train:  68%|██████▊   | 220/322 [00:21<00:09, 10.80it/s]Loading train:  69%|██████▉   | 222/322 [00:22<00:09, 10.72it/s]Loading train:  26%|██▋       | 85/322 [00:08<00:25,  9.39it/s]Loading train:  70%|██████▉   | 224/322 [00:22<00:09, 10.84it/s]Loading train:  27%|██▋       | 87/322 [00:08<00:23,  9.96it/s]Loading train:  70%|███████   | 226/322 [00:22<00:09, 10.50it/s]Loading train:  28%|██▊       | 89/322 [00:08<00:23, 10.08it/s]Loading train:  71%|███████   | 228/322 [00:22<00:08, 10.96it/s]Loading train:  28%|██▊       | 91/322 [00:09<00:24,  9.56it/s]Loading train:  71%|███████▏  | 230/322 [00:22<00:08, 10.64it/s]Loading train:  29%|██▉       | 93/322 [00:09<00:23,  9.87it/s]Loading train:  72%|███████▏  | 232/322 [00:23<00:08, 10.30it/s]Loading train:  30%|██▉       | 95/322 [00:09<00:23,  9.51it/s]Loading train:  73%|███████▎  | 234/322 [00:23<00:08, 10.40it/s]Loading train:  30%|███       | 97/322 [00:09<00:23,  9.70it/s]Loading train:  73%|███████▎  | 236/322 [00:23<00:07, 10.88it/s]Loading train:  31%|███       | 99/322 [00:10<00:23,  9.31it/s]Loading train:  74%|███████▍  | 238/322 [00:23<00:08, 10.46it/s]Loading train:  31%|███▏      | 101/322 [00:10<00:22,  9.84it/s]Loading train:  75%|███████▍  | 240/322 [00:23<00:07, 10.39it/s]Loading train:  32%|███▏      | 102/322 [00:10<00:22,  9.82it/s]Loading train:  32%|███▏      | 103/322 [00:10<00:22,  9.75it/s]Loading train:  75%|███████▌  | 242/322 [00:24<00:07, 10.37it/s]Loading train:  76%|███████▌  | 244/322 [00:24<00:07, 10.77it/s]Loading train:  33%|███▎      | 105/322 [00:10<00:23,  9.31it/s]Loading train:  76%|███████▋  | 246/322 [00:24<00:07, 10.34it/s]Loading train:  33%|███▎      | 107/322 [00:10<00:21,  9.94it/s]Loading train:  34%|███▍      | 109/322 [00:11<00:21, 10.10it/s]Loading train:  77%|███████▋  | 248/322 [00:24<00:07, 10.10it/s]Loading train:  34%|███▍      | 111/322 [00:11<00:21,  9.91it/s]Loading train:  78%|███████▊  | 250/322 [00:24<00:07,  9.77it/s]Loading train:  35%|███▌      | 113/322 [00:11<00:22,  9.43it/s]Loading train:  78%|███████▊  | 252/322 [00:25<00:07,  9.26it/s]Loading train:  79%|███████▊  | 253/322 [00:25<00:07,  9.06it/s]Loading train:  35%|███▌      | 114/322 [00:11<00:27,  7.45it/s]Loading train:  79%|███████▉  | 254/322 [00:25<00:08,  7.75it/s]Loading train:  36%|███▌      | 115/322 [00:11<00:28,  7.19it/s]Loading train:  79%|███████▉  | 255/322 [00:25<00:08,  8.10it/s]Loading train:  36%|███▋      | 117/322 [00:12<00:25,  7.92it/s]Loading train:  80%|███████▉  | 257/322 [00:25<00:07,  8.76it/s]Loading train:  80%|████████  | 258/322 [00:25<00:07,  8.97it/s]Loading train:  37%|███▋      | 119/322 [00:12<00:25,  8.00it/s]Loading train:  37%|███▋      | 120/322 [00:12<00:23,  8.46it/s]Loading train:  81%|████████  | 260/322 [00:26<00:06,  9.17it/s]Loading train:  81%|████████  | 261/322 [00:26<00:06,  9.11it/s]Loading train:  38%|███▊      | 122/322 [00:12<00:22,  9.06it/s]Loading train:  81%|████████▏ | 262/322 [00:26<00:06,  9.35it/s]Loading train:  82%|████████▏ | 263/322 [00:26<00:06,  9.37it/s]Loading train:  39%|███▊      | 124/322 [00:12<00:21,  9.06it/s]Loading train:  82%|████████▏ | 265/322 [00:26<00:06,  9.41it/s]Loading train:  39%|███▉      | 126/322 [00:12<00:20,  9.53it/s]Loading train:  83%|████████▎ | 267/322 [00:26<00:05,  9.89it/s]Loading train:  40%|███▉      | 128/322 [00:13<00:21,  9.18it/s]Loading train:  83%|████████▎ | 268/322 [00:26<00:05,  9.71it/s]Loading train:  84%|████████▎ | 269/322 [00:26<00:05,  9.73it/s]Loading train:  40%|████      | 130/322 [00:13<00:19,  9.89it/s]Loading train:  84%|████████▍ | 270/322 [00:27<00:05,  9.72it/s]Loading train:  41%|████      | 132/322 [00:13<00:18, 10.05it/s]Loading train:  84%|████████▍ | 272/322 [00:27<00:04, 10.28it/s]Loading train:  42%|████▏     | 134/322 [00:13<00:19,  9.78it/s]Loading train:  85%|████████▌ | 274/322 [00:27<00:04,  9.99it/s]Loading train:  42%|████▏     | 136/322 [00:13<00:18, 10.08it/s]Loading train:  86%|████████▌ | 276/322 [00:27<00:04,  9.84it/s]Loading train:  43%|████▎     | 138/322 [00:14<00:19,  9.63it/s]Loading train:  86%|████████▋ | 278/322 [00:27<00:04,  9.78it/s]Loading train:  43%|████▎     | 140/322 [00:14<00:18,  9.89it/s]Loading train:  87%|████████▋ | 280/322 [00:28<00:04, 10.10it/s]Loading train:  88%|████████▊ | 282/322 [00:28<00:03, 10.29it/s]Loading train:  44%|████▍     | 142/322 [00:14<00:18,  9.48it/s]Loading train:  45%|████▍     | 144/322 [00:14<00:17, 10.11it/s]Loading train:  88%|████████▊ | 284/322 [00:28<00:03, 10.10it/s]Loading train:  45%|████▌     | 146/322 [00:14<00:17, 10.18it/s]Loading train:  89%|████████▉ | 286/322 [00:28<00:03, 10.53it/s]Loading train:  89%|████████▉ | 288/322 [00:28<00:03, 10.38it/s]Loading train:  46%|████▌     | 148/322 [00:15<00:17,  9.86it/s]Loading train:  47%|████▋     | 150/322 [00:15<00:16, 10.13it/s]Loading train:  90%|█████████ | 290/322 [00:28<00:03, 10.04it/s]Loading train:  47%|████▋     | 152/322 [00:15<00:17,  9.74it/s]Loading train:  91%|█████████ | 292/322 [00:29<00:03,  9.89it/s]Loading train:  48%|████▊     | 154/322 [00:15<00:16,  9.97it/s]Loading train:  91%|█████████▏| 294/322 [00:29<00:02,  9.69it/s]Loading train:  92%|█████████▏| 296/322 [00:29<00:02, 10.14it/s]Loading train:  48%|████▊     | 156/322 [00:16<00:17,  9.45it/s]Loading train:  93%|█████████▎| 298/322 [00:29<00:02, 10.54it/s]Loading train:  49%|████▉     | 158/322 [00:16<00:16,  9.99it/s]Loading train:  93%|█████████▎| 300/322 [00:29<00:02, 10.27it/s]Loading train:  50%|████▉     | 160/322 [00:16<00:15, 10.16it/s]Loading train:  94%|█████████▍| 302/322 [00:30<00:01, 10.18it/s]Loading train:  50%|█████     | 162/322 [00:16<00:16,  9.78it/s]Loading train:  94%|█████████▍| 304/322 [00:30<00:01, 10.19it/s]Loading train:  51%|█████     | 164/322 [00:16<00:15, 10.07it/s]Loading train:  95%|█████████▌| 306/322 [00:30<00:01, 10.28it/s]Loading train:  52%|█████▏    | 166/322 [00:17<00:15,  9.78it/s]Loading train:  96%|█████████▌| 308/322 [00:30<00:01, 10.26it/s]Loading train:  52%|█████▏    | 168/322 [00:17<00:15, 10.10it/s]Loading train:  53%|█████▎    | 170/322 [00:17<00:14, 10.52it/s]Loading train:  96%|█████████▋| 310/322 [00:30<00:01,  9.93it/s]Loading train:  97%|█████████▋| 312/322 [00:31<00:00, 10.09it/s]Loading train:  53%|█████▎    | 172/322 [00:17<00:14, 10.19it/s]Loading train:  54%|█████▍    | 174/322 [00:17<00:14, 10.25it/s]Loading train:  98%|█████████▊| 314/322 [00:31<00:00,  9.88it/s]Loading train:  98%|█████████▊| 316/322 [00:31<00:00,  9.99it/s]Loading train:  55%|█████▍    | 176/322 [00:17<00:14,  9.76it/s]Loading train:  55%|█████▍    | 177/322 [00:18<00:15,  9.48it/s]Loading train:  99%|█████████▉| 318/322 [00:31<00:00, 10.25it/s]Loading train:  55%|█████▌    | 178/322 [00:18<00:15,  9.47it/s]Loading train:  99%|█████████▉| 320/322 [00:31<00:00, 10.11it/s]Loading train:  56%|█████▌    | 180/322 [00:18<00:15,  9.29it/s]Loading train: 100%|██████████| 322/322 [00:32<00:00, 10.31it/s]
-concatenating: train:   0%|          | 0/322 [00:00<?, ?it/s]Loading train:  57%|█████▋    | 182/322 [00:18<00:14,  9.63it/s]concatenating: train:   9%|▊         | 28/322 [00:00<00:01, 271.60it/s]concatenating: train:  17%|█▋        | 56/322 [00:00<00:00, 272.12it/s]Loading train:  57%|█████▋    | 184/322 [00:18<00:13, 10.03it/s]concatenating: train:  26%|██▋       | 85/322 [00:00<00:00, 274.74it/s]concatenating: train:  35%|███▍      | 112/322 [00:00<00:00, 273.30it/s]Loading train:  58%|█████▊    | 186/322 [00:19<00:13,  9.85it/s]concatenating: train:  43%|████▎     | 140/322 [00:00<00:00, 274.78it/s]Loading train:  58%|█████▊    | 187/322 [00:19<00:13,  9.79it/s]concatenating: train:  52%|█████▏    | 169/322 [00:00<00:00, 277.20it/s]concatenating: train:  62%|██████▏   | 199/322 [00:00<00:00, 282.94it/s]Loading train:  59%|█████▊    | 189/322 [00:19<00:13,  9.71it/s]concatenating: train:  71%|███████   | 228/322 [00:00<00:00, 284.69it/s]concatenating: train:  80%|████████  | 258/322 [00:00<00:00, 287.70it/s]Loading train:  59%|█████▉    | 191/322 [00:19<00:13,  9.92it/s]concatenating: train:  89%|████████▉ | 288/322 [00:01<00:00, 289.14it/s]Loading train:  60%|█████▉    | 192/322 [00:19<00:13,  9.84it/s]concatenating: train:  99%|█████████▉| 318/322 [00:01<00:00, 290.76it/s]concatenating: train: 100%|██████████| 322/322 [00:01<00:00, 284.66it/s]Loading train:  60%|██████    | 194/322 [00:19<00:12, 10.12it/s]Loading train:  61%|██████    | 196/322 [00:20<00:12,  9.85it/s]Loading train:  61%|██████▏   | 198/322 [00:20<00:12, 10.07it/s]
-Loading test:   0%|          | 0/6 [00:00<?, ?it/s]Loading test:  33%|███▎      | 2/6 [00:00<00:00, 12.23it/s]Loading train:  62%|██████▏   | 200/322 [00:20<00:11, 10.33it/s]Loading test:  67%|██████▋   | 4/6 [00:00<00:00, 12.66it/s]Loading train:  63%|██████▎   | 202/322 [00:20<00:11, 10.23it/s]Loading test: 100%|██████████| 6/6 [00:00<00:00, 12.62it/s]
-concatenating: validation:   0%|          | 0/6 [00:00<?, ?it/s]concatenating: validation: 100%|██████████| 6/6 [00:00<00:00, 323.36it/s]Loading train:  63%|██████▎   | 204/322 [00:20<00:11,  9.95it/s]Loading train:  64%|██████▍   | 206/322 [00:20<00:11, 10.09it/s]Loading train:  65%|██████▍   | 208/322 [00:21<00:11, 10.12it/s]Loading train:  65%|██████▌   | 210/322 [00:21<00:11, 10.02it/s]Loading train:  66%|██████▌   | 212/322 [00:21<00:10, 10.30it/s]train vimp2_D_Aug5_Rot_5_7T
-(220/322) train vimp2_H_Aug4_Rot_7_7T
-(221/322) train vimp2_I_Aug2_Rot_5_7T
-(222/322) train vimp2_K_Aug1_Rot_4_7T
-(223/322) train vimp2_C_Aug4_Rot_-2_7T
-(224/322) train vimp2_F_Aug3_Rot_-1_7T
-(225/322) train vimp2_K_Aug5_Rot_-7_7T
-(226/322) train vimp2_B_Aug2_Rot_4_7T
-(227/322) train vimp2_D_Aug1_Rot_-7_7T
-(228/322) train vimp2_H_Aug0_Rot_7_7T
-(229/322) train vimp2_J_Aug0_Rot_-6_7T
-(230/322) train vimp2_H_Aug5_Rot_-4_7T
-(231/322) train vimp2_J_Aug4_Rot_-4_7T
-(232/322) train vimp2_L_Aug3_Rot_2_7T
-(233/322) train vimp2_C_Aug0_Rot_-4_7T
-(234/322) train vimp2_D_Aug5_Rot_-6_7T
-(235/322) train vimp2_K_Aug2_Rot_-1_7T
-(236/322) train vimp2_C_Aug4_Rot_-4_7T
-(237/322) train vimp2_F_Aug3_Rot_6_7T
-(238/322) train vimp2_I_Aug2_Rot_6_7T
-(239/322) train vimp2_H_Aug1_Rot_-1_7T
-(240/322) train vimp2_J_Aug0_Rot_6_7T
-(241/322) train vimp2_K_Aug5_Rot_7_7T
-(242/322) train vimp2_B_Aug2_Rot_7_7T
-(243/322) train vimp2_D_Aug2_Rot_-4_7T
-(244/322) train vimp2_C_Aug1_Rot_3_7T
-(245/322) train vimp2_F_Aug0_Rot_-2_7T
-(246/322) train vimp2_H_Aug5_Rot_-7_7T
-(247/322) train vimp2_J_Aug4_Rot_5_7T
-(248/322) train vimp2_L_Aug3_Rot_-4_7T
-(249/322) train vimp2_F_Aug3_Rot_7_7T
-(250/322) train vimp2_I_Aug3_Rot_-2_7T
-(251/322) train vimp2_K_Aug2_Rot_1_7T
-(252/322) train vimp2_C_Aug4_Rot_-5_7T
-(253/322) train vimp2_L_Aug0_Rot_-5_7T
-(254/322) train vimp2_B_Aug3_Rot_1_7T
-(255/322) train vimp2_D_Aug2_Rot_-5_7T
-(256/322) train vimp2_H_Aug1_Rot_-7_7T
-(257/322) train vimp2_J_Aug1_Rot_-3_7T
-(258/322) train vimp2_C_Aug1_Rot_6_7T
-(259/322) train vimp2_F_Aug0_Rot_6_7T
-(260/322) train vimp2_H_Aug5_Rot_7_7T
-(261/322) train vimp2_J_Aug4_Rot_-6_7T
-(262/322) train vimp2_L_Aug3_Rot_6_7T
-(263/322) train vimp2_C_Aug5_Rot_-1_7T
-(264/322) train vimp2_F_Aug4_Rot_-1_7T
-(265/322) train vimp2_I_Aug3_Rot_2_7T
-(266/322) train vimp2_K_Aug2_Rot_-2_7T
-(267/322) train vimp2_H_Aug2_Rot_3_7T
-(268/322) train vimp2_J_Aug1_Rot_6_7T
-(269/322) train vimp2_L_Aug0_Rot_6_7T
-(270/322) train vimp2_B_Aug3_Rot_-3_7T
-(271/322) train vimp2_D_Aug2_Rot_6_7T
-(272/322) train vimp2_F_Aug0_Rot_7_7T
-(273/322) train vimp2_I_Aug0_Rot_-2_7T
-(274/322) train vimp2_J_Aug5_Rot_-1_7T
-(275/322) train vimp2_L_Aug4_Rot_0_7T
-(276/322) train vimp2_C_Aug1_Rot_7_7T
-(277/322) train vimp2_F_Aug4_Rot_3_7T
-(278/322) train vimp2_I_Aug3_Rot_-4_7T
-(279/322) train vimp2_K_Aug3_Rot_-1_7T
-(280/322) train vimp2_B_Aug0_Rot_-1_7T
-(281/322) train vimp2_C_Aug5_Rot_-2_7T
-(282/322) train vimp2_J_Aug1_Rot_-7_7T
-(283/322) train vimp2_L_Aug0_Rot_7_7T
-(284/322) train vimp2_B_Aug3_Rot_3_7T
-(285/322) train vimp2_D_Aug3_Rot_-1_7T
-(286/322) train vimp2_H_Aug2_Rot_-4_7T
-(287/322) train vimp2_C_Aug2_Rot_3_7T
-(288/322) train vimp2_F_Aug1_Rot_-1_7T
-(289/322) train vimp2_I_Aug0_Rot_2_7T
-(290/322) train vimp2_J_Aug5_Rot_3_7T
-(291/322) train vimp2_L_Aug4_Rot_-4_7T
-(292/322) train vimp2_C_Aug5_Rot_6_7T
-(293/322) train vimp2_F_Aug4_Rot_4_7T
-(294/322) train vimp2_I_Aug4_Rot_-4_7T
-(295/322) train vimp2_K_Aug3_Rot_6_7T
-(296/322) train vimp2_B_Aug0_Rot_-5_7T
-(297/322) train vimp2_D_Aug3_Rot_1_7T
-(298/322) train vimp2_H_Aug2_Rot_-6_7T
-(299/322) train vimp2_J_Aug2_Rot_-3_7T
-(300/322) train vimp2_L_Aug1_Rot_0_7T
-(301/322) train vimp2_B_Aug4_Rot_-1_7T
-(302/322) train vimp2_I_Aug0_Rot_5_7T
-(303/322) train vimp2_J_Aug5_Rot_-5_7T
-(304/322) train vimp2_L_Aug5_Rot_2_7T
-(305/322) train vimp2_C_Aug2_Rot_-4_7T
-(306/322) train vimp2_F_Aug1_Rot_2_7T
-(307/322) train vimp2_D_Aug0_Rot_-1_7T
-(308/322) train vimp2_F_Aug5_Rot_1_7T
-(309/322) train vimp2_I_Aug4_Rot_-5_7T
-(310/322) train vimp2_K_Aug3_Rot_-7_7T
-(311/322) train vimp2_B_Aug0_Rot_7_7T
-(312/322) train vimp2_H_Aug3_Rot_3_7T
-(313/322) train vimp2_J_Aug2_Rot_-4_7T
-(314/322) train vimp2_L_Aug1_Rot_5_7T
-(315/322) train vimp2_B_Aug4_Rot_-4_7T
-(316/322) train vimp2_D_Aug3_Rot_5_7T
-(317/322) train vimp2_L_Aug5_Rot_3_7T
-(318/322) train vimp2_C_Aug2_Rot_-5_7T
-(319/322) train vimp2_F_Aug1_Rot_7_7T
-(320/322) train vimp2_I_Aug1_Rot_-1_7T
-(321/322) train vimp2_K_Aug0_Rot_-5_7T
-(0/6) test vimp2_A_3T
-(1/6) test vimp2_G_3T
-(2/6) test vimp2_M_3T
-(3/6) test vimp2_A_7T
-(4/6) test vimp2_G_7T
-(5/6) test vimp2_M_7T
----------------------------------------------------------------
-Full Experiment Info
-slicingDim [0] Nuclei_Indexes [2.0] GPU:   0,1 HCascade 
-
----------------------------------------------------------------
-************ stage 1 ************
-************ stage 2 ************
-************ stage 3 ************
----------------------------------------------------------------
- Nucleus: 2.0  | GPU: 0,1  | SD 0  | Dropout 0.3  | LR 0.001  | NL 3  |  HCascade |  FM 20
-Experiment: exp4
-SubExperiment: sE11_HCascade_FM20_DO0.3_ET_InitFrom_Main_AllAugments
-SubExperiment: sE11-HCascade-FM20-DO0.3-ET-InitFrom-Main-AllAugments
----------------------------------------------------------------
-InputDimensions [84, 56, 48]
-(12739, 84, 56, 1)
-__________________________________________________________________________________________________
-Layer (type)                    Output Shape         Param #     Connected to                     
-==================================================================================================
-input_1 (InputLayer)            (None, 84, 56, 1)    0                                            
-__________________________________________________________________________________________________
-batch_normalization_1 (BatchNor (None, 84, 56, 1)    4           input_1[0][0]                    
-__________________________________________________________________________________________________
-conv2d_1 (Conv2D)               (None, 84, 56, 20)   200         batch_normalization_1[0][0]      
-__________________________________________________________________________________________________
-conv2d_2 (Conv2D)               (None, 84, 56, 20)   3620        conv2d_1[0][0]                   
-__________________________________________________________________________________________________
-max_pooling2d_1 (MaxPooling2D)  (None, 42, 28, 20)   0           conv2d_2[0][0]                   
-__________________________________________________________________________________________________
-dropout_1 (Dropout)             (None, 42, 28, 20)   0           max_pooling2d_1[0][0]            
-__________________________________________________________________________________________________
-batch_normalization_2 (BatchNor (None, 42, 28, 20)   80          dropout_1[0][0]                  
-__________________________________________________________________________________________________
-conv2d_3 (Conv2D)               (None, 42, 28, 40)   7240        batch_normalization_2[0][0]      
-__________________________________________________________________________________________________
-conv2d_4 (Conv2D)               (None, 42, 28, 40)   14440       conv2d_3[0][0]                   
-__________________________________________________________________________________________________
-max_pooling2d_2 (MaxPooling2D)  (None, 21, 14, 40)   0           conv2d_4[0][0]                   
-__________________________________________________________________________________________________
-dropout_2 (Dropout)             (None, 21, 14, 40)   0           max_pooling2d_2[0][0]            
-__________________________________________________________________________________________________
-conv2d_5 (Conv2D)               (None, 21, 14, 80)   28880       dropout_2[0][0]                  
-__________________________________________________________________________________________________
-conv2d_6 (Conv2D)               (None, 21, 14, 80)   57680       conv2d_5[0][0]                   
-__________________________________________________________________________________________________
-dropout_3 (Dropout)             (None, 21, 14, 80)   0           conv2d_6[0][0]                   
-__________________________________________________________________________________________________
-batch_normalization_3 (BatchNor (None, 21, 14, 80)   320         dropout_3[0][0]                  
-__________________________________________________________________________________________________
-conv2d_transpose_1 (Conv2DTrans (None, 42, 28, 40)   12840       batch_normalization_3[0][0]      
-__________________________________________________________________________________________________Loading train:  66%|██████▋   | 214/322 [00:21<00:10, 10.69it/s]Loading train:  67%|██████▋   | 216/322 [00:21<00:10, 10.33it/s]Loading train:  68%|██████▊   | 218/322 [00:22<00:10, 10.39it/s]Loading train:  68%|██████▊   | 220/322 [00:22<00:10, 10.05it/s]Loading train:  69%|██████▉   | 222/322 [00:22<00:10,  9.98it/s]Loading train:  70%|██████▉   | 224/322 [00:22<00:09, 10.49it/s]Loading train:  70%|███████   | 226/322 [00:22<00:09, 10.14it/s]Loading train:  71%|███████   | 228/322 [00:23<00:09, 10.37it/s]Loading train:  71%|███████▏  | 230/322 [00:23<00:08, 10.44it/s]Loading train:  72%|███████▏  | 232/322 [00:23<00:08, 10.21it/s]Loading train:  73%|███████▎  | 234/322 [00:23<00:08, 10.03it/s]Loading train:  73%|███████▎  | 236/322 [00:23<00:08, 10.32it/s]Loading train:  74%|███████▍  | 238/322 [00:24<00:07, 10.53it/s]Loading train:  75%|███████▍  | 240/322 [00:24<00:07, 10.25it/s]Loading train:  75%|███████▌  | 242/322 [00:24<00:07, 10.35it/s]Loading train:  76%|███████▌  | 244/322 [00:24<00:07, 10.75it/s]Loading train:  76%|███████▋  | 246/322 [00:24<00:07,  9.81it/s]Loading train:  77%|███████▋  | 248/322 [00:25<00:08,  9.03it/s]Loading train:  77%|███████▋  | 249/322 [00:25<00:08,  8.32it/s]Loading train:  78%|███████▊  | 250/322 [00:25<00:08,  8.45it/s]Loading train:  78%|███████▊  | 251/322 [00:25<00:08,  8.66it/s]Loading train:  78%|███████▊  | 252/322 [00:25<00:08,  8.38it/s]Loading train:  79%|███████▉  | 254/322 [00:25<00:07,  8.77it/s]Loading train:  79%|███████▉  | 255/322 [00:25<00:07,  8.69it/s]Loading train:  80%|███████▉  | 257/322 [00:26<00:06,  9.30it/s]Loading train:  80%|████████  | 258/322 [00:26<00:06,  9.36it/s]Loading train:  80%|████████  | 259/322 [00:26<00:06,  9.45it/s]Loading train:  81%|████████  | 261/322 [00:26<00:06,  9.53it/s]Loading train:  81%|████████▏ | 262/322 [00:26<00:06,  9.59it/s]Loading train:  82%|████████▏ | 264/322 [00:26<00:06,  9.57it/s]Loading train:  82%|████████▏ | 265/322 [00:27<00:06,  9.05it/s]Loading train:  83%|████████▎ | 266/322 [00:27<00:06,  8.65it/s]Loading train:  83%|████████▎ | 268/322 [00:27<00:05,  9.40it/s]Loading train:  84%|████████▎ | 269/322 [00:27<00:05,  9.35it/s]Loading train:  84%|████████▍ | 271/322 [00:27<00:05,  9.76it/s]Loading train:  85%|████████▍ | 273/322 [00:27<00:04, 10.28it/s]Loading train:  85%|████████▌ | 275/322 [00:27<00:04,  9.91it/s]Loading train:  86%|████████▌ | 277/322 [00:28<00:04, 10.02it/s]Loading train:  87%|████████▋ | 279/322 [00:28<00:04,  9.83it/s]Loading train:  87%|████████▋ | 281/322 [00:28<00:04, 10.08it/s]Loading train:  88%|████████▊ | 283/322 [00:28<00:03, 10.00it/s]Loading train:  89%|████████▊ | 285/322 [00:28<00:03, 10.12it/s]Loading train:  89%|████████▉ | 287/322 [00:29<00:03, 10.30it/s]Loading train:  90%|████████▉ | 289/322 [00:29<00:03, 10.09it/s]Loading train:  90%|█████████ | 291/322 [00:29<00:03, 10.22it/s]Loading train:  91%|█████████ | 293/322 [00:29<00:02,  9.97it/s]Loading train:  92%|█████████▏| 295/322 [00:29<00:02, 10.18it/s]Loading train:  92%|█████████▏| 297/322 [00:30<00:02,  9.89it/s]Loading train:  93%|█████████▎| 298/322 [00:30<00:02,  9.88it/s]Loading train:  93%|█████████▎| 300/322 [00:30<00:02, 10.16it/s]Loading train:  94%|█████████▍| 302/322 [00:30<00:01, 10.33it/s]Loading train:  94%|█████████▍| 304/322 [00:30<00:01, 10.04it/s]Loading train:  95%|█████████▌| 306/322 [00:31<00:01,  9.80it/s]Loading train:  96%|█████████▌| 308/322 [00:31<00:01, 10.09it/s]Loading train:  96%|█████████▋| 310/322 [00:31<00:01, 10.50it/s]Loading train:  97%|█████████▋| 312/322 [00:31<00:00, 10.09it/s]Loading train:  98%|█████████▊| 314/322 [00:31<00:00, 10.37it/s]Loading train:  98%|█████████▊| 316/322 [00:32<00:00,  9.74it/s]Loading train:  98%|█████████▊| 317/322 [00:32<00:00,  9.81it/s]Loading train:  99%|█████████▉| 318/322 [00:32<00:00,  9.76it/s]Loading train:  99%|█████████▉| 320/322 [00:32<00:00,  9.61it/s]Loading train: 100%|██████████| 322/322 [00:32<00:00,  9.57it/s]
-concatenating: train:   0%|          | 0/322 [00:00<?, ?it/s]concatenating: train:   8%|▊         | 26/322 [00:00<00:01, 249.26it/s]concatenating: train:  16%|█▌        | 50/322 [00:00<00:01, 244.44it/s]concatenating: train:  23%|██▎       | 75/322 [00:00<00:01, 244.84it/s]concatenating: train:  32%|███▏      | 102/322 [00:00<00:00, 248.92it/s]concatenating: train:  39%|███▉      | 127/322 [00:00<00:00, 246.78it/s]concatenating: train:  47%|████▋     | 152/322 [00:00<00:00, 247.26it/s]concatenating: train:  55%|█████▍    | 177/322 [00:00<00:00, 245.91it/s]concatenating: train:  63%|██████▎   | 204/322 [00:00<00:00, 250.26it/s]concatenating: train:  72%|███████▏  | 231/322 [00:00<00:00, 255.08it/s]concatenating: train:  80%|███████▉  | 257/322 [00:01<00:00, 256.00it/s]concatenating: train:  89%|████████▉ | 286/322 [00:01<00:00, 264.71it/s]concatenating: train:  98%|█████████▊| 316/322 [00:01<00:00, 274.20it/s]concatenating: train: 100%|██████████| 322/322 [00:01<00:00, 258.41it/s]
-Loading test:   0%|          | 0/6 [00:00<?, ?it/s]Loading test:  33%|███▎      | 2/6 [00:00<00:00, 12.58it/s]Loading test:  67%|██████▋   | 4/6 [00:00<00:00, 12.91it/s]Loading test: 100%|██████████| 6/6 [00:00<00:00, 12.90it/s]
-concatenating: validation:   0%|          | 0/6 [00:00<?, ?it/s]concatenating: validation: 100%|██████████| 6/6 [00:00<00:00, 290.48it/s] vimp2_I_Aug0_Rot_5_7T
-(220/322) train vimp2_J_Aug5_Rot_-5_7T
-(221/322) train vimp2_L_Aug5_Rot_2_7T
-(222/322) train vimp2_B_Aug0_Rot_7_7T
-(223/322) train vimp2_D_Aug0_Rot_-1_7T
-(224/322) train vimp2_F_Aug5_Rot_1_7T
-(225/322) train vimp2_I_Aug4_Rot_-5_7T
-(226/322) train vimp2_K_Aug3_Rot_-7_7T
-(227/322) train vimp2_B_Aug4_Rot_-4_7T
-(228/322) train vimp2_D_Aug3_Rot_5_7T
-(229/322) train vimp2_H_Aug3_Rot_3_7T
-(230/322) train vimp2_J_Aug2_Rot_-4_7T
-(231/322) train vimp2_L_Aug1_Rot_5_7T
-(232/322) train vimp2_C_Aug2_Rot_-5_7T
-(233/322) train vimp2_F_Aug1_Rot_7_7T
-(234/322) train vimp2_I_Aug1_Rot_-1_7T
-(235/322) train vimp2_K_Aug0_Rot_-5_7T
-(236/322) train vimp2_L_Aug5_Rot_3_7T
-(237/322) train vimp2_D_Aug0_Rot_2_7T
-(238/322) train vimp2_F_Aug5_Rot_-3_7T
-(239/322) train vimp2_I_Aug5_Rot_-3_7T
-(240/322) train vimp2_B_Aug1_Rot_-1_7T
-(241/322) train vimp2_K_Aug4_Rot_3_7T
-(242/322) train vimp2_B_Aug5_Rot_-2_7T
-(243/322) train vimp2_D_Aug4_Rot_-5_7T
-(244/322) train vimp2_H_Aug3_Rot_-7_7T
-(245/322) train vimp2_J_Aug2_Rot_5_7T
-(246/322) train vimp2_L_Aug1_Rot_-7_7T
-(247/322) train vimp2_C_Aug3_Rot_-1_7T
-(248/322) train vimp2_F_Aug2_Rot_-1_7T
-(249/322) train vimp2_I_Aug1_Rot_-5_7T
-(250/322) train vimp2_K_Aug0_Rot_-6_7T
-(251/322) train vimp2_L_Aug5_Rot_-6_7T
-(252/322) train vimp2_B_Aug1_Rot_3_7T
-(253/322) train vimp2_D_Aug0_Rot_-4_7T
-(254/322) train vimp2_F_Aug5_Rot_-5_7T
-(255/322) train vimp2_I_Aug5_Rot_-4_7T
-(256/322) train vimp2_K_Aug4_Rot_-4_7T
-(257/322) train vimp2_J_Aug3_Rot_1_7T
-(258/322) train vimp2_L_Aug2_Rot_2_7T
-(259/322) train vimp2_B_Aug5_Rot_5_7T
-(260/322) train vimp2_D_Aug4_Rot_5_7T
-(261/322) train vimp2_H_Aug4_Rot_-3_7T
-(262/322) train vimp2_C_Aug3_Rot_-4_7T
-(263/322) train vimp2_F_Aug2_Rot_-4_7T
-(264/322) train vimp2_I_Aug1_Rot_7_7T
-(265/322) train vimp2_K_Aug1_Rot_1_7T
-(266/322) train vimp2_B_Aug1_Rot_-5_7T
-(267/322) train vimp2_D_Aug1_Rot_5_7T
-(268/322) train vimp2_H_Aug0_Rot_-2_7T
-(269/322) train vimp2_I_Aug5_Rot_-5_7T
-(270/322) train vimp2_K_Aug4_Rot_7_7T
-(271/322) train vimp2_B_Aug5_Rot_7_7T
-(272/322) train vimp2_D_Aug5_Rot_-2_7T
-(273/322) train vimp2_H_Aug4_Rot_-5_7T
-(274/322) train vimp2_J_Aug3_Rot_4_7T
-(275/322) train vimp2_L_Aug2_Rot_-5_7T
-(276/322) train vimp2_C_Aug3_Rot_4_7T
-(277/322) train vimp2_F_Aug2_Rot_7_7T
-(278/322) train vimp2_I_Aug2_Rot_0_7T
-(279/322) train vimp2_K_Aug1_Rot_3_7T
-(280/322) train vimp2_B_Aug2_Rot_-4_7T
-(281/322) train vimp2_D_Aug1_Rot_6_7T
-(282/322) train vimp2_H_Aug0_Rot_3_7T
-(283/322) train vimp2_J_Aug0_Rot_-3_7T
-(284/322) train vimp2_K_Aug5_Rot_-1_7T
-(285/322) train vimp2_C_Aug0_Rot_1_7T
-(286/322) train vimp2_D_Aug5_Rot_5_7T
-(287/322) train vimp2_H_Aug4_Rot_7_7T
-(288/322) train vimp2_J_Aug3_Rot_6_7T
-(289/322) train vimp2_L_Aug2_Rot_7_7T
-(290/322) train vimp2_C_Aug4_Rot_-2_7T
-(291/322) train vimp2_F_Aug3_Rot_-1_7T
-(292/322) train vimp2_I_Aug2_Rot_5_7T
-(293/322) train vimp2_K_Aug1_Rot_4_7T
-(294/322) train vimp2_B_Aug2_Rot_4_7T
-(295/322) train vimp2_D_Aug1_Rot_-7_7T
-(296/322) train vimp2_H_Aug0_Rot_7_7T
-(297/322) train vimp2_J_Aug0_Rot_-6_7T
-(298/322) train vimp2_K_Aug5_Rot_-7_7T
-(299/322) train vimp2_C_Aug0_Rot_-4_7T
-(300/322) train vimp2_D_Aug5_Rot_-6_7T
-(301/322) train vimp2_H_Aug5_Rot_-4_7T
-(302/322) train vimp2_J_Aug4_Rot_-4_7T
-(303/322) train vimp2_L_Aug3_Rot_2_7T
-(304/322) train vimp2_C_Aug4_Rot_-4_7T
-(305/322) train vimp2_F_Aug3_Rot_6_7T
-(306/322) train vimp2_I_Aug2_Rot_6_7T
-(307/322) train vimp2_K_Aug2_Rot_-1_7T
-(308/322) train vimp2_B_Aug2_Rot_7_7T
-(309/322) train vimp2_D_Aug2_Rot_-4_7T
-(310/322) train vimp2_H_Aug1_Rot_-1_7T
-(311/322) train vimp2_J_Aug0_Rot_6_7T
-(312/322) train vimp2_K_Aug5_Rot_7_7T
-(313/322) train vimp2_C_Aug1_Rot_3_7T
-(314/322) train vimp2_F_Aug0_Rot_-2_7T
-(315/322) train vimp2_H_Aug5_Rot_-7_7T
-(316/322) train vimp2_J_Aug4_Rot_5_7T
-(317/322) train vimp2_L_Aug3_Rot_-4_7T
-(318/322) train vimp2_C_Aug4_Rot_-5_7T
-(319/322) train vimp2_F_Aug3_Rot_7_7T
-(320/322) train vimp2_I_Aug3_Rot_-2_7T
-(321/322) train vimp2_K_Aug2_Rot_1_7T
-(0/6) test vimp2_A_3T
-(1/6) test vimp2_G_3T
-(2/6) test vimp2_M_3T
-(3/6) test vimp2_A_7T
-(4/6) test vimp2_G_7T
-(5/6) test vimp2_M_7T
----------------------------------------------------------------
-Full Experiment Info
-slicingDim [1] Nuclei_Indexes [2.0] GPU:   2, HCascade 
-
----------------------------------------------------------------
-************ stage 1 ************
-************ stage 2 ************
-************ stage 3 ************
----------------------------------------------------------------
- Nucleus: 2.0  | GPU: 2,  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  HCascade |  FM 20
-Experiment: exp4
-SubExperiment: sE11_HCascade_FM20_DO0.3_ET_InitFrom_Main_AllAugments
-SubExperiment: sE11-HCascade-FM20-DO0.3-ET-InitFrom-Main-AllAugments
----------------------------------------------------------------
-InputDimensions [56, 56, 72]
-(20945, 56, 56, 1)
-__________________________________________________________________________________________________
-Layer (type)                    Output Shape         Param #     Connected to                     
-==================================================================================================
-input_1 (InputLayer)            (None, 56, 56, 1)    0                                            
-__________________________________________________________________________________________________
-batch_normalization_1 (BatchNor (None, 56, 56, 1)    4           input_1[0][0]                    
-__________________________________________________________________________________________________
-conv2d_1 (Conv2D)               (None, 56, 56, 20)   200         batch_normalization_1[0][0]      
-__________________________________________________________________________________________________
-conv2d_2 (Conv2D)               (None, 56, 56, 20)   3620        conv2d_1[0][0]                   
-__________________________________________________________________________________________________
-max_pooling2d_1 (MaxPooling2D)  (None, 28, 28, 20)   0           conv2d_2[0][0]                   
-__________________________________________________________________________________________________
-dropout_1 (Dropout)             (None, 28, 28, 20)   0           max_pooling2d_1[0][0]            
-__________________________________________________________________________________________________
-batch_normalization_2 (BatchNor (None, 28, 28, 20)   80          dropout_1[0][0]                  
-__________________________________________________________________________________________________
-conv2d_3 (Conv2D)               (None, 28, 28, 40)   7240        batch_normalization_2[0][0]      
-__________________________________________________________________________________________________
-conv2d_4 (Conv2D)               (None, 28, 28, 40)   14440       conv2d_3[0][0]                   
-__________________________________________________________________________________________________
-max_pooling2d_2 (MaxPooling2D)  (None, 14, 14, 40)   0           conv2d_4[0][0]                   
-__________________________________________________________________________________________________
-dropout_2 (Dropout)             (None, 14, 14, 40)   0           max_pooling2d_2[0][0]            
-__________________________________________________________________________________________________
-conv2d_5 (Conv2D)               (None, 14, 14, 80)   28880       dropout_2[0][0]                  
-__________________________________________________________________________________________________
-conv2d_6 (Conv2D)               (None, 14, 14, 80)   57680       conv2d_5[0][0]                   
-__________________________________________________________________________________________________
-dropout_3 (Dropout)             (None, 14, 14, 80)   0           conv2d_6[0][0]                   
-__________________________________________________________________________________________________
-batch_normalization_3 (BatchNor (None, 14, 14, 80)   320         dropout_3[0][0]                  
-__________________________________________________________________________________________________
-conv2d_transpose_1 (Conv2DTrans (None, 28, 28, 40)   12840       batch_normalization_3[0][0]      
-__________________________________________________________________________________________________
-
-concatenate_1 (Concatenate)     (None, 28, 28, 80)   0           conv2d_transpose_1[0][0]         
-                                                                 conv2d_4[0][0]                   
-__________________________________________________________________________________________________
-conv2d_7 (Conv2D)               (None, 28, 28, 40)   28840       concatenate_1[0][0]              
-__________________________________________________________________________________________________
-conv2d_8 (Conv2D)               (None, 28, 28, 40)   14440       conv2d_7[0][0]                   
-__________________________________________________________________________________________________
-dropout_4 (Dropout)             (None, 28, 28, 40)   0           conv2d_8[0][0]                   
-__________________________________________________________________________________________________
-batch_normalization_4 (BatchNor (None, 28, 28, 40)   160         dropout_4[0][0]                  
-__________________________________________________________________________________________________
-conv2d_transpose_2 (Conv2DTrans (None, 56, 56, 20)   3220        batch_normalization_4[0][0]      
-__________________________________________________________________________________________________
-concatenate_2 (Concatenate)     (None, 56, 56, 40)   0           conv2d_transpose_2[0][0]         
-                                                                 conv2d_2[0][0]                   
-__________________________________________________________________________________________________
-conv2d_9 (Conv2D)               (None, 56, 56, 20)   7220        concatenate_2[0][0]              
-__________________________________________________________________________________________________
-conv2d_10 (Conv2D)              (None, 56, 56, 20)   3620        conv2d_9[0][0]                   
-__________________________________________________________________________________________________
-dropout_5 (Dropout)             (None, 56, 56, 20)   0           conv2d_10[0][0]                  
-__________________________________________________________________________________________________
-conv2d_11 (Conv2D)              (None, 56, 56, 2)    42          dropout_5[0][0]                  
-==================================================================================================
-Total params: 182,846
-Trainable params: 182,564
-Non-trainable params: 282
-__________________________________________________________________________________________________
- --- initialized from older Model  
-------------------------------------------------------------------
-Traceback (most recent call last):
-  File "main.py", line 103, in <module>
-    Run(UserInfoB, IV)
-  File "main.py", line 84, in Run
-    if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages(UserInfoB)
-  File "main.py", line 48, in HierarchicalStages
-    Run_SingleNuclei(UserInfoB)
-  File "main.py", line 82, in Run_SingleNuclei
-    subRun(UserInfoB)
-  File "main.py", line 71, in subRun
-    choosingModel.check_Run(params, Data)              
-  File "/array/ssd/msmajdi/code/thalamus/keras/modelFuncs/choosingModel.py", line 31, in check_Run
-    model      = trainingExperiment(Data, params) if not params.preprocess.TestOnly else loadModel(params)
-  File "/array/ssd/msmajdi/code/thalamus/keras/modelFuncs/choosingModel.py", line 357, in trainingExperiment
-    model, hist = modelTrain_Unet(Data, params, model)
-  File "/array/ssd/msmajdi/code/thalamus/keras/modelFuncs/choosingModel.py", line 272, in modelTrain_Unet
-    if len(params.WhichExperiment.HardParams.Machine.GPU_Index) > 1: model = multi_gpu_model(model)
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/keras/utils/multi_gpu_utils.py", line 166, in multi_gpu_model
-    'Received: `gpus=%d`' % gpus)
-ValueError: For multi-gpu usage to be effective, call `multi_gpu_model` with `gpus >= 2`. Received: `gpus=1`
-
-concatenate_1 (Concatenate)     (None, 42, 28, 80)   0           conv2d_transpose_1[0][0]         
-                                                                 conv2d_4[0][0]                   
-__________________________________________________________________________________________________
-conv2d_7 (Conv2D)               (None, 42, 28, 40)   28840       concatenate_1[0][0]              
-__________________________________________________________________________________________________
-conv2d_8 (Conv2D)               (None, 42, 28, 40)   14440       conv2d_7[0][0]                   
-__________________________________________________________________________________________________
-dropout_4 (Dropout)             (None, 42, 28, 40)   0           conv2d_8[0][0]                   
-__________________________________________________________________________________________________
-batch_normalization_4 (BatchNor (None, 42, 28, 40)   160         dropout_4[0][0]                  
-__________________________________________________________________________________________________
-conv2d_transpose_2 (Conv2DTrans (None, 84, 56, 20)   3220        batch_normalization_4[0][0]      
-__________________________________________________________________________________________________
-concatenate_2 (Concatenate)     (None, 84, 56, 40)   0           conv2d_transpose_2[0][0]         
-                                                                 conv2d_2[0][0]                   
-__________________________________________________________________________________________________
-conv2d_9 (Conv2D)               (None, 84, 56, 20)   7220        concatenate_2[0][0]              
-__________________________________________________________________________________________________
-conv2d_10 (Conv2D)              (None, 84, 56, 20)   3620        conv2d_9[0][0]                   
-__________________________________________________________________________________________________
-dropout_5 (Dropout)             (None, 84, 56, 20)   0           conv2d_10[0][0]                  
-__________________________________________________________________________________________________
-conv2d_11 (Conv2D)              (None, 84, 56, 2)    42          dropout_5[0][0]                  
-==================================================================================================
-Total params: 182,846
-Trainable params: 182,564
-Non-trainable params: 282
-__________________________________________________________________________________________________
- --- initialized from older Model  
-------------------------------------------------------------------
-Train on 12739 samples, validate on 232 samples
-Epoch 1/100
- - 15s - loss: 0.0042 - acc: 0.9983 - mDice: 0.5361 - val_loss: 0.0058 - val_acc: 0.9980 - val_mDice: 0.5682
-
-Epoch 00001: val_mDice improved from -inf to 0.56823, saving model to /array/ssd/msmajdi/experiments/keras/exp4/models/sE11_HCascade_FM20_DO0.3_ET_InitFrom_Main_AllAugments/2-AV/sd0/best_model_weights_ET.h5
-Epoch 2/100
- - 6s - loss: 0.0031 - acc: 0.9987 - mDice: 0.6390 - val_loss: 0.0058 - val_acc: 0.9981 - val_mDice: 0.6124
-
-Epoch 00002: val_mDice improved from 0.56823 to 0.61236, saving model to /array/ssd/msmajdi/experiments/keras/exp4/models/sE11_HCascade_FM20_DO0.3_ET_InitFrom_Main_AllAugments/2-AV/sd0/best_model_weights_ET.h5
-Epoch 3/100
- - 6s - loss: 0.0027 - acc: 0.9989 - mDice: 0.6819 - val_loss: 0.0064 - val_acc: 0.9980 - val_mDice: 0.6167
-
-Epoch 00003: val_mDice improved from 0.61236 to 0.61673, saving model to /array/ssd/msmajdi/experiments/keras/exp4/models/sE11_HCascade_FM20_DO0.3_ET_InitFrom_Main_AllAugments/2-AV/sd0/best_model_weights_ET.h5
-Epoch 4/100
- - 6s - loss: 0.0025 - acc: 0.9989 - mDice: 0.7050 - val_loss: 0.0067 - val_acc: 0.9980 - val_mDice: 0.6205
-
-Epoch 00004: val_mDice improved from 0.61673 to 0.62046, saving model to /array/ssd/msmajdi/experiments/keras/exp4/models/sE11_HCascade_FM20_DO0.3_ET_InitFrom_Main_AllAugments/2-AV/sd0/best_model_weights_ET.h5
-Epoch 5/100
- - 6s - loss: 0.0024 - acc: 0.9990 - mDice: 0.7207 - val_loss: 0.0072 - val_acc: 0.9980 - val_mDice: 0.6187
-
-Epoch 00005: val_mDice did not improve from 0.62046
-
-Epoch 00005: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
-Epoch 6/100
- - 6s - loss: 0.0022 - acc: 0.9991 - mDice: 0.7426 - val_loss: 0.0074 - val_acc: 0.9979 - val_mDice: 0.6088
-
-Epoch 00006: val_mDice did not improve from 0.62046
-Epoch 7/100
- - 6s - loss: 0.0022 - acc: 0.9991 - mDice: 0.7477 - val_loss: 0.0072 - val_acc: 0.9979 - val_mDice: 0.6142
-
-Epoch 00007: val_mDice did not improve from 0.62046
-Epoch 8/100
- - 6s - loss: 0.0021 - acc: 0.9991 - mDice: 0.7521 - val_loss: 0.0075 - val_acc: 0.9980 - val_mDice: 0.6126
-
-Epoch 00008: val_mDice did not improve from 0.62046
-Epoch 9/100
- - 5s - loss: 0.0021 - acc: 0.9991 - mDice: 0.7560 - val_loss: 0.0068 - val_acc: 0.9979 - val_mDice: 0.6091
-
-Epoch 00009: val_mDice did not improve from 0.62046
-
-Epoch 00009: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
-Epoch 10/100
- - 6s - loss: 0.0020 - acc: 0.9992 - mDice: 0.7637 - val_loss: 0.0074 - val_acc: 0.9978 - val_mDice: 0.6170
-
-Epoch 00010: val_mDice did not improve from 0.62046
-Epoch 11/100
- - 6s - loss: 0.0020 - acc: 0.9992 - mDice: 0.7651 - val_loss: 0.0076 - val_acc: 0.9979 - val_mDice: 0.6096
-
-Epoch 00011: val_mDice did not improve from 0.62046
-Epoch 12/100
- - 6s - loss: 0.0020 - acc: 0.9992 - mDice: 0.7691 - val_loss: 0.0075 - val_acc: 0.9979 - val_mDice: 0.6150
-
-Epoch 00012: val_mDice did not improve from 0.62046
-Epoch 13/100
- - 5s - loss: 0.0020 - acc: 0.9992 - mDice: 0.7711 - val_loss: 0.0078 - val_acc: 0.9979 - val_mDice: 0.6108
-
-Epoch 00013: val_mDice did not improve from 0.62046
-
-Epoch 00013: ReduceLROnPlateau reducing learning rate to 0.0001250000059371814.
-Epoch 14/100
- - 6s - loss: 0.0019 - acc: 0.9992 - mDice: 0.7728 - val_loss: 0.0079 - val_acc: 0.9979 - val_mDice: 0.6175
-
-Epoch 00014: val_mDice did not improve from 0.62046
-Epoch 15/100
- - 6s - loss: 0.0019 - acc: 0.9992 - mDice: 0.7744 - val_loss: 0.0081 - val_acc: 0.9979 - val_mDice: 0.6126
-
-Epoch 00015: val_mDice did not improve from 0.62046
-Epoch 16/100
- - 5s - loss: 0.0019 - acc: 0.9992 - mDice: 0.7743 - val_loss: 0.0076 - val_acc: 0.9979 - val_mDice: 0.6177
-
-Epoch 00016: val_mDice did not improve from 0.62046
-Epoch 17/100
- - 5s - loss: 0.0019 - acc: 0.9992 - mDice: 0.7769 - val_loss: 0.0078 - val_acc: 0.9979 - val_mDice: 0.6108
-
-Epoch 00017: val_mDice did not improve from 0.62046
-
-Epoch 00017: ReduceLROnPlateau reducing learning rate to 9e-05.
-Epoch 18/100
- - 6s - loss: 0.0019 - acc: 0.9992 - mDice: 0.7765 - val_loss: 0.0081 - val_acc: 0.9979 - val_mDice: 0.6092
-
-Epoch 00018: val_mDice did not improve from 0.62046
-Epoch 19/100
- - 6s - loss: 0.0019 - acc: 0.9992 - mDice: 0.7779 - val_loss: 0.0079 - val_acc: 0.9979 - val_mDice: 0.6164
-
-predicting test subjects:   0%|          | 0/6 [00:00<?, ?it/s]predicting test subjects:  17%|█▋        | 1/6 [00:00<00:03,  1.66it/s]predicting test subjects:  33%|███▎      | 2/6 [00:00<00:01,  2.20it/s]predicting test subjects:  50%|█████     | 3/6 [00:00<00:01,  2.82it/s]predicting test subjects:  83%|████████▎ | 5/6 [00:01<00:00,  3.63it/s]predicting test subjects: 100%|██████████| 6/6 [00:01<00:00,  4.45it/s]
-predicting train subjects:   0%|          | 0/322 [00:00<?, ?it/s]predicting train subjects:   0%|          | 1/322 [00:00<00:45,  7.11it/s]predicting train subjects:   1%|          | 3/322 [00:00<00:40,  7.85it/s]predicting train subjects:   1%|          | 4/322 [00:00<00:40,  7.95it/s]predicting train subjects:   2%|▏         | 5/322 [00:00<00:40,  7.82it/s]predicting train subjects:   2%|▏         | 6/322 [00:00<00:39,  8.08it/s]predicting train subjects:   2%|▏         | 8/322 [00:00<00:37,  8.47it/s]predicting train subjects:   3%|▎         | 9/322 [00:01<00:36,  8.65it/s]predicting train subjects:   3%|▎         | 10/322 [00:01<00:38,  8.18it/s]predicting train subjects:   3%|▎         | 11/322 [00:01<00:36,  8.51it/s]predicting train subjects:   4%|▎         | 12/322 [00:01<00:35,  8.64it/s]predicting train subjects:   4%|▍         | 13/322 [00:01<00:34,  8.83it/s]predicting train subjects:   4%|▍         | 14/322 [00:01<00:38,  8.01it/s]predicting train subjects:   5%|▍         | 15/322 [00:01<00:36,  8.38it/s]predicting train subjects:   5%|▍         | 16/322 [00:01<00:39,  7.66it/s]predicting train subjects:   5%|▌         | 17/322 [00:02<00:41,  7.42it/s]predicting train subjects:   6%|▌         | 18/322 [00:02<00:44,  6.79it/s]predicting train subjects:   6%|▌         | 19/322 [00:02<00:41,  7.34it/s]predicting train subjects:   6%|▌         | 20/322 [00:02<00:39,  7.60it/s]predicting train subjects:   7%|▋         | 21/322 [00:02<00:40,  7.51it/s]predicting train subjects:   7%|▋         | 22/322 [00:02<00:39,  7.62it/s]predicting train subjects:   7%|▋         | 23/322 [00:02<00:38,  7.75it/s]predicting train subjects:   7%|▋         | 24/322 [00:02<00:36,  8.25it/s]predicting train subjects:   8%|▊         | 25/322 [00:03<00:37,  7.85it/s]predicting train subjects:   8%|▊         | 27/322 [00:03<00:34,  8.60it/s]predicting train subjects:   9%|▉         | 29/322 [00:03<00:33,  8.71it/s]predicting train subjects:   9%|▉         | 30/322 [00:03<00:33,  8.82it/s]predicting train subjects:  10%|▉         | 32/322 [00:03<00:33,  8.76it/s]predicting train subjects:  10%|█         | 33/322 [00:03<00:34,  8.36it/s]predicting train subjects:  11%|█         | 34/322 [00:04<00:34,  8.23it/s]predicting train subjects:  11%|█         | 35/322 [00:04<00:35,  7.98it/s]predicting train subjects:  11%|█▏        | 37/322 [00:04<00:33,  8.53it/s]predicting train subjects:  12%|█▏        | 38/322 [00:04<00:32,  8.85it/s]predicting train subjects:  12%|█▏        | 39/322 [00:04<00:34,  8.22it/s]predicting train subjects:  13%|█▎        | 41/322 [00:04<00:31,  8.89it/s]predicting train subjects:  13%|█▎        | 42/322 [00:04<00:30,  9.06it/s]predicting train subjects:  13%|█▎        | 43/322 [00:05<00:30,  9.12it/s]predicting train subjects:  14%|█▎        | 44/322 [00:05<00:32,  8.60it/s]predicting train subjects:  14%|█▍        | 45/322 [00:05<00:33,  8.21it/s]predicting train subjects:  14%|█▍        | 46/322 [00:05<00:31,  8.63it/s]predicting train subjects:  15%|█▍        | 47/322 [00:05<00:30,  8.89it/s]predicting train subjects:  15%|█▍        | 48/322 [00:05<00:33,  8.28it/s]predicting train subjects:  16%|█▌        | 50/322 [00:05<00:30,  8.79it/s]predicting train subjects:  16%|█▌        | 51/322 [00:05<00:30,  8.81it/s]predicting train subjects:  16%|█▌        | 52/322 [00:06<00:29,  9.10it/s]predicting train subjects:  16%|█▋        | 53/322 [00:06<00:32,  8.40it/s]predicting train subjects:  17%|█▋        | 55/322 [00:06<00:29,  9.02it/s]predicting train subjects:  17%|█▋        | 56/322 [00:06<00:29,  9.07it/s]predicting train subjects:  18%|█▊        | 57/322 [00:06<00:28,  9.32it/s]predicting train subjects:  18%|█▊        | 58/322 [00:06<00:30,  8.74it/s]predicting train subjects:  19%|█▊        | 60/322 [00:06<00:28,  9.08it/s]predicting train subjects:  19%|█▉        | 62/322 [00:07<00:29,  8.89it/s]predicting train subjects:  20%|█▉        | 64/322 [00:07<00:27,  9.31it/s]predicting train subjects:  20%|██        | 65/322 [00:07<00:27,  9.37it/s]predicting train subjects:  21%|██        | 67/322 [00:07<00:28,  9.07it/s]predicting train subjects:  21%|██▏       | 69/322 [00:07<00:26,  9.57it/s]predicting train subjects:  22%|██▏       | 70/322 [00:08<00:26,  9.48it/s]predicting train subjects:  22%|██▏       | 72/322 [00:08<00:26,  9.30it/s]predicting train subjects:  23%|██▎       | 74/322 [00:08<00:26,  9.53it/s]predicting train subjects:  24%|██▎       | 76/322 [00:08<00:26,  9.24it/s]predicting train subjects:  24%|██▍       | 78/322 [00:08<00:25,  9.60it/s]predicting train subjects:  25%|██▍       | 79/322 [00:08<00:25,  9.58it/s]predicting train subjects:  25%|██▌       | 81/322 [00:09<00:26,  9.25it/s]predicting train subjects:  25%|██▌       | 82/322 [00:09<00:25,  9.39it/s]predicting train subjects:  26%|██▌       | 83/322 [00:09<00:25,  9.48it/s]predicting train subjects:  26%|██▌       | 84/322 [00:09<00:25,  9.36it/s]predicting train subjects:  27%|██▋       | 86/322 [00:09<00:25,  9.18it/s]predicting train subjects:  27%|██▋       | 88/322 [00:09<00:24,  9.43it/s]predicting train subjects:  28%|██▊       | 89/322 [00:10<00:26,  8.70it/s]predicting train subjects:  28%|██▊       | 90/322 [00:10<00:28,  8.11it/s]predicting train subjects:  29%|██▊       | 92/322 [00:10<00:26,  8.73it/s]predicting train subjects:  29%|██▉       | 93/322 [00:10<00:32,  7.07it/s]predicting train subjects:  29%|██▉       | 94/322 [00:10<00:29,  7.75it/s]predicting train subjects:  30%|██▉       | 95/322 [00:10<00:29,  7.61it/s]predicting train subjects:  30%|███       | 97/322 [00:11<00:27,  8.32it/s]predicting train subjects:  30%|███       | 98/322 [00:11<00:26,  8.54it/s]predicting train subjects:  31%|███       | 99/322 [00:11<00:25,  8.72it/s]predicting train subjects:  31%|███▏      | 101/322 [00:11<00:25,  8.75it/s]predicting train subjects:  32%|███▏      | 103/322 [00:11<00:24,  9.11it/s]predicting train subjects:  32%|███▏      | 104/322 [00:11<00:25,  8.48it/s]predicting train subjects:  33%|███▎      | 106/322 [00:12<00:24,  8.94it/s]predicting train subjects:  34%|███▎      | 108/322 [00:12<00:22,  9.36it/s]predicting train subjects:  34%|███▍      | 109/322 [00:12<00:24,  8.77it/s]predicting train subjects:  34%|███▍      | 110/322 [00:12<00:26,  8.11it/s]predicting train subjects:  34%|███▍      | 111/322 [00:12<00:25,  8.39it/s]predicting train subjects:  35%|███▌      | 113/322 [00:12<00:23,  8.87it/s]predicting train subjects:  36%|███▌      | 115/322 [00:13<00:23,  8.83it/s]predicting train subjects:  36%|███▋      | 117/322 [00:13<00:22,  9.17it/s]predicting train subjects:  37%|███▋      | 119/322 [00:13<00:22,  8.95it/s]predicting train subjects:  38%|███▊      | 121/322 [00:13<00:21,  9.44it/s]predicting train subjects:  38%|███▊      | 122/322 [00:13<00:21,  9.37it/s]predicting train subjects:  39%|███▊      | 124/322 [00:13<00:21,  9.15it/s]predicting train subjects:  39%|███▉      | 126/322 [00:14<00:20,  9.57it/s]predicting train subjects:  39%|███▉      | 127/322 [00:14<00:28,  6.95it/s]predicting train subjects:  40%|████      | 129/322 [00:14<00:26,  7.41it/s]predicting train subjects:  41%|████      | 131/322 [00:14<00:23,  8.03it/s]predicting train subjects:  41%|████      | 132/322 [00:14<00:22,  8.53it/s]predicting train subjects:  41%|████▏     | 133/322 [00:15<00:23,  8.13it/s]predicting train subjects:  42%|████▏     | 135/322 [00:15<00:21,  8.81it/s]predicting train subjects:  43%|████▎     | 137/322 [00:15<00:21,  8.79it/s]predicting train subjects:  43%|████▎     | 139/322 [00:15<00:20,  9.04it/s]predicting train subjects:  44%|████▍     | 141/322 [00:15<00:19,  9.37it/s]predicting train subjects:  44%|████▍     | 142/322 [00:16<00:21,  8.41it/s]predicting train subjects:  44%|████▍     | 143/322 [00:16<00:22,  8.12it/s]predicting train subjects:  45%|████▌     | 145/322 [00:16<00:20,  8.58it/s]predicting train subjects:  46%|████▌     | 147/322 [00:16<00:20,  8.57it/s]predicting train subjects:  46%|████▋     | 149/322 [00:16<00:18,  9.18it/s]predicting train subjects:  47%|████▋     | 150/322 [00:16<00:18,  9.19it/s]predicting train subjects:  47%|████▋     | 152/322 [00:17<00:18,  9.15it/s]predicting train subjects:  48%|████▊     | 154/322 [00:17<00:17,  9.69it/s]predicting train subjects:  48%|████▊     | 155/322 [00:17<00:17,  9.44it/s]predicting train subjects:  48%|████▊     | 156/322 [00:17<00:17,  9.52it/s]predicting train subjects:  49%|████▉     | 157/322 [00:17<00:18,  8.78it/s]predicting train subjects:  49%|████▉     | 159/322 [00:17<00:17,  9.08it/s]predicting train subjects:  50%|████▉     | 160/322 [00:17<00:17,  9.25it/s]predicting train subjects:  50%|█████     | 161/322 [00:18<00:19,  8.47it/s]predicting train subjects:  51%|█████     | 163/322 [00:18<00:17,  8.99it/s]predicting train subjects:  51%|█████     | 164/322 [00:18<00:20,  7.88it/s]predicting train subjects:  51%|█████     | 165/322 [00:18<00:18,  8.36it/s]predicting train subjects:  52%|█████▏    | 166/322 [00:18<00:19,  7.97it/s]predicting train subjects:  52%|█████▏    | 168/322 [00:18<00:17,  8.61it/s]predicting train subjects:  53%|█████▎    | 170/322 [00:19<00:16,  9.02it/s]predicting train subjects:  53%|█████▎    | 171/322 [00:19<00:16,  9.16it/s]predicting train subjects:  54%|█████▎    | 173/322 [00:19<00:16,  9.00it/s]predicting train subjects:  54%|█████▍    | 175/322 [00:19<00:15,  9.28it/s]predicting train subjects:  55%|█████▍    | 176/322 [00:19<00:15,  9.33it/s]predicting train subjects:  55%|█████▍    | 177/322 [00:19<00:15,  9.43it/s]predicting train subjects:  55%|█████▌    | 178/322 [00:19<00:15,  9.57it/s]predicting train subjects:  56%|█████▌    | 180/322 [00:20<00:17,  8.34it/s]predicting train subjects:  57%|█████▋    | 182/322 [00:20<00:15,  8.82it/s]predicting train subjects:  57%|█████▋    | 183/322 [00:20<00:15,  9.04it/s]predicting train subjects:  57%|█████▋    | 184/322 [00:20<00:14,  9.26it/s]predicting train subjects:  58%|█████▊    | 186/322 [00:20<00:14,  9.42it/s]predicting train subjects:  58%|█████▊    | 188/322 [00:21<00:13,  9.63it/s]predicting train subjects:  59%|█████▉    | 190/322 [00:21<00:13,  9.75it/s]predicting train subjects:  59%|█████▉    | 191/322 [00:21<00:13,  9.64it/s]predicting train subjects:  60%|█████▉    | 192/322 [00:21<00:16,  7.82it/s]predicting train subjects:  60%|█████▉    | 193/322 [00:21<00:15,  8.28it/s]predicting train subjects:  60%|██████    | 194/322 [00:21<00:15,  8.29it/s]predicting train subjects:  61%|██████    | 196/322 [00:21<00:14,  8.80it/s]predicting train subjects:  61%|██████▏   | 198/322 [00:22<00:13,  9.32it/s]predicting train subjects:  62%|██████▏   | 199/322 [00:22<00:13,  9.16it/s]predicting train subjects:  62%|██████▏   | 201/322 [00:22<00:12,  9.46it/s]predicting train subjects:  63%|██████▎   | 202/322 [00:22<00:12,  9.59it/s]predicting train subjects:  63%|██████▎   | 203/322 [00:22<00:12,  9.41it/s]predicting train subjects:  63%|██████▎   | 204/322 [00:22<00:12,  9.27it/s]predicting train subjects:  64%|██████▎   | 205/322 [00:22<00:12,  9.36it/s]predicting train subjects:  64%|██████▍   | 206/322 [00:22<00:12,  9.48it/s]predicting train subjects:  65%|██████▍   | 208/322 [00:23<00:11,  9.87it/s]predicting train subjects:  65%|██████▌   | 210/322 [00:23<00:11,  9.59it/s]predicting train subjects:  66%|██████▌   | 212/322 [00:23<00:11,  9.92it/s]predicting train subjects:  66%|██████▌   | 213/322 [00:23<00:11,  9.64it/s]predicting train subjects:  66%|██████▋   | 214/322 [00:23<00:11,  9.54it/s]predicting train subjects:  67%|██████▋   | 216/322 [00:23<00:10,  9.67it/s]predicting train subjects:  67%|██████▋   | 217/322 [00:24<00:10,  9.55it/s]predicting train subjects:  68%|██████▊   | 218/322 [00:24<00:10,  9.52it/s]predicting train subjects:  68%|██████▊   | 220/322 [00:24<00:10,  9.97it/s]predicting train subjects:  69%|██████▉   | 222/322 [00:24<00:10,  9.91it/s]predicting train subjects:  70%|██████▉   | 224/322 [00:24<00:09, 10.03it/s]predicting train subjects:  70%|███████   | 226/322 [00:24<00:09,  9.78it/s]predicting train subjects:  70%|███████   | 227/322 [00:25<00:09,  9.79it/s]predicting train subjects:  71%|███████   | 229/322 [00:25<00:09,  9.94it/s]predicting train subjects:  71%|███████▏  | 230/322 [00:25<00:09,  9.73it/s]predicting train subjects:  72%|███████▏  | 231/322 [00:25<00:09,  9.50it/s]predicting train subjects:  72%|███████▏  | 232/322 [00:25<00:09,  9.49it/s]predicting train subjects:  72%|███████▏  | 233/322 [00:25<00:09,  9.46it/s]predicting train subjects:  73%|███████▎  | 235/322 [00:25<00:08,  9.90it/s]predicting train subjects:  74%|███████▎  | 237/322 [00:26<00:08, 10.00it/s]predicting train subjects:  74%|███████▍  | 239/322 [00:26<00:08,  9.68it/s]predicting train subjects:  75%|███████▍  | 240/322 [00:26<00:08,  9.46it/s]predicting train subjects:  75%|███████▍  | 241/322 [00:26<00:08,  9.40it/s]predicting train subjects:  75%|███████▌  | 243/322 [00:26<00:08,  9.56it/s]predicting train subjects:  76%|███████▌  | 245/322 [00:26<00:07,  9.86it/s]predicting train subjects:  76%|███████▋  | 246/322 [00:27<00:08,  9.32it/s]predicting train subjects:  77%|███████▋  | 247/322 [00:27<00:08,  9.15it/s]predicting train subjects:  77%|███████▋  | 248/322 [00:27<00:08,  9.17it/s]predicting train subjects:  77%|███████▋  | 249/322 [00:27<00:07,  9.15it/s]predicting train subjects:  78%|███████▊  | 250/322 [00:27<00:08,  8.91it/s]predicting train subjects:  78%|███████▊  | 251/322 [00:27<00:07,  9.17it/s]predicting train subjects:  79%|███████▊  | 253/322 [00:27<00:07,  9.41it/s]predicting train subjects:  79%|███████▉  | 254/322 [00:27<00:07,  9.40it/s]predicting train subjects:  79%|███████▉  | 255/322 [00:27<00:07,  9.49it/s]predicting train subjects:  80%|███████▉  | 257/322 [00:28<00:06,  9.55it/s]predicting train subjects:  80%|████████  | 258/322 [00:28<00:06,  9.33it/s]predicting train subjects:  81%|████████  | 260/322 [00:28<00:06,  9.20it/s]predicting train subjects:  81%|████████  | 261/322 [00:28<00:06,  9.08it/s]predicting train subjects:  81%|████████▏ | 262/322 [00:28<00:06,  9.07it/s]predicting train subjects:  82%|████████▏ | 263/322 [00:28<00:06,  9.19it/s]predicting train subjects:  82%|████████▏ | 265/322 [00:29<00:06,  9.17it/s]predicting train subjects:  83%|████████▎ | 266/322 [00:29<00:05,  9.39it/s]predicting train subjects:  83%|████████▎ | 267/322 [00:29<00:06,  8.53it/s]predicting train subjects:  83%|████████▎ | 268/322 [00:29<00:06,  8.63it/s]predicting train subjects:  84%|████████▎ | 269/322 [00:29<00:05,  8.85it/s]predicting train subjects:  84%|████████▍ | 270/322 [00:29<00:05,  8.99it/s]predicting train subjects:  84%|████████▍ | 271/322 [00:29<00:05,  9.19it/s]predicting train subjects:  85%|████████▍ | 273/322 [00:29<00:05,  9.25it/s]predicting train subjects:  85%|████████▌ | 275/322 [00:30<00:05,  9.38it/s]predicting train subjects:  86%|████████▌ | 276/322 [00:30<00:04,  9.41it/s]predicting train subjects:  86%|████████▋ | 278/322 [00:30<00:04,  9.34it/s]predicting train subjects:  87%|████████▋ | 280/322 [00:30<00:04,  9.57it/s]predicting train subjects:  87%|████████▋ | 281/322 [00:30<00:04,  9.55it/s]predicting train subjects:  88%|████████▊ | 283/322 [00:30<00:04,  9.64it/s]predicting train subjects:  88%|████████▊ | 284/322 [00:31<00:03,  9.60it/s]predicting train subjects:  89%|████████▊ | 285/322 [00:31<00:03,  9.61it/s]predicting train subjects:  89%|████████▉ | 287/322 [00:31<00:03,  9.73it/s]predicting train subjects:  90%|████████▉ | 289/322 [00:31<00:03,  9.57it/s]predicting train subjects:  90%|█████████ | 291/322 [00:31<00:03,  9.62it/s]predicting train subjects:  91%|█████████ | 292/322 [00:31<00:03,  9.59it/s]predicting train subjects:  91%|█████████▏| 294/322 [00:32<00:02,  9.53it/s]predicting train subjects:  92%|█████████▏| 296/322 [00:32<00:02,  9.70it/s]predicting train subjects:  92%|█████████▏| 297/322 [00:32<00:02,  9.76it/s]predicting train subjects:  93%|█████████▎| 299/322 [00:32<00:02,  9.88it/s]predicting train subjects:  93%|█████████▎| 300/322 [00:32<00:02,  9.74it/s]predicting train subjects:  93%|█████████▎| 301/322 [00:32<00:02,  9.70it/s]predicting train subjects:  94%|█████████▍| 302/322 [00:32<00:02,  9.66it/s]predicting train subjects:  94%|█████████▍| 304/322 [00:33<00:01,  9.66it/s]predicting train subjects:  95%|█████████▍| 305/322 [00:33<00:01,  9.63it/s]predicting train subjects:  95%|█████████▌| 307/322 [00:33<00:01,  9.52it/s]predicting train subjects:  96%|█████████▌| 309/322 [00:33<00:01,  9.56it/s]predicting train subjects:  97%|█████████▋| 311/322 [00:33<00:01,  9.75it/s]predicting train subjects:  97%|█████████▋| 312/322 [00:33<00:01,  9.79it/s]predicting train subjects:  97%|█████████▋| 313/322 [00:34<00:00,  9.56it/s]predicting train subjects:  98%|█████████▊| 314/322 [00:34<00:00,  9.52it/s]predicting train subjects:  98%|█████████▊| 315/322 [00:34<00:00,  9.47it/s]predicting train subjects:  98%|█████████▊| 317/322 [00:34<00:00,  9.84it/s]predicting train subjects:  99%|█████████▉| 318/322 [00:34<00:00,  9.78it/s]predicting train subjects:  99%|█████████▉| 320/322 [00:34<00:00,  9.68it/s]predicting train subjects: 100%|██████████| 322/322 [00:34<00:00,  9.86it/s]
-
-Epoch 00019: val_mDice did not improve from 0.62046
-Restoring model weights from the end of the best epoch
-Epoch 00019: early stopping
-{'val_loss': [0.0057984614857183444, 0.0058429904266035764, 0.0064454369311188831, 0.0067078340316897838, 0.007159043970549929, 0.0074230167565160782, 0.0071979090250257789, 0.0074947605246742221, 0.0068092968812661948, 0.0074174140885086923, 0.0075809254696400001, 0.0074760665282093243, 0.0077540972350357935, 0.0078543216022181096, 0.0080740895716409234, 0.0075683550716474143, 0.0077704548562780532, 0.0080813838185035975, 0.0078513500489422981], 'val_acc': [0.9980125118946207, 0.99809863341265714, 0.99801664722376859, 0.99803266340288621, 0.99799740108950385, 0.99787048019211866, 0.99788009709325332, 0.99796027150647393, 0.99790530985799331, 0.99784435897037904, 0.99787140303644639, 0.99791536557263338, 0.99790486385082378, 0.99786913600461236, 0.99792364445225945, 0.99791812177362116, 0.99791857805745354, 0.99788149060874154, 0.99787597923443239], 'val_mDice': [0.56823384761810303, 0.61236284724597279, 0.61673332596647323, 0.62045510678455751, 0.61871416301562865, 0.60879454324985371, 0.61418425420234946, 0.61261771362403339, 0.60914893602502762, 0.61697078881592582, 0.60960796680943719, 0.61504414163786791, 0.61075042958917292, 0.61747407913208008, 0.61262917929682237, 0.61770734396474114, 0.6108451136227312, 0.60915915308327506, 0.61636890214065021], 'loss': [0.004172883510960403, 0.0030533698486706379, 0.0026968068264709047, 0.0025218254300241583, 0.0024006668184648849, 0.0022093937473111505, 0.002164561497508855, 0.0021293005436399766, 0.0020883660385625242, 0.0020240530994929773, 0.0019987960394404038, 0.001970442401636218, 0.0019570769552891224, 0.0019370844535484578, 0.0019165996601889165, 0.0019094198928659471, 0.0019042122557338037, 0.0018889769243814981, 0.0018851525635201261], 'acc': [0.99831537920953861, 0.99872645072505051, 0.99887878469118607, 0.99894794901514627, 0.99899839275026814, 0.999080997540294, 0.99909602272537668, 0.99911068346541754, 0.99912574698481649, 0.99915850324864308, 0.9991638801687226, 0.99917553244865576, 0.99918131615324091, 0.99919259811142047, 0.99919813819915648, 0.99919993136364993, 0.99920659861971517, 0.99920879318328781, 0.99920778231396579], 'mDice': [0.53610488187762373, 0.63904583562214923, 0.68191750236841076, 0.7049836542441843, 0.72069272543760954, 0.74256274075810935, 0.74769951125330691, 0.75206984308303282, 0.75597636929317458, 0.76366873634452015, 0.76507620248027963, 0.76909931930588704, 0.77105493158679883, 0.77283340299491632, 0.77441487824470467, 0.77425819095444925, 0.77692302470304908, 0.77650398910115803, 0.77785903928006439], 'lr': [0.001, 0.001, 0.001, 0.001, 0.001, 0.00050000002, 0.00050000002, 0.00050000002, 0.00050000002, 0.00025000001, 0.00025000001, 0.00025000001, 0.00025000001, 0.00012500001, 0.00012500001, 0.00012500001, 0.00012500001, 9.0000001e-05, 9.0000001e-05]}
-Using TensorFlow backend.
-
-
-
-  exp4 ET 
-
-
-
-vimp2_A_3T /array/ssd/msmajdi/experiments/keras/exp4/test/ET_3T/
-    saving 4 Super Nuclei
-    ImClosing All Nuclei
-Traceback (most recent call last):
-  File "otherFuncs/creatingFourSuperNuclei.py", line 234, in <module>
-    applyMain(Dir ,'_PProcessed')
-  File "otherFuncs/creatingFourSuperNuclei.py", line 226, in applyMain
-    RunAllFunctions(Dir + nameSubject + '/Label/')
-  File "otherFuncs/creatingFourSuperNuclei.py", line 214, in RunAllFunctions
-    ImClosingAllNuclei()
-  File "otherFuncs/creatingFourSuperNuclei.py", line 165, in ImClosingAllNuclei
-    smallFuncs.saveImage( closeMask(msk > 0 , 1) , im.affine , im.header, Directory + 'ImClosed/' + name + '_ImClosed' + mode + '.nii.gz')
-  File "otherFuncs/creatingFourSuperNuclei.py", line 53, in closeMask
-    return ndimage.binary_closing(mask, structure=struc)  
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/scipy/ndimage/morphology.py", line 774, in binary_closing
-    border_value, origin, brute_force)
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/scipy/ndimage/morphology.py", line 507, in binary_dilation
-    output, border_value, origin, 1, brute_force)
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/scipy/ndimage/morphology.py", line 245, in _binary_erosion
-    border_value, origin, invert, cit, 0)
-KeyboardInterrupt
