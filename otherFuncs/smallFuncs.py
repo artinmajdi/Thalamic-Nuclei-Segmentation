@@ -376,9 +376,11 @@ def search_ExperimentDirectory(whichExperiment):
     crossVal = whichExperiment.SubExperiment.crossVal
 
     def checkInputDirectory(Dir, NucleusName, sag_In_Cor,modeData):
-        Dir_CV = whichExperiment.Experiment.address + '/crossVal/' + crossVal.index + '/' + modeData
+        
+        sdTag2 = '/sd0' if sag_In_Cor else sdTag
         Read   = whichExperiment.Dataset.ReadTrain
         DirAug = Dir + '/Augments/' + Read.ReadAugments.Tag
+        Dir_CV = whichExperiment.Experiment.address + '/crossVal/'
 
         def Search_ImageFolder(Dir, NucleusName):
 
@@ -503,45 +505,58 @@ def search_ExperimentDirectory(whichExperiment):
         # Input = Input_cls()
 
         def LoopReadingData(Input, Dirr):
-            SubjectsList = next(os.walk(Dirr))[1]
+            if os.path.exists(Dirr):
+                SubjectsList = next(os.walk(Dirr))[1]
 
-            if whichExperiment.Dataset.check_vimp_SubjectName: SubjectsList = [s for s in SubjectsList if 'vimp' in s]
+                if whichExperiment.Dataset.check_vimp_SubjectName: SubjectsList = [s for s in SubjectsList if 'vimp' in s]
 
-            for s in SubjectsList:
-                Input.Subjects[s] = Search_ImageFolder(Dirr + '/' + s , NucleusName)
-                Input.Subjects[s].subjectName = s
+                for s in SubjectsList:
+                    Input.Subjects[s] = Search_ImageFolder(Dirr + '/' + s , NucleusName)
+                    Input.Subjects[s].subjectName = s
 
             return Input
 
+        def load_CrossVal_Data(Input , Dir):            
+            if os.path.exists(Dir):
+                CV_list = crossVal.index if (modeData == 'test') else [s for s in os.listdir(Dir) if not (s in crossVal.index) ]
+
+                for x in CV_list: 
+                    Input = LoopReadingData(Input, Dir + x)
+
+                    if Read.ReadAugments.Mode and not (modeData == 'test'): 
+                        Input = LoopReadingData(Input , Dir + x + '/Augments' + sdTag2)
+
+            return Input
 
         Input = LoopReadingData(Input, Dir)
 
         # SRI_flag_test = False if (Read.Main or Read.ET) and (modeData == 'test') else True
         SRI_flag_test = True
         
-        if Read.Main and os.path.exists( Dir + '/Main'): Input = LoopReadingData(Input, Dir + '/Main')
-        if Read.ET   and os.path.exists( Dir + '/ET'  ): Input = LoopReadingData(Input, Dir + '/ET')            
-        if Read.SRI  and os.path.exists( Dir + '/SRI' ) and SRI_flag_test: Input = LoopReadingData(Input, Dir + '/SRI')
+        if Read.Main: Input = LoopReadingData(Input, Dir + '/Main')
+        if Read.ET  : Input = LoopReadingData(Input, Dir + '/ET')            
+        if Read.SRI and SRI_flag_test: Input = LoopReadingData(Input, Dir + '/SRI')
         
-        if Read.Main and os.path.exists(Dir_CV) and crossVal.Mode: Input = LoopReadingData(Input, Dir_CV)
+        if crossVal.Mode:
+            if Read.Main: Input = load_CrossVal_Data(Input , Dir_CV + 'Main/')
+            if Read.ET:   Input = load_CrossVal_Data(Input , Dir_CV + 'ET/')
+            if Read.SRI:  Input = load_CrossVal_Data(Input , Dir_CV + 'SRI/')
 
 
-        if Read.ReadAugments.Mode:
+
+        if Read.ReadAugments.Mode and not (modeData == 'test'):
              
             def func_readAugments(Input , sdTag2):
-                Main_Dir , CV_Dir , ET_Dir = (DirAug + '/Main' + sdTag2  ,  Dir_CV + '/Augments' + sdTag2   ,  DirAug + '/ET'   + sdTag2)                
+                Main_Dir , ET_Dir = (DirAug + '/Main' + sdTag2  ,  DirAug + '/ET'   + sdTag2)                
                 if Read.Main and os.path.exists( Main_Dir):                  Input = LoopReadingData( Input, Main_Dir)
-                if Read.Main and os.path.exists( CV_Dir ) and crossVal.Mode: Input = LoopReadingData( Input, CV_Dir  )  # reading Cross Val Data
                 if Read.ET   and os.path.exists( ET_Dir ):                   Input = LoopReadingData( Input, ET_Dir  )
-
                 return Input
                     
-            if Read.ReadAugments.LoadAll:
-                for sdTag2 in ['/sd0' , '/sd1' , '/sd2']: 
-                    Input = func_readAugments(Input , sdTag2)
-            else:
-                sdTag2 = '/sd0' if sag_In_Cor else sdTag
-                Input = func_readAugments(Input , sdTag2)                
+            # if Read.ReadAugments.LoadAll:
+            #     for sdTag2 in ['/sd0' , '/sd1' , '/sd2']: 
+            #         Input = func_readAugments(Input , sdTag2)
+            # else:            
+            Input = func_readAugments(Input , sdTag2)                
 
 
         return Input

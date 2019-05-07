@@ -79,8 +79,8 @@ def temp_Experiments_preSet(UserInfoB):
             UserInfoB['InitializeB'].From_3T        = False   
             UserInfoB['CrossVal'].Mode = False
             
-        elif UserInfoB['TypeExperiment'] == 10:
-            UserInfoB['ReadTrain'].ReadAugments.LoadAll = True 
+        # elif UserInfoB['TypeExperiment'] == 10:
+        #     UserInfoB['ReadTrain'].ReadAugments.LoadAll = True 
             # UserInfoB['SubExperiment'].Tag += '_Main_AllAugments'   
             
         elif UserInfoB['TypeExperiment'] == 11:
@@ -297,8 +297,8 @@ def func_WhichExperiment(UserInfo):
         
         class CrossVal:
             Mode = False
-            index = 'a'
-            All_Indexes = ['a' , 'b']
+            index = ['a']
+            # All_Indexes = ['a' , 'b']
         class subExperiment:
             index = ''
             tag = ''
@@ -335,7 +335,7 @@ def func_WhichExperiment(UserInfo):
             class readAugmentFn:
                 Mode = False
                 Tag = ''
-                LoadAll = True
+                LoadAll = False
 
             class readTrain:
                 Main = True

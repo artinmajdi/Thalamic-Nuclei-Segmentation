@@ -17,8 +17,8 @@ TypeExperiment = 9
 
 class CrossVal:
     Mode = False
-    index = 'a'
-    All_Indexes = ['a' , 'b']
+    index = ['a']
+    All_Indexes = ['a' , 'b' , 'c' , 'd']
 
 class Experiments:
     Index , Tag = '4' , '' # '1' , '' # , 'cascadeV1'
@@ -36,7 +36,7 @@ class InitializeB:
     From_3T        = False
 
 class simulation:
-    TestOnly      = False
+    TestOnly      = True
     epochs        = 100
     GPU_Index     = "0,1"
     Learning_Rate = 1e-3

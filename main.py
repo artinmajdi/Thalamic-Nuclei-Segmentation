@@ -76,7 +76,8 @@ def Run(UserInfoB,InitValues):
                 UserInfoB['simulation'].slicingDim = [sd]       
 
                 # if UserInfoB['CrossVal'].Mode:
-                #     for UserInfoB['CrossVal'].index in UserInfoB['CrossVal'].All_Indexes:   
+                #     for cv in UserInfoB['CrossVal'].All_Indexes:
+                #         UserInfoB['CrossVal'].index = [cv]
                 #         subRun(UserInfoB)
                 # else:
                 subRun(UserInfoB)
