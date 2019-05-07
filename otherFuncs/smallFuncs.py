@@ -352,7 +352,7 @@ def terminalEntries(UserInfo):
                 UserInfo['Model_Method'] = 'HCascade' 
 
         elif entry.lower() in ('-ci','--CrossVal_Index'):
-            UserInfo['CrossVal'].index = sys.argv[en+1]
+            UserInfo['CrossVal'].index = [sys.argv[en+1]]
                 
 
                 

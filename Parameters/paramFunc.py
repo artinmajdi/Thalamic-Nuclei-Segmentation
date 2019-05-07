@@ -146,7 +146,7 @@ def func_Exp_subExp_Names(UserInfo):
         else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag   # + field_Strength_Tag()            
         # else: tag = method + '_FM' + str(FM) + SE.Tag 
 
-        if UserInfo['CrossVal'].Mode: tag += '_CV_' + UserInfo['CrossVal'].index
+        if UserInfo['CrossVal'].Mode: tag += '_CV_' + UserInfo['CrossVal'].index[0]
 
         return subExperiment(tag)
 
