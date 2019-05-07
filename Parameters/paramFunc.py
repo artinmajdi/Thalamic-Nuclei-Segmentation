@@ -77,7 +77,7 @@ def temp_Experiments_preSet(UserInfoB):
             UserInfoB['InitializeB'].FromThalamus   = False
             UserInfoB['InitializeB'].FromOlderModel = True
             UserInfoB['InitializeB'].From_3T        = False   
-            UserInfoB['CrossVal'].Mode = False
+            # UserInfoB['CrossVal'].Mode = False
             
         # elif UserInfoB['TypeExperiment'] == 10:
         #     UserInfoB['ReadTrain'].ReadAugments.LoadAll = True 
