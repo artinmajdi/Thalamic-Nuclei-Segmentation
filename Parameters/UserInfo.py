@@ -1,5 +1,5 @@
 
-Model_Method =  'Cascade' # 'mUnet' #' FCN_25D' #  'HCascade' # 
+Model_Method =  'HCascade' # 'mUnet' #' FCN_25D' #  'HCascade' # 
 
 # TypeExperiment == 1: # Main
 # TypeExperiment == 2: # Transfer Learn ET
@@ -13,7 +13,7 @@ Model_Method =  'Cascade' # 'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 10: # Main + All Augments
 # TypeExperiment == 11: # Main + Init from Thalamus
 # TypeExperiment == 12: # Main + Init from 3T
-TypeExperiment = 9
+TypeExperiment = 1
 
 class CrossVal:
     Mode = True
@@ -27,22 +27,22 @@ DropoutValue = 0.3
 
 class SubExperiment: 
     Index = 12
-    Tag   = '_ET_InitFrom_Main_AllAugments' # 
+    Tag   = '_InitFrom_SRI_AllAugments' # '_ET_InitFrom_Main_AllAugments' # 
     Mode_JustThis = False
   
 class InitializeB:
     FromThalamus   = False
-    FromOlderModel = True
-    From_3T        = False
+    FromOlderModel = False
+    From_3T        = True
 
 class simulation:
     TestOnly      = False
     epochs        = 100
-    GPU_Index     = "4"
+    GPU_Index     = "0,1"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1] # ,2,4]
+    nucleus_Index = [2,4,5,6,7,8] # ,2,4]
     slicingDim    = [2] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2

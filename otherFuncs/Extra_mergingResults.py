@@ -125,7 +125,7 @@ class mergingDiceValues:
                             SRI  = []
 
                         for sIx , subject in enumerate(sE_Dices[:,0]):
-                            if len(subject) == 7:   subjectDice.ET.append(sIx)
+                            if 'ET' in subject:     subjectDice.ET.append(sIx)
                             elif 'CSFn' in subject: subjectDice.CSfn.append(sIx)
                             elif 'SRI'  in subject: subjectDice.SRI.append(sIx)
                             else:                   subjectDice.Main.append(sIx)
