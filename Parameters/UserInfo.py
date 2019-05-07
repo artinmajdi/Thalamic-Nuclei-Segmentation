@@ -13,10 +13,10 @@ Model_Method =  'HCascade' # 'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 10: # Main + All Augments
 # TypeExperiment == 11: # Main + Init from Thalamus
 # TypeExperiment == 12: # Main + Init from 3T
-TypeExperiment = 1
+TypeExperiment = 9
 
 class CrossVal:
-    Mode = True
+    Mode = False
     index = 'a'
     All_Indexes = ['a' , 'b']
 
@@ -27,13 +27,13 @@ DropoutValue = 0.3
 
 class SubExperiment: 
     Index = 12
-    Tag   = '_InitFrom_SRI_AllAugments' # '_ET_InitFrom_Main_AllAugments' # 
+    Tag   = '_ET_InitFrom_Main_AllAugments' # '_InitFrom_SRI_AllAugments' # 
     Mode_JustThis = False
   
 class InitializeB:
     FromThalamus   = False
-    FromOlderModel = False
-    From_3T        = True
+    FromOlderModel = True
+    From_3T        = False
 
 class simulation:
     TestOnly      = False
