@@ -101,10 +101,11 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
 # for UserInfoB['Model_Method'] in ['HCascade'  ,  'Cascade' ]:
-if UserInfoB['CrossVal'].Mode:
-    for cv in ['a' , 'b']:
-        UserInfoB['CrossVal'].index = [cv]
-        Run(UserInfoB, IV)
-else: Run(UserInfoB, IV)
+#if UserInfoB['CrossVal'].Mode:
+#    for cv in ['b' , 'c']:
+#        UserInfoB['CrossVal'].index = [cv]
+#        Run(UserInfoB, IV)
+#else: 
+Run(UserInfoB, IV)
 
 K.clear_session()
