@@ -1,24 +1,20 @@
 
 
-Model_Method =  'HCascade' # 'mUnet' #' FCN_25D' #  'HCascade' # 
+Model_Method =  'Cascade' # 'mUnet' #' FCN_25D' #  'HCascade' # 
 
-# TypeExperiment == 1: # Main
-# TypeExperiment == 2: # Transfer Learn ET
-# TypeExperiment == 3: # SRI
-# TypeExperiment == 4: # Predict ET from MS&Ctrl
-# TypeExperiment == 5: # Train ET Initialized from 3T
-# TypeExperiment == 6: # Train Main+ET
-# TypeExperiment == 7: # Train Main+ET+SRI
-# TypeExperiment == 8: # Train Main+SRI
-# TypeExperiment == 9: # Train ET Initialized from Main+SRI
-# TypeExperiment == 10: # Main + All Augments
-# TypeExperiment == 11: # Main + Init from Thalamus
-# TypeExperiment == 12: # Main + Init from 3T
-TypeExperiment = 9
+# Main = 7T (Ctrl&MS)
+# ET   = ET(7T + 3T)
+# TypeExperiment == 1: # 3T      Init Randomly
+# TypeExperiment == 2: # Main    Init from 3T
+# TypeExperiment == 3: # ET      Init from Main
+# TypeExperiment == 4: # ET Transfer Learn from Main
+# TypeExperiment == 5: # ET Predicted from Main
+# TypeExperiment == 6: # Main + 3T  Init Randomly
+TypeExperiment = 3
 
 class CrossVal:
     Mode = True
-    index = ['a']
+    index = ['b']
     All_Indexes = ['a' , 'b' , 'c' , 'd']
 
 class Experiments:
@@ -28,13 +24,14 @@ DropoutValue = 0.3
 
 class SubExperiment: 
     Index = 12
-    Tag   = '_ET_InitFrom_Main_AllAugments' # '_InitFrom_SRI_AllAugments' # 
+    Tag   = '_ET_Init_Main_AllAugs' # '_InitFrom_SRI_AllAugments' # 
     Mode_JustThis = False
   
 class InitializeB:
     FromThalamus   = False
-    FromOlderModel = True
+    FromOlderModel = False
     From_3T        = False
+    From_7T        = False
 
 class simulation:
     TestOnly      = False

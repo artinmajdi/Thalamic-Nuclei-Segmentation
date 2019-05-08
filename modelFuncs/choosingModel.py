@@ -199,7 +199,7 @@ def trainingExperiment(Data, params):
             save_best_only=True, mode='min' , min_lr=0.9e-4 , )
         
         # Progbar = keras.callbacks.Progba
-        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=15, verbose=1, mode=mode, \
+        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=25, verbose=1, mode=mode, \
             baseline=0, restore_best_weights=True)
 
         # TensorBoard = keras.callbacks.TensorBoard(log_dir= Dir_Save + '/logs', histogram_freq=1, batch_size=batch_size, \
@@ -263,6 +263,12 @@ def trainingExperiment(Data, params):
                         model.load_weights(TP.Model_3T + '/model_weights.h5')
                         print(' --- initialized from Model_3T' , TP.Model_3T)
                     except: print('initialized from From_3T failed')
+
+                elif Initialize.From_7T and os.path.exists(TP.Model_7T + '/model_weights.h5'):
+                    try:
+                        model.load_weights(TP.Model_7T + '/model_weights.h5')
+                        print(' --- initialized from Model_7T' , TP.Model_7T)
+                    except: print('initialized from From_7T failed')                        
 
             print('------------------------------------------------------------------')
             return model  

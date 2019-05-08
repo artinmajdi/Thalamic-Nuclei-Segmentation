@@ -14,6 +14,18 @@ import json
 
 def temp_Experiments_preSet(UserInfoB):
 
+    # TypeExperiment == 1: # Main
+    # TypeExperiment == 2: # Transfer Learn ET
+    # TypeExperiment == 3: # SRI
+    # TypeExperiment == 4: # Predict ET from MS&Ctrl
+    # TypeExperiment == 5: # Train ET Initialized from 3T
+    # TypeExperiment == 6: # Train Main+ET
+    # TypeExperiment == 7: # Train Main+ET+SRI
+    # TypeExperiment == 8: # Train Main+SRI
+    # TypeExperiment == 9: # Train ET Initialized from Main+SRI
+    # TypeExperiment == 10: # Main + All Augments
+    # TypeExperiment == 11: # Main + Init from Thalamus
+    # TypeExperiment == 12: # Main + Init from 3T
     class TypeExperimentFuncs():
         def __init__(self):            
             class ReadTrainC:
@@ -105,11 +117,62 @@ def temp_Experiments_preSet(UserInfoB):
 
     return UserInfoB
 
+def temp_Experiments_preSet_V2(UserInfoB):
+
+    class TypeExperimentFuncs():
+        def __init__(self):            
+            class ReadTrainC:
+                def __init__(self, SRI=0 , ET=0 , Main=0 , CSFn=0):   
+                    class readAugments: Mode, Tag, LoadAll = True, '', False
+                    self.SRI  = SRI  > 0.5
+                    self.ET   = ET   > 0.5
+                    self.Main = Main > 0.5
+                    self.CSFn = CSFn > 0.5
+
+                    self.ReadAugments = readAugments                    
+            self.ReadTrainC = ReadTrainC
+
+            class Transfer_LearningC:
+                def __init__(self, Mode=False , FrozenLayers = [0] , Tag = '_TF' , Stage = 0):
+                    self.Mode         = Mode
+                    self.FrozenLayers = FrozenLayers
+                    self.Stage        = Stage
+                    self.Tag          = Tag
+            self.Transfer_LearningC = Transfer_LearningC
+
+            class InitializeB:
+                def __init__(self, FromThalamus=False , FromOlderModel=False , From_3T=False , From_7T=False):
+                    self.FromThalamus   = FromThalamus
+                    self.FromOlderModel = FromOlderModel
+                    self.From_3T        = From_3T
+                    self.From_7T = From_7T
+            self.InitializeB = InitializeB
+
+        def main(self, TypeExperiment = 1):
+            switcher = {
+                1:  (8   ,   self.ReadTrainC(SRI=1)         , self.InitializeB()                    ,  self.Transfer_LearningC() ),
+                2:  (11  ,   self.ReadTrainC(Main=1)        , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
+                3:  (11  ,   self.ReadTrainC(ET=1)          , self.InitializeB(From_7T=True) ,  self.Transfer_LearningC() ),
+                4:  (11  ,   self.ReadTrainC(ET=1)          , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True  , FrozenLayers=[0] , Tag = '_TF') ),
+                5:  (11  ,   self.ReadTrainC(ET=1)          , self.InitializeB()                    ,  self.Transfer_LearningC() ),
+                6:  (11  ,   self.ReadTrainC(SRI=1, Main=1) , self.InitializeB()                    ,  self.Transfer_LearningC() ),
+                }
+            return switcher.get(TypeExperiment , 'wrong Index')
+
+    a,b,c,d = TypeExperimentFuncs().main(UserInfoB['TypeExperiment'])
+    UserInfoB['SubExperiment'].Index = a
+    UserInfoB['ReadTrain']           = b
+    UserInfoB['Transfer_Learning']   = d
+    UserInfoB['InitializeB']         = c
+    if UserInfoB['TypeExperiment'] == 5: UserInfoB['simulation'].TestOnly = True
+
+    return UserInfoB
+
 def Run(UserInfoB, terminal=False):
         
     if terminal: UserInfoB = smallFuncs.terminalEntries(UserInfoB)
 
-    UserInfoB = temp_Experiments_preSet(UserInfoB)
+    UserInfoB = temp_Experiments_preSet_V2(UserInfoB)
 
     class params:
         WhichExperiment = func_WhichExperiment(UserInfoB)
@@ -128,10 +191,10 @@ def func_Exp_subExp_Names(UserInfo):
         DO = UserInfo['DropoutValue']
         SE = UserInfo['SubExperiment']
         method = UserInfo['Model_Method']        
-        def field_Strength_Tag():
-            if UserInfo['ReadTrain'].SRI:                                 return '_3T'    
-            elif UserInfo['ReadTrain'].Main or UserInfo['ReadTrain'].ET:  return '_7T' 
-            else:                                                         return '_CSFn'                                                                        
+        # def field_Strength_Tag():
+        #     if UserInfo['ReadTrain'].SRI:                                 return '_3T'    
+        #     elif UserInfo['ReadTrain'].Main or UserInfo['ReadTrain'].ET:  return '_7T' 
+        #     else:                                                         return '_CSFn'                                                                        
                
         class subExperiment:
             def __init__(self, tag):                
@@ -139,11 +202,12 @@ def func_Exp_subExp_Names(UserInfo):
                 self.tag = tag
                 self.name_thalamus = ''            
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
-                self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM) # + '_3T' 
+                self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM)
+                self.name_Init_from_7T = 'sE11_' + method + '_FM' + str(FM)
                 self.crossVal = UserInfo['CrossVal']()
 
         if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
-        else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag   # + field_Strength_Tag()            
+        else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag            
         # else: tag = method + '_FM' + str(FM) + SE.Tag 
 
         if UserInfo['CrossVal'].Mode: tag += '_CV_' + UserInfo['CrossVal'].index[0]
@@ -216,7 +280,6 @@ def func_WhichExperiment(UserInfo):
                 Stage = 0 # 1
                 FrozenLayers = [0]
                 Tag = '_TF'
-
             
             class classWeight:
                 Weight = {0:1 , 1:1}
@@ -234,6 +297,7 @@ def func_WhichExperiment(UserInfo):
                 FromThalamus   = False
                 FromOlderModel = False
                 From_3T        = False  
+                From_7T = False  
 
             class dataGenerator:
                 mode = False
@@ -293,7 +357,6 @@ def func_WhichExperiment(UserInfo):
             tag = ''
             name = ''
             address = ''
-
         
         class CrossVal:
             Mode = False
@@ -305,6 +368,8 @@ def func_WhichExperiment(UserInfo):
             name = ''
             name_thalamus = ''
             crossVal = CrossVal()
+            name_Init_from_7T = ''
+            name_Init_from_3T = ''
 
         def datasetFunc():
             class validation:
@@ -480,20 +545,18 @@ def func_WhichExperiment(UserInfo):
                 
             return num_classes
 
-        def func_Initialize(Init):
-            A, B, C = Init.FromThalamus , Init.FromOlderModel , Init.From_3T
+        # def func_Initialize(Init):
+        #     A, B, C, D = Init.FromThalamus , Init.FromOlderModel , Init.From_3T , Init.From_7T
 
-            class InitializeB:
-                def __init__(self, FromThalamus , FromOlderModel , From_3T):
-                    self.FromThalamus   = FromThalamus
-                    self.FromOlderModel = FromOlderModel
-                    self.From_3T        = From_3T
-                                                
-            # if InitializeB.FromThalamus + InitializeB.FromOlderModel + InitializeB.From_3T > 1:
-            #     print('WARNING:   initilization can only happen from one source')
-            #     InitializeB.FromThalamus , InitializeB.FromOlderModel , InitializeB.From_3T = False , False , False
+        #     class InitializeB:
+        #         def __init__(self, FromThalamus , FromOlderModel , From_3T , From_7T):
+        #             self.FromThalamus   = FromThalamus
+        #             self.FromOlderModel = FromOlderModel
+        #             self.From_3T        = From_3T
+        #             self.From_7T = From_7T
+                                            
 
-            return InitializeB(A,B,C)
+        #     return InitializeB(A,B,C,D)
 
         def fixing_NetworkParams_BasedOn_InputDim(dim):
             class kernel_size: 
@@ -526,16 +589,14 @@ def func_WhichExperiment(UserInfo):
         HardParams.Machine.GPU_Index = str(UserInfo['simulation'].GPU_Index)
 
      
-        HardParams.Model.metrics, _   = Metrics.MetricInfo(UserInfo['MetricIx'])
-        HardParams.Model.optimizer, _ = Optimizers.OptimizerInfo(1, UserInfo['simulation'].Learning_Rate)
-        HardParams.Model.num_Layers   = UserInfo['simulation'].num_Layers
-        HardParams.Model.batch_size   = UserInfo['simulation'].batch_size
-        HardParams.Model.epochs       = UserInfo['simulation'].epochs
-        HardParams.Model.verbose      = UserInfo['simulation'].verbose
-        HardParams.Model.DataGenerator = UserInfo['dataGenerator']()
-        
-        
-        HardParams.Model.Initialize = func_Initialize(UserInfo['simulation'].Initialize)
+        HardParams.Model.metrics, _    = Metrics.MetricInfo(UserInfo['MetricIx'])
+        HardParams.Model.optimizer, _  = Optimizers.OptimizerInfo(1, UserInfo['simulation'].Learning_Rate)
+        HardParams.Model.num_Layers    = UserInfo['simulation'].num_Layers
+        HardParams.Model.batch_size    = UserInfo['simulation'].batch_size
+        HardParams.Model.epochs        = UserInfo['simulation'].epochs
+        HardParams.Model.verbose       = UserInfo['simulation'].verbose
+        HardParams.Model.DataGenerator = UserInfo['dataGenerator']()                
+        HardParams.Model.Initialize    = UserInfo['InitializeB']
 
         HardParams.Model.Method.Type                  = UserInfo['Model_Method']
         HardParams.Model.Method.save_Best_Epoch_Model = UserInfo['simulation'].save_Best_Epoch_Model   
