@@ -11,7 +11,7 @@ Model_Method =  'Cascade' # 'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 5: # ET Predicted from Main
 # TypeExperiment == 6: # Main + 3T  Init Randomly
 # TypeExperiment == 7: # ET      Init from Randomly
-TypeExperiment = 3
+TypeExperiment = 1
 
 class CrossVal:
     Mode = True
@@ -25,7 +25,7 @@ DropoutValue = 0.3
 
 class SubExperiment:
     Index = 11
-    Tag   = '_ET_Init_Main_AllAugs' # _ET_Init_Main_AllAugs' # _ET_Init_Rn_AllAugs' # '_InitFrom_SRI_AllAugments' # 
+    Tag   = '_Main_Init_3T_AllAugs' # _ET_Init_Main_AllAugs' # _ET_Init_Rn_AllAugs' # '_InitFrom_SRI_AllAugments' # 
     Mode_JustThis = False
   
 class InitializeB:
@@ -35,7 +35,7 @@ class InitializeB:
     From_7T        = False
 
 class simulation:
-    TestOnly      = False
+    TestOnly      = True
     epochs        = 100
     GPU_Index     = "0,1"
     Learning_Rate = 1e-3
