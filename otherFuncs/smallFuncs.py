@@ -158,61 +158,57 @@ class Nuclei_Class():
         return nuLs
             
 class Experiment_Folder_Search():    
-    def __init__(self, General_Address='' , Experiment_Name = '' , subExperiment_Name=''):
+    def __init__(self, General_Address='' , Experiment_Name = '' , subExperiment_Name='', mode='results'):
        
         class All_Experiments:
-            address = General_Address
-            List = [s for s in os.listdir(General_Address) if 'exp' in s] if General_Address else []
-        self.All_Experiments = All_Experiments()
-                 
+            def __init__(self, General_Address):
+                        
+                self.address = General_Address
+                self.List = [s for s in os.listdir(General_Address) if 'exp' in s] if General_Address else []
+            
         class Experiment:
-            name                = Experiment_Name
-            address             = self.All_Experiments.address + '/' + Experiment_Name
-            List_subExperiments = ''
-            TagsList             = []
-        self.Experiment = Experiment()                                        
-        
-        def func_List_subExperiments(self, mode):
-            
-            class SD:
-                def __init__(self, mode = False , name='' , sdx='' , TgC=0 , address=''):
-                    self.mode = mode                        
-                    if self.mode: 
-                        self.tagList = np.append( ['Tag' + str(TgC) + '_' + sdx], name.split('_') ) 
-                        # self.address = address
-                        self.subject_List = [a for a in os.listdir(address) if 'vimp' in a]
-                        self.subject_List.sort()
-                        self.name = sdx
-            class subExp():
-                def __init__(self, name , address , TgC):
-                    self.name = name  
-                    # self.address = address + '/' + self.name
+            def __init__(self, Experiment_Name , AllExp_address):
+                        
+                self.name                = Experiment_Name
+                self.address             = AllExp_address + '/' + Experiment_Name
+                self.List_subExperiments = ''
+                self.TagsList            = []
 
-                    sdx = os.listdir(address + '/' + self.name)
+        def search_AllsubExp_inExp(Exp_address, mode):
+                        
+                class subExp():
+                    def __init__(self, name , address , TgC):
 
-                    self.multiPlanar = []
-                    for sd in ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:
-                        self.multiPlanar.append( SD(True, name , sd,TgC , address + '/' + name+'/' + sd) if sd in sdx else SD() )
+                        def find_Planes(address , name , TgC):
 
-                    # sd1 = SD(True, name , 'sd1',TgC , address + '/' + name+'/sd1') if 'sd1' in sdx else SD() 
-                    # sd2 = SD(True, name , 'sd2',TgC , address + '/' + name+'/sd2') if 'sd2' in sdx else SD() 
-                    # self.multiPlanar = [sd0 , sd1 , sd2]  
-            
-            List_subExps = [a for a in os.listdir(self.Experiment.address + '/' + mode) if ('subExp' in a) or ('sE' in a)]   
-            List_subExps.sort()
-            
-            self.Experiment.List_subExperiments , self.Experiment.TagsList = [] , []
-            for Ix, name in enumerate(List_subExps):
-                self.Experiment.List_subExperiments.append(subExp(name , self.Experiment.address + '/' + mode , Ix))
-                self.Experiment.TagsList.append( np.append(['Tag' + str(Ix)],  name.split('_')) )
+                            class SD:
+                                def __init__(self, mode = False , name='' , plane_name='' , TgC=0 , address=''):
+                                    self.mode = mode                        
+                                    if self.mode: 
+                                        self.tagList = np.append( ['Tag' + str(TgC) + '_' + plane_name], name.split('_') ) 
+                                        self.subject_List = [a for a in os.listdir(address) if 'vimp' in a]
+                                        self.subject_List.sort()
+                                        self.name = plane_name
+                                        
+                            multiPlanar = []
+                            if mode == 'results':
+                                sdx = os.listdir(address + '/' + name)                                
+                                for sd in ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:
+                                    multiPlanar.append( SD(True, name , sd,TgC , address + '/' + name+'/' + sd) if sd in sdx else SD() )
+                            else:
+                                multiPlanar = [ SD(True, name , sd,TgC , address + '/' + name+'/') for sd in ['sd0' , 'sd1' , 'sd2'] ]
+                            return multiPlanar
 
-            # np.append( ['Tag' + str(TgC) + '_' + sdx], name.split('_') 
-            # return [  for Ix, name in enumerate(List_subExps) ]        
-        
-        if self.Experiment.name:
-            func_List_subExperiments(self, 'results')
-            # self.Experiment.List_subExperiments = func_List_subExperiments(self, 'results')
+                        self.name = name  
+                        self.multiPlanar = find_Planes(address , name , TgC)
+                        
+                List_subExps = [a for a in os.listdir(Exp_address + '/' + mode) if ('subExp' in a) or ('sE' in a)] 
 
+                subExps = [subExp(name , Exp_address + '/' + mode , Ix)  for Ix, name in enumerate(List_subExps)]
+                TagsList = [ np.append(['Tag' + str(Ix)],  name.split('_'))  for Ix, name in enumerate(List_subExps) ]
+
+                return subExps, TagsList
+                
         def func_Nuclei_Names():
             NumColumns = 19
             Nuclei_Names = np.append( ['subjects'] , list(np.zeros(NumColumns-1))  )
@@ -226,15 +222,24 @@ class Experiment_Folder_Search():
             for nIx in Nuclei_Class().All_Nuclei().Indexes:
                 Nuclei_Names[nuclei_Index_Integer(nIx)] = Nuclei_Class(index=nIx).name
 
-            return Nuclei_Names
-        self.Nuclei_Names = func_Nuclei_Names()
+            return Nuclei_Names        
+        
+        def search_1subExp(List_subExperiments):
+            for a in List_subExperiments:
+                if a.name == subExperiment_Name: 
+                    return a
+
+        self.All_Experiments = All_Experiments(General_Address)                 
+        self.Experiment      = Experiment(Experiment_Name, self.All_Experiments.address)                                        
+        self.Nuclei_Names    = func_Nuclei_Names()
+
+
+        if Experiment_Name: 
+            self.Experiment.List_subExperiments , self.Experiment.TagsList = search_AllsubExp_inExp(self.Experiment.address, mode)
 
         if subExperiment_Name:
-            for a in self.Experiment.List_subExperiments:
-                if a.name == subExperiment_Name: 
-                    self.subExperiment = a
-                    break
-            
+            self.subExperiment = search_1subExp(self.Experiment.List_subExperiments)
+
 def gpuSetting(GPU_Index):
     
     os.environ["CUDA_VISIBLE_DEVICES"] = GPU_Index

@@ -25,7 +25,7 @@ DropoutValue = 0.3
 
 class SubExperiment:
     Index = 11
-    Tag   = '_ET_Init_Main_AllAugs_LR1e2' # _ET_Init_Rn_AllAugs' # _ET_Init_Rn_AllAugs' # '_InitFrom_SRI_AllAugments' # 
+    Tag   = '_ET_Init_Main_AllAugs' # _ET_Init_Main_AllAugs' # _ET_Init_Rn_AllAugs' # '_InitFrom_SRI_AllAugments' # 
     Mode_JustThis = False
   
 class InitializeB:
@@ -36,9 +36,9 @@ class InitializeB:
 
 class simulation:
     TestOnly      = False
-    epochs        = 250
+    epochs        = 100
     GPU_Index     = "0,1"
-    Learning_Rate = 1e-2
+    Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
     nucleus_Index = [1] # ,2,4]

@@ -13,7 +13,7 @@ import math
 # import shutil
 params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 
-NumColumns , n_epochsMax = 19 , 150
+NumColumns , n_epochsMax = 19 , 250
 
 class savingHistory_AsExcel:
     def __init__(self, Info):
@@ -172,9 +172,10 @@ class mergingDiceValues:
 
 for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[3:4]:
 
-    Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name)
-    print('Experiment_Name',Experiment_Name)
-    mergingDiceValues(Info)
+    # Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')
+    # mergingDiceValues(Info)
+
+    Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
     savingHistory_AsExcel(Info)
 
 os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
