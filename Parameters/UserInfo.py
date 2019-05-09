@@ -22,9 +22,9 @@ class Experiments:
 
 DropoutValue = 0.3
 
-class SubExperiment: 
-    Index = 12
-    Tag   = '_ET_Init_Main_AllAugs' # '_InitFrom_SRI_AllAugments' # 
+class SubExperiment:
+    Index = 11
+    Tag   = '_ET_Init_Rn_AllAugs' # '_InitFrom_SRI_AllAugments' # 
     Mode_JustThis = False
   
 class InitializeB:
