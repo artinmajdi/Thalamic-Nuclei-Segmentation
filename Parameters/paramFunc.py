@@ -156,6 +156,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 4:  (11  ,   self.ReadTrainC(ET=1)          , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True  , FrozenLayers=[0] , Tag = '_TF') ),
                 5:  (11  ,   self.ReadTrainC(ET=1)          , self.InitializeB()                    ,  self.Transfer_LearningC() ),
                 6:  (11  ,   self.ReadTrainC(SRI=1, Main=1) , self.InitializeB()                    ,  self.Transfer_LearningC() ),
+                7:  (11  ,   self.ReadTrainC(ET=1)          , self.InitializeB()                    ,  self.Transfer_LearningC() ),
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 

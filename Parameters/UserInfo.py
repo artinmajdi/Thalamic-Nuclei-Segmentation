@@ -10,11 +10,12 @@ Model_Method =  'Cascade' # 'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 4: # ET Transfer Learn from Main
 # TypeExperiment == 5: # ET Predicted from Main
 # TypeExperiment == 6: # Main + 3T  Init Randomly
+# TypeExperiment == 7: # ET      Init from Randomly
 TypeExperiment = 3
 
 class CrossVal:
     Mode = True
-    index = ['b']
+    index = ['a']
     All_Indexes = ['a' , 'b' , 'c' , 'd']
 
 class Experiments:
@@ -23,8 +24,8 @@ class Experiments:
 DropoutValue = 0.3
 
 class SubExperiment:
-    Index = 11
-    Tag   = '_ET_Init_Rn_AllAugs' # '_InitFrom_SRI_AllAugments' # 
+    Index = 8
+    Tag   = '_ET_Init_Main_AllAugs' # _ET_Init_Rn_AllAugs' # _ET_Init_Rn_AllAugs' # '_InitFrom_SRI_AllAugments' # 
     Mode_JustThis = False
   
 class InitializeB:
