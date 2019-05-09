@@ -528,7 +528,7 @@ def search_ExperimentDirectory(whichExperiment):
                 for x in CV_list: 
                     Input = LoopReadingData(Input, Dir + x)
 
-                    if Read.ReadAugments.Mode and not (modeData == 'test'): 
+                    if Read.ReadAugments.Mode: # and not (modeData == 'test'): 
                         Input = LoopReadingData(Input , Dir + x + '/Augments' + sdTag2)
 
             return Input
@@ -549,7 +549,7 @@ def search_ExperimentDirectory(whichExperiment):
 
 
 
-        if Read.ReadAugments.Mode and not (modeData == 'test'):
+        if Read.ReadAugments.Mode: # and not (modeData == 'test'):
              
             def func_readAugments(Input , sdTag2):
                 Main_Dir , ET_Dir = (DirAug + '/Main' + sdTag2  ,  DirAug + '/ET'   + sdTag2)                
