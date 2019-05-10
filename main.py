@@ -63,7 +63,6 @@ def Run(UserInfoB,InitValues):
 
             print('Experiment:', params.WhichExperiment.Experiment.name)                              
             print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
-            print('SubExperiment:', params.WhichExperiment.SubExperiment.name.replace('_','-'))
             print('---------------------------------------------------------------')
                                     
             Data, params = datasets.loadDataset(params) 

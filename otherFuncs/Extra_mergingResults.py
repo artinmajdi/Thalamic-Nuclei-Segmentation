@@ -134,20 +134,25 @@ class mergingDiceValues:
                             if len(subjectDiceList) <= 3: return np.round(1000*np.nanmean(sE_Dices[subjectDiceList, 1:18].astype(np.float) , axis=0))/1000
                             else: return np.round(1000*np.nanmedian(sE_Dices[subjectDiceList, 1:18].astype(np.float) , axis=0))/1000
 
-                        tag = self.plane.tagList[0]
-                        if len(subjectDice.ET) > 0:   self.All_Subjs_Ns.ET.pd[  tag] = average_median(sE_Dices , subjectDice.ET)   #np.average(sE_Dices[subjectDice.ET, 1:18].astype(np.float) , axis=0)
-                        if len(subjectDice.Main) > 0: self.All_Subjs_Ns.Main.pd[tag] = average_median(sE_Dices , subjectDice.Main) #np.median(sE_Dices[subjectDice.Main,1:18].astype(np.float) , axis=0)
-                        if len(subjectDice.CSfn) > 0: self.All_Subjs_Ns.CSFn.pd[tag] = average_median(sE_Dices , subjectDice.CSFn) #np.median(sE_Dices[subjectDice.CSFn,1:18].astype(np.float) , axis=0)                        
-                        if len(subjectDice.SRI) > 0:  self.All_Subjs_Ns.SRI.pd[ tag] = average_median(sE_Dices , subjectDice.SRI)  #np.median(sE_Dices[subjectDice.SRI ,1:18].astype(np.float) , axis=0)                                                
+                        tag = self.plane.direction +'-' + self.plane.tagIndex                        
+                        if len(subjectDice.ET) > 0:   self.All_Subjs_Ns.ET.pd[  tag] = average_median(sE_Dices , subjectDice.ET)   
+                        if len(subjectDice.Main) > 0: self.All_Subjs_Ns.Main.pd[tag] = average_median(sE_Dices , subjectDice.Main) 
+                        if len(subjectDice.CSfn) > 0: self.All_Subjs_Ns.CSFn.pd[tag] = average_median(sE_Dices , subjectDice.CSFn) 
+                        if len(subjectDice.SRI) > 0:  self.All_Subjs_Ns.SRI.pd[ tag] = average_median(sE_Dices , subjectDice.SRI)  
                     divideSubjects_BasedOnModality(self, sE_Dices)
 
         def loopOver_Subexperiments(self):
             class smallActions():                                                                                              
                 def add_space(self):
-                    self.All_Subjs_Ns.ET.pd[  self.subExperiment.name] = np.nan*np.ones(17)
-                    self.All_Subjs_Ns.Main.pd[self.subExperiment.name] = np.nan*np.ones(17)
-                    self.All_Subjs_Ns.CSFn.pd[self.subExperiment.name] = np.nan*np.ones(17)
-                    self.All_Subjs_Ns.SRI.pd[ self.subExperiment.name] = np.nan*np.ones(17)
+                    # self.All_Subjs_Ns.ET.pd[  self.subExperiment.name] = np.nan*np.ones(17)
+                    # self.All_Subjs_Ns.Main.pd[self.subExperiment.name] = np.nan*np.ones(17)
+                    # self.All_Subjs_Ns.CSFn.pd[self.subExperiment.name] = np.nan*np.ones(17)
+                    # self.All_Subjs_Ns.SRI.pd[ self.subExperiment.name] = np.nan*np.ones(17)
+
+                    self.All_Subjs_Ns.ET.pd[  self.subExperiment.Tag[0]] = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.Main.pd[self.subExperiment.Tag[0]] = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.CSFn.pd[self.subExperiment.Tag[0]] = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.SRI.pd[ self.subExperiment.Tag[0]] = np.nan*np.ones(17)
 
                 def save_All_Dices(PD):
                     PD.ET.pd.to_excel( self.writer , sheet_name=PD.ET.sheet_name  )
@@ -155,8 +160,10 @@ class mergingDiceValues:
                     PD.CSFn.pd.to_excel(self.writer, sheet_name=PD.CSFn.sheet_name)
                     PD.SRI.pd.to_excel( self.writer, sheet_name=PD.SRI.sheet_name )
 
-            for self.subExperiment in tqdm( self.Info.Experiment.List_subExperiments , desc='Dices:'):
+            A = zip(self.Info.Experiment.List_subExperiments , self.Info.Experiment.TagsList)
+            for self.subExperiment, tag in tqdm( A , desc='Dices:'):
 
+                self.subExperiment.Tag = tag
                 smallActions.add_space(self)
                 for self.plane in self.subExperiment.multiPlanar:
                     
@@ -175,8 +182,8 @@ for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExpe
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')
     mergingDiceValues(Info)
 
-    Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
-    savingHistory_AsExcel(Info)
+    # Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
+    # savingHistory_AsExcel(Info)
 
 os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
 

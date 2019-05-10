@@ -176,38 +176,43 @@ class Experiment_Folder_Search():
 
         def search_AllsubExp_inExp(Exp_address, mode):
                         
-                class subExp():
-                    def __init__(self, name , address , TgC):
+            class subExp():
+                def __init__(self, name , address , TgC):
 
-                        def find_Planes(address , name , TgC):
+                    def find_Planes(address , name , TgC):
 
-                            class SD:
-                                def __init__(self, mode = False , name='' , plane_name='' , TgC=0 , address=''):
-                                    self.mode = mode                        
-                                    if self.mode: 
-                                        self.tagList = np.append( ['Tag' + str(TgC) + '_' + plane_name], name.split('_') ) 
-                                        self.subject_List = [a for a in os.listdir(address) if 'vimp' in a]
-                                        self.subject_List.sort()
-                                        self.name = plane_name
-                                        
-                            multiPlanar = []
-                            if mode == 'results':
-                                sdx = os.listdir(address + '/' + name)                                
-                                for sd in ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:
-                                    multiPlanar.append( SD(True, name , sd,TgC , address + '/' + name+'/' + sd) if sd in sdx else SD() )
-                            else:
-                                multiPlanar = [ SD(True, name , sd,TgC , address + '/' + name+'/') for sd in ['sd0' , 'sd1' , 'sd2'] ]
-                            return multiPlanar
+                        class SD:
+                            def __init__(self, mode = False , name='' , plane_name='', direction_name='' , TgC=0 , address=''):
+                                self.mode = mode                        
+                                if self.mode: 
+                                    self.tagList = np.append( ['Tag' + str(TgC) + '_' + plane_name], name.split('_') ) 
+                                    self.tagIndex = str(TgC)
+                                    self.subject_List = [a for a in os.listdir(address) if 'vimp' in a]
+                                    self.subject_List.sort()
+                                    self.name = plane_name
+                                    self.direction = direction_name
+                                    
+                        multiPlanar = []
+                        sdLst =  tuple(['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum'])
+                        PlNmLs = tuple(['Sagittal' , 'Coronal' , 'Axial', 'MV' , '2.5D_Sum' , '1.5D_Sum'])
+                        if mode == 'results':
+                            sdx = os.listdir(address + '/' + name)     
+                            for sd, plane_name in zip(sdLst, PlNmLs): # ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:                                
+                                multiPlanar.append( SD(True, name , sd , plane_name,TgC , address + '/' + name+'/' + sd) if sd in sdx else SD() )
+                        else:
+                            for sd, plane_name in zip(sdLst, PlNmLs)[:3]: # ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:                                
+                                multiPlanar.append( SD(True, name , sd , plane_name,TgC , address + '/' + name+'/' + sd) if sd in sdx else SD() )
+                        return multiPlanar
 
-                        self.name = name  
-                        self.multiPlanar = find_Planes(address , name , TgC)
-                        
-                List_subExps = [a for a in os.listdir(Exp_address + '/' + mode) if ('subExp' in a) or ('sE' in a)] 
+                    self.name = name  
+                    self.multiPlanar = find_Planes(address , name , TgC)
+                    
+            List_subExps = [a for a in os.listdir(Exp_address + '/' + mode) if ('subExp' in a) or ('sE' in a)] 
+            List_subExps.sort()
+            subExps = [subExp(name , Exp_address + '/' + mode , Ix)  for Ix, name in enumerate(List_subExps)]
+            TagsList = [ np.append(['Tag' + str(Ix)],  name.split('_'))  for Ix, name in enumerate(List_subExps) ]
 
-                subExps = [subExp(name , Exp_address + '/' + mode , Ix)  for Ix, name in enumerate(List_subExps)]
-                TagsList = [ np.append(['Tag' + str(Ix)],  name.split('_'))  for Ix, name in enumerate(List_subExps) ]
-
-                return subExps, TagsList
+            return subExps, TagsList
                 
         def func_Nuclei_Names():
             NumColumns = 19
@@ -528,7 +533,7 @@ def search_ExperimentDirectory(whichExperiment):
                 for x in CV_list: 
                     Input = LoopReadingData(Input, Dir + x)
 
-                    if Read.ReadAugments.Mode: # and not (modeData == 'test'): 
+                    if Read.ReadAugments.Mode and not (modeData == 'test'): 
                         Input = LoopReadingData(Input , Dir + x + '/Augments' + sdTag2)
 
             return Input
@@ -549,7 +554,7 @@ def search_ExperimentDirectory(whichExperiment):
 
 
 
-        if Read.ReadAugments.Mode: # and not (modeData == 'test'):
+        if Read.ReadAugments.Mode and not (modeData == 'test'):
              
             def func_readAugments(Input , sdTag2):
                 Main_Dir , ET_Dir = (DirAug + '/Main' + sdTag2  ,  DirAug + '/ET'   + sdTag2)                

@@ -166,6 +166,11 @@ def temp_Experiments_preSet_V2(UserInfoB):
     UserInfoB['Transfer_Learning']   = d
     UserInfoB['InitializeB']         = c
     if UserInfoB['TypeExperiment'] == 5: UserInfoB['simulation'].TestOnly = True
+    if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T_AllAugs'
+    if UserInfoB['TypeExperiment'] == 3: UserInfoB['SubExperiment'].Tag = '_ET_Init_Main_AllAugs'
+    if UserInfoB['TypeExperiment'] == 7: UserInfoB['SubExperiment'].Tag = '_ET_Init_Rn_AllAugs'
+
+        
 
     return UserInfoB
 
@@ -208,7 +213,7 @@ def func_Exp_subExp_Names(UserInfo):
                 self.crossVal = UserInfo['CrossVal']()
 
         if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
-        else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag            
+        else: tag = method + '_FM' + str(FM) #+ '_DO' + str(DO) + SE.Tag            
         # else: tag = method + '_FM' + str(FM) + SE.Tag 
 
         if UserInfo['CrossVal'].Mode: tag += '_CV_' + UserInfo['CrossVal'].index[0]
