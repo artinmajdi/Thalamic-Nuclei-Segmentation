@@ -1,6 +1,6 @@
 
 
-Model_Method =   'mUnet' #'Cascade' #' FCN_25D' #  'HCascade' # 
+Model_Method =   'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' # 
 
 # Main = 7T (Ctrl&MS)
 # ET   = ET(7T + 3T)
@@ -11,10 +11,10 @@ Model_Method =   'mUnet' #'Cascade' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 5: # ET Predicted from Main
 # TypeExperiment == 6: # Main + 3T  Init Randomly
 # TypeExperiment == 7: # ET      Init from Randomly
-TypeExperiment = 1
+TypeExperiment = 2
 
 class CrossVal:
-    Mode = False
+    Mode = True
     index = ['a']
     All_Indexes = ['a' , 'b' , 'c' , 'd']
 
@@ -35,7 +35,7 @@ class InitializeB:
     From_7T        = False
 
 class simulation:
-    TestOnly      = True
+    TestOnly      = False
     epochs        = 100
     GPU_Index     = "0,1"
     Learning_Rate = 1e-3

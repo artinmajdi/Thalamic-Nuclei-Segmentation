@@ -213,7 +213,7 @@ def func_Exp_subExp_Names(UserInfo):
                 self.crossVal = UserInfo['CrossVal']()
 
         if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
-        else: tag = method + '_FM' + str(FM) #+ '_DO' + str(DO) + SE.Tag            
+        else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag            
         # else: tag = method + '_FM' + str(FM) + SE.Tag 
 
         if UserInfo['CrossVal'].Mode: tag += '_CV_' + UserInfo['CrossVal'].index[0]
