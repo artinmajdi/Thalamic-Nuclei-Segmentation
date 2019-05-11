@@ -71,7 +71,7 @@ def func_DecisionTree(Info , params):
 
     Info.subExperiment.address = Info.Experiment.address + '/results/' + Info.subExperiment.name + '/'
    
-    a = smallFuncs.Nuclei_Class().All_Nuclei()
+    a = smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei()
     for nucleusNm , nucleiIx in zip(a.Names , a.Indexes):
         print(Info.subExperiment.name , nucleusNm)
         # nucleusNm, nucleiIx = '1-THALAMUS' , 1

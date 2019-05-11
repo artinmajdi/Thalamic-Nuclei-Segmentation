@@ -193,8 +193,8 @@ class Experiment_Folder_Search():
                                     self.direction = direction_name
                                     
                         multiPlanar = []
-                        sdLst =  tuple(['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum'])
-                        PlNmLs = tuple(['Sagittal' , 'Coronal' , 'Axial', 'MV' , '2.5D_Sum' , '1.5D_Sum'])
+                        sdLst =  tuple(['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , 'DT' , '2.5D_Sum' , '1.5D_Sum'])
+                        PlNmLs = tuple(['Sagittal' , 'Coronal' , 'Axial', 'MV' , 'DT' , '2.5D_Sum' , '1.5D_Sum'])
                         if mode == 'results':
                             sdx = os.listdir(address + '/' + name)     
                             for sd, plane_name in zip(sdLst, PlNmLs): # ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:                                

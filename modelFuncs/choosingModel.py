@@ -87,6 +87,7 @@ def testingExeriment(model, Data, params):
             nucleusName, _ , _ = smallFuncs.NucleiSelection(NucleiIndex)
 
             smallFuncs.saveImage( pred1N_BtO , DataSubj.Affine, DataSubj.Header, dirSave + '/' + nucleusName + '.nii.gz')
+            print(dirSave)
             return dirSave, nucleusName
 
         def applyPrediction():
@@ -155,7 +156,6 @@ def testingExeriment(model, Data, params):
             prediction[name] = predictingTestSubject(DataTest[name], params.directories.Test.Input_Sagittal.Subjects[name] , ResultDir)
 
         return prediction
-
 
     def loopOver_Predicting_TrainSubjects(DataTrain):
         prediction = {}
