@@ -84,7 +84,8 @@ def func_DecisionTree(Info , params):
         
         def training(params , Info):
 
-            clf = tree.DecisionTreeClassifier()
+            clf = tree.DecisionTreeClassifier(max_depth=3)
+            
             for cnt , subj in enumerate(tqdm(list(params.directories.Train.Input.Subjects))):
                 try: 
                     subject = params.directories.Train.Input.Subjects[subj]
@@ -97,7 +98,6 @@ def func_DecisionTree(Info , params):
                         address = Info.subExperiment.address + sd + '/TrainData_Output/' + subject.subjectName + '/' + nucleusNm + '.nii.gz'                           
                         X[:,ix] = nib.load(address).get_data().reshape(-1)
                         
-
                     # if cnt == 0:
                     #     TrainData = X.copy()
                     #     TrainLabel = Y.copy()
