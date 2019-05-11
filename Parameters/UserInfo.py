@@ -35,7 +35,7 @@ class InitializeB:
     From_7T        = False
 
 class simulation:
-    TestOnly      = True
+    TestOnly      = False
     epochs        = 100
     GPU_Index     = "0,1"
     Learning_Rate = 1e-3
