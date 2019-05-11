@@ -167,7 +167,6 @@ class mergingDiceValues:
                 smallActions.add_space(self)
                 for self.plane in self.subExperiment.multiPlanar:
                     if self.plane.mode:
-                        print(self.subExperiment.name , self.plane)
                         print(self.subExperiment.name , self.plane.name)
                         # try: 
                         func_Load_Subexperiment(self)
