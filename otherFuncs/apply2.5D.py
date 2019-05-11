@@ -86,26 +86,28 @@ def func_DecisionTree(Info , params):
 
             clf = tree.DecisionTreeClassifier()
             for cnt , subj in enumerate(tqdm(list(params.directories.Train.Input.Subjects))):
-
-                subject = params.directories.Train.Input.Subjects[subj]
-                # print(cnt, len(params.directories.Train.Input.Subjects) , subject.subjectName)
-                ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')        
-                Y = ManualLabel.get_data().reshape(-1)
-                X = np.zeros((np.prod(ManualLabel.shape),3))
-                
-                for ix , sd in enumerate(['sd0' , 'sd1' , 'sd2']):
-                    address = Info.subExperiment.address + sd + '/TrainData_Output/' + subject.subjectName + '/' + nucleusNm + '.nii.gz'                           
-                    X[:,ix] = nib.load(address).get_data().reshape(-1)
+                try: 
+                    subject = params.directories.Train.Input.Subjects[subj]
+                    # print(cnt, len(params.directories.Train.Input.Subjects) , subject.subjectName)
+                    ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')        
+                    Y = ManualLabel.get_data().reshape(-1)
+                    X = np.zeros((np.prod(ManualLabel.shape),3))
                     
+                    for ix , sd in enumerate(['sd0' , 'sd1' , 'sd2']):
+                        address = Info.subExperiment.address + sd + '/TrainData_Output/' + subject.subjectName + '/' + nucleusNm + '.nii.gz'                           
+                        X[:,ix] = nib.load(address).get_data().reshape(-1)
+                        
 
-                # if cnt == 0:
-                #     TrainData = X.copy()
-                #     TrainLabel = Y.copy()
-                # else:
-                #     TrainData  = np.concatenate((TrainData,X),axis=0)
-                #     TrainLabel = np.concatenate((TrainLabel,Y),axis=0)
+                    # if cnt == 0:
+                    #     TrainData = X.copy()
+                    #     TrainLabel = Y.copy()
+                    # else:
+                    #     TrainData  = np.concatenate((TrainData,X),axis=0)
+                    #     TrainLabel = np.concatenate((TrainLabel,Y),axis=0)
 
-                clf = clf.fit(X,Y>0)
+                    clf = clf.fit(X,Y>0)
+                except:
+                    print('crashed',subj)
 
             # clf = clf.fit(TrainData,TrainLabel>0)
 

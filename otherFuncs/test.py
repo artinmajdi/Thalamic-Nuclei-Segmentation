@@ -1,44 +1,46 @@
+# import numpy as np
+from sklearn import tree
+import os
+import nibabel as nib
 import numpy as np
-# import os, sys
-# sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-# # sys.path.append( os.path.dirname(os.path.dirname(__file__)) )
-# import otherFuncs.smallFuncs as smallFuncs
-# import Parameters.UserInfo as UserInfo
-# import Parameters.paramFunc as paramFunc
-# import keras
-# import h5py
-# import nibabel as nib
-# import nilearn 
-# from nilearn import image as niImage
+import Parameters.UserInfo as UserInfo
+import Parameters.paramFunc as paramFunc
 
-# params = paramFunc.Run(UserInfo.__dict__, terminal=True)
+params = paramFunc.Run(UserInfoB, terminal=True)
 
-a = [['a',1],['b',2]
-b = [['e',3] , ['b',2]]
-c = np.concatenate((a,b), axis=0)
-print(np.unique(c))
-print(list(set(a+b)))
-# def func_reslice(dir1, dir_ref, interpolation):
-#     im = niImage.load_img(dir1)
-#     min , max = im.get_data().min() , im.get_data().max()
-#     print(min , max)
-#     if max >1:
-#         print('---')
-#     ref = niImage.load_img(dir_ref)
-#     imRL = niImage.resample_img(img=im , target_affine=ref.affine  , target_shape=im.shape,interpolation=interpolation)    
-#     return imRL
+dir = 'dir to results'
+a = [s for s in os.listdir(dir + 'sd0/') if 'vimp' in s]
+b = [s for s in os.listdir(dir + 'sd1/') if 'vimp' in s]
+c = [s for s in os.listdir(dir + 'sd2/') if 'vimp' in s]
+subjectList = list(set(a+b+c))
 
-# dir_ref = '/array/ssd/msmajdi/experiments/keras/exp3/train/Main/vimp2_819_05172013_DS/'
-# dir_in  = '/array/ssd/msmajdi/data/preProcessed/7T/vimp2_A/'
-# dir_out = '/array/ssd/msmajdi/data/preProcessed/7T/vimp2_A_b/'
-# smallFuncs.mkDir(dir_out + 'Label/')
 
-# imRL = func_reslice(dir_in + 'WMnMPRAGE_bias_corr.nii.gz', dir_ref + 'WMnMPRAGE_bias_corr.nii.gz' , 'continuous')
-# nib.save(imRL , dir_out + 'WMnMPRAGE_bias_corr.nii.gz')
+def load_msks_Allsd(dir + sd + subj + '/' +  label):
+    def readAllsd(sd):
+        msk = nib.load(dir + sd + subj + '/' +  label + '.nii.gz')
+        return msk.get_data().reshape(-1).transpose()
 
-# for label in smallFuncs.Nuclei_Class(method = 'Cascade').All_Nuclei().Names:
-#     print(label)
-#     imRL = func_reslice(dir_in + 'Label/' + label + '.nii.gz', dir_ref + 'Label/' + label + '.nii.gz' , 'nearest')
-#     nib.save(imRL , dir_out + 'Label/' + label + '.nii.gz')
+    X = [readAllsd(sd) for sd in ['sd0/' , 'sd1/' , 'sd2/'] ]
+    
 
-# print('---')
+
+for subj in params.directories.Input.subjects:
+    
+    clf = tree.DecisionTreeClassifier()
+    clf = clf.fit(X,Y)
+
+
+
+dir = '/home/artinl/Documents/RESEARCH/dataset/Main/vimp2_819_05172013_DS_MS/Label/1-THALAMUS_PProcessed.nii.gz'
+msk = nib.load(dir)
+
+a.shape
+
+X = []
+X.append(a)
+X
+b = a.reshape(msk.shape)
+b.shape
+
+np.unique(msk.get_data())
+clf.predict(X2)
