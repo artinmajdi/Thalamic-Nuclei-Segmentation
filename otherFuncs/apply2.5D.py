@@ -44,6 +44,7 @@ def func_MajorityVoting(Info , params):
     subjects = [s for s in params.directories.Test.Input.Subjects if 'ERROR' not in s]
     for sj in tqdm(subjects):
         subject = params.directories.Test.Input.Subjects[sj]
+        print(subject.subjectName)
         Info.subject = subject()
 
         a = smallFuncs.Nuclei_Class().All_Nuclei()
@@ -117,6 +118,7 @@ def func_DecisionTree(Info , params):
             for cnt , subj in enumerate(list(params.directories.Test.Input.Subjects)):
 
                 subject = params.directories.Test.Input.Subjects[subj]
+                print(subject)
                 print(cnt, len(params.directories.Test.Input.Subjects) , subject.subjectName)
                 ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')        
                 Yt = ManualLabel.get_data().reshape(-1)
@@ -144,6 +146,6 @@ UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 params = paramFunc.Run(UserInfoB, terminal=False)
 
 InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
-# func_MajorityVoting(InfoS , params)
-func_DecisionTree(InfoS , params)
+func_MajorityVoting(InfoS , params)
+# func_DecisionTree(InfoS , params)
 #    print(subExperiment)

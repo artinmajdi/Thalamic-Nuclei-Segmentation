@@ -150,13 +150,14 @@ def temp_Experiments_preSet_V2(UserInfoB):
 
         def main(self, TypeExperiment = 1):
             switcher = {
-                1:  (8   ,   self.ReadTrainC(SRI=1)         , self.InitializeB()                    ,  self.Transfer_LearningC() ),
-                2:  (11  ,   self.ReadTrainC(Main=1)        , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
-                3:  (11  ,   self.ReadTrainC(ET=1)          , self.InitializeB(From_7T=True) ,  self.Transfer_LearningC() ),
-                4:  (11  ,   self.ReadTrainC(ET=1)          , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True  , FrozenLayers=[0] , Tag = '_TF') ),
-                5:  (11  ,   self.ReadTrainC(ET=1)          , self.InitializeB()                    ,  self.Transfer_LearningC() ),
-                6:  (11  ,   self.ReadTrainC(SRI=1, Main=1) , self.InitializeB()                    ,  self.Transfer_LearningC() ),
-                7:  (11  ,   self.ReadTrainC(ET=1)          , self.InitializeB()                    ,  self.Transfer_LearningC() ),
+                1:  (8   ,   self.ReadTrainC(SRI=1)          , self.InitializeB()                    ,  self.Transfer_LearningC() ),
+                2:  (11  ,   self.ReadTrainC(Main=1)         , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
+                3:  (11  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC() ),
+                4:  (11  ,   self.ReadTrainC(ET=1)           , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True  , FrozenLayers=[0] , Tag = '_TF') ),
+                5:  (11  ,   self.ReadTrainC(ET=1)           , self.InitializeB()                    ,  self.Transfer_LearningC() ),
+                6:  (11  ,   self.ReadTrainC(SRI=1, Main=1)  , self.InitializeB()                    ,  self.Transfer_LearningC() ),
+                7:  (11  ,   self.ReadTrainC(ET=1)           , self.InitializeB()                    ,  self.Transfer_LearningC() ),
+                8:  (11  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(FromThalamus=True)   ,  self.Transfer_LearningC() ),
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 
@@ -169,6 +170,8 @@ def temp_Experiments_preSet_V2(UserInfoB):
     if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T_AllAugs'
     if UserInfoB['TypeExperiment'] == 3: UserInfoB['SubExperiment'].Tag = '_ET_Init_Main_AllAugs'
     if UserInfoB['TypeExperiment'] == 7: UserInfoB['SubExperiment'].Tag = '_ET_Init_Rn_AllAugs'
+    if UserInfoB['TypeExperiment'] == 8: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_Th'
+
 
         
 

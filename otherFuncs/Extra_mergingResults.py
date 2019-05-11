@@ -167,7 +167,7 @@ class mergingDiceValues:
                 smallActions.add_space(self)
                 for self.plane in self.subExperiment.multiPlanar:
                     if self.plane.mode:
-                        print(self.subExperiment.name , self.plane.name)
+                        # print(self.subExperiment.name , self.plane.name)
                         # try: 
                         func_Load_Subexperiment(self)
                         # except: print('failed' ,self.subExperiment )                                            
@@ -178,7 +178,7 @@ class mergingDiceValues:
         loopOver_Subexperiments(self)
 
 
-for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[3:4]:
+for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[2:3]:
 
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')
     mergingDiceValues(Info)
