@@ -11,7 +11,7 @@ Model_Method =   'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 5: # ET Predicted from Main
 # TypeExperiment == 6: # Main + 3T  Init Randomly
 # TypeExperiment == 7: # ET      Init from Randomly
-TypeExperiment = 2
+TypeExperiment = 3
 
 class CrossVal:
     Mode = True
