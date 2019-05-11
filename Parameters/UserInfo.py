@@ -11,7 +11,7 @@ Model_Method =   'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 5: # ET Predicted from Main
 # TypeExperiment == 6: # Main + 3T  Init Randomly
 # TypeExperiment == 7: # ET      Init from Randomly
-TypeExperiment = 3
+TypeExperiment = 2
 
 class CrossVal:
     Mode = True
@@ -35,13 +35,13 @@ class InitializeB:
     From_7T        = False
 
 class simulation:
-    TestOnly      = False
+    TestOnly      = True
     epochs        = 100
     GPU_Index     = "0,1"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1] # ,2,4]
+    nucleus_Index = [1,2] # ,2,4]
     slicingDim    = [2] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2

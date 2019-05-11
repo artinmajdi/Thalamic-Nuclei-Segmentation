@@ -212,7 +212,6 @@ def loadDataset(params):
         AA = subject.address.split(os.path.dirname(subject.address) + '/')
         shutil.move(subject.address, os.path.dirname(subject.address) + '/' + 'ERROR_' + AA[1])
         print('WARNING:', mode , nameSubject, ' image and mask have different shape sizes')
-
     
     def saveHDf5(g1 , im , msk , origMsk , imF , subject):
         g = g1.create_group(subject.subjectName)
@@ -233,7 +232,7 @@ def loadDataset(params):
             Flag_TrainDice = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
             Flag_cascadeMethod = 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and int(params.WhichExperiment.Nucleus.Index[0]) == 1
             Flag_notEmpty = params.directories.Train.Input.Subjects
-            return (not Flag_TestOnly) and (Flag_TrainDice or Flag_cascadeMethod ) and Flag_notEmpty
+            return (not Flag_TestOnly or Flag_TrainDice or Flag_cascadeMethod ) and Flag_notEmpty
         
 
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue

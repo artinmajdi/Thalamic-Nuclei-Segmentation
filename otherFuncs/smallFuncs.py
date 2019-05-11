@@ -702,7 +702,6 @@ def Saving_UserInfo(DirSave, params):
     # with open(DirSave + '/UserInfo.json', "r") as j:
     #     data = json.load(j)
 
-
 def closeMask(mask,cnt):
     struc = ndimage.generate_binary_structure(3,2)
     if cnt > 1: struc = ndimage.iterate_structure(struc, cnt)
