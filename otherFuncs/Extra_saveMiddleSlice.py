@@ -43,7 +43,8 @@ class Input_cls():
         self.subj = subj
         m = self.middleSlice()
 
-        imm = nib.load(self.dir_in + '/' + self.subj + '/WMnMPRAGE_bias_corr.nii.gz').slicer[:,:,m:m+1]
+        im = nib.load(self.dir_in + '/' + self.subj + '/WMnMPRAGE_bias_corr.nii.gz')
+        imm = im.slicer[:,:,m:m+1].get_data()
         
         self.save_image(imm)
 
@@ -63,9 +64,10 @@ for subj in input.subjList:
 # msk = nib.load(Mskdir_in)
 
 
-# msk.slicer[:,:,100:101].shape
-
-
+# a = msk.slicer[:,:,100:101]
+# a.get_data()
+# b = a[:]
+# np.array(a)
 # objects = skimage.measure.regionprops(skimage.measure.label(msk.get_data()))
 
 # Ix = np.argsort( [obj.area for obj in objects] )
