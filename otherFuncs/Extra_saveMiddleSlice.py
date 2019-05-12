@@ -43,7 +43,7 @@ class Input_cls():
         self.subj = subj
         im = nib.load(self.dir_in + '/' + self.subj + '/WMnMPRAGE_bias_corr.nii.gz')
         sz = im.shape
-        imm = im.slicer[:sz[0],:sz[1],self.middleSlice()]
+        imm = im.slicer[0:sz[0],0:sz[1],self.middleSlice()]
 
         self.save_image(imm)
 
