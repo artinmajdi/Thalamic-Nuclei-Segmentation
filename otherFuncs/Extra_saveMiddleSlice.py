@@ -27,27 +27,47 @@ class Input_cls():
         self.subjList = [s for s  in os.listdir(self.dir_in) if 'vimp' in s]
 
         
-    def save_middleSlice_per_subject(self,subj):
-        im = nib.load(self.dir_in + '/' + subj + '/WMnMPRAGE_bias_corr.nii.gz')
-        imm = im.get_data()[...,int(im.shape[2]/2)]
-
+    def middleSlice(self):
+        msk = nib.load(self.dir_in + '/' + subj + '/Label/1-THALAMUS.nii.gz')
+        objects = skimage.measure.regionprops(skimage.measure.label(msk.get_data()))
+        Ix = np.argsort( [obj.area for obj in objects] )
+        bbox = objects[ Ix[-1] ].bbox
+        return int((bbox[2] + bbox[5])/2) 
+        
+    def save_image(self , imm):
         imm2 = skimage.transform.rotate(imm,90,resize=True)
         imageio.imwrite(self.dir_out + '/' + subj + '.jpg', imm2)  
+
+    def save_subject_middle_jpg(self,subj):
+        
+        im = nib.load(self.dir_in + '/' + subj + '/WMnMPRAGE_bias_corr.nii.gz')
+
+        imm = im.get_data()[...,self.middleSlice()]
+
+        self.save_image(imm)
+
 
 
 input = Input_cls()
 
 for subj in input.subjList:
-    input.save_middleSlice_per_subject(subj)
+    input.save_subject_middle_jpg(subj)
 
 
 
 
 # subj = 'vimp2_901_07052013_AS_MS'
-# dir_in = '/home/artinl/Documents/RESEARCH/dataset/7T/' + subj + '/WMnMPRAGE_bias_corr.nii.gz'
-# im = nib.load(dir_in)
+# Imdir_in = '/home/artinl/Documents/RESEARCH/dataset/7T/' + subj + '/WMnMPRAGE_bias_corr.nii.gz'
+# Mskdir_in = '/home/artinl/Documents/RESEARCH/dataset/7T/' + subj + '/Label/1-THALAMUS.nii.gz'
+# msk = nib.load(Mskdir_in)
 
-# imm = im.get_data()[...,int(im.shape[2]/2)]
+# objects = skimage.measure.regionprops(skimage.measure.label(msk.get_data()))
+
+# Ix = np.argsort( [obj.area for obj in objects] )
+# bbox = objects[ Ix[-1] ].bbox
+
+# im = nib.load(Imdir_in)
+# imm = im.get_data()[...,int((bbox[2] + bbox[5])/2) ]
 
 # plt.imshow(imm,cmap='gray')
 
