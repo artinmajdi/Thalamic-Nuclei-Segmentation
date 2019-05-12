@@ -41,8 +41,8 @@ class Input_cls():
     def save_subject_middle_jpg(self,subj):
         
         im = nib.load(self.dir_in + '/' + subj + '/WMnMPRAGE_bias_corr.nii.gz')
-
-        imm = im.get_data()[...,self.middleSlice()]
+        sz = im.shape
+        imm = im.slicer[:sz[0],:sz[1],self.middleSlice()]
 
         self.save_image(imm)
 
