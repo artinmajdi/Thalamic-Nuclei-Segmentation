@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import imageio
 import skimage
-import otherFuncs.smallFuncs as smallFuncs
+# import otherFuncs.smallFuncs as smallFuncs
 # import Parameters.UserInfo as UserInfo
 # import Parameters.paramFunc as paramFunc
 # params = paramFunc.Run(UserInfo.__dict__, terminal=True)
