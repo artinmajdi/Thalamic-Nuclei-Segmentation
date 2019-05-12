@@ -41,10 +41,10 @@ class Input_cls():
     def save_subject_middle_jpg(self,subj):
         
         self.subj = subj
-        im = nib.load(self.dir_in + '/' + self.subj + '/WMnMPRAGE_bias_corr.nii.gz')
-        sz = im.shape
-        imm = im.slicer[0:sz[0],0:sz[1],self.middleSlice()]
+        m = self.middleSlice()
 
+        imm = nib.load(self.dir_in + '/' + self.subj + '/WMnMPRAGE_bias_corr.nii.gz').slicer[:,:,m:m+1]
+        
         self.save_image(imm)
 
 
@@ -61,6 +61,10 @@ for subj in input.subjList:
 # Imdir_in = '/home/artinl/Documents/RESEARCH/dataset/7T/' + subj + '/WMnMPRAGE_bias_corr.nii.gz'
 # Mskdir_in = '/home/artinl/Documents/RESEARCH/dataset/7T/' + subj + '/Label/1-THALAMUS.nii.gz'
 # msk = nib.load(Mskdir_in)
+
+
+# msk.slicer[:,:,100:101].shape
+
 
 # objects = skimage.measure.regionprops(skimage.measure.label(msk.get_data()))
 
