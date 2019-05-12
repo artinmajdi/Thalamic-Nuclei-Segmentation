@@ -36,11 +36,12 @@ class Input_cls():
         
     def save_image(self , imm):
         imm2 = skimage.transform.rotate(imm,90,resize=True)
-        imageio.imwrite(self.dir_out + '/' + subj + '.jpg', imm2)  
+        imageio.imwrite(self.dir_out + '/' + self.subj + '.jpg', imm2)  
 
     def save_subject_middle_jpg(self,subj):
         
-        im = nib.load(self.dir_in + '/' + subj + '/WMnMPRAGE_bias_corr.nii.gz')
+        self.subj = subj
+        im = nib.load(self.dir_in + '/' + self.subj + '/WMnMPRAGE_bias_corr.nii.gz')
         sz = im.shape
         imm = im.slicer[:sz[0],:sz[1],self.middleSlice()]
 
