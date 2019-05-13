@@ -25,9 +25,7 @@ def func_FixMinMax(im):
         im = nib.Nifti1Image(imD.astype('float32'), affine)
         im.get_header = header        
     return im
-
     
-
 def findingNot01Labels(dir_ET_in , sT):    
     for subj in [s for s in os.listdir(dir_ET_in + sT) if 'vimp' in s]:
         
@@ -38,7 +36,6 @@ def findingNot01Labels(dir_ET_in , sT):
             msk  = nib.load(dir_in + 'Label/' + label + '.nii.gz')
             
             print(sT, subj , label, msk.get_data().max()) if msk.get_data().max() > 1 else print(sT, subj , label)
-
 
 def loopOverAllSubjects(dir_ET_in , dir_ET_out , dir_ref , sT , MnMx_Flag , RL_Flag , targetShape_Mode):
     def func_reslice(dir1, dir_ref, interpolation):
@@ -73,9 +70,7 @@ def loopOverAllSubjects(dir_ET_in , dir_ET_out , dir_ref , sT , MnMx_Flag , RL_F
         dir_out = smallFuncs.mkDir(dir_ET_out + sT + subj + '/')
         
         func_apply_reslice_perSubj(dir_in , dir_out , subj)
-        
 
-        
 dir_ref    = '/array/ssd/msmajdi/experiments/keras/exp3/train/Main/vimp2_819_05172013_DS/'
 dir_ET_in  = '/array/ssd/msmajdi/data/preProcessed/ET_orig/'
 dir_ET_out = smallFuncs.mkDir('/array/ssd/msmajdi/data/preProcessed/ET_Resliced/')

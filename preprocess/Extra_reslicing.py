@@ -1,0 +1,109 @@
+import os, sys
+sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+# sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from otherFuncs import smallFuncs
+from nilearn import image as niImage
+import nibabel as nib
+import json
+import numpy as np
+
+
+subject = 'vimp2_Case3_WMn'
+
+dirr = '/array/ssd/msmajdi/experiments/keras/exp4/test/Main/' 
+dir_ref = '/array/ssd/msmajdi/code/general/'
+subject_addr_out = smallFuncs.mkDir(dirr + subject + '_b')
+
+
+class UserEntry():
+    def __init__(self):
+        self.dir_in  = ''
+        self.dir_out = ''
+        self.mode    = 0
+
+        for en in range(len(sys.argv)):
+            if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = sys.argv[en+1]
+            elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = sys.argv[en+1]
+            elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = int(sys.argv[en+1])                     
+            
+class Reference():
+    def __init__(self, nucleus='Image'): 
+
+        self.dir_origRefImage = '/array/ssd/msmajdi/experiments/keras/exp3/train/Main/vimp2_819_05172013_DS/'
+        self.dir = '/array/ssd/msmajdi/code/general/Reslicing/'
+        self.nucleus = nucleus
+
+    def write(self):
+        
+        if self.nucleus == 'Image': DirT = 'WMnMPRAGE_bias_corr.nii.gz'
+        else: DirT = 'Label/' + self.nucleus + '.nii.gz'
+            
+        if os.path.exists(self.dir_origRefImage + DirT):
+            ref = nib.load(self.dir_origRefImage + DirT)
+
+            Info_Ref = {'affine':ref.affine.tolist() , 'shape':ref.shape}
+            with open(self.dir + self.nucleus + '.json', "w") as j:
+                j.write(json.dumps(Info_Ref))
+        else:
+            print('nucleus %s doesn not exist' % self.nucleus )
+
+    def read(self):
+        if os.path.exists(self.dir + self.nucleus + '.json'):
+            with open(self.dir + self.nucleus + '.json', "r") as j: 
+                return json.load(j)
+        else:
+            print('nucleus %s doesn not exist' % self.nucleus )            
+
+    def write_all_nuclei(self):       
+        for self.nucleus in np.append('Image' , smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names): 
+            Reference(self.nucleus).write()
+
+class reslice_cls():
+    def __init__(self, dir_in = '' , dir_out = ''):
+
+        self.dir_in  = dir_in
+        self.dir_out = dir_out
+
+    def apply_reslice(self):
+        
+        def apply_to_Image(image , self):            
+            ref = Reference(nucleus='Image').read()
+
+            input_image  = self.dir_in  + '/' + image
+            output_image = self.dir_out + '/' + image
+
+            img = nib.load(input_image)
+            im = niImage.resample_img(img=img , target_affine=ref['affine']  , target_shape=ref['shape'] , interpolation='continuous')            
+            nib.save(im, output_image)        
+
+        def apply_to_mask(nucleus , self):
+            ref = Reference(nucleus=nucleus).read()
+            
+            input_image  = self.dir_in  + '/Label/' + nucleus
+            output_image = self.dir_out + '/Label/' + nucleus
+
+            msk = niImage.resample_img(img= nib.load(input_image) , target_affine=ref['affine']  , target_shape=ref['shape'] , interpolation='nearest')
+            nib.save(msk, output_image)
+            
+        smallFuncs.mkDir(self.dir_out)
+        for image in [n for n in os.listdir(self.dir_in) if '.nii.gz' in n]: apply_to_Image(image , self)
+        
+        smallFuncs.mkDir(self.dir_out + '/Label/')
+        for nucleus in [n for n in os.listdir(self.dir_in + '/Label/') if '.nii.gz' in n]: apply_to_mask(nucleus , self)
+
+    def reslice_all(self):
+        for subj in [s for s in os.listdir(self.dir_in)]:
+            print(subj , '\n')
+            dir_in  = self.dir_in + '/' + subj
+            dir_out = self.dir_out + '/' + subj
+            temp = reslice_cls(dir_in=dir_in , dir_out=dir_out)
+            temp.apply_reslice()
+
+
+UI = UserEntry()
+UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/CSFn_WMn_V1_Uncropped/WMn/case1'
+UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/CSFn_WMn_V2_Resliced/WMn/case1'
+UI.mode = 0
+
+if UI.mode == 0: reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).apply_reslice()
+else:            reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).reslice_all()
