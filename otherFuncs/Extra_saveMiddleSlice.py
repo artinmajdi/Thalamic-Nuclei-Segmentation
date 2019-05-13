@@ -14,7 +14,8 @@ import skimage
 
 class Input_cls():
     def __init__(self, dir_in='' , dir_out=''):
-
+        self.dir_in = dir_in
+        self.dir_out = dir_out
         def directories(self):
             for en in range(len(sys.argv)):
 
@@ -28,7 +29,7 @@ class Input_cls():
 
         
     def middleSlice(self):
-        msk = nib.load(self.dir_in + '/' + subj + '/Label/1-THALAMUS.nii.gz')
+        msk = nib.load(self.dir_in + '/' + self.subj + '/Label/1-THALAMUS.nii.gz')
         objects = skimage.measure.regionprops(skimage.measure.label(msk.get_data()))
         Ix = np.argsort( [obj.area for obj in objects] )
         bbox = objects[ Ix[-1] ].bbox
