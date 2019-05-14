@@ -70,7 +70,7 @@ class reslice_cls():
             input_image  = self.dir_in  + '/' + image
             output_image = self.dir_out + '/' + image
 
-            im = niImage.resample_img(img=nib.load(input_image) , target_affine=ref['affine'] , target_shape=ref['shape']  , interpolation='continuous')            
+            im = niImage.resample_img(img=nib.load(input_image) , target_affine=ref['affine'] , interpolation='continuous') # , target_shape=ref['shape'] 
             nib.save(im, output_image)        
 
         def apply_to_mask(nucleus , self):
@@ -79,7 +79,7 @@ class reslice_cls():
             input_image  = self.dir_in  + '/Label/' + nucleus
             output_image = self.dir_out + '/Label/' + nucleus
 
-            msk = niImage.resample_img(img= nib.load(input_image) , target_affine=ref['affine'] , target_shape=ref['shape']  , interpolation='nearest')
+            msk = niImage.resample_img(img= nib.load(input_image) , target_affine=ref['affine'] , interpolation='nearest')  # , target_shape=ref['shape'] 
             nib.save(msk, output_image)
             
         smallFuncs.mkDir(self.dir_out)
@@ -89,7 +89,7 @@ class reslice_cls():
         for nucleus in [n for n in os.listdir(self.dir_in + '/Label/') if '.nii.gz' in n]: apply_to_mask(nucleus , self)
 
     def reslice_all(self):
-        for subj in [s for s in os.listdir(self.dir_in)]:
+        for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s]:
             print(subj , '\n')
             dir_in  = self.dir_in + '/' + subj
             dir_out = self.dir_out + '/' + subj

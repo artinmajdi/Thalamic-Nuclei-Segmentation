@@ -21,7 +21,7 @@ class UserEntry():
             elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = int(sys.argv[en+1])
             
 class uncrop_cls():
-    def __init__(self, dir_in = '' , dir_out = '' , maskCrop='mask_inp'):
+    def __init__(self, dir_in = '' , dir_out = '' , maskCrop=''):
 
         self.dir_in  = dir_in
         self.dir_out = dir_out
@@ -41,19 +41,20 @@ class uncrop_cls():
             uncrop.uncrop_by_mask(input_image=input_image, output_image=output_image , full_mask=full_mask)     
 
     def uncrop_All(self):
-        for subj in [s for s in os.listdir(self.dir_in)]:
+        for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s]:
             print(subj , '\n')
             dir_in  = self.dir_in + '/' + subj
             dir_out = self.dir_out + '/' + subj
-            temp = uncrop_cls(dir_in=dir_in , dir_out=dir_out)
+            temp = uncrop_cls(dir_in=dir_in , dir_out=dir_out , maskCrop=self.maskCrop)
             temp.apply_uncrop()
 
 
 
-
-# dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn_Orig/WMn/case1'
-# dir_out = smallFuncs.mkDir('/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/WMn/case1')
-
 UI = UserEntry()
-if UI.mode == 0: uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out , maskCrop='mask_t1').apply_uncrop()
-else:            uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out , maskCrop='mask_t1').uncrop_All()
+UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/step1_registered_labels'
+UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/step2_Uncropped'
+UI.mode    = 1
+if UI.mode == 0: 
+    uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out , maskCrop='mask_t1').apply_uncrop()
+else:            
+    uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out , maskCrop='mask_t1').uncrop_All()
