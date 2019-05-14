@@ -99,9 +99,9 @@ class reslice_cls():
 
 
 UI = UserEntry()
-# UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/CSFn_WMn_V1_Uncropped/WMn/case1'
-# UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/CSFn_WMn_V2_Resliced/WMn/case1'
-# UI.mode = 0
+UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/CSFn_WMn_V1_Uncropped/WMn'
+UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/CSFn_WMn_V2_Resliced/WMn'
+UI.mode = 1
 
 if UI.mode == 0: reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).apply_reslice()
 else:            reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).reslice_all()
