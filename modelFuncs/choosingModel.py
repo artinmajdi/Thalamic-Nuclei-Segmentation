@@ -22,7 +22,7 @@ import keras
 from keras.utils import multi_gpu_model, multi_gpu_utils
 import h5py
 import keras.layers as KLayers
-import json
+# import json
 from keras.preprocessing.image import ImageDataGenerator
 
 def check_Run(params, Data):
