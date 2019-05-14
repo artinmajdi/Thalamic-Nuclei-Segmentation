@@ -70,8 +70,7 @@ class reslice_cls():
             input_image  = self.dir_in  + '/' + image
             output_image = self.dir_out + '/' + image
 
-            im = nib.load(input_image)
-            im = niImage.resample_img(img=im , target_affine=ref['affine'] , target_shape=ref['shape'] , interpolation='continuous')   
+            im = niImage.resample_img(img=nib.load(input_image) , target_affine=ref['affine'] , target_shape=ref['shape']  , interpolation='continuous')            
             nib.save(im, output_image)        
 
         def apply_to_mask(nucleus , self):
@@ -80,7 +79,7 @@ class reslice_cls():
             input_image  = self.dir_in  + '/Label/' + nucleus
             output_image = self.dir_out + '/Label/' + nucleus
 
-            msk = niImage.resample_img(img= nib.load(input_image) , target_affine=ref['affine']  , target_shape=ref['shape'] , interpolation='nearest')
+            msk = niImage.resample_img(img= nib.load(input_image) , target_affine=ref['affine'] , target_shape=ref['shape']  , interpolation='nearest')
             nib.save(msk, output_image)
             
         smallFuncs.mkDir(self.dir_out)
@@ -99,9 +98,9 @@ class reslice_cls():
 
 
 UI = UserEntry()
-UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/CSFn_WMn_V1_Uncropped/WMn'
-UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/CSFn_WMn_V2_Resliced/WMn'
-UI.mode = 1
+# UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/CSFn_WMn_V1_Uncropped/WMn'
+# UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/CSFn_WMn_V2_Resliced/WMn'
+# UI.mode = 1
 
 if UI.mode == 0: reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).apply_reslice()
 else:            reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).reslice_all()

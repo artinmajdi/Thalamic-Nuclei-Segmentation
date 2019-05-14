@@ -55,5 +55,5 @@ class uncrop_cls():
 # dir_out = smallFuncs.mkDir('/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/WMn/case1')
 
 UI = UserEntry()
-if UI.mode == 0: uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).apply_uncrop()
-else:            uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).uncrop_All()
+if UI.mode == 0: uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out , maskCrop='mask_t1').apply_uncrop()
+else:            uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out , maskCrop='mask_t1').uncrop_All()

@@ -1,0 +1,37 @@
+#!/bin/tcsh
+
+
+set dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/CSFn_WMn_V0_Orig/CSFn'
+set dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/CSFn_WMn_Register/CSFn'
+
+
+cd $dir_in
+
+foreach v (case*)
+
+set g = $dir_in/$v
+antsRegistration  -d 3 --float 0 --output \[aff,affine.nii.gz\] -r \[$g/crop_t1.nii.gz, $g/crop_wmn.nii.gz,1\] -t Rigid\[0.1\] --metric MI\[$g/crop_t1.nii.gz, $g/crop_wmn.nii.gz,1,32,Regular,0.25\] --convergence \[1000x500x250x100,1e-7,10\] -v -f 8x4x2x1 -s 3x2x1x0vox -v -t Affine\[0.1\] --metric MI\[$g/crop_t1.nii.gz, $g/crop_wmn.nii.gz,1,32,Regular,0.25\] --convergence \[1000x500x250x100,5e-8,10\] -f 8x4x2x1 -s 3x2x1x0vox
+
+
+
+
+set o = $dir_out/$v
+mkdir $o
+mkdir $o/Label
+
+cp $g/crop_t1.nii.gz $o/crop_t1.nii.gz
+
+
+foreach n ('1-THALAMUS' '2-AV' '4-VA' '5-VLa' '6-VLP' '7-VPL' '8-Pul' '9-LGN' '10-MGN' '11-CM' '12-MD-Pf' '13-Hb' '14-MTT')
+
+antsApplyTransforms -d 3 -i $g/Label/$n.nii.gz -r $g/crop_t1.nii.gz -o $o/Label/$n.nii.gz -t aff0GenericAffine.mat -n NearestNeighbor
+
+end
+
+end
+
+
+
+
+
+
