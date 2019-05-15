@@ -182,13 +182,14 @@ class Experiment_Folder_Search():
                     def find_Planes(address , name , TgC):
 
                         class SD:
-                            def __init__(self, mode = False , name='' , plane_name='', direction_name='' , TgC=0 , address=''):
-                                self.mode = mode                        
-                                if self.mode: 
+                            def __init__(self, Flag = False , name='' , plane_name='', direction_name='' , TgC=0 , address=''):
+                                self.Flag = Flag                        
+                                if self.Flag: 
                                     self.tagList = np.append( ['Tag' + str(TgC) + '_' + plane_name], name.split('_') ) 
                                     self.tagIndex = str(TgC)
-                                    self.subject_List = [a for a in os.listdir(address) if 'vimp' in a]
-                                    self.subject_List.sort()
+                                    if mode == 'results':
+                                        self.subject_List = [a for a in os.listdir(address) if 'vimp' in a]
+                                        self.subject_List.sort()
                                     self.name = plane_name
                                     self.direction = direction_name
                                     
@@ -200,8 +201,8 @@ class Experiment_Folder_Search():
                             for sd, plane_name in zip(sdLst, PlNmLs): # ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:                                
                                 multiPlanar.append( SD(True, name , sd , plane_name,TgC , address + '/' + name+'/' + sd) if sd in sdx else SD() )
                         else:
-                            for sd, plane_name in zip(sdLst, PlNmLs)[:3]: # ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:                                
-                                multiPlanar.append( SD(True, name , sd , plane_name,TgC , address + '/' + name+'/' + sd) if sd in sdx else SD() )
+                            for sd, plane_name in zip(sdLst[:3], PlNmLs[:3]): # [:3]: # ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:                                
+                                multiPlanar.append( SD(True, name , sd , plane_name,TgC , address + '/' + name+'/' + sd) if sd in sd else SD() )
                         return multiPlanar
 
                     self.name = name  
@@ -374,9 +375,9 @@ def search_ExperimentDirectory(whichExperiment):
 
     def func_model_Tag(whichExperiment):
         model_Tag = ''
-        if whichExperiment.HardParams.Model.Transfer_Learning.Mode:                             model_Tag += '_TF'
-        if whichExperiment.Dataset.ReadTrain.ET and not whichExperiment.Dataset.ReadTrain.Main: model_Tag += '_ET'
-        if whichExperiment.Dataset.ReadTrain.CSFn:                                              model_Tag += '_CSFn'
+        if whichExperiment.HardParams.Model.Transfer_Learning.Mode:                               model_Tag += '_TF'
+        if whichExperiment.Dataset.ReadTrain.ET   and not whichExperiment.Dataset.ReadTrain.Main: model_Tag += '_ET'
+        if whichExperiment.Dataset.ReadTrain.CSFn and not whichExperiment.Dataset.ReadTrain.Main: model_Tag += '_CSFn'
         return model_Tag
 
     sdTag = '/sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim)
@@ -390,7 +391,7 @@ def search_ExperimentDirectory(whichExperiment):
         sdTag2 = '/sd0' if sag_In_Cor else sdTag
         Read   = whichExperiment.Dataset.ReadTrain
         DirAug = Dir + '/Augments/' + Read.ReadAugments.Tag
-        Dir_CV = whichExperiment.Experiment.address + '/crossVal/'
+        Dir_CV = whichExperiment.Experiment.address + '/crossVal'
 
         def Search_ImageFolder(Dir, NucleusName):
 
@@ -541,32 +542,32 @@ def search_ExperimentDirectory(whichExperiment):
         Input = LoopReadingData(Input, Dir)
 
         # SRI_flag_test = False if (Read.Main or Read.ET) and (modeData == 'test') else True
-        SRI_flag_test = True
+        # SRI_flag_test = True
         
-        if Read.Main: Input = LoopReadingData(Input, Dir + '/Main')
-        if Read.ET  : Input = LoopReadingData(Input, Dir + '/ET')            
-        if Read.SRI and SRI_flag_test: Input = LoopReadingData(Input, Dir + '/SRI')
+        if Read.Main : Input = LoopReadingData(Input, Dir + '/Main')
+        if Read.ET   : Input = LoopReadingData(Input, Dir + '/ET')                   
+        if Read.SRI  : Input = LoopReadingData(Input, Dir + '/SRI')
+        if Read.CSFn : Input = LoopReadingData(Input, Dir + '/CSFn')
+        # if Read.SRI and SRI_flag_test: Input = LoopReadingData(Input, Dir + '/SRI')
         
         if crossVal.Mode:
-            if Read.Main: Input = load_CrossVal_Data(Input , Dir_CV + 'Main/')
-            if Read.ET:   Input = load_CrossVal_Data(Input , Dir_CV + 'ET/')
-            if Read.SRI:  Input = load_CrossVal_Data(Input , Dir_CV + 'SRI/')
+            if Read.Main:  Input = load_CrossVal_Data(Input , Dir_CV + '/Main/')
+            if Read.ET:    Input = load_CrossVal_Data(Input , Dir_CV + '/ET/')
+            if Read.SRI:   Input = load_CrossVal_Data(Input , Dir_CV + '/SRI/')
+            if Read.CSFn : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn/')    
 
 
 
         if Read.ReadAugments.Mode and not (modeData == 'test'):
              
-            def func_readAugments(Input , sdTag2):
-                Main_Dir , ET_Dir = (DirAug + '/Main' + sdTag2  ,  DirAug + '/ET'   + sdTag2)                
-                if Read.Main and os.path.exists( Main_Dir):                  Input = LoopReadingData( Input, Main_Dir)
-                if Read.ET   and os.path.exists( ET_Dir ):                   Input = LoopReadingData( Input, ET_Dir  )
-                return Input
-                    
-            # if Read.ReadAugments.LoadAll:
-            #     for sdTag2 in ['/sd0' , '/sd1' , '/sd2']: 
-            #         Input = func_readAugments(Input , sdTag2)
-            # else:            
-            Input = func_readAugments(Input , sdTag2)                
+            # def func_readAugments(Input , sdTag2):
+            if Read.Main and os.path.exists(DirAug + '/Main' + sdTag2): Input = LoopReadingData(Input, DirAug + '/Main' + sdTag2)
+            if Read.ET   and os.path.exists(DirAug + '/ET'   + sdTag2): Input = LoopReadingData(Input, DirAug + '/ET'   + sdTag2)
+            if Read.SRI  and os.path.exists(DirAug + '/SRI'  + sdTag2): Input = LoopReadingData(Input, DirAug + '/SRI'  + sdTag2)
+            if Read.CSFn and os.path.exists(DirAug + '/CSFn' + sdTag2): Input = LoopReadingData(Input, DirAug + '/CSFn' + sdTag2)
+                # return Input
+                             
+            # Input = func_readAugments(Input , sdTag2)                
 
 
         return Input

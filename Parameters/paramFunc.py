@@ -12,6 +12,7 @@ import pandas as pd
 import numpy as np
 import json
 
+"""
 def temp_Experiments_preSet(UserInfoB):
 
     # TypeExperiment == 1: # Main
@@ -116,7 +117,7 @@ def temp_Experiments_preSet(UserInfoB):
     UserInfoB = extra_info(UserInfoB)
 
     return UserInfoB
-
+"""
 def temp_Experiments_preSet_V2(UserInfoB):
 
     class TypeExperimentFuncs():
@@ -145,7 +146,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
                     self.FromThalamus   = FromThalamus
                     self.FromOlderModel = FromOlderModel
                     self.From_3T        = From_3T
-                    self.From_7T = From_7T
+                    self.From_7T        = From_7T
             self.InitializeB = InitializeB
 
         def main(self, TypeExperiment = 1):
@@ -158,6 +159,8 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 6:  (11  ,   self.ReadTrainC(SRI=1, Main=1)  , self.InitializeB()                    ,  self.Transfer_LearningC() ),
                 7:  (11  ,   self.ReadTrainC(ET=1)           , self.InitializeB()                    ,  self.Transfer_LearningC() ),
                 8:  (11  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(FromThalamus=True)   ,  self.Transfer_LearningC() ),
+                9:  (11  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
+                10:  (12  ,   self.ReadTrainC(CSFn=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC() ),
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 
@@ -167,13 +170,13 @@ def temp_Experiments_preSet_V2(UserInfoB):
     UserInfoB['Transfer_Learning']   = d
     UserInfoB['InitializeB']         = c
     if UserInfoB['TypeExperiment'] == 5: UserInfoB['simulation'].TestOnly = True
-    if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T_AllAugs'
+    if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T_AllAugs_250epochs_Wo_LR_scheduler'
     if UserInfoB['TypeExperiment'] == 3: UserInfoB['SubExperiment'].Tag = '_ET_Init_Main_AllAugs'
     if UserInfoB['TypeExperiment'] == 7: UserInfoB['SubExperiment'].Tag = '_ET_Init_Rn_AllAugs'
     if UserInfoB['TypeExperiment'] == 8: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_Th'
+    if UserInfoB['TypeExperiment'] == 9: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_3T'
+    if UserInfoB['TypeExperiment'] == 10: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_Main'
 
-
-        
 
     return UserInfoB
 
@@ -220,8 +223,9 @@ def func_Exp_subExp_Names(UserInfo):
         # else: tag = method + '_FM' + str(FM) + SE.Tag 
 
         if UserInfo['CrossVal'].Mode: tag += '_CV_' + UserInfo['CrossVal'].index[0]
-
-        return subExperiment(tag)
+        A = subExperiment(tag)
+        print(A.name_Init_from_7T)
+        return A
 
     def func_Experiment():
         EX = UserInfo['Experiments']

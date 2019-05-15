@@ -12,7 +12,9 @@ Model_Method =   'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 6: # Main + 3T  Init Randomly
 # TypeExperiment == 7: # ET      Init from Randomly
 # TypeExperiment == 8 # Main + 3T  Init Th
-TypeExperiment = 2
+# TypeExperiment == 9 # Main + 3T  Init 3T
+# TypeExperiment == 10 # CSFn  Init Main
+TypeExperiment = 10
 
 class CrossVal:
     Mode = True
@@ -20,13 +22,13 @@ class CrossVal:
     All_Indexes = ['a' , 'b' , 'c' , 'd']
 
 class Experiments:
-    Index , Tag = '4' , '' # '1' , '' # , 'cascadeV1'
+    Index , Tag = '5_CSFn' , '' # '1' , '' # , 'cascadeV1'
 
 DropoutValue = 0.3
 
 class SubExperiment:
     Index = 11
-    Tag   = '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
+    Tag   = '' # '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
     Mode_JustThis = False
   
 class InitializeB:
@@ -37,7 +39,7 @@ class InitializeB:
 
 class simulation:
     TestOnly      = False
-    epochs        = 100
+    epochs        = 250
     GPU_Index     = "0,1"
     Learning_Rate = 1e-3
     num_Layers    = 3

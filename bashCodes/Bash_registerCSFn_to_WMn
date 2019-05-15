@@ -1,8 +1,8 @@
 #!/bin/tcsh
 
 
-set dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/full_Image/step0_orig'
-set dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/full_Image/step1_registered_labels'
+set dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step0_orig_crop'
+set dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step1_registered_labels_croppedInput'
 
 
 cd $dir_in
@@ -13,8 +13,8 @@ echo $g
 
 cd $dir_in/$g
 
-set IN  = full_T1.nii.gz # crop_t1.nii.gz
-set Ref = full_WMn.nii.gz # crop_wmn.nii.gz
+set IN  = crop_t1.nii.gz #full_T1.nii.gz # 
+set Ref = crop_wmn.nii.gz #full_WMn.nii.gz # 
 
 antsRegistration  -d 3 --float 0 --output \[aff,affine.nii.gz\] -r \[$IN, $Ref,1\] -t Rigid\[0.1\] --metric MI\[$IN, $Ref,1,32,Regular,0.25\] --convergence \[1000x500x250x100,1e-7,10\] -v -f 8x4x2x1 -s 3x2x1x0vox -v -t Affine\[0.1\] --metric MI\[$IN, $Ref,1,32,Regular,0.25\] --convergence \[1000x500x250x100,5e-8,10\] -f 8x4x2x1 -s 3x2x1x0vox
 

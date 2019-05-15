@@ -62,7 +62,7 @@ class savingHistory_AsExcel:
 
             for self.subExperiment in self.Info.Experiment.List_subExperiments:
                 for self.plane in self.subExperiment.multiPlanar:
-                    if self.plane.mode: Load_subDir_History(self)
+                    if self.plane.Flag: Load_subDir_History(self)
 
             if len(self.AllNucleusInfo) != 0: pd.DataFrame(data=self.AllNucleusInfo, columns=self.FullNamesLA).to_excel(writer, sheet_name=self.nucleus.replace('_ImClosed',''))
 
@@ -96,50 +96,50 @@ class mergingDiceValues:
 
         def func_Load_Subexperiment(self):
             
-            if self.plane.mode:
+            # if self.plane.Flag:
 
-                self.subExperiment.address = self.Info.Experiment.address + '/results/' + self.subExperiment.name +'/'+ self.plane.name
-              
-                def func_1subject_Dices(self):                    
-                    Dice_Single = np.append(self.subject, list(np.nan*np.ones(NumColumns-1)))                    
-                    for ind, name in enumerate( self.Info.Nuclei_Names ):
-                        Dir_subject = self.subExperiment.address + '/' + self.subject + '/Dice_' + name +'.txt'
-                        if os.path.isfile(Dir_subject): Dice_Single[ind] = math.ceil( np.loadtxt(Dir_subject)[1] *1e3)/1e3
-                    return Dice_Single                                    
-                sE_Dices = np.array([  func_1subject_Dices(self)  for self.subject in self.plane.subject_List  ])
+            self.subExperiment.address = self.Info.Experiment.address + '/results/' + self.subExperiment.name +'/'+ self.plane.name
+            
+            def func_1subject_Dices(self):                    
+                Dice_Single = np.append(self.subject, list(np.nan*np.ones(NumColumns-1)))                    
+                for ind, name in enumerate( self.Info.Nuclei_Names ):
+                    Dir_subject = self.subExperiment.address + '/' + self.subject + '/Dice_' + name +'.txt'
+                    if os.path.isfile(Dir_subject): Dice_Single[ind] = math.ceil( np.loadtxt(Dir_subject)[1] *1e3)/1e3
+                return Dice_Single                                    
+            sE_Dices = np.array([  func_1subject_Dices(self)  for self.subject in self.plane.subject_List  ])
 
-                if len(sE_Dices) > 0:
-                    def save_Dices_subExp_In_ExcelFormat(self , sE_Dices):
-                        pd_sE = pd.DataFrame()
-                        for nIx, nucleus in enumerate(self.Info.Nuclei_Names): 
-                            if nIx == 0 : pd_sE[nucleus] = sE_Dices[:,nIx]
-                            else:         pd_sE[nucleus] = sE_Dices[:,nIx].astype(np.float16)
-                        pd_sE.to_excel(  self.writer, sheet_name=self.plane.tagList[0] )    
-                    save_Dices_subExp_In_ExcelFormat(self , sE_Dices)
-                    
-                    def divideSubjects_BasedOnModality(self, sE_Dices):
-                        class subjectDice:
-                            ET   = []
-                            Main = []
-                            CSfn = []
-                            SRI  = []
+            if len(sE_Dices) > 0:
+                def save_Dices_subExp_In_ExcelFormat(self , sE_Dices):
+                    pd_sE = pd.DataFrame()
+                    for nIx, nucleus in enumerate(self.Info.Nuclei_Names): 
+                        if nIx == 0 : pd_sE[nucleus] = sE_Dices[:,nIx]
+                        else:         pd_sE[nucleus] = sE_Dices[:,nIx].astype(np.float16)
+                    pd_sE.to_excel(  self.writer, sheet_name=self.plane.tagList[0] )    
+                save_Dices_subExp_In_ExcelFormat(self , sE_Dices)
+                
+                def divideSubjects_BasedOnModality(self, sE_Dices):
+                    class subjectDice:
+                        ET   = []
+                        Main = []
+                        CSfn = []
+                        SRI  = []
 
-                        for sIx , subject in enumerate(sE_Dices[:,0]):
-                            if 'ET' in subject:     subjectDice.ET.append(sIx)
-                            elif 'CSFn' in subject: subjectDice.CSfn.append(sIx)
-                            elif 'SRI'  in subject: subjectDice.SRI.append(sIx)
-                            else:                   subjectDice.Main.append(sIx)
+                    for sIx , subject in enumerate(sE_Dices[:,0]):
+                        if 'ET' in subject:     subjectDice.ET.append(sIx)
+                        elif 'CSFn' in subject: subjectDice.CSfn.append(sIx)
+                        elif 'SRI'  in subject: subjectDice.SRI.append(sIx)
+                        else:                   subjectDice.Main.append(sIx)
 
-                        def average_median(sE_Dices , subjectDiceList):
-                            if len(subjectDiceList) <= 3: return np.round(1000*np.nanmean(sE_Dices[subjectDiceList, 1:18].astype(np.float) , axis=0))/1000
-                            else: return np.round(1000*np.nanmedian(sE_Dices[subjectDiceList, 1:18].astype(np.float) , axis=0))/1000
+                    def average_median(sE_Dices , subjectDiceList):
+                        if len(subjectDiceList) <= 3: return np.round(1000*np.nanmean(sE_Dices[subjectDiceList, 1:18].astype(np.float) , axis=0))/1000
+                        else: return np.round(1000*np.nanmedian(sE_Dices[subjectDiceList, 1:18].astype(np.float) , axis=0))/1000
 
-                        tag = self.plane.direction +'-' + self.plane.tagIndex                        
-                        if len(subjectDice.ET) > 0:   self.All_Subjs_Ns.ET.pd[  tag] = average_median(sE_Dices , subjectDice.ET)   
-                        if len(subjectDice.Main) > 0: self.All_Subjs_Ns.Main.pd[tag] = average_median(sE_Dices , subjectDice.Main) 
-                        if len(subjectDice.CSfn) > 0: self.All_Subjs_Ns.CSFn.pd[tag] = average_median(sE_Dices , subjectDice.CSFn) 
-                        if len(subjectDice.SRI) > 0:  self.All_Subjs_Ns.SRI.pd[ tag] = average_median(sE_Dices , subjectDice.SRI)  
-                    divideSubjects_BasedOnModality(self, sE_Dices)
+                    tag = self.plane.direction +'-' + self.plane.tagIndex                        
+                    if len(subjectDice.ET) > 0:   self.All_Subjs_Ns.ET.pd[  tag] = average_median(sE_Dices , subjectDice.ET)   
+                    if len(subjectDice.Main) > 0: self.All_Subjs_Ns.Main.pd[tag] = average_median(sE_Dices , subjectDice.Main) 
+                    if len(subjectDice.CSfn) > 0: self.All_Subjs_Ns.CSFn.pd[tag] = average_median(sE_Dices , subjectDice.CSFn) 
+                    if len(subjectDice.SRI) > 0:  self.All_Subjs_Ns.SRI.pd[ tag] = average_median(sE_Dices , subjectDice.SRI)  
+                divideSubjects_BasedOnModality(self, sE_Dices)
 
         def loopOver_Subexperiments(self):
             class smallActions():                                                                                              
@@ -166,7 +166,7 @@ class mergingDiceValues:
                 self.subExperiment.Tag = tag
                 smallActions.add_space(self)
                 for self.plane in self.subExperiment.multiPlanar:
-                    if self.plane.mode:
+                    if self.plane.Flag:
                         # print(self.subExperiment.name , self.plane.name)
                         # try: 
                         func_Load_Subexperiment(self)
@@ -178,13 +178,13 @@ class mergingDiceValues:
         loopOver_Subexperiments(self)
 
 
-for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[2:3]:
+for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List:
 
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')
     mergingDiceValues(Info)
 
-    # Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
-    # savingHistory_AsExcel(Info)
+    Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
+    savingHistory_AsExcel(Info)
 
 os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
 
