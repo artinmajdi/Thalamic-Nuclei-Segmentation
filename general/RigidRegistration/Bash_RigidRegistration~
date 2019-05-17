@@ -1,0 +1,21 @@
+#!/bin/tcsh
+
+
+set Dir = '/media/data1/artin/thomas/priors/Unlabeled'
+set DirCrop = '/media/data1/artin/code/Thalamus_CNN/notMainCodes/RigidRegistration'
+
+cd $Dir
+foreach vimp (vimp2_*)
+
+echo $vimp
+cd $Dir/$vimp
+#ANTS 3 -m CC\[$Dir/$vimp/WMnMPRAGE_bias_corr.nii.gz, $DirCrop/origtemplate.nii.gz ,1,5\] -o linear -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false
+
+#WarpImageMultiTransform 3 $DirCrop/MyCrop_Template.nii.gz $Dir/$vimp/MyCrop2.nii.gz -R $Dir/$vimp/WMnMPRAGE_bias_corr.nii.gz linearAffine.txt
+
+# antsRegistration -d 3 --float 0 --output \[rigid,rigid.nii.gz\] -t Rigid\[0.1\] --metric MI\[$Dir/WMnMPRAGE_bias_corr.nii.gz, $Dir_Template/origtemplate.nii.gz,1,32,Regular,0.25\] --convergence \[1000x500x250x100,1e-6,10\] -v -f 8x4x2x1 -s 3x2x1x0vox
+
+# antsApplyTransforms -d 3 -i ~tyson/thomas/mask_templ_93x187x68.nii.gz -r $x -o maskwmn.nii.gz -t rigid0GenericAffine.mat
+
+end
+

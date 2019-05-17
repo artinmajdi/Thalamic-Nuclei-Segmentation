@@ -1,0 +1,4 @@
+{
+    "python.linting.pylintEnabled": true,
+    "python.pythonPath": "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/bin/python"
+}

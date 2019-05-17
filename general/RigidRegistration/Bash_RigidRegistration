@@ -1,0 +1,51 @@
+#!/bin/tcsh
+
+
+#set Dir = '/media/data1/artin/thomas/priors/Unlabeled'
+set DirCrop = '/media/data1/artin/code/Thalamus_CNN/notMainCodes/RigidRegistration'
+
+#cd $Dir
+#foreach vimp (vimp2_*)
+#echo $vimp
+#cd $Dir/$vimp
+
+#ANTS 3 -m CC\[WMnMPRAGE_bias_corr.nii.gz, $DirCrop/origtemplate.nii.gz ,1,5\] -o linear -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false
+
+#WarpImageMultiTransform 3 $DirCrop/MyCrop_Template2_Gap10.nii.gz MyCrop2_Gap10.nii.gz -R WMnMPRAGE_bias_corr.nii.gz linearAffine.txt
+
+#WarpImageMultiTransform 3 $DirCrop/MyCrop_Template2_Gap20.nii.gz MyCrop2_Gap20.nii.gz -R WMnMPRAGE_bias_corr.nii.gz linearAffine.txt
+
+## antsRegistration -d 3 --float 0 --output \[rigid,rigid.nii.gz\] -t Rigid\[0.1\] --metric MI\[$Dir/WMnMPRAGE_bias_corr.nii.gz, $Dir_Template/origtemplate.nii.gz,1,32,Regular,0.25\] --convergence \[1000x500x250x100,1e-6,10\] -v -f 8x4x2x1 -s 3x2x1x0vox
+
+## antsApplyTransforms -d 3 -i ~tyson/thomas/mask_templ_93x187x68.nii.gz -r $x -o maskwmn.nii.gz -t rigid0GenericAffine.mat
+
+#end
+
+
+
+set Dir = '/media/data1/artin/vimp2_test'
+cd $Dir
+
+
+# ls
+WarpImageMultiTransform 3 WMnMPRAGE_bias_corr.nii.gz WMnMPRAGE_bias_corr_new.nii.gz -R WMnMPRAGE_bias_corr.nii.gz deformation/WMnMPRAGEAffine.txt  # deformation/WMnMPRAGEWarp.nii.gz 
+
+# WarpImageMultiTransform 3 Manual_Delineation_Sanitized/1-THALAMUS.nii.gz Manual_Delineation_Sanitized/1-THALAMUS_new.nii.gz -R ../thomas/origtemplate.nii.gz  deformation/WMnMPRAGEAffine.txt  # deformation/WMnMPRAGEWarp.nii.gz
+
+
+
+ANTS 3 -m CC\[WMnMPRAGE_bias_corr.nii.gz, $DirCrop/origtemplate.nii.gz ,1,5\] -o linear -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false
+
+WarpImageMultiTransform 3 $DirCrop/MyCrop_Template2_Gap20.nii.gz MyCrop2_Gap20_Or.nii.gz -R WMnMPRAGE_bias_corr_new.nii.gz linearAffine.txt
+
+
+
+
+
+
+
+
+
+
+
+
