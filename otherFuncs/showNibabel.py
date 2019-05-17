@@ -1,19 +1,19 @@
 
 import nibabel as nib
 import numpy as np
-import sys
+import sys, os
 
 
-# Link = True if '-l' in sys.argv else False
-# inputs = [x for x  in sys.argv[1:] if '-' not in x]
+Link = True if '-l' in sys.argv else False
+inputs = [os.getcwd() + '/' + x for x  in sys.argv[1:] if '-l' not in x]
 
-dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step2_uncropped/vimp2_case1'
-Link = True
-inputs = [dir + '/crop_t1.nii.gz' , dir + '/Label/1-THALAMUS.nii.gz']
+# dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step2_uncropped/vimp2_case1'
+# Link = True
+# inputs = [dir + '/crop_t1.nii.gz' , dir + '/Label/1-THALAMUS.nii.gz']
 
 a = {}
 for ix , dir in enumerate(inputs):
-
+    
     a[ix] = nib.viewers.OrthoSlicer3D(nib.load(dir).get_data())
 
     if Link and ix > 0: a[0].link_to(a[ix])

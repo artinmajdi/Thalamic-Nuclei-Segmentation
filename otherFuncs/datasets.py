@@ -232,7 +232,7 @@ def loadDataset(params):
             Flag_TrainDice = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
             Flag_cascadeMethod = 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and int(params.WhichExperiment.Nucleus.Index[0]) == 1
             Flag_notEmpty = params.directories.Train.Input.Subjects
-            return (not Flag_TestOnly or Flag_TrainDice or Flag_cascadeMethod ) and Flag_notEmpty
+            return (not Flag_TestOnly) and (Flag_TrainDice or Flag_cascadeMethod ) and Flag_notEmpty
         
 
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
@@ -325,7 +325,7 @@ def loadDataset(params):
             
         DataAll = data()
         
-        if 0: # trainFlag():
+        if trainFlag():
             DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
             DataAll = separateTrainVal_and_concatenateTrain( DataAll )
 

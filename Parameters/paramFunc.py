@@ -161,6 +161,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 8:  (11  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(FromThalamus=True)   ,  self.Transfer_LearningC() ),
                 9:  (11  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
                 10:  (12  ,   self.ReadTrainC(CSFn=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC() ),
+                11:  (12  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 
@@ -170,12 +171,13 @@ def temp_Experiments_preSet_V2(UserInfoB):
     UserInfoB['Transfer_Learning']   = d
     UserInfoB['InitializeB']         = c
     if UserInfoB['TypeExperiment'] == 5: UserInfoB['simulation'].TestOnly = True
-    if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T_AllAugs_250epochs_Wo_LR_scheduler'
+    if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T_AllAugs' # _250epochs_Wo_LR_scheduler
     if UserInfoB['TypeExperiment'] == 3: UserInfoB['SubExperiment'].Tag = '_ET_Init_Main_AllAugs'
     if UserInfoB['TypeExperiment'] == 7: UserInfoB['SubExperiment'].Tag = '_ET_Init_Rn_AllAugs'
     if UserInfoB['TypeExperiment'] == 8: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_Th'
     if UserInfoB['TypeExperiment'] == 9: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_3T'
     if UserInfoB['TypeExperiment'] == 10: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_Main'
+    if UserInfoB['TypeExperiment'] == 11: UserInfoB['SubExperiment'].Tag = '_Main_Plus_3T_InitFrom_3T_NoSchedular'
 
 
     return UserInfoB
@@ -219,8 +221,8 @@ def func_Exp_subExp_Names(UserInfo):
                 self.crossVal = UserInfo['CrossVal']()
 
         if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
-        else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag            
-        # else: tag = method + '_FM' + str(FM) + SE.Tag 
+        # else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag            
+        else: tag = method + '_FM' + str(FM) + SE.Tag 
 
         if UserInfo['CrossVal'].Mode: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)

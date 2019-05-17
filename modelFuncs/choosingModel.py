@@ -199,7 +199,7 @@ def trainingExperiment(Data, params):
             save_best_only=True, mode='min' , min_lr=0.9e-4 , )
         
         # Progbar = keras.callbacks.Progba
-        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=25, verbose=1, mode=mode, \
+        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=30, verbose=1, mode=mode, \
             baseline=0, restore_best_weights=True)
 
         # TensorBoard = keras.callbacks.TensorBoard(log_dir= Dir_Save + '/logs', histogram_freq=1, batch_size=batch_size, \
@@ -207,7 +207,7 @@ def trainingExperiment(Data, params):
                 # embeddings_data=None, update_freq='epoch')
 
         # if params.UserInfo()  
-        return [checkpointer , EarlyStopping] #  , Reduce_LR, TensorBoard , TQDMCallback()
+        return [checkpointer  , EarlyStopping] # , Reduce_LR, TensorBoard , TQDMCallback()
         
     def saveReport(DirSave, name , data, method):
 

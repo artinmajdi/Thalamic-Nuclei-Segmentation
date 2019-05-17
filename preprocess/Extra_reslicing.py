@@ -15,8 +15,8 @@ class UserEntry():
         self.mode    = 0
 
         for en in range(len(sys.argv)):
-            if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = sys.argv[en+1]
-            elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = sys.argv[en+1]
+            if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = os.getcwd() + '/' + sys.argv[en+1]
+            elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.getcwd() + '/' + sys.argv[en+1]
             elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = int(sys.argv[en+1])                     
             
 class Reference():
@@ -67,26 +67,29 @@ class reslice_cls():
         def apply_to_Image(image , self):            
             ref = Reference(nucleus='Image').read()
 
-            input_image  = self.dir_in  + '/' + image
-            output_image = self.dir_out + '/' + image
+            input_image  = self.dir_in  + '/' + image + '.nii.gz'
+            output_image = self.dir_out + '/' + image + '.nii.gz'
 
-            im = niImage.resample_img(img=nib.load(input_image) , target_shape=ref['shape'] , target_affine=ref['affine'] , interpolation='continuous') # 
+            im = niImage.resample_img(img=nib.load(input_image), target_affine=ref['affine'][:3,:3] , interpolation='continuous') #  , target_shape=ref['shape'] 
             nib.save(im, output_image)        
 
         def apply_to_mask(nucleus , self):
             ref = Reference(nucleus=nucleus).read()
             
-            input_image  = self.dir_in  + '/Label/' + nucleus
-            output_image = self.dir_out + '/Label/' + nucleus
+            input_image  = self.dir_in  + '/Label/' + nucleus + '.nii.gz'
+            output_image = self.dir_out + '/Label/' + nucleus + '.nii.gz'
 
-            msk = niImage.resample_img(img= nib.load(input_image+ '.nii.gz') , target_shape=ref['shape'] , target_affine=ref['affine'] , interpolation='nearest')  #
+            msk = niImage.resample_img(img= nib.load(input_image), target_affine=ref['affine'][:3,:3] , interpolation='nearest')  # , target_shape=ref['shape'] 
             nib.save(msk, output_image)
             
         smallFuncs.mkDir(self.dir_out)
-        for image in [n for n in os.listdir(self.dir_in) if '.nii.gz' in n]: apply_to_Image(image , self)
+        for image in [n.split('.nii.gz')[0] for n in os.listdir(self.dir_in) if '.nii.gz' in n]: 
+            print('Applying to Image')
+            apply_to_Image(image , self)
         
         smallFuncs.mkDir(self.dir_out + '/Label/')
         for nucleus in smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names:  # [n for n in os.listdir(self.dir_in + '/Label/') if '.nii.gz' in n]: 
+            print('Applying to',nucleus)
             apply_to_mask(nucleus , self)
 
     def reslice_all(self):
@@ -99,8 +102,8 @@ class reslice_cls():
 
 
 UI = UserEntry()
-UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step0_orig_crop/vimp2_case1'
-UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step2_uncropped2/vimp2_case1'
+UI.dir_in  = '/array/ssd/msmajdi/experiments/keras/exp4/test/Main/vimp2_case2'
+UI.dir_out = '/array/ssd/msmajdi/experiments/keras/exp4/test/Main/vimp2_case2_Reslice3'
 UI.mode = 0
 
 if UI.mode == 0: reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).apply_reslice()
