@@ -46,7 +46,7 @@ class uncrop_cls():
             uncrop.uncrop_by_mask(input_image=input_image, output_image=output_image , full_mask=full_mask)     
 
     def uncrop_All(self):
-        for subj in ['vimp2_case1']: # [s for s in os.listdir(self.dir_in) if 'vimp' in s]:
+        for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s]:
             print(subj , '\n')
             dir_in  = self.dir_in + '/' + subj
             dir_out = self.dir_out + '/' + subj
