@@ -49,7 +49,7 @@ class LoadingData:
 
         # model = choosingModel.architecture(params)
         # model.load_weights(dir + '1-THALAMUS/model_weights.h5')
-        self.model = kerasmodels.load_model(self.params.directories.Train.Model + '/model.h5')
+        self.model = kerasmodels.load_model(self.params.directories.Train.Model + '/model_CSFn.h5')
 
         class Layers:
             Outputs = [layer.output for layer in self.model.layers[1:]]
@@ -141,7 +141,7 @@ for VFM.UserInfoB['simulation'].nucleus_Index in Nuclei_Indexes:
 
     for subject_Index in range(len(list(VFM.Data.Test))):
         a = VFM.Data.Test[list(VFM.Data.Test)[subject_Index]].Image.shape[0]
-        for slice in [7,int(a/2),a-7]:
+        for slice in [115]: # 7,int(a/2),a-7]:
             VFM.predict(subject_Index=subject_Index , slice=slice)
             # VFM.concatenate_pred(layer_num=6)
             # VFM.show('gray')

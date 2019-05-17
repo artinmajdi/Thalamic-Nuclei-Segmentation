@@ -31,9 +31,14 @@ class uncrop_cls():
 
         smallFuncs.mkDir(self.dir_out + '/Label')   
 
-        image = [n for n in os.listdir(self.dir_in) if '.nii.gz' in n]
-        copyfile(self.dir_in + '/' + image[0] , self.dir_out + '/' + image[0])
+        # image = [n for n in os.listdir(self.dir_in) if '.nii.gz' in n]
+        # copyfile(self.dir_in + '/' + image[0] , self.dir_out + '/' + image[0])
 
+        # input_image  = self.dir_in  + '/crop_t1.nii.gz'
+        # output_image = self.dir_out + '/crop_t1.nii.gz'
+        # full_mask    = self.dir_in  + '/Label/' + self.maskCrop + '.nii.gz'
+        # uncrop.uncrop_by_mask(input_image=input_image, output_image=output_image , full_mask=full_mask)  
+        
         for label in smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names:
             input_image  = self.dir_in  + '/Label/' + label    + '.nii.gz'
             output_image = self.dir_out + '/Label/' + label    + '.nii.gz'
@@ -41,7 +46,7 @@ class uncrop_cls():
             uncrop.uncrop_by_mask(input_image=input_image, output_image=output_image , full_mask=full_mask)     
 
     def uncrop_All(self):
-        for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s]:
+        for subj in ['vimp2_case1']: # [s for s in os.listdir(self.dir_in) if 'vimp' in s]:
             print(subj , '\n')
             dir_in  = self.dir_in + '/' + subj
             dir_out = self.dir_out + '/' + subj
@@ -51,8 +56,8 @@ class uncrop_cls():
 
 
 UI = UserEntry()
-UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/step1_registered_labels'
-UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/step2_Uncropped'
+UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step1_registered_labels_croppedInput'
+UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step2_uncropped'
 UI.mode    = 1
 if UI.mode == 0: 
     uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out , maskCrop='mask_t1').apply_uncrop()

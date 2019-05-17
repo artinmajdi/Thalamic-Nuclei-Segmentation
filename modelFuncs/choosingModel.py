@@ -207,7 +207,7 @@ def trainingExperiment(Data, params):
                 # embeddings_data=None, update_freq='epoch')
 
         # if params.UserInfo()  
-        return [checkpointer] #  , Reduce_LR , EarlyStopping, TensorBoard , TQDMCallback()
+        return [checkpointer , EarlyStopping] #  , Reduce_LR, TensorBoard , TQDMCallback()
         
     def saveReport(DirSave, name , data, method):
 

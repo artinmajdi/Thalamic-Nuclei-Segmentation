@@ -325,7 +325,7 @@ def loadDataset(params):
             
         DataAll = data()
         
-        if trainFlag():
+        if 0: # trainFlag():
             DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
             DataAll = separateTrainVal_and_concatenateTrain( DataAll )
 
