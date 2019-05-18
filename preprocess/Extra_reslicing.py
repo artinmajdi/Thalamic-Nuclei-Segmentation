@@ -83,10 +83,10 @@ class reslice_cls():
             output_image = self.dir_out + '/Label/' + nucleus + '.nii.gz'
 
            
-            affine = np.zeros(3)
-            for f in range(3): affine[f,f] = ref['affine'][f,f]
-            msk = niImage.resample_img(img= nib.load(input_image), target_affine=affine[f,f]  , interpolation='nearest')  # , target_shape=ref['shape'] 
-            # msk = niImage.resample_img(img= , target_affine=ref['affine'][:3,:3] , interpolation='nearest')  # , target_shape=ref['shape'] 
+            # affine = np.zeros(3)
+            # for f in range(3): affine[f,f] = ref['affine'][f,f]
+            # msk = niImage.resample_img(img= nib.load(input_image), target_affine=affine[f,f]  , interpolation='nearest')  # , target_shape=ref['shape'] 
+            msk = niImage.resample_img(img=nib.load(input_image) , target_affine=ref['affine'][:3,:3] , interpolation='nearest')  # , target_shape=ref['shape'] 
             nib.save(msk, output_image)
             
         smallFuncs.mkDir(self.dir_out)
