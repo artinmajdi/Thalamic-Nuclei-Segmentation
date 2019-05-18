@@ -19,6 +19,9 @@ class UserEntry():
             elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.getcwd() + '/' + sys.argv[en+1]
             elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = int(sys.argv[en+1])                     
             
+        print(self.dir_in)
+        print(self.dir_out)
+        
 class Reference():
     def __init__(self, nucleus='Image'): 
 
@@ -79,7 +82,11 @@ class reslice_cls():
             input_image  = self.dir_in  + '/Label/' + nucleus + '.nii.gz'
             output_image = self.dir_out + '/Label/' + nucleus + '.nii.gz'
 
-            msk = niImage.resample_img(img= nib.load(input_image), target_affine=ref['affine'][:3,:3] , interpolation='nearest')  # , target_shape=ref['shape'] 
+           
+            affine = np.zeros(3)
+            for f in range(3): affine[f,f] = ref['affine'][f,f]
+            msk = niImage.resample_img(img= nib.load(input_image), target_affine=affine[f,f]  , interpolation='nearest')  # , target_shape=ref['shape'] 
+            # msk = niImage.resample_img(img= , target_affine=ref['affine'][:3,:3] , interpolation='nearest')  # , target_shape=ref['shape'] 
             nib.save(msk, output_image)
             
         smallFuncs.mkDir(self.dir_out)
@@ -99,6 +106,7 @@ class reslice_cls():
             dir_out = self.dir_out + '/' + subj
             temp = reslice_cls(dir_in=dir_in , dir_out=dir_out)
             temp.apply_reslice()
+
 
 
 UI = UserEntry()

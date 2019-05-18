@@ -121,12 +121,12 @@ class mergingDiceValues:
                     class subjectDice:
                         ET   = []
                         Main = []
-                        CSfn = []
+                        CSFn = []
                         SRI  = []
 
                     for sIx , subject in enumerate(sE_Dices[:,0]):
                         if 'ET' in subject:     subjectDice.ET.append(sIx)
-                        elif 'CSFn' in subject: subjectDice.CSfn.append(sIx)
+                        elif 'CSFn' in subject: subjectDice.CSFn.append(sIx)
                         elif 'SRI'  in subject: subjectDice.SRI.append(sIx)
                         else:                   subjectDice.Main.append(sIx)
 
@@ -137,7 +137,7 @@ class mergingDiceValues:
                     tag = self.plane.direction +'-' + self.plane.tagIndex                        
                     if len(subjectDice.ET) > 0:   self.All_Subjs_Ns.ET.pd[  tag] = average_median(sE_Dices , subjectDice.ET)   
                     if len(subjectDice.Main) > 0: self.All_Subjs_Ns.Main.pd[tag] = average_median(sE_Dices , subjectDice.Main) 
-                    if len(subjectDice.CSfn) > 0: self.All_Subjs_Ns.CSFn.pd[tag] = average_median(sE_Dices , subjectDice.CSFn) 
+                    if len(subjectDice.CSFn) > 0: self.All_Subjs_Ns.CSFn.pd[tag] = average_median(sE_Dices , subjectDice.CSFn) 
                     if len(subjectDice.SRI) > 0:  self.All_Subjs_Ns.SRI.pd[ tag] = average_median(sE_Dices , subjectDice.SRI)  
                 divideSubjects_BasedOnModality(self, sE_Dices)
 
@@ -178,13 +178,13 @@ class mergingDiceValues:
         loopOver_Subexperiments(self)
 
 
-for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List:
+for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[2:]:
 
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')
     mergingDiceValues(Info)
 
-    Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
-    savingHistory_AsExcel(Info)
+    # Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
+    # savingHistory_AsExcel(Info)
 
 os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
 

@@ -15,7 +15,7 @@ Model_Method =   'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 9 # Main + 3T  Init 3T
 # TypeExperiment == 10 # CSFn  Init Main
 # TypeExperiment == 11 # Main + 3T  Init 3T + no schedular 
-TypeExperiment = 1
+TypeExperiment = 10
 
 class CrossVal:
     Mode = False
@@ -23,7 +23,7 @@ class CrossVal:
     All_Indexes = ['a' , 'b' , 'c' , 'd']
 
 class Experiments:
-    Index , Tag = '4' , '' # '5_CSFn' , '' # '1' , '' # , 'cascadeV1'
+    Index , Tag = '5_CSFn' , '' # '4' , '' #  '1' , '' # , 'cascadeV1'
 
 DropoutValue = 0.3
 
