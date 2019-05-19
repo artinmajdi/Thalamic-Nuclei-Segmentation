@@ -66,13 +66,15 @@ def applyMain(Dir,mode):
             
         def saving4SuperNuclei():
             print('    saving 4 Super Nuclei')
+        
             for superNuclei in HierarchicalNames:
-                for cnt, subNuclei in enumerate(Names[superNuclei].FullNames):
-                    msk = nib.load(Directory + subNuclei + mode + '.nii.gz').get_data()
-                    Mask = msk if cnt == 0 else Mask + msk
+                if not os.path.exists(Directory + superNuclei + '_ImClosed' + mode + '.nii.gz'):
+                    for cnt, subNuclei in enumerate(Names[superNuclei].FullNames):
+                        msk = nib.load(Directory + subNuclei + mode + '.nii.gz').get_data()
+                        Mask = msk if cnt == 0 else Mask + msk
 
-                smallFuncs.saveImage( Mask > 0 , im.affine , im.header, Directory + 'Hierarchical/' + superNuclei + mode + '.nii.gz')
-                smallFuncs.saveImage( closeMask(Mask > 0 , 1) , im.affine , im.header, Directory + superNuclei + '_ImClosed' + mode + '.nii.gz')
+                    smallFuncs.saveImage( Mask > 0 , im.affine , im.header, Directory + 'Hierarchical/' + superNuclei + mode + '.nii.gz')
+                    smallFuncs.saveImage( closeMask(Mask > 0 , 1) , im.affine , im.header, Directory + superNuclei + '_ImClosed' + mode + '.nii.gz')
 
         def saving4SuperNuclei_WithDifferentLabels():
             print('    saving 4 Super Nuclei')
