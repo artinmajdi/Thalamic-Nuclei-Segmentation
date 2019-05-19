@@ -162,6 +162,8 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 9:  (11  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
                 10:  (12  ,   self.ReadTrainC(CSFn=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC() ),
                 11:  (12  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
+                12:  (12  ,   self.ReadTrainC(CSFn=1)         , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
+                13:  (12  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC() ),
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 
@@ -175,9 +177,11 @@ def temp_Experiments_preSet_V2(UserInfoB):
     if UserInfoB['TypeExperiment'] == 3: UserInfoB['SubExperiment'].Tag = '_ET_Init_Main_AllAugs'
     if UserInfoB['TypeExperiment'] == 7: UserInfoB['SubExperiment'].Tag = '_ET_Init_Rn_AllAugs'
     if UserInfoB['TypeExperiment'] == 8: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_Th'
-    if UserInfoB['TypeExperiment'] == 9: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_3T'
+    if UserInfoB['TypeExperiment'] == 9: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_3T' 
     if UserInfoB['TypeExperiment'] == 10: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_Main'
     if UserInfoB['TypeExperiment'] == 11: UserInfoB['SubExperiment'].Tag = '_Main_Plus_3T_InitFrom_3T_NoSchedular'
+    if UserInfoB['TypeExperiment'] == 12: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_3T'
+    if UserInfoB['TypeExperiment'] == 13: UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_3Tp7T_NoSchedular'
 
 
     return UserInfoB
@@ -217,12 +221,13 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_thalamus = ''            
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
                 self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM)
-                self.name_Init_from_7T = 'sE11_' + method + '_FM' + str(FM)
+                #self.name_Init_from_7T = 'sE11_' + method + '_FM' + str(FM)
+                self.name_Init_from_7T = 'sE12_' + method + '_FM' + str(FM) + '_3T7T'
                 self.crossVal = UserInfo['CrossVal']()
 
         if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
-        # else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag            
-        else: tag = method + '_FM' + str(FM) + SE.Tag 
+        else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag            
+        # else: tag = method + '_FM' + str(FM) + SE.Tag 
 
         if UserInfo['CrossVal'].Mode: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)

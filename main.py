@@ -40,8 +40,8 @@ def Run(UserInfoB,InitValues):
             Run_SingleNuclei(UserInfoB)
 
         print('************ stage 2 ************')                    
-        for UserInfoB['simulation'].nucleus_Index in BB.HCascade_Parents_Identifier(InitValues.Nuclei_Indexes):
-            Run_SingleNuclei(UserInfoB)
+        #for UserInfoB['simulation'].nucleus_Index in BB.HCascade_Parents_Identifier(InitValues.Nuclei_Indexes):
+        #    Run_SingleNuclei(UserInfoB)
 
         print('************ stage 3 ************')
         for UserInfoB['simulation'].nucleus_Index in BB.remove_Thalamus_From_List(InitValues.Nuclei_Indexes):
