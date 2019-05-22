@@ -4,6 +4,8 @@ from shutil import copyfile
 import matplotlib.pyplot as plt
 import os, sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+# import skimage
+# print(skimage.__version__)
 from skimage import measure
 from copy import deepcopy
 import json

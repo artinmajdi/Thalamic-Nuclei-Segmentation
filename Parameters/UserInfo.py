@@ -11,8 +11,8 @@ Model_Method =   'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 5: # ET Predicted from Main
 # TypeExperiment == 6: # Main + 3T  Init Randomly
 # TypeExperiment == 7: # ET      Init from Randomly
-# TypeExperiment == 8 # Main + 3T  Init Th
-# TypeExperiment == 9 # Main + 3T  Init 3T
+# TypeExperiment == 8  # Main + 3T  Init Th
+# TypeExperiment == 9  # Main + 3T  Init 3T
 # TypeExperiment == 10 # CSFn  Init Main
 # TypeExperiment == 11 # Main + 3T  Init 3T + no schedular 
 # TypeExperiment == 12 # CSFn  Init 3T
