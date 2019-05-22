@@ -17,7 +17,7 @@ Model_Method =   'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 11 # Main + 3T  Init 3T + no schedular 
 # TypeExperiment == 12 # CSFn  Init 3T
 # TypeExperiment == 13 # ET Init non-ET 3T & 7T
-TypeExperiment = 13
+TypeExperiment = 9
 
 class CrossVal:
     Mode = True
@@ -25,7 +25,7 @@ class CrossVal:
     All_Indexes = ['a' , 'b' , 'c' , 'd']
 
 class Experiments:
-    Index , Tag = '5_CSFn' , '' # '4' , '' #  '1' , '' # , 'cascadeV1'
+    Index , Tag = '4' , '' # '5_CSFn' , '' #   '1' , '' # , 'cascadeV1'
 
 DropoutValue = 0.3
 
@@ -41,14 +41,14 @@ class InitializeB:
     From_7T        = False
 
 class simulation:
-    TestOnly      = False
+    TestOnly      = True
     epochs        = 100
-    GPU_Index     = "0"
+    GPU_Index     = "3"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1] # ,2,4]
-    slicingDim    = [1] #[2,1,0]
+    nucleus_Index = [1,2] # ,2,4]
+    slicingDim    = [2] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20
@@ -61,7 +61,7 @@ class simulation:
     save_Best_Epoch_Model = True
     Use_Coronal_Thalamus_InSagittal = True
     Use_TestCases_For_Validation = True
-    ImClosePrediction = True
+    ImClosePrediction =  True # False #
     
 
 class dataGenerator:

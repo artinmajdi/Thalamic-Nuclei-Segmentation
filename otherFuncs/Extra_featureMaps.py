@@ -49,12 +49,13 @@ class LoadingData:
 
         # model = choosingModel.architecture(params)
         # model.load_weights(dir + '1-THALAMUS/model_weights.h5')
-        self.model = kerasmodels.load_model(self.params.directories.Train.Model + '/model_CSFn.h5')
+        self.model = kerasmodels.load_model(self.params.directories.Train.Model + '/model.h5') # + '/model_CSFn.h5')
 
         class Layers:
             Outputs = [layer.output for layer in self.model.layers[1:]]
-            Names      = [layer.name for layer in self.model.layers[1:]]
-            Input      = self.model.layers[0].output # keras.layers.Input( tuple(self.params.WhichExperiment.HardParams.Model.InputDimensions[:self.params.WhichExperiment.HardParams.Model.Method.InputImage2Dvs3D]) + (1,) )
+            Names   = [layer.name for layer in self.model.layers[1:]]
+            Input   = self.model.layers[0].output # keras.layers.Input( tuple(self.params.WhichExperiment.HardParams.Model.InputDimensions[:self.params.WhichExperiment.HardParams.Model.Method.InputImage2Dvs3D]) + (1,) )
+            # Input  = keras.layers.Input( (1,152,196,1) )
             predictions = ''
         self.Layers = Layers()
 

@@ -13,8 +13,13 @@ import otherFuncs.smallFuncs as smallFuncs
 # import Parameters.paramFunc as paramFunc
 # params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 
-dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step1_registered_labels/vimp2_case2/Label/'
-im = nib.load(dir + '1-THALAMUS.nii.gz')
+dir = '/array/ssd/msmajdi/experiments/keras/exp4/test/Main/vimp2_case17_CSFn/'
+im = nib.load(dir + 'PProcessed.nii.gz')
+# im2 = nib.load(dir + 'reverece_contrast_PProcessed.nii.gz')
 
-im2 = nib.Nifti1Image(im.get_data() > 0.5 , im.affine)
-nib.save(im2, dir+'1t_junk.nii.gz')
+
+mx = im.get_data().max()
+imm = 1 - im.get_data()/mx
+
+im2 = nib.Nifti1Image(imm, im.affine)
+nib.save(im2, dir+'reverece_contrast_PProcessed.nii.gz')

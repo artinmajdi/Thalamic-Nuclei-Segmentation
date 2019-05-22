@@ -56,7 +56,8 @@ def func_MajorityVoting(Info , params):
                 ix , pred3Dims = 0 , ''
                 ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
                 for sdInfo in Info.subExperiment.multiPlanar:
-                    if sdInfo.mode and 'sd' in sdInfo.name:
+                    # print(sdInfo)
+                    if sdInfo.Flag and 'sd' in sdInfo.name:
                         address = Info.subExperiment.address + sdInfo.name + '/' + subject.subjectName + '/' + nucleusNm + '.nii.gz'
                         if os.path.isfile(address):
                             

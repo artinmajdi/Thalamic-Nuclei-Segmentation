@@ -71,6 +71,7 @@ def testingExeriment(model, Data, params):
                 return ndimage.binary_closing(mask, structure=struc)
 
             pred1N = binarizing( np.squeeze(pred1Class) )
+            # pred1N = np.squeeze(pred1Class) 
             
             if params.WhichExperiment.HardParams.Model.Method.ImClosePrediction: 
                 pred1N = closeMask(pred1N)
