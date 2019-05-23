@@ -25,7 +25,7 @@ class CrossVal:
     All_Indexes = ['a' , 'b' , 'c' , 'd']
 
 class Experiments:
-    Index , Tag = '4' , '' # '5_CSFn' , '' #   '1' , '' # , 'cascadeV1'
+    Index , Tag = '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1'
 
 DropoutValue = 0.3
 
@@ -41,13 +41,13 @@ class InitializeB:
     From_7T        = False
 
 class simulation:
-    TestOnly      = False
+    TestOnly      = True
     epochs        = 100
-    GPU_Index     = "3"
+    GPU_Index     = "0"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1,2] # ,2,4]
+    nucleus_Index = [1] # ,2,4]
     slicingDim    = [2] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2

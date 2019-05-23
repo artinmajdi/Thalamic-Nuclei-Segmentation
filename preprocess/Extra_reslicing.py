@@ -110,9 +110,9 @@ class reslice_cls():
 
 
 UI = UserEntry()
-UI.dir_in  = '/array/ssd/msmajdi/experiments/keras/exp4/test/Main/vimp2_case2'
-UI.dir_out = '/array/ssd/msmajdi/experiments/keras/exp4/test/Main/vimp2_case2_Reslice3'
-UI.mode = 0
+# UI.dir_in  = '/array/ssd/msmajdi/experiments/keras/exp4/test/Main/vimp2_case2'
+# UI.dir_out = '/array/ssd/msmajdi/experiments/keras/exp4/test/Main/vimp2_case2_Reslice3'
+# UI.mode = 0
 
 if UI.mode == 0: reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).apply_reslice()
 else:            reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).reslice_all()
