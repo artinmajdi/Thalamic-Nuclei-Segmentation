@@ -180,7 +180,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
     if UserInfoB['TypeExperiment'] == 9: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_3T' 
     if UserInfoB['TypeExperiment'] == 10: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_Main'
     if UserInfoB['TypeExperiment'] == 11: UserInfoB['SubExperiment'].Tag = '_Main_Plus_3T_InitFrom_3T_NoSchedular'
-    if UserInfoB['TypeExperiment'] == 12: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_3T'
+    if UserInfoB['TypeExperiment'] == 12: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_3T_reversed_Contrast'
     if UserInfoB['TypeExperiment'] == 13: UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_3Tp7T_NoSchedular'
 
 
