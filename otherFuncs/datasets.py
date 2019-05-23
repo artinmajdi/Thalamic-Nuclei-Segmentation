@@ -167,6 +167,7 @@ def loadDataset(params):
 
         im = inputPreparationForUnet(im, subject2, params)
         im = normalizeA.main_normalize(params.preprocess.Normalize , im)
+        im = 1 - im
         return im, imF
 
     def readingNuclei(params, subject, imFshape):

@@ -1,38 +1,25 @@
 import nibabel as nib
 import numpy as np
 import nilearn
-# import pywt
-import pybm3d
-
 import matplotlib.pyplot as plt
-# from scipy.misc import imresize
 import os, sys
+from skimage import measure
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 import otherFuncs.smallFuncs as smallFuncs
-# from scipy.ndimage import zoom
-
-# import Parameters.UserInfo as UserInfo
-# import Parameters.paramFunc as paramFunc
-# params = paramFunc.Run(UserInfo.__dict__, terminal=True)
-
-dir = '/array/ssd/msmajdi/experiments/keras/Check_Datasets/CSFn_Checks/'
-subject = 'vimp2_case17_CSFn'
-
-dir2 = dir + subject + '/PProcessed.nii.gz'
-im = nib.load(dir2)
-
-mx = im.get_data().max()
-imm = 1 - im.get_data()/mx
 
 
-imm2 = pybm3d.bm3d.bm3d(imm,np.std(imm))
+dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/full_Image/step1_registered_labels/vimp2_case17/'
 
+im = nib.load(dir + 'full_T1.nii.gz')
+msk = nib.load(dir + 'Label/1-THALAMUS.nii.gz')
 
-# plt.imshow(imm[...,80],cmap='gray')
-# plt.imshow(imm2[...,80],cmap='gray')
-a = nib.viewers.OrthoSlicer3D(imm)
-b = nib.viewers.OrthoSlicer3D(imm2,title='denoised')
-a.link_to(b)
-a.show()
-# im2 = nib.Nifti1Image(imm, im.affine)
-# nib.save(im2, dir+'reverece_contrast_PProcessed.nii.gz')
+obj = measure.regionprops(measure.label(msk.get_data()))
+
+sc = int((obj[0].bbox[-1] + obj[0].bbox[2])/2)
+
+imm = np.squeeze(im.slicer[:,:,sc:sc+1].get_data())
+mskk = np.squeeze(msk.slicer[:,:,sc:sc+1].get_data())
+
+imm2 = imm/imm.max() + mskk*0.5
+smallFuncs.imShow(imm2 , imm)
+# plt.imshow(imm2,cmap='gray')
