@@ -22,6 +22,7 @@ import keras
 from keras.utils import multi_gpu_model, multi_gpu_utils
 import h5py
 import keras.layers as KLayers
+from sklearn.utils import class_weight
 # import json
 from keras.preprocessing.image import ImageDataGenerator
 
@@ -326,10 +327,13 @@ def trainingExperiment(Data, params):
 
             if params.WhichExperiment.HardParams.Model.DataGenerator.Mode: hist = func_RunGenerator()
             else:
-                # keras.backend.set_session(tf_debug.TensorBoardDebugWrapperSession(tf.Session(), "engr-bilgin01s:6064"))                
-                if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])
-                else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
-                            
+                # keras.backend.set_session(tf_debug.TensorBoardDebugWrapperSession(tf.Session(), "engr-bilgin01s:6064"))    
+                classes = np.unique(Data.Train.Mask)
+                y_train = np.reshape(Data.Train.Mask[...,0],[-1])
+                class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
+                if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])
+                else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
+
                 if ModelParam.showHistory: print(hist.history)
 
             return model, hist                         
