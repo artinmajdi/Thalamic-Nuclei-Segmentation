@@ -19,7 +19,6 @@ def sliceDim(SD):
     elif SD == 1: return ([2,0,1] , [1,2,0])
     elif SD == 2: return ([0,1,2] , [0,1,2])
     
-
 def Save_AllNuclei_inOne(Directory):
     A = smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei()
     Mask = []
@@ -31,7 +30,8 @@ def Save_AllNuclei_inOne(Directory):
             im = nib.load( Directory + '/' + name + '.nii.gz' )  
 
     smallFuncs.saveImage( Mask , im.affine , im.header, Directory + 'AllLabels.nii.gz')
-    
+
+
 def applyMain(Dir,mode):
     
     def RunAllFunctions(Directory):
@@ -89,22 +89,7 @@ def applyMain(Dir,mode):
             for cnt, superNuclei in enumerate(HierarchicalNames):
                 msk = nib.load(Directory + 'Hierarchical/' + superNuclei + mode + '.nii.gz').get_data()
                 Mask = msk if cnt == 0 else Mask + (cnt+1)*msk
-                # a = mplot3d.Axes3D.contour3D(x,y,z)
-                # mplot3d.Axes3D.scatter3D(x2,y2,zs=1)
-                # mplot3d.Axes3D(x2,y2)
-                # x,y,z = np.where(msk == 1)
-                # x2,y2 = np.meshgrid(x,y)
 
-                # from mpl_toolkits.mplot3d import axes3d
-                # import matplotlib.pyplot as plt
-                # from matplotlib import cm
-
-                # fig = plt.figure()
-                # ax = fig.add_subplot(111, projection='3d')
-                # X, Y, Z = axes3d.get_test_data(0.05)
-                # cset = ax.contour(X, Y, Z, cmap=cm.coolwarm)
-                # ax.clabel(cset, fontsize=9, inline=1)
-                # plt.show()
                 msk = nib.load(Directory + superNuclei + '_ImClosed' + mode + '.nii.gz').get_data()
                 MaskClosed = msk if cnt == 0 else MaskClosed + (cnt+1)*msk
 
@@ -213,15 +198,15 @@ def applyMain(Dir,mode):
 
             smallFuncs.saveImage( Mask , im.affine , im.header, Directory + 'AllLabels.nii.gz')
         
-        # saving4SuperNuclei()
+        saving4SuperNuclei()
 
-        # ImClosingAllNuclei()
+        ImClosingAllNuclei()
 
         Save_AllNuclei_inOne()
         # Save_AllNuclei_inOne_Imclosed_Except_AV()
-        # saving4SuperNuclei_WithDifferentLabels()
+        saving4SuperNuclei_WithDifferentLabels()
         # saveAV_BB()
-        # creatingFullMaskWithAll4Supernuclei()
+        creatingFullMaskWithAll4Supernuclei()
 
     Subjects = [sub for sub in os.listdir(Dir) if 'vimp' in sub]
 
@@ -247,8 +232,11 @@ class Input_cls():
         if self.dir_in: self.subjList = [s for s  in os.listdir(self.dir_in) if ('vimp' in s) and ('jpg' not in s)]
 
 
+Dir = '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/results/sE12_Cascade_FM20_DO0.3_CSFn__Init_3T_CV_a/2.5D_MV/'
+applyMain(Dir ,'') # _PProcessed')
+
 # Dir = '/array/ssd/msmajdi/experiments/keras/exp4/results/sE11_Cascade_FM20_DO0.3_ET_Init_Main_AllAugs_CV_a/sd2'
-# for exp in ['exp4' , 'exp3']:
+# for exp in ['exp5_CSFn']:
 #     for ds in ['ET_3T' , 'ET_7T']: # 'ET']: #  
 #         print('\n\n\n  ' + exp + ' ET \n\n\n')
 #         # for dataset in ['Main/' , 'SRI/' , 'ET/']:
@@ -260,12 +248,12 @@ class Input_cls():
 #         for sd in ['sd0/' , 'sd1/' , 'sd2/']:
 #             Dir = '/array/ssd/msmajdi/experiments/keras/' + exp + '/test/' + ds + '/AugData/' + sd  # params.directories.Test.Input.Subjects  + '/' # 
 
-input = Input_cls()
+# input = Input_cls()
 
-input.dir_in = '/array/ssd/msmajdi/experiments/keras/exp4/results/sE11_Cascade_FM20_DO0.3_Main_Init_3T_AllAugs_CV_a/sd2/vimp2_ANON695_03132013'
-Save_AllNuclei_inOne(input.dir_in)
+# input.dir_in = '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/crossVal/CSFn/a/vimp2_case17_CSFn_withSuperNuclei/Label/'
+# Save_AllNuclei_inOne(input.dir_in)
 
-
-# applyMain(Dir ,'_PProcessed')
+# creatingFullMaskWithAll4Supernuclei(input.dir_in , '_PProcessed')
+# # applyMain(Dir ,'_PProcessed')
 
 

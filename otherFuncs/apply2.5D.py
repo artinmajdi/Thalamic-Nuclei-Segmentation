@@ -86,7 +86,7 @@ def func_DecisionTree(Info , params):
         
         def training(params , Info):
 
-            clf = tree.DecisionTreeClassifier(max_depth=3)
+            clf = tree.DecisionTreeClassifier(max_depth=1)
             
             for cnt , subj in enumerate(tqdm(list(params.directories.Train.Input.Subjects))):
                 try: 
@@ -147,6 +147,6 @@ for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade' , 'mUnet']: # subExperi
     params = paramFunc.Run(UserInfoB, terminal=False)
 
     InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
-    func_MajorityVoting(InfoS , params)
-    # func_DecisionTree(InfoS , params)
-    #    print(subExperiment)
+    #func_MajorityVoting(InfoS , params)
+    func_DecisionTree(InfoS , params)
+
