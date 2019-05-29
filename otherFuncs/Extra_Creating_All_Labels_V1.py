@@ -53,11 +53,6 @@ def applyMain(Dir,mode):
             Names[name] = inputInfo(fullIndexes=fullIndexes, FullNames=FullNames)
 
         # Names = dict({1:['posterior',[8,9,10]], 2:['lateral',[4,5,6,7]] , 3:['Anterior',[2]] , 4:['Medial',[11,12,13]] })
-
-        def dilateMask(mask,cnt):
-            struc = ndimage.generate_binary_structure(3,2)
-            if cnt > 1: struc = ndimage.iterate_structure(struc, cnt)
-            return ndimage.binary_dilation(mask, structure=struc)
         
         def closeMask(mask,cnt):
             struc = ndimage.generate_binary_structure(3,2)
@@ -96,7 +91,13 @@ def applyMain(Dir,mode):
             smallFuncs.saveImage(Mask , im.affine , im.header, Directory + 'Hierarchical/All_4MainNuclei' + mode + '.nii.gz')
             smallFuncs.saveImage(MaskClosed , im.affine , im.header, Directory + 'Hierarchical/All_4MainNuclei_ImClosed' + mode + '.nii.gz')
 
-        def saveAV_BB():             
+        """
+        def saveAV_BB(): 
+            def dilateMask(mask,cnt):
+                struc = ndimage.generate_binary_structure(3,2)
+                if cnt > 1: struc = ndimage.iterate_structure(struc, cnt)
+                return ndimage.binary_dilation(mask, structure=struc)
+                                    
             print('    creating Full Mask With All 4 Super Nuclei')
             for cnt, superNuclei in enumerate([HierarchicalNames[0],HierarchicalNames[2]]):
                 msk = nib.load(Directory + superNuclei + '_ImClosed' + mode + '.nii.gz').get_data()
@@ -105,9 +106,9 @@ def applyMain(Dir,mode):
             BBf = np.loadtxt('/array/ssd/msmajdi/experiments/keras/exp1/results/sE11_HCascade_FM20_7T_Main/sd2/vimp2_915_07112013_LC_MS/BB_1-THALAMUS.txt',dtype=int)
             crd = BBf[:,:2]
 
-            mskTh = nib.load(Directory + '1-THALAMUS_PProcessed.nii.gz').get_data()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
-            mskAV = nib.load(Directory + '2-AV_PProcessed.nii.gz').get_data()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
-            mskAll = nib.load(Directory + 'AllLabels2.nii.gz').get_data()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
+            # mskTh = nib.load(Directory + '1-THALAMUS_PProcessed.nii.gz').get_data()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
+            # mskAV = nib.load(Directory + '2-AV_PProcessed.nii.gz').get_data()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
+            # mskAll = nib.load(Directory + 'AllLabels2.nii.gz').get_data()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
             
             # def remove_posterior(im, Directory):
             mskPosterior = nib.load(Directory + 'posterior_ImClosed_PProcessed.nii.gz').get_data()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
@@ -115,7 +116,7 @@ def applyMain(Dir,mode):
             Ix = np.argsort( [obj.area for obj in objects] )
             bbox = objects[ Ix[-1] ].bbox
             crd = [ [bbox[d] , bbox[3 + d] ] for d in range(3)]
-            coronalCrop = [ crd[1][1] , mskPosterior.shape[1] ] 
+            # coronalCrop = [ crd[1][1] , mskPosterior.shape[1] ] 
 
 
             print('---------')
@@ -153,7 +154,7 @@ def applyMain(Dir,mode):
             # a.show()
 
             smallFuncs.saveImage(msk , im.affine , im.header, Directory + 'AnteiorMask_2AV_new.nii.gz')
-
+        """
         def ImClosingAllNuclei():
             print('    ImClosing All Nuclei')
             _, _, AllNames = smallFuncs.NucleiSelection(ind=1)
@@ -232,7 +233,7 @@ class Input_cls():
         if self.dir_in: self.subjList = [s for s  in os.listdir(self.dir_in) if ('vimp' in s) and ('jpg' not in s)]
 
 
-Dir = '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/results/sE12_Cascade_FM20_DO0.3_CSFn__Init_3T_CV_a/2.5D_MV/'
+Dir = '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/results/sE12_HCascade_FM20_DO0.3_Main_Plus_3T_InitFrom_3T_NoSchedular_CV_a/2.5D_MV/' # '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/results/sE12_Cascade_FM20_DO0.3_CSFn__Init_3T_CV_a/2.5D_MV/'
 applyMain(Dir ,'') # _PProcessed')
 
 # Dir = '/array/ssd/msmajdi/experiments/keras/exp4/results/sE11_Cascade_FM20_DO0.3_ET_Init_Main_AllAugs_CV_a/sd2'

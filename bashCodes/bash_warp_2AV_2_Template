@@ -1,0 +1,47 @@
+#!/bin/bash
+
+
+export dir='/array/ssd/msmajdi/experiments/keras/exp5_CSFn/train/Main/temp'
+echo $dir 
+
+cd $dir
+
+for vi in vimp2_*; do
+
+
+echo '------------------------------'
+echo ' '
+echo $vi
+echo ' '
+echo '------------------------------'
+export Template='/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration/cropped_origtemplate.nii.gz'
+export Image=$dir/$vi/PProcessed.nii.gz
+
+
+
+export Affine=$dir/$vi/temp_AV
+
+cd $Affine
+#mkdir $Affine
+
+antsRegistration  -d 3 --float 0 --output \[aff,affine.nii.gz\] -r \[$Template, $Image,1\] -t Rigid\[0.1\] --metric MI\[$Template, $Image,1,32,Regular,0.25\] --convergence \[1000x500x250x100,1e-7,10\] -v -f 8x4x2x1 -s 3x2x1x0vox -v -t Affine\[0.1\] --metric MI\[$Template, $Image,1,32,Regular,0.25\] --convergence \[1000x500x250x100,5e-8,10\] -f 8x4x2x1 -s 3x2x1x0vox
+        
+
+#ANTS 3 -m CC[$Template, $Image ,1,5] -o $Affine/linear -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false
+
+
+
+export Label=$dir/$vi/Label/2-AV_PProcessed.nii.gz
+
+export output=$dir/AV_Masks
+
+echo $Label
+echo $Template
+echo $Affine
+
+antsApplyTransforms -d 3 -i $Label -r $Template -o $output/$vi.nii.gz -t $Affine/aff0GenericAffine.mat -n NearestNeighbor
+
+#WarpImageMultiTransform 3 $Label $output/out.nii.gz -R $Template $Affine/linearAffine.txt
+	
+done
+            

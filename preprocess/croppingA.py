@@ -21,14 +21,6 @@ def main(subject , params):
 def func_cropImage(params, subject):
 
     def cropImage_FromCoordinates(CropMask , Gap): 
-        # ss = np.sum(CropMask,axis=2)
-        # c1 = np.where(np.sum(ss,axis=1) > 0)[0]
-        # c2 = np.where(np.sum(ss,axis=0) > 0)[0]
-
-        # ss = np.sum(CropMask,axis=1)
-        # c3 = np.where(np.sum(ss,axis=0) > 0)[0]
-
-        # BBCord = [   [c1[0],c1[-1]]  ,  [c2[0],c2[-1]]  , [c3[0],c3[-1]]  ]
         BBCord = smallFuncs.findBoundingBox(CropMask>0.5)
 
         d = np.zeros((3,2),dtype=np.int)
