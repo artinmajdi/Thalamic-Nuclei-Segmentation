@@ -83,8 +83,8 @@ havingBackGround_AsExtraDimension = True
 gapDilation = 5
 
 class Template:
-    Image = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/origtemplate.nii.gz'
-    Mask = '/array/ssd/msmajdi/code/general/RigidRegistration' + '/CropMaskV3.nii.gz'  # MyCrop_Template2_Gap20
+    Image = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/origtemplate.nii.gz'
+    Mask = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/CropMaskV3.nii.gz'  # MyCrop_Template2_Gap20
 
 
 #! metric function
