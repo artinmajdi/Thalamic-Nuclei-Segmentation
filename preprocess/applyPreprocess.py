@@ -35,10 +35,15 @@ def apply_On_Individual(params,Info):
 
     BashCallingFunctionsA.BiasCorrection( subject , params)
 
+    
     if ('Aug' not in Info.subjectName) and ('CSFn' not in Info.subjectName): 
         BashCallingFunctionsA.RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
         
         croppingA.main(subject , params)
+
+
+    BashCallingFunctionsA.RigidRegistration_2AV( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
+    croppingA.crop_AV(subject , params)
 
     return params
 

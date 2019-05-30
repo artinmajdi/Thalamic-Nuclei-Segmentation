@@ -31,6 +31,19 @@ def BiasCorrection(subject , params):
             if params.preprocess.Debug.doDebug:
                 copyfile(outP , outDebug)
 
+def RigidRegistration_2AV(subject , Template , preprocess):
+
+    
+    processed = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
+    outP = subject.Temp.address + '/CropMask_AV.nii.gz'
+    LinearAffine = subject.Temp.Deformation.address + '/linearAffine.txt'
+    if preprocess.Cropping.Mode and not os.path.isfile(outP):        
+        if not os.path.isfile(LinearAffine): 
+            print('     Rigid Registration')
+            os.system("ANTS 3 -m CC[%s, %s ,1,5] -o %s -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false" %(processed , Template.Image , subject.Temp.Deformation.address + '/linear') )
+        print('     Warping')
+        os.system("WarpImageMultiTransform 3 %s %s -R %s %s"%(Template.Mask_2AV , outP , processed , LinearAffine) )
+
 def Bash_AugmentNonLinear(subject , subjectRef , outputAddress): # Image , Mask , Reference , output):
 
     print('     Augment NonLinear')

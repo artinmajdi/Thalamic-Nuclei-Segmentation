@@ -55,9 +55,9 @@ class register_cls():
 # dir_out = smallFuncs.mkDir('/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/WMn/case1')
 
 UI = UserEntry()
-UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn_Orig/CSFn/case1'
-UI.dir_out = smallFuncs.mkDir('/array/ssd/msmajdi/data/preProcessed/CSFn_WMn_Register/CSFn/case1')
-UI.mode = 0
+# UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn_Orig/CSFn/case1'
+# UI.dir_out = smallFuncs.mkDir('/array/ssd/msmajdi/data/preProcessed/CSFn_WMn_Register/CSFn/case1')
+# UI.mode = 0
 
 
 if UI.mode == 0: register_cls(dir_in = UI.dir_in , dir_out = UI.dir_out , maskCrop='mask_t1').apply_register()

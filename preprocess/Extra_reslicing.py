@@ -26,7 +26,7 @@ class Reference():
     def __init__(self, nucleus='Image'): 
 
         self.dir_origRefImage = '/array/ssd/msmajdi/experiments/keras/exp3/train/Main/vimp2_819_05172013_DS/'
-        self.dir = '/array/ssd/msmajdi/code/general/Reslicing/'
+        self.dir = '/array/ssd/msmajdi/code/thalamus/keras/general/Reslicing/'
         self.nucleus = nucleus if not ('.nii.gz' in nucleus) else nucleus.split('.nii.gz')[0]
     def write(self):
         
@@ -100,7 +100,7 @@ class reslice_cls():
             apply_to_mask(nucleus , self)
 
     def reslice_all(self):
-        for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s]:
+        for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s and 'vimp2_A' not in s]:
             print(subj , '\n')
             dir_in  = self.dir_in + '/' + subj
             dir_out = self.dir_out + '/' + subj
@@ -110,9 +110,9 @@ class reslice_cls():
 
 
 UI = UserEntry()
-# UI.dir_in  = '/array/ssd/msmajdi/experiments/keras/exp4/test/Main/vimp2_case2'
-# UI.dir_out = '/array/ssd/msmajdi/experiments/keras/exp4/test/Main/vimp2_case2_Reslice3'
-# UI.mode = 0
+UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/pre-steps/CSFn/full_Image/ET/step0_orig'
+UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/pre-steps/CSFn/full_Image/ET/step1_resliced'
+UI.mode = 1
 
 if UI.mode == 0: reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).apply_reslice()
 else:            reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).reslice_all()

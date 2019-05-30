@@ -17,7 +17,7 @@ Model_Method =   'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 11 # Main + 3T  Init 3T + no schedular 
 # TypeExperiment == 12 # CSFn  Init 3T
 # TypeExperiment == 13 # ET Init non-ET 3T & 7T
-TypeExperiment = 13
+TypeExperiment = 2
 
 class CrossVal:
     Mode = True
@@ -25,7 +25,7 @@ class CrossVal:
     All_Indexes = ['a' , 'b' , 'c' , 'd']
 
 class Experiments:
-    Index , Tag = '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1'
+    Index , Tag = '6' , '' # '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1'
 
 DropoutValue = 0.3
 
@@ -85,6 +85,7 @@ gapDilation = 5
 class Template:
     Image = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/origtemplate.nii.gz'
     Mask = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/CropMaskV3.nii.gz'  # MyCrop_Template2_Gap20
+    Mask_2AV = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/CropMask_AV.nii.gz' 
 
 
 #! metric function

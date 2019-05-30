@@ -12,6 +12,7 @@ from keras import backend as K
 import pandas as pd
 import xlsxwriter
 import csv
+import numpy as np
 # import json
 import nibabel as nib
 # from shutil import copyfile , copytree
@@ -64,12 +65,15 @@ def Run(UserInfoB,InitValues):
             print('Experiment:', params.WhichExperiment.Experiment.name)                              
             print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
             print('---------------------------------------------------------------')
-                                    
+
+            # if not(UserInfoB['simulation'].nucleus_Index == 1.4):
             Data, params = datasets.loadDataset(params) 
             print(Data.Train.Image.shape)               
             choosingModel.check_Run(params, Data)              
             K.clear_session()
-
+            # else:
+            #     save_Anteior_BBox()
+                    
         for sd in InitValues.slicingDim:            
             if not (sd == 0 and UserInfoB['simulation'].nucleus_Index == 1):
                 UserInfoB['simulation'].slicingDim = [sd]       
@@ -87,6 +91,25 @@ def Run(UserInfoB,InitValues):
     elif UserInfoB['Model_Method'] == 'singleRun': Run_SingleNuclei(UserInfoB)
     else: Loop_All_Nuclei(UserInfoB)
      
+# def save_Anteior_BBox():
+#     def cropBoundingBoxes(PreStageMask, dirr):
+
+#         def checkBordersOnBoundingBox(Sz , BB , gapS):
+#             return [   [   np.max([BB[d][0]-gapS,0])  ,   np.min( [BB[d][1]+gapS,Sz[d]])   ]  for d in range(3) ]
+
+#         # Thalamus_Mask_Dilated = dilateMask( PreStageMask, params.WhichExperiment.Dataset.gapDilation )
+#         imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+
+#         BB = smallFuncs.findBoundingBox(PreStageMask)
+#         BB = checkBordersOnBoundingBox(imF.shape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
+#         gapDilation = params.WhichExperiment.Dataset.gapDilation
+#         BBd = [  [BB[ii][0] - gapDilation , BB[ii][1] + gapDilation] for ii in range(len(BB))]
+#         BBd = checkBordersOnBoundingBox(imF.shape , BBd , 0)
+        
+#         if 'train' in mode: dirr += '/TrainData_Output'
+
+#         np.savetxt(dirr + '/' + subject.subjectName + '/BB_' + params.WhichExperiment.Nucleus.name + '.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')
+
 def preMode(UserInfoB):
     UserInfoB = smallFuncs.terminalEntries(UserInfoB)
     params = paramFunc.Run(UserInfoB, terminal=False)   

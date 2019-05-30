@@ -562,15 +562,16 @@ def search_ExperimentDirectory(whichExperiment):
 
         if Read.ReadAugments.Mode and not (modeData == 'test'):
              
-            # def func_readAugments(Input , sdTag2):
             if Read.Main and os.path.exists(DirAug + '/Main' + sdTag2): Input = LoopReadingData(Input, DirAug + '/Main' + sdTag2)
             if Read.ET   and os.path.exists(DirAug + '/ET'   + sdTag2): Input = LoopReadingData(Input, DirAug + '/ET'   + sdTag2)
             if Read.SRI  and os.path.exists(DirAug + '/SRI'  + sdTag2): Input = LoopReadingData(Input, DirAug + '/SRI'  + sdTag2)
             if Read.CSFn and os.path.exists(DirAug + '/CSFn' + sdTag2): Input = LoopReadingData(Input, DirAug + '/CSFn' + sdTag2)
-                # return Input
                              
-            # Input = func_readAugments(Input , sdTag2)                
-
+             
+            if Read.Main and os.path.exists(Dir + '/Main/Augments' + sdTag2): Input = LoopReadingData(Input, Dir + '/Main/Augments' + sdTag2)
+            if Read.ET   and os.path.exists(Dir + '/ET/Augments'   + sdTag2): Input = LoopReadingData(Input, Dir + '/ET/Augments'   + sdTag2)
+            if Read.SRI  and os.path.exists(Dir + '/SRI/Augments'  + sdTag2): Input = LoopReadingData(Input, Dir + '/SRI/Augments'  + sdTag2)
+            if Read.CSFn and os.path.exists(Dir + '/CSFn/Augments' + sdTag2): Input = LoopReadingData(Input, Dir + '/CSFn/Augments' + sdTag2)
 
         return Input
 
