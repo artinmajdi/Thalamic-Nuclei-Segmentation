@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(__file__))  # sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 import otherFuncs.smallFuncs as smallFuncs
-import otherFuncs.datasets as datasets
+from otherFuncs import datasets
 import modelFuncs.choosingModel as choosingModel
 import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
@@ -93,7 +93,7 @@ def Run(UserInfoB,InitValues):
                     def loop_Subjects(mode):
                         Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
                         for _, subject in tqdm(Subjects.items(), desc='Saving Anterior BoundingBox ' + mode):
-                            
+                            print(subject.subjectName)
                             BashCallingFunctionsA.RigidRegistration_2AV( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
                             croppingA.crop_AV(subject , params)
 
@@ -122,10 +122,6 @@ def Run(UserInfoB,InitValues):
     elif UserInfoB['Model_Method'] == 'singleRun': Run_SingleNuclei(UserInfoB)
     else: Loop_All_Nuclei(UserInfoB)
      
-
-
-
-
 def preMode(UserInfoB):
     UserInfoB = smallFuncs.terminalEntries(UserInfoB)
     params = paramFunc.Run(UserInfoB, terminal=False)   

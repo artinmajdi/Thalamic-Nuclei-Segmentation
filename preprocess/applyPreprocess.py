@@ -1,7 +1,8 @@
-# import os, sys
-# sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+import os, sys
+sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 import otherFuncs.smallFuncs as smallFuncs
 from preprocess import augmentA, BashCallingFunctionsA, normalizeA, croppingA
+from preprocess import Extra_AV_Crop # create_AV_Mask
 
 # TODO  check 3T 7T dimension and interpolation
 # TODO check image format and convert to nifti
@@ -34,16 +35,15 @@ def apply_On_Individual(params,Info):
     if 1: print( '(' + str(Info.ind) + '/'+str(Info.Length) + ')' , Info.mode, Info.subjectName)
 
     BashCallingFunctionsA.BiasCorrection( subject , params)
-
     
     if ('Aug' not in Info.subjectName) and ('CSFn' not in Info.subjectName): 
         BashCallingFunctionsA.RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
         
         croppingA.main(subject , params)
 
-
-    BashCallingFunctionsA.RigidRegistration_2AV( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
-    croppingA.crop_AV(subject , params)
+    Extra_AV_Crop.main(dir_in=subject.address, dir_template=params.WhichExperiment.HardParams.Template.Address)
+    # BashCallingFunctionsA.RigidRegistration_2AV( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
+    # croppingA.crop_AV(subject , params)
 
     return params
 

@@ -13,18 +13,21 @@ class UserEntry():
     def __init__(self):
         self.dir_in  = ''
         self.dir_out = ''
+        self.dir_mask = ''
         self.mode    = 0
 
         for en in range(len(sys.argv)):
             if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = sys.argv[en+1]
             elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = sys.argv[en+1]
+            elif sys.argv[en].lower() in ('-msk','--mask'): self.dir_mask = sys.argv[en+1]
             elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = int(sys.argv[en+1])
             
 class uncrop_cls():
-    def __init__(self, dir_in = '' , dir_out = '' , maskCrop=''):
+    def __init__(self, dir_in = '' , dir_out = '' , dir_mask = '' , maskCrop=''):
 
         self.dir_in  = dir_in
         self.dir_out = dir_out
+        self.dir_mask = dir_mask
         self.maskCrop = maskCrop
 
     def apply_uncrop(self):
@@ -42,7 +45,8 @@ class uncrop_cls():
         for label in smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names:
             input_image  = self.dir_in  + '/Label/' + label    + '.nii.gz'
             output_image = self.dir_out + '/Label/' + label    + '.nii.gz'
-            full_mask    = self.dir_in  + '/Label/' + self.maskCrop + '.nii.gz'
+            full_mask = self.dir_in  + '/Label/' + self.maskCrop + '.nii.gz' 
+
             uncrop.uncrop_by_mask(input_image=input_image, output_image=output_image , full_mask=full_mask)     
 
     def uncrop_All(self):
@@ -53,13 +57,18 @@ class uncrop_cls():
             temp = uncrop_cls(dir_in=dir_in , dir_out=dir_out , maskCrop=self.maskCrop)
             temp.apply_uncrop()
 
+    def apply_individual(self):
+        uncrop.uncrop_by_mask(input_image=self.dir_in, output_image=self.dir_out , full_mask=self.dir_mask) 
+
 
 
 UI = UserEntry()
-UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step1_registered_labels_croppedInput'
-UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step2_uncropped'
-UI.mode    = 1
+# UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step1_registered_labels_croppedInput'
+# UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step2_uncropped'
+# UI.mode    = 1
 if UI.mode == 0: 
-    uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out , maskCrop='mask_t1').apply_uncrop()
-else:            
-    uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out , maskCrop='mask_t1').uncrop_All()
+    uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out, dir_mask = '' , maskCrop='mask_t1').apply_uncrop()
+elif UI.mode == 1:            
+    uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out, dir_mask = '' , maskCrop='mask_t1').uncrop_All()
+elif UI.mode == 2:
+    uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out, dir_mask = UI.dir_mask , maskCrop='').apply_individual()

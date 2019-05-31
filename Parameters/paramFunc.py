@@ -5,7 +5,7 @@ import modelFuncs.Metrics as Metrics
 import modelFuncs.Optimizers as Optimizers
 # from Parameters import Classes
 import otherFuncs.smallFuncs as smallFuncs
-import otherFuncs.datasets as datasets
+from otherFuncs import datasets
 import pickle
 from copy import deepcopy
 import pandas as pd

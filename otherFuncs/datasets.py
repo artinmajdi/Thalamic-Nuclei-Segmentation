@@ -1,7 +1,7 @@
 import numpy as np
-from imageio import imread
+# from imageio import imread
 from random import shuffle
-from tqdm import tqdm, trange
+from tqdm import tqdm # , trange
 import nibabel as nib
 import shutil
 import os, sys
@@ -9,13 +9,13 @@ import os, sys
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 import otherFuncs.smallFuncs as smallFuncs
 import preprocess.normalizeA as normalizeA
-import preprocess.applyPreprocess as applyPreprocess
-import matplotlib.pyplot as plt
+from preprocess import applyPreprocess
+# import matplotlib.pyplot as plt
 from scipy import ndimage
-from shutil import copyfile
+# from shutil import copyfile
 import h5py
-import pickle
-import skimage
+# import pickle
+# import skimage
 
 def ClassesFunc():
     class ImageLabel:

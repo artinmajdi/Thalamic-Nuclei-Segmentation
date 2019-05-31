@@ -4,19 +4,19 @@ import os
 
 
 
-def imShow(*args):
-    _, axes = plt.subplots(len(args))
-    for ax, im in enumerate(args):
-        axes[ax].imshow(im[...,ax],cmap='gray')
+# def imShow(*args):
+#     _, axes = plt.subplots(len(args))
+#     for ax, im in enumerate(args):
+#         axes[ax].imshow(im[...,ax],cmap='gray')
 
-    plt.show()
+#     plt.show()
 
-    return True
+#     return True
 
-os.getcwd()
-dir = '/array/ssd/msmajdi/code/general/RigidRegistration/'
+# os.getcwd()
+# dir = '/array/ssd/msmajdi/code/general/RigidRegistration/'
 
-im = nib.load(dir + 'origtemplate.nii.gz').get_data()
-msk = nib.load(dir + 'MyCrop_Template2_Gap20.nii.gz').get_data()
+# im = nib.load(dir + 'origtemplate.nii.gz').get_data()
+# msk = nib.load(dir + 'MyCrop_Template2_Gap20.nii.gz').get_data()
 
-cropMask
+# cropMask
