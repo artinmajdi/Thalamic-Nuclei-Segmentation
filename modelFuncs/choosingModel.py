@@ -457,7 +457,7 @@ def architecture(ModelParam):
                 conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(WBp)
                 conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(conv)
 
-                if np.min(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) > 30: 
+                if 1: # np.min(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) > 30: 
                     pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)  
                     if DT.Mode and trainable: pool = KLayers.Dropout(DT.Value)(pool)  
                 else: 
@@ -481,7 +481,7 @@ def architecture(ModelParam):
 
                 if LP.batchNormalization:  WBp = KLayers.BatchNormalization()(WBp)
 
-                if np.min(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) > 30: 
+                if 1: #  np.min(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) > 30: 
                     WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2,2), padding=padding, activation=AC.layers, trainable=trainable)(WBp)
 
                 UP = KLayers.merge.concatenate( [WBp, contracting_Info[nL+1]] , axis=3)
@@ -501,7 +501,7 @@ def architecture(ModelParam):
             trainable = False if TF.Mode and nL in TF.FrozenLayers else True
             featureMaps = FM*(2**nL)
 
-            if LP.batchNormalization: WB = KLayers.BatchNormalization()(WB)  
+            # if LP.batchNormalization: WB = KLayers.BatchNormalization()(WB)  
             WB = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(WB)
             WB = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(WB)
             
