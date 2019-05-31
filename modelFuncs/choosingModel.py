@@ -325,16 +325,26 @@ def trainingExperiment(Data, params):
 
                 return hist
 
-            if params.WhichExperiment.HardParams.Model.DataGenerator.Mode: hist = func_RunGenerator()
-            else:
-                # keras.backend.set_session(tf_debug.TensorBoardDebugWrapperSession(tf.Session(), "engr-bilgin01s:6064"))    
-                classes = np.unique(Data.Train.Mask)
-                y_train = np.reshape(Data.Train.Mask[...,0],[-1])
-                class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
-                if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])
-                else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
+            def func_without_Generator():
+                # keras.backend.set_session(tf_debug.TensorBoardDebugWrapperSession(tf.Session(), "engr-bilgin01s:6064"))   
+                if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode:
+                    classes = np.unique(Data.Train.Mask)
+                    y_train = np.reshape(Data.Train.Mask[...,0],[-1])
+                    class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
+                    if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])
+                    else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
+                
+                else:
+                    if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])
+                    else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
 
                 if ModelParam.showHistory: print(hist.history)
+
+                return hist
+
+            if params.WhichExperiment.HardParams.Model.DataGenerator.Mode: hist = func_RunGenerator()
+            else: hist = func_without_Generator()
+
 
             return model, hist                         
         model, hist = modelFit(model)
@@ -419,6 +429,7 @@ def save_BoundingBox_Hierarchy(params, PRED):
         loop_Subjects_Sagittal(PRED.Sagittal_Test, 'test')
         loop_Subjects_Sagittal(PRED.Sagittal_Train, 'train')        
 
+
 def architecture(ModelParam):
 
     # ModelParam = params.WhichExperiment.HardParams.Model
@@ -445,8 +456,16 @@ def architecture(ModelParam):
                 if LP.batchNormalization:  WBp = KLayers.BatchNormalization()(WBp)
                 conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(WBp)
                 conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(conv)
-                pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)
-                if DT.Mode and trainable: pool = KLayers.Dropout(DT.Value)(pool)
+
+                if np.min(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) > 30: 
+                    pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)  
+                    if DT.Mode and trainable: pool = KLayers.Dropout(DT.Value)(pool)  
+                else: 
+                    if DT.Mode and trainable: pool = KLayers.Dropout(DT.Value)(conv)  
+                
+                              
+                # if LP.batchNormalization:  pool = KLayers.BatchNormalization()(pool)
+                
                 return pool, conv
             
             for nL in range(NLayers -1):  
@@ -461,10 +480,15 @@ def architecture(ModelParam):
                 featureMaps = FM*(2**nL)
 
                 if LP.batchNormalization:  WBp = KLayers.BatchNormalization()(WBp)
-                UP = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2,2), padding=padding, activation=AC.layers, trainable=trainable)(WBp)
-                UP = KLayers.merge.concatenate( [UP, contracting_Info[nL+1]] , axis=3)
+
+                if np.min(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) > 30: 
+                    WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2,2), padding=padding, activation=AC.layers, trainable=trainable)(WBp)
+
+                UP = KLayers.merge.concatenate( [WBp, contracting_Info[nL+1]] , axis=3)
                 conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(UP)
                 conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(conv)
+                
+                # if LP.batchNormalization:  conv = KLayers.BatchNormalization()(conv)                                    
                 if DT.Mode and trainable: conv = KLayers.Dropout(DT.Value)(conv)
                 return conv
 
@@ -477,12 +501,16 @@ def architecture(ModelParam):
             trainable = False if TF.Mode and nL in TF.FrozenLayers else True
             featureMaps = FM*(2**nL)
 
+            if LP.batchNormalization: WB = KLayers.BatchNormalization()(WB)  
             WB = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(WB)
             WB = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(WB)
+            
+            # if LP.batchNormalization: WB = KLayers.BatchNormalization()(WB)            
             if DT.Mode and trainable: WB = KLayers.Dropout(DT.Value)(WB)
             return WB
                 
         inputs = KLayers.Input(input_shape)
+        # if LP.batchNormalization:  inputs = KLayers.BatchNormalization()(inputs)
         # for nL in range(NLayers -1):  
         #     if nL == 0: WB, Conv_Out = inputs , {}
         #     WB, Conv_Out[nL+1] = Unet_sublayer_Contracting(WB, nL)

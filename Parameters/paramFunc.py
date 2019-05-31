@@ -539,14 +539,15 @@ def func_WhichExperiment(UserInfo):
             if ModelIdea == 'HCascade':
 
                 Name, Indexes = {}, {}
-                for i in [1.1, 1.2, 1.3]:
+                for i in [1.1, 1.2, 1.3, 1.4]:
                     Name[i], Indexes[i], _ = smallFuncs.NucleiSelection(ind=i)
 
-                for ixf in tuple(fullIndexes) + tuple([1.1, 1.2, 1.3]):
+                for ixf in tuple(fullIndexes) + tuple([1.1, 1.2, 1.3, 1.4]):
 
                     if ixf in Indexes[1.1]: referenceLabel[ixf] = Name[1.1]
                     elif ixf in Indexes[1.2]: referenceLabel[ixf] = Name[1.2]
                     elif ixf in Indexes[1.3]: referenceLabel[ixf] = Name[1.3]
+                    elif ixf in Indexes[1.4]: referenceLabel[ixf] = Name[1.4]
                     elif ixf == 1: referenceLabel[ixf] = 'None'
                     else: referenceLabel[ixf] = '1-THALAMUS'
 

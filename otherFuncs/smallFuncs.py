@@ -116,12 +116,14 @@ class Nuclei_Class():
             def parent_child(index):
                 if self.method == 'HCascade':
                     switcher_Parent = {
-                        1:   (None, [1.1 , 1.2 , 1.3 , 2]),
+                        # 1:   (None, [1.1 , 1.2 , 1.3 , 2]),
+                        1:   (None, [1.1 , 1.2 , 1.3 , 1.4]),
                         1.1: (1,    [4,5,6,7]),   # Lateral
                         1.2: (1,    [8,9,10]),    # Posterior
-                        1.3: (1,    [11,12,13]),  # Medial
-                        1.4: (1,     None),       # Anterior
-                        2:   (1,     None) }              
+                        1.3: (1,    [11,12,13]),  # Medial                       
+                        1.4: (1,     [2])}       # Anterior
+                        # 1.4: (1,     [None]),       # Anterior                        
+                        # 2:   (1,     None) }              
                     return switcher_Parent.get(index)
                 else:
                     return ( None, [2,4,5,6,7,8,9,10,11,12,13,14] ) if index == 1 else (1,None)                               
@@ -140,7 +142,7 @@ class Nuclei_Class():
         find_Parent_child(self)
         
     def All_Nuclei(self):
-        if self.method == 'HCascade': indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14]) + tuple([1.1,1.2,1.3])
+        if self.method == 'HCascade': indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14]) + tuple([1.1,1.2,1.3,1.4])
         else:                         indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14])
 
         class All_Nuclei:
@@ -390,7 +392,9 @@ def search_ExperimentDirectory(whichExperiment):
 
     def checkInputDirectory(Dir, NucleusName, sag_In_Cor,modeData):
         
-        sdTag2 = '/sd0' if sag_In_Cor else sdTag
+        # sdTag2 = '/sd0' if sag_In_Cor else sdTag
+        sdTag2 = '/sd'
+
         Read   = whichExperiment.Dataset.ReadTrain
         DirAug = Dir + '/Augments/' + Read.ReadAugments.Tag
         Dir_CV = whichExperiment.Experiment.address + '/crossVal'
@@ -561,7 +565,7 @@ def search_ExperimentDirectory(whichExperiment):
 
 
         if Read.ReadAugments.Mode and not (modeData == 'test'):
-             
+            
             if Read.Main and os.path.exists(DirAug + '/Main' + sdTag2): Input = LoopReadingData(Input, DirAug + '/Main' + sdTag2)
             if Read.ET   and os.path.exists(DirAug + '/ET'   + sdTag2): Input = LoopReadingData(Input, DirAug + '/ET'   + sdTag2)
             if Read.SRI  and os.path.exists(DirAug + '/SRI'  + sdTag2): Input = LoopReadingData(Input, DirAug + '/SRI'  + sdTag2)

@@ -1,6 +1,6 @@
 
 
-Model_Method =   'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' # 
+Model_Method =   'HCascade' #'mUnet' #' FCN_25D' #  'HCascade' # 
 
 # Main = 7T (Ctrl&MS)
 # ET   = ET(7T + 3T)
@@ -17,7 +17,7 @@ Model_Method =   'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 11 # Main + 3T  Init 3T + no schedular 
 # TypeExperiment == 12 # CSFn  Init 3T
 # TypeExperiment == 13 # ET Init non-ET 3T & 7T
-TypeExperiment = 2
+TypeExperiment = 1
 
 class CrossVal:
     Mode = True
@@ -31,7 +31,7 @@ DropoutValue = 0.3
 
 class SubExperiment:
     Index = 12
-    Tag   = '' # '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
+    Tag   = '_FCN' # '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
     Mode_JustThis = False
   
 class InitializeB:
@@ -42,13 +42,13 @@ class InitializeB:
 
 class simulation:
     TestOnly      = False
-    epochs        = 100
+    epochs        = 150
     GPU_Index     = "0"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
-    nucleus_Index = [1] # ,2,4]
-    slicingDim    = [2] #[2,1,0]
+    nucleus_Index = [2] # ,2,4]
+    slicingDim    = [1] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20
@@ -56,7 +56,7 @@ class simulation:
     Multiply_By_Thalmaus = False
     Multiply_By_Rest_For_AV = False
 
-    Weighted_Class_Mode = False
+    Weighted_Class_Mode = True
     Initialize = InitializeB()
     save_Best_Epoch_Model = True
     Use_Coronal_Thalamus_InSagittal = True

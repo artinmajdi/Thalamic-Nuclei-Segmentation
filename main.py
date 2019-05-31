@@ -16,6 +16,10 @@ import numpy as np
 # import json
 import nibabel as nib
 # from shutil import copyfile , copytree
+from tqdm import tqdm
+from preprocess import BashCallingFunctionsA, croppingA
+
+
 
 class InitValues:
     def __init__(self, Nuclei_Indexes=1 , slicingDim=2):
@@ -66,13 +70,40 @@ def Run(UserInfoB,InitValues):
             print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
             print('---------------------------------------------------------------')
 
-            # if not(UserInfoB['simulation'].nucleus_Index == 1.4):
-            Data, params = datasets.loadDataset(params) 
-            print(Data.Train.Image.shape)               
-            choosingModel.check_Run(params, Data)              
-            K.clear_session()
-            # else:
-            #     save_Anteior_BBox()
+            if not(UserInfoB['simulation'].nucleus_Index == 1.4):
+                Data, params = datasets.loadDataset(params) 
+                print(Data.Train.Image.shape)               
+                choosingModel.check_Run(params, Data)              
+                K.clear_session()
+            else:
+                def save_Anteior_BBox(params):
+                    def cropBoundingBoxes(mode, subject):
+
+                        msk = nib.load(subject.Temp.address + '/CropMask_AV.nii.gz')
+
+                        BB = smallFuncs.findBoundingBox(msk.get_data())
+                        BBd = [  [BB[ii][0] , BB[ii][1]] for ii in range(len(BB))]
+                        
+                        dirr = params.directories.Test.Result
+                        if 'train' in mode: dirr += '/TrainData_Output'
+                        
+                        smallFuncs.mkDir(dirr + '/' + subject.subjectName)
+                        np.savetxt(dirr + '/' + subject.subjectName + '/BB_' + params.WhichExperiment.Nucleus.name + '.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')
+
+                    def loop_Subjects(mode):
+                        Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
+                        for _, subject in tqdm(Subjects.items(), desc='Saving Anterior BoundingBox ' + mode):
+                            
+                            BashCallingFunctionsA.RigidRegistration_2AV( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
+                            croppingA.crop_AV(subject , params)
+
+                            cropBoundingBoxes(mode, subject)
+
+                    
+                    loop_Subjects('train')
+                    loop_Subjects('test')
+                                    
+                save_Anteior_BBox(params)
                     
         for sd in InitValues.slicingDim:            
             if not (sd == 0 and UserInfoB['simulation'].nucleus_Index == 1):
@@ -91,24 +122,9 @@ def Run(UserInfoB,InitValues):
     elif UserInfoB['Model_Method'] == 'singleRun': Run_SingleNuclei(UserInfoB)
     else: Loop_All_Nuclei(UserInfoB)
      
-# def save_Anteior_BBox():
-#     def cropBoundingBoxes(PreStageMask, dirr):
 
-#         def checkBordersOnBoundingBox(Sz , BB , gapS):
-#             return [   [   np.max([BB[d][0]-gapS,0])  ,   np.min( [BB[d][1]+gapS,Sz[d]])   ]  for d in range(3) ]
 
-#         # Thalamus_Mask_Dilated = dilateMask( PreStageMask, params.WhichExperiment.Dataset.gapDilation )
-#         imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
 
-#         BB = smallFuncs.findBoundingBox(PreStageMask)
-#         BB = checkBordersOnBoundingBox(imF.shape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
-#         gapDilation = params.WhichExperiment.Dataset.gapDilation
-#         BBd = [  [BB[ii][0] - gapDilation , BB[ii][1] + gapDilation] for ii in range(len(BB))]
-#         BBd = checkBordersOnBoundingBox(imF.shape , BBd , 0)
-        
-#         if 'train' in mode: dirr += '/TrainData_Output'
-
-#         np.savetxt(dirr + '/' + subject.subjectName + '/BB_' + params.WhichExperiment.Nucleus.name + '.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')
 
 def preMode(UserInfoB):
     UserInfoB = smallFuncs.terminalEntries(UserInfoB)
