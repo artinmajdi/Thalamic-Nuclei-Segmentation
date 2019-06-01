@@ -8,13 +8,7 @@ from skimage.measure import regionprops, label
 import Parameters.UserInfo as UserInfo
 from Parameters import paramFunc
 # params = paramFunc.Run(UserInfo.__dict__, terminal=False)
-import nibabel as nib
-
-# def __init__(self):
-if '--check' in sys.argv: 
-    check_if_AV_inside_Crop()
-    print('----')
-        
+import nibabel as nib       
 
 def main(dir_in, dir_template):
     class UserEntry():
@@ -196,3 +190,8 @@ def check_if_AV_inside_Crop():
             # print(np.unique(B))
 
 # check_if_AV_inside_Crop()
+
+
+if '--check' in sys.argv: 
+    check_if_AV_inside_Crop()
+    print('----')
