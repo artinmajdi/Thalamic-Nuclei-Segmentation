@@ -11,7 +11,9 @@ from Parameters import paramFunc
 import nibabel as nib
 
 # def __init__(self):
-if '--check' in sys.argv: check_if_AV_inside_Crop()
+if '--check' in sys.argv: 
+    check_if_AV_inside_Crop()
+    print('----')
         
 
 def main(dir_in, dir_template):
