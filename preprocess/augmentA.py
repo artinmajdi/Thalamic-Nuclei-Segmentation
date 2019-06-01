@@ -114,7 +114,7 @@ def LinearFunc(params, mode):
                 apply_OnImage()
 
                 def loopOver_AllNuclei():
-                    subF = [s for s in os.listdir(subject.Label.address) if '.nii.gz' in s ] # PProcessed' in s]
+                    subF = [s for s in os.listdir(subject.Label.address) if 'PProcessed' in s ] 
                     for NucleusName in subF: 
 
                         # print(NucleusName)
