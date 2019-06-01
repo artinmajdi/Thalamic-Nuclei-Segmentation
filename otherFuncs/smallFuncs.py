@@ -288,9 +288,9 @@ def nibShow(*args):
         a = nib.viewers.OrthoSlicer3D(im)
     a.show()
 
-def fixMaskMinMax(Image):
+def fixMaskMinMax(Image,name):
     if Image.max() > 1 or Image.min() < 0:
-        print('smallFuncs','error in label values', 'min',Image.min() , 'max', Image.max() )
+        print(name, 'error in label values', 'min',Image.min() , 'max', Image.max() )
         Image = np.float32(Image)
         Image = ( Image-Image.min() )/( Image.max() - Image.min() )
         
