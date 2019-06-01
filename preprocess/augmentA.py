@@ -95,34 +95,34 @@ def LinearFunc(params, mode):
 
             return self.Image
 
-    Subjects = params.directories.Train.Input.Subjects
-    SubjectNames = list(Subjects.keys())
+    for Subjects in [params.directories.Train.Input.Subjects , params.directories.Test.Input.Subjects]:
+        SubjectNames = list(Subjects.keys())
 
-    for imInd, nameSubject in enumerate(SubjectNames):
-        subject  = Subjects[nameSubject]
-        for AugIx in range(params.Augment.Linear.Length):
-            linearCls = linearFuncs_Class(params, nameSubject, AugIx , subject)
+        for imInd, nameSubject in enumerate(SubjectNames):
+            subject  = Subjects[nameSubject]
+            for AugIx in range(params.Augment.Linear.Length):
+                linearCls = linearFuncs_Class(params, nameSubject, AugIx , subject)
 
-            print('image',imInd,'/',len(SubjectNames),'augment',AugIx,'/',params.Augment.Linear.Length , nameSubject , \
-                'sd' , params.WhichExperiment.Dataset.slicingInfo.slicingDim , 'angle' , linearCls.InputThreshs.angle)            
+                print('image',imInd,'/',len(SubjectNames),'augment',AugIx,'/',params.Augment.Linear.Length , nameSubject , \
+                    'sd' , params.WhichExperiment.Dataset.slicingInfo.slicingDim , 'angle' , linearCls.InputThreshs.angle)            
 
-            def apply_OnImage():
-                imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image                        
-                Image = linearCls.main( imF.get_data() , 5)
-                smallFuncs.saveImage(Image , imF.affine , imF.header , linearCls.outDirectory.Image + '/' + subject.ImageProcessed + '.nii.gz' )            
-            apply_OnImage()
+                def apply_OnImage():
+                    imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image                        
+                    Image = linearCls.main( imF.get_data() , 5)
+                    smallFuncs.saveImage(Image , imF.affine , imF.header , linearCls.outDirectory.Image + '/' + subject.ImageProcessed + '.nii.gz' )            
+                apply_OnImage()
 
-            def loopOver_AllNuclei():
-                subF = [s for s in os.listdir(subject.Label.address) if 'PProcessed' in s]
-                for NucleusName in subF: 
+                def loopOver_AllNuclei():
+                    subF = [s for s in os.listdir(subject.Label.address) if 'PProcessed' in s]
+                    for NucleusName in subF: 
 
-                    # print(NucleusName)
-                    MaskF = nib.load(subject.Label.address + '/' + NucleusName)
-                    Mask  = smallFuncs.fixMaskMinMax(MaskF.get_data())
+                        # print(NucleusName)
+                        MaskF = nib.load(subject.Label.address + '/' + NucleusName)
+                        Mask  = smallFuncs.fixMaskMinMax(MaskF.get_data())
 
-                    Mask = linearCls.main( Mask , 1)  # applyLinearAugment(Mask.copy(), InputThreshs, 1)
-                    smallFuncs.saveImage(Mask  , MaskF.affine , MaskF.header ,  linearCls.outDirectory.Mask  + '/' + NucleusName  )
-            loopOver_AllNuclei()
+                        Mask = linearCls.main( Mask , 1)  # applyLinearAugment(Mask.copy(), InputThreshs, 1)
+                        smallFuncs.saveImage(Mask  , MaskF.affine , MaskF.header ,  linearCls.outDirectory.Mask  + '/' + NucleusName  )
+                loopOver_AllNuclei()
 
 def NonLinearFunc(Input, Augment, mode):
 
