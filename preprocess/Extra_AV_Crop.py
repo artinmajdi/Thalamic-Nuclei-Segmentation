@@ -10,8 +10,8 @@ from Parameters import paramFunc
 # params = paramFunc.Run(UserInfo.__dict__, terminal=False)
 import nibabel as nib
 
-def __init__(self):
-    if '--check' in sys.argv: check_if_AV_inside_Crop()
+# def __init__(self):
+if '--check' in sys.argv: check_if_AV_inside_Crop()
         
 
 def main(dir_in, dir_template):
