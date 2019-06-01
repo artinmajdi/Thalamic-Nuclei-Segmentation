@@ -230,7 +230,7 @@ def func_Exp_subExp_Names(UserInfo):
         else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag            
         # else: tag = method + '_FM' + str(FM) + SE.Tag 
 
-        if UserInfo['CrossVal'].Mode: tag += '_CV_' + UserInfo['CrossVal'].index[0]
+        if UserInfo['CrossVal'].Mode and 'sE8' not in tag: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
         print(A.name_Init_from_7T)
         return A
