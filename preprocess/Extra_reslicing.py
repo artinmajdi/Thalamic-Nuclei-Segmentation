@@ -17,7 +17,7 @@ class UserEntry():
         for en in range(len(sys.argv)):
             if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = os.getcwd() + '/' + sys.argv[en+1]
             elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.getcwd() + '/' + sys.argv[en+1]
-            elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = int(sys.argv[en+1])                     
+            elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = sys.argv[en+1]
             
         print(self.dir_in)
         print(self.dir_out)
@@ -114,5 +114,5 @@ UI = UserEntry()
 # UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/pre-steps/CSFn/full_Image/ET/step1_resliced'
 # UI.mode = 1
 
-if UI.mode == 0: reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).apply_reslice()
-else:            reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).reslice_all()
+if UI.mode == 'all': reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).reslice_all()
+else: reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).apply_reslice()
