@@ -56,6 +56,7 @@ def LinearFunc(params, mode):
             class outDirectory:
                 Image = smallFuncs.mkDir( self.params.directories.Train.Input.address + '/' + sd + '/' + self.nameSubject2 + '_' + sd)
                 Mask = smallFuncs.mkDir( self.params.directories.Train.Input.address + '/' + sd + '/' + self.nameSubject2 + '_' + sd + '/Label')
+                Temp = smallFuncs.mkDir( self.params.directories.Train.Input.address + '/' + sd + '/' + self.nameSubject2 + '_' + sd + '/temp')
             self.outDirectory = outDirectory()
 
             smallFuncs.mkDir(self.outDirectory.Image + '/temp/')
@@ -123,6 +124,17 @@ def LinearFunc(params, mode):
                         Mask = linearCls.main( Mask , 1)  # applyLinearAugment(Mask.copy(), InputThreshs, 1)
                         smallFuncs.saveImage(Mask  , MaskF.affine , MaskF.header ,  linearCls.outDirectory.Mask  + '/' + NucleusName  )
                 loopOver_AllNuclei()
+            
+                def loopOver_Extra_Crops():
+                    subF = [s for s in os.listdir(subject.Temp.address) if '.nii.gz' in s]
+                    for cropName in subF: 
+
+                        # print(cropName)
+                        MaskF = nib.load(subject.Temp.address + '/' + cropName)
+
+                        Mask = linearCls.main( MaskF.get_data() , 1) 
+                        smallFuncs.saveImage(Mask  , MaskF.affine , MaskF.header ,  linearCls.outDirectory.Temp  + '/' + cropName  )
+                loopOver_Extra_Crops()                    
 
 def NonLinearFunc(Input, Augment, mode):
 
