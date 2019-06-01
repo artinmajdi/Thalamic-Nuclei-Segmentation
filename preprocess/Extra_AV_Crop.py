@@ -10,6 +10,10 @@ from Parameters import paramFunc
 # params = paramFunc.Run(UserInfo.__dict__, terminal=False)
 import nibabel as nib
 
+def __init__(self):
+    if '--check' in sys.argv: check_if_AV_inside_Crop()
+        
+
 def main(dir_in, dir_template):
     class UserEntry():
         def __init__(self, dir_in  = '' , dir_template='/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration', mode=0):
