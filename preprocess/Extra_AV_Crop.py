@@ -167,7 +167,8 @@ def check_if_AV_inside_Crop():
 
         return d
 
-    dir = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/ET/d/'
+    UE = UserEntry()
+    dir = UE.dir_in #  '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/ET/d/'
     for subject in [s for s in os.listdir(dir) if 'vimp' in s]:
         
         # subject = Subjects[list(Subjects)[0]]    
