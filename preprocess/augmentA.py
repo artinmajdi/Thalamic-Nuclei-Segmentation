@@ -119,7 +119,9 @@ def LinearFunc(params, mode):
 
                         # print(NucleusName)
                         MaskF = nib.load(subject.Label.address + '/' + NucleusName)
-                        Mask  = smallFuncs.fixMaskMinMax(MaskF.get_data(),NucleusName)
+                        Mask = MaskF.get_data()
+
+                        if 'DifferentLabels' not in NucleusName: Mask = smallFuncs.fixMaskMinMax(Mask,NucleusName)
 
                         Mask = linearCls.main( Mask , 1)  # applyLinearAugment(Mask.copy(), InputThreshs, 1)
                         smallFuncs.saveImage(Mask  , MaskF.affine , MaskF.header ,  linearCls.outDirectory.Mask  + '/' + NucleusName  )
