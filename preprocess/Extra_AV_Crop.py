@@ -153,7 +153,8 @@ def check_if_AV_inside_Crop():
             self.mode = mode
 
             for en in range(len(sys.argv)):
-                if sys.argv[en].lower() in ('-i','--input'):  self.dir_in = os.getcwd() + '/' + sys.argv[en+1]
+                if sys.argv[en].lower() in ('-i','--input'):  
+                    self.dir_in = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd/' not in sys.argv[en+1] else sys.argv[en+1]
                 elif sys.argv[en].lower() in ('-m','--mode'): self.mode   = int(sys.argv[en+1])
 
 
