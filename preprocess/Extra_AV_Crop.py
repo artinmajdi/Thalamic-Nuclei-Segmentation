@@ -187,4 +187,4 @@ def check_if_AV_inside_Crop():
             # B = mskAV*(1-cropAV>0.5)
             # print(np.unique(B))
 
-check_if_AV_inside_Crop()
+# check_if_AV_inside_Crop()
