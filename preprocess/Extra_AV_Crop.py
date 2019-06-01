@@ -39,7 +39,7 @@ def main(dir_in, dir_template):
             outMask = self.dir_in + '/temp/CropMask_AV.nii.gz'  
             LinearAffine = self.dir_in + '/temp/deformation/linearAffine.txt'
 
-            if os.path.isfile(LinearAffine): #  and not os.path.isfile(outMask): 
+            if os.path.isfile(LinearAffine) and not os.path.isfile(outMask): 
                 os.system("WarpImageMultiTransform 3 %s %s -R %s %s"%(inMask , outMask , Image , LinearAffine) )
             elif not os.path.isfile(LinearAffine): 
                 print('Registration is required', self.dir_in)
