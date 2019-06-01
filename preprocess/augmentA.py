@@ -114,14 +114,14 @@ def LinearFunc(params, mode):
                 apply_OnImage()
 
                 def loopOver_AllNuclei():
-                    subF = [s for s in os.listdir(subject.Label.address) if 'PProcessed' in s]
+                    subF = [s for s in os.listdir(subject.Label.address) if '.nii.gz' in s ] # PProcessed' in s]
                     for NucleusName in subF: 
 
                         # print(NucleusName)
                         MaskF = nib.load(subject.Label.address + '/' + NucleusName)
                         Mask = MaskF.get_data()
 
-                        if 'DifferentLabels' not in NucleusName: Mask = smallFuncs.fixMaskMinMax(Mask,NucleusName)
+                        if 'Labels' not in NucleusName: Mask = smallFuncs.fixMaskMinMax(Mask,NucleusName)
 
                         Mask = linearCls.main( Mask , 1)  # applyLinearAugment(Mask.copy(), InputThreshs, 1)
                         smallFuncs.saveImage(Mask  , MaskF.affine , MaskF.header ,  linearCls.outDirectory.Mask  + '/' + NucleusName  )
