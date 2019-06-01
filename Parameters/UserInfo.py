@@ -17,7 +17,7 @@ Model_Method =   'HCascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 11 # Main + 3T  Init 3T + no schedular 
 # TypeExperiment == 12 # CSFn  Init 3T
 # TypeExperiment == 13 # ET Init non-ET 3T & 7T
-TypeExperiment = 2
+TypeExperiment = 3
 
 class CrossVal:
     Mode = True
