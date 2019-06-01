@@ -28,7 +28,7 @@ class nucleus:
 def saveImageDice(InfoSave, ManualLabel):
     smallFuncs.saveImage( InfoSave.Image , ManualLabel.affine, ManualLabel.header, InfoSave.address  + InfoSave.nucleus.name + '.nii.gz')
     
-    Label = smallFuncs.fixMaskMinMax(ManualLabel.get_data()) > 0.5
+    Label = smallFuncs.fixMaskMinMax(ManualLabel.get_data(),'ML') > 0.5
 
     Dice = np.zeros((1,2))
     Dice[0,0] , Dice[0,1] = InfoSave.nucleus.index , smallFuncs.mDice(InfoSave.Image  , Label)
