@@ -290,7 +290,7 @@ def nibShow(*args):
 
 def fixMaskMinMax(Image,name):
     if Image.max() > 1 or Image.min() < 0:
-        print(name, 'error in label values', 'min',Image.min() , 'max', Image.max() )
+        print(name.split('PProcessed')[0], '         Error in label values', 'min',Image.min() , 'max', Image.max() )
         Image = np.float32(Image)
         Image = ( Image-Image.min() )/( Image.max() - Image.min() )
         
