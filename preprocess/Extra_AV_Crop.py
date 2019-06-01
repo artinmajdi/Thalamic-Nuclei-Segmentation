@@ -6,8 +6,8 @@ import otherFuncs.smallFuncs as smallFuncs
 from shutil import copyfile
 from skimage.measure import regionprops, label
 import Parameters.UserInfo as UserInfo
-import Parameters.paramFunc as paramFunc
-params = paramFunc.Run(UserInfo.__dict__, terminal=False)
+from Parameters import paramFunc
+# params = paramFunc.Run(UserInfo.__dict__, terminal=False)
 import nibabel as nib
 
 def main(dir_in, dir_template):
@@ -39,7 +39,7 @@ def main(dir_in, dir_template):
             outMask = self.dir_in + '/temp/CropMask_AV.nii.gz'  
             LinearAffine = self.dir_in + '/temp/deformation/linearAffine.txt'
 
-            if os.path.isfile(LinearAffine) and not os.path.isfile(outMask): 
+            if os.path.isfile(LinearAffine): #  and not os.path.isfile(outMask): 
                 os.system("WarpImageMultiTransform 3 %s %s -R %s %s"%(inMask , outMask , Image , LinearAffine) )
             elif not os.path.isfile(LinearAffine): 
                 print('Registration is required', self.dir_in)
@@ -79,10 +79,10 @@ def main(dir_in, dir_template):
     if UI.mode == 0: AV_crop_cls(dir_in = UI.dir_in , dir_template = UI.dir_template).apply_Warp()
     else:            AV_crop_cls(dir_in = UI.dir_in , dir_template = UI.dir_template).warp_all()
 
-def finding_Crop_AV_Dims():
+def save_Crop_AV():
 
     dir_template='/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration'
-    dir = '/array/ssd/msmajdi/experiments/keras/exp6/train/Main/temp/AV_Masks/'
+    dir = dir_template + '/AV_Masks/'
 
     subjects = [s for s in os.listdir(dir) if 'vimp2' in s]
 
@@ -98,17 +98,19 @@ def finding_Crop_AV_Dims():
     D = [int(i) for i in D]
 
     im = nib.load(dir_template + '/cropped_origtemplate.nii.gz')
-    msk1 = msk2 = msk3 = np.zeros(im.shape)
+    msk1 = np.zeros(im.shape)
 
-    msk1[D[0]:D[3],D[1]:D[4],D[2]:D[5]] = 1
+    g = 3
+    msk1[D[0]-g:D[3]+g,D[1]-g:D[4]+g,D[2]-g:D[5]+g] = 1
 
     smallFuncs.saveImage(msk1,im.affine, im.header , dir_template+'/CropMask_AV.nii.gz')
 
-# finding_Crop_AV_Dims()
+    os.system("uncrop -i CropMask_AV.nii.gz -o Mask_AV2.nii.gz -msk CropMaskV3.nii.gz -m 2")
 
+# save_Crop_AV()
+
+"""
 def check_if_AV_inside_Crop():
-
-
 
     def cropImage_FromCoordinates(CropMask , Gap): 
         BBCord = smallFuncs.findBoundingBox(CropMask>0.5)
@@ -141,5 +143,48 @@ def check_if_AV_inside_Crop():
             print(subject.subjectName  , 'zero mask')
             # B = mskAV*(1-cropAV>0.5)
             # print(np.unique(B))
+"""
 
-# check_if_AV_inside_Crop()
+def check_if_AV_inside_Crop():
+
+    class UserEntry():
+        def __init__(self, dir_in  = '' , mode=1):
+            self.dir_in       = dir_in
+            self.mode = mode
+
+            for en in range(len(sys.argv)):
+                if sys.argv[en].lower() in ('-i','--input'):  self.dir_in = os.getcwd() + '/' + sys.argv[en+1]
+                elif sys.argv[en].lower() in ('-m','--mode'): self.mode   = int(sys.argv[en+1])
+
+
+    def cropImage_FromCoordinates(CropMask , Gap): 
+        BBCord = smallFuncs.findBoundingBox(CropMask>0.5)
+
+        d = np.zeros((3,2),dtype=np.int)
+        for ix in range(len(BBCord)):
+            d[ix,:] = [  BBCord[ix][0]-Gap[ix] , BBCord[ix][-1]+Gap[ix]  ]
+            d[ix,:] = [  max(d[ix,0],0)    , min(d[ix,1],CropMask.shape[ix])  ]
+
+        return d
+
+    dir = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/Main/b/'
+    for subject in [s for s in os.listdir(dir) if 'vimp' in s]:
+        
+        # subject = Subjects[list(Subjects)[0]]    
+        cropAV = nib.load(dir + subject + '/temp/CropMask_AV.nii.gz').get_data()
+        mskAV  = nib.load(dir + subject + '/Label/2-AV_PProcessed.nii.gz').get_data()
+        
+        if np.sum(cropAV) > 0:
+            d = cropImage_FromCoordinates(cropAV , [0,0,0])  
+
+            mskAV_Crp = nib.load(dir + subject + '/Label/2-AV_PProcessed.nii.gz').slicer[ d[0,0]:d[0,1], d[1,0]:d[1,1], d[2,0]:d[2,1] ]            
+            
+            a = np.sum(mskAV_Crp.get_data()) / np.sum(mskAV)
+            flag = 'Correct' if np.abs(1-a) < 0.001 else 'Clipped ' + str(a)
+            print(subject  , '------- <' , flag , '>---')
+        else:
+            print(subject  , 'zero mask')
+            # B = mskAV*(1-cropAV>0.5)
+            # print(np.unique(B))
+
+check_if_AV_inside_Crop()

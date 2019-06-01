@@ -17,7 +17,7 @@ Model_Method =   'HCascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 11 # Main + 3T  Init 3T + no schedular 
 # TypeExperiment == 12 # CSFn  Init 3T
 # TypeExperiment == 13 # ET Init non-ET 3T & 7T
-TypeExperiment = 2
+TypeExperiment = 1
 
 class CrossVal:
     Mode = True
@@ -43,7 +43,7 @@ class InitializeB:
 class simulation:
     TestOnly      = False
     epochs        = 150
-    GPU_Index     = "0"
+    GPU_Index     = "1"
     Learning_Rate = 1e-3
     num_Layers    = 3
     NormalizaeMethod = 'MinMax' #  '1Std0Mean' #

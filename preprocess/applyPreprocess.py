@@ -1,8 +1,8 @@
 import os, sys
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 import otherFuncs.smallFuncs as smallFuncs
-from preprocess import augmentA, BashCallingFunctionsA, normalizeA, croppingA
-from preprocess import Extra_AV_Crop # create_AV_Mask
+from preprocess import Extra_AV_Crop, augmentA, BashCallingFunctionsA, normalizeA, croppingA
+# from preprocess import  # create_AV_Mask
 
 # TODO  check 3T 7T dimension and interpolation
 # TODO check image format and convert to nifti

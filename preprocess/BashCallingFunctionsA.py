@@ -13,7 +13,7 @@ def RigidRegistration(subject , Template , preprocess):
     processed = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
     outP = subject.Temp.address + '/CropMask.nii.gz'
     LinearAffine = subject.Temp.Deformation.address + '/linearAffine.txt'
-    if preprocess.Mode and preprocess.Cropping.Mode and not os.path.isfile(outP):
+    if preprocess.Mode and preprocess.Cropping.Mode: # and not os.path.isfile(outP):
         print('     Rigid Registration')
         if not os.path.isfile(LinearAffine): 
             os.system("ANTS 3 -m CC[%s, %s ,1,5] -o %s -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false" %(processed , Template.Image , subject.Temp.Deformation.address + '/linear') )
