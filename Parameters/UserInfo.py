@@ -14,10 +14,10 @@ Model_Method =   'HCascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 8  # Main + 3T  Init Th
 # TypeExperiment == 9  # Main + 3T  Init 3T
 # TypeExperiment == 10 # CSFn  Init Main
-# TypeExperiment == 11 # Main + 3T  Init 3T + no schedular 
+# not needed any more ------------------------ TypeExperiment == 11 # Main + 3T  Init 3T + no schedular 
 # TypeExperiment == 12 # CSFn  Init 3T
 # TypeExperiment == 13 # ET Init non-ET 3T & 7T
-TypeExperiment = 10
+TypeExperiment = 9
 
 architectureType = 'U-Net'
 
