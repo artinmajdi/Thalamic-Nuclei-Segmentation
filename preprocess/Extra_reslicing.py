@@ -1,6 +1,6 @@
 import os, sys
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-# sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from otherFuncs import smallFuncs
 from nilearn import image as niImage
 import nibabel as nib
@@ -100,7 +100,7 @@ class reslice_cls():
             apply_to_mask(nucleus , self)
 
     def reslice_all(self):
-        for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s and 'vimp2_A' not in s]:
+        for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s]:
             print(subj , '\n')
             dir_in  = self.dir_in + '/' + subj
             dir_out = self.dir_out + '/' + subj
@@ -110,9 +110,9 @@ class reslice_cls():
 
 
 UI = UserEntry()
-# UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/pre-steps/CSFn/full_Image/ET/step0_orig'
-# UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/pre-steps/CSFn/full_Image/ET/step1_resliced'
-# UI.mode = 1
+UI.dir_in  = '/home/artinl/Documents/MS/step0_orig'
+UI.dir_out = '/home/artinl/Documents/MS/step1_resliced'
+UI.mode = 'all'
 
 if UI.mode == 'all': reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).reslice_all()
 else: reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).apply_reslice()
