@@ -209,6 +209,7 @@ def func_Exp_subExp_Names(UserInfo):
         FM = UserInfo['simulation'].FirstLayer_FeatureMap_Num
         DO = UserInfo['DropoutValue']
         SE = UserInfo['SubExperiment']
+        AT =  '_' + UserInfo['architectureType']
         method = UserInfo['Model_Method']        
         # def field_Strength_Tag():
         #     if UserInfo['ReadTrain'].SRI:                                 return '_3T'    
@@ -226,8 +227,9 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Init_from_7T = 'sE12_' + method + '_FM' + str(FM) + '_3T7T'
                 self.crossVal = UserInfo['CrossVal']()
 
-        if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
-        else: tag = method + '_FM' + str(FM) + '_DO' + str(DO) + SE.Tag            
+        # if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
+        # else: tag =
+        tag = method + '_FM' + str(FM) + '_DO' + str(DO) + AT + SE.Tag      
         # else: tag = method + '_FM' + str(FM) + SE.Tag 
 
 
