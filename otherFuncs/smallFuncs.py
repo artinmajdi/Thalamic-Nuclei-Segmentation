@@ -228,6 +228,7 @@ class Experiment_Folder_Search():
                 elif nIx == 1.1:     return 15
                 elif nIx == 1.2:     return 16
                 elif nIx == 1.3:     return 17
+                elif nIx == 1.4:     return 18
 
             for nIx in Nuclei_Class().All_Nuclei().Indexes:
                 Nuclei_Names[nuclei_Index_Integer(nIx)] = Nuclei_Class(index=nIx).name

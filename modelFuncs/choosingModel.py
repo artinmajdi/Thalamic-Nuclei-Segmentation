@@ -736,7 +736,6 @@ def architecture(ModelParam):
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
    
-
     def CNN_Classifier(ModelParam):
         dim   = ModelParam.Method.InputImage2Dvs3D
         input_shape= tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
@@ -793,10 +792,10 @@ def architecture(ModelParam):
         model = UNet(ModelParam)
     
     elif  ModelParam.architectureType == 'U-Net2':
-        model = UNet(ModelParam)
+        model = UNet2(ModelParam)
 
     elif  ModelParam.architectureType == 'U-Net3':
-        model = UNet(ModelParam)
+        model = UNet3(ModelParam)
 
     elif 'CNN_Classifier' in ModelParam.architectureType:
         model = CNN_Classifier(ModelParam)
