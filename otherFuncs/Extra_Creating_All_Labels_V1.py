@@ -235,7 +235,7 @@ class Input_cls():
 
 # Dir = '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/results/sE12_HCascade_FM20_DO0.3_Main_Plus_3T_InitFrom_3T_NoSchedular_CV_a/2.5D_MV/' # '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/results/sE12_Cascade_FM20_DO0.3_CSFn__Init_3T_CV_a/2.5D_MV/'
 IC = Input_cls()
-applyMain(CI.dir_in , 'PProcessed') # '') #
+applyMain(IC.dir_in , '_PProcessed') # '') #
 
 # Dir = '/array/ssd/msmajdi/experiments/keras/exp4/results/sE11_Cascade_FM20_DO0.3_ET_Init_Main_AllAugs_CV_a/sd2'
 # for exp in ['exp5_CSFn']:
