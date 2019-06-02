@@ -229,7 +229,8 @@ def func_Exp_subExp_Names(UserInfo):
 
         # if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
         # else: tag =
-        tag = method + '_FM' + str(FM) + '_DO' + str(DO) + AT + SE.Tag      
+        # tag = method + '_FM' + str(FM) + '_DO' + str(DO) + AT + SE.Tag    
+        tag = method + '_FM' + str(FM) + AT + SE.Tag  #  
         # else: tag = method + '_FM' + str(FM) + SE.Tag 
 
 
