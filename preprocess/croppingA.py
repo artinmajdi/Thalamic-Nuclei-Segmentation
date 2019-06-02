@@ -66,11 +66,13 @@ def func_cropImage(params, subject):
 
     check_crop(inP, outP, outDebug, CropCoordinates)
 
-    for ind in params.WhichExperiment.Nucleus.FullIndexes:
-        inP, outP, outDebug = directoriesNuclei(subject, ind)
-        if not os.path.isfile(outDebug) and 'python' in params.preprocess.Cropping.Method and CropCoordinates == '': CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  
-        check_crop(inP, outP, outDebug, CropCoordinates)
-
+    try: 
+        for ind in params.WhichExperiment.Nucleus.FullIndexes:
+            inP, outP, outDebug = directoriesNuclei(subject, ind)
+            if not os.path.isfile(outDebug) and 'python' in params.preprocess.Cropping.Method and CropCoordinates == '': CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  
+            check_crop(inP, outP, outDebug, CropCoordinates)
+    except:
+        print('nucleus ' + str(ind) + ' failed')
 
 def crop_AV(subject , params):
 
