@@ -222,9 +222,9 @@ def func_Exp_subExp_Names(UserInfo):
                 self.tag = tag
                 self.name_thalamus = ''            
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
-                self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM)
+                self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM) + AT 
                 #self.name_Init_from_7T = 'sE11_' + method + '_FM' + str(FM)
-                self.name_Init_from_7T = 'sE12_' + method + '_FM' + str(FM) + '_3T7T'
+                self.name_Init_from_7T = 'sE12_' + method + '_FM' + str(FM) + AT # + '_3T7T'
                 self.crossVal = UserInfo['CrossVal']()
 
         # if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 

@@ -134,12 +134,8 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-# for UserInfoB['Model_Method'] in ['HCascade'  ,  'Cascade' ]:
-#if UserInfoB['CrossVal'].Mode:
-#    for cv in ['b' , 'c']:
-#        UserInfoB['CrossVal'].index = [cv]
-#        Run(UserInfoB, IV)
-#else: 
+#for UserInfoB['architectureType'] in ['U-Net2' , 'U-Net3']:
+#    Run(UserInfoB, IV)
 Run(UserInfoB, IV)
 
 K.clear_session()
