@@ -41,7 +41,9 @@ def apply_On_Individual(params,Info):
         
         croppingA.main(subject , params)
 
-    Extra_AV_Crop.main(dir_in=subject.address, dir_template=params.WhichExperiment.HardParams.Template.Address)
+    # Extra_AV_Crop.main(dir_in=subject.address, dir_template=params.WhichExperiment.HardParams.Template.Address)
+
+    
     # BashCallingFunctionsA.RigidRegistration_2AV( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
     # croppingA.crop_AV(subject , params)
 

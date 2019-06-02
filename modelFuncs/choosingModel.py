@@ -480,9 +480,8 @@ def architecture(ModelParam):
 
                 if LP.batchNormalization:  WBp = KLayers.BatchNormalization()(WBp)
 
-                if 1: #  np.min(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) > 30: 
-                    WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2,2), padding=padding, activation=AC.layers, trainable=trainable)(WBp)
-
+                # if 1: #  np.min(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) > 30: 
+                WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2,2), padding=padding, activation=AC.layers, trainable=trainable)(WBp)
                 UP = KLayers.merge.concatenate( [WBp, contracting_Info[nL+1]] , axis=3)
                 conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(UP)
                 conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(conv)
@@ -735,7 +734,110 @@ def architecture(ModelParam):
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
-   
+    def UNet4(ModelParam):  #  Conv -> BatchNorm -> Relu ) -> (Conv -> BatchNorm -> Relu)  -> maxpooling  -> Dropout
+                    
+        TF = ModelParam.Transfer_Learning
+        LP = ModelParam.Layer_Params        
+        KN = ModelParam.Layer_Params.ConvLayer.Kernel_size        
+        AC = ModelParam.Layer_Params.Activitation
+        DT = ModelParam.Layer_Params.Dropout
+        FM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
+
+
+        input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+        padding     = ModelParam.Layer_Params.ConvLayer.padding
+        NLayers     = ModelParam.num_Layers
+        num_classes = ModelParam.MultiClass.num_classes
+        pool_size   = ModelParam.Layer_Params.MaxPooling.pool_size
+
+        def Layer(featureMaps, trainable, input):
+            conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(input)
+            conv = KLayers.BatchNormalization()(conv)  
+            return KLayers.Activation(AC.layers)(conv) 
+
+        def Unet_sublayer_Contracting(inputs):
+            def main_USC(WBp, nL):
+                trainable = False if TF.Mode and nL in TF.FrozenLayers else True
+                featureMaps = FM*(2**nL)
+
+                conv = Layer(featureMaps, trainable, WBp)
+                # conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(WBp)
+                # conv = KLayers.BatchNormalization()(conv)  
+                # conv = KLayers.Activation(AC.layers)(conv) 
+
+                conv = Layer(featureMaps, trainable, conv)
+                # conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(conv)
+                # conv = KLayers.BatchNormalization()(conv)  
+                # conv = KLayers.Activation(AC.layers)(conv) 
+                                              
+                
+                pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)                                
+                
+                if trainable: pool = KLayers.Dropout(DT.Value)(pool)  
+                                
+                return pool, conv
+            
+            for nL in range(NLayers -1):  
+                if nL == 0: WB, Conv_Out = inputs , {}
+                WB, Conv_Out[nL+1] = main_USC(WB, nL)  
+
+            return WB, Conv_Out
+
+        def Unet_sublayer_Expanding(WB , Conv_Out):
+            def main_USE(WBp, nL, contracting_Info):
+                trainable = False if TF.Mode and nL in TF.FrozenLayers else True
+                featureMaps = FM*(2**nL)
+
+                WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2,2), padding=padding, activation=AC.layers, trainable=trainable)(WBp)
+                UP = KLayers.merge.concatenate( [WBp, contracting_Info[nL+1]] , axis=3)
+
+                conv = Layer(featureMaps, trainable, UP)
+                # conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(UP)
+                # conv = KLayers.BatchNormalization()(conv) 
+                # conv = KLayers.Activation(AC.layers)(conv)
+
+                conv = Layer(featureMaps, trainable, conv)
+                # conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(conv)
+                # conv = KLayers.BatchNormalization()(conv) 
+                # conv = KLayers.Activation(AC.layers)(conv)
+                
+                if DT.Mode and trainable: conv = KLayers.Dropout(DT.Value)(conv)
+                return conv
+
+            for nL in reversed(range(NLayers -1)):  
+                WB = main_USE(WB, nL, Conv_Out)
+
+            return WB
+
+        def Unet_MiddleLayer(WB, nL):
+            trainable = False if TF.Mode and nL in TF.FrozenLayers else True
+            featureMaps = FM*(2**nL)
+
+            WB = Layer(featureMaps, trainable, WB)
+            # WB = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(WB)
+            # WB = KLayers.BatchNormalization()(WB) 
+            # WB = KLayers.Activation(AC.layers)(WB)
+
+            WB = Layer(featureMaps, trainable, WB)
+            # WB = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(WB)
+            # WB = KLayers.BatchNormalization()(WB) 
+            # WB = KLayers.Activation(AC.layers)(WB)            
+
+            if DT.Mode and trainable: WB = KLayers.Dropout(DT.Value)(WB)
+            return WB
+                
+        inputs = KLayers.Input(input_shape)
+
+        WB, Conv_Out = Unet_sublayer_Contracting(inputs)
+
+        WB = Unet_MiddleLayer(WB , NLayers-1)
+
+        WB = Unet_sublayer_Expanding(WB , Conv_Out)
+
+        final = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
+
+        return kerasmodels.Model(inputs=[inputs], outputs=[final])
+
     def CNN_Classifier(ModelParam):
         dim   = ModelParam.Method.InputImage2Dvs3D
         input_shape= tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
@@ -796,6 +898,9 @@ def architecture(ModelParam):
 
     elif  ModelParam.architectureType == 'U-Net3':
         model = UNet3(ModelParam)
+
+    elif  ModelParam.architectureType == 'U-Net4':
+        model = UNet4(ModelParam)
 
     elif 'CNN_Classifier' in ModelParam.architectureType:
         model = CNN_Classifier(ModelParam)

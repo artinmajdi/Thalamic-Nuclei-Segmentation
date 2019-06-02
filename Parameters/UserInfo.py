@@ -19,7 +19,7 @@ Model_Method = 'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 13 # ET Init non-ET 3T & 7T
 TypeExperiment = 1
 
-architectureType = 'U-Net3'
+architectureType = 'U-Net4'
 
 class CrossVal:
     Mode = True
@@ -42,13 +42,13 @@ class InitializeB:
     From_3T        = False
     From_7T        = False
 
+
 class simulation:
     TestOnly      = False
     epochs        = 150
-    GPU_Index     = "3"
+    GPU_Index     = "4"
     Learning_Rate = 1e-3
-    num_Layers    = 3
-    NormalizaeMethod = 'MinMax' #  '1Std0Mean' #
+    num_Layers    = 3    
     nucleus_Index = [1,2] # ,2,4]
     slicingDim    = [1] #[2,1,0]
     batch_size    = 100
@@ -111,7 +111,8 @@ class preprocess:
 
 class normalize:
     Mode = True
-    Method = 'MinMax'
+    Method = 'MinMax' #  'Both' # '1Std0Mean' #  
+
 
 AugmentMode = False
 Augment_LinearMode = True

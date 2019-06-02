@@ -692,7 +692,7 @@ def Saving_UserInfo(DirSave, params):
         'FromOlderModel' : params.UserInfo['InitializeB'].FromOlderModel,
         'From_3T'        : params.UserInfo['InitializeB'].From_3T,
         'Learning_Rate'  : params.UserInfo['simulation'].Learning_Rate,
-        'Normalizae'     : params.UserInfo['simulation'].NormalizaeMethod,
+        'Normalizae'     : params.UserInfo['normalize'].Method,
         'slicing_Dim'    : params.UserInfo['simulation'].slicingDim[0],
         'batch'          : int(params.UserInfo['simulation'].batch_size),
         'FeatureMaps'    : int(params.UserInfo['simulation'].FirstLayer_FeatureMap_Num),

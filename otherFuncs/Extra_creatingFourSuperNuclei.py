@@ -77,7 +77,7 @@ def applyMain(Dir,mode):
                     smallFuncs.saveImage( closeMask(Mask > 0 , 1) , im.affine , im.header, Directory + superNuclei + '_ImClosed' + mode + '.nii.gz')
 
         def saving4SuperNuclei_WithDifferentLabels():
-            print('    saving 4 Super Nuclei')
+            print('    saving 4 Super Nuclei with different labels')
             for superNuclei in HierarchicalNames:
                 for cnt, subNuclei in enumerate(Names[superNuclei].FullNames):
                     msk = nib.load(Directory + subNuclei + mode + '.nii.gz').get_data()
@@ -221,9 +221,9 @@ def applyMain(Dir,mode):
 
         # Save_AllNuclei_inOne()
         # Save_AllNuclei_inOne_Imclosed_Except_AV()
-        # saving4SuperNuclei_WithDifferentLabels()
+        saving4SuperNuclei_WithDifferentLabels()
         # saveAV_BB()
-        # creatingFullMaskWithAll4Supernuclei()
+        creatingFullMaskWithAll4Supernuclei()
 
     Subjects = [sub for sub in os.listdir(Dir) if 'vimp' in sub]
 
@@ -241,8 +241,8 @@ class Input_cls():
         def directories(self):
             for en in range(len(sys.argv)):
 
-                if sys.argv[en].lower() in ('-i','--input'):    self.dir_in = sys.argv[en+1]
-                elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = sys.argv[en+1]
+                if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1]
+                elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1]
                            
         directories(self)
 
@@ -250,29 +250,29 @@ class Input_cls():
 
 
 # Dir = '/array/ssd/msmajdi/experiments/keras/exp4/results/sE11_Cascade_FM20_DO0.3_ET_Init_Main_AllAugs_CV_a/sd2'
-for exp in ['exp5_CSFn']:
-    for ds in ['CSFn']:
-        print('\n\n\n  ' + exp + ' CSFn \n\n\n')
-        # for dataset in ['Main/' , 'SRI/' , 'ET/']:
+# for exp in ['exp5_CSFn']:
+#     for ds in ['CSFn']:
+#         print('\n\n\n  ' + exp + ' CSFn \n\n\n')
+#         # for dataset in ['Main/' , 'SRI/' , 'ET/']:
 
-        Dir_Train = '/array/ssd/msmajdi/experiments/keras/' + exp + '/train/' + ds + '/'
-        applyMain(Dir_Train ,'_PProcessed')
-        for sd in ['sd0/' , 'sd1/' , 'sd2/']: applyMain(Dir_Train + 'Augments/' + sd ,'_PProcessed')
-
-
-        # Dir_Test = '/array/ssd/msmajdi/experiments/keras/' + exp + '/test/' + ds + '/'
-        # applyMain(Dir_Test ,'_PProcessed')
-        # for sd in ['sd0/' , 'sd1/' , 'sd2/']: applyMain(Dir_Test + 'Augments/' + sd ,'_PProcessed')
+#         Dir_Train = '/array/ssd/msmajdi/experiments/keras/' + exp + '/train/' + ds + '/'
+#         applyMain(Dir_Train ,'_PProcessed')
+#         for sd in ['sd0/' , 'sd1/' , 'sd2/']: applyMain(Dir_Train + 'Augments/' + sd ,'_PProcessed')
 
 
-        for cv in ['/a/' , '/b/' , '/c/']:
-            Dir_crossVal = '/array/ssd/msmajdi/experiments/keras/' + exp + '/crossVal/' + ds + cv
-            applyMain(Dir_crossVal ,'_PProcessed')
-            for sd in ['sd0/' , 'sd1/' , 'sd2/']: applyMain(Dir_crossVal + 'Augments/' + sd ,'_PProcessed')
+#         # Dir_Test = '/array/ssd/msmajdi/experiments/keras/' + exp + '/test/' + ds + '/'
+#         # applyMain(Dir_Test ,'_PProcessed')
+#         # for sd in ['sd0/' , 'sd1/' , 'sd2/']: applyMain(Dir_Test + 'Augments/' + sd ,'_PProcessed')
 
 
-#input = Input_cls()
-#Save_AllNuclei_inOne(input.dir_in)
+#         for cv in ['/a/' , '/b/' , '/c/']:
+#             Dir_crossVal = '/array/ssd/msmajdi/experiments/keras/' + exp + '/crossVal/' + ds + cv
+#             applyMain(Dir_crossVal ,'_PProcessed')
+#             for sd in ['sd0/' , 'sd1/' , 'sd2/']: applyMain(Dir_crossVal + 'Augments/' + sd ,'_PProcessed')
+
+
+input = Input_cls()
+applyMain(input.dir_in ,'')
 
 
 # applyMain(Dir ,'_PProcessed')

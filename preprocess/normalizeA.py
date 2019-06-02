@@ -11,6 +11,12 @@ def funcNormalize(Method , Image):
     elif Method == '1Std0Mean':
         Image = np.float32(Image)
         Image = ( Image-Image.mean() )/( Image.std() )
+
+    elif Method == 'Both':
+        Image = np.float32(Image)
+        Image = ( Image-Image.min() )/( Image.max() - Image.min() )
+        Image = ( Image-Image.mean() )/( Image.std() )
+
     return Image
 
 def main_normalize(Normalize , Image):

@@ -15,8 +15,8 @@ class UserEntry():
         self.mode    = 0
 
         for en in range(len(sys.argv)):
-            if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = os.getcwd() + '/' + sys.argv[en+1]
-            elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.getcwd() + '/' + sys.argv[en+1]
+            if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1] 
+            elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1]
             elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = sys.argv[en+1]
             
         print(self.dir_in)
