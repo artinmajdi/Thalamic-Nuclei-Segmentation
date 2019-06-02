@@ -569,18 +569,6 @@ def func_WhichExperiment(UserInfo):
                 
             return num_classes
 
-        # def func_Initialize(Init):
-        #     A, B, C, D = Init.FromThalamus , Init.FromOlderModel , Init.From_3T , Init.From_7T
-
-        #     class InitializeB:
-        #         def __init__(self, FromThalamus , FromOlderModel , From_3T , From_7T):
-        #             self.FromThalamus   = FromThalamus
-        #             self.FromOlderModel = FromOlderModel
-        #             self.From_3T        = From_3T
-        #             self.From_7T = From_7T
-                                            
-
-        #     return InitializeB(A,B,C,D)
 
         def fixing_NetworkParams_BasedOn_InputDim(dim):
             class kernel_size: 
@@ -621,6 +609,7 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.verbose       = UserInfo['simulation'].verbose
         HardParams.Model.DataGenerator = UserInfo['dataGenerator']()                
         HardParams.Model.Initialize    = UserInfo['InitializeB']
+        HardParams.Model.architectureType = UserInfo['architectureType'] 
 
         HardParams.Model.Method.Type                  = UserInfo['Model_Method']
         HardParams.Model.Method.save_Best_Epoch_Model = UserInfo['simulation'].save_Best_Epoch_Model   

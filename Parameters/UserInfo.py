@@ -19,6 +19,8 @@ Model_Method =   'HCascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 13 # ET Init non-ET 3T & 7T
 TypeExperiment = 10
 
+architectureType = 'U-Net'
+
 class CrossVal:
     Mode = True
     index = ['a']
