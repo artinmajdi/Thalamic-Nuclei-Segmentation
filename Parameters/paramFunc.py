@@ -187,6 +187,17 @@ def temp_Experiments_preSet_V2(UserInfoB):
     if UserInfoB['TypeExperiment'] == 13: UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_3Tp7T_NoSchedular' # _WeightedClass'
     if UserInfoB['TypeExperiment'] == 14: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_THOMAS_CSFn' 
 
+    # if UserInfoB['TypeExperiment'] == 5: UserInfoB['simulation'].TestOnly = True
+    # if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T' # _250epochs_Wo_LR_scheduler
+    # if UserInfoB['TypeExperiment'] == 3: UserInfoB['SubExperiment'].Tag = '_ET_Init_Main'
+    # if UserInfoB['TypeExperiment'] == 7: UserInfoB['SubExperiment'].Tag = '_ET_Init_Rn'
+    # if UserInfoB['TypeExperiment'] == 8: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_Th'
+    # if UserInfoB['TypeExperiment'] == 9: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_3T' 
+    # if UserInfoB['TypeExperiment'] == 10: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_Main'
+    # if UserInfoB['TypeExperiment'] == 11: UserInfoB['SubExperiment'].Tag = '_Main_Plus_3T_InitFrom_3T'
+    # if UserInfoB['TypeExperiment'] == 12: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_3T' # _reversed_Contrast
+    # if UserInfoB['TypeExperiment'] == 13: UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_3Tp7T' # _WeightedClass'
+    # if UserInfoB['TypeExperiment'] == 14: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_THOMAS_CSFn' 
 
     return UserInfoB
 

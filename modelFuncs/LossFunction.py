@@ -11,7 +11,7 @@ def LossInfo(loss_Index):
         1: (losses.binary_crossentropy, 'Loss_BCE'),
         2: (Loss_Dice, 'Loss_Dice'),
         3: (Loss_Log_Dice, 'Loss_LogDice'),
-        4: (Loss_binary_And_Dice, 'Loss_binary_And_LogDice'),
+        4: (Loss_CCE_And_LogDice, 'Loss_CCE_And_LogDice'),
         5: (losses.categorical_crossentropy, 'Loss_CCE'),
         
     }
@@ -33,8 +33,8 @@ def Loss_Dice(y_true,y_pred):
 def Loss_Log_Dice(y_true,y_pred):
     return tf.log( 1 - Metrics.mDice(y_true,y_pred) )
 
-def Loss_binary_And_Dice(y_true,y_pred):
-    return losses.binary_crossentropy(y_true,y_pred) + Loss_Log_Dice(y_true,y_pred)
+def Loss_CCE_And_LogDice(y_true,y_pred):
+    return losses.categorical_crossentropy(y_true,y_pred) + Loss_Log_Dice(y_true,y_pred)
 
 
 

@@ -20,7 +20,7 @@ Model_Method = 'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 14 # CSFn Init CSFn_THOMAS
 TypeExperiment = 1
 
-lossFunction_Index = 5
+lossFunction_Index = 4 # 1
 
 class normalize:
     Mode = True
@@ -57,8 +57,8 @@ class simulation:
     GPU_Index     = "1"
     Learning_Rate = 1e-3
     num_Layers    = 3    
-    nucleus_Index = [1,2] # ,2,4]
-    slicingDim    = [1] #[2,1,0]
+    nucleus_Index = [2] # ,2,4]
+    slicingDim    = [2] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20
