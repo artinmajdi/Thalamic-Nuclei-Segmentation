@@ -12,6 +12,7 @@ def LossInfo(loss_Index):
         2: (Loss_Dice, 'Loss_Dice'),
         3: (Loss_Log_Dice, 'Loss_LogDice'),
         4: (Loss_binary_And_Dice, 'Loss_binary_And_LogDice'),
+        5: (losses.categorical_crossentropy, 'Loss_CCE'),
         
     }
     return switcher.get(loss_Index, 'WARNING: Invalid loss function index')
@@ -34,6 +35,7 @@ def Loss_Log_Dice(y_true,y_pred):
 
 def Loss_binary_And_Dice(y_true,y_pred):
     return losses.binary_crossentropy(y_true,y_pred) + Loss_Log_Dice(y_true,y_pred)
+
 
 
 # def weightedBinaryCrossEntropy(y_true, y_pred):

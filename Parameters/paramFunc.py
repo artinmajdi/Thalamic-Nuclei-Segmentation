@@ -236,7 +236,7 @@ def func_Exp_subExp_Names(UserInfo):
 
         if UserInfo['lossFunction_Index'] != 1: 
             _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
-            tag += a
+            tag += '_' + a
 
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
@@ -572,7 +572,7 @@ def func_WhichExperiment(UserInfo):
 
         def func_NumClasses():
 
-            num_classes = len(UserInfo['nucleus_Index']) if HardParams.Model.multiclass.Mode else 1
+            num_classes = len(UserInfo['nucleus_Index']) if HardParams.Model.MultiClass.Mode else 1
             if HardParams.Model.Method.havingBackGround_AsExtraDimension: num_classes += 1 
                 
             return num_classes
@@ -661,7 +661,7 @@ def func_WhichExperiment(UserInfo):
     WhichExperiment.SubExperiment = subExperiment
     WhichExperiment.address       = UserInfo['Experiments_Address']         
     WhichExperiment.HardParams    = func_ModelParams()
-    WhichExperiment.Nucleus       = func_Nucleus(WhichExperiment.HardParams.Model.multiclass.Mode)
+    WhichExperiment.Nucleus       = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.Mode)
     WhichExperiment.Dataset       = func_Dataset()
         
     # if UserInfo['simulation'].TestOnly: 

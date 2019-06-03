@@ -108,7 +108,7 @@ def testingExeriment(model, Data, params):
 
                     dirSave, nucleusName = savingOutput(pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
 
-                Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.multiclass.Mode else dirSave + '/Dice_' + nucleusName + '.txt'
+                Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.MultiClass.Mode else dirSave + '/Dice_' + nucleusName + '.txt'
                 np.savetxt(Dir_Dice ,Dice,fmt='%1.1f %1.4f')
                 return pred1N_BtO
 

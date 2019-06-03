@@ -20,13 +20,13 @@ Model_Method = 'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 14 # CSFn Init CSFn_THOMAS
 TypeExperiment = 1
 
-lossFunction_Index = 3
+lossFunction_Index = 5
 
 class normalize:
     Mode = True
     Method = '1Std0Mean' #  'MinMax' #  'Both' # 
 
-architectureType = 'U-Net' # 'U-Net4'
+architectureType = 'U-Net4' # 'U-Net' # 
 
 class CrossVal:
     Mode = True
@@ -54,7 +54,7 @@ class InitializeB:
 class simulation:
     TestOnly      = False
     epochs        = 150
-    GPU_Index     = "4"
+    GPU_Index     = "1"
     Learning_Rate = 1e-3
     num_Layers    = 3    
     nucleus_Index = [1,2] # ,2,4]
@@ -72,7 +72,7 @@ class simulation:
     Use_Coronal_Thalamus_InSagittal = True
     Use_TestCases_For_Validation = True
     ImClosePrediction =  True # False #
-    Multi_Class_Mode = True
+    Multi_Class_Mode = False
     
 
 class dataGenerator:
