@@ -108,7 +108,7 @@ def testingExeriment(model, Data, params):
 
                     dirSave, nucleusName = savingOutput(pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
 
-                Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.MultiClass.mode else dirSave + '/Dice_' + nucleusName + '.txt'
+                Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.multiclass.Mode else dirSave + '/Dice_' + nucleusName + '.txt'
                 np.savetxt(Dir_Dice ,Dice,fmt='%1.1f %1.4f')
                 return pred1N_BtO
 
@@ -194,7 +194,8 @@ def trainingExperiment(Data, params):
         mode = 'max'
         monitor = 'val_mDice'       
         
-        checkpointer = keras.callbacks.ModelCheckpoint(filepath= Dir_Save + '/best_model_weights' + params.directories.Train.model_Tag + '.h5', \
+        A = params.directories.Train.model_Tag if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
+        checkpointer = keras.callbacks.ModelCheckpoint(filepath= Dir_Save + '/best_model_weights' + A + '.h5', \
             monitor = 'val_mDice' , verbose=1, save_best_only=True, mode=mode)
 
         Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = 'loss', factor=0.5, min_delta=0.005 , patience=4, verbose=1, \
@@ -270,7 +271,14 @@ def trainingExperiment(Data, params):
                     try:
                         model.load_weights(TP.Model_7T + '/model_weights.h5')
                         print(' --- initialized from Model_7T' , TP.Model_7T)
-                    except: print('initialized from From_7T failed')                        
+                    except: print('initialized from From_7T failed')  
+
+                elif Initialize.From_CSFn and os.path.exists(TP.Model_CSFn + '/model_weights.h5'):
+                    try:
+                        model.load_weights(TP.Model_CSFn + '/model_weights.h5')
+                        print(' --- initialized from Model_CSFn' , TP.Model_CSFn)
+                    except: print('initialized from From_CSFn failed') 
+
 
             print('------------------------------------------------------------------')
             return model  
@@ -282,14 +290,16 @@ def trainingExperiment(Data, params):
         def saveModel_h5(model, modelS):       
             smallFuncs.mkDir(params.directories.Train.Model)
             
-            if params.WhichExperiment.HardParams.Model.Method.save_Best_Epoch_Model:
-                model.load_weights(params.directories.Train.Model + '/best_model_weights' + params.directories.Train.model_Tag + '.h5')
+            A = params.directories.Train.model_Tag if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
 
-            # model.save(params.directories.Train.Model + '/model' + params.directories.Train.model_Tag + '.h5', overwrite=True, include_optimizer=False )
-            # model.save_weights(params.directories.Train.Model + '/model_weights' + params.directories.Train.model_Tag + '.h5', overwrite=True )
+            if params.WhichExperiment.HardParams.Model.Method.save_Best_Epoch_Model:                
+                model.load_weights(params.directories.Train.Model + '/best_model_weights' + A + '.h5')
 
-            modelS.save(params.directories.Train.Model + '/model' + params.directories.Train.model_Tag + '.h5', overwrite=True, include_optimizer=False )
-            modelS.save_weights(params.directories.Train.Model + '/model_weights' + params.directories.Train.model_Tag + '.h5', overwrite=True )
+            # model.save(params.directories.Train.Model + '/model' + A + '.h5', overwrite=True, include_optimizer=False )
+            # model.save_weights(params.directories.Train.Model + '/model_weights' + A + '.h5', overwrite=True )
+
+            modelS.save(params.directories.Train.Model + '/model' + A + '.h5', overwrite=True, include_optimizer=False )
+            modelS.save_weights(params.directories.Train.Model + '/model_weights' + A + '.h5', overwrite=True )
 
             keras.utils.plot_model(modelS,to_file=params.directories.Train.Model+'/Architecture.png',show_layer_names=True,show_shapes=True)
 
@@ -308,7 +318,8 @@ def trainingExperiment(Data, params):
                 verbose          = params.WhichExperiment.HardParams.Model.verbose                
                 Validation_fromKeras = params.WhichExperiment.Dataset.Validation.fromKeras
             
-                # model2.save_weights(params.directories.Train.Model + '/model_weights' + params.directories.Train.model_Tag + '.h5', overwrite=True )
+                # A = params.directories.Train.model_Tag if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
+                # model2.save_weights(params.directories.Train.Model + '/model_weights' + A + '.h5', overwrite=True )
                 return callbacks , batch_size, epochs, valSplit_Per, verbose , Validation_fromKeras
             callbacks , batch_size, epochs, valSplit_Per, verbose , Validation_fromKeras = func_modelParams()
                           

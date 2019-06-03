@@ -143,11 +143,12 @@ def temp_Experiments_preSet_V2(UserInfoB):
             self.Transfer_LearningC = Transfer_LearningC
 
             class InitializeB:
-                def __init__(self, FromThalamus=False , FromOlderModel=False , From_3T=False , From_7T=False):
+                def __init__(self, FromThalamus=False , FromOlderModel=False , From_3T=False , From_7T=False , From_CSFn=False):
                     self.FromThalamus   = FromThalamus
                     self.FromOlderModel = FromOlderModel
                     self.From_3T        = From_3T
                     self.From_7T        = From_7T
+                    self.From_CSFn      = From_CSFn
             self.InitializeB = InitializeB
 
         def main(self, TypeExperiment = 1):
@@ -162,9 +163,10 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 8:  (11  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(FromThalamus=True)   ,  self.Transfer_LearningC() ),
                 9:  (11  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
                 10:  (12  ,   self.ReadTrainC(CSFn=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC() ),
-                11:  (12  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
-                12:  (12  ,   self.ReadTrainC(CSFn=1)         , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
-                13:  (12  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC() ),
+                11:  (12  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(From_3T=True)       ,  self.Transfer_LearningC() ),
+                12:  (12  ,   self.ReadTrainC(CSFn=1)         , self.InitializeB(From_3T=True)       ,  self.Transfer_LearningC() ),
+                13:  (12  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)       ,  self.Transfer_LearningC() ),
+                14:  (12  ,   self.ReadTrainC(CSFn=1)         , self.InitializeB(From_CSFn=True)     ,  self.Transfer_LearningC() ),
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 
@@ -183,6 +185,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
     if UserInfoB['TypeExperiment'] == 11: UserInfoB['SubExperiment'].Tag = '_Main_Plus_3T_InitFrom_3T_NoSchedular'
     if UserInfoB['TypeExperiment'] == 12: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_3T' # _reversed_Contrast
     if UserInfoB['TypeExperiment'] == 13: UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_3Tp7T_NoSchedular' # _WeightedClass'
+    if UserInfoB['TypeExperiment'] == 14: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_THOMAS_CSFn' 
 
 
     return UserInfoB
@@ -225,19 +228,21 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM) + AT 
                 #self.name_Init_from_7T = 'sE11_' + method + '_FM' + str(FM)
                 self.name_Init_from_7T = 'sE12_' + method + '_FM' + str(FM) + AT # + '_3T7T'
+                self.name_Init_from_CSFn = 'sE9_' + method + '_FM' + str(FM) + AT  
                 self.crossVal = UserInfo['CrossVal']()
 
-        # if SE.Mode_JustThis or method == 'FCN_25D': tag = SE.Tag 
-        # else: tag =
         # tag = method + '_FM' + str(FM) + '_DO' + str(DO) + AT + SE.Tag    
-        tag = method + '_FM' + str(FM) + AT + SE.Tag + '_' + UserInfo['normalize'].Method #  
-        # else: tag = method + '_FM' + str(FM) + SE.Tag 
+        tag = method + '_FM' + str(FM) + AT + SE.Tag + '_' + UserInfo['normalize'].Method  
 
+        if UserInfo['lossFunction_Index'] != 1: 
+            _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
+            tag += a
 
-        if UserInfo['CrossVal'].Mode and SE.Index != 8: tag += '_CV_' + UserInfo['CrossVal'].index[0]
+        if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
-        print('Init From 3T Tag', A.name_Init_from_3T)
-        print('Init From 7T Tag', A.name_Init_from_7T)
+        print('Init From 3T Tag'  , A.name_Init_from_3T)
+        print('Init From 7T Tag'  , A.name_Init_from_7T)
+        print('Init From CSFn Tag', A.name_Init_from_CSFn)
         return A
 
     def func_Experiment():
@@ -278,7 +283,7 @@ def func_WhichExperiment(UserInfo):
 
                 class multiclass:
                     num_classes = ''
-                    mode = False
+                    Mode = False
 
                 class maxPooling:
                     strides = (2,2)
@@ -353,8 +358,8 @@ def func_WhichExperiment(UserInfo):
                 
                 
 
-            lossFunctionIx = 5
-            model.loss, _ = LossFunction.LossInfo(lossFunctionIx)
+            lossFunction_Index = 1
+            model.loss, _ = LossFunction.LossInfo(lossFunction_Index)
 
             class machine:
                 WhichMachine = 'server'
@@ -567,7 +572,7 @@ def func_WhichExperiment(UserInfo):
 
         def func_NumClasses():
 
-            num_classes = len(UserInfo['nucleus_Index']) if HardParams.Model.MultiClass.mode else 1
+            num_classes = len(UserInfo['nucleus_Index']) if HardParams.Model.multiclass.Mode else 1
             if HardParams.Model.Method.havingBackGround_AsExtraDimension: num_classes += 1 
                 
             return num_classes
@@ -614,6 +619,9 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.Initialize    = UserInfo['InitializeB']
         HardParams.Model.architectureType = UserInfo['architectureType'] 
 
+
+        HardParams.Model.loss, _ = LossFunction.LossInfo(UserInfo['lossFunction_Index'] ) 
+
         HardParams.Model.Method.Type                  = UserInfo['Model_Method']
         HardParams.Model.Method.save_Best_Epoch_Model = UserInfo['simulation'].save_Best_Epoch_Model   
         HardParams.Model.Method.InputImage2Dvs3D      = UserInfo['simulation'].InputImage2Dvs3D
@@ -625,6 +633,7 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.Method.Use_TestCases_For_Validation      = UserInfo['simulation'].Use_TestCases_For_Validation
         HardParams.Model.Method.ImClosePrediction                 = UserInfo['simulation'].ImClosePrediction
 
+        HardParams.Model.MultiClass.Mode = UserInfo['simulation'].Multi_Class_Mode
         HardParams.Model.MultiClass.num_classes = func_NumClasses()
         HardParams.Model.Layer_Params = func_Layer_Params(UserInfo)
 
@@ -652,7 +661,7 @@ def func_WhichExperiment(UserInfo):
     WhichExperiment.SubExperiment = subExperiment
     WhichExperiment.address       = UserInfo['Experiments_Address']         
     WhichExperiment.HardParams    = func_ModelParams()
-    WhichExperiment.Nucleus       = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.mode)
+    WhichExperiment.Nucleus       = func_Nucleus(WhichExperiment.HardParams.Model.multiclass.Mode)
     WhichExperiment.Dataset       = func_Dataset()
         
     # if UserInfo['simulation'].TestOnly: 

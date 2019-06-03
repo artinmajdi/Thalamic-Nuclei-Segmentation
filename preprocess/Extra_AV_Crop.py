@@ -145,17 +145,17 @@ def check_if_AV_inside_Crop():
             # print(np.unique(B))
 """
 
-def check_if_AV_inside_Crop():
+def check_if_AV_inside_Crop(pprocessed_flag):
 
     class UserEntry():
-        def __init__(self, dir_in  = '' , mode=1):
+        def __init__(self, dir_in  = '' , mode='all'):
             self.dir_in       = dir_in
             self.mode = mode
 
             for en in range(len(sys.argv)):
                 if sys.argv[en].lower() in ('-i','--input'):  
                     self.dir_in = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd/' not in sys.argv[en+1] else sys.argv[en+1]
-                elif sys.argv[en].lower() in ('-m','--mode'): self.mode   = int(sys.argv[en+1])
+                elif sys.argv[en].lower() in ('-m','--mode'): self.mode   = sys.argv[en+1]
 
 
     def cropImage_FromCoordinates(CropMask , Gap): 
@@ -168,30 +168,36 @@ def check_if_AV_inside_Crop():
 
         return d
 
-    UE = UserEntry()
-    dir = UE.dir_in #  '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/ET/d/'
-    for subject in [s for s in os.listdir(dir) if 'vimp' in s]:
-        
-        # subject = Subjects[list(Subjects)[0]]    
-        cropAV = nib.load(dir + subject + '/temp/CropMask_AV.nii.gz').get_data()
-        mskAV  = nib.load(dir + subject + '/Label/2-AV_PProcessed.nii.gz').get_data()
+    def apply_subject(Dir_subj,subject):
+        AV_name = '2-AV_PProcessed.nii.gz' if pprocessed_flag else '2-AV.nii.gz'
+        cropAV = nib.load(Dir_subj + 'temp/CropMask_AV.nii.gz').get_data()
+        mskAV  = nib.load(Dir_subj + 'Label/' + AV_name).get_data()
         
         if np.sum(cropAV) > 0:
             d = cropImage_FromCoordinates(cropAV , [0,0,0])  
 
-            mskAV_Crp = nib.load(dir + subject + '/Label/2-AV_PProcessed.nii.gz').slicer[ d[0,0]:d[0,1], d[1,0]:d[1,1], d[2,0]:d[2,1] ]            
+            mskAV_Crp = nib.load(Dir_subj + 'Label/' + AV_name).slicer[ d[0,0]:d[0,1], d[1,0]:d[1,1], d[2,0]:d[2,1] ]            
             
             a = np.sum(mskAV_Crp.get_data()) / np.sum(mskAV)
             flag = 'Correct' if np.abs(1-a) < 0.001 else 'Clipped ' + str(a)
             print(subject  , '------- <' , flag , '>---')
         else:
             print(subject  , 'zero mask')
-            # B = mskAV*(1-cropAV>0.5)
-            # print(np.unique(B))
+            
+    UE = UserEntry()
+    dir = UE.dir_in #  '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/ET/d/'
+    
+    if UE.mode == 'all': 
+        for subject in [s for s in os.listdir(dir) if 'vimp' in s]:
+            apply_subject(dir + subject + '/' , subject)
+    else:
+        apply_subject(dir, '')
+
 
 # check_if_AV_inside_Crop()
 
 
 if '--check' in sys.argv: 
-    check_if_AV_inside_Crop()
+    pprocessed_flag = True # True
+    check_if_AV_inside_Crop(pprocessed_flag)
     print('----')

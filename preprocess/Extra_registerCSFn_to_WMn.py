@@ -27,19 +27,27 @@ class register_cls():
         self.dir_out = dir_out
 
     def apply_register(self):
-        
-        IN  = self.dir_in  
-        OUT = self.dir_out 
-                
-        # os.system(' cd %s | antsRegistration  -d 3 --float 0 --output \[aff,affine.nii.gz\] -r \[ crop_t1.nii.gz, crop_wmn.nii.gz,1\] -t Rigid\[0.1\] --metric MI\[ crop_t1.nii.gz, crop_wmn.nii.gz,1,32,Regular,0.25\] --convergence \[1000x500x250x100,1e-7,10\] -v -f 8x4x2x1 -s 3x2x1x0vox -v -t Affine\[0.1\] --metric MI\[ crop_t1.nii.gz, crop_wmn.nii.gz,1,32,Regular,0.25\] --convergence \[1000x500x250x100,5e-8,10\] -f 8x4x2x1 -s 3x2x1x0vox' % (IN))
-        os.system('antsRegistration  -d 3 --float 0 --output \[ %s/aff,%s/affine.nii.gz\] -r \[ %s/crop_t1.nii.gz, %s/crop_wmn.nii.gz,1\] -t Rigid\[0.1\] --metric MI\[ %s/crop_t1.nii.gz, %s/crop_wmn.nii.gz,1,32,Regular,0.25\] --convergence \[1000x500x250x100,1e-7,10\] -v -f 8x4x2x1 -s 3x2x1x0vox -v -t Affine\[0.1\] --metric MI\[ %s/crop_t1.nii.gz, %s/crop_wmn.nii.gz,1,32,Regular,0.25\] --convergence \[1000x500x250x100,5e-8,10\] -f 8x4x2x1 -s 3x2x1x0vox' % (IN,IN,IN,IN,IN,IN,IN,IN) )
 
-        smallFuncs.mkDir(self.dir_out + '/Label') 
-        for nucleus in smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names:
-            IN  = self.dir_in  + '/Label/' + nucleus    + '.nii.gz'
-            OUT = self.dir_out + '/Label/' + nucleus    + '.nii.gz'            
+        def warp_nuclei(self):
+            smallFuncs.mkDir(self.dir_out + '/Label') 
+            for nucleus in smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names:
+                IN  = self.dir_in  + '/Label/' + nucleus    + '.nii.gz'
+                OUT = self.dir_out + '/Label/' + nucleus    + '.nii.gz'            
+                os.system('antsApplyTransforms -d 3 -i %s -r %s/crop_t1.nii.gz -o %s -t %s/aff0GenericAffine.mat -n NearestNeighbor' % (IN , self.dir_in , OUT , self.dir_in))  
+                os.system('cp -r %s/crop_t1.nii.gz %s/temp %s/ ' %(self.dir_in , self.dir_in , self.dir_out))
+
+        def warp_AV_Mask(self):
+            smallFuncs.mkDir(self.dir_out + '/temp') 
+            IN  = self.dir_in  + '/temp/CropMask_AV.nii.gz'
+            OUT = self.dir_out + '/temp/CropMask_AV.nii.gz'            
             os.system('antsApplyTransforms -d 3 -i %s -r %s/crop_t1.nii.gz -o %s -t %s/aff0GenericAffine.mat -n NearestNeighbor' % (IN , self.dir_in , OUT , self.dir_in))  
-            os.system('cp -r %s/crop_t1.nii.gz %s/temp %s/ ' %(self.dir_in , self.dir_in , self.dir_out))
+
+
+        IN  = self.dir_in  
+        os.system('antsRegistration  -d 3 --float 0 --output \[ %s/aff,%s/affine.nii.gz\] -r \[ %s/crop_t1.nii.gz, %s/crop_wmn.nii.gz,1\] -t Rigid\[0.1\] --metric MI\[ %s/crop_t1.nii.gz, %s/crop_wmn.nii.gz,1,32,Regular,0.25\] --convergence \[1000x500x250x100,1e-7,10\] -v -f 8x4x2x1 -s 3x2x1x0vox -v -t Affine\[0.1\] --metric MI\[ %s/crop_t1.nii.gz, %s/crop_wmn.nii.gz,1,32,Regular,0.25\] --convergence \[1000x500x250x100,5e-8,10\] -f 8x4x2x1 -s 3x2x1x0vox' % (IN,IN,IN,IN,IN,IN,IN,IN) )
+        warp_nuclei(self)
+        warp_AV_Mask(self)
+
     def register_All(self):
         for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s]:
             print(subj , '\n')
@@ -55,10 +63,10 @@ class register_cls():
 # dir_out = smallFuncs.mkDir('/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/WMn/case1')
 
 UI = UserEntry()
-dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/pre-steps/CSFn/'
-UI.dir_in  = dir + 'step3_Cropped'
-UI.dir_out = smallFuncs.mkDir(dir + 'step4_registered')
-UI.mode = 'all'
+# dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/pre-steps/CSFn/'
+# UI.dir_in  = dir + 'step3_Cropped'
+# UI.dir_out = smallFuncs.mkDir(dir + 'step4_registered')
+# UI.mode = 'all'
 
 
 if UI.mode == 'all': register_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).register_All()

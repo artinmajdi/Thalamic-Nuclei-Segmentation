@@ -4,15 +4,15 @@ import tensorflow as tf
 import modelFuncs.Metrics as Metrics
 from keras import losses # optimizers, metrics
 import keras.backend as Keras_Backend
-
+import numpy as np
 
 def LossInfo(loss_Index):
     switcher = {
-        1: (Loss_Dice, 'Loss_Dice'),
-        2: (MyLoss_binary_crossentropy, 'Loss_myBCE'),
-        3: (Loss_binary_And_Dice, 'Loss_Dice_N_BCE'),
-        4: (weightedBinaryCrossEntropy, 'Weighted_Loss_Dice_N_BCE'),
-        5: (losses.binary_crossentropy, 'Loss_origBCE'),
+        1: (losses.binary_crossentropy, 'Loss_BCE'),
+        2: (Loss_Dice, 'Loss_Dice'),
+        3: (Loss_Log_Dice, 'Loss_LogDice'),
+        4: (Loss_binary_And_Dice, 'Loss_binary_And_LogDice'),
+        
     }
     return switcher.get(loss_Index, 'WARNING: Invalid loss function index')
 
@@ -29,14 +29,17 @@ def MyLoss_binary_crossentropy(y_true,y_pred):
 def Loss_Dice(y_true,y_pred):
     return 1 - Metrics.mDice(y_true,y_pred)
 
+def Loss_Log_Dice(y_true,y_pred):
+    return tf.log( 1 - Metrics.mDice(y_true,y_pred) )
+
 def Loss_binary_And_Dice(y_true,y_pred):
-    return losses.binary_crossentropy(y_true,y_pred) + 0.01*Loss_Dice(y_true,y_pred)
+    return losses.binary_crossentropy(y_true,y_pred) + Loss_Log_Dice(y_true,y_pred)
 
 
-def weightedBinaryCrossEntropy(y_true, y_pred):
-    weight = y_true*1e6
-    bce = Keras_Backend.binary_crossentropy(y_true, y_pred)
-    return Keras_Backend.mean(bce*weight)
+# def weightedBinaryCrossEntropy(y_true, y_pred):
+#     weight = y_true*1e6
+#     bce = Keras_Backend.binary_crossentropy(y_true, y_pred)
+#     return Keras_Backend.mean(bce*weight)
 
 # def myCross_entropy(y_true,y_pred):
 #     n_class = 2

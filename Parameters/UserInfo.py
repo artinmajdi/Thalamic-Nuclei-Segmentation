@@ -17,9 +17,16 @@ Model_Method = 'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # not needed any more ------------------------ TypeExperiment == 11 # Main + 3T  Init 3T + no schedular 
 # TypeExperiment == 12 # CSFn  Init 3T
 # TypeExperiment == 13 # ET Init non-ET 3T & 7T
+# TypeExperiment == 14 # CSFn Init CSFn_THOMAS
 TypeExperiment = 1
 
-architectureType = 'U-Net4'
+lossFunction_Index = 3
+
+class normalize:
+    Mode = True
+    Method = '1Std0Mean' #  'MinMax' #  'Both' # 
+
+architectureType = 'U-Net' # 'U-Net4'
 
 class CrossVal:
     Mode = True
@@ -41,6 +48,7 @@ class InitializeB:
     FromOlderModel = False
     From_3T        = False
     From_7T        = False
+    From_CSFn      = False
 
 
 class simulation:
@@ -64,6 +72,7 @@ class simulation:
     Use_Coronal_Thalamus_InSagittal = True
     Use_TestCases_For_Validation = True
     ImClosePrediction =  True # False #
+    Multi_Class_Mode = True
     
 
 class dataGenerator:
@@ -108,10 +117,6 @@ Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 class preprocess:
     Mode = False
     BiasCorrection = False
-
-class normalize:
-    Mode = True
-    Method = 'MinMax' #  'Both' # '1Std0Mean' #  
 
 
 AugmentMode = False

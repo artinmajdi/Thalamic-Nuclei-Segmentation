@@ -592,6 +592,7 @@ def search_ExperimentDirectory(whichExperiment):
         Model_Thalamus = Exp_address + '/models/' + SE.name                   + '/' + '1-THALAMUS' + sdTag
         Model_3T       = Exp_address + '/models/' + SE.name_Init_from_3T      + '/' + NucleusName  + sdTag
         Model_7T       = Exp_address + '/models/' + SE.name_Init_from_7T      + '/' + NucleusName  + sdTag
+        Model_CSFn     = Exp_address + '/models/' + SE.name_Init_from_CSFn    + '/' + NucleusName  + sdTag
         Model_InitTF   = Exp_address + '/models/' + SE.name.split('_TF_')[0]  + '/' + NucleusName  + sdTag
         model_Tag = func_model_Tag(whichExperiment)
         Input     = checkInputDirectory(address, NucleusName,False,'train')
