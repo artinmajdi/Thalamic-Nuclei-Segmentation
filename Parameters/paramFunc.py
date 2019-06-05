@@ -249,6 +249,11 @@ def func_Exp_subExp_Names(UserInfo):
             _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
             tag += '_' + a
 
+        if not UserInfo['simulation'].Weighted_Class_Mode: tag += '_NotWeighted'
+        else: tag += '_Weighted'
+
+        # tag += '_normalize_On_AllSubjs'
+
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
         print('Init From 3T Tag'  , A.name_Init_from_3T)
@@ -689,6 +694,8 @@ def func_preprocess(UserInfo):
         class normalize:
             Mode = True
             Method = 'MinMax'
+            per_Subject = True
+            per_Dataset = False
 
 
         class cropping:

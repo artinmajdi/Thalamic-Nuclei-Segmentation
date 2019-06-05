@@ -166,7 +166,9 @@ def loadDataset(params):
             im = func_Multiply_By_NotAV(im)
 
         im = inputPreparationForUnet(im, subject2, params)
-        im = normalizeA.main_normalize(params.preprocess.Normalize , im)
+
+        if params.preprocess.Normalize.per_Subject: im = normalizeA.main_normalize(params.preprocess.Normalize , im)
+
         # im = 1 - im
         return im, imF
 
@@ -259,19 +261,34 @@ def loadDataset(params):
             
             return trainCase(Image=images, Mask=masks.astype('float32'))
             
-        def separateTrainVal_and_concatenateTrain(DataAll):            
+        def separateTrainVal_and_concatenateTrain(DataAll):   
+
+            def func_normalize(DataAll):
+                if DataAll.Train:      DataAll.Train.Image = normalizeA.main_normalize(params.preprocess.Normalize , DataAll.Train.Image)
+                if DataAll.Validation: DataAll.Validation.Image = normalizeA.main_normalize(params.preprocess.Normalize , DataAll.Validation.Image)
+                
+                for nameSubject in list(DataAll.Train_ForTest):
+                    DataAll.Train_ForTest[nameSubject].Image = normalizeA.main_normalize(params.preprocess.Normalize , DataAll.Train_ForTest[nameSubject].Image)
+
+                for nameSubject in list(DataAll.Test):
+                    DataAll.Test[nameSubject].Image = normalizeA.main_normalize(params.preprocess.Normalize , DataAll.Test[nameSubject].Image)
+                
+                return DataAll
+
             TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage, list(params.directories.Train.Input.Subjects), params.WhichExperiment.Dataset.randomFlag)
 
             save_hdf5_subject_List(params.h5 , 'trainList' , TrainList )
 
             if params.WhichExperiment.Dataset.Validation.fromKeras or params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
-                DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, list(DataAll.Train_ForTest),'train')
+                DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, list(DataAll.Train_ForTest),'train')                
                 DataAll.Validation = ''            
             else:                
                 DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, TrainList,'train')
                 DataAll.Validation = separatingConcatenatingIndexes(DataAll.Train_ForTest, ValList,'validation')
-
+                
                 save_hdf5_subject_List(params.h5 , 'valList' , ValList )
+
+            if params.preprocess.Normalize.per_Dataset: DataAll = func_normalize(DataAll)
 
             return DataAll
 
