@@ -339,7 +339,7 @@ def terminalEntries(UserInfo):
                 UserInfo['simulation'].nucleus_Index = [float(sys.argv[en+1])] # [int(sys.argv[en+1])]
 
         elif entry.lower() in ('-l','--loss'):
-            UserInfo['lossFunctionIx'] = int(sys.argv[en+1])
+            UserInfo['lossFunction_Index'] = int(sys.argv[en+1])
 
         elif entry.lower() in ('-d','--dataset'):
             UserInfo['DatasetIx'] = int(sys.argv[en+1])

@@ -59,8 +59,9 @@ def Run(UserInfoB,InitValues):
                 Run_SingleNuclei(UserInfoB)
 
         else:
-            UserInfoB['simulation'].nucleus_Index = 1
-            Run_SingleNuclei(UserInfoB)
+            if 1 in UserInfoB['simulation'].nucleus_Index:
+                UserInfoB['simulation'].nucleus_Index = [1]
+                Run_SingleNuclei(UserInfoB)
 
             BB = smallFuncs.Nuclei_Class(1,'HCascade')
             UserInfoB['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(InitValues.Nuclei_Indexes)
@@ -79,12 +80,16 @@ def Run(UserInfoB,InitValues):
             print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
             print('---------------------------------------------------------------')
 
-            if not(UserInfoB['simulation'].nucleus_Index == 1.4):
-                Data, params = datasets.loadDataset(params) 
-                print(Data.Train.Image.shape)               
-                choosingModel.check_Run(params, Data)              
-                K.clear_session()
-            else:
+            if 1 in UserInfoB['simulation'].nucleus_Index:
+                input_model  = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name_Thalmus_network
+                output_model = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name
+                os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
+
+                input_model  = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name_Thalmus_network
+                output_model = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name
+                os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
+
+            elif 1.4 in UserInfoB['simulation'].nucleus_Index:
                 def save_Anteior_BBox(params):
                     def cropBoundingBoxes(mode, subject):
 
@@ -107,12 +112,17 @@ def Run(UserInfoB,InitValues):
                             croppingA.crop_AV(subject , params)
 
                             cropBoundingBoxes(mode, subject)
-
                     
                     loop_Subjects('train')
-                    loop_Subjects('test')
-                                    
+                    loop_Subjects('test')                                    
                 save_Anteior_BBox(params)
+
+            else:
+                Data, params = datasets.loadDataset(params) 
+                print(Data.Train.Image.shape)               
+                choosingModel.check_Run(params, Data)              
+                K.clear_session()
+
                     
         for sd in InitValues.slicingDim:            
             if not (sd == 0 and UserInfoB['simulation'].nucleus_Index == 1):

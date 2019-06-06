@@ -25,6 +25,8 @@ import keras.layers as KLayers
 from sklearn.utils import class_weight
 # import json
 from keras.preprocessing.image import ImageDataGenerator
+import modelFuncs.LossFunction as LossFunction
+
 
 def check_Run(params, Data):
 
@@ -48,6 +50,20 @@ def loadModel(params):
 
 def testingExeriment(model, Data, params):
        
+    def func_dice_name():
+        if 'HCascade' in params.WhichExperiment.HardParams.Model.Method.Type: 
+            BB = smallFuncs.Nuclei_Class(1,'HCascade')
+            parent = BB.HCascade_Parents_Identifier(params.WhichExperiment.Nucleus.Index)
+            if len(parent) == 1: 
+                dice_tag = smallFuncs.Nuclei_Class(parent,'HCascade').name
+            else: 
+                dice_tag = str(parent)
+        else: 
+            dice_tag = 'All'  
+
+        return dice_tag
+    dice_tag = func_dice_name()
+
     class prediction:
         Test = ''
         Train = ''
@@ -107,8 +123,8 @@ def testingExeriment(model, Data, params):
                     pred1N_BtO, Dice[cnt,:] = postProcessing(pred[...,cnt], DataSubj.OrigMask[...,cnt] , params.WhichExperiment.Nucleus.Index[cnt] )
 
                     dirSave, nucleusName = savingOutput(pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
-
-                Dir_Dice = dirSave + '/Dice.txt' if params.WhichExperiment.HardParams.Model.MultiClass.Mode else dirSave + '/Dice_' + nucleusName + '.txt'
+                
+                Dir_Dice = dirSave + '/Dice_' + dice_tag + '.txt' if params.WhichExperiment.HardParams.Model.MultiClass.Mode else dirSave + '/Dice_' + nucleusName + '.txt'
                 np.savetxt(Dir_Dice ,Dice,fmt='%1.1f %1.4f')
                 return pred1N_BtO
 
@@ -307,7 +323,21 @@ def trainingExperiment(Data, params):
                 
         def modelFit(model):
 
-            model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
+            def func_class_weights():
+                sz = Data.Train.Mask.shape
+                NUM_CLASSES = sz[3]
+                class_weights = np.zeros(NUM_CLASSES)
+                for ix in range(NUM_CLASSES):                                        
+                    TRUE_Count = len(np.where(Data.Train.Mask[...,ix] > 0.5)[0])
+                    NUM_SAMPLES = np.prod(sz[:3])
+                    class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
+
+                # class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
+                return class_weights
+                
+            class_weights = func_class_weights()
+
+            model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss(class_weights) , metrics=ModelParam.metrics)
                 
             def func_modelParams():
                 callbacks = func_CallBacks(params)
@@ -339,15 +369,18 @@ def trainingExperiment(Data, params):
             def func_without_Generator():
                 # keras.backend.set_session(tf_debug.TensorBoardDebugWrapperSession(tf.Session(), "engr-bilgin01s:6064"))   
                 if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode:
-                    classes = np.unique(Data.Train.Mask)
-                    y_train = np.reshape(Data.Train.Mask[...,0],[-1])
-                    class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
-                    if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])
-                    else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
+                    
+                    # if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])
+                    # else:  
+
+                    _, loss_tag = LossFunction.LossInfo(params.UserInfo['lossFunction_Index'])
+                    if  'My_' in loss_tag:                 
+                        hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask , batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
+                    else:
+                        hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
                 
-                else:
-                    if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])
-                    else:                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
+                else:                 
+                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
 
                 if ModelParam.showHistory: print(hist.history)
 
