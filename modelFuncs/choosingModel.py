@@ -336,8 +336,10 @@ def trainingExperiment(Data, params):
                 return class_weights
                 
             class_weights = func_class_weights()
+            _, loss_tag = LossFunction.LossInfo(params.UserInfo['lossFunction_Index'])
 
-            model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss(class_weights) , metrics=ModelParam.metrics)
+            if  'My_' in loss_tag: model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss(class_weights) , metrics=ModelParam.metrics)
+            else: model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
                 
             def func_modelParams():
                 callbacks = func_CallBacks(params)
@@ -372,8 +374,7 @@ def trainingExperiment(Data, params):
                     
                     # if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])
                     # else:  
-
-                    _, loss_tag = LossFunction.LossInfo(params.UserInfo['lossFunction_Index'])
+                    
                     if  'My_' in loss_tag:                 
                         hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask , batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
                     else:

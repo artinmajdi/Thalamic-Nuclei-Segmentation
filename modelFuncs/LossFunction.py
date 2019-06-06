@@ -17,33 +17,37 @@ def LossInfo(loss_Index):
     }
     return switcher.get(loss_Index, 'WARNING: Invalid loss function index')
 
-def My_BCE_Loss(weights):
+def func_Loss_Dice(x , y):
+    return -tf.log( tf.reduce_sum(tf.multiply(x,y))*2/( tf.reduce_sum(x) + tf.reduce_sum(y) + 1e-7) )
+   
+def func_Average(loss, NUM_CLASSES):
+    return tf.divide(tf.reduce_sum(loss), tf.cast(NUM_CLASSES,tf.float32))
+
+def My_BCE_Loss(W):
 
     def func_loss(y_true,y_pred):
         NUM_CLASSES = y_pred.shape[3] - 1
-        loss = [ weights[d]*losses.binary_crossentropy(y_true[...,d],y_pred[...,d]) for d in range(NUM_CLASSES)]
-
-        return tf.divide(tf.reduce_sum(loss), tf.cast(NUM_CLASSES,tf.float32))
+        loss = [ W[d]*losses.binary_crossentropy(y_true[...,d],y_pred[...,d]) for d in range(NUM_CLASSES)]
+        return func_Average(loss, NUM_CLASSES)
 
     return func_loss
 
-def My_LogDice_Loss(weights):
+def My_LogDice_Loss(W):
 
     def func_loss(y_true,y_pred):
-        
         NUM_CLASSES = y_pred.shape[3] - 1
-        loss = [ - weights[d]*tf.log( Metrics.mDice(y_true,y_pred) )   for d in range(NUM_CLASSES)]
-        return tf.divide(tf.reduce_sum(loss), tf.cast(NUM_CLASSES,tf.float32))
+        loss = [ W[d]*func_Loss_Dice(y_true[...,d],y_pred[...,d]) for d in range(NUM_CLASSES)]
+        return func_Average(loss, NUM_CLASSES)
 
     return func_loss
 
-def My_Joint_Loss(weights):
+def My_Joint_Loss(W):
 
     def func_loss(y_true,y_pred):
         NUM_CLASSES = y_pred.shape[3] - 1
-        loss = [ weights[d] * (  losses.binary_crossentropy(y_true[...,d],y_pred[...,d]) - tf.log(Metrics.mDice(y_true[...,d],y_pred[...,d]))  ) for d in range(NUM_CLASSES)]
+        loss = [ W[d] * (  losses.binary_crossentropy(y_true[...,d],y_pred[...,d]) + func_Loss_Dice(y_true[...,d],y_pred[...,d])  ) for d in range(NUM_CLASSES)]
 
-        return tf.divide(tf.reduce_sum(loss), tf.cast(NUM_CLASSES,tf.float32))
+        return func_Average(loss, NUM_CLASSES)
 
     return func_loss    
 

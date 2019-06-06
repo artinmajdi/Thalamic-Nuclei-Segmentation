@@ -20,7 +20,7 @@ Model_Method = 'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 14 # CSFn Init CSFn_THOMAS
 TypeExperiment = 1
 
-lossFunction_Index = 4 # 1
+lossFunction_Index = 5 # 1
 
 class normalize:
     Mode = True
@@ -55,8 +55,8 @@ class InitializeB:
 
 class simulation:
     TestOnly      = False
-    epochs        = 150
-    GPU_Index     = "1"
+    epochs        = 300
+    GPU_Index     = "7"
     Learning_Rate = 1e-3
     num_Layers    = 3    
     nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] # ,2,4]
