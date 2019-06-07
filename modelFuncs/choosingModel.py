@@ -326,11 +326,13 @@ def trainingExperiment(Data, params):
             def func_class_weights():
                 sz = Data.Train.Mask.shape
                 NUM_CLASSES = sz[3]
-                class_weights = np.zeros(NUM_CLASSES)
-                for ix in range(NUM_CLASSES):                                        
-                    TRUE_Count = len(np.where(Data.Train.Mask[...,ix] > 0.5)[0])
-                    NUM_SAMPLES = np.prod(sz[:3])
-                    class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
+                class_weights = np.ones(NUM_CLASSES)
+
+                if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode:
+                    for ix in range(NUM_CLASSES):                                        
+                        TRUE_Count = len(np.where(Data.Train.Mask[...,ix] > 0.5)[0])
+                        NUM_SAMPLES = np.prod(sz[:3])
+                        class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
 
                 # class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
                 return class_weights
@@ -370,16 +372,9 @@ def trainingExperiment(Data, params):
 
             def func_without_Generator():
                 # keras.backend.set_session(tf_debug.TensorBoardDebugWrapperSession(tf.Session(), "engr-bilgin01s:6064"))   
-                if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode:
-                    
-                    # if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])
-                    # else:  
-                    
-                    if  'My_' in loss_tag:                 
-                        hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask , batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
-                    else:
-                        hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
-                
+                if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode and ('My_' not in loss_tag):                    
+                    # if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])                   
+                    hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])                        
                 else:                 
                     hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])        
 
