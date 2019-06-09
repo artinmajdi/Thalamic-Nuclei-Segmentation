@@ -28,7 +28,7 @@ class normalize:
     per_Subject = True
     per_Dataset = False
 
-architectureType = 'FCN_with_SkipConnection' # 'FCN' # U-Net4' # 'U-Net' # 
+architectureType = 'U-Net4' # 'FCN_with_SkipConnection' # 'FCN' #  'U-Net' # 
 
 class CrossVal:
     Mode = True

@@ -247,8 +247,8 @@ def func_Exp_subExp_Names(UserInfo):
         # tag = method + '_FM' + str(FM) + '_DO' + str(DO) + AT + SE.Tag   
         
         tag = method + '_FM' + str(FM) + AT + SE.Tag
-        if  'FCN' in UserInfo['architectureType']:
-            tag += '_NL' + str(NL) # '_' + UserInfo['normalize'].Method  
+        # if  'FCN' in UserInfo['architectureType']:
+        tag += '_NL' + str(NL) # '_' + UserInfo['normalize'].Method  
 
         if UserInfo['lossFunction_Index'] != 1: 
             _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
