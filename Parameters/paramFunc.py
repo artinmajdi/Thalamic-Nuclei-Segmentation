@@ -223,6 +223,7 @@ def func_Exp_subExp_Names(UserInfo):
         FM = UserInfo['simulation'].FirstLayer_FeatureMap_Num
         DO = UserInfo['DropoutValue']
         SE = UserInfo['SubExperiment']
+        NL = UserInfo['simulation'].num_Layers
         AT =  '_' + UserInfo['architectureType']
         method = UserInfo['Model_Method']        
         # def field_Strength_Tag():
@@ -243,8 +244,11 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
 
-        # tag = method + '_FM' + str(FM) + '_DO' + str(DO) + AT + SE.Tag    
-        tag = method + '_FM' + str(FM) + AT + SE.Tag + '_' + UserInfo['normalize'].Method  
+        # tag = method + '_FM' + str(FM) + '_DO' + str(DO) + AT + SE.Tag   
+        
+        tag = method + '_FM' + str(FM) + AT + SE.Tag
+        if  'FCN' in UserInfo['architectureType']:
+            tag += '_NL' + str(NL) # '_' + UserInfo['normalize'].Method  
 
         if UserInfo['lossFunction_Index'] != 1: 
             _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
