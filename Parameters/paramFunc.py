@@ -507,7 +507,12 @@ def func_WhichExperiment(UserInfo):
             if len(NucleusIndex) == 1 or not MultiClassMode:
                 NucleusName , _, _ = smallFuncs.NucleiSelection( NucleusIndex[0] )
             else:
-                NucleusName = ('MultiClass_' + str(NucleusIndex)).replace(', ','').replace('[','').replace(']','')
+                if (UserInfo['Model_Method'] == 'HCascade') and (1.1 in UserInfo['simulation'].nucleus_Index):
+                    NucleusName = 'MultiClass_HCascade_Groups'
+                else:
+                    NucleusName = ('MultiClass_' + str(NucleusIndex)).replace(', ','').replace('[','').replace(']','')
+                
+                    
 
             return NucleusName
 

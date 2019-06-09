@@ -41,33 +41,52 @@ def Run(UserInfoB,InitValues):
 
         print('************ stage 1 ************')
         if 1 in InitValues.Nuclei_Indexes: 
-            UserInfoB['simulation'].nucleus_Index = 1
-            Run_SingleNuclei(UserInfoB)
+            UserInfoB['simulation'].nucleus_Index = [1]
+            Run_Main(UserInfoB)
 
         print('************ stage 2 ************')                    
         for UserInfoB['simulation'].nucleus_Index in BB.HCascade_Parents_Identifier(InitValues.Nuclei_Indexes):
-            Run_SingleNuclei(UserInfoB)
+            Run_Main(UserInfoB)
 
         print('************ stage 3 ************')
         for UserInfoB['simulation'].nucleus_Index in BB.remove_Thalamus_From_List(InitValues.Nuclei_Indexes):
-            Run_SingleNuclei(UserInfoB)
+            Run_Main(UserInfoB)
+
+    def HierarchicalStages_Multi_Class(UserInfoB):
+
+        BB = smallFuncs.Nuclei_Class(1,'HCascade')
+
+        print('************ stage 1 ************')
+        if 1 in InitValues.Nuclei_Indexes: 
+            UserInfoB['simulation'].nucleus_Index = [1]
+            Run_Main(UserInfoB)
+
+        print('************ stage 2 ************')                    
+        UserInfoB['simulation'].nucleus_Index = [1.1, 1.2, 1.3, 2]
+        Run_Main(UserInfoB)
+
+        print('************ stage 3 ************')
+        for parent in [1.1, 1.2, 1.3]:
+            CC = smallFuncs.Nuclei_Class(parent,'HCascade')
+            UserInfoB['simulation'].nucleus_Index = CC.child
+            Run_Main(UserInfoB)
 
     def Loop_All_Nuclei_wMultiClass(UserInfoB):
 
         if not UserInfoB['simulation'].Multi_Class_Mode:
             for UserInfoB['simulation'].nucleus_Index in InitValues.Nuclei_Indexes:
-                Run_SingleNuclei(UserInfoB)
+                Run_Main(UserInfoB)
 
         else:
-            if 1 in UserInfoB['simulation'].nucleus_Index:
+            if (1 in UserInfoB['simulation'].nucleus_Index) and (UserInfoB['Model_Method'] != 'FCN'):
                 UserInfoB['simulation'].nucleus_Index = [1]
-                Run_SingleNuclei(UserInfoB)
+                Run_Main(UserInfoB)
 
             BB = smallFuncs.Nuclei_Class(1,'HCascade')
             UserInfoB['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(InitValues.Nuclei_Indexes)
-            Run_SingleNuclei(UserInfoB)
+            Run_Main(UserInfoB)
 
-    def Run_SingleNuclei(UserInfoB):
+    def Run_Main(UserInfoB):
         def subRun(UserInfoB):             
             params = paramFunc.Run(UserInfoB, terminal=False)
 
@@ -89,7 +108,7 @@ def Run(UserInfoB,InitValues):
                 output_model = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name
                 os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
 
-            elif 1.4 in UserInfoB['simulation'].nucleus_Index:
+            elif (1.4 in UserInfoB['simulation'].nucleus_Index) and (not UserInfoB['simulation'].Multi_Class_Mode):
                 def save_Anteior_BBox(params):
                     def cropBoundingBoxes(mode, subject):
 
@@ -129,10 +148,9 @@ def Run(UserInfoB,InitValues):
                 UserInfoB['simulation'].slicingDim = [sd]
                 subRun(UserInfoB)
                  
-    if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages_single_Class(UserInfoB)
+    if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages_Multi_Class(UserInfoB)
     elif UserInfoB['Model_Method'] == 'Cascade' :  Loop_All_Nuclei_wMultiClass(UserInfoB)
-    elif UserInfoB['Model_Method'] == 'FCN_25D':   Loop_All_Nuclei_wMultiClass(UserInfoB)
-    elif UserInfoB['Model_Method'] == 'singleRun': Run_SingleNuclei(UserInfoB)
+    elif UserInfoB['Model_Method'] == 'singleRun': Run_Main(UserInfoB)
     else: Loop_All_Nuclei_wMultiClass(UserInfoB)
      
 def preMode(UserInfoB):

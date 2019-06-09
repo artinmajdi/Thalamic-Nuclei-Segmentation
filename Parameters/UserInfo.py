@@ -1,6 +1,6 @@
 
 
-Model_Method = 'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' # 
+Model_Method = 'HCascade' #'mUnet' #'FCN_with_SkipConnection' # 'FCN' # 'HCascade' # 
 
 # Main = 7T (Ctrl&MS)
 # ET   = ET(7T + 3T)
