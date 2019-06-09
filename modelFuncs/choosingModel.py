@@ -955,10 +955,10 @@ def architecture(ModelParam):
                 return conv
             
             for nL in range(NLayers -1):  
-                if nL == 0: WB, Conv_Out = inputs , {}
-                WB, Conv_Out[nL+1] = main_USC(WB, nL)  
+                if nL == 0: Conv_Out = {0:inputs}
+                Conv_Out[nL+1] = main_USC(Conv_Out[nL], nL)  
 
-            return WB, Conv_Out
+            return Conv_Out[nL+1], Conv_Out
 
         def Unet_sublayer_Expanding(WB , Conv_Out):
             def main_USE(WBp, nL, contracting_Info):
