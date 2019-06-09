@@ -417,12 +417,12 @@ def trainingExperiment(Data, params):
     smallFuncs.Saving_UserInfo(params.directories.Train.Model, params)
     model = architecture(params.WhichExperiment.HardParams.Model)
 
-    if 'U-Net' in params.WhichExperiment.HardParams.Model.architectureType:
-        model, hist = modelTrain_Unet(Data, params, model)
-        saveReport(params.directories.Train.Model , 'hist_history' , hist.history , 'pickle')
+    # if 'U-Net' in params.WhichExperiment.HardParams.Model.architectureType:
+    model, hist = modelTrain_Unet(Data, params, model)
+    saveReport(params.directories.Train.Model , 'hist_history' , hist.history , 'pickle')
 
-    elif 'FCN_Cropping':
-        model, hist = modelTrain_Unet(Data, params, model)
+    # elif 'FCN_Cropping':
+    #     model, hist = modelTrain_Unet(Data, params, model)
 
     return model
 
