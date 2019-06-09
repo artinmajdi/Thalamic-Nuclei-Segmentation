@@ -328,12 +328,15 @@ def trainingExperiment(Data, params):
                 NUM_CLASSES = sz[3]
                 class_weights = np.ones(NUM_CLASSES)
 
-                if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode:
-                    for ix in range(NUM_CLASSES):                                        
-                        TRUE_Count = len(np.where(Data.Train.Mask[...,ix] > 0.5)[0])
-                        NUM_SAMPLES = np.prod(sz[:3])
-                        class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
+                #! equal weights
+                # if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode:
+                #     for ix in range(NUM_CLASSES):                                        
+                #         TRUE_Count = len(np.where(Data.Train.Mask[...,ix] > 0.5)[0])
+                #         NUM_SAMPLES = np.prod(sz[:3])
+                #         class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
 
+                #! zero weight for foreground
+                # class_weights[0] = 0
                 # class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
                 return class_weights
                 

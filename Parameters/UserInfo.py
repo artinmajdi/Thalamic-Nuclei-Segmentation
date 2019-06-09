@@ -20,7 +20,7 @@ Model_Method = 'Cascade' #'mUnet' #' FCN_25D' #  'HCascade' #
 # TypeExperiment == 14 # CSFn Init CSFn_THOMAS
 TypeExperiment = 1
 
-lossFunction_Index = 5 # 1
+lossFunction_Index = 1 # 1
 
 class normalize:
     Mode = True
@@ -42,7 +42,7 @@ DropoutValue = 0.3
 
 class SubExperiment:
     Index = 12
-    Tag   = '' # '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
+    Tag   = '_equal_weights' # '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
     Mode_JustThis = False
   
 class InitializeB:
@@ -59,7 +59,7 @@ class simulation:
     GPU_Index     = "7"
     Learning_Rate = 1e-3
     num_Layers    = 3    
-    nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] # ,2,4]
+    nucleus_Index = [1,10] # ,5,6,7,8,9,10,11,12,13,14] # ,2,4]
     slicingDim    = [2] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2

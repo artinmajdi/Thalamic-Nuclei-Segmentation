@@ -240,7 +240,7 @@ def func_Exp_subExp_Names(UserInfo):
                 #self.name_Init_from_7T = 'sE11_' + method + '_FM' + str(FM)
                 self.name_Init_from_7T = 'sE12_' + method + '_FM' + str(FM) + AT # + '_3T7T'
                 self.name_Init_from_CSFn = 'sE9_' + method + '_FM' + str(FM) + AT  
-                self.name_Thalmus_network = 'sE8_FM' + str(FM) + AT + '_1-THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
+                self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
 
         # tag = method + '_FM' + str(FM) + '_DO' + str(DO) + AT + SE.Tag    
