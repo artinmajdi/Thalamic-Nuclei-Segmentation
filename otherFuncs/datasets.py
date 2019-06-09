@@ -527,7 +527,7 @@ def preAnalysis(params):
 
         HardParams = params.WhichExperiment.HardParams
         
-        if 'Cascade' in HardParams.Model.Method.Type:          
+        if 'U-Net' in params.WhichExperiment.HardParams.Model.architectureType:    # 'Cascade' in HardParams.Model.Method.Type and 
             if params.WhichExperiment.Dataset.InputPadding.Automatic: 
                 inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
                 MinInputSize = np.min(inputSizes, axis=0)
@@ -541,8 +541,7 @@ def preAnalysis(params):
                 print('WARNING: INPUT IMAGE SIZE IS TOO SMALL FOR THE NUMBER OF LAYERS')
                 num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:dim],kernel_size) )) + 1))
                 print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
-
-            if 'FCN' not in params.WhichExperiment.HardParams.Model.architectureType:
+            
                 params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
         return params
 
