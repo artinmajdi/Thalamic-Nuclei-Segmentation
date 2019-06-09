@@ -527,7 +527,7 @@ def preAnalysis(params):
 
         HardParams = params.WhichExperiment.HardParams
         
-        if 'U-Net' in params.WhichExperiment.HardParams.Model.architectureType:    # 'Cascade' in HardParams.Model.Method.Type and 
+        if params.WhichExperiment.HardParams.Model.architectureType != 'FCN':    # 'Cascade' in HardParams.Model.Method.Type and 
             if params.WhichExperiment.Dataset.InputPadding.Automatic: 
                 inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
                 MinInputSize = np.min(inputSizes, axis=0)
