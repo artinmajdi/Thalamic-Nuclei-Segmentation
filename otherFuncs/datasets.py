@@ -542,7 +542,8 @@ def preAnalysis(params):
                 num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:dim],kernel_size) )) + 1))
                 print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
 
-            params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
+            if 'FCN' not in params.WhichExperiment.HardParams.Model.architectureType:
+                params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
         return params
 
     params = find_AllInputSizes(params)
