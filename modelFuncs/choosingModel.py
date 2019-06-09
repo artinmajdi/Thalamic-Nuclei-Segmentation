@@ -551,10 +551,6 @@ def architecture(ModelParam):
             return WB
                 
         inputs = KLayers.Input(input_shape)
-        # if LP.batchNormalization:  inputs = KLayers.BatchNormalization()(inputs)
-        # for nL in range(NLayers -1):  
-        #     if nL == 0: WB, Conv_Out = inputs , {}
-        #     WB, Conv_Out[nL+1] = Unet_sublayer_Contracting(WB, nL)
 
         WB, Conv_Out = Unet_sublayer_Contracting(inputs)
 
@@ -562,14 +558,11 @@ def architecture(ModelParam):
 
         WB = Unet_sublayer_Expanding(WB , Conv_Out)
 
-        # for nL in reversed(range(NLayers -1)):  
-        #     WB = Unet_sublayer_Expanding(WB, nL, Conv_Out)
-
         final = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
-
+    """
     def UNet2(ModelParam):  #  Conv -> BatchNorm -> Relu ) -> (Conv -> BatchNorm -> Relu)  -> Dropout -> maxpooling
                     
         TF = ModelParam.Transfer_Learning
@@ -777,6 +770,7 @@ def architecture(ModelParam):
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
+    """
     def UNet4(ModelParam):  #  Conv -> BatchNorm -> Relu ) -> (Conv -> BatchNorm -> Relu)  -> maxpooling  -> Dropout
                     
         TF = ModelParam.Transfer_Learning
@@ -905,10 +899,10 @@ def architecture(ModelParam):
         def CNN_Part(inputs):
             def main_USC(conv, nL):
                 trainable = False if TF.Mode and nL in TF.FrozenLayers else True
-                featureMaps = FM*(2**nL)
+                # featureMaps = FM*(2**nL)
 
-                conv = Layer(featureMaps, trainable, conv)
-                conv = Layer(featureMaps, trainable, conv)                                                                          
+                conv = Layer(FM, trainable, conv)
+                conv = Layer(FM, trainable, conv)                                                                          
                 if trainable: conv = KLayers.Dropout(DT.Value)(conv)                                  
                 return conv
             
@@ -1004,8 +998,6 @@ def architecture(ModelParam):
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
-
-
     """
     def CNN_Classifier(ModelParam):
         dim   = ModelParam.Method.InputImage2Dvs3D
@@ -1063,20 +1055,14 @@ def architecture(ModelParam):
     if  ModelParam.architectureType == 'U-Net':
         model = UNet(ModelParam)
     
-    elif  ModelParam.architectureType == 'U-Net2':
-        model = UNet2(ModelParam)
-
-    elif  ModelParam.architectureType == 'U-Net3':
-        model = UNet3(ModelParam)
-
     elif  ModelParam.architectureType == 'U-Net4':
         model = UNet4(ModelParam)
 
-    elif 'CNN_Classifier' in ModelParam.architectureType:
-        model = CNN_Classifier(ModelParam)
+    elif  ModelParam.architectureType == 'FCN':
+        model = FCN(ModelParam)
 
-    elif 'FCN_2D' in ModelParam.architectureType:
-        model = FCN_2D(ModelParam)
+    elif  ModelParam.architectureType == 'FCN_with_SkipConnection':
+        model = FCN_with_SkipConnection(ModelParam)
 
     model.summary()
 
