@@ -507,7 +507,7 @@ def func_WhichExperiment(UserInfo):
             if len(NucleusIndex) == 1 or not MultiClassMode:
                 NucleusName , _, _ = smallFuncs.NucleiSelection( NucleusIndex[0] )
             else:
-                NucleusName = ('MultiClass_' + str(NucleusIndex)).replace(', ','_').replace('[','').replace(']','')
+                NucleusName = ('MultiClass_' + str(NucleusIndex)).replace(', ','').replace('[','').replace(']','')
 
             return NucleusName
 
