@@ -62,8 +62,11 @@ class savingHistory_AsExcel:
                 address = Info.Experiment.address + '/models/' + self.subExperiment.name
                 A = set(os.listdir(address))
                 nuclei_List = nuclei_List.union(A)
+
+            nuclei_List = list(nuclei_List)
+            nuclei_List.sort()
             return nuclei_List
-            
+
         writer = pd.ExcelWriter(  Info.Experiment.address + '/results/All_LossAccForEpochs.xlsx', engine='xlsxwriter')
         
 
