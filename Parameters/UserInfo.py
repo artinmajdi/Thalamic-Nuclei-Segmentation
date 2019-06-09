@@ -58,7 +58,7 @@ class simulation:
     epochs        = 300
     GPU_Index     = "7"
     Learning_Rate = 1e-3
-    num_Layers    = 3    
+    num_Layers    = 6   
     nucleus_Index = [1,10] # ,5,6,7,8,9,10,11,12,13,14] # ,2,4]
     slicingDim    = [2] #[2,1,0]
     batch_size    = 100
