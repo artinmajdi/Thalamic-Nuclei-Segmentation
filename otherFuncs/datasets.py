@@ -552,6 +552,7 @@ def preAnalysis(params):
             if params.WhichExperiment.HardParams.Model.Upsample.Mode:
                 scale = params.WhichExperiment.HardParams.Model.Upsample.Scale                
                 params.WhichExperiment.HardParams.Model.num_Layers += int(np.log2(scale))
+                print('# after Upsampled   LAYERS =>    New :',params.WhichExperiment.HardParams.Model.num_Layers)
 
         return params
 
