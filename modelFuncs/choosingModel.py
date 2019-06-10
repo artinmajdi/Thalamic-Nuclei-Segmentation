@@ -497,7 +497,7 @@ def architecture(ModelParam):
 
     if ModelParam.Upsample.Mode:
         scale , szI = ModelParam.Upsample.Scale   ,  ModelParam.InputDimensions        
-        InDim_new = (szI[0] , scale*szI[1] , scale*szI[2] , 1)
+        InDim_new = (scale*szI[0] , scale*szI[1] , szI[2] , 1)
         input_shape = tuple(InDim_new[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
     else:
         input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
