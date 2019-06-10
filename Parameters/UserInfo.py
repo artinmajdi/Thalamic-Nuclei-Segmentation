@@ -1,6 +1,6 @@
 
 
-Model_Method = 'Cascade' #'mUnet' #'FCN_with_SkipConnection' # 'FCN' # 'HCascade' # 
+Model_Method = 'HCascade' #'mUnet' #'FCN_with_SkipConnection' # 'FCN' # 'HCascade' # 
 
 # Main = 7T (Ctrl&MS)
 # ET   = ET(7T + 3T)
@@ -26,7 +26,7 @@ TypeExperiment = 1
 # 4: (My_LogDice_Loss                 , 'My_LogDice_Loss'),
 # 5: (My_Joint_Loss                   , 'My_Joint_Loss'),     
 
-lossFunction_Index = 3 # 1
+lossFunction_Index = 1 # 1
 
 class normalize:
     Mode = True
@@ -48,7 +48,7 @@ DropoutValue = 0.3
 
 class SubExperiment:
     Index = 12
-    Tag   = '_zeroWeightFor0257' # '_equal_weights' '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
+    Tag   = '' # '_zeroWeightFor0257' _equal_weights' '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
     Mode_JustThis = False
   
 class InitializeB:
@@ -59,7 +59,7 @@ class InitializeB:
     From_CSFn      = False
 
 class upsample:
-    Mode = False
+    Mode = True
     Scale = 2
 
 class simulation:
@@ -72,7 +72,7 @@ class simulation:
     slicingDim    = [2] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 20
+    FirstLayer_FeatureMap_Num = 10
     verbose = 2
     Multiply_By_Thalmaus = False
     Multiply_By_Rest_For_AV = False

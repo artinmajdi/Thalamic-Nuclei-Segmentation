@@ -261,7 +261,7 @@ def func_Exp_subExp_Names(UserInfo):
         else: tag += '_SingleClass'
 
         if UserInfo['upsample'].Mode: tag += '_Upsampled' + str(UserInfo['upsample'].Scale)
-        # tag += '_normalize_On_AllSubjs'
+        # # tag += '_normalize_On_AllSubjs'
 
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)

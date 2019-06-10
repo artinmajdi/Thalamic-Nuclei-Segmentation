@@ -52,12 +52,14 @@ def testingExeriment(model, Data, params):
        
     def func_dice_name():
         if 'HCascade' in params.WhichExperiment.HardParams.Model.Method.Type: 
-            BB = smallFuncs.Nuclei_Class(1,'HCascade')
-            parent = BB.HCascade_Parents_Identifier(params.WhichExperiment.Nucleus.Index)
-            if len(parent) == 1: 
-                dice_tag = smallFuncs.Nuclei_Class(parent[0],'HCascade').name.replace('_ImClosed','')
-            else: 
-                dice_tag = str(parent)
+                                    
+            if 1.2 in params.WhichExperiment.Nucleus.Index:
+                dice_tag = 'All_Groups'                
+            else:
+                BB = smallFuncs.Nuclei_Class(1,'HCascade')
+                parent = BB.HCascade_Parents_Identifier(params.WhichExperiment.Nucleus.Index)
+                dice_tag = 'All_' + smallFuncs.Nuclei_Class(parent[0],'HCascade').name.replace('_ImClosed','')
+                
         else: 
             dice_tag = 'All'  
 
@@ -120,13 +122,16 @@ def testingExeriment(model, Data, params):
                 Dice = np.zeros((num_classes-1,2))
                 for cnt in range(num_classes-1):
 
+                    # ! where I added the concatenation for different masks
                     pred1N_BtO, Dice[cnt,:] = postProcessing(pred[...,cnt], DataSubj.OrigMask[...,cnt] , params.WhichExperiment.Nucleus.Index[cnt] )
+                    
+                    ALL_pred = np.concatenate( (ALL_pred , pred1N_BtO[...,np.newaxis]) , axis=3) if cnt > 0 else pred1N_BtO[...,np.newaxis]
 
                     dirSave, nucleusName = savingOutput(pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
                 
                 Dir_Dice = dirSave + '/Dice_' + dice_tag + '.txt' if params.WhichExperiment.HardParams.Model.MultiClass.Mode else dirSave + '/Dice_' + nucleusName + '.txt'
                 np.savetxt(Dir_Dice ,Dice,fmt='%1.1f %1.4f')
-                return pred1N_BtO
+                return ALL_pred
 
             def unPadding(im , pad):
                 sz = im.shape
@@ -144,7 +149,6 @@ def testingExeriment(model, Data, params):
                     im = im[pad[0][0]:sz[0]-pad[0][1] , pad[1][0]:sz[1]-pad[1][1] , pad[2][0]:sz[2]-pad[2][1],:]
 
                 return im
-
             
             def downsample_Mask(Mask , scale):
 
@@ -356,9 +360,9 @@ def trainingExperiment(Data, params):
                         NUM_SAMPLES = np.prod(sz[:3])
                         class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
 
-                # ! zero weight for foreground
-                for i in [0,2,5,7]: class_weights[i] = 0
-                # class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
+                # # ! zero weight for foreground
+                # for i in [0,2,5,7]: class_weights[i] = 0
+                # # class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
                 return class_weights
                 
             class_weights = func_class_weights()
@@ -452,25 +456,26 @@ def save_BoundingBox_Hierarchy(params, PRED):
     params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
     def save_BoundingBox(PreStageMask, subject, mode , dirr):
 
-        def cropBoundingBoxes(PreStageMask, dirr):
+        # def cropBoundingBoxes(PreStageMask, dirr):
 
-            def checkBordersOnBoundingBox(Sz , BB , gapS):
-                return [   [   np.max([BB[d][0]-gapS,0])  ,   np.min( [BB[d][1]+gapS,Sz[d]])   ]  for d in range(3) ]
+        def checkBordersOnBoundingBox(Sz , BB , gapS):
+            return [   [   np.max([BB[d][0]-gapS,0])  ,   np.min( [BB[d][1]+gapS,Sz[d]])   ]  for d in range(3) ]
 
-            # Thalamus_Mask_Dilated = dilateMask( PreStageMask, params.WhichExperiment.Dataset.gapDilation )
-            imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+        # Thalamus_Mask_Dilated = dilateMask( PreStageMask, params.WhichExperiment.Dataset.gapDilation )
+        imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+        if 'train' in mode: dirr += '/TrainData_Output'
 
-            BB = smallFuncs.findBoundingBox(PreStageMask)
+        for ch in range(PreStageMask.shape[3]):
+            BB = smallFuncs.findBoundingBox(PreStageMask[...,ch])
             BB = checkBordersOnBoundingBox(imF.shape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
             gapDilation = params.WhichExperiment.Dataset.gapDilation
             BBd = [  [BB[ii][0] - gapDilation , BB[ii][1] + gapDilation] for ii in range(len(BB))]
-            BBd = checkBordersOnBoundingBox(imF.shape , BBd , 0)
-            
-            if 'train' in mode: dirr += '/TrainData_Output'
+            BBd = checkBordersOnBoundingBox(imF.shape , BBd , 0)            
 
-            np.savetxt(dirr + '/' + subject.subjectName + '/BB_' + params.WhichExperiment.Nucleus.name + '.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')
+            nucleusName = smallFuncs.Nuclei_Class(index=params.WhichExperiment.Nucleus.Index[ch]).name
+            np.savetxt(dirr + '/' + subject.subjectName + '/BB_' + nucleusName + '.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')
 
-        cropBoundingBoxes(PreStageMask, dirr)
+            # cropBoundingBoxes(PreStageMask, dirr)
 
     nucleus = params.WhichExperiment.Nucleus.name
     def loop_Subjects(PRED, mode):
