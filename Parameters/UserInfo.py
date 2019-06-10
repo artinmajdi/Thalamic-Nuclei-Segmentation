@@ -52,7 +52,10 @@ class InitializeB:
     From_7T        = False
     From_CSFn      = False
 
-
+class upsample:
+    Mode = True
+    Scale = 2
+    
 class simulation:
     TestOnly      = False
     epochs        = 300

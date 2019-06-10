@@ -260,6 +260,7 @@ def func_Exp_subExp_Names(UserInfo):
         if UserInfo['simulation'].Multi_Class_Mode: tag += '_MultiClass'
         else: tag += '_SingleClass'
 
+        if UserInfo['upsample'].Mode: tag += '_Upsampled' + str(UserInfo['upsample'].Scale)
         # tag += '_normalize_On_AllSubjs'
 
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
@@ -358,6 +359,9 @@ def func_WhichExperiment(UserInfo):
                 mode = False
                 NumSubjects_Per_batch = 5
 
+            class upsample:
+                Mode = False
+                Scale = 2
             class model:
                 architectureType = 'U-Net'
                 epochs = ''
@@ -379,6 +383,7 @@ def func_WhichExperiment(UserInfo):
                 paddingErrorPatience = 20
                 Transfer_Learning = transfer_Learning()
                 DataGenerator = dataGenerator()
+                Upsample = upsample()
                 
                 
 
@@ -647,6 +652,7 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.DataGenerator = UserInfo['dataGenerator']()                
         HardParams.Model.Initialize    = UserInfo['InitializeB']
         HardParams.Model.architectureType = UserInfo['architectureType'] 
+        HardParams.Model.Upsample      = UserInfo['upsample']()
 
 
         HardParams.Model.loss, _ = LossFunction.LossInfo(UserInfo['lossFunction_Index'] ) 

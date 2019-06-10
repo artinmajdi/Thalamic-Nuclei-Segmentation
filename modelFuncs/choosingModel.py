@@ -26,7 +26,7 @@ from sklearn.utils import class_weight
 # import json
 from keras.preprocessing.image import ImageDataGenerator
 import modelFuncs.LossFunction as LossFunction
-
+from skimage.transform import AffineTransform , warp
 
 def check_Run(params, Data):
 
@@ -145,12 +145,33 @@ def testingExeriment(model, Data, params):
 
                 return im
 
+            
+            def downsample_Mask(Mask , scale):
+
+                szM = Mask.shape
+                
+                Mask3  = np.zeros( (szM[0] , int(szM[1]/scale) , int(szM[2]/scale) , szM[3])  )
+
+                newShape = int(szM[1]/scale) , int(szM[2]/scale)
+
+                tform = AffineTransform(scale=(1/scale, 1/scale))
+                for i in range(Mask3.shape[0]):
+                    for ch in range(Mask3.shape[3]):
+                        Mask3[i ,: ,: ,ch]  = warp( np.squeeze(Mask[i ,: ,: ,ch]) ,  tform.inverse, output_shape=newShape, order=0)
+                
+                return  Mask3
+
             im = DataSubj.Image.copy()
             predF = model.predict(im)
             # score = model.evaluate(DataSubj.Image, DataSubj.Mask)
             pred = predF[...,:num_classes-1]
-
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
+
+
+            if params.WhichExperiment.HardParams.Model.Upsample.Mode:
+                scale = params.WhichExperiment.HardParams.Model.Upsample.Scale
+                pred = downsample_Mask(pred , scale)
+           
             pred = np.transpose(pred,[1,2,0,3])
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
 

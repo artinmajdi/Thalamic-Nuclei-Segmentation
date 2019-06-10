@@ -14,6 +14,7 @@ from preprocess import applyPreprocess
 from scipy import ndimage
 # from shutil import copyfile
 import h5py
+from skimage.transform import AffineTransform , warp
 # import pickle
 # import skimage
 
@@ -88,21 +89,8 @@ def loadDataset(params):
             return np.pad(im, Padding2[:3], 'constant')
 
         if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
-            # subject.NewCropInfo.PadSizeBackToOrig
             BB = subject2.NewCropInfo.OriginalBoundingBox
             im = im[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]
-
-            # def save_4Nuclei_CroppedMask():
-            # im = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
-            # msk = nib.load(subject2.Label.address + '/' + subject2.Label.LabelProcessed.replace('ImClosed_','') + '_DifferentLabels.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
-            # a = smallFuncs.Nuclei_Class(1,'HCascade').HCascade_Parents_Identifier([params.UserInfo['simulation'].nucleus_Index])
-            # b = smallFuncs.Nuclei_Class(a[0],'HCascade').name
-            # im = nib.load(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
-            # msk = nib.load(subject2.Label.address + '/' + b.replace('_ImClosed','') + '_PProcessed_DifferentLabels.nii.gz').slicer[BB[0][0]:BB[0][1]    ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]  
-
-            # nib.save(im,'/array/ssd/msmajdi/experiments/'  + 'Image_' + subject2.Label.LabelProcessed.split('_ImClosed_PProcessed')[0] + '_Stage2.nii.gz' )
-            # nib.save(msk,'/array/ssd/msmajdi/experiments/' + 'Mask_'  + subject2.Label.LabelProcessed.split('_ImClosed_PProcessed')[0] + '_DiffLabels_Stage2.nii.gz' )
-            # print('----')
                         
         im = CroppingInput(im, subject2.Padding)
         # im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
@@ -162,8 +150,8 @@ def loadDataset(params):
         if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index and params.WhichExperiment.HardParams.Model.Method.Multiply_By_Thalmaus:
             im = func_Multiply_By_Thalmaus(im)
 
-        if 2 in params.WhichExperiment.Nucleus.Index and params.WhichExperiment.HardParams.Model.Method.Multiply_By_Rest_For_AV:
-            im = func_Multiply_By_NotAV(im)
+        # if 2 in params.WhichExperiment.Nucleus.Index and params.WhichExperiment.HardParams.Model.Method.Multiply_By_Rest_For_AV:
+        #     im = func_Multiply_By_NotAV(im)
 
         im = inputPreparationForUnet(im, subject2, params)
 
@@ -237,7 +225,6 @@ def loadDataset(params):
             Flag_notEmpty = params.directories.Train.Input.Subjects
             return (not Flag_TestOnly) and (Flag_TrainDice or Flag_cascadeMethod ) and Flag_notEmpty
         
-
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
 
         def save_hdf5_subject_List(h , Tag , List):
@@ -308,6 +295,30 @@ def loadDataset(params):
                         print('WARNING: subject: ',subject.subjectName,' padding error patience activated, Error:', np.min(subject.Padding))
                 return ErrorFlag
 
+            def upsample_Image(Image, Mask , scale):
+                szI = Image.shape
+                szM = Mask.shape
+                
+                Image3 = np.zeros( (szI[0] , scale*szI[1] , scale*szI[2] , szI[3])  )
+                Mask3  = np.zeros( (szM[0] , scale*szM[1] , scale*szM[2] , szM[3])  )
+
+                newShape = (2*szI[1] , 2*szI[2])
+
+                # for i in range(Image.shape[2]):
+                #     Image2[...,i] = scipy.misc.imresize(Image[...,i] ,size=newShape[:2] , interp='cubic')
+                #     Mask2[...,i]  = scipy.misc.imresize( (Mask[...,i] > 0.5).astype(np.float32) ,size=newShape[:2] , interp='bilinear')
+
+                tform = AffineTransform(scale=(scale, scale))
+                for i in range(Image.shape[0]):
+
+                    for ch in range(Image3.shape[3]):
+                        Image3[i ,: ,: ,ch] = warp( np.squeeze(Image[i ,: ,: ,ch]), tform.inverse, output_shape=newShape, order=3)
+
+                    for ch in range(Mask3.shape[3]):
+                        Mask3[i ,: ,: ,ch]  = warp( (np.squeeze(Mask[i ,: ,: ,ch]) > 0.5).astype(np.float32) ,  tform.inverse, output_shape=newShape, order=0)
+                
+                return Image3 , Mask3
+                
             Data = {}
             g1 = params.h5.create_group(mode)
             for nameSubject, subject in tqdm(Subjects.items(), desc='Loading ' + mode):
@@ -319,6 +330,11 @@ def loadDataset(params):
 
                 msk = msk>Th
                 origMsk = origMsk>Th
+
+                if params.WhichExperiment.HardParams.Model.Upsample.Mode:
+                    scale = params.WhichExperiment.HardParams.Model.Upsample.Scale
+                    im, msk = upsample_Image(im, msk , scale)    
+
 
                 if im[...,0].shape == msk[...,0].shape:
                     Data[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=(origMsk).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
@@ -406,17 +422,6 @@ def movingFromDatasetToExperiments(params):
     return True
 
 def preAnalysis(params):
-
-    # def saveUserParams(params):
-    #     params.UserInfo['simulation'].num_Layers = params.WhichExperiment.HardParams.Model.num_Layers
-    #     params.UserInfo['InputDimensions'] = params.WhichExperiment.HardParams.Model.InputDimensions
-    #     # print('InputDimensions', params.WhichExperiment.HardParams.Model.InputDimensions)
-    #     # print('num_Layers', params.WhichExperiment.HardParams.Model.num_Layers)
-
-    #     for sf in list(params.UserInfo):
-    #         if '__' in sf: params.UserInfo.__delitem__(sf)
-
-    #     smallFuncs.mkDir(params.directories.Train.Model)
 
     def find_PaddingValues(params):
 
@@ -543,6 +548,11 @@ def preAnalysis(params):
                 print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
             
                 params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
+
+            if params.WhichExperiment.HardParams.Model.Upsample.Mode:
+                scale = params.WhichExperiment.HardParams.Model.Upsample.Scale                
+                params.WhichExperiment.HardParams.Model.num_Layers += int(np.log2(scale))
+
         return params
 
     params = find_AllInputSizes(params)

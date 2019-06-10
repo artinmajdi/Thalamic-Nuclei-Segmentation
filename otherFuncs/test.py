@@ -1,44 +1,55 @@
 import nibabel as nib
 import numpy as np
-import nilearn
-import matplotlib.pyplot as plt
-import os, sys
+# import nilearn
+# import matplotlib.pyplot as plt
+# import os, sys
 from skimage import measure
-sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-import otherFuncs.smallFuncs as smallFuncs
-import Parameters.UserInfo as UserInfo
-import Parameters.paramFunc as paramFunc
-params = paramFunc.Run(UserInfo.__dict__, terminal=False)
+# sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+# import otherFuncs.smallFuncs as smallFuncs
+# import Parameters.UserInfo as UserInfo
+# import Parameters.paramFunc as paramFunc
+# params = paramFunc.Run(UserInfo.__dict__, terminal=False)
+from scipy import misc
+import skimage
 
 
-def cropImage_FromCoordinates(CropMask , Gap): 
-    BBCord = smallFuncs.findBoundingBox(CropMask>0.5)
+dir = '/home/artinl/Documents/vimp2_0944_07092014_SRI/'
 
-    d = np.zeros((3,2),dtype=np.int)
-    for ix in range(len(BBCord)):
-        d[ix,:] = [  BBCord[ix][0]-Gap[ix] , BBCord[ix][-1]+Gap[ix]  ]
-        d[ix,:] = [  max(d[ix,0],0)    , min(d[ix,1],CropMask.shape[ix])  ]
 
-    return d
+im = nib.load(dir + 'PProcessed.nii.gz')
+Image = im.get_data()
 
-mode = 'train'
-Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects
-for _, subject in Subjects.items():
-    
-    # subject = Subjects[list(Subjects)[0]]    
-    cropAV = nib.load(subject.Temp.address + '/CropMask_AV.nii.gz').get_data()
-    mskAV  = nib.load(subject.Label.address + '/2-AV_PProcessed.nii.gz').get_data()
+Mask = nib.load(dir + 'Label/1-THALAMUS_PProcessed.nii.gz').get_data()
 
-    
-    if np.sum(cropAV) > 0:
-        d = cropImage_FromCoordinates(cropAV , [0,0,0])  
+sz = Image.shape
+newShape =  (2*sz[0] , 2*sz[1]) + (sz[2],)  
 
-        mskAV_Crp = nib.load(subject.Label.address + '/2-AV_PProcessed.nii.gz').slicer[ d[0,0]:d[0,1], d[1,0]:d[1,1], d[2,0]:d[2,1] ]            
-        
-        a = np.sum(mskAV_Crp.get_data()) / np.sum(mskAV)
-        flag = 'Correct' if np.abs(1-a) < 0.001 else 'Clipped ' + str(a)
-        print(subject.subjectName  , '------- <' , flag , '>---')
-    else:
-        print(subject.subjectName  , 'zero mask')
-        # B = mskAV*(1-cropAV>0.5)
-        # print(np.unique(B))
+
+# Image2 = np.zeros(newShape)
+# Mask2 = np.zeros(newShape)
+# for i in range(Image.shape[2]):
+#     Image2[...,i] = misc.imresize(Image[...,i] ,size=newShape[:2] , interp='cubic')
+#     Mask2[...,i]  = misc.imresize( (Mask[...,i] > 0.5).astype(np.float32) ,size=newShape[:2] , interp='bilinear')
+
+sz = Image.shape
+newShape =  (2*sz[0] , 2*sz[1]) + (sz[2],)  
+
+Image3 = np.zeros(newShape)
+Mask3  = np.zeros(newShape)
+tform = skimage.transform.AffineTransform(scale=(2,2) )
+for i in range(Image.shape[2]):
+    Image3[...,i] = skimage.transform.warp( Image[...,i], tform.inverse, output_shape=newShape[:2], order=3)
+    Mask3[...,i]  = skimage.transform.warp( (Mask[...,i] > 0.5).astype(np.float32) ,  tform.inverse, output_shape=newShape[:2], order=0)
+
+
+# a = nib.viewers.OrthoSlicer3D(Image)
+a = nib.viewers.OrthoSlicer3D(Image , title='orig')
+b = nib.viewers.OrthoSlicer3D(Image2, title='Mask2')
+c = nib.viewers.OrthoSlicer3D(Image3, title='Mask3')
+
+a.link_to(b)
+a.link_to(c)
+a.show()
+# b.show()
+
+
