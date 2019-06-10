@@ -20,7 +20,13 @@ Model_Method = 'Cascade' #'mUnet' #'FCN_with_SkipConnection' # 'FCN' # 'HCascade
 # TypeExperiment == 14 # CSFn Init CSFn_THOMAS
 TypeExperiment = 1
 
-lossFunction_Index = 1 # 1
+# 1: (losses.binary_crossentropy      , 'Loss_BCE'),
+# 2: (losses.categorical_crossentropy , 'Loss_CCE'),
+# 3: (My_BCE_Loss                     , 'My_BCE_Loss'),
+# 4: (My_LogDice_Loss                 , 'My_LogDice_Loss'),
+# 5: (My_Joint_Loss                   , 'My_Joint_Loss'),     
+
+lossFunction_Index = 3 # 1
 
 class normalize:
     Mode = True
@@ -42,7 +48,7 @@ DropoutValue = 0.3
 
 class SubExperiment:
     Index = 12
-    Tag   = '' # '_equal_weights' '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
+    Tag   = '_zeroWeightFor0257' # '_equal_weights' '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
     Mode_JustThis = False
   
 class InitializeB:
@@ -53,7 +59,7 @@ class InitializeB:
     From_CSFn      = False
 
 class upsample:
-    Mode = True
+    Mode = False
     Scale = 2
 
 class simulation:
@@ -61,8 +67,8 @@ class simulation:
     epochs        = 300
     GPU_Index     = "7"
     Learning_Rate = 1e-3
-    num_Layers    = 6   
-    nucleus_Index = [1,2,4,5,6,7,14] # ,5,6,7,8,9,10,11,12,13,14] # ,2,4]
+    num_Layers    = 4 
+    nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] # ,2,4]
     slicingDim    = [2] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2

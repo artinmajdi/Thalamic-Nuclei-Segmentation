@@ -55,7 +55,7 @@ def testingExeriment(model, Data, params):
             BB = smallFuncs.Nuclei_Class(1,'HCascade')
             parent = BB.HCascade_Parents_Identifier(params.WhichExperiment.Nucleus.Index)
             if len(parent) == 1: 
-                dice_tag = smallFuncs.Nuclei_Class(parent,'HCascade').name
+                dice_tag = smallFuncs.Nuclei_Class(parent[0],'HCascade').name.replace('_ImClosed','')
             else: 
                 dice_tag = str(parent)
         else: 
@@ -357,7 +357,7 @@ def trainingExperiment(Data, params):
                         class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
 
                 # ! zero weight for foreground
-                # class_weights[0] = 0
+                class_weights[0,2,5,7] = 0
                 # class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
                 return class_weights
                 
