@@ -1,6 +1,6 @@
 
 
-Model_Method = 'HCascade' #'mUnet' #'FCN_with_SkipConnection' # 'FCN' # 'HCascade' # 
+Model_Method = 'Cascade' #'mUnet' #'FCN_with_SkipConnection' # 'FCN' # 'HCascade' # 
 
 # Main = 7T (Ctrl&MS)
 # ET   = ET(7T + 3T)
@@ -55,7 +55,7 @@ class InitializeB:
 class upsample:
     Mode = True
     Scale = 2
-    
+
 class simulation:
     TestOnly      = False
     epochs        = 300

@@ -495,6 +495,13 @@ def save_BoundingBox_Hierarchy(params, PRED):
 
 def architecture(ModelParam):
 
+    if ModelParam.Upsample.Mode:
+        scale , szI = ModelParam.Upsample.Scale   ,  ModelParam.InputDimensions        
+        InDim_new = (szI[0] , scale*szI[1] , scale*szI[2] , szI[3])
+        input_shape = tuple(InDim_new[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+    else:
+        input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+
     # ModelParam = params.WhichExperiment.HardParams.Model
     def UNet(ModelParam):  # BatchNorm -> (Conv ->  Relu ) -> (Conv -> Relu)  -> maxpooling  -> Dropout
         
@@ -505,7 +512,7 @@ def architecture(ModelParam):
         DT = ModelParam.Layer_Params.Dropout
         FM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
 
-        input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+        # input_shape = tuple(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
         padding     = ModelParam.Layer_Params.ConvLayer.padding
         NLayers     = ModelParam.num_Layers
         num_classes = ModelParam.MultiClass.num_classes
@@ -520,7 +527,7 @@ def architecture(ModelParam):
                 conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(WBp)
                 conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(conv)
 
-                if 1: # np.min(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) > 30: 
+                if 1: # np.min(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) > 30: 
                     pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)  
                     if DT.Mode and trainable: pool = KLayers.Dropout(DT.Value)(pool)  
                 else: 
@@ -544,7 +551,7 @@ def architecture(ModelParam):
 
                 if LP.batchNormalization:  WBp = KLayers.BatchNormalization()(WBp)
 
-                # if 1: #  np.min(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) > 30: 
+                # if 1: #  np.min(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) > 30: 
                 WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2,2), padding=padding, activation=AC.layers, trainable=trainable)(WBp)
                 UP = KLayers.merge.concatenate( [WBp, contracting_Info[nL+1]] , axis=3)
                 conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, activation=AC.layers, trainable=trainable)(UP)
@@ -594,7 +601,7 @@ def architecture(ModelParam):
         FM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
 
 
-        input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+        # input_shape = tuple(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
         padding     = ModelParam.Layer_Params.ConvLayer.padding
         NLayers     = ModelParam.num_Layers
         num_classes = ModelParam.MultiClass.num_classes
@@ -696,7 +703,7 @@ def architecture(ModelParam):
         DT = ModelParam.Layer_Params.Dropout
         FM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
 
-        input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+        # input_shape = tuple(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
         padding     = ModelParam.Layer_Params.ConvLayer.padding
         NLayers     = ModelParam.num_Layers
         num_classes = ModelParam.MultiClass.num_classes
@@ -802,7 +809,7 @@ def architecture(ModelParam):
         FM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
 
 
-        input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+        # input_shape = tuple(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
         padding     = ModelParam.Layer_Params.ConvLayer.padding
         NLayers     = ModelParam.num_Layers
         num_classes = ModelParam.MultiClass.num_classes
@@ -906,7 +913,7 @@ def architecture(ModelParam):
         FM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
 
 
-        input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+        # input_shape = tuple(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
         padding     = ModelParam.Layer_Params.ConvLayer.padding
         NLayers     = ModelParam.num_Layers
         num_classes = ModelParam.MultiClass.num_classes
@@ -951,7 +958,7 @@ def architecture(ModelParam):
         FM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
 
 
-        input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+        # input_shape = tuple(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
         padding     = ModelParam.Layer_Params.ConvLayer.padding
         NLayers     = ModelParam.num_Layers
         num_classes = ModelParam.MultiClass.num_classes
@@ -1022,7 +1029,7 @@ def architecture(ModelParam):
     """
     def CNN_Classifier(ModelParam):
         dim   = ModelParam.Method.InputImage2Dvs3D
-        input_shape= tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+        # input_shape= tuple(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
         model = kerasmodels.Sequential()
         model.add(KLayers.Conv2D(filters=16, kernel_size=ModelParam.kernel_size, padding=ModelParam.padding, activation=ModelParam.activitation, input_shape=input_shape  ))
         model.add(KLayers.MaxPooling2D(pool_size=ModelParam.Layer_Params.MaxPooling.pool_size))
@@ -1043,7 +1050,7 @@ def architecture(ModelParam):
 
         NumberFM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
         
-        input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+        # input_shape = tuple(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
         inputs = KLayers.Input( input_shape )
 
         conv = inputs
@@ -1059,7 +1066,7 @@ def architecture(ModelParam):
     def FCN_2D(ModelParam):
 
         NumberFM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
-        input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+        # input_shape = tuple(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
         inputs = KLayers.Input( input_shape )
 
         conv = inputs
