@@ -357,7 +357,7 @@ def trainingExperiment(Data, params):
                         class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
 
                 # ! zero weight for foreground
-                class_weights[0,2,5,7] = 0
+                for i in [0,2,5,7]: class_weights[i] = 0
                 # class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
                 return class_weights
                 
