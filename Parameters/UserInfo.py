@@ -1,6 +1,6 @@
 
 
-Model_Method = 'Cascade' #'mUnet' #'FCN_with_SkipConnection' # 'FCN' # 'HCascade' # 
+Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 
 
 # Main = 7T (Ctrl&MS)
 # ET   = ET(7T + 3T)
@@ -34,7 +34,7 @@ class normalize:
     per_Subject = True
     per_Dataset = False
 
-architectureType = 'U-Net4' # 'FCN_with_SkipConnection' # 'FCN' #  'U-Net' # 
+architectureType = 'FCN_with_SkipConnection' #'U-Net4' #  'FCN' #  'U-Net' # 
 
 class CrossVal:
     Mode = True
@@ -59,15 +59,15 @@ class InitializeB:
     From_CSFn      = False
 
 class upsample:
-    Mode = True
+    Mode = False
     Scale = 2
 
 class simulation:
-    TestOnly      = True
+    TestOnly      = False
     epochs        = 300
     GPU_Index     = "7"
     Learning_Rate = 1e-3
-    num_Layers    = 4 
+    num_Layers    = 3 
     nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] # ,2,4]
     slicingDim    = [2] #[2,1,0]
     batch_size    = 100
