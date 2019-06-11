@@ -360,7 +360,7 @@ def trainingExperiment(Data, params):
                         NUM_SAMPLES = np.prod(sz[:3])
                         class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
 
-                print(class_weights)
+                print('class_weights' , class_weights)
                 # # ! zero weight for foreground
                 # for i in [0,2,5,7]: class_weights[i] = 0
                 # # class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
