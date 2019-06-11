@@ -165,8 +165,9 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
-    Run(UserInfoB, IV)
+for UserInfoB['simulation'].num_Layers in [3 , 4]:
+    for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 20 , 30 , 40]:
+        Run(UserInfoB, IV)
 # Run(UserInfoB, IV)
 
 K.clear_session()
