@@ -126,15 +126,17 @@ class mergingDiceValues:
                     return Dice_Single
                 
                 def func_Search_Over_Multi_Class(Dice_Single):
-                    Dir_subject = self.subExperiment.address + '/' + self.subject + '/Dice_All.txt'
-                    if os.path.isfile(Dir_subject): 
-                        A = np.loadtxt(Dir_subject)
 
-                        if not isinstance(A[0],np.ndarray): 
-                            Dice_Single[smallFuncs.Nuclei_Class(index=A[0], method = 'HCascade').name] = math.ceil(  A[1]*1e3 )/1e3
-                        else:
-                            for id, nIx in enumerate(A[:,0]):
-                                Dice_Single[smallFuncs.Nuclei_Class(index=nIx, method = 'HCascade').name] = math.ceil(  A[id,1]*1e3 )/1e3
+                    for DiceTag in ['/Dice_All' , '/Dice_All_Groups' , '/Dice_All_Medial' , '/Dice_All_lateral' , '/Dice_All_posterior']:
+                        Dir_subject = self.subExperiment.address + '/' + self.subject + DiceTag + '.txt'
+                        if os.path.isfile(Dir_subject): 
+                            A = np.loadtxt(Dir_subject)
+
+                            if not isinstance(A[0],np.ndarray): 
+                                Dice_Single[smallFuncs.Nuclei_Class(index=A[0], method = 'HCascade').name] = math.ceil(  A[1]*1e3 )/1e3
+                            else:
+                                for id, nIx in enumerate(A[:,0]):
+                                    Dice_Single[smallFuncs.Nuclei_Class(index=nIx, method = 'HCascade').name] = math.ceil(  A[id,1]*1e3 )/1e3
 
                     return Dice_Single
 
