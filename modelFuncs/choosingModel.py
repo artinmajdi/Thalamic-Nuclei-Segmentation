@@ -107,7 +107,7 @@ def testingExeriment(model, Data, params):
             nucleusName, _ , _ = smallFuncs.NucleiSelection(NucleiIndex)
 
             smallFuncs.saveImage( pred1N_BtO , DataSubj.Affine, DataSubj.Header, dirSave + '/' + nucleusName + '.nii.gz')
-            print(dirSave)
+            # print(dirSave)
             return dirSave, nucleusName
 
         def applyPrediction():

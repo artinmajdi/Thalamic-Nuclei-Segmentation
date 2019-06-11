@@ -1,6 +1,6 @@
 
 
-Model_Method = 'HCascade' #'mUnet' #'FCN_with_SkipConnection' # 'FCN' # 'HCascade' # 
+Model_Method = 'Cascade' #'mUnet' #'FCN_with_SkipConnection' # 'FCN' # 'HCascade' # 
 
 # Main = 7T (Ctrl&MS)
 # ET   = ET(7T + 3T)
@@ -63,7 +63,7 @@ class upsample:
     Scale = 2
 
 class simulation:
-    TestOnly      = False
+    TestOnly      = True
     epochs        = 300
     GPU_Index     = "7"
     Learning_Rate = 1e-3
@@ -72,7 +72,7 @@ class simulation:
     slicingDim    = [2] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 10
+    FirstLayer_FeatureMap_Num = 20
     verbose = 2
     Multiply_By_Thalmaus = False
     Multiply_By_Rest_For_AV = False
