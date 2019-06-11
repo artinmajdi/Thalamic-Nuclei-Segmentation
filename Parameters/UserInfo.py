@@ -1,6 +1,6 @@
 
 
-Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 
+Model_Method = 'HCascade' #'mUnet' # 'HCascade' # 
 
 # Main = 7T (Ctrl&MS)
 # ET   = ET(7T + 3T)
@@ -34,7 +34,7 @@ class normalize:
     per_Subject = True
     per_Dataset = False
 
-architectureType = 'FCN_with_SkipConnection' #'U-Net4' #  'FCN' #  'U-Net' # 
+architectureType = 'U-Net4' #'FCN_with_SkipConnection' #  'FCN' 
 
 class CrossVal:
     Mode = True
@@ -59,7 +59,7 @@ class InitializeB:
     From_CSFn      = False
 
 class upsample:
-    Mode = False
+    Mode = True
     Scale = 2
 
 class simulation:
