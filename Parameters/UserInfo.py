@@ -1,7 +1,7 @@
 
 
-Model_Method = 'normal' # Cascade' #'mUnet' # 'HCascade' # 
-architectureType = 'FCN'  #'U-Net4' #'FCN_with_SkipConnection' #  
+Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
+architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #  
 
 
 # Main = 7T (Ctrl&MS)
