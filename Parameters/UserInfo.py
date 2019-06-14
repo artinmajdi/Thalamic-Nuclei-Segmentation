@@ -1,6 +1,8 @@
 
 
-Model_Method = 'HCascade' #'mUnet' # 'HCascade' # 
+Model_Method = 'normal' # Cascade' #'mUnet' # 'HCascade' # 
+architectureType = 'FCN'  #'U-Net4' #'FCN_with_SkipConnection' #  
+
 
 # Main = 7T (Ctrl&MS)
 # ET   = ET(7T + 3T)
@@ -34,7 +36,7 @@ class normalize:
     per_Subject = True
     per_Dataset = False
 
-architectureType = 'U-Net4' #'FCN_with_SkipConnection' #  'FCN' 
+
 
 class CrossVal:
     Mode = True
@@ -84,6 +86,7 @@ class simulation:
     Use_TestCases_For_Validation = True
     ImClosePrediction =  True # False #
     Multi_Class_Mode = True
+    LR_Scheduler = False
     
 
 class dataGenerator:

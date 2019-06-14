@@ -239,9 +239,16 @@ def trainingExperiment(Data, params):
         checkpointer = keras.callbacks.ModelCheckpoint(filepath= Dir_Save + '/best_model_weights' + A + '.h5', \
             monitor = 'val_mDice' , verbose=1, save_best_only=True, mode=mode)
 
-        Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = 'loss', factor=0.5, min_delta=0.005 , patience=4, verbose=1, \
-            save_best_only=True, mode='min' , min_lr=0.9e-4 , )
+        # Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = 'loss', factor=0.5, min_delta=0.005 , patience=4, verbose=1, \
+        #     save_best_only=True, mode='min' , min_lr=0.9e-4 , )
         
+        def step_decay_schedule(initial_lr=1e-2, decay_factor=0.5, step_size=70):
+            def schedule(epoch):
+                return initial_lr * (decay_factor ** np.floor(epoch/step_size))            
+            return keras.callbacks.LearningRateScheduler(schedule)
+        
+        Reduce_LR = step_decay_schedule()
+
         # Progbar = keras.callbacks.Progba
         EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=30, verbose=1, mode=mode, \
             baseline=0, restore_best_weights=True)
@@ -250,8 +257,9 @@ def trainingExperiment(Data, params):
         #     write_graph=False, write_grads=False, write_images=False, embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None, \
                 # embeddings_data=None, update_freq='epoch')
 
-        # if params.UserInfo()  
-        return [checkpointer  , EarlyStopping] # , Reduce_LR, TensorBoard , TQDMCallback()
+        
+        if params.UserInfo['simulation'].LR_Scheduler: return [checkpointer  , EarlyStopping , Reduce_LR]
+        else: return [checkpointer  , EarlyStopping] # TQDMCallback()
         
     def saveReport(DirSave, name , data, method):
 

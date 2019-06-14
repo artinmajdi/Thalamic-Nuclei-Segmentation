@@ -71,19 +71,19 @@ def Run(UserInfoB,InitValues):
             UserInfoB['simulation'].nucleus_Index = CC.child
             Run_Main(UserInfoB)
 
-    def Loop_All_Nuclei_wMultiClass(UserInfoB):
+    def Cascade_Loop(UserInfoB):
 
         if not UserInfoB['simulation'].Multi_Class_Mode:
             for UserInfoB['simulation'].nucleus_Index in InitValues.Nuclei_Indexes:
                 Run_Main(UserInfoB)
 
         else:
-            if (1 in UserInfoB['simulation'].nucleus_Index) and (UserInfoB['Model_Method'] != 'FCN'):
-                UserInfoB['simulation'].nucleus_Index = [1]
-                Run_Main(UserInfoB)
+            # if (1 in UserInfoB['simulation'].nucleus_Index) and (UserInfoB['Model_Method'] != 'FCN'):
+            UserInfoB['simulation'].nucleus_Index = [1]
+            Run_Main(UserInfoB)
 
-            BB = smallFuncs.Nuclei_Class(1,'HCascade')
-            UserInfoB['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(InitValues.Nuclei_Indexes)
+            BB = smallFuncs.Nuclei_Class(1,'Cascade')            
+            UserInfoB['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(list(BB.All_Nuclei().Indexes))
             Run_Main(UserInfoB)
 
     def Run_Main(UserInfoB):
@@ -149,9 +149,9 @@ def Run(UserInfoB,InitValues):
                 subRun(UserInfoB)
                  
     if   UserInfoB['Model_Method'] == 'HCascade':  HierarchicalStages_Multi_Class(UserInfoB)
-    elif UserInfoB['Model_Method'] == 'Cascade' :  Loop_All_Nuclei_wMultiClass(UserInfoB)
+    elif UserInfoB['Model_Method'] == 'Cascade' :  Cascade_Loop(UserInfoB)
     elif UserInfoB['Model_Method'] == 'singleRun': Run_Main(UserInfoB)
-    else: Loop_All_Nuclei_wMultiClass(UserInfoB)
+    else: Cascade_Loop(UserInfoB)
      
 def preMode(UserInfoB):
     UserInfoB = smallFuncs.terminalEntries(UserInfoB)

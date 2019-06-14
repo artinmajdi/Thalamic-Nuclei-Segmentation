@@ -261,6 +261,8 @@ def func_Exp_subExp_Names(UserInfo):
 
         if UserInfo['upsample'].Mode: tag += '_US' + str(UserInfo['upsample'].Scale)
 
+        if UserInfo['simulation'].LR_Scheduler: tag += '_wLRScheduler'
+        
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
         # print('Init From 3T Tag'  , A.name_Init_from_3T)

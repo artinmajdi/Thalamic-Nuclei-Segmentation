@@ -367,9 +367,21 @@ def terminalEntries(UserInfo):
             elif int(sys.argv[en+1]) == 3:
                 UserInfo['Model_Method'] = 'mUnet' 
             elif int(sys.argv[en+1]) == 4:
-                UserInfo['Model_Method'] = 'FCN' 
-            elif int(sys.argv[en+1]) == 5:
-                UserInfo['Model_Method'] = 'FCN_with_SkipConnection' 
+                UserInfo['Model_Method'] = 'normal' 
+                UserInfo['architectureType'] = 'FCN' 
+                
+            # elif int(sys.argv[en+1]) == 5:
+            #     UserInfo['Model_Method'] = 'FCN_with_SkipConnection' 
+                # UserInfo['architectureType'] = 'FCN_with_SkipConnection' 
+
+        elif entry.lower() in ('--scheduler'):
+            UserInfo['simulation'].LR_Scheduler = True 
+
+                
+            # elif int(sys.argv[en+1]) == 5:
+            #     UserInfo['Model_Method'] = 'FCN_with_SkipConnection' 
+                # UserInfo['architectureType'] = 'FCN_with_SkipConnection' 
+            
 
         elif entry.lower() in ('-ci','--CrossVal_Index'):
             UserInfo['CrossVal'].index = [sys.argv[en+1]]
