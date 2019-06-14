@@ -302,7 +302,7 @@ def loadDataset(params):
                 Image3 = np.zeros( (szI[0] , scale*szI[1] , scale*szI[2] , szI[3])  )
                 Mask3  = np.zeros( (szM[0] , scale*szM[1] , scale*szM[2] , szM[3])  )
 
-                newShape = (2*szI[1] , 2*szI[2])
+                newShape = (scale*szI[1] , scale*szI[2])
 
                 # for i in range(Image.shape[2]):
                 #     Image2[...,i] = scipy.misc.imresize(Image[...,i] ,size=newShape[:2] , interp='cubic')
@@ -541,19 +541,16 @@ def preAnalysis(params):
 
             kernel_size = HardParams.Model.Layer_Params.ConvLayer.Kernel_size.conv
             num_Layers  = HardParams.Model.num_Layers
-            dim = HardParams.Model.Method.InputImage2Dvs3D
-            if np.min(MinInputSize[:dim] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0:  # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size
-                print('WARNING: INPUT IMAGE SIZE IS TOO SMALL FOR THE NUMBER OF LAYERS')
-                num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:dim],kernel_size) )) + 1))
-                print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',num_Layers)
-            
-                params.WhichExperiment.HardParams.Model.num_Layers = num_Layers
 
             if params.WhichExperiment.HardParams.Model.Upsample.Mode:
-                scale = params.WhichExperiment.HardParams.Model.Upsample.Scale                
-                params.WhichExperiment.HardParams.Model.num_Layers += int(np.log2(scale))
-                print('# after Upsampled   LAYERS =>    New :',params.WhichExperiment.HardParams.Model.num_Layers)
+                MinInputSize = MinInputSize*params.WhichExperiment.HardParams.Model.Upsample.Scale                 
 
+            dim = HardParams.Model.Method.InputImage2Dvs3D
+            if np.min(MinInputSize[:dim] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0:  # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size                
+                params.WhichExperiment.HardParams.Model.num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:dim],kernel_size) )) + 1))
+                print('WARNING: INPUT IMAGE SIZE IS TOO SMALL FOR THE NUMBER OF LAYERS')
+                print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',params.WhichExperiment.HardParams.Model.num_Layers)
+            
         return params
 
     params = find_AllInputSizes(params)

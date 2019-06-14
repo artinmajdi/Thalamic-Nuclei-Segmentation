@@ -199,6 +199,8 @@ def temp_Experiments_preSet_V2(UserInfoB):
     # if UserInfoB['TypeExperiment'] == 13: UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_3Tp7T' # _WeightedClass'
     # if UserInfoB['TypeExperiment'] == 14: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_THOMAS_CSFn' 
 
+    if UserInfoB['upsample'].Scale == 1: UserInfoB['upsample'].Mode = False
+        
     return UserInfoB
 
 def Run(UserInfoB, terminal=False):
@@ -220,12 +222,13 @@ def func_Exp_subExp_Names(UserInfo):
 
     def func_subExperiment():
         
-        FM = UserInfo['simulation'].FirstLayer_FeatureMap_Num
+        FM = '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
         DO = UserInfo['DropoutValue']
         SE = UserInfo['SubExperiment']
-        NL = UserInfo['simulation'].num_Layers
-        AT =  '_' + UserInfo['architectureType']
+        NL = '_NL' + str(UserInfo['simulation'].num_Layers)
+        ACH =  '_' + UserInfo['architectureType']
         method = UserInfo['Model_Method']        
+
         # def field_Strength_Tag():
         #     if UserInfo['ReadTrain'].SRI:                                 return '_3T'    
         #     elif UserInfo['ReadTrain'].Main or UserInfo['ReadTrain'].ET:  return '_7T' 
@@ -237,37 +240,32 @@ def func_Exp_subExp_Names(UserInfo):
                 self.tag = tag
                 self.name_thalamus = ''            
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
-                self.name_Init_from_3T = 'sE8_' + method + '_FM' + str(FM) + AT 
-                #self.name_Init_from_7T = 'sE11_' + method + '_FM' + str(FM)
-                self.name_Init_from_7T = 'sE12_' + method + '_FM' + str(FM) + AT # + '_3T7T'
-                self.name_Init_from_CSFn = 'sE9_' + method + '_FM' + str(FM) + AT  
+                self.name_Init_from_3T    = 'sE8_'  + method + '_FM' + str(FM) + ACH + NL
+                self.name_Init_from_7T    = 'sE12_' + method + '_FM' + str(FM) + ACH + NL
+                self.name_Init_from_CSFn  = 'sE9_'  + method + '_FM' + str(FM) + ACH + NL  
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
-
-        # tag = method + '_FM' + str(FM) + '_DO' + str(DO) + AT + SE.Tag   
-        
-        tag = method + '_FM' + str(FM) + AT + SE.Tag
-        # if  'FCN' in UserInfo['architectureType']:
-        tag += '_NL' + str(NL) # '_' + UserInfo['normalize'].Method  
+       
+        tag = method + FM + ACH + NL + SE.Tag
+        # tag +=  '_' + UserInfo['normalize'].Method  
 
         if UserInfo['lossFunction_Index'] != 1: 
             _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
             tag += '_' + a
 
-        if not UserInfo['simulation'].Weighted_Class_Mode: tag += '_NotWeighted'
-        else: tag += '_Weighted'
+        # if not UserInfo['simulation'].Weighted_Class_Mode: tag += '_NotWeighted'
+        # else: tag += '_Weighted'
 
-        if UserInfo['simulation'].Multi_Class_Mode: tag += '_MultiClass'
-        else: tag += '_SingleClass'
+        # if UserInfo['simulation'].Multi_Class_Mode: tag += '_MultiClass'
+        # else: tag += '_SingleClass'
 
-        if UserInfo['upsample'].Mode: tag += '_Upsampled' + str(UserInfo['upsample'].Scale)
-        # # tag += '_normalize_On_AllSubjs'
+        if UserInfo['upsample'].Mode: tag += '_US' + str(UserInfo['upsample'].Scale)
 
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
-        print('Init From 3T Tag'  , A.name_Init_from_3T)
-        print('Init From 7T Tag'  , A.name_Init_from_7T)
-        print('Init From CSFn Tag', A.name_Init_from_CSFn)
+        # print('Init From 3T Tag'  , A.name_Init_from_3T)
+        # print('Init From 7T Tag'  , A.name_Init_from_7T)
+        # print('Init From CSFn Tag', A.name_Init_from_CSFn)
         return A
 
     def func_Experiment():

@@ -369,7 +369,7 @@ def trainingExperiment(Data, params):
             class_weights = func_class_weights()
             _, loss_tag = LossFunction.LossInfo(params.UserInfo['lossFunction_Index'])
 
-            if  'My_' in loss_tag: model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss(class_weights) , metrics=ModelParam.metrics)
+            if  'My' in loss_tag: model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss(class_weights) , metrics=ModelParam.metrics)
             else: model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
                 
             def func_modelParams():
@@ -401,7 +401,7 @@ def trainingExperiment(Data, params):
 
             def func_without_Generator():
                 # keras.backend.set_session(tf_debug.TensorBoardDebugWrapperSession(tf.Session(), "engr-bilgin01s:6064"))   
-                if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode and ('My_' not in loss_tag):                    
+                if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode and ('My' not in loss_tag):                    
                     # if Validation_fromKeras: hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_split=valSplit_Per                                , verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])                   
                     hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, class_weight=class_weights , batch_size=batch_size, epochs=epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Mask), verbose=verbose, callbacks=callbacks) # , callbacks=[TQDMCallback()])                        
                 else:                 

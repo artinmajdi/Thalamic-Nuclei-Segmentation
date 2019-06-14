@@ -9,11 +9,11 @@ import numpy as np
 
 def LossInfo(loss_Index):
     switcher = {
-        1: (losses.binary_crossentropy      , 'Loss_BCE'),
-        2: (losses.categorical_crossentropy , 'Loss_CCE'),
-        3: (My_BCE_Loss                     , 'My_BCE_Loss'),
-        4: (My_LogDice_Loss                 , 'My_LogDice_Loss'),
-        5: (My_Joint_Loss                   , 'My_Joint_Loss'),        
+        1: (losses.binary_crossentropy      , 'LS_BCE'),
+        2: (losses.categorical_crossentropy , 'LS_CCE'),
+        3: (My_BCE_Loss                     , 'LS_MyBCE'),
+        4: (My_LogDice_Loss                 , 'LS_MyLogDice'),
+        5: (My_Joint_Loss                   , 'LS_MyJoint'),        
     }
     return switcher.get(loss_Index, 'WARNING: Invalid loss function index')
 

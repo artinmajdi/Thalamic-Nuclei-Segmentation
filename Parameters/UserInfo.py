@@ -26,7 +26,7 @@ TypeExperiment = 1
 # 4: (My_LogDice_Loss                 , 'My_LogDice_Loss'),
 # 5: (My_Joint_Loss                   , 'My_Joint_Loss'),     
 
-lossFunction_Index = 1 # 1
+lossFunction_Index = 3
 
 class normalize:
     Mode = True
@@ -65,7 +65,7 @@ class upsample:
 class simulation:
     TestOnly      = False
     epochs        = 300
-    GPU_Index     = "7"
+    GPU_Index     = "5"
     Learning_Rate = 1e-3
     num_Layers    = 3 
     nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] # ,2,4]
