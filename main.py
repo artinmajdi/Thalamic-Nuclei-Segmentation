@@ -99,16 +99,16 @@ def Run(UserInfoB,InitValues):
             print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
             print('---------------------------------------------------------------')
 
-            if 1 in UserInfoB['simulation'].nucleus_Index:
-                input_model  = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name_Thalmus_network
-                output_model = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name
-                os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
+            # if 1 in UserInfoB['simulation'].nucleus_Index:
+            #     input_model  = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name_Thalmus_network
+            #     output_model = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name
+            #     os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
 
-                input_model  = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name_Thalmus_network
-                output_model = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name
-                os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
+            #     input_model  = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name_Thalmus_network
+            #     output_model = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name
+            #     os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
 
-            elif (1.4 in UserInfoB['simulation'].nucleus_Index) and (not UserInfoB['simulation'].Multi_Class_Mode):
+            if (1.4 in UserInfoB['simulation'].nucleus_Index) and (not UserInfoB['simulation'].Multi_Class_Mode):
                 def save_Anteior_BBox(params):
                     def cropBoundingBoxes(mode, subject):
 
