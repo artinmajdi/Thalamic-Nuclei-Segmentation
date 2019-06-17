@@ -179,25 +179,13 @@ def temp_Experiments_preSet_V2(UserInfoB):
     if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T_AllAugs' # _250epochs_Wo_LR_scheduler
     if UserInfoB['TypeExperiment'] == 3: UserInfoB['SubExperiment'].Tag = '_ET_Init_Main_AllAugs'
     if UserInfoB['TypeExperiment'] == 7: UserInfoB['SubExperiment'].Tag = '_ET_Init_Rn_AllAugs'
-    if UserInfoB['TypeExperiment'] == 8: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_Th'
-    if UserInfoB['TypeExperiment'] == 9: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_3T' 
+    if UserInfoB['TypeExperiment'] == 8: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_Th'
+    if UserInfoB['TypeExperiment'] == 9: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_3T' 
     if UserInfoB['TypeExperiment'] == 10: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_Main'
-    if UserInfoB['TypeExperiment'] == 11: UserInfoB['SubExperiment'].Tag = '_Main_Plus_3T_InitFrom_3T_NoSchedular'
+    if UserInfoB['TypeExperiment'] == 11: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_3T_NoSchedular'
     if UserInfoB['TypeExperiment'] == 12: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_3T' # _reversed_Contrast
     if UserInfoB['TypeExperiment'] == 13: UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_3Tp7T_NoSchedular' # _WeightedClass'
     if UserInfoB['TypeExperiment'] == 14: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_THOMAS_CSFn' 
-
-    # if UserInfoB['TypeExperiment'] == 5: UserInfoB['simulation'].TestOnly = True
-    # if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T' # _250epochs_Wo_LR_scheduler
-    # if UserInfoB['TypeExperiment'] == 3: UserInfoB['SubExperiment'].Tag = '_ET_Init_Main'
-    # if UserInfoB['TypeExperiment'] == 7: UserInfoB['SubExperiment'].Tag = '_ET_Init_Rn'
-    # if UserInfoB['TypeExperiment'] == 8: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_Th'
-    # if UserInfoB['TypeExperiment'] == 9: UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI_InitFrom_3T' 
-    # if UserInfoB['TypeExperiment'] == 10: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_Main'
-    # if UserInfoB['TypeExperiment'] == 11: UserInfoB['SubExperiment'].Tag = '_Main_Plus_3T_InitFrom_3T'
-    # if UserInfoB['TypeExperiment'] == 12: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_3T' # _reversed_Contrast
-    # if UserInfoB['TypeExperiment'] == 13: UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_3Tp7T' # _WeightedClass'
-    # if UserInfoB['TypeExperiment'] == 14: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_THOMAS_CSFn' 
 
     if UserInfoB['upsample'].Scale == 1: UserInfoB['upsample'].Mode = False
         
@@ -240,9 +228,9 @@ def func_Exp_subExp_Names(UserInfo):
                 self.tag = tag
                 self.name_thalamus = ''            
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
-                self.name_Init_from_3T    = 'sE8_'  + method + '_FM' + str(FM) + ACH + NL
-                self.name_Init_from_7T    = 'sE12_' + method + '_FM' + str(FM) + ACH + NL
-                self.name_Init_from_CSFn  = 'sE9_'  + method + '_FM' + str(FM) + ACH + NL  
+                self.name_Init_from_3T    = 'sE8_'  + method + FM + ACH + NL + '_LS_MyBCE'
+                self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + '_LS_MyBCE'
+                self.name_Init_from_CSFn  = 'sE9_'  + method + FM + ACH + NL + '_LS_MyBCE'  
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
        
