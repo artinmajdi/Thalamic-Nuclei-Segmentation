@@ -311,10 +311,11 @@ def trainingExperiment(Data, params):
                         
 
                 elif Initialize.From_3T and os.path.exists(TP.Model_3T + '/model_weights.h5'):
+                    print('-----' , TP.Model_3T + '/model_weights.h5')
                     try:
                         model.load_weights(TP.Model_3T + '/model_weights.h5')
                         print(' --- initialized from Model_3T' , TP.Model_3T)
-                    except: print('initialized from From_3T failed')
+                    except: print('initialized from 3T failed')
 
                 elif Initialize.From_7T and os.path.exists(TP.Model_7T + '/model_weights.h5'):
                     try:
