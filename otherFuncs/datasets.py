@@ -533,11 +533,15 @@ def preAnalysis(params):
         HardParams = params.WhichExperiment.HardParams
         
         if params.WhichExperiment.HardParams.Model.architectureType != 'FCN':    # 'Cascade' in HardParams.Model.Method.Type and 
-            if params.WhichExperiment.Dataset.InputPadding.Automatic: 
-                inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
-                MinInputSize = np.min(inputSizes, axis=0)
-            else:
-                MinInputSize = params.WhichExperiment.Dataset.InputPadding.HardDimensions
+
+            def func_MinInputSize(params):
+                if params.WhichExperiment.Dataset.InputPadding.Automatic: 
+                    inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
+                    return np.min(inputSizes, axis=0)
+                else:
+                    return params.WhichExperiment.Dataset.InputPadding.HardDimensions
+
+            MinInputSize = func_MinInputSize(params)
 
             kernel_size = HardParams.Model.Layer_Params.ConvLayer.Kernel_size.conv
             num_Layers  = HardParams.Model.num_Layers
@@ -548,10 +552,12 @@ def preAnalysis(params):
 
             params.WhichExperiment.HardParams.Model.num_Layers_changed = False
             dim = HardParams.Model.Method.InputImage2Dvs3D
-            if np.min(MinInputSize[:dim] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0:  # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size                
+            
+            # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size                
+            if np.min(MinInputSize[:dim] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0: 
                 params.WhichExperiment.HardParams.Model.num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:dim],kernel_size) )) + 1))
                 print('WARNING: INPUT IMAGE SIZE IS TOO SMALL FOR THE NUMBER OF LAYERS')
-                print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',params.WhichExperiment.HardParams.Model.num_Layers)
+                print('# LAYERS  OLD:',num_Layers  ,  ' =>  NEW:',params.WhichExperiment.HardParams.Model.num_Layers)
                 params.WhichExperiment.HardParams.Model.num_Layers_changed = True
             
         return params
