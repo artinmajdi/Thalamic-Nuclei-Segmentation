@@ -106,7 +106,7 @@ def Run(UserInfoB, InitValues):
                 
             def print_func(UserInfoB, params):
                 print('---------------------------------------------------------------')
-                print(' Nucleus:', NI  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',sd, \
+                print(' Nucleus:', NI  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
                     ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
                     ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num)
 
