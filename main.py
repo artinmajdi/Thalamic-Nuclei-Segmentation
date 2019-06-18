@@ -183,6 +183,7 @@ IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation']
 
 
 UserInfoB['simulation'].num_Layers = 5
+UserInfoB['upsample'].Scale  = 2
 Run(UserInfoB, IV)
 
 # for UserInfoB['simulation'].num_Layers in [2 , 3 , 4]:
