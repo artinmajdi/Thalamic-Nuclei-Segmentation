@@ -158,7 +158,7 @@ def Run(UserInfoB, InitValues):
         def Loop_slicing_orientations(UserInfoB, InitValues):
             for sd in InitValues.slicingDim:            
                 print('+++++++++   NI  ++++++++++' , NI)
-                if not (sd == 0 and NI == 1):                    
+                if not (sd == 0 and NI == [1]):                    
                     UserInfoB['simulation'].slicingDim = [sd]
                     subRun(UserInfoB)
 
