@@ -182,7 +182,7 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
 
-UserInfoB['simulation'].num_Layers = 20
+UserInfoB['simulation'].num_Layers = 5
 Run(UserInfoB, IV)
 
 # for UserInfoB['simulation'].num_Layers in [2 , 3 , 4]:
