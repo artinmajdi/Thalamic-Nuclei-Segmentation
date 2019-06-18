@@ -30,13 +30,6 @@ class InitValues:
 def Run(UserInfoB, InitValues):
     
     MM = UserInfoB['Model_Method']
-    def print_FullExp(IV):
-        print('---------------------------------------------------------------')
-        print('Full Experiment Info')
-        print('slicingDim' , IV.slicingDim , 'Nuclei_Indexes' , IV.Nuclei_Indexes , 'GPU:  ', UserInfoB['simulation'].GPU_Index, UserInfoB['Model_Method'] , '\n')
-        print('---------------------------------------------------------------')
-
-    print_FullExp(InitValues)
 
     def HierarchicalStages_single_Class(UserInfoB):
 
@@ -108,7 +101,7 @@ def Run(UserInfoB, InitValues):
                 print('---------------------------------------------------------------')
                 print(' Nucleus:', NI  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
                     ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
-                    ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num)
+                    ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale , '|  slicingDim' , IV.slicingDim[0])
 
                 print('Experiment:', params.WhichExperiment.Experiment.name)                              
                 print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
@@ -148,8 +141,8 @@ def Run(UserInfoB, InitValues):
             params = paramFunc.Run(UserInfoB, terminal=False)
             print_func(UserInfoB, params)
 
-            if (NI == [1]) and ('sE8' in params.WhichExperiment.SubExperiment.name): func_copy_Thalamus_preds(params)            
-            elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
+            # if (NI == [1]) and ('sE8' in params.WhichExperiment.SubExperiment.name): func_copy_Thalamus_preds(params)            
+            if (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
             else: 
                 temp_params = preAnalysis(params)
                 if not temp_params.WhichExperiment.HardParams.Model.num_Layers_changed: 
@@ -177,29 +170,32 @@ def preMode(UserInfoB):
     K = smallFuncs.gpuSetting(params.WhichExperiment.HardParams.Machine.GPU_Index)
     return UserInfoB, K
 
+def loop_fine_tuning(UserInfoB):
+    for UserInfoB['simulation'].num_Layers in [2 , 3 , 4]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
+            for UserInfoB['upsample'].Scale in [1 , 2 , 4]:
+                Run(UserInfoB, IV)
+
+                
+    for UserInfoB['upsample'].Scale in [2 , 4]:
+        for UserInfoB['simulation'].num_Layers in [5]:
+            for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
+                Run(UserInfoB, IV)
+
+    for UserInfoB['upsample'].Scale in [4]:
+        for UserInfoB['simulation'].num_Layers in [6]:
+            for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
+                Run(UserInfoB, IV)
+
+
 UserInfoB, K = preMode(UserInfo.__dict__)
 
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
 
-# UserInfoB['simulation'].num_Layers = 5
-# UserInfoB['upsample'].Scale  = 2
-# Run(UserInfoB, IV)
+Run(UserInfoB, IV)
 
-for UserInfoB['simulation'].num_Layers in [2 , 3 , 4]:
-    for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
-        for UserInfoB['upsample'].Scale in [1 , 2 , 4]:
-            Run(UserInfoB, IV)
+# loop_fine_tuning(UserInfoB)
 
-            
-for UserInfoB['upsample'].Scale in [2 , 4]:
-    for UserInfoB['simulation'].num_Layers in [5]:
-        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
-            Run(UserInfoB, IV)
-
-for UserInfoB['upsample'].Scale in [4]:
-    for UserInfoB['simulation'].num_Layers in [6]:
-        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
-            Run(UserInfoB, IV)
 
 K.clear_session()

@@ -62,7 +62,7 @@ class InitializeB:
 
 class upsample:
     Mode = True
-    Scale = 2
+    Scale = 1
 
 class simulation:
     TestOnly      = False
@@ -135,7 +135,7 @@ class preprocess:
 
 AugmentMode = False
 Augment_LinearMode = True
-Augment_Linear_Length = 6
+Augment_Linear_Length = 2
 
 class Augment_Rotation:
     Mode = True
