@@ -125,7 +125,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
             class ReadTrainC:
                 def __init__(self, SRI=0 , ET=0 , Main=0 , CSFn=0):   
                     # class readAugments: Mode, Tag, LoadAll = False, '', False  # temp
-                    class readAugments: Mode, Tag, LoadAll = False, '', False
+                    class readAugments: Mode, Tag, LoadAll = True, '', False
                     self.SRI  = SRI  > 0.5
                     self.ET   = ET   > 0.5
                     self.Main = Main > 0.5
@@ -187,7 +187,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
     if UserInfoB['TypeExperiment'] == 13: UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_3Tp7T_NoSchedular' # _WeightedClass'
     if UserInfoB['TypeExperiment'] == 14: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_THOMAS_CSFn' 
 
-    if UserInfoB['upsample'].Scale == 1: UserInfoB['upsample'].Mode = False
+    # if UserInfoB['upsample'].Scale == 1: UserInfoB['upsample'].Mode = False
         
     return UserInfoB
 
