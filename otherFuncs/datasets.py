@@ -377,13 +377,13 @@ def loadDataset(params):
         return DataAll
 
     params = preAnalysis(params)
-    print( 'InputDimensions' , params.WhichExperiment.HardParams.Model.InputDimensions )
     
     smallFuncs.mkDir(params.directories.Test.Result)
     params.h5 = h5py.File(params.directories.Test.Result + '/Data.hdf5','w')
     Data = main_ReadingDataset(params)
     params.h5.close()
     # saveHDf5(Data)
+
 
     return Data, params
 
@@ -545,11 +545,14 @@ def preAnalysis(params):
             if params.WhichExperiment.HardParams.Model.Upsample.Mode:
                 MinInputSize = MinInputSize*params.WhichExperiment.HardParams.Model.Upsample.Scale                 
 
+
+            params.WhichExperiment.HardParams.Model.num_Layers_changed = False
             dim = HardParams.Model.Method.InputImage2Dvs3D
             if np.min(MinInputSize[:dim] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0:  # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size                
                 params.WhichExperiment.HardParams.Model.num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:dim],kernel_size) )) + 1))
                 print('WARNING: INPUT IMAGE SIZE IS TOO SMALL FOR THE NUMBER OF LAYERS')
                 print('# LAYERS  OLD:',HardParams.Model.num_Layers  ,  ' =>  NEW:',params.WhichExperiment.HardParams.Model.num_Layers)
+                params.WhichExperiment.HardParams.Model.num_Layers_changed = True
             
         return params
 
