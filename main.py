@@ -182,21 +182,23 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
 
+UserInfoB['simulation'].num_Layers = [20]
+Run(UserInfoB, IV)
 
-for UserInfoB['simulation'].num_Layers in [2 , 3 , 4]:
-    for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
-        for UserInfoB['upsample'].Scale in [2 , 1 , 4]:
-            Run(UserInfoB, IV)
+# for UserInfoB['simulation'].num_Layers in [2 , 3 , 4]:
+#     for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
+#         for UserInfoB['upsample'].Scale in [2 , 1 , 4]:
+#             Run(UserInfoB, IV)
 
             
-for UserInfoB['upsample'].Scale in [2 , 4]:
-    for UserInfoB['simulation'].num_Layers in [5]:
-        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
-            Run(UserInfoB, IV)
+# for UserInfoB['upsample'].Scale in [2 , 4]:
+#     for UserInfoB['simulation'].num_Layers in [5]:
+#         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
+#             Run(UserInfoB, IV)
 
-for UserInfoB['upsample'].Scale in [4]:
-    for UserInfoB['simulation'].num_Layers in [6]:
-        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
-            Run(UserInfoB, IV)
+# for UserInfoB['upsample'].Scale in [4]:
+#     for UserInfoB['simulation'].num_Layers in [6]:
+#         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
+#             Run(UserInfoB, IV)
 
 K.clear_session()
