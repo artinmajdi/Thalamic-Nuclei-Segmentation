@@ -172,19 +172,19 @@ def preMode(UserInfoB):
 
 def loop_fine_tuning(UserInfoB):
     for UserInfoB['simulation'].num_Layers in [2 , 3 , 4]:
-        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
             for UserInfoB['upsample'].Scale in [1 , 2 , 4]:
                 Run(UserInfoB, IV)
 
                 
     for UserInfoB['upsample'].Scale in [2 , 4]:
         for UserInfoB['simulation'].num_Layers in [5]:
-            for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
+            for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
                 Run(UserInfoB, IV)
 
     for UserInfoB['upsample'].Scale in [4]:
         for UserInfoB['simulation'].num_Layers in [6]:
-            for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
+            for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
                 Run(UserInfoB, IV)
 
 
