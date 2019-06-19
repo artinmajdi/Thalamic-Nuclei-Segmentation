@@ -165,13 +165,7 @@ def Run(UserInfoB, InitValues):
 
             if (NI == [1]) and ('sE8' in params.WhichExperiment.SubExperiment.name): func_copy_Thalamus_preds(params)            
             elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
-            else: 
-                # temp_params = preAnalysis(params)
-                # print('**************************')
-                # print('#layers changed' , temp_params.WhichExperiment.HardParams.Model.num_Layers_changed)
-                # print('#layer',temp_params.WhichExperiment.HardParams.Model.num_Layers)
-                # if not temp_params.WhichExperiment.HardParams.Model.num_Layers_changed: 
-                normal_run(params)
+            else: normal_run(params)
 
         def Loop_slicing_orientations(UserInfoB, InitValues):
             for sd in InitValues.slicingDim:            
@@ -208,7 +202,7 @@ def Run_tryExcept(UserInfoB, IV):
 def loop_fine_tuning(UserInfoB):
 
     for UserInfoB['upsample'].Scale in [1 , 2 , 4]:
-        for UserInfoB['simulation'].num_Layers in [2 , 3 , 4]:
+        for UserInfoB['simulation'].num_Layers in [3 , 4]:
             for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:            
                 Run_tryExcept(UserInfoB, IV)
                 
