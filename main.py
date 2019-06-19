@@ -209,7 +209,7 @@ def loop_fine_tuning(UserInfoB):
 
 
 def loop_fine_tuning2(UserInfoB):
-    
+
     for UserInfoB['upsample'].Scale in [2 , 4]:
         for UserInfoB['simulation'].num_Layers in [5]:
             for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
@@ -229,7 +229,9 @@ IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation']
 # UserInfoB['simulation'].num_Layers = 10
 # Run(UserInfoB, IV)
 
-loop_fine_tuning(UserInfoB)
+# loop_fine_tuning(UserInfoB)
+
+loop_fine_tuning2(UserInfoB)
 
 
 K.clear_session()
