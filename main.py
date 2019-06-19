@@ -141,12 +141,12 @@ def Run(UserInfoB, InitValues):
             params = paramFunc.Run(UserInfoB, terminal=False)
             print_func(UserInfoB, params)
 
-            if (NI == [1]) and ('sE8' in params.WhichExperiment.SubExperiment.name): func_copy_Thalamus_preds(params)            
-            elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
-            else: 
-                temp_params = preAnalysis(params)
-                if not temp_params.WhichExperiment.HardParams.Model.num_Layers_changed: 
-                    normal_run(params)
+            temp_params = preAnalysis(params)
+            if not temp_params.WhichExperiment.HardParams.Model.num_Layers_changed: 
+
+                if (NI == [1]) and ('sE8' in params.WhichExperiment.SubExperiment.name): func_copy_Thalamus_preds(params)            
+                elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
+                else: normal_run(params)
 
         def Loop_slicing_orientations(UserInfoB, InitValues):
             for sd in InitValues.slicingDim:            
