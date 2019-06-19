@@ -50,7 +50,7 @@ def Run(UserInfoB, InitValues):
 
     def HierarchicalStages_Multi_Class(UserInfoB):
 
-        BB = smallFuncs.Nuclei_Class(1,'HCascade')
+        # BB = smallFuncs.Nuclei_Class(1,'HCascade')
 
         print('************ stage 1 ************')
         if 1 in InitValues.Nuclei_Indexes: 
@@ -141,8 +141,8 @@ def Run(UserInfoB, InitValues):
             params = paramFunc.Run(UserInfoB, terminal=False)
             print_func(UserInfoB, params)
 
-            # if (NI == [1]) and ('sE8' in params.WhichExperiment.SubExperiment.name): func_copy_Thalamus_preds(params)            
-            if (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
+            if (NI == [1]) and ('sE8' in params.WhichExperiment.SubExperiment.name): func_copy_Thalamus_preds(params)            
+            elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
             else: 
                 temp_params = preAnalysis(params)
                 if not temp_params.WhichExperiment.HardParams.Model.num_Layers_changed: 
@@ -150,7 +150,6 @@ def Run(UserInfoB, InitValues):
 
         def Loop_slicing_orientations(UserInfoB, InitValues):
             for sd in InitValues.slicingDim:            
-                print('+++++++++   NI  ++++++++++' , NI)
                 if not (sd == 0 and NI == [1]):                    
                     UserInfoB['simulation'].slicingDim = [sd]
                     subRun(UserInfoB)
@@ -171,11 +170,11 @@ def preMode(UserInfoB):
     return UserInfoB, K
 
 def loop_fine_tuning(UserInfoB):
-    for UserInfoB['simulation'].num_Layers in [2 , 3 , 4]:
-        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
-            for UserInfoB['upsample'].Scale in [1 , 2 , 4]:
-                Run(UserInfoB, IV)
 
+    for UserInfoB['upsample'].Scale in [1 , 2 , 4]:
+        for UserInfoB['simulation'].num_Layers in [2 , 3 , 4]:
+            for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:            
+                Run(UserInfoB, IV)
                 
     for UserInfoB['upsample'].Scale in [2 , 4]:
         for UserInfoB['simulation'].num_Layers in [5]:
@@ -193,6 +192,7 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
 
+UserInfoB['simulation'].num_Layers in [10]
 Run(UserInfoB, IV)
 
 # loop_fine_tuning(UserInfoB)

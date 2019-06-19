@@ -215,6 +215,8 @@ def func_Exp_subExp_Names(UserInfo):
         SE = UserInfo['SubExperiment']
         NL = '_NL' + str(UserInfo['simulation'].num_Layers)
         ACH =  '_' + UserInfo['architectureType']
+        _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
+        LF = '_' + a
         method = UserInfo['Model_Method']        
 
         # def field_Strength_Tag():
@@ -234,12 +236,12 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
        
-        tag = method + FM + ACH + NL + SE.Tag
+        tag = method + FM + ACH + NL + LF + SE.Tag
         # tag +=  '_' + UserInfo['normalize'].Method  
 
-        if UserInfo['lossFunction_Index'] != 1: 
-            _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
-            tag += '_' + a
+        # if UserInfo['lossFunction_Index'] != 1: 
+        #     _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
+        # tag += '_' + LF
 
         # if not UserInfo['simulation'].Weighted_Class_Mode: tag += '_NotWeighted'
         # else: tag += '_Weighted'
@@ -253,9 +255,10 @@ def func_Exp_subExp_Names(UserInfo):
         
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
-        print('Init From 3T Tag'  , A.name_Init_from_3T)
-        # print('Init From 7T Tag'  , A.name_Init_from_7T)
-        # print('Init From CSFn Tag', A.name_Init_from_CSFn)
+        print('Initialize Tags:  ')
+        print('    Init From 3T Tag'  , A.name_Init_from_3T)
+        print('    Init From 7T Tag'  , A.name_Init_from_7T)
+        print('    Init From CSFn Tag', A.name_Init_from_CSFn)
         return A
 
     def func_Experiment():

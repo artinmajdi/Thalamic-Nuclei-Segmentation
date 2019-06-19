@@ -70,7 +70,7 @@ class simulation:
     GPU_Index     = "5"
     Learning_Rate = 1e-3
     num_Layers    = 3 
-    nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] # ,2,4]
+    nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14] # ,2,4]
     slicingDim    = [2] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2
@@ -85,7 +85,7 @@ class simulation:
     Use_Coronal_Thalamus_InSagittal = True
     Use_TestCases_For_Validation = True
     ImClosePrediction =  True # False #
-    Multi_Class_Mode = False
+    Multi_Class_Mode = True
     LR_Scheduler = False
     
 
