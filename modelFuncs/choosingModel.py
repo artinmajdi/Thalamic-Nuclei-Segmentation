@@ -250,7 +250,7 @@ def trainingExperiment(Data, params):
         Reduce_LR = step_decay_schedule()
 
         # Progbar = keras.callbacks.Progba
-        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=30, verbose=1, mode=mode, \
+        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=20, verbose=1, mode=mode, \
             baseline=0, restore_best_weights=True)
 
         # TensorBoard = keras.callbacks.TensorBoard(log_dir= Dir_Save + '/logs', histogram_freq=1, batch_size=batch_size, \
