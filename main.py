@@ -29,8 +29,25 @@ class InitValues:
                 
 def Run(UserInfoB, InitValues):
     
+
     MM = UserInfoB['Model_Method']
 
+    def check_if_num_Layers_fit(UserInfoB):
+        def print_func2(UserInfoB, params):
+            print('---------------------- check Layers Step ------------------------------')
+            print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
+                ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
+                ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale , '|  slicingDim' , UserInfoB['simulation'].slicingDim[0])
+
+            print('#layers changed' , temp_params.WhichExperiment.HardParams.Model.num_Layers_changed)
+            print('#layer',temp_params.WhichExperiment.HardParams.Model.num_Layers)                                        
+            print('---------------------------------------------------------------')                
+
+        temp_params = paramFunc.Run(UserInfoB, terminal=False)
+        temp_params = preAnalysis(temp_params)
+        print_func2(UserInfoB, temp_params)
+        return temp_params.WhichExperiment.HardParams.Model.num_Layers_changed
+        
     def HierarchicalStages_single_Class(UserInfoB):
 
         BB = smallFuncs.Nuclei_Class(1,'HCascade')
@@ -53,19 +70,22 @@ def Run(UserInfoB, InitValues):
         # BB = smallFuncs.Nuclei_Class(1,'HCascade')
 
         print('************ stage 1 ************')
-        if 1 in InitValues.Nuclei_Indexes: 
-            UserInfoB['simulation'].nucleus_Index = [1]
+        # if 1 in InitValues.Nuclei_Indexes: 
+        UserInfoB['simulation'].nucleus_Index = [1]
+        if not check_if_num_Layers_fit(UserInfoB):
             Run_Main(UserInfoB)
 
-        print('************ stage 2 ************')                    
-        UserInfoB['simulation'].nucleus_Index = [1.1, 1.2, 1.3, 2]
-        Run_Main(UserInfoB)
+            print('************ stage 2 ************')                    
+            UserInfoB['simulation'].nucleus_Index = [1.1, 1.2, 1.3, 2]
+            if not check_if_num_Layers_fit(UserInfoB):
+                Run_Main(UserInfoB)
 
-        print('************ stage 3 ************')
-        for parent in [1.1, 1.2, 1.3]:
-            CC = smallFuncs.Nuclei_Class(parent,'HCascade')
-            UserInfoB['simulation'].nucleus_Index = CC.child
-            Run_Main(UserInfoB)
+                print('************ stage 3 ************')
+                for parent in [1.1, 1.2, 1.3]:
+                    CC = smallFuncs.Nuclei_Class(parent,'HCascade')
+                    UserInfoB['simulation'].nucleus_Index = CC.child
+                    if not check_if_num_Layers_fit(UserInfoB):
+                        Run_Main(UserInfoB)
 
     def Loop_Over_Nuclei(UserInfoB):
 
@@ -74,23 +94,7 @@ def Run(UserInfoB, InitValues):
                 Run_Main(UserInfoB)
 
         else:
-            
-            def check_if_num_Layers_fit(UserInfoB):
-                def print_func2(UserInfoB, params):
-                    print('---------------------- check Layers Step ------------------------------')
-                    print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
-                        ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
-                        ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale , '|  slicingDim' , UserInfoB['simulation'].slicingDim[0])
-
-                    print('#layers changed' , temp_params.WhichExperiment.HardParams.Model.num_Layers_changed)
-                    print('#layer',temp_params.WhichExperiment.HardParams.Model.num_Layers)                                        
-                    print('---------------------------------------------------------------')                
-
-                params = paramFunc.Run(UserInfoB, terminal=False)
-                temp_params = preAnalysis(params)
-                print_func2(UserInfoB, params)
-                return temp_params.WhichExperiment.HardParams.Model.num_Layers_changed
-          
+                      
             UserInfoB['simulation'].nucleus_Index = [1]
             if not check_if_num_Layers_fit(UserInfoB): 
                 Run_Main(UserInfoB)
