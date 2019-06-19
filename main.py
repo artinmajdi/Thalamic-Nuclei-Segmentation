@@ -84,11 +84,13 @@ def Run(UserInfoB, InitValues):
                 return temp_params.WhichExperiment.HardParams.Model.num_Layers_changed
           
             UserInfoB['simulation'].nucleus_Index = [1]
-            if not check_if_num_Layers_fit(UserInfoB): Run_Main(UserInfoB)
+            if not check_if_num_Layers_fit(UserInfoB): 
+                Run_Main(UserInfoB)
 
-            BB = smallFuncs.Nuclei_Class(1,'Cascade')            
-            UserInfoB['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(list(BB.All_Nuclei().Indexes))
-            if not check_if_num_Layers_fit(UserInfoB): Run_Main(UserInfoB)
+                BB = smallFuncs.Nuclei_Class(1,'Cascade')            
+                UserInfoB['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(list(BB.All_Nuclei().Indexes))
+                if not check_if_num_Layers_fit(UserInfoB): 
+                    Run_Main(UserInfoB)
 
     def Run_Main(UserInfoB):
 
