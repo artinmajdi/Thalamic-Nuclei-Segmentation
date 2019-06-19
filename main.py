@@ -191,10 +191,11 @@ def preMode(UserInfoB):
 def Run_tryExcept(UserInfoB, IV):
     try:
         Run(UserInfoB, IV)
-    except:
+    except Exception as e:
         print('Failed')
         print('Failed')
         print('Failed')
+        print(e)
         print( 'US', UserInfoB['upsample'].Scale , 'NL', UserInfoB['simulation'].num_Layers , 'FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num)
         print('Failed')
         print('Failed')
