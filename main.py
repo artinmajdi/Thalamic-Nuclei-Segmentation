@@ -74,13 +74,21 @@ def Run(UserInfoB, InitValues):
                 Run_Main(UserInfoB)
 
         else:
-            # if (1 in UserInfoB['simulation'].nucleus_Index) and (UserInfoB['Model_Method'] != 'FCN'):
+            
+            def check_if_num_Layers_fit(UserInfoB):
+                params = paramFunc.Run(UserInfoB, terminal=False)
+                temp_params = preAnalysis(params)
+                print('**************************')
+                print('#layers changed' , temp_params.WhichExperiment.HardParams.Model.num_Layers_changed)
+                print('#layer',temp_params.WhichExperiment.HardParams.Model.num_Layers)
+                return temp_params.WhichExperiment.HardParams.Model.num_Layers_changed
+          
             UserInfoB['simulation'].nucleus_Index = [1]
-            Run_Main(UserInfoB)
+            if not check_if_num_Layers_fit(UserInfoB): Run_Main(UserInfoB)
 
             BB = smallFuncs.Nuclei_Class(1,'Cascade')            
             UserInfoB['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(list(BB.All_Nuclei().Indexes))
-            Run_Main(UserInfoB)
+            if not check_if_num_Layers_fit(UserInfoB): Run_Main(UserInfoB)
 
     def Run_Main(UserInfoB):
 
@@ -141,15 +149,15 @@ def Run(UserInfoB, InitValues):
             params = paramFunc.Run(UserInfoB, terminal=False)
             print_func(UserInfoB, params)
 
-            temp_params = preAnalysis(params)
-            print('**************************')
-            print('#layers changed' , temp_params.WhichExperiment.HardParams.Model.num_Layers_changed)
-            print('#layer',temp_params.WhichExperiment.HardParams.Model.num_Layers)
-            if not temp_params.WhichExperiment.HardParams.Model.num_Layers_changed: 
-
-                if (NI == [1]) and ('sE8' in params.WhichExperiment.SubExperiment.name): func_copy_Thalamus_preds(params)            
-                elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
-                else: normal_run(params)
+            if (NI == [1]) and ('sE8' in params.WhichExperiment.SubExperiment.name): func_copy_Thalamus_preds(params)            
+            elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
+            else: 
+                # temp_params = preAnalysis(params)
+                # print('**************************')
+                # print('#layers changed' , temp_params.WhichExperiment.HardParams.Model.num_Layers_changed)
+                # print('#layer',temp_params.WhichExperiment.HardParams.Model.num_Layers)
+                # if not temp_params.WhichExperiment.HardParams.Model.num_Layers_changed: 
+                normal_run(params)
 
         def Loop_slicing_orientations(UserInfoB, InitValues):
             for sd in InitValues.slicingDim:            
