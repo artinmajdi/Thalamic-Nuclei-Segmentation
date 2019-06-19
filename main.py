@@ -37,7 +37,7 @@ def Run(UserInfoB, InitValues):
             print('---------------------- check Layers Step ------------------------------')
             print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
                 ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
-                ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale , '|  slicingDim' , UserInfoB['simulation'].slicingDim[0])
+                ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale)
 
             print('#layers changed' , temp_params.WhichExperiment.HardParams.Model.num_Layers_changed)
             print('#layer',temp_params.WhichExperiment.HardParams.Model.num_Layers)                                        
@@ -123,7 +123,7 @@ def Run(UserInfoB, InitValues):
                 print('---------------------------------------------------------------')
                 print(' Nucleus:', NI  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
                     ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
-                    ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale , '|  slicingDim' , UserInfoB['simulation'].slicingDim[0])
+                    ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale)
 
                 print('Experiment:', params.WhichExperiment.Experiment.name)                              
                 print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
