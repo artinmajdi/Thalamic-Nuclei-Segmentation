@@ -338,7 +338,7 @@ def loadDataset(params):
 
                 if im[...,0].shape == msk[...,0].shape:
                     Data[nameSubject] = testCase(Image=im, Mask=msk ,OrigMask=(origMsk).astype('float32'), Affine=imF.get_affine(), Header=imF.get_header(), original_Shape=imF.shape)
-                    saveHDf5(g1 , im , msk , origMsk , imF , subject)
+                    # saveHDf5(g1 , im , msk , origMsk , imF , subject)
                                         
                 else: 
                     Error_MisMatch_In_Dim_ImageMask(subject , mode, nameSubject)
