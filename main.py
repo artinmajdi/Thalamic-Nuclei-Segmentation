@@ -33,7 +33,7 @@ def Run(UserInfoB, InitValues):
     MM = UserInfoB['Model_Method']
 
     def check_if_num_Layers_fit(UserInfoB):
-        def print_func2(UserInfoB, params):
+        def print_func2(UserInfoB, temp_params):
             print('---------------------- check Layers Step ------------------------------')
             print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
                 ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
