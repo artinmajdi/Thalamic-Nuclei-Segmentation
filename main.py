@@ -206,7 +206,10 @@ def loop_fine_tuning(UserInfoB):
         for UserInfoB['simulation'].num_Layers in [3 , 4]:
             for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:            
                 Run_tryExcept(UserInfoB, IV)
-                
+
+
+def loop_fine_tuning2(UserInfoB):
+    
     for UserInfoB['upsample'].Scale in [2 , 4]:
         for UserInfoB['simulation'].num_Layers in [5]:
             for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
