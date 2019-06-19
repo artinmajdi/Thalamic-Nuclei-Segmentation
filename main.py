@@ -173,7 +173,6 @@ def Run(UserInfoB, InitValues):
                     UserInfoB['simulation'].slicingDim = [sd]
                     subRun(UserInfoB)
 
-        1/0
         Loop_slicing_orientations(UserInfoB, InitValues)
 
                  
