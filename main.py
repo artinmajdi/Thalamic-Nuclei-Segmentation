@@ -76,11 +76,19 @@ def Run(UserInfoB, InitValues):
         else:
             
             def check_if_num_Layers_fit(UserInfoB):
+                def print_func2(UserInfoB, params):
+                    print('---------------------- check Layers Step ------------------------------')
+                    print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
+                        ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
+                        ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale , '|  slicingDim' , UserInfoB['simulation'].slicingDim[0])
+
+                    print('#layers changed' , temp_params.WhichExperiment.HardParams.Model.num_Layers_changed)
+                    print('#layer',temp_params.WhichExperiment.HardParams.Model.num_Layers)                                        
+                    print('---------------------------------------------------------------')                
+
                 params = paramFunc.Run(UserInfoB, terminal=False)
                 temp_params = preAnalysis(params)
-                print('**************************')
-                print('#layers changed' , temp_params.WhichExperiment.HardParams.Model.num_Layers_changed)
-                print('#layer',temp_params.WhichExperiment.HardParams.Model.num_Layers)
+                print_func2(UserInfoB, params)
                 return temp_params.WhichExperiment.HardParams.Model.num_Layers_changed
           
             UserInfoB['simulation'].nucleus_Index = [1]
@@ -111,7 +119,7 @@ def Run(UserInfoB, InitValues):
                 print('---------------------------------------------------------------')
                 print(' Nucleus:', NI  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
                     ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
-                    ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale , '|  slicingDim' , IV.slicingDim[0])
+                    ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale , '|  slicingDim' , UserInfoB['simulation'].slicingDim[0])
 
                 print('Experiment:', params.WhichExperiment.Experiment.name)                              
                 print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
