@@ -206,7 +206,6 @@ IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation']
 
 
 # UserInfoB['simulation'].num_Layers = 10
-print('--------------------')
 Run(UserInfoB, IV)
 
 # loop_fine_tuning(UserInfoB)
