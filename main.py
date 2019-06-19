@@ -173,6 +173,7 @@ def Run(UserInfoB, InitValues):
                     UserInfoB['simulation'].slicingDim = [sd]
                     subRun(UserInfoB)
 
+        1/0
         Loop_slicing_orientations(UserInfoB, InitValues)
 
                  
@@ -189,7 +190,7 @@ def preMode(UserInfoB):
     return UserInfoB, K
 
 def Run_tryExcept(UserInfoB, IV):
-    try:
+    try:        
         Run(UserInfoB, IV)
     except Exception as e:
         print('Failed')
