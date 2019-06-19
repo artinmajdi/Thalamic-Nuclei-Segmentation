@@ -29,7 +29,7 @@ class InitValues:
                 
 def Run(UserInfoB, InitValues):
     
-
+    
     MM = UserInfoB['Model_Method']
 
     def check_if_num_Layers_fit(UserInfoB):
@@ -194,22 +194,28 @@ def preMode(UserInfoB):
     K = smallFuncs.gpuSetting(params.WhichExperiment.HardParams.Machine.GPU_Index)
     return UserInfoB, K
 
+def Run_tryExcept(UserInfoB, IV):
+    try:
+        Run(UserInfoB, IV)
+    except:
+        print('Failed')
+        
 def loop_fine_tuning(UserInfoB):
 
     for UserInfoB['upsample'].Scale in [1 , 2 , 4]:
         for UserInfoB['simulation'].num_Layers in [2 , 3 , 4]:
             for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:            
-                Run(UserInfoB, IV)
+                Run_tryExcept(UserInfoB, IV)
                 
     for UserInfoB['upsample'].Scale in [2 , 4]:
         for UserInfoB['simulation'].num_Layers in [5]:
             for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
-                Run(UserInfoB, IV)
+                Run_tryExcept(UserInfoB, IV)
 
     for UserInfoB['upsample'].Scale in [4]:
         for UserInfoB['simulation'].num_Layers in [6]:
             for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
-                Run(UserInfoB, IV)
+                Run_tryExcept(UserInfoB, IV)
 
 
 UserInfoB, K = preMode(UserInfo.__dict__)
@@ -218,9 +224,9 @@ IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation']
 
 
 # UserInfoB['simulation'].num_Layers = 10
-Run(UserInfoB, IV)
+# Run(UserInfoB, IV)
 
-# loop_fine_tuning(UserInfoB)
+loop_fine_tuning(UserInfoB)
 
 
 K.clear_session()
