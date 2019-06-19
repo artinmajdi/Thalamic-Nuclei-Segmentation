@@ -142,6 +142,9 @@ def Run(UserInfoB, InitValues):
             print_func(UserInfoB, params)
 
             temp_params = preAnalysis(params)
+            print('**************************')
+            print('#layers changed' , temp_params.WhichExperiment.HardParams.Model.num_Layers_changed)
+            print('#layer',temp_params.WhichExperiment.HardParams.Model.num_Layers)
             if not temp_params.WhichExperiment.HardParams.Model.num_Layers_changed: 
 
                 if (NI == [1]) and ('sE8' in params.WhichExperiment.SubExperiment.name): func_copy_Thalamus_preds(params)            
