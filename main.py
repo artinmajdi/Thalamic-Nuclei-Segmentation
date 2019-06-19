@@ -199,7 +199,12 @@ def Run_tryExcept(UserInfoB, IV):
         Run(UserInfoB, IV)
     except:
         print('Failed')
-        
+        print('Failed')
+        print('Failed')
+        print( 'US', UserInfoB['upsample'].Scale , 'NL', UserInfoB['simulation'].num_Layers , 'FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num)
+        print('Failed')
+        print('Failed')
+
 def loop_fine_tuning(UserInfoB):
 
     for UserInfoB['upsample'].Scale in [1 , 2 , 4]:
