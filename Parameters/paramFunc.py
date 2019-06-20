@@ -176,9 +176,9 @@ def temp_Experiments_preSet_V2(UserInfoB):
     UserInfoB['Transfer_Learning']   = d
     UserInfoB['InitializeB']         = c
     if UserInfoB['TypeExperiment'] == 5: UserInfoB['simulation'].TestOnly = True
-    if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T_AllAugs' # _250epochs_Wo_LR_scheduler
-    if UserInfoB['TypeExperiment'] == 3: UserInfoB['SubExperiment'].Tag = '_ET_Init_Main_AllAugs'
-    if UserInfoB['TypeExperiment'] == 7: UserInfoB['SubExperiment'].Tag = '_ET_Init_Rn_AllAugs'
+    if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T'
+    if UserInfoB['TypeExperiment'] == 3: UserInfoB['SubExperiment'].Tag = '_ET_Init_Main'
+    if UserInfoB['TypeExperiment'] == 7: UserInfoB['SubExperiment'].Tag = '_ET_Init_Rn'
     if UserInfoB['TypeExperiment'] == 8: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_Th'
     if UserInfoB['TypeExperiment'] == 9: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_3T' 
     if UserInfoB['TypeExperiment'] == 10: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_Main'

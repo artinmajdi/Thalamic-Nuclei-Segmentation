@@ -20,7 +20,7 @@ architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #
 # TypeExperiment == 12 # CSFn  Init 3T
 # TypeExperiment == 13 # ET Init non-ET 3T & 7T
 # TypeExperiment == 14 # CSFn Init CSFn_THOMAS
-TypeExperiment = 1
+TypeExperiment = 2
 
 # 1: (losses.binary_crossentropy      , 'Loss_BCE'),
 # 2: (losses.categorical_crossentropy , 'Loss_CCE'),
