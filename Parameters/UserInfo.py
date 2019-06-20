@@ -20,8 +20,8 @@ architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #
 # TypeExperiment == 12 # CSFn  Init 3T
 # TypeExperiment == 13 # ET Init non-ET 3T & 7T
 # TypeExperiment == 14 # CSFn Init CSFn_THOMAS
-TypeExperiment = 2
-multi_Class_Mode = False
+TypeExperiment = 1
+multi_Class_Mode = True
 
 lossFunction_Index = 3
 
