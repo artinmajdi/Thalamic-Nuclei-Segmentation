@@ -247,7 +247,7 @@ def func_Exp_subExp_Names(UserInfo):
         # if not UserInfo['simulation'].Weighted_Class_Mode: tag += '_NotWeighted'
         # else: tag += '_Weighted'
 
-        # if UserInfo['simulation'].Multi_Class_Mode: tag += '_MultiClass'
+        if not UserInfo['simulation'].Multi_Class_Mode: tag += '_SingleClass'
         # else: tag += '_SingleClass'
 
         # if UserInfo['upsample'].Mode: tag += US

@@ -21,12 +21,7 @@ architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #
 # TypeExperiment == 13 # ET Init non-ET 3T & 7T
 # TypeExperiment == 14 # CSFn Init CSFn_THOMAS
 TypeExperiment = 1
-
-# 1: (losses.binary_crossentropy      , 'Loss_BCE'),
-# 2: (losses.categorical_crossentropy , 'Loss_CCE'),
-# 3: (My_BCE_Loss                     , 'My_BCE_Loss'),
-# 4: (My_LogDice_Loss                 , 'My_LogDice_Loss'),
-# 5: (My_Joint_Loss                   , 'My_Joint_Loss'),     
+multi_Class_Mode = False
 
 lossFunction_Index = 3
 
@@ -85,7 +80,7 @@ class simulation:
     Use_Coronal_Thalamus_InSagittal = True
     Use_TestCases_For_Validation = True
     ImClosePrediction =  True # False #
-    Multi_Class_Mode = True
+    Multi_Class_Mode = multi_Class_Mode
     LR_Scheduler = False
     
 
