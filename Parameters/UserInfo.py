@@ -85,7 +85,7 @@ class simulation:
     Use_Coronal_Thalamus_InSagittal = True
     Use_TestCases_For_Validation = True
     ImClosePrediction =  True # False #
-    Multi_Class_Mode = False
+    Multi_Class_Mode = True
     LR_Scheduler = False
     
 
