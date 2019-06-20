@@ -229,9 +229,9 @@ IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation']
 # UserInfoB['simulation'].num_Layers = 10
 # Run(UserInfoB, IV)
 
-# loop_fine_tuning(UserInfoB)
+loop_fine_tuning(UserInfoB)
 
-loop_fine_tuning2(UserInfoB)
+# loop_fine_tuning2(UserInfoB)
 
 
 K.clear_session()
