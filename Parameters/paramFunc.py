@@ -215,6 +215,7 @@ def func_Exp_subExp_Names(UserInfo):
         SE = UserInfo['SubExperiment']
         NL = '_NL' + str(UserInfo['simulation'].num_Layers)
         ACH =  '_' + UserInfo['architectureType']
+        US = '_US' + str(UserInfo['upsample'].Scale)
         _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
         LF = '_' + a
         method = UserInfo['Model_Method']        
@@ -230,13 +231,13 @@ def func_Exp_subExp_Names(UserInfo):
                 self.tag = tag
                 self.name_thalamus = ''            
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
-                self.name_Init_from_3T    = 'sE8_'  + method + FM + ACH + NL + '_LS_MyBCE'
-                self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + '_LS_MyBCE'
-                self.name_Init_from_CSFn  = 'sE9_'  + method + FM + ACH + NL + '_LS_MyBCE'  
+                self.name_Init_from_3T    = 'sE8_'  + method + FM + ACH + NL + LF + US 
+                self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + LF + US 
+                self.name_Init_from_CSFn  = 'sE9_'  + method + FM + ACH + NL + LF + US 
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
        
-        tag = method + FM + ACH + NL + LF + SE.Tag
+        tag = method + FM + ACH + NL + LF + US + SE.Tag
         # tag +=  '_' + UserInfo['normalize'].Method  
 
         # if UserInfo['lossFunction_Index'] != 1: 
@@ -249,7 +250,7 @@ def func_Exp_subExp_Names(UserInfo):
         # if UserInfo['simulation'].Multi_Class_Mode: tag += '_MultiClass'
         # else: tag += '_SingleClass'
 
-        if UserInfo['upsample'].Mode: tag += '_US' + str(UserInfo['upsample'].Scale)
+        # if UserInfo['upsample'].Mode: tag += US
 
         if UserInfo['simulation'].LR_Scheduler: tag += '_wLRScheduler'
         
