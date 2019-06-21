@@ -99,10 +99,10 @@ def Run(UserInfoB, InitValues):
             if not check_if_num_Layers_fit(UserInfoB): 
                 Run_Main(UserInfoB)
 
-                BB = smallFuncs.Nuclei_Class(1,'Cascade')            
-                UserInfoB['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(list(BB.All_Nuclei().Indexes))
-                if not check_if_num_Layers_fit(UserInfoB): 
-                    Run_Main(UserInfoB)
+                # BB = smallFuncs.Nuclei_Class(1,'Cascade')            
+                # UserInfoB['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(list(BB.All_Nuclei().Indexes))
+                # if not check_if_num_Layers_fit(UserInfoB): 
+                #     Run_Main(UserInfoB)
 
     def Run_Main(UserInfoB):
 
@@ -205,7 +205,7 @@ def loop_fine_tuning(UserInfoB):
     for UserInfoB['upsample'].Scale in [1 , 2]: #  , 4]:
         for UserInfoB['simulation'].num_Layers in [3 , 4]:
             for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:            
-                Run_tryExcept(UserInfoB, IV)
+                Run(UserInfoB, IV)
 
 
 def loop_fine_tuning2(UserInfoB):
@@ -213,12 +213,12 @@ def loop_fine_tuning2(UserInfoB):
     for UserInfoB['upsample'].Scale in [2 , 4]:
         for UserInfoB['simulation'].num_Layers in [5]:
             for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
-                Run_tryExcept(UserInfoB, IV)
+                Run(UserInfoB, IV)
 
     for UserInfoB['upsample'].Scale in [4]:
         for UserInfoB['simulation'].num_Layers in [6]:
             for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
-                Run_tryExcept(UserInfoB, IV)
+                Run(UserInfoB, IV)
 
 
 UserInfoB, K = preMode(UserInfo.__dict__)

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+export dir=/array/ssd/msmajdi/experiments/keras/FreeSurfer_Results
+
+cd $dir
+
+for v in vimp* ; do 
+
+echo $v
+export SUBJECTS_DIR=$dir/$v
+cd $SUBJECTS_DIR
+recon-all -i full_csfn.nii.gz -s bert -all
+
+done
+
+
+
+
+

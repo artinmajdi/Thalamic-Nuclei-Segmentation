@@ -28,6 +28,24 @@ from keras.preprocessing.image import ImageDataGenerator
 import modelFuncs.LossFunction as LossFunction
 from skimage.transform import AffineTransform , warp
 
+def func_class_weights(weighted_Mode, Mask):
+    sz = Mask.shape
+    NUM_CLASSES = sz[3]
+    class_weights = np.ones(NUM_CLASSES)
+
+    #! equal weights
+    if weighted_Mode:
+        for ix in range(NUM_CLASSES):                                        
+            TRUE_Count = len(np.where(Mask[...,ix] > 0.5)[0])
+            NUM_SAMPLES = np.prod(sz[:3])
+            class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
+
+    print('class_weights' , class_weights)
+    # # ! zero weight for foreground
+    # for i in [0,2,5,7]: class_weights[i] = 0
+    # # class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
+    return class_weights
+    
 def check_Run(params, Data):
 
     # os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
@@ -44,8 +62,8 @@ def loadModel(params):
     model.load_weights(params.directories.Train.Model + '/model_weights.h5')
     
     # model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')
-    ModelParam = params.WhichExperiment.HardParams.Model
-    model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
+    # ModelParam = params.WhichExperiment.HardParams.Model
+    # model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
     return model
 
 def testingExeriment(model, Data, params):
@@ -54,7 +72,7 @@ def testingExeriment(model, Data, params):
         if 'HCascade' in params.WhichExperiment.HardParams.Model.Method.Type: 
                                     
             if 1.2 in params.WhichExperiment.Nucleus.Index:
-                dice_tag = 'All_Groups'                
+                dice_tag = 'All_Groups'                              
             else:
                 BB = smallFuncs.Nuclei_Class(1,'HCascade')
                 parent = BB.HCascade_Parents_Identifier(params.WhichExperiment.Nucleus.Index)
@@ -129,7 +147,7 @@ def testingExeriment(model, Data, params):
 
                     dirSave, nucleusName = savingOutput(pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
                 
-                Dir_Dice = dirSave + '/Dice_' + dice_tag + '.txt' if params.WhichExperiment.HardParams.Model.MultiClass.Mode else dirSave + '/Dice_' + nucleusName + '.txt'
+                Dir_Dice = dirSave + '/Dice_' + dice_tag + '.txt' if (params.WhichExperiment.HardParams.Model.MultiClass.Mode and num_classes > 2 ) else dirSave + '/Dice_' + nucleusName + '.txt'
                 np.savetxt(Dir_Dice ,Dice,fmt='%1.1f %1.4f')
                 return ALL_pred
 
@@ -357,25 +375,8 @@ def trainingExperiment(Data, params):
                 
         def modelFit(model):
 
-            def func_class_weights():
-                sz = Data.Train.Mask.shape
-                NUM_CLASSES = sz[3]
-                class_weights = np.ones(NUM_CLASSES)
-
-                #! equal weights
-                if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode:
-                    for ix in range(NUM_CLASSES):                                        
-                        TRUE_Count = len(np.where(Data.Train.Mask[...,ix] > 0.5)[0])
-                        NUM_SAMPLES = np.prod(sz[:3])
-                        class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
-
-                print('class_weights' , class_weights)
-                # # ! zero weight for foreground
-                # for i in [0,2,5,7]: class_weights[i] = 0
-                # # class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
-                return class_weights
                 
-            class_weights = func_class_weights()
+            class_weights = func_class_weights(params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode, Data.Train.Mask)
             _, loss_tag = LossFunction.LossInfo(params.UserInfo['lossFunction_Index'])
 
             if  'My' in loss_tag: model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss(class_weights) , metrics=ModelParam.metrics)
