@@ -39,9 +39,8 @@ def Run(UserInfoB, InitValues):
                 ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
                 ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale)
 
-            print('#layers changed' , temp_params.WhichExperiment.HardParams.Model.num_Layers_changed)
-            print('#layer',temp_params.WhichExperiment.HardParams.Model.num_Layers)                                        
-            print('---------------------------------------------------------------')                
+            print('\n' ,'#layer',temp_params.WhichExperiment.HardParams.Model.num_Layers , '#layers changed' , temp_params.WhichExperiment.HardParams.Model.num_Layers_changed)
+            # print('---------------------------------------------------------------')                
 
         temp_params = paramFunc.Run(UserInfoB, terminal=False)
         temp_params = preAnalysis(temp_params)
@@ -99,10 +98,10 @@ def Run(UserInfoB, InitValues):
             if not check_if_num_Layers_fit(UserInfoB): 
                 Run_Main(UserInfoB)
 
-                # BB = smallFuncs.Nuclei_Class(1,'Cascade')            
-                # UserInfoB['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(list(BB.All_Nuclei().Indexes))
-                # if not check_if_num_Layers_fit(UserInfoB): 
-                #     Run_Main(UserInfoB)
+                BB = smallFuncs.Nuclei_Class(1,'Cascade')            
+                UserInfoB['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(list(BB.All_Nuclei().Indexes))
+                if not check_if_num_Layers_fit(UserInfoB): 
+                    Run_Main(UserInfoB)
 
     def Run_Main(UserInfoB):
 
@@ -111,19 +110,24 @@ def Run(UserInfoB, InitValues):
         def subRun(UserInfoB): 
             
             def func_copy_Thalamus_preds(params):
-                input_model  = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name_Thalmus_network
+                if 'sE12' in params.WhichExperiment.SubExperiment.name: 
+                    name_Thalmus_network = 'sE12_Predictions_Full_THALAMUS'
+                elif 'sE8' in params.WhichExperiment.SubExperiment.name: 
+                    name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS'
+
+                input_model  = params.WhichExperiment.Experiment.address + '/models/' + name_Thalmus_network # params.WhichExperiment.SubExperiment.name_Thalmus_network
                 output_model = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name
                 os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
 
-                input_model  = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name_Thalmus_network
+                input_model  = params.WhichExperiment.Experiment.address + '/results/' + name_Thalmus_network # params.WhichExperiment.SubExperiment.name_Thalmus_network
                 output_model = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name
                 os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
                 
             def print_func(UserInfoB, params):
-                print('---------------------------------------------------------------')
-                print(' Nucleus:', NI  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
-                    ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
-                    ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale)
+                # print('---------------------------------------------------------------')
+                # print(' Nucleus:', NI  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
+                #     ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
+                #     ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale)
 
                 print('Experiment:', params.WhichExperiment.Experiment.name)                              
                 print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
@@ -163,7 +167,8 @@ def Run(UserInfoB, InitValues):
             params = paramFunc.Run(UserInfoB, terminal=False)
             print_func(UserInfoB, params)
 
-            if (NI == [1]) and ('sE8' in params.WhichExperiment.SubExperiment.name): func_copy_Thalamus_preds(params)            
+            if (NI == [1]): #  and ('sE8' in params.WhichExperiment.SubExperiment.name): 
+                func_copy_Thalamus_preds(params)            
             elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
             else: normal_run(params)
 

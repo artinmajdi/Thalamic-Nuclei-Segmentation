@@ -1,6 +1,6 @@
 
 
-Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
+Model_Method = 'HCascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #  
 
 
@@ -22,7 +22,7 @@ architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #
 # TypeExperiment == 14 # CSFn Init CSFn_THOMAS
 TypeExperiment = 2
 multi_Class_Mode = True
-testOnly = True
+testOnly = False
 
 lossFunction_Index = 3
 
@@ -66,7 +66,7 @@ class simulation:
     GPU_Index     = "5"
     Learning_Rate = 1e-3
     num_Layers    = 3 
-    nucleus_Index = [1] # [2,4,5,6,7,8,9,10,11,12,13,14] # ,2,4]
+    nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] # ,2,4]
     slicingDim    = [1] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2

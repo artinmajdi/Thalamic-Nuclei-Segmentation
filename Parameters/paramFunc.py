@@ -125,7 +125,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
             class ReadTrainC:
                 def __init__(self, SRI=0 , ET=0 , Main=0 , CSFn=0):   
                     # class readAugments: Mode, Tag, LoadAll = False, '', False  # temp
-                    class readAugments: Mode, Tag, LoadAll = False, '', False
+                    class readAugments: Mode, Tag, LoadAll = True, '', False
                     self.SRI  = SRI  > 0.5
                     self.ET   = ET   > 0.5
                     self.Main = Main > 0.5
@@ -256,10 +256,10 @@ def func_Exp_subExp_Names(UserInfo):
         
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
-        print('Initialize Tags:  ')
-        print('    Init From 3T Tag'  , A.name_Init_from_3T)
-        print('    Init From 7T Tag'  , A.name_Init_from_7T)
-        print('    Init From CSFn Tag', A.name_Init_from_CSFn)
+        # print('Initialize Tags:  ')
+        # print('    Init From 3T Tag'  , A.name_Init_from_3T)
+        # print('    Init From 7T Tag'  , A.name_Init_from_7T)
+        # print('    Init From CSFn Tag', A.name_Init_from_CSFn)
         return A
 
     def func_Experiment():
