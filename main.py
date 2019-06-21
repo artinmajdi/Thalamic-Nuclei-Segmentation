@@ -245,7 +245,7 @@ def func_temp_checkSingleClass_vs_MultiClass(UserInfoB):
             Run(UserInfoB, IV)
 
 def func_temp2_checkLossFunction(UserInfoB):
-    for UserInfoB['lossFunction_Index'] in [6 , 7 , 4]:
+    for UserInfoB['lossFunction_Index'] in [4, 6 , 7 , 8 , 9]:
         Run(UserInfoB, IV)
 
 

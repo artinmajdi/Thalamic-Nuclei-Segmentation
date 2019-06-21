@@ -16,8 +16,8 @@ def LossInfo(loss_Index):
         5: (My_Joint_Loss                   , 'LS_MyJoint'), 
         6: (My_BCE_unweighted_Loss          , 'LS_MyBCE_unWeighted'),  
         7: (My_BCE_wBackground_Loss         , 'LS_MyBCE_wBackground'),      
-        8: (My_LogDice_unweighted_Loss     , 'LS_MyLogDice_unWeighted'),   
-        8: (My_LogDice_wBackground_Loss     , 'LS_MyLogDice_wBackground'),        
+        8: (My_LogDice_unweighted_Loss      , 'LS_MyLogDice_unWeighted'),   
+        9: (My_LogDice_wBackground_Loss     , 'LS_MyLogDice_wBackground'),        
     }
     return switcher.get(loss_Index, 'WARNING: Invalid loss function index')
 
