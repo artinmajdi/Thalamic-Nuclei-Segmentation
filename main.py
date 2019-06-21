@@ -231,10 +231,23 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
 
-# UserInfoB['simulation'].num_Layers = 10
+def func_temp(UserInfoB):
+    UserInfoB['simulation'].Multi_Class_Mode = False
+    for UserInfoB['lossFunction_Index'] in [3, 1, 4]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
+            Run(UserInfoB, IV)
+
+    UserInfoB['simulation'].Multi_Class_Mode = True
+    for UserInfoB['lossFunction_Index'] in [1, 4]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
+            Run(UserInfoB, IV)
+
+
+func_temp(UserInfoB)
+
 # Run(UserInfoB, IV)
 
-loop_fine_tuning(UserInfoB)
+# loop_fine_tuning(UserInfoB)
 
 # loop_fine_tuning2(UserInfoB)
 

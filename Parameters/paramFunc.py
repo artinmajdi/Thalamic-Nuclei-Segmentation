@@ -125,7 +125,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
             class ReadTrainC:
                 def __init__(self, SRI=0 , ET=0 , Main=0 , CSFn=0):   
                     # class readAugments: Mode, Tag, LoadAll = False, '', False  # temp
-                    class readAugments: Mode, Tag, LoadAll = True, '', False
+                    class readAugments: Mode, Tag, LoadAll = False, '', False
                     self.SRI  = SRI  > 0.5
                     self.ET   = ET   > 0.5
                     self.Main = Main > 0.5

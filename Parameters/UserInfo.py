@@ -1,6 +1,6 @@
 
 
-Model_Method = 'HCascade' #'mUnet' # 'HCascade' # 'normal' #
+Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #  
 
 
