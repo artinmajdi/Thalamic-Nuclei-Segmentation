@@ -54,15 +54,15 @@ def Run(UserInfoB, InitValues):
         print('************ stage 1 ************')
         if 1 in InitValues.Nuclei_Indexes: 
             UserInfoB['simulation'].nucleus_Index = [1]
-            Run_Main(UserInfoB)
+            if not check_if_num_Layers_fit(UserInfoB): Run_Main(UserInfoB)
 
         print('************ stage 2 ************')                    
         for UserInfoB['simulation'].nucleus_Index in BB.HCascade_Parents_Identifier(InitValues.Nuclei_Indexes):
-            Run_Main(UserInfoB)
+            if not check_if_num_Layers_fit(UserInfoB): Run_Main(UserInfoB)
 
         print('************ stage 3 ************')
         for UserInfoB['simulation'].nucleus_Index in BB.remove_Thalamus_From_List(InitValues.Nuclei_Indexes):
-            Run_Main(UserInfoB)
+            if not check_if_num_Layers_fit(UserInfoB): Run_Main(UserInfoB)
 
     def HierarchicalStages_Multi_Class(UserInfoB):
 
@@ -90,7 +90,7 @@ def Run(UserInfoB, InitValues):
 
         if not UserInfoB['simulation'].Multi_Class_Mode:
             for UserInfoB['simulation'].nucleus_Index in InitValues.Nuclei_Indexes:
-                Run_Main(UserInfoB)
+                if not check_if_num_Layers_fit(UserInfoB): Run_Main(UserInfoB)
 
         else:
                       
@@ -100,8 +100,7 @@ def Run(UserInfoB, InitValues):
 
                 BB = smallFuncs.Nuclei_Class(1,'Cascade')            
                 UserInfoB['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(list(BB.All_Nuclei().Indexes))
-                if not check_if_num_Layers_fit(UserInfoB): 
-                    Run_Main(UserInfoB)
+                if not check_if_num_Layers_fit(UserInfoB): Run_Main(UserInfoB)
 
     def Run_Main(UserInfoB):
 
@@ -181,7 +180,10 @@ def Run(UserInfoB, InitValues):
         Loop_slicing_orientations(UserInfoB, InitValues)
 
                  
-    if   MM == 'HCascade':  HierarchicalStages_Multi_Class(UserInfoB)
+    if  MM == 'HCascade':  
+        if UserInfoB['simulation'].Multi_Class_Mode: HierarchicalStages_Multi_Class(UserInfoB)
+        else: HierarchicalStages_single_Class(UserInfoB)
+
     elif MM == 'singleRun': Run_Main(UserInfoB)
     else: Loop_Over_Nuclei(UserInfoB)
      
@@ -231,7 +233,7 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
 
-def func_temp(UserInfoB):
+def func_temp_checkSingleClass_vs_MultiClass(UserInfoB):
     UserInfoB['simulation'].Multi_Class_Mode = False
     for UserInfoB['lossFunction_Index'] in [3, 1, 4]:
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
@@ -242,8 +244,14 @@ def func_temp(UserInfoB):
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
             Run(UserInfoB, IV)
 
+def func_temp2_checkLossFunction(UserInfoB):
+    for UserInfoB['lossFunction_Index'] in [6 , 7 , 4]:
+        Run(UserInfoB, IV)
 
-func_temp(UserInfoB)
+
+func_temp2_checkLossFunction(UserInfoB)
+
+# func_temp_checkSingleClass_vs_MultiClass(UserInfoB)
 
 # Run(UserInfoB, IV)
 
