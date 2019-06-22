@@ -70,7 +70,7 @@ class simulation:
     slicingDim    = [1] #[2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 20
+    FirstLayer_FeatureMap_Num = 10
     verbose = 2
     Multiply_By_Thalmaus = False
     Multiply_By_Rest_For_AV = False

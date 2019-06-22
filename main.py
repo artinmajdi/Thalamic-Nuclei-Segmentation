@@ -249,11 +249,11 @@ def func_temp2_checkLossFunction(UserInfoB):
         Run(UserInfoB, IV)
 
 
-func_temp2_checkLossFunction(UserInfoB)
+# func_temp2_checkLossFunction(UserInfoB)
 
 # func_temp_checkSingleClass_vs_MultiClass(UserInfoB)
 
-# Run(UserInfoB, IV)
+Run(UserInfoB, IV)
 
 # loop_fine_tuning(UserInfoB)
 
