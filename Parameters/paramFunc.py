@@ -171,21 +171,23 @@ def temp_Experiments_preSet_V2(UserInfoB):
             return switcher.get(TypeExperiment , 'wrong Index')
 
     a,b,c,d = TypeExperimentFuncs().main(UserInfoB['TypeExperiment'])
+    b.ReadAugments.Mode = UserInfoB['simulation'].ReadAugments_Mode
+    
     UserInfoB['SubExperiment'].Index = a
     UserInfoB['ReadTrain']           = b
     UserInfoB['Transfer_Learning']   = d
     UserInfoB['InitializeB']         = c
     if UserInfoB['TypeExperiment'] == 5: UserInfoB['simulation'].TestOnly = True
-    if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T'
-    if UserInfoB['TypeExperiment'] == 3: UserInfoB['SubExperiment'].Tag = '_ET_Init_Main'
-    if UserInfoB['TypeExperiment'] == 7: UserInfoB['SubExperiment'].Tag = '_ET_Init_Rn'
-    if UserInfoB['TypeExperiment'] == 8: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_Th'
-    if UserInfoB['TypeExperiment'] == 9: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_3T' 
-    if UserInfoB['TypeExperiment'] == 10: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_Main'
-    if UserInfoB['TypeExperiment'] == 11: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_3T_NoSchedular'
-    if UserInfoB['TypeExperiment'] == 12: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_3T' # _reversed_Contrast
-    if UserInfoB['TypeExperiment'] == 13: UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_3Tp7T_NoSchedular' # _WeightedClass'
-    if UserInfoB['TypeExperiment'] == 14: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_THOMAS_CSFn' 
+    if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T' + UserInfoB['tag_temp']
+    if UserInfoB['TypeExperiment'] == 3: UserInfoB['SubExperiment'].Tag = '_ET_Init_Main' + UserInfoB['tag_temp']
+    if UserInfoB['TypeExperiment'] == 7: UserInfoB['SubExperiment'].Tag = '_ET_Init_Rn' + UserInfoB['tag_temp']
+    if UserInfoB['TypeExperiment'] == 8: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_Th' + UserInfoB['tag_temp']
+    if UserInfoB['TypeExperiment'] == 9: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_3T'  + UserInfoB['tag_temp']
+    if UserInfoB['TypeExperiment'] == 10: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_Main' + UserInfoB['tag_temp']
+    if UserInfoB['TypeExperiment'] == 11: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_3T_NoSchedular' + UserInfoB['tag_temp']
+    if UserInfoB['TypeExperiment'] == 12: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_3T'  + UserInfoB['tag_temp'] # _reversed_Contrast
+    if UserInfoB['TypeExperiment'] == 13: UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_3Tp7T_NoSchedular'  + UserInfoB['tag_temp'] # _WeightedClass'
+    if UserInfoB['TypeExperiment'] == 14: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_THOMAS_CSFn' + UserInfoB['tag_temp']
 
     # if UserInfoB['upsample'].Scale == 1: UserInfoB['upsample'].Mode = False
         
@@ -237,7 +239,7 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
        
-        tag = method + FM + ACH + NL + LF + US + SE.Tag
+        tag = method + FM + ACH + NL + LF + US + SE.Tag + '_gap' + str(UserInfo['gapDilation'])
         # tag +=  '_' + UserInfo['normalize'].Method  
 
         # if UserInfo['lossFunction_Index'] != 1: 

@@ -478,10 +478,12 @@ def save_BoundingBox_Hierarchy(params, PRED):
 
         for ch in range(PreStageMask.shape[3]):
             BB = smallFuncs.findBoundingBox(PreStageMask[...,ch])
-            BB = checkBordersOnBoundingBox(imF.shape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
+            # BB = checkBordersOnBoundingBox(imF.shape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
             gapDilation = params.WhichExperiment.Dataset.gapDilation
             BBd = [  [BB[ii][0] - gapDilation , BB[ii][1] + gapDilation] for ii in range(len(BB))]
             BBd = checkBordersOnBoundingBox(imF.shape , BBd , 0)            
+
+            BB = checkBordersOnBoundingBox(imF.shape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
 
             nucleusName = smallFuncs.Nuclei_Class(index=params.WhichExperiment.Nucleus.Index[ch]).name
             np.savetxt(dirr + '/' + subject.subjectName + '/BB_' + nucleusName + '.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')

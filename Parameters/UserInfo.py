@@ -1,6 +1,6 @@
 
 
-Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
+Model_Method = 'HCascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #  
 
 
@@ -22,9 +22,11 @@ architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #
 # TypeExperiment == 14 # CSFn Init CSFn_THOMAS
 TypeExperiment = 2
 multi_Class_Mode = True
-testOnly = False
-
+readAugments_Mode = True
 lossFunction_Index = 3
+
+tag_temp = '_temp_fixed_BB'
+testOnly = False
 
 class normalize:
     Mode = True
@@ -67,10 +69,10 @@ class simulation:
     Learning_Rate = 1e-3
     num_Layers    = 3 
     nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] # ,2,4]
-    slicingDim    = [1] #[2,1,0]
+    slicingDim    = [2,1,0]
     batch_size    = 100
     InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 10
+    FirstLayer_FeatureMap_Num = 20
     verbose = 2
     Multiply_By_Thalmaus = False
     Multiply_By_Rest_For_AV = False
@@ -83,6 +85,7 @@ class simulation:
     ImClosePrediction =  True # False #
     Multi_Class_Mode = multi_Class_Mode
     LR_Scheduler = False
+    ReadAugments_Mode = readAugments_Mode
     
 
 class dataGenerator:
