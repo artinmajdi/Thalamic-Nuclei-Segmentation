@@ -255,9 +255,10 @@ def func_temp2_checkLossFunction(UserInfoB):
 # for UserInfoB['gapDilation'] in [0 , 2 , 4 , 5 , 7 , 9]:
     # Run(UserInfoB, IV)
 
-loop_fine_tuning(UserInfoB)
+# loop_fine_tuning(UserInfoB)
 
 # loop_fine_tuning2(UserInfoB)
 
+Run(UserInfoB, IV)
 
 K.clear_session()
