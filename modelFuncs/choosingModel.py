@@ -483,6 +483,8 @@ def save_BoundingBox_Hierarchy(params, PRED):
             BBd = [  [BB[ii][0] - gapDilation , BB[ii][1] + gapDilation] for ii in range(len(BB))]
             BBd = checkBordersOnBoundingBox(imF.shape , BBd , 0)            
 
+
+            # ! temp fixed the position of bounding box ; it used to double effect the slicing gap on plane gap
             BB = checkBordersOnBoundingBox(imF.shape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
 
             nucleusName = smallFuncs.Nuclei_Class(index=params.WhichExperiment.Nucleus.Index[ch]).name

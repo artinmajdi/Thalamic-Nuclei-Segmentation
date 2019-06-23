@@ -123,13 +123,14 @@ def temp_Experiments_preSet_V2(UserInfoB):
     class TypeExperimentFuncs():
         def __init__(self):            
             class ReadTrainC:
-                def __init__(self, SRI=0 , ET=0 , Main=0 , CSFn=0):   
+                def __init__(self, SRI=0 , ET=0 , Main=0 , CSFn1=0 , CSFn2=0):   
                     # class readAugments: Mode, Tag, LoadAll = False, '', False  # temp
                     class readAugments: Mode, Tag, LoadAll = True, '', False
                     self.SRI  = SRI  > 0.5
                     self.ET   = ET   > 0.5
                     self.Main = Main > 0.5
-                    self.CSFn = CSFn > 0.5
+                    self.CSFn1 = CSFn1 > 0.5
+                    self.CSFn2 = CSFn2 > 0.5
 
                     self.ReadAugments = readAugments                    
             self.ReadTrainC = ReadTrainC
@@ -143,12 +144,12 @@ def temp_Experiments_preSet_V2(UserInfoB):
             self.Transfer_LearningC = Transfer_LearningC
 
             class InitializeB:
-                def __init__(self, FromThalamus=False , FromOlderModel=False , From_3T=False , From_7T=False , From_CSFn=False):
+                def __init__(self, FromThalamus=False , FromOlderModel=False , From_3T=False , From_7T=False , From_CSFn1=False):
                     self.FromThalamus   = FromThalamus
                     self.FromOlderModel = FromOlderModel
                     self.From_3T        = From_3T
                     self.From_7T        = From_7T
-                    self.From_CSFn      = From_CSFn
+                    self.From_CSFn1      = From_CSFn1
             self.InitializeB = InitializeB
 
         def main(self, TypeExperiment = 1):

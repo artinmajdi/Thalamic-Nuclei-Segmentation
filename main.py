@@ -166,9 +166,9 @@ def Run(UserInfoB, InitValues):
             params = paramFunc.Run(UserInfoB, terminal=False)
             print_func(UserInfoB, params)
 
-            if (NI == [1]): #  and ('sE8' in params.WhichExperiment.SubExperiment.name): 
-                func_copy_Thalamus_preds(params)            
-            elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
+            # if (NI == [1]): #  and ('sE8' in params.WhichExperiment.SubExperiment.name): 
+                # func_copy_Thalamus_preds(params)            
+            if (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
             else: normal_run(params)
 
         def Loop_slicing_orientations(UserInfoB, InitValues):
@@ -209,9 +209,9 @@ def Run_tryExcept(UserInfoB, IV):
 
 def loop_fine_tuning(UserInfoB):
 
-    for UserInfoB['upsample'].Scale in [1 , 2]: #  , 4]:
+    for UserInfoB['upsample'].Scale in [1]: #  2 , 4]:
         for UserInfoB['simulation'].num_Layers in [3 , 4]:
-            for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:            
+            for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40 , 60]:
                 Run(UserInfoB, IV)
 
 
@@ -253,10 +253,10 @@ def func_temp2_checkLossFunction(UserInfoB):
 
 # func_temp_checkSingleClass_vs_MultiClass(UserInfoB)
 
-for UserInfoB['gapDilation'] in [0 , 2 , 4 , 5 , 7 , 9]:
-    Run(UserInfoB, IV)
+# for UserInfoB['gapDilation'] in [0 , 2 , 4 , 5 , 7 , 9]:
+    # Run(UserInfoB, IV)
 
-# loop_fine_tuning(UserInfoB)
+loop_fine_tuning(UserInfoB)
 
 # loop_fine_tuning2(UserInfoB)
 

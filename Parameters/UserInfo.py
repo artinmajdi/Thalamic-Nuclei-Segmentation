@@ -20,12 +20,12 @@ architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #
 # TypeExperiment == 12 # CSFn  Init 3T
 # TypeExperiment == 13 # ET Init non-ET 3T & 7T
 # TypeExperiment == 14 # CSFn Init CSFn_THOMAS
-TypeExperiment = 2
-multi_Class_Mode = True
+TypeExperiment = 3
+multi_Class_Mode = False
 readAugments_Mode = True
 lossFunction_Index = 3
 
-tag_temp = '_temp_fixed_BB'
+tag_temp = '' # _temp_fixed_BB
 testOnly = False
 
 class normalize:
