@@ -89,11 +89,12 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 4:  (12  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_ET_Init_Main'),
                 5:  (13  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC(Mode=True) , '_ET_TL_Main'),
 
-                6:  (12  ,   self.ReadTrainC(CSFn1=1)        , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC()          , '_CSFn1_Init_3T'),
+                6:  (12  ,   self.ReadTrainC(CSFn1=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_CSFn1_Init_Main'),
 
                 7:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC()          , '_CSFn2_Init_CSFn1'),
-                8:  (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_CSFn1'),
-                9:  (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T   =True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_Main'),
+                8:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_CSFn2_Init_Main'),
+                9:  (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_CSFn1'),
+                10: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T   =True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_Main'),
 
                 }                                           
             return switcher.get(TypeExperiment , 'wrong Index')
@@ -154,7 +155,7 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
                 self.name_Init_from_3T    = 'sE8_'  + method + FM + ACH + NL + LF + US 
                 self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + LF + US 
-                self.name_Init_from_CSFn1  = 'sE9_'  + method + FM + ACH + NL + LF + US 
+                self.name_Init_from_CSFn1 = 'sE9_'  + method + FM + ACH + NL + LF + US 
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
        

@@ -327,7 +327,6 @@ def trainingExperiment(Data, params):
                         print(' --- initialized from Thalamus  ')
                     except: print('initialized from Thalamus failed')
                         
-
                 elif Initialize.From_3T and os.path.exists(TP.Model_3T + '/model_weights.h5'):
                     print('-----' , TP.Model_3T + '/model_weights.h5')
                     try:
@@ -341,11 +340,11 @@ def trainingExperiment(Data, params):
                         print(' --- initialized from Model_7T' , TP.Model_7T)
                     except: print('initialized from From_7T failed')  
 
-                elif Initialize.From_CSFn and os.path.exists(TP.Model_CSFn + '/model_weights.h5'):
+                elif Initialize.From_CSFn1 and os.path.exists(TP.Model_CSFn1 + '/model_weights.h5'):
                     try:
-                        model.load_weights(TP.Model_CSFn + '/model_weights.h5')
-                        print(' --- initialized from Model_CSFn' , TP.Model_CSFn)
-                    except: print('initialized from From_CSFn failed') 
+                        model.load_weights(TP.Model_CSFn1 + '/model_weights.h5')
+                        print(' --- initialized from Model_CSFn1' , TP.Model_CSFn1)
+                    except: print('initialized from From_CSFn1 failed') 
 
 
             print('------------------------------------------------------------------')

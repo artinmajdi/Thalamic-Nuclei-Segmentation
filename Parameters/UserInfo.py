@@ -16,14 +16,15 @@ architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #
 # TypeExperiment == 5: # ET Transfer Learn from Main
 
 
-# TypeExperiment == 6  # CSFn1  Init 3T
+# TypeExperiment == 6  # CSFn1  Init Main
 
 # TypeExperiment == 7  # CSFn2  Init CSFn1
-# TypeExperiment == 8  # CSFn2  Transfer Learn from CSFn1
-# TypeExperiment == 9  # CSFn2  Transfer Learn from Main
+# TypeExperiment == 8  # CSFn2  Init Main
+# TypeExperiment == 9  # CSFn2  Transfer Learn from CSFn1
+# TypeExperiment == 10  # CSFn2  Transfer Learn from Main
 
 
-TypeExperiment = 6
+TypeExperiment = 8
 multi_Class_Mode = True
 readAugments_Mode = True
 lossFunction_Index = 3

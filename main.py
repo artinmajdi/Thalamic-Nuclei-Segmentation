@@ -108,19 +108,26 @@ def Run(UserInfoB, InitValues):
 
         def subRun(UserInfoB): 
             
-            def func_copy_Thalamus_preds(params):
-                if 'sE12' in params.WhichExperiment.SubExperiment.name: 
-                    name_Thalmus_network = 'sE12_Predictions_Full_THALAMUS'
-                elif 'sE8' in params.WhichExperiment.SubExperiment.name: 
-                    name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS'
+            def func_copy_Thalamus_preds(params):                
 
-                input_model  = params.WhichExperiment.Experiment.address + '/models/' + name_Thalmus_network # params.WhichExperiment.SubExperiment.name_Thalmus_network
-                output_model = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name
-                os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
+                def func_mainCopy(name_Thalmus_network):
+                    input_model  = params.WhichExperiment.Experiment.address + '/models/' + name_Thalmus_network # params.WhichExperiment.SubExperiment.name_Thalmus_network
+                    output_model = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name
+                    os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
 
-                input_model  = params.WhichExperiment.Experiment.address + '/results/' + name_Thalmus_network # params.WhichExperiment.SubExperiment.name_Thalmus_network
-                output_model = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name
-                os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
+                    input_model  = params.WhichExperiment.Experiment.address + '/results/' + name_Thalmus_network # params.WhichExperiment.SubExperiment.name_Thalmus_network
+                    output_model = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name
+                    os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
+
+
+                ReadTrain = params.WhichExperiment.Dataset.ReadTrain
+
+                
+                if ReadTrain.SRI:    func_mainCopy('sE8_Predictions_Full_THALAMUS')
+                if ReadTrain.ET:     func_mainCopy('sE12_Predictions_Full_THALAMUS_ET')
+                if ReadTrain.Main:   func_mainCopy('sE12_Predictions_Full_THALAMUS_Main')                
+                if ReadTrain.CSFn1:  func_mainCopy('sE12_Predictions_Full_CSFn1')
+                if ReadTrain.CSFn2:  func_mainCopy('sE12_Predictions_Full_CSFn2')
                 
             def print_func(UserInfoB, params):
                 print('---------------------------------------------------------------')
@@ -167,7 +174,7 @@ def Run(UserInfoB, InitValues):
             print_func(UserInfoB, params)
 
             # if (NI == [1]): #  and ('sE8' in params.WhichExperiment.SubExperiment.name): 
-                # func_copy_Thalamus_preds(params)            
+            #     func_copy_Thalamus_preds(params)
             if (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
             else: normal_run(params)
 
@@ -259,6 +266,7 @@ def func_temp2_checkLossFunction(UserInfoB):
 
 # loop_fine_tuning2(UserInfoB)
 
-Run(UserInfoB, IV)
+for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade']:
+    Run(UserInfoB, IV)
 
 K.clear_session()
