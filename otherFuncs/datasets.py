@@ -351,7 +351,8 @@ def loadDataset(params):
                 Read = params.WhichExperiment.Dataset.ReadTrain
                 Val_Indexes = list(DataAll.Test)
             
-                if (Read.Main or Read.ET or Read.CSFn) and Read.SRI: Val_Indexes = [s for s in Val_Indexes if 'SRI' not in s]
+                if Read.CSFn2 and Read.CSFn1:              Val_Indexes = [s for s in Val_Indexes if ('CSFn1' not in s)]
+                elif (Read.Main or Read.ET) and Read.SRI:  Val_Indexes = [s for s in Val_Indexes if ('SRI' not in s)]
 
                 DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, Val_Indexes, 'validation')                
                 save_hdf5_subject_List(params.h5 , 'valList' , Val_Indexes)

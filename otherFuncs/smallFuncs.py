@@ -394,7 +394,8 @@ def search_ExperimentDirectory(whichExperiment):
         model_Tag = ''
         if whichExperiment.HardParams.Model.Transfer_Learning.Mode:                               model_Tag += '_TF'
         if whichExperiment.Dataset.ReadTrain.ET   and not whichExperiment.Dataset.ReadTrain.Main: model_Tag += '_ET'
-        if whichExperiment.Dataset.ReadTrain.CSFn and not whichExperiment.Dataset.ReadTrain.Main: model_Tag += '_CSFn'
+        if whichExperiment.Dataset.ReadTrain.CSFn1 and not whichExperiment.Dataset.ReadTrain.Main: model_Tag += '_CSFn1'
+        if whichExperiment.Dataset.ReadTrain.CSFn2 and not whichExperiment.Dataset.ReadTrain.Main: model_Tag += '_CSFn2'
         return model_Tag
 
     sdTag = '/sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim)
@@ -566,29 +567,33 @@ def search_ExperimentDirectory(whichExperiment):
         if Read.Main : Input = LoopReadingData(Input, Dir + '/Main')
         if Read.ET   : Input = LoopReadingData(Input, Dir + '/ET')                   
         if Read.SRI  : Input = LoopReadingData(Input, Dir + '/SRI')
-        if Read.CSFn : Input = LoopReadingData(Input, Dir + '/CSFn')
+        if Read.CSFn1 : Input = LoopReadingData(Input, Dir + '/CSFn1')
+        if Read.CSFn2 : Input = LoopReadingData(Input, Dir + '/CSFn2')
         # if Read.SRI and SRI_flag_test: Input = LoopReadingData(Input, Dir + '/SRI')
         
         if crossVal.Mode:
             if Read.Main:  Input = load_CrossVal_Data(Input , Dir_CV + '/Main/')
             if Read.ET:    Input = load_CrossVal_Data(Input , Dir_CV + '/ET/')
             if Read.SRI:   Input = load_CrossVal_Data(Input , Dir_CV + '/SRI/')
-            if Read.CSFn : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn/')    
+            if Read.CSFn1 : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn1/')  
+            if Read.CSFn2 : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn2/')    
 
 
 
         if Read.ReadAugments.Mode and not (modeData == 'test'):
             
-            if Read.Main and os.path.exists(DirAug + '/Main' + sdTag2): Input = LoopReadingData(Input, DirAug + '/Main' + sdTag2)
-            if Read.ET   and os.path.exists(DirAug + '/ET'   + sdTag2): Input = LoopReadingData(Input, DirAug + '/ET'   + sdTag2)
-            if Read.SRI  and os.path.exists(DirAug + '/SRI'  + sdTag2): Input = LoopReadingData(Input, DirAug + '/SRI'  + sdTag2)
-            if Read.CSFn and os.path.exists(DirAug + '/CSFn' + sdTag2): Input = LoopReadingData(Input, DirAug + '/CSFn' + sdTag2)
+            if Read.Main  and os.path.exists(DirAug + '/Main' + sdTag2): Input = LoopReadingData(Input, DirAug + '/Main' + sdTag2)
+            if Read.ET    and os.path.exists(DirAug + '/ET'   + sdTag2): Input = LoopReadingData(Input, DirAug + '/ET'   + sdTag2)
+            if Read.SRI   and os.path.exists(DirAug + '/SRI'  + sdTag2): Input = LoopReadingData(Input, DirAug + '/SRI'  + sdTag2)
+            if Read.CSFn1 and os.path.exists(DirAug + '/CSFn1' + sdTag2): Input = LoopReadingData(Input, DirAug + '/CSFn1' + sdTag2)
+            if Read.CSFn2 and os.path.exists(DirAug + '/CSFn2' + sdTag2): Input = LoopReadingData(Input, DirAug + '/CSFn2' + sdTag2)
                              
              
-            if Read.Main and os.path.exists(Dir + '/Main/Augments' + sdTag2): Input = LoopReadingData(Input, Dir + '/Main/Augments' + sdTag2)
-            if Read.ET   and os.path.exists(Dir + '/ET/Augments'   + sdTag2): Input = LoopReadingData(Input, Dir + '/ET/Augments'   + sdTag2)
-            if Read.SRI  and os.path.exists(Dir + '/SRI/Augments'  + sdTag2): Input = LoopReadingData(Input, Dir + '/SRI/Augments'  + sdTag2)
-            if Read.CSFn and os.path.exists(Dir + '/CSFn/Augments' + sdTag2): Input = LoopReadingData(Input, Dir + '/CSFn/Augments' + sdTag2)
+            if Read.Main  and os.path.exists(Dir + '/Main/Augments' + sdTag2):  Input = LoopReadingData(Input, Dir + '/Main/Augments'  + sdTag2)
+            if Read.ET    and os.path.exists(Dir + '/ET/Augments'   + sdTag2):  Input = LoopReadingData(Input, Dir + '/ET/Augments'    + sdTag2)
+            if Read.SRI   and os.path.exists(Dir + '/SRI/Augments'  + sdTag2):  Input = LoopReadingData(Input, Dir + '/SRI/Augments'   + sdTag2)
+            if Read.CSFn1 and os.path.exists(Dir + '/CSFn1/Augments' + sdTag2): Input = LoopReadingData(Input, Dir + '/CSFn1/Augments' + sdTag2)
+            if Read.CSFn2 and os.path.exists(Dir + '/CSFn2/Augments' + sdTag2): Input = LoopReadingData(Input, Dir + '/CSFn2/Augments' + sdTag2)
 
         return Input
 
@@ -604,7 +609,7 @@ def search_ExperimentDirectory(whichExperiment):
         Model_Thalamus = Exp_address + '/models/' + SE.name                   + '/' + '1-THALAMUS' + sdTag
         Model_3T       = Exp_address + '/models/' + SE.name_Init_from_3T      + '/' + NucleusName  + sdTag
         Model_7T       = Exp_address + '/models/' + SE.name_Init_from_7T      + '/' + NucleusName  + sdTag
-        Model_CSFn     = Exp_address + '/models/' + SE.name_Init_from_CSFn    + '/' + NucleusName  + sdTag
+        Model_CSFn1    = Exp_address + '/models/' + SE.name_Init_from_CSFn1   + '/' + NucleusName  + sdTag
         Model_InitTF   = Exp_address + '/models/' + SE.name.split('_TF_')[0]  + '/' + NucleusName  + sdTag
         model_Tag = func_model_Tag(whichExperiment)
         Input     = checkInputDirectory(address, NucleusName,False,'train')

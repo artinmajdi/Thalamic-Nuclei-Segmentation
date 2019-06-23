@@ -28,26 +28,6 @@ def temp_Experiments_preSet(UserInfoB):
     # TypeExperiment == 11: # Main + Init from Thalamus
     # TypeExperiment == 12: # Main + Init from 3T
     class TypeExperimentFuncs():
-        def __init__(self):            
-            class ReadTrainC:
-                def __init__(self, SRI=0 , ET=0 , Main=1 , CSFn=0):   
-                    class readAugments: Mode, Tag, LoadAll = True, '', False
-                    self.SRI  = SRI  > 0.5
-                    self.ET   = ET   > 0.5
-                    self.Main = Main > 0.5
-                    self.CSFn = CSFn > 0.5
-
-                    self.ReadAugments = readAugments                    
-            self.ReadTrainC = ReadTrainC
-
-            class Transfer_LearningC:
-                def __init__(self, Mode=False , FrozenLayers = [0] , Tag = '_TF' , Stage = 0):
-                    self.Mode         = Mode
-                    self.FrozenLayers = FrozenLayers
-                    self.Stage        = Stage
-                    self.Tag          = Tag
-            self.Transfer_LearningC = Transfer_LearningC
-
         def main(self, TypeExperiment = 1):
             switcher = {
                 1:  (11  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
@@ -63,60 +43,7 @@ def temp_Experiments_preSet(UserInfoB):
                 11: (11  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
                 12: (11  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
                 }
-            return switcher.get(TypeExperiment , 'wrong Index')
-
-    def extra_info(UserInfoB):
-        if UserInfoB['TypeExperiment'] == 4:
-            UserInfoB['simulation'].TestOnly = True
-
-        elif UserInfoB['TypeExperiment'] == 3:
-            UserInfoB['InitializeB'].FromThalamus   = True
-            UserInfoB['InitializeB'].FromOlderModel = True
-            UserInfoB['InitializeB'].From_3T        = False  
-
-        elif UserInfoB['TypeExperiment'] == 5: 
-            UserInfoB['InitializeB'].FromThalamus   = False
-            UserInfoB['InitializeB'].FromOlderModel = False
-            UserInfoB['InitializeB'].From_3T        = True  
-            UserInfoB['simulation'].TestOnly        = False  
-        
-        elif UserInfoB['TypeExperiment'] == 7:
-            UserInfoB['SubExperiment'].Tag += '_Main_PlusET_PlusSRI'
-
-        #elif UserInfoB['TypeExperiment'] == 8:
-        #    UserInfoB['SubExperiment'].Tag = '_Main_PlusSRI'
-
-        elif UserInfoB['TypeExperiment'] == 9:
-            UserInfoB['InitializeB'].FromThalamus   = False
-            UserInfoB['InitializeB'].FromOlderModel = True
-            UserInfoB['InitializeB'].From_3T        = False   
-            # UserInfoB['CrossVal'].Mode = False
-            
-        # elif UserInfoB['TypeExperiment'] == 10:
-        #     UserInfoB['ReadTrain'].ReadAugments.LoadAll = True 
-            # UserInfoB['SubExperiment'].Tag += '_Main_AllAugments'   
-            
-        elif UserInfoB['TypeExperiment'] == 11:
-            UserInfoB['SubExperiment'].Tag += '_Main_Init_FromThalamus'  
-            UserInfoB['InitializeB'].FromThalamus   = True
-            UserInfoB['InitializeB'].FromOlderModel = False
-            UserInfoB['InitializeB'].From_3T        = False       
-
-        elif UserInfoB['TypeExperiment'] == 12:
-            UserInfoB['SubExperiment'].Tag += '_Main_Init_From3T'  
-            UserInfoB['InitializeB'].FromThalamus   = False
-            UserInfoB['InitializeB'].FromOlderModel = False
-            UserInfoB['InitializeB'].From_3T        = True  
-
-        return UserInfoB
-
-    a,b,c = TypeExperimentFuncs().main(UserInfoB['TypeExperiment'])
-    UserInfoB['SubExperiment'].Index = a
-    UserInfoB['ReadTrain']           = b
-    UserInfoB['Transfer_Learning']   = c
-    UserInfoB = extra_info(UserInfoB)
-
-    return UserInfoB
+            return switcher.get(TypeExperiment , 'wrong Index')    
 """
 def temp_Experiments_preSet_V2(UserInfoB):
 
@@ -149,46 +76,37 @@ def temp_Experiments_preSet_V2(UserInfoB):
                     self.FromOlderModel = FromOlderModel
                     self.From_3T        = From_3T
                     self.From_7T        = From_7T
-                    self.From_CSFn1      = From_CSFn1
+                    self.From_CSFn1     = From_CSFn1
             self.InitializeB = InitializeB
 
         def main(self, TypeExperiment = 1):
             switcher = {
-                1:  (8   ,   self.ReadTrainC(SRI=1)          , self.InitializeB()                    ,  self.Transfer_LearningC() ),
-                2:  (12  ,   self.ReadTrainC(Main=1)         , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
-                3:  (12  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC() ),
-                4:  (12  ,   self.ReadTrainC(ET=1)           , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True  , FrozenLayers=[0] , Tag = '_TF') ),
-                5:  (12  ,   self.ReadTrainC(ET=1)           , self.InitializeB()                    ,  self.Transfer_LearningC() ),
-                6:  (12  ,   self.ReadTrainC(SRI=1, Main=1)  , self.InitializeB()                    ,  self.Transfer_LearningC() ),
-                7:  (12  ,   self.ReadTrainC(ET=1)           , self.InitializeB()                    ,  self.Transfer_LearningC() ),
-                8:  (12  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(FromThalamus=True)   ,  self.Transfer_LearningC() ),
-                9:  (12  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC() ),
-                10:  (12  ,   self.ReadTrainC(CSFn=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC() ),
-                11:  (12  ,   self.ReadTrainC(Main=1 , SRI=1) , self.InitializeB(From_3T=True)       ,  self.Transfer_LearningC() ),
-                12:  (12  ,   self.ReadTrainC(CSFn=1)         , self.InitializeB(From_3T=True)       ,  self.Transfer_LearningC() ),
-                13:  (12  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)       ,  self.Transfer_LearningC() ),
-                14:  (12  ,   self.ReadTrainC(CSFn=1)         , self.InitializeB(From_CSFn=True)     ,  self.Transfer_LearningC() ),
-                }
+                1:  (8   ,   self.ReadTrainC(SRI=1)          , self.InitializeB()                    ,  self.Transfer_LearningC()          , '' ),
+
+                2:  (12  ,   self.ReadTrainC(Main=1)         , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC()          , '_Main_Init_3T' ),
+                3:  (12  ,   self.ReadTrainC(SRI=1, Main=1)  , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC()          , '_3T7T_Init_3T'),
+
+                4:  (12  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_ET_Init_Main'),
+                5:  (13  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC(Mode=True) , '_ET_TL_Main'),
+
+                6:  (12  ,   self.ReadTrainC(CSFn1=1)        , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC()          , '_CSFn1_Init_3T'),
+
+                7:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC()          , '_CSFn2_Init_CSFn1'),
+                8:  (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_CSFn1'),
+                9:  (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T   =True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_Main'),
+
+                }                                           
             return switcher.get(TypeExperiment , 'wrong Index')
 
-    a,b,c,d = TypeExperimentFuncs().main(UserInfoB['TypeExperiment'])
+    a,b,c,d,e = TypeExperimentFuncs().main(UserInfoB['TypeExperiment'])
     b.ReadAugments.Mode = UserInfoB['simulation'].ReadAugments_Mode
     
     UserInfoB['SubExperiment'].Index = a
     UserInfoB['ReadTrain']           = b
     UserInfoB['Transfer_Learning']   = d
     UserInfoB['InitializeB']         = c
-    if UserInfoB['TypeExperiment'] == 5: UserInfoB['simulation'].TestOnly = True
-    if UserInfoB['TypeExperiment'] == 2: UserInfoB['SubExperiment'].Tag = '_Main_Init_3T' + UserInfoB['tag_temp']
-    if UserInfoB['TypeExperiment'] == 3: UserInfoB['SubExperiment'].Tag = '_ET_Init_Main' + UserInfoB['tag_temp']
-    if UserInfoB['TypeExperiment'] == 7: UserInfoB['SubExperiment'].Tag = '_ET_Init_Rn' + UserInfoB['tag_temp']
-    if UserInfoB['TypeExperiment'] == 8: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_Th' + UserInfoB['tag_temp']
-    if UserInfoB['TypeExperiment'] == 9: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_3T'  + UserInfoB['tag_temp']
-    if UserInfoB['TypeExperiment'] == 10: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_Main' + UserInfoB['tag_temp']
-    if UserInfoB['TypeExperiment'] == 11: UserInfoB['SubExperiment'].Tag = '_3T7T_Init_3T_NoSchedular' + UserInfoB['tag_temp']
-    if UserInfoB['TypeExperiment'] == 12: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_3T'  + UserInfoB['tag_temp'] # _reversed_Contrast
-    if UserInfoB['TypeExperiment'] == 13: UserInfoB['SubExperiment'].Tag = '_ET_InitFrom_3Tp7T_NoSchedular'  + UserInfoB['tag_temp'] # _WeightedClass'
-    if UserInfoB['TypeExperiment'] == 14: UserInfoB['SubExperiment'].Tag = '_CSFn__Init_THOMAS_CSFn' + UserInfoB['tag_temp']
+    UserInfoB['SubExperiment'].Tag   = e + UserInfoB['tag_temp']  
+
 
     # if UserInfoB['upsample'].Scale == 1: UserInfoB['upsample'].Mode = False
         
@@ -236,7 +154,7 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
                 self.name_Init_from_3T    = 'sE8_'  + method + FM + ACH + NL + LF + US 
                 self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + LF + US 
-                self.name_Init_from_CSFn  = 'sE9_'  + method + FM + ACH + NL + LF + US 
+                self.name_Init_from_CSFn1  = 'sE9_'  + method + FM + ACH + NL + LF + US 
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
        
@@ -262,7 +180,7 @@ def func_Exp_subExp_Names(UserInfo):
         # print('Initialize Tags:  ')
         # print('    Init From 3T Tag'  , A.name_Init_from_3T)
         # print('    Init From 7T Tag'  , A.name_Init_from_7T)
-        # print('    Init From CSFn Tag', A.name_Init_from_CSFn)
+        # print('    Init From CSFn1 Tag', A.name_Init_from_CSFn1)
         return A
 
     def func_Experiment():
@@ -311,7 +229,6 @@ def func_WhichExperiment(UserInfo):
 
                 class method:
                     Type = ''
-                    # InitializeFromReference = True # from 3T or WMn for CSFn
                     ReferenceMask = ''
                     havingBackGround_AsExtraDimension = True
                     InputImage2Dvs3D = 2
@@ -458,10 +375,11 @@ def func_WhichExperiment(UserInfo):
                 LoadAll = False
 
             class readTrain:
-                Main = True
-                ET   = True
-                SRI  = True
-                CSFn = False
+                Main  = True
+                ET    = True
+                SRI   = True
+                CSFn1 = False
+                CSFn2 = False
                 ReadAugments = readAugmentFn()
 
             class dataset:

@@ -251,8 +251,7 @@ class Input_cls():
 
 # Dir = '/array/ssd/msmajdi/experiments/keras/exp4/results/sE11_Cascade_FM20_DO0.3_ET_Init_Main_AllAugs_CV_a/sd2'
 # for exp in ['exp5_CSFn']:
-#     for ds in ['CSFn']:
-#         print('\n\n\n  ' + exp + ' CSFn \n\n\n')
+#     for ds in ['CSFn1']:
 #         # for dataset in ['Main/' , 'SRI/' , 'ET/']:
 
 #         Dir_Train = '/array/ssd/msmajdi/experiments/keras/' + exp + '/train/' + ds + '/'

@@ -63,7 +63,7 @@ class register_cls():
 # dir_out = smallFuncs.mkDir('/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/WMn/case1')
 
 UI = UserEntry()
-# dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/pre-steps/CSFn/'
+# dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/pre-steps/CSFn1/'
 # UI.dir_in  = dir + 'step3_Cropped'
 # UI.dir_out = smallFuncs.mkDir(dir + 'step4_registered')
 # UI.mode = 'all'

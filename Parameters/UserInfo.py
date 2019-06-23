@@ -1,27 +1,30 @@
 
 
-Model_Method = 'HCascade' #'mUnet' # 'HCascade' # 'normal' #
+Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #  
 
 
 # Main = 7T (Ctrl&MS)
 # ET   = ET(7T + 3T)
-# TypeExperiment == 1: # 3T      Init Randomly
-# TypeExperiment == 2: # Main    Init from 3T
-# TypeExperiment == 3: # ET      Init from Main
-# TypeExperiment == 4: # ET Transfer Learn from Main
-# TypeExperiment == 5: # ET Predicted from Main
-# TypeExperiment == 6: # Main + 3T  Init Randomly
-# TypeExperiment == 7: # ET      Init from Randomly
-# TypeExperiment == 8  # Main + 3T  Init Th
-# TypeExperiment == 9  # Main + 3T  Init 3T
-# TypeExperiment == 10 # CSFn  Init Main
-# not needed any more ------------------------ TypeExperiment == 11 # Main + 3T  Init 3T + no schedular 
-# TypeExperiment == 12 # CSFn  Init 3T
-# TypeExperiment == 13 # ET Init non-ET 3T & 7T
-# TypeExperiment == 14 # CSFn Init CSFn_THOMAS
-TypeExperiment = 3
-multi_Class_Mode = False
+
+# TypeExperiment == 1: # 3T      Init Rn
+
+# TypeExperiment == 2: # Main       Init 3T
+# TypeExperiment == 3  # Main + 3T  Init 3T
+
+# TypeExperiment == 4: # ET      Init Main
+# TypeExperiment == 5: # ET Transfer Learn from Main
+
+
+# TypeExperiment == 6  # CSFn1  Init 3T
+
+# TypeExperiment == 7  # CSFn2  Init CSFn1
+# TypeExperiment == 8  # CSFn2  Transfer Learn from CSFn1
+# TypeExperiment == 9  # CSFn2  Transfer Learn from Main
+
+
+TypeExperiment = 6
+multi_Class_Mode = True
 readAugments_Mode = True
 lossFunction_Index = 3
 
@@ -65,12 +68,12 @@ class upsample:
 class simulation:
     TestOnly      = testOnly
     epochs        = 300
-    GPU_Index     = "5"
+    GPU_Index     = "7"
     Learning_Rate = 1e-3
     num_Layers    = 3 
-    nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] # ,2,4]
-    slicingDim    = [2,1,0]
-    batch_size    = 100
+    nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
+    slicingDim    = [1,2,0]
+    batch_size    = 50
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20
     verbose = 2

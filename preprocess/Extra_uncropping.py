@@ -63,8 +63,8 @@ class uncrop_cls():
 
 
 UI = UserEntry()
-# UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step1_registered_labels_croppedInput'
-# UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step2_uncropped'
+# UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn1/cropped_Image/step1_registered_labels_croppedInput'
+# UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn1/cropped_Image/step2_uncropped'
 # UI.mode    = 1
 if UI.mode == 0: 
     uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out, dir_mask = '' , maskCrop='mask_t1').apply_uncrop()

@@ -252,7 +252,7 @@ applyMain(IC.dir_in , '_PProcessed') # '') #
 
 # input = Input_cls()
 
-# input.dir_in = '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/crossVal/CSFn/a/vimp2_case17_CSFn_withSuperNuclei/Label/'
+# input.dir_in = '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/crossVal/CSFn_Dataset1/a/vimp2_case17_CSFn_withSuperNuclei/Label/'
 # Save_AllNuclei_inOne(input.dir_in)
 
 # creatingFullMaskWithAll4Supernuclei(input.dir_in , '_PProcessed')

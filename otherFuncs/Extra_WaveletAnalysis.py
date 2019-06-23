@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 
 
-a = nib.load('/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/step1_registered_labels_croppedInput/vimp2_case1/crop_t1.nii.gz')
+a = nib.load('/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn_Dataset1/cropped_Image/step1_registered_labels_croppedInput/vimp2_case1/crop_t1.nii.gz')
 nib.viewers.OrthoSlicer3D(a.get_data()).show()
 
 

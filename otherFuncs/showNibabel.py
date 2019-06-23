@@ -58,7 +58,7 @@ else: showNibabel()
 
 
 
-# dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn/cropped_Image/'
+# dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/_Dataset1/cropped_Image/'
 # a = '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/crossVal/ET/a/vimp2_G_7T_ET/PProcessed.nii.gz' # step0_orig_crop/vimp2_case2/crop_t1.nii.gz'
 # # b = 'step2_resliced_for_croppedInput/vimp2_case2/crop_t1.nii.gz'
 # c = '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/train/Main/vimp2_824_05212013_JS/PProcessed.nii.gz'

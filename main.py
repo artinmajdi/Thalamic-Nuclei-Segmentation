@@ -35,7 +35,7 @@ def Run(UserInfoB, InitValues):
     def check_if_num_Layers_fit(UserInfoB):
         def print_func2(UserInfoB, temp_params):
             print('---------------------- check Layers Step ------------------------------')
-            print(' Nucleus:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
+            print(' N:', UserInfoB['simulation'].nucleus_Index  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
                 ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
                 ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale)
 
@@ -123,10 +123,10 @@ def Run(UserInfoB, InitValues):
                 os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
                 
             def print_func(UserInfoB, params):
-                # print('---------------------------------------------------------------')
-                # print(' Nucleus:', NI  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
-                #     ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
-                #     ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale)
+                print('---------------------------------------------------------------')
+                print(' Nucleus:', NI  , ' | GPU:', UserInfoB['simulation'].GPU_Index , ' | SD',UserInfoB['simulation'].slicingDim[0], \
+                    ' | Dropout', UserInfoB['DropoutValue'] , ' | LR' , UserInfoB['simulation'].Learning_Rate, ' | NL' , UserInfoB['simulation'].num_Layers,\
+                    ' | ', UserInfoB['Model_Method'] , '|  FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num  ,  '|  Upsample' , UserInfoB['upsample'].Scale)
 
                 print('Experiment:', params.WhichExperiment.Experiment.name)                              
                 print('SubExperiment:', params.WhichExperiment.SubExperiment.name)
@@ -183,7 +183,6 @@ def Run(UserInfoB, InitValues):
     if  MM == 'HCascade':  
         if UserInfoB['simulation'].Multi_Class_Mode: HierarchicalStages_Multi_Class(UserInfoB)
         else: HierarchicalStages_single_Class(UserInfoB)
-
     elif MM == 'singleRun': Run_Main(UserInfoB)
     else: Loop_Over_Nuclei(UserInfoB)
      
