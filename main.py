@@ -163,6 +163,30 @@ def Run(UserInfoB, InitValues):
                 loop_Subjects('test') 
                             
             def normal_run(params):
+                """
+                def copy_model_for_Transfer_Learning():
+                    def func_mainCopy(name_Thalmus_network):
+                        input_model  = params.WhichExperiment.Experiment.address + '/models/' + name_Thalmus_network # params.WhichExperiment.SubExperiment.name_Thalmus_network
+                        output_model = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name
+                        os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
+
+                        input_model  = params.WhichExperiment.Experiment.address + '/results/' + name_Thalmus_network # params.WhichExperiment.SubExperiment.name_Thalmus_network
+                        output_model = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name
+                        os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
+
+                    # params.
+
+                    # Model_3T       = Exp_address + '/models/' + SE.name_Init_from_3T      + '/' + NucleusName  + sdTag
+                    # Model_7T       = Exp_address + '/models/' + SE.name_Init_from_7T      + '/' + NucleusName  + sdTag
+                    # Model_CSFn1    = Exp_address + '/models/' + SE.name_Init_from_CSFn1   + '/' + NucleusName  + sdTag
+
+                    if params.UserInfoB['InitializeB'].From_3T:    func_mainCopy('sE8_Predictions_Full_THALAMUS') 
+                    if params.UserInfoB['InitializeB'].From_7T:    func_mainCopy('sE8_Predictions_Full_THALAMUS') 
+                    if params.UserInfoB['InitializeB'].From_CSFn1: func_mainCopy('sE8_Predictions_Full_THALAMUS') 
+                                            
+                if params.UserInfoB['Transfer_Learning'].Mode: copy_model_for_Transfer_Learning(params)
+                """
+
                 Data, params = datasets.loadDataset(params)                             
                 choosingModel.check_Run(params, Data)              
                 K.clear_session()
@@ -170,8 +194,7 @@ def Run(UserInfoB, InitValues):
             params = paramFunc.Run(UserInfoB, terminal=False)
             print_func(UserInfoB, params)
 
-            if (NI == [1]): #  and ('sE8' in params.WhichExperiment.SubExperiment.name): 
-                func_copy_Thalamus_preds(params)
+            if (NI == [1]): print('--') # func_copy_Thalamus_preds(params)
             elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
             else: normal_run(params)
 
@@ -273,9 +296,9 @@ IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation']
 # for UserInfoB['TypeExperiment'] in [1, 2, 8]:
 #     Run(UserInfoB, IV)
 
-for UserInfoB['architectureType'] in ['U-Net4', 'FCN_Unet']:
-    for UserInfoB['TypeExperiment'] in [1, 2, 4]:
-        Run(UserInfoB, IV)
+# for UserInfoB['architectureType'] in ['U-Net4', 'FCN_Unet']:
+#     for UserInfoB['TypeExperiment'] in [1, 2, 4]:
+Run(UserInfoB, IV)
 
 # loop_fine_tuning(UserInfoB)
 

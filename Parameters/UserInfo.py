@@ -1,7 +1,7 @@
 
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
-architectureType = 'FCN_Unet' # 'U-Net4' # 'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
+architectureType = 'U-Net4' # 'FCN_Unet' # 'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
 
 # TypeExperiment == 1: # 3T      Init Rn
 
@@ -20,10 +20,10 @@ architectureType = 'FCN_Unet' # 'U-Net4' # 'FCN_Unet' # 'FCN'  #'FCN_with_SkipCo
 # TypeExperiment == 10  # CSFn2  Transfer Learn from Main
 
 
-TypeExperiment = 1
+TypeExperiment = 5
 
 multi_Class_Mode = True
-readAugments_Mode = True
+readAugments_Mode = False
 lossFunction_Index = 3
 
 tag_temp = '' # _temp_fixed_BB
@@ -70,14 +70,14 @@ class upsample:
 class simulation:
     TestOnly      = testOnly
     epochs        = 300
-    GPU_Index     = "7"
+    GPU_Index     = "0"
     Learning_Rate = 1e-3
     num_Layers    = 3 
     nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
-    slicingDim    = [2,1,0]
-    batch_size    = 100
+    slicingDim    = [1] # 2,1,0]
+    batch_size    = 300
     InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 10
+    FirstLayer_FeatureMap_Num = 20
     verbose = 2
     Multiply_By_Thalmaus = False
     Multiply_By_Rest_For_AV = False

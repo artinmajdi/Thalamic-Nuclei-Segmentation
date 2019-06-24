@@ -64,10 +64,17 @@ def temp_Experiments_preSet_V2(UserInfoB):
 
             class Transfer_LearningC:
                 def __init__(self, Mode=False , FrozenLayers = [0] , Tag = '_TF' , Stage = 0):
+                    
+                    class unet_Freeze():
+                        Contracting = {0:True, 1:True, 2:True, 3:False, 4:False, 5:False }
+                        Expanding   = {0:True, 1:False, 2:False, 3:False, 4:False, 5:False }
+                        Middle      = True
+                    
                     self.Mode         = Mode
                     self.FrozenLayers = FrozenLayers
                     self.Stage        = Stage
                     self.Tag          = Tag
+                    self.U_Net4       = unet_Freeze()
             self.Transfer_LearningC = Transfer_LearningC
 
             class InitializeB:

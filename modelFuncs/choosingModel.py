@@ -270,7 +270,7 @@ def trainingExperiment(Data, params):
         Reduce_LR = step_decay_schedule()
 
         # Progbar = keras.callbacks.Progba
-        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=20, verbose=1, mode=mode, \
+        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=30, verbose=1, mode=mode, \
             baseline=0, restore_best_weights=True)
 
         # TensorBoard = keras.callbacks.TensorBoard(log_dir= Dir_Save + '/logs', histogram_freq=1, batch_size=batch_size, \
@@ -310,43 +310,43 @@ def trainingExperiment(Data, params):
                     
         def modelInitialize(model):            
             TP = params.directories.Train
-            if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode:
-                model.load_weights(TP.Model + '/model_weights.h5')
-                print(' --- initialized from older Model <- -> Transfer Learning ')                                
-            else:
+            # if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode:
+            #     model.load_weights(TP.Model + '/model_weights.h5')
+            #     print(' --- initialized from older Model <- -> Transfer Learning ')                                
+            # else:
                 
-                Initialize = params.WhichExperiment.HardParams.Model.Initialize
-                                        
-                if Initialize.FromOlderModel and os.path.exists(TP.Model + '/model_weights.h5'):
-                    try: 
-                        model.load_weights(TP.Model + '/model_weights.h5')
-                        print(' --- initialized from older Model  ')
-                    except: print('initialized from older Model failed')
+            Initialize = params.WhichExperiment.HardParams.Model.Initialize
+                                    
+            if Initialize.FromOlderModel and os.path.exists(TP.Model + '/model_weights.h5'):
+                try: 
+                    model.load_weights(TP.Model + '/model_weights.h5')
+                    print(' --- initialized from older Model  ')
+                except: print('initialized from older Model failed')
 
-                elif Initialize.FromThalamus and params.WhichExperiment.Nucleus.Index[0] != 1 and os.path.exists(TP.Model_Thalamus + '/model_weights.h5'):
-                    try: 
-                        model.load_weights(TP.Model_Thalamus + '/model_weights.h5')
-                        print(' --- initialized from Thalamus  ')
-                    except: print('initialized from Thalamus failed')
-                        
-                elif Initialize.From_3T and os.path.exists(TP.Model_3T + '/model_weights.h5'):
-                    print('-----' , TP.Model_3T + '/model_weights.h5')
-                    try:
-                        model.load_weights(TP.Model_3T + '/model_weights.h5')
-                        print(' --- initialized from Model_3T' , TP.Model_3T)
-                    except: print('initialized from 3T failed')
+            elif Initialize.FromThalamus and params.WhichExperiment.Nucleus.Index[0] != 1 and os.path.exists(TP.Model_Thalamus + '/model_weights.h5'):
+                try: 
+                    model.load_weights(TP.Model_Thalamus + '/model_weights.h5')
+                    print(' --- initialized from Thalamus  ')
+                except: print('initialized from Thalamus failed')
+                    
+            elif Initialize.From_3T and os.path.exists(TP.Model_3T + '/model_weights.h5'):
+                print('-----' , TP.Model_3T + '/model_weights.h5')
+                try:
+                    model.load_weights(TP.Model_3T + '/model_weights.h5')
+                    print(' --- initialized from Model_3T' , TP.Model_3T)
+                except: print('initialized from 3T failed')
 
-                elif Initialize.From_7T and os.path.exists(TP.Model_7T + '/model_weights.h5'):
-                    try:
-                        model.load_weights(TP.Model_7T + '/model_weights.h5')
-                        print(' --- initialized from Model_7T' , TP.Model_7T)
-                    except: print('initialized from From_7T failed')  
+            elif Initialize.From_7T and os.path.exists(TP.Model_7T + '/model_weights.h5'):
+                try:
+                    model.load_weights(TP.Model_7T + '/model_weights.h5')
+                    print(' --- initialized from Model_7T' , TP.Model_7T)
+                except: print('initialized from From_7T failed')  
 
-                elif Initialize.From_CSFn1 and os.path.exists(TP.Model_CSFn1 + '/model_weights.h5'):
-                    try:
-                        model.load_weights(TP.Model_CSFn1 + '/model_weights.h5')
-                        print(' --- initialized from Model_CSFn1' , TP.Model_CSFn1)
-                    except: print('initialized from From_CSFn1 failed') 
+            elif Initialize.From_CSFn1 and os.path.exists(TP.Model_CSFn1 + '/model_weights.h5'):
+                try:
+                    model.load_weights(TP.Model_CSFn1 + '/model_weights.h5')
+                    print(' --- initialized from Model_CSFn1' , TP.Model_CSFn1)
+                except: print('initialized from From_CSFn1 failed') 
 
 
             print('------------------------------------------------------------------')
@@ -546,23 +546,16 @@ def architecture(ModelParam):
 
         def Unet_sublayer_Contracting(inputs):
             def main_USC(WBp, nL):
-                trainable = False if TF.Mode and nL in TF.FrozenLayers else True
+                trainable = TF.U_Net4.Contracting[nL] if TF.Mode else True
                 featureMaps = FM*(2**nL)
 
                 conv = Layer(featureMaps, trainable, WBp)
-                # conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(WBp)
-                # conv = KLayers.BatchNormalization()(conv)  
-                # conv = KLayers.Activation(AC.layers)(conv) 
-
                 conv = Layer(featureMaps, trainable, conv)
-                # conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(conv)
-                # conv = KLayers.BatchNormalization()(conv)  
-                # conv = KLayers.Activation(AC.layers)(conv) 
-                                              
                 
                 pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)                                
                 
-                if trainable: pool = KLayers.Dropout(DT.Value)(pool)  
+                # if DT.Mode and trainable: pool = KLayers.Dropout(DT.Value)(pool)  
+                pool = KLayers.Dropout(DT.Value)(pool)  
                                 
                 return pool, conv
             
@@ -574,23 +567,17 @@ def architecture(ModelParam):
 
         def Unet_sublayer_Expanding(WB , Conv_Out):
             def main_USE(WBp, nL, contracting_Info):
-                trainable = False if TF.Mode and nL in TF.FrozenLayers else True
+                trainable = TF.U_Net4.Expanding[nL] if TF.Mode else True
                 featureMaps = FM*(2**nL)
 
                 WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2,2), padding=padding, activation=AC.layers, trainable=trainable)(WBp)
                 UP = KLayers.merge.concatenate( [WBp, contracting_Info[nL+1]] , axis=3)
 
                 conv = Layer(featureMaps, trainable, UP)
-                # conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(UP)
-                # conv = KLayers.BatchNormalization()(conv) 
-                # conv = KLayers.Activation(AC.layers)(conv)
-
                 conv = Layer(featureMaps, trainable, conv)
-                # conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(conv)
-                # conv = KLayers.BatchNormalization()(conv) 
-                # conv = KLayers.Activation(AC.layers)(conv)
                 
-                if DT.Mode and trainable: conv = KLayers.Dropout(DT.Value)(conv)
+                # if DT.Mode and trainable: conv = KLayers.Dropout(DT.Value)(conv)
+                conv = KLayers.Dropout(DT.Value)(conv)
                 return conv
 
             for nL in reversed(range(NLayers -1)):  
@@ -599,20 +586,15 @@ def architecture(ModelParam):
             return WB
 
         def Unet_MiddleLayer(WB, nL):
-            trainable = False if TF.Mode and nL in TF.FrozenLayers else True
+            trainable = TF.U_Net4.Middle if TF.Mode else True
             featureMaps = FM*(2**nL)
 
             WB = Layer(featureMaps, trainable, WB)
-            # WB = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(WB)
-            # WB = KLayers.BatchNormalization()(WB) 
-            # WB = KLayers.Activation(AC.layers)(WB)
+            WB = Layer(featureMaps, trainable, WB)     
 
-            WB = Layer(featureMaps, trainable, WB)
-            # WB = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(WB)
-            # WB = KLayers.BatchNormalization()(WB) 
-            # WB = KLayers.Activation(AC.layers)(WB)            
-
-            if DT.Mode and trainable: WB = KLayers.Dropout(DT.Value)(WB)
+            # if DT.Mode and trainable: WB = KLayers.Dropout(DT.Value)(WB)
+            WB = KLayers.Dropout(DT.Value)(WB)
+            
             return WB
                 
         inputs = KLayers.Input(input_shape)
