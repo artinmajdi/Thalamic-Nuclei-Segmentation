@@ -73,6 +73,8 @@ def testingExeriment(model, Data, params):
                                     
             if 1.2 in params.WhichExperiment.Nucleus.Index:
                 dice_tag = 'All_Groups'                              
+            elif 1 in params.WhichExperiment.Nucleus.Index:
+                dice_tag = '1-THALAMUS'
             else:
                 BB = smallFuncs.Nuclei_Class(1,'HCascade')
                 parent = BB.HCascade_Parents_Identifier(params.WhichExperiment.Nucleus.Index)

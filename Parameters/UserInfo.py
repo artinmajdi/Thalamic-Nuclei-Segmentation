@@ -17,6 +17,7 @@ architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #
 
 
 # TypeExperiment == 6  # CSFn1  Init Main
+# TypeExperiment == 11  # CSFn1  Init 3T
 
 # TypeExperiment == 7  # CSFn2  Init CSFn1
 # TypeExperiment == 8  # CSFn2  Init Main
@@ -24,10 +25,11 @@ architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #
 # TypeExperiment == 10  # CSFn2  Transfer Learn from Main
 
 
-TypeExperiment = 8
-multi_Class_Mode = True
+TypeExperiment = 2
+
+multi_Class_Mode = False
 readAugments_Mode = True
-lossFunction_Index = 3
+lossFunction_Index = 4
 
 tag_temp = '' # _temp_fixed_BB
 testOnly = False
@@ -73,7 +75,7 @@ class simulation:
     Learning_Rate = 1e-3
     num_Layers    = 3 
     nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
-    slicingDim    = [1,2,0]
+    slicingDim    = [2,1,0]
     batch_size    = 50
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20

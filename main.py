@@ -234,6 +234,23 @@ def loop_fine_tuning2(UserInfoB):
                 Run(UserInfoB, IV)
 
 
+def loop_fine_tuning_CSFn(UserInfoB):
+
+    
+    # for UserInfoB['simulation'].num_Layers in [3]:
+    #     for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [30 , 40 , 60]:
+    #         Run(UserInfoB, IV)
+
+    # for UserInfoB['simulation'].num_Layers in [4]:
+    #     for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40 , 60]:
+    #         Run(UserInfoB, IV)
+
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['upsample'].Scale = 2
+    for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 40]:
+        Run(UserInfoB, IV)
+
+
 UserInfoB, K = preMode(UserInfo.__dict__)
 
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
@@ -266,7 +283,8 @@ def func_temp2_checkLossFunction(UserInfoB):
 
 # loop_fine_tuning2(UserInfoB)
 
-for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade']:
-    Run(UserInfoB, IV)
+loop_fine_tuning_CSFn(UserInfoB)
+
+# Run(UserInfoB, IV)
 
 K.clear_session()

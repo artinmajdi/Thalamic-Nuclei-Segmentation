@@ -90,6 +90,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 5:  (13  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC(Mode=True) , '_ET_TL_Main'),
 
                 6:  (12  ,   self.ReadTrainC(CSFn1=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_CSFn1_Init_Main'),
+                11: (12  ,   self.ReadTrainC(CSFn1=1)        , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC()          , '_CSFn1_Init_3T'),
 
                 7:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC()          , '_CSFn2_Init_CSFn1'),
                 8:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_CSFn2_Init_Main'),
@@ -140,6 +141,8 @@ def func_Exp_subExp_Names(UserInfo):
         US = '_US' + str(UserInfo['upsample'].Scale)
         _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
         LF = '_' + a
+        GAP = '' # _gap' + str(UserInfo['gapDilation'])
+
         method = UserInfo['Model_Method']        
 
         # def field_Strength_Tag():
@@ -159,7 +162,7 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
        
-        tag = method + FM + ACH + NL + LF + US + SE.Tag + '_gap' + str(UserInfo['gapDilation'])
+        tag = method + FM + ACH + NL + LF + US + SE.Tag + GAP
         # tag +=  '_' + UserInfo['normalize'].Method  
 
         # if UserInfo['lossFunction_Index'] != 1: 

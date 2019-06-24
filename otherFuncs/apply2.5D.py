@@ -44,7 +44,7 @@ def func_MajorityVoting(Info , params):
     subjects = [s for s in params.directories.Test.Input.Subjects if 'ERROR' not in s]
     for sj in tqdm(subjects):
         subject = params.directories.Test.Input.Subjects[sj]
-        print(subject.subjectName)
+        # print(subject.subjectName)
         Info.subject = subject()
 
         a = smallFuncs.Nuclei_Class().All_Nuclei()
@@ -143,10 +143,16 @@ def func_DecisionTree(Info , params):
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
-for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade' , 'mUnet']: # subExperiment in ['sE11_mUnet_FM20_DO0.3_Main_InitFrom_Th_CV_a' , 'sE11_mUnet_FM20_DO0.3_Main_PlustET_InitFrom_Th_CV_a'] : #
-    params = paramFunc.Run(UserInfoB, terminal=False)
-
-    InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
-    #func_MajorityVoting(InfoS , params)
-    func_DecisionTree(InfoS , params)
-
+for UserInfoB['lossFunction_Index'] in [3]:
+# for UserInfoB['TypeExperiment'] in [6, 11]: # ,  2 , 4]:
+# for UserInfoB['gapDilation'] in [0,2,4,5,7,9]:
+    for UserInfoB['simulation'].num_Layers in [3]: #  , 4 , 5 , 6]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20]: #  , 30 , 40 , 60]:
+            
+            try:
+                params = paramFunc.Run(UserInfoB, terminal=False)
+                InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
+                func_MajorityVoting(InfoS , params)
+                # func_DecisionTree(InfoS , params)
+            except Exception as e:
+                print(e)
