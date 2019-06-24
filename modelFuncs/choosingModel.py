@@ -699,9 +699,9 @@ def architecture(ModelParam):
         inputs = KLayers.Input(input_shape)
 
     
-        for nL in range(2):
-            if nL == 0: conv = Layer(FM, True, inputs) 
-            else:       conv = Layer(FM, True, conv) 
+        for nL in range(3):
+            if nL == 0: conv = Layer(60, True, inputs) 
+            else:       conv = Layer(60, True, conv) 
                   
             conv = KLayers.Dropout(DT.Value)(conv)  
             

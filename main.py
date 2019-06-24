@@ -119,15 +119,12 @@ def Run(UserInfoB, InitValues):
                     output_model = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name
                     os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
 
-
-                ReadTrain = params.WhichExperiment.Dataset.ReadTrain
-
-                
-                if ReadTrain.SRI:    func_mainCopy('sE8_Predictions_Full_THALAMUS')
-                if ReadTrain.ET:     func_mainCopy('sE12_Predictions_Full_THALAMUS_ET')
-                if ReadTrain.Main:   func_mainCopy('sE12_Predictions_Full_THALAMUS_Main')                
-                if ReadTrain.CSFn1:  func_mainCopy('sE12_Predictions_Full_CSFn1')
-                if ReadTrain.CSFn2:  func_mainCopy('sE12_Predictions_Full_CSFn2')
+                ReadTrain = params.WhichExperiment.Dataset.ReadTrain                
+                if ReadTrain.SRI:    func_mainCopy('sE8_Predictions_Full_THALAMUS') 
+                if ReadTrain.ET:     func_mainCopy('sE12_Predictions_Full_THALAMUS_ET') 
+                if ReadTrain.Main:   func_mainCopy('sE12_Predictions_Full_THALAMUS_Main') 
+                if ReadTrain.CSFn1:  func_mainCopy('sE12_Predictions_Full_THALAMUS_CSFn1') 
+                if ReadTrain.CSFn2:  func_mainCopy('sE12_Predictions_Full_THALAMUS_CSFn2') 
                 
             def print_func(UserInfoB, params):
                 print('---------------------------------------------------------------')
@@ -173,9 +170,9 @@ def Run(UserInfoB, InitValues):
             params = paramFunc.Run(UserInfoB, terminal=False)
             print_func(UserInfoB, params)
 
-            # if (NI == [1]): #  and ('sE8' in params.WhichExperiment.SubExperiment.name): 
-            #     func_copy_Thalamus_preds(params)
-            if (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
+            if (NI == [1]): #  and ('sE8' in params.WhichExperiment.SubExperiment.name): 
+                func_copy_Thalamus_preds(params)
+            elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
             else: normal_run(params)
 
         def Loop_slicing_orientations(UserInfoB, InitValues):
@@ -220,7 +217,6 @@ def loop_fine_tuning(UserInfoB):
             for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40 , 60]:
                 Run(UserInfoB, IV)
 
-
 def loop_fine_tuning2(UserInfoB):
 
     for UserInfoB['upsample'].Scale in [2 , 4]:
@@ -232,7 +228,6 @@ def loop_fine_tuning2(UserInfoB):
         for UserInfoB['simulation'].num_Layers in [6]:
             for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
                 Run(UserInfoB, IV)
-
 
 def loop_fine_tuning_CSFn(UserInfoB):
 
@@ -250,12 +245,6 @@ def loop_fine_tuning_CSFn(UserInfoB):
     for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 40]:
         Run(UserInfoB, IV)
 
-
-UserInfoB, K = preMode(UserInfo.__dict__)
-
-IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-
-
 def func_temp_checkSingleClass_vs_MultiClass(UserInfoB):
     UserInfoB['simulation'].Multi_Class_Mode = False
     for UserInfoB['lossFunction_Index'] in [3, 1, 4]:
@@ -272,12 +261,21 @@ def func_temp2_checkLossFunction(UserInfoB):
         Run(UserInfoB, IV)
 
 
+UserInfoB, K = preMode(UserInfo.__dict__)
+
+IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+
 # func_temp2_checkLossFunction(UserInfoB)
 
 # func_temp_checkSingleClass_vs_MultiClass(UserInfoB)
 
-# for UserInfoB['gapDilation'] in [0 , 2 , 4 , 5 , 7 , 9]:
-    # Run(UserInfoB, IV)
+# for UserInfoB['TypeExperiment'] in [1, 2, 8]:
+#     Run(UserInfoB, IV)
+
+for UserInfoB['architectureType'] in ['U-Net4', 'FCN_Unet']:
+    for UserInfoB['TypeExperiment'] in [1, 2, 4]:
+        Run(UserInfoB, IV)
 
 # loop_fine_tuning(UserInfoB)
 
@@ -285,6 +283,6 @@ def func_temp2_checkLossFunction(UserInfoB):
 
 # loop_fine_tuning_CSFn(UserInfoB)
 
-Run(UserInfoB, IV)
+# Run(UserInfoB, IV)
 
 K.clear_session()
