@@ -283,8 +283,8 @@ def func_temp2_checkLossFunction(UserInfoB):
 
 # loop_fine_tuning2(UserInfoB)
 
-loop_fine_tuning_CSFn(UserInfoB)
+# loop_fine_tuning_CSFn(UserInfoB)
 
-# Run(UserInfoB, IV)
+Run(UserInfoB, IV)
 
 K.clear_session()

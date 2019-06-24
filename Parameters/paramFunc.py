@@ -105,7 +105,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
     
     UserInfoB['SubExperiment'].Index = a
     UserInfoB['ReadTrain']           = b
-    UserInfoB['Transfer_Learning']   = d
+    # UserInfoB['Transfer_Learning']   = d
     UserInfoB['InitializeB']         = c
     UserInfoB['SubExperiment'].Tag   = e + UserInfoB['tag_temp']  
 

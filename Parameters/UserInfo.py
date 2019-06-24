@@ -3,10 +3,6 @@
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #  
 
-
-# Main = 7T (Ctrl&MS)
-# ET   = ET(7T + 3T)
-
 # TypeExperiment == 1: # 3T      Init Rn
 
 # TypeExperiment == 2: # Main       Init 3T
@@ -14,7 +10,6 @@ architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #
 
 # TypeExperiment == 4: # ET      Init Main
 # TypeExperiment == 5: # ET Transfer Learn from Main
-
 
 # TypeExperiment == 6  # CSFn1  Init Main
 # TypeExperiment == 11  # CSFn1  Init 3T
@@ -27,12 +22,16 @@ architectureType = 'U-Net4' #'FCN'  #'FCN_with_SkipConnection' #
 
 TypeExperiment = 2
 
-multi_Class_Mode = False
+multi_Class_Mode = True
 readAugments_Mode = True
 lossFunction_Index = 4
 
 tag_temp = '' # _temp_fixed_BB
 testOnly = False
+
+# class Transfer_Learning:
+#     Mode   = False
+#     Method = 'FCN_Unet'
 
 class normalize:
     Mode = True
