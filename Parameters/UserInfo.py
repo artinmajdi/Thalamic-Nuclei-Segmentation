@@ -1,7 +1,7 @@
 
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
-architectureType = 'U-Net4' # 'FCN_Unet' # 'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
+architectureType = 'FCN_Unet' #  'U-Net4' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
 
 # TypeExperiment == 1: # 3T      Init Rn
 
@@ -12,18 +12,18 @@ architectureType = 'U-Net4' # 'FCN_Unet' # 'FCN_Unet' # 'FCN'  #'FCN_with_SkipCo
 # TypeExperiment == 5: # ET Transfer Learn from Main
 
 # TypeExperiment == 6  # CSFn1  Init Main
-# TypeExperiment == 11  # CSFn1  Init 3T
+# TypeExperiment == 11 # CSFn1  Init 3T
 
 # TypeExperiment == 7  # CSFn2  Init CSFn1
 # TypeExperiment == 8  # CSFn2  Init Main
 # TypeExperiment == 9  # CSFn2  Transfer Learn from CSFn1
-# TypeExperiment == 10  # CSFn2  Transfer Learn from Main
+# TypeExperiment == 10 # CSFn2  Transfer Learn from Main
 
 
-TypeExperiment = 5
+TypeExperiment = 1
 
 multi_Class_Mode = True
-readAugments_Mode = False
+readAugments_Mode = True
 lossFunction_Index = 3
 
 tag_temp = '' # _temp_fixed_BB
@@ -70,7 +70,7 @@ class upsample:
 class simulation:
     TestOnly      = testOnly
     epochs        = 300
-    GPU_Index     = "0"
+    GPU_Index     = "1"
     Learning_Rate = 1e-3
     num_Layers    = 3 
     nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]

@@ -68,7 +68,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
                     class unet_Freeze():
                         Contracting = {0:True, 1:True, 2:True, 3:False, 4:False, 5:False }
                         Expanding   = {0:True, 1:False, 2:False, 3:False, 4:False, 5:False }
-                        Middle      = True
+                        Middle      = True                        
                     
                     self.Mode         = Mode
                     self.FrozenLayers = FrozenLayers

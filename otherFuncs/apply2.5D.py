@@ -147,7 +147,7 @@ for UserInfoB['lossFunction_Index'] in [3]:
 # for UserInfoB['TypeExperiment'] in [6, 11]: # ,  2 , 4]:
 # for UserInfoB['gapDilation'] in [0,2,4,5,7,9]:
     for UserInfoB['simulation'].num_Layers in [3]: #  , 4 , 5 , 6]:
-        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20]: #  , 30 , 40 , 60]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10]: #  , 30 , 40 , 60]:
             
             try:
                 params = paramFunc.Run(UserInfoB, terminal=False)

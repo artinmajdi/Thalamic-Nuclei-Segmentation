@@ -154,6 +154,7 @@ class mergingDiceValues:
 
                     pd_sE['subject'] = [s['subject'] for s in sE_Dices]
                     for nucleus in All_Nuclei_Names: 
+
                         if nucleus in sE_Dices[0]: pd_sE[nucleus] = [s[nucleus] for s in sE_Dices] # .astype(np.float16)
 
                     pd_sE.to_excel(  self.writer, sheet_name=self.plane.tagList[0] )    
@@ -237,8 +238,8 @@ for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExpe
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')
     mergingDiceValues(Info)
 
-    Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
-    savingHistory_AsExcel(Info)
+    # Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
+    # savingHistory_AsExcel(Info)
 
 os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
 

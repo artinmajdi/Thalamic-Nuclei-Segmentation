@@ -609,7 +609,7 @@ def architecture(ModelParam):
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
-    def FCN_UNet(ModelParam):  #  Conv -> BatchNorm -> Relu ) -> (Conv -> BatchNorm -> Relu)  -> maxpooling  -> Dropout
+    def FCN_Unet(ModelParam):  #  Conv -> BatchNorm -> Relu ) -> (Conv -> BatchNorm -> Relu)  -> maxpooling  -> Dropout
                     
         TF = ModelParam.Transfer_Learning
         LP = ModelParam.Layer_Params        
@@ -631,7 +631,7 @@ def architecture(ModelParam):
 
         def Unet_sublayer_Contracting(inputs):
             def main_USC(WBp, nL):
-                trainable = False if TF.Mode and nL in TF.FrozenLayers else True
+                trainable = TF.U_Net4.Contracting[nL] if TF.Mode else True
                 featureMaps = FM*(2**nL)
 
                 conv = Layer(featureMaps, trainable, WBp)
@@ -651,7 +651,7 @@ def architecture(ModelParam):
 
         def Unet_sublayer_Expanding(WB , Conv_Out):
             def main_USE(WBp, nL, contracting_Info):
-                trainable = False if TF.Mode and nL in TF.FrozenLayers else True
+                trainable = TF.U_Net4.Expanding[nL] if TF.Mode else True
                 featureMaps = FM*(2**nL)
 
                 WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2,2), padding=padding, activation=AC.layers, trainable=trainable)(WBp)
@@ -669,7 +669,7 @@ def architecture(ModelParam):
             return WB
 
         def Unet_MiddleLayer(WB, nL):
-            trainable = False if TF.Mode and nL in TF.FrozenLayers else True
+            trainable = TF.U_Net4.Middle if TF.Mode else True
             featureMaps = FM*(2**nL)
 
             WB = Layer(featureMaps, trainable, WB)
@@ -678,15 +678,16 @@ def architecture(ModelParam):
             if DT.Mode and trainable: WB = KLayers.Dropout(DT.Value)(WB)
             return WB
                 
-        inputs = KLayers.Input(input_shape)
+        def FCN_Layer(inputs):
+            for nL in range(3):
+                if nL == 0: conv = Layer(40, True, inputs) 
+                else:       conv = Layer(40, True, conv) 
+                    
+                conv = KLayers.Dropout(DT.Value)(conv)  
+            return conv
 
-    
-        for nL in range(3):
-            if nL == 0: conv = Layer(60, True, inputs) 
-            else:       conv = Layer(60, True, conv) 
-                  
-            conv = KLayers.Dropout(DT.Value)(conv)  
-            
+        inputs = KLayers.Input(input_shape)
+        conv = FCN_Layer(inputs)    
         WB, Conv_Out = Unet_sublayer_Contracting(conv)
 
         WB = Unet_MiddleLayer(WB , NLayers-1)
@@ -696,8 +697,7 @@ def architecture(ModelParam):
         final = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
-    
-    
+        
     def FCN(ModelParam):  #  Conv -> BatchNorm -> Relu ) -> (Conv -> BatchNorm -> Relu)  -> maxpooling  -> Dropout
                     
         TF = ModelParam.Transfer_Learning
@@ -1178,8 +1178,8 @@ def architecture(ModelParam):
     elif  ModelParam.architectureType == 'FCN_with_SkipConnection':
         model = FCN_with_SkipConnection(ModelParam)
 
-    elif  ModelParam.architectureType == 'FCN_UNet':
-        model = FCN_UNet(ModelParam)
+    elif  ModelParam.architectureType == 'FCN_Unet':
+        model = FCN_Unet(ModelParam)
 
     model.summary()
 
