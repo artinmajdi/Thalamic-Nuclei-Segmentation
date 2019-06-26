@@ -74,7 +74,7 @@ class simulation:
     Learning_Rate = 1e-3
     num_Layers    = 3 
     nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
-    slicingDim    = [1] # 2,1,0]
+    slicingDim    = [2,0] # 1,0]
     batch_size    = 300
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20

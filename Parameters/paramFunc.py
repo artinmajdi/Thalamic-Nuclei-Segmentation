@@ -192,6 +192,10 @@ def func_Exp_subExp_Names(UserInfo):
         # print('    Init From 3T Tag'  , A.name_Init_from_3T)
         # print('    Init From 7T Tag'  , A.name_Init_from_7T)
         # print('    Init From CSFn1 Tag', A.name_Init_from_CSFn1)
+
+
+
+        # A.name = 'sE12_HCascade_MV_Results_BestNetwork'
         return A
 
     def func_Experiment():

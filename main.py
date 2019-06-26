@@ -293,8 +293,8 @@ IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation']
 
 # func_temp_checkSingleClass_vs_MultiClass(UserInfoB)
 
-for UserInfoB['TypeExperiment'] in [1, 2, 4, 11, 5 , 9 , 10]:
-    Run(UserInfoB, IV)
+# for UserInfoB['TypeExperiment'] in [4, 11, 5 , 9 , 10]:
+Run(UserInfoB, IV)
 
 # for UserInfoB['architectureType'] in ['U-Net4', 'FCN_Unet']:
 #     for UserInfoB['TypeExperiment'] in [1, 2, 4]:

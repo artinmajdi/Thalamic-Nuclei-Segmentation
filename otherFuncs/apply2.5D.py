@@ -143,16 +143,16 @@ def func_DecisionTree(Info , params):
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
-for UserInfoB['lossFunction_Index'] in [3]:
-# for UserInfoB['TypeExperiment'] in [6, 11]: # ,  2 , 4]:
-# for UserInfoB['gapDilation'] in [0,2,4,5,7,9]:
-    for UserInfoB['simulation'].num_Layers in [3]: #  , 4 , 5 , 6]:
-        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10]: #  , 30 , 40 , 60]:
+# for UserInfoB['lossFunction_Index'] in [3]:
+# # for UserInfoB['TypeExperiment'] in [6, 11]: # ,  2 , 4]:
+# # for UserInfoB['gapDilation'] in [0,2,4,5,7,9]:
+#     for UserInfoB['simulation'].num_Layers in [3]: #  , 4 , 5 , 6]:
+#         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10]: #  , 30 , 40 , 60]:
             
-            try:
-                params = paramFunc.Run(UserInfoB, terminal=False)
-                InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
-                func_MajorityVoting(InfoS , params)
-                # func_DecisionTree(InfoS , params)
-            except Exception as e:
-                print(e)
+# try:
+params = paramFunc.Run(UserInfoB, terminal=False)
+InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
+func_MajorityVoting(InfoS , params)
+# func_DecisionTree(InfoS , params)
+# except Exception as e:
+#     print(e)
