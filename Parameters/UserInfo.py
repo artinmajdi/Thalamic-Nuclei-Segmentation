@@ -1,7 +1,7 @@
 
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
-architectureType = 'FCN_Unet' #  'U-Net4' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
+architectureType = 'U-Net4' # 'FCN_Unet' #   'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
 
 # TypeExperiment == 1: # 3T      Init Rn
 
@@ -19,14 +19,13 @@ architectureType = 'FCN_Unet' #  'U-Net4' #  'FCN_Unet' # 'FCN'  #'FCN_with_Skip
 # TypeExperiment == 9  # CSFn2  Transfer Learn from CSFn1
 # TypeExperiment == 10 # CSFn2  Transfer Learn from Main
 
-
 TypeExperiment = 1
 
 multi_Class_Mode = True
 readAugments_Mode = True
 lossFunction_Index = 3
 
-tag_temp = '' # _temp_fixed_BB
+tag_temp = '_NEW' # _temp_fixed_BB
 testOnly = False
 
 # class Transfer_Learning:
@@ -65,17 +64,17 @@ class InitializeB:
 
 class upsample:
     Mode = True
-    Scale = 1
+    Scale = 2
 
 class simulation:
     TestOnly      = testOnly
     epochs        = 300
-    GPU_Index     = "1"
+    GPU_Index     = "6"
     Learning_Rate = 1e-3
     num_Layers    = 3 
     nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
-    slicingDim    = [2,0] # 1,0]
-    batch_size    = 300
+    slicingDim    = [2,1,0]
+    batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20
     verbose = 2

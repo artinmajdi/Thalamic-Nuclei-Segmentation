@@ -66,10 +66,7 @@ def Run(UserInfoB, InitValues):
 
     def HierarchicalStages_Multi_Class(UserInfoB):
 
-        # BB = smallFuncs.Nuclei_Class(1,'HCascade')
-
         print('************ stage 1 ************')
-        # if 1 in InitValues.Nuclei_Indexes: 
         UserInfoB['simulation'].nucleus_Index = [1]
         if not check_if_num_Layers_fit(UserInfoB):
             Run_Main(UserInfoB)
@@ -120,11 +117,11 @@ def Run(UserInfoB, InitValues):
                     os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
 
                 ReadTrain = params.WhichExperiment.Dataset.ReadTrain                
-                if ReadTrain.SRI:    func_mainCopy('sE8_Predictions_Full_THALAMUS') 
-                if ReadTrain.ET:     func_mainCopy('sE12_Predictions_Full_THALAMUS_ET') 
-                if ReadTrain.Main:   func_mainCopy('sE12_Predictions_Full_THALAMUS_Main') 
-                if ReadTrain.CSFn1:  func_mainCopy('sE12_Predictions_Full_THALAMUS_CSFn1') 
-                if ReadTrain.CSFn2:  func_mainCopy('sE12_Predictions_Full_THALAMUS_CSFn2') 
+                if ReadTrain.SRI:    func_mainCopy('Predictions_Full_THALAMUS_SRI') 
+                if ReadTrain.ET:     func_mainCopy('Predictions_Full_THALAMUS_ET') 
+                if ReadTrain.Main:   func_mainCopy('Predictions_Full_THALAMUS_Main') 
+                if ReadTrain.CSFn1:  func_mainCopy('Predictions_Full_THALAMUS_CSFn1') 
+                if ReadTrain.CSFn2:  func_mainCopy('Predictions_Full_THALAMUS_CSFn2') 
                 
             def print_func(UserInfoB, params):
                 print('---------------------------------------------------------------')
@@ -193,8 +190,9 @@ def Run(UserInfoB, InitValues):
                                 
             params = paramFunc.Run(UserInfoB, terminal=False)
             print_func(UserInfoB, params)
-
-            if (NI == [1]): func_copy_Thalamus_preds(params) # print('--')
+            Read = params.WhichExperiment.Dataset.ReadTrain
+            if (1 in NI )  and (not Read.ET): func_copy_Thalamus_preds(params)
+            elif (1.2 in NI) and UserInfoB['simulation'].Multi_Class_Mode and (not Read.ET): print('skipped')
             elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
             else: normal_run(params)
 
@@ -233,79 +231,45 @@ def Run_tryExcept(UserInfoB, IV):
         print('Failed')
         print('Failed')
 
-def loop_fine_tuning(UserInfoB):
-
-    for UserInfoB['upsample'].Scale in [1]: #  2 , 4]:
-        for UserInfoB['simulation'].num_Layers in [3 , 4]:
-            for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40 , 60]:
-                Run(UserInfoB, IV)
-
-def loop_fine_tuning2(UserInfoB):
-
-    for UserInfoB['upsample'].Scale in [2 , 4]:
-        for UserInfoB['simulation'].num_Layers in [5]:
-            for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
-                Run(UserInfoB, IV)
-
-    for UserInfoB['upsample'].Scale in [4]:
-        for UserInfoB['simulation'].num_Layers in [6]:
-            for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40]:
-                Run(UserInfoB, IV)
-
-def loop_fine_tuning_CSFn(UserInfoB):
-
-    
-    # for UserInfoB['simulation'].num_Layers in [3]:
-    #     for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [30 , 40 , 60]:
-    #         Run(UserInfoB, IV)
-
-    # for UserInfoB['simulation'].num_Layers in [4]:
-    #     for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30 , 40 , 60]:
-    #         Run(UserInfoB, IV)
-
-    UserInfoB['simulation'].num_Layers = 3
+def EXP_3_SRI_Main_US2_m2_(UserInfoB):
     UserInfoB['upsample'].Scale = 2
-    for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 40]:
+    UserInfoB['simulation'].num_Layers = 5
+    UserInfoB['Model_Method'] = 'HCascade'
+    UserInfoB['simulation'].batch_size = 30
+    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 50 # , 50
+    
+    for UserInfoB['TypeExperiment'] in [1, 2]:
         Run(UserInfoB, IV)
 
-def func_temp_checkSingleClass_vs_MultiClass(UserInfoB):
-    UserInfoB['simulation'].Multi_Class_Mode = False
-    for UserInfoB['lossFunction_Index'] in [3, 1, 4]:
-        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
+
+def EXP_2_ET_superGroups_Only(UserInfoB):
+    
+    UserInfoB['Model_Method'] = 'HCascade' # , 'HCascade']:
+    UserInfoB['upsample'].Scale = 1
+    UserInfoB['TypeExperiment'] = 4
+    UserInfoB['simulation'].batch_size = 100
+    for UserInfoB['num_Layers'] in [3, 4]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]: 
             Run(UserInfoB, IV)
 
-    UserInfoB['simulation'].Multi_Class_Mode = True
-    for UserInfoB['lossFunction_Index'] in [1, 4]:
-        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
-            Run(UserInfoB, IV)
-
-def func_temp2_checkLossFunction(UserInfoB):
-    for UserInfoB['lossFunction_Index'] in [4, 6 , 7 , 8 , 9]:
+def EXP_1_FM10_allMethods_HCascade(UserInfoB):
+    UserInfoB['Model_Method'] = 'HCascade' # , 'HCascade']:
+    UserInfoB['upsample'].Scale = 1
+    UserInfoB['num_Layers'] = 4
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 10
+    UserInfoB['simulation'].batch_size = 100
+    for UserInfoB['TypeExperiment'] in [1 ,2 ,4]: 
         Run(UserInfoB, IV)
-
 
 UserInfoB, K = preMode(UserInfo.__dict__)
-
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-
-# func_temp2_checkLossFunction(UserInfoB)
-
-# func_temp_checkSingleClass_vs_MultiClass(UserInfoB)
-
-# for UserInfoB['TypeExperiment'] in [4, 11, 5 , 9 , 10]:
-Run(UserInfoB, IV)
-
-# for UserInfoB['architectureType'] in ['U-Net4', 'FCN_Unet']:
-#     for UserInfoB['TypeExperiment'] in [1, 2, 4]:
+EXP_3_SRI_Main_US2_m2_(UserInfoB)
 # Run(UserInfoB, IV)
 
-# loop_fine_tuning(UserInfoB)
 
-# loop_fine_tuning2(UserInfoB)
 
-# loop_fine_tuning_CSFn(UserInfoB)
 
-# Run(UserInfoB, IV)
+
 
 K.clear_session()
