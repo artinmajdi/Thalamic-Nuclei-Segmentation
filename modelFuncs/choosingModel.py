@@ -617,6 +617,7 @@ def architecture(ModelParam):
         AC = ModelParam.Layer_Params.Activitation
         DT = ModelParam.Layer_Params.Dropout
         FM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
+        FM_FCN = ModelParam.Layer_Params.FCN_FeatureMaps
 
         # input_shape = tuple(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
         padding     = ModelParam.Layer_Params.ConvLayer.padding
@@ -680,8 +681,8 @@ def architecture(ModelParam):
                 
         def FCN_Layer(inputs):
             for nL in range(3):
-                if nL == 0: conv = Layer(40, True, inputs) 
-                else:       conv = Layer(40, True, conv) 
+                if nL == 0: conv = Layer(FM_FCN, True, inputs) 
+                else:       conv = Layer(FM_FCN, True, conv) 
                     
                 conv = KLayers.Dropout(DT.Value)(conv)  
             return conv

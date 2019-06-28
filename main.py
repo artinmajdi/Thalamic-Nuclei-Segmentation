@@ -261,12 +261,24 @@ def EXP_1_FM10_allMethods_HCascade(UserInfoB):
     for UserInfoB['TypeExperiment'] in [1 ,2 ,4]: 
         Run(UserInfoB, IV)
 
+def EXP4_FCN_Unet(UserInfoB):
+    UserInfoB['Model_Method'] = 'Cascade' # , 'HCascade']:
+    UserInfoB['upsample'].Scale = 1
+    UserInfoB['num_Layers'] = 3
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    UserInfoB['simulation'].batch_size = 100
+    for UserInfoB['simulation'].FCN_FeatureMaps in [10 ,20 , 60]: 
+        for UserInfoB['TypeExperiment'] in [1 ,2 ,4]: 
+            Run(UserInfoB, IV)
+
 UserInfoB, K = preMode(UserInfo.__dict__)
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
 
-for UserInfoB['TypeExperiment'] in [1 ,2 ,4]: 
-    Run(UserInfoB, IV)
+
+EXP4_FCN_Unet(UserInfoB)
+# for UserInfoB['TypeExperiment'] in [1 ,2 ,4]: 
+# Run(UserInfoB, IV)
 
 
 

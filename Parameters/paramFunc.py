@@ -150,6 +150,8 @@ def func_Exp_subExp_Names(UserInfo):
         LF = '_' + a
         GAP = '' # _gap' + str(UserInfo['gapDilation'])
 
+        FCN = '_FCNFM_' + str(UserInfo['simulation'].FCN_FeatureMaps) if (UserInfo['architectureType']  == 'FCN_Unet') else ''
+
         method = UserInfo['Model_Method']        
 
         # def field_Strength_Tag():
@@ -163,13 +165,14 @@ def func_Exp_subExp_Names(UserInfo):
                 self.tag = tag
                 self.name_thalamus = ''            
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
-                self.name_Init_from_3T    = 'sE8_'  + method + FM + ACH + NL + LF + US 
-                self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + LF + US 
-                self.name_Init_from_CSFn1 = 'sE9_'  + method + FM + ACH + NL + LF + US 
+                self.name_Init_from_3T    = 'sE8_'  + method + FM + ACH + NL + LF + US + FCN
+                self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + LF + US + FCN 
+                self.name_Init_from_CSFn1 = 'sE9_'  + method + FM + ACH + NL + LF + US + FCN 
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
        
-        tag = method + FM + ACH + NL + LF + US + SE.Tag + GAP
+        tag = method + FM + ACH + NL + LF + US + FCN + SE.Tag + GAP
+        
         # tag +=  '_' + UserInfo['normalize'].Method  
 
         # if UserInfo['lossFunction_Index'] != 1: 
@@ -269,6 +272,7 @@ def func_WhichExperiment(UserInfo):
                 Mode = False
             class layer_Params:
                 FirstLayer_FeatureMap_Num = 64
+                FCN_FeatureMaps    =  30
                 batchNormalization = True
                 ConvLayer = convLayer()
                 MaxPooling = maxPooling()
@@ -560,6 +564,8 @@ def func_WhichExperiment(UserInfo):
             kernel_size, maxPooling = fixing_NetworkParams_BasedOn_InputDim(UserInfo['simulation'].InputImage2Dvs3D)
 
             Layer_Params.FirstLayer_FeatureMap_Num = UserInfo['simulation'].FirstLayer_FeatureMap_Num
+            Layer_Params.FCN_FeatureMaps           = UserInfo['simulation'].FCN_FeatureMaps
+            
             Layer_Params.ConvLayer.Kernel_size = kernel_size()
             Layer_Params.MaxPooling = maxPooling()
             Layer_Params.Dropout.Value = UserInfo['DropoutValue']

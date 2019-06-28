@@ -1,7 +1,7 @@
 
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
-architectureType = 'SegNet_Unet' # 'SegNet' #  'U-Net4' #   'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
+architectureType = 'FCN_Unet' # 'U-Net4' #  'SegNet_Unet' # 'SegNet' #    'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
 
 # TypeExperiment == 1: # 3T      Init Rn
 
@@ -46,7 +46,7 @@ class CrossVal:
     All_Indexes = ['a' , 'b' , 'c' , 'd']
 
 class Experiments:
-    Index , Tag = '6' , '' # '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1'
+    Index , Tag = '7' , '' # '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1'
 
 DropoutValue = 0.3
 
@@ -77,6 +77,7 @@ class simulation:
     batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20
+    FCN_FeatureMaps = 30
     verbose = 2
     Multiply_By_Thalmaus = False
     Multiply_By_Rest_For_AV = False
