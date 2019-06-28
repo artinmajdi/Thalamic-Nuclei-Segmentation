@@ -1,7 +1,7 @@
 
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
-architectureType = 'SegNet' # 'Res_Unet' # 'U-Net4' #   'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
+architectureType = 'SegNet_Unet' # 'SegNet' #  'U-Net4' #   'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
 
 # TypeExperiment == 1: # 3T      Init Rn
 
@@ -22,7 +22,7 @@ architectureType = 'SegNet' # 'Res_Unet' # 'U-Net4' #   'FCN_Unet' # 'FCN'  #'FC
 TypeExperiment = 1
 
 multi_Class_Mode = True
-readAugments_Mode = False
+readAugments_Mode = True
 lossFunction_Index = 3
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
