@@ -427,14 +427,12 @@ def preAnalysis(params):
     def find_PaddingValues(params):
 
         def findingPaddedInputSize(params):
-            inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)    
-            a = 2**(params.WhichExperiment.HardParams.Model.num_Layers - 1)
-            # new_inputSize = [  a * np.ceil(s / a) if s % a != 0 else s for s in np.max(inputSizes, axis=0) ]
-
-            # new_inputSize = np.max(inputSizes, axis=0)
-            # for dim in range(3):
-            #     if new_inputSize[dim] % a != 0: new_inputSize[dim] = a * np.ceil(new_inputSize[dim] / a)
-
+            inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)  
+            
+            num_Layers = params.WhichExperiment.HardParams.Model.num_Layers
+            L = num_Layers if 'SegNet' in params.WhichExperiment.HardParams.Model.architectureType else num_Layers - 1
+                
+            a = 2**(L) 
             return [  int(a * np.ceil(s / a)) if s % a != 0 else s for s in np.max(inputSizes, axis=0) ]
             
         def findingSubjectsFinalPaddingAmount(wFolder, Input, params):

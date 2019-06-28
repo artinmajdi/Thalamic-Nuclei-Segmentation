@@ -190,11 +190,12 @@ def Run(UserInfoB, InitValues):
                                 
             params = paramFunc.Run(UserInfoB, terminal=False)
             print_func(UserInfoB, params)
-            Read = params.WhichExperiment.Dataset.ReadTrain
-            if (1 in NI )  and (not Read.ET): func_copy_Thalamus_preds(params)
-            elif (1.2 in NI) and UserInfoB['simulation'].Multi_Class_Mode and (not Read.ET): print('skipped')
-            elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
-            else: normal_run(params)
+            # Read = params.WhichExperiment.Dataset.ReadTrain
+            # if (1 in NI )  and (not Read.ET): func_copy_Thalamus_preds(params)
+            # elif (1.2 in NI) and UserInfoB['simulation'].Multi_Class_Mode and (not Read.ET): print('skipped')
+            # elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
+            # else: 
+            normal_run(params)
 
         def Loop_slicing_orientations(UserInfoB, InitValues):
             for sd in InitValues.slicingDim:            
@@ -264,8 +265,8 @@ def EXP_1_FM10_allMethods_HCascade(UserInfoB):
 UserInfoB, K = preMode(UserInfo.__dict__)
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-EXP_3_SRI_Main_US2_m2_(UserInfoB)
-# Run(UserInfoB, IV)
+# EXP_3_SRI_Main_US2_m2_(UserInfoB)
+Run(UserInfoB, IV)
 
 
 
