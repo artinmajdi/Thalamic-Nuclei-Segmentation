@@ -4622,3 +4622,11 @@ Epoch 58/300
 Epoch 00058: val_mDice did not improve from 0.84682
 Epoch 59/300
  - 77s - loss: 88.4471 - acc: 0.9710 - mDice: 0.9638 - val_loss: 874.7341 - val_acc: 0.9738 - val_mDice: 0.8445
+
+Epoch 00059: val_mDice did not improve from 0.84682
+Epoch 60/300
+ - 76s - loss: 88.7093 - acc: 0.9710 - mDice: 0.9638 - val_loss: 910.2068 - val_acc: 0.9740 - val_mDice: 0.8453
+
+Epoch 00060: val_mDice did not improve from 0.84682
+Epoch 61/300
+ - 75s - loss: 87.4750 - acc: 0.9710 - mDice: 0.9643 - val_loss: 905.4758 - val_acc: 0.9741 - val_mDice: 0.8420

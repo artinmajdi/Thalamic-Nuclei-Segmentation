@@ -3900,3 +3900,11 @@ Epoch 19/300
 Epoch 00019: val_mDice improved from 0.82849 to 0.83423, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE8_HCascade_FM50_U-Net4_NL5_LS_MyBCE_US2_NEW/MultiClass_111213/sd2/best_model_weights.h5
 Epoch 20/300
  - 105s - loss: 224.4658 - acc: 0.9688 - mDice: 0.9051 - val_loss: 556.9339 - val_acc: 0.9731 - val_mDice: 0.8377
+
+Epoch 00020: val_mDice improved from 0.83423 to 0.83769, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE8_HCascade_FM50_U-Net4_NL5_LS_MyBCE_US2_NEW/MultiClass_111213/sd2/best_model_weights.h5
+Epoch 21/300
+ - 104s - loss: 211.3818 - acc: 0.9686 - mDice: 0.9105 - val_loss: 588.6171 - val_acc: 0.9736 - val_mDice: 0.8360
+
+Epoch 00021: val_mDice did not improve from 0.83769
+Epoch 22/300
+ - 105s - loss: 200.1154 - acc: 0.9686 - mDice: 0.9157 - val_loss: 671.3995 - val_acc: 0.9728 - val_mDice: 0.8377

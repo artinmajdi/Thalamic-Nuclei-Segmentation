@@ -242,7 +242,6 @@ def EXP_3_SRI_Main_US2_m2_(UserInfoB):
     for UserInfoB['TypeExperiment'] in [1, 2]:
         Run(UserInfoB, IV)
 
-
 def EXP_2_ET_superGroups_Only(UserInfoB):
     
     UserInfoB['Model_Method'] = 'HCascade' # , 'HCascade']:
@@ -265,8 +264,9 @@ def EXP_1_FM10_allMethods_HCascade(UserInfoB):
 UserInfoB, K = preMode(UserInfo.__dict__)
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-# EXP_3_SRI_Main_US2_m2_(UserInfoB)
-Run(UserInfoB, IV)
+
+for UserInfoB['TypeExperiment'] in [1 ,2 ,4]: 
+    Run(UserInfoB, IV)
 
 
 
