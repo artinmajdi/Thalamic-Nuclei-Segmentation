@@ -275,12 +275,9 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
 
-
-# EXP4_FCN_Unet(UserInfoB)
-# for UserInfoB['TypeExperiment'] in [1 ,2 ,4]: 
-# Run(UserInfoB, IV)
-
 def EXP5_Resnet_Cascade_3T_and_Main(UserInfoB):
+    UserInfoB['simulation'].GPU_Index = "6"
+
     # Cascade   Main Init 3T
     UserInfoB['Model_Method'] = 'Cascade'
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 10
@@ -310,6 +307,9 @@ def EXP5_Resnet_Cascade_3T_and_Main(UserInfoB):
             Run(UserInfoB, IV)
 
 def EXP6_Resnet_HCascade_3T_and_Main(UserInfoB):
+
+    UserInfoB['simulation'].GPU_Index = "5"
+
     # ! HCascade   Main Init 3T
     UserInfoB['Model_Method'] = 'HCascade'
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
@@ -339,6 +339,9 @@ def EXP6_Resnet_HCascade_3T_and_Main(UserInfoB):
             Run(UserInfoB, IV)
 
 def EXP7_Resnet_Cascade_3T_Main_ET(UserInfoB):
+
+    UserInfoB['simulation'].GPU_Index = "3"
+
     # Cascade   ET Init Main
     UserInfoB['Model_Method'] = 'Cascade'
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
@@ -350,6 +353,9 @@ def EXP7_Resnet_Cascade_3T_Main_ET(UserInfoB):
             Run(UserInfoB, IV)
 
 def EXP8_Resnet_HCascade_3T_Main_ET(UserInfoB):
+
+    UserInfoB['simulation'].GPU_Index = "1"
+
     # HCascade   ET Init Main
     UserInfoB['Model_Method'] = 'HCascade'
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
@@ -360,13 +366,74 @@ def EXP8_Resnet_HCascade_3T_Main_ET(UserInfoB):
         for UserInfoB['TypeExperiment'] in [1,2,4]:
             Run(UserInfoB, IV)
 
+def EXP9_ET_HCascade(UserInfoB):
+    UserInfoB['simulation'].GPU_Index = "0"
+
+    # HCascade   ET Init Main
+    UserInfoB['Model_Method'] = 'HCascade'
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [0,1,2]
+    UserInfoB['tag_temp'] = '_NEW' 
+    UserInfoB['Experiments'].Index = '7'
+    UserInfoB['architectureType'] = 'U-Net4'
+
+    for UserInfoB['TypeExperiment'] in [4,5]:
+        Run(UserInfoB, IV)
+
+def EXP10_Unet_Cascade_Main_OtherFolds(UserInfoB):
+    # Cascade   Main Init 3T
+
+    UserInfoB['simulation'].GPU_Index = "1"
+    UserInfoB['CrossVal'].index   = ['b']
+    UserInfoB['TypeExperiment']   = 2
+    UserInfoB['architectureType'] = 'U-Net4'
+    UserInfoB['Model_Method']     = 'Cascade'
+    UserInfoB['Experiments'].Index = '6'
+
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 10
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [0]
+    Run(UserInfoB, IV)
+
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    UserInfoB['simulation'].num_Layers = 4
+    UserInfoB['simulation'].slicingDim = [1]
+    Run(UserInfoB, IV)
+
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [2]
+    Run(UserInfoB, IV)
+
+def EXP11_Unet_HCascade_Main_OtherFolds(UserInfoB):
+
+    UserInfoB['simulation'].GPU_Index = "5"
+    UserInfoB['CrossVal'].index   = ['b']
+    UserInfoB['TypeExperiment']   = 2
+    UserInfoB['architectureType'] = 'U-Net4'
+    UserInfoB['Model_Method']     = 'HCascade'
+    UserInfoB['Experiments'].Index = '6'
+
+
+    # ! HCascade   Main Init 3T
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [0]
+    Run(UserInfoB, IV)
+
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
+    UserInfoB['simulation'].num_Layers = 4
+    UserInfoB['simulation'].slicingDim = [1]
+    Run(UserInfoB, IV)
+
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [2]
+    Run(UserInfoB, IV)
+
+
+EXP10_Unet_Cascade_Main_OtherFolds(UserInfoB)
+EXP11_Unet_HCascade_Main_OtherFolds(UserInfoB)
+
 K.clear_session()
-
-
-# EXP5_Resnet_Cascade_3T_and_Main(UserInfoB)
-
-# EXP6_Resnet_HCascade_3T_and_Main(UserInfoB)
-
-# EXP7_Resnet_Cascade_3T_Main_ET(UserInfoB)
-
-EXP8_Resnet_HCascade_3T_Main_ET(UserInfoB)
