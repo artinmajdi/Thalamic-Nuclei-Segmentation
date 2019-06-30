@@ -1,0 +1,20 @@
+2019-06-30 15:21:58.392097: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-06-30 15:22:04.318474: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:84:00.0
+totalMemory: 15.89GiB freeMemory: 15.60GiB
+2019-06-30 15:22:04.318580: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-06-30 15:22:04.940836: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-06-30 15:22:04.940904: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-06-30 15:22:04.940916: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-06-30 15:22:04.941378: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:84:00.0, compute capability: 6.0)
+mkdir: cannot create directory ‘/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM20_U-Net4_NL3_LS_MyBCE_US1_ET_Init_Main_CV_a’: File exists
+mkdir: cannot create directory ‘/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM20_U-Net4_NL3_LS_MyBCE_US1_ET_Init_Main_CV_a’: File exists
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+Using TensorFlow backend.
+Loading train:   0%|          | 0/18 [00:00<?, ?it/s]Loading train:   6%|▌         | 1/18 [00:01<00:23,  1.40s/it]Loading train:  11%|█         | 2/18 [00:02<00:21,  1.33s/it]Loading train:  17%|█▋        | 3/18 [00:03<00:19,  1.29s/it]

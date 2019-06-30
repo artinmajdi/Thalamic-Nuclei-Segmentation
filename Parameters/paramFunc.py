@@ -161,8 +161,8 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_thalamus = ''            
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
                 self.name_Init_from_3T    = 'sE8_'  + method + FM + ACH + NL + LF + US + FCN
-                self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + LF + US + FCN + '_CV_a' 
-                self.name_Init_from_CSFn1 = 'sE9_'  + method + FM + ACH + NL + LF + US + FCN + '_CV_a' 
+                self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + LF + US + FCN + '_Main_Init_3T_CV_a' 
+                self.name_Init_from_CSFn1 = 'sE9_'  + method + FM + ACH + NL + LF + US + FCN + '_CSFn1_Init_Main_CV_a'   # this needs to be fixed
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
        
@@ -182,7 +182,7 @@ def func_Exp_subExp_Names(UserInfo):
         # print('    Init From 7T Tag'  , A.name_Init_from_7T)
         # print('    Init From CSFn1 Tag', A.name_Init_from_CSFn1)
 
-        A.name = 'sE8_HCascade_MV_Results_BestNetwork'
+        # A.name = 'sE8_HCascade_MV_Results_BestNetwork'
         return A
 
     def func_Experiment():

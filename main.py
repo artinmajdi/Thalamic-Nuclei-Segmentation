@@ -77,11 +77,12 @@ def Run(UserInfoB, InitValues):
                 Run_Main(UserInfoB)
 
                 print('************ stage 3 ************')
-                for parent in [1.1, 1.2, 1.3]:
-                    CC = smallFuncs.Nuclei_Class(parent,'HCascade')
-                    UserInfoB['simulation'].nucleus_Index = CC.child
-                    if not check_if_num_Layers_fit(UserInfoB):
-                        Run_Main(UserInfoB)
+                if not UserInfoB['temp_just_superGroups']:
+                    for parent in [1.1, 1.2, 1.3]:
+                        CC = smallFuncs.Nuclei_Class(parent,'HCascade')
+                        UserInfoB['simulation'].nucleus_Index = CC.child
+                        if not check_if_num_Layers_fit(UserInfoB):
+                            Run_Main(UserInfoB)
 
     def Loop_Over_Nuclei(UserInfoB):
 
@@ -108,20 +109,20 @@ def Run(UserInfoB, InitValues):
             def func_copy_Thalamus_preds(params):                
 
                 def func_mainCopy(name_Thalmus_network):
-                    input_model  = params.WhichExperiment.Experiment.address + '/models/' + name_Thalmus_network # params.WhichExperiment.SubExperiment.name_Thalmus_network
-                    output_model = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name
-                    os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
+                    # input_model  = params.WhichExperiment.Experiment.address + '/models/' + name_Thalmus_network # params.WhichExperiment.SubExperiment.name_Thalmus_network
+                    # output_model = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name
+                    # os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
 
                     input_model  = params.WhichExperiment.Experiment.address + '/results/' + name_Thalmus_network # params.WhichExperiment.SubExperiment.name_Thalmus_network
                     output_model = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name
                     os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
 
                 ReadTrain = params.WhichExperiment.Dataset.ReadTrain                
-                if ReadTrain.SRI:    func_mainCopy('Predictions_Full_THALAMUS_SRI') 
-                if ReadTrain.ET:     func_mainCopy('Predictions_Full_THALAMUS_ET') 
-                if ReadTrain.Main:   func_mainCopy('Predictions_Full_THALAMUS_Main') 
-                if ReadTrain.CSFn1:  func_mainCopy('Predictions_Full_THALAMUS_CSFn1') 
-                if ReadTrain.CSFn2:  func_mainCopy('Predictions_Full_THALAMUS_CSFn2') 
+                if ReadTrain.SRI:    func_mainCopy('Predictions_Full_THALAMUS/SRI') 
+                if ReadTrain.ET:     func_mainCopy('Predictions_Full_THALAMUS/ET') 
+                if ReadTrain.Main:   func_mainCopy('Predictions_Full_THALAMUS/Main') 
+                if ReadTrain.CSFn1:  func_mainCopy('Predictions_Full_THALAMUS/CSFn1') 
+                if ReadTrain.CSFn2:  func_mainCopy('Predictions_Full_THALAMUS/CSFn2') 
                 
             def print_func(UserInfoB, params):
                 print('---------------------------------------------------------------')
@@ -190,12 +191,11 @@ def Run(UserInfoB, InitValues):
                                 
             params = paramFunc.Run(UserInfoB, terminal=False)
             print_func(UserInfoB, params)
-            # Read = params.WhichExperiment.Dataset.ReadTrain
-            # if (1 in NI )  and (not Read.ET): func_copy_Thalamus_preds(params)
+            Read = params.WhichExperiment.Dataset.ReadTrain
+            if (1 in NI ): func_copy_Thalamus_preds(params)
             # elif (1.2 in NI) and UserInfoB['simulation'].Multi_Class_Mode and (not Read.ET): print('skipped')
-            # elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
-            # else: 
-            normal_run(params)
+            elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
+            else: normal_run(params)
 
         def Loop_slicing_orientations(UserInfoB, InitValues):
             for sd in InitValues.slicingDim:            
@@ -242,9 +242,23 @@ def EXP_3_SRI_Main_US2_m2_(UserInfoB):
     for UserInfoB['TypeExperiment'] in [1, 2]:
         Run(UserInfoB, IV)
 
-def EXP_2_ET_superGroups_Only(UserInfoB):
+def EXP_2_ET_superGroups_Only_HCascade(UserInfoB):
     
+    UserInfoB['simulation'].GPU_Index = "1"
     UserInfoB['Model_Method'] = 'HCascade' # , 'HCascade']:
+    UserInfoB['upsample'].Scale = 1
+    UserInfoB['TypeExperiment'] = 4
+    UserInfoB['temp_just_superGroups'] = True
+    UserInfoB['simulation'].nucleus_Index = [1.1, 1.2, 1.3, 1.4]
+    UserInfoB['simulation'].batch_size = 100
+    for UserInfoB['simulation'].num_Layers in [3, 4]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]: 
+            Run(UserInfoB, IV)
+
+def EXP_2b_ET_Cascade(UserInfoB):
+    
+    UserInfoB['simulation'].GPU_Index = "4"
+    UserInfoB['Model_Method'] = 'Cascade' # , 'HCascade']:
     UserInfoB['upsample'].Scale = 1
     UserInfoB['TypeExperiment'] = 4
     UserInfoB['simulation'].batch_size = 100
@@ -262,6 +276,7 @@ def EXP_1_FM10_allMethods_HCascade(UserInfoB):
         Run(UserInfoB, IV)
 
 def EXP4_FCN_Unet(UserInfoB):
+    # TODO I need to remoev ET ones from this experiment and repeat it, because they weren't initialized
     UserInfoB['Model_Method'] = 'Cascade' # , 'HCascade']:
     UserInfoB['upsample'].Scale = 1
     UserInfoB['simulation'].num_Layers = 3
@@ -270,10 +285,6 @@ def EXP4_FCN_Unet(UserInfoB):
     for UserInfoB['simulation'].FCN_FeatureMaps in [10 ,20 , 60]: 
         for UserInfoB['TypeExperiment'] in [1 ,2 ,4]: 
             Run(UserInfoB, IV)
-
-UserInfoB, K = preMode(UserInfo.__dict__)
-IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-
 
 def EXP5_Resnet_Cascade_3T_and_Main(UserInfoB):
     UserInfoB['simulation'].GPU_Index = "6"
@@ -433,7 +444,9 @@ def EXP11_Unet_HCascade_Main_OtherFolds(UserInfoB):
     Run(UserInfoB, IV)
 
 
-EXP10_Unet_Cascade_Main_OtherFolds(UserInfoB)
-EXP11_Unet_HCascade_Main_OtherFolds(UserInfoB)
+UserInfoB, K = preMode(UserInfo.__dict__)
+IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+EXP_2b_ET_Cascade(UserInfoB)
 
 K.clear_session()
