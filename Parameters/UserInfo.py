@@ -22,7 +22,7 @@ architectureType = 'U-Net4' # 'Res_Unet' 'FCN_Unet' #  'SegNet_Unet' # 'SegNet' 
 TypeExperiment = 1
 
 multi_Class_Mode = True
-readAugments_Mode = False
+readAugments_Mode = True
 lossFunction_Index = 3
 
 tag_temp = '' # _NEW' # _temp_fixed_BB

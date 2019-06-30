@@ -261,7 +261,7 @@ def EXP_2b_ET_Cascade(UserInfoB):
     UserInfoB['Model_Method'] = 'Cascade' # , 'HCascade']:
     UserInfoB['upsample'].Scale = 1
     UserInfoB['TypeExperiment'] = 4
-    UserInfoB['simulation'].batch_size = 100
+    UserInfoB['simulation'].batch_size = 200
     for UserInfoB['simulation'].num_Layers in [3, 4]:
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]: 
             Run(UserInfoB, IV)
