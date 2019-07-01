@@ -102,8 +102,11 @@ def Run(UserInfoB, InitValues):
 
     def Run_Main(UserInfoB):
 
+        
         NI = UserInfoB['simulation'].nucleus_Index
+        if not UserInfoB['simulation'].Multi_Class_Mode: NI = [NI]
 
+        
         def subRun(UserInfoB): 
             
             def func_copy_Thalamus_preds(params):                
@@ -190,9 +193,11 @@ def Run(UserInfoB, InitValues):
                 K.clear_session()
                                 
             params = paramFunc.Run(UserInfoB, terminal=False)
+            Flag_3T = ('sE8' in params.WhichExperiment.SubExperiment.name)
+
             print_func(UserInfoB, params)
             Read = params.WhichExperiment.Dataset.ReadTrain
-            if (1 in NI ): func_copy_Thalamus_preds(params)
+            if (1 in NI ) and (UserInfoB['CrossVal'].index == ['a']) and (not Flag_3T): func_copy_Thalamus_preds(params)
             # elif (1.2 in NI) and UserInfoB['simulation'].Multi_Class_Mode and (not Read.ET): print('skipped')
             elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
             else: normal_run(params)
@@ -204,7 +209,6 @@ def Run(UserInfoB, InitValues):
                     subRun(UserInfoB)
 
         Loop_slicing_orientations(UserInfoB, InitValues)
-
                  
     if  MM == 'HCascade':  
         if UserInfoB['simulation'].Multi_Class_Mode: HierarchicalStages_Multi_Class(UserInfoB)
@@ -242,7 +246,7 @@ def EXP_3_SRI_Main_US2_m2_(UserInfoB):
     for UserInfoB['TypeExperiment'] in [1, 2]:
         Run(UserInfoB, IV)
 
-def EXP_2_ET_superGroups_Only_HCascade(UserInfoB):
+def EXP_2_ET_superGroups_Only_HCascade_finetune(UserInfoB):
     
     UserInfoB['simulation'].GPU_Index = "1"
     UserInfoB['Model_Method'] = 'HCascade' # , 'HCascade']:
@@ -255,7 +259,7 @@ def EXP_2_ET_superGroups_Only_HCascade(UserInfoB):
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]: 
             Run(UserInfoB, IV)
 
-def EXP_2b_ET_Cascade(UserInfoB):
+def EXP_2b_ET_Cascade_finetune(UserInfoB):
     
     UserInfoB['simulation'].GPU_Index = "4"
     UserInfoB['Model_Method'] = 'Cascade' # , 'HCascade']:
@@ -395,7 +399,7 @@ def EXP9_ET_HCascade(UserInfoB):
 def EXP10_Unet_Cascade_Main_OtherFolds(UserInfoB):
     # Cascade   Main Init 3T
 
-    UserInfoB['simulation'].GPU_Index = "1"
+    # UserInfoB['simulation'].GPU_Index = "5"
     UserInfoB['CrossVal'].index   = ['b']
     UserInfoB['TypeExperiment']   = 2
     UserInfoB['architectureType'] = 'U-Net4'
@@ -419,7 +423,7 @@ def EXP10_Unet_Cascade_Main_OtherFolds(UserInfoB):
 
 def EXP11_Unet_HCascade_Main_OtherFolds(UserInfoB):
 
-    UserInfoB['simulation'].GPU_Index = "5"
+    # UserInfoB['simulation'].GPU_Index = "5"
     UserInfoB['CrossVal'].index   = ['b']
     UserInfoB['TypeExperiment']   = 2
     UserInfoB['architectureType'] = 'U-Net4'
@@ -443,10 +447,33 @@ def EXP11_Unet_HCascade_Main_OtherFolds(UserInfoB):
     UserInfoB['simulation'].slicingDim = [2]
     Run(UserInfoB, IV)
 
+def EXP12_SingleClass(UserInfoB):
+    UserInfoB['simulation'].Multi_Class_Mode = False    
+    UserInfoB['architectureType'] = 'U-Net4'
+    UserInfoB['Experiments'].Index = '6'
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    UserInfoB['simulation'].num_Layers = 3
+
+
+    for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade' , 'mUnet']: 
+        for UserInfoB['TypeExperiment'] in [1, 2, 4, 8]: 
+            Run(UserInfoB, IV)
+
+def EXP_13_CSFn2_Cascade_finetune(UserInfoB):
+    
+    # UserInfoB['simulation'].GPU_Index = "0"
+    UserInfoB['Model_Method'] = 'Cascade' # , 'HCascade']:
+    UserInfoB['upsample'].Scale = 1
+    UserInfoB['TypeExperiment'] = 8
+    UserInfoB['simulation'].batch_size = 100
+    for UserInfoB['simulation'].num_Layers in [3, 4]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]: 
+            Run(UserInfoB, IV)
 
 UserInfoB, K = preMode(UserInfo.__dict__)
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-EXP_2b_ET_Cascade(UserInfoB)
+EXP_13_CSFn2_Cascade_finetune(UserInfoB)
+
 
 K.clear_session()

@@ -2,6 +2,7 @@
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'U-Net4' # 'Res_Unet' 'FCN_Unet' #  'SegNet_Unet' # 'SegNet' #    'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
+gpu = "7"
 
 # TypeExperiment == 1: # 3T      Init Rn
 
@@ -70,7 +71,7 @@ class upsample:
 class simulation:
     TestOnly      = testOnly
     epochs        = 300
-    GPU_Index     = "1"
+    GPU_Index     = gpu
     Learning_Rate = 1e-3
     num_Layers    = 3 
     nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
