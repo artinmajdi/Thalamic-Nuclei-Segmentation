@@ -154,8 +154,10 @@ class mergingDiceValues:
 
                     pd_sE['subject'] = [s['subject'] for s in sE_Dices]
                     for nucleus in All_Nuclei_Names: 
-
-                        if nucleus in sE_Dices[0]: pd_sE[nucleus] = [s[nucleus] for s in sE_Dices] # .astype(np.float16)
+                        try:
+                            if nucleus in sE_Dices[0]: pd_sE[nucleus] = [s[nucleus] for s in sE_Dices] # .astype(np.float16)
+                        except Exception as e:
+                            print(e)
 
                     pd_sE.to_excel(  self.writer, sheet_name=self.plane.tagList[0] )    
                 save_Dices_subExp_In_ExcelFormat(self , sE_Dices)

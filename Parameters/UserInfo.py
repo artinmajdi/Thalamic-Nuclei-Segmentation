@@ -1,6 +1,6 @@
 
 
-Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
+Model_Method = 'HCascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'U-Net4' # 'Res_Unet' 'FCN_Unet' #  'SegNet_Unet' # 'SegNet' #    'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
 gpu = "5"
 
@@ -20,14 +20,14 @@ gpu = "5"
 # TypeExperiment == 9  # CSFn2  Transfer Learn from CSFn1
 # TypeExperiment == 10 # CSFn2  Transfer Learn from Main
 
-TypeExperiment = 1
+TypeExperiment = 4
 
 multi_Class_Mode = True
 readAugments_Mode = True
 lossFunction_Index = 3
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
-testOnly = False
+testOnly = True
 
 # class Transfer_Learning:
 #     Mode   = False

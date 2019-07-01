@@ -197,8 +197,8 @@ def Run(UserInfoB, InitValues):
 
             print_func(UserInfoB, params)
             Read = params.WhichExperiment.Dataset.ReadTrain
-            if (1 in NI ) and (UserInfoB['CrossVal'].index == ['a']) and (not Flag_3T): func_copy_Thalamus_preds(params)
-            # elif (1.2 in NI) and UserInfoB['simulation'].Multi_Class_Mode and (not Read.ET): print('skipped')
+            if (1 in NI ) and (UserInfoB['CrossVal'].index == ['a']) and (not Flag_3T): print('  ') #  func_copy_Thalamus_preds(params)
+            # elif (1.2 in NI) and UserInfoB['simulation'].Multi_Class_Mode and (Read.ET): print('skipped')
             elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
             else: normal_run(params)
 
@@ -255,6 +255,21 @@ def EXP_2_ET_superGroups_Only_HCascade_finetune(UserInfoB):
     UserInfoB['TypeExperiment'] = 4
     UserInfoB['temp_just_superGroups'] = True
     UserInfoB['simulation'].nucleus_Index = [1.1, 1.2, 1.3, 1.4]
+    UserInfoB['simulation'].batch_size = 100
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    UserInfoB['simulation'].num_Layers = 3
+    # for UserInfoB['simulation'].num_Layers in [3, 4]:
+    #     for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]: 
+    Run(UserInfoB, IV)
+
+def EXP_2c_ET_nuclei_Only_HCascade_finetune(UserInfoB):
+    
+    # UserInfoB['simulation'].GPU_Index = "1"
+    UserInfoB['Model_Method'] = 'HCascade'
+    UserInfoB['upsample'].Scale = 1
+    UserInfoB['TypeExperiment'] = 4
+    UserInfoB['temp_just_superGroups'] = False
     UserInfoB['simulation'].batch_size = 100
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
@@ -504,7 +519,6 @@ def EXP_13_CSFn2_Cascade_finetune(UserInfoB):
 
 UserInfoB, K = preMode(UserInfo.__dict__)
 
-EXP10_Unet_Cascade_Main_OtherFolds(UserInfoB)
-EXP11_Unet_HCascade_Main_OtherFolds(UserInfoB)
+EXP_2_ET_superGroups_Only_HCascade_finetune(UserInfoB)
 
 K.clear_session()
