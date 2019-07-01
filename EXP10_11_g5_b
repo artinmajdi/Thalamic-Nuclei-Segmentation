@@ -1,0 +1,477 @@
+*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
+(0/532) train vimp2_1448_08132015_SRI
+(1/532) train vimp2_1452_10162014_SRI
+(2/532) train vimp2_1510_04202015_SRI
+(3/532) train vimp2_1519_04212015_SRI
+(4/532) train vimp2_1530_04232015_SRI
+(5/532) train vimp2_1557_05062015_SRI
+(6/532) train vimp2_1559_05062015_SRI
+(7/532) train vimp2_1564_05072015_SRI
+(8/532) train vimp2_1604_10092015_SRI
+(9/532) train vimp2_1620_05292015_SRI
+(10/532) train vimp2_1621_05292015_SRI
+(11/532) train vimp2_1621_10162015_SRI
+(12/532) train vimp2_1622_05292015_SRI
+(13/532) train vimp2_1623_05292015_SRI
+(14/532) train vimp2_1632_10232015_SRI
+(15/532) train vimp2_1648_10282015_SRI
+(16/532) train vimp2_1689_06262015_SRI
+(17/532) train vimp2_1709_07072015_SRI
+(18/532) train vimp2_1712_11162015_SRI
+(19/532) train vimp2_1724_11202015_SRI
+(20/532) train vimp2_1751_12022015_SRI
+(21/532) train vimp2_1756_12032015_SRI
+(22/532) train vimp2_1761_12042015_SRI
+(23/532) train vimp2_1844_01142016_SRI
+(24/532) train vimp2_1847_01152016_SRI
+(25/532) train vimp2_1888_01292016_SRI
+(26/532) train vimp2_1907_02052016_SRI
+(27/532) train vimp2_2039_03182016_SRI
+(28/532) train vimp2_2119_04142016_SRI
+(29/532) train vimp2_2309_07072016_SRI
+(30/532) train vimp2_2390_07272016_SRI
+(31/532) train vimp2_2398_07292016_SRI
+(32/532) train vimp2_2450_08172016_SRI
+(33/532) train vimp2_2459_08192016_SRI
+(34/532) train vimp2_2460_08192016_SRI
+(35/532) train vimp2_2476_08242016_SRI
+(36/532) train vimp2_2484_08252016_SRI
+(37/532) train vimp2_2485_08252016_SRI
+(38/532) train vimp2_2499_08302016_SRI
+(39/532) train vimp2_2617_10262016_SRI
+(40/532) train vimp2_2618_10262016_SRI
+(41/532) train vimp2_2628_10282016_SRI
+(42/532) train vimp2_2878_01262017_SRI
+(43/532) train vimp2_2914_02162017_Test_NewCases_SRI
+(44/532) train vimp2_2926_02222017_Test_NewCases_SRI
+(45/532) train vimp2_2946_03032017_Test_NewCases_SRI
+(46/532) train vimp2_2948_03042017_Test_NewCases_SRI
+(47/532) train vimp2_2966_03092017_Test_NewCases_SRI
+(48/532) train vimp2_2972_03102017_Test_NewCases_SRI
+(49/532) train vimp2_2998_03222017_Test_NewCases_SRI
+(50/532) train vimp2_3131_05182017_SRI
+(51/532) train vimp2_3187_06092017_SRI
+(52/532) train vimp2_3349_08012017_SRI
+(53/532) train vimp2_676_04252014_SRI
+(54/532) train vimp2_804_06042014_SRI
+(55/532) train vimp2_1082_12092014_SRI
+(56/532) train vimp2_1116_12152014_SRI
+(57/532) train vimp2_1278_02062015_SRI
+(58/532) train vimp2_1443_08122015_SRI
+(59/532) train vimp2_1662_10302015_SRI
+(60/532) train vimp2_2438_08122016_SRI
+(61/532) train vimp2_2846_01112017_SRI
+(62/532) train vimp2_1139_12192014_SRI
+(63/532) train vimp2_1220_01212015_SRI
+(64/532) train vimp2_1400_03132015_SRI
+(65/532) train vimp2_1510_09022015_SRI
+(66/532) train vimp2_1739_11242015_SRI
+(67/532) train vimp2_2462_08192016_Test_NewCases_SRI
+(68/532) train vimp2_702_04302014_SRI
+(69/532) train vimp2_969_07142014_SRI
+(70/532) train vimp2_1100_08062014_SRI
+(71/532) train vimp2_1276_02052015_SRI
+(72/532) train vimp2_1410_03172015_SRI
+(73/532) train vimp2_1595_05202015_SRI
+(74/532) train vimp2_1875_01262016_SRI
+(75/532) train vimp2_2951_03062017_Test_NewCases_SRI
+(76/532) train vimp2_1082_12092014_SRI_Aug0_Rot_-3_sd1
+(77/532) train vimp2_1082_12092014_SRI_Aug0_Rot_-6_sd2
+(78/532) train vimp2_1082_12092014_SRI_Aug0_Rot_7_sd0
+(79/532) train vimp2_1082_12092014_SRI_Aug1_Rot_-2_sd2
+(80/532) train vimp2_1082_12092014_SRI_Aug1_Rot_-3_sd0
+(81/532) train vimp2_1082_12092014_SRI_Aug1_Rot_-7_sd1
+(82/532) train vimp2_1100_08062014_SRI_Aug0_Rot_2_sd1
+(83/532) train vimp2_1100_08062014_SRI_Aug0_Rot_-2_sd2
+(84/532) train vimp2_1100_08062014_SRI_Aug0_Rot_4_sd0
+(85/532) train vimp2_1100_08062014_SRI_Aug1_Rot_-2_sd2
+(86/532) train vimp2_1100_08062014_SRI_Aug1_Rot_-3_sd0
+(87/532) train vimp2_1100_08062014_SRI_Aug1_Rot_5_sd1
+(88/532) train vimp2_1116_12152014_SRI_Aug0_Rot_3_sd0
+(89/532) train vimp2_1116_12152014_SRI_Aug0_Rot_3_sd2
+(90/532) train vimp2_1116_12152014_SRI_Aug0_Rot_-7_sd1
+(91/532) train vimp2_1116_12152014_SRI_Aug1_Rot_3_sd1
+(92/532) train vimp2_1116_12152014_SRI_Aug1_Rot_6_sd2
+(93/532) train vimp2_1116_12152014_SRI_Aug1_Rot_-7_sd0
+(94/532) train vimp2_1139_12192014_SRI_Aug0_Rot_-2_sd1
+(95/532) train vimp2_1139_12192014_SRI_Aug0_Rot_3_sd0
+(96/532) train vimp2_1139_12192014_SRI_Aug0_Rot_-5_sd2
+(97/532) train vimp2_1139_12192014_SRI_Aug1_Rot_-1_sd0
+(98/532) train vimp2_1139_12192014_SRI_Aug1_Rot_3_sd2
+(99/532) train vimp2_1139_12192014_SRI_Aug1_Rot_-6_sd1
+(100/532) train vimp2_1220_01212015_SRI_Aug0_Rot_1_sd2
+(101/532) train vimp2_1220_01212015_SRI_Aug0_Rot_6_sd1
+(102/532) train vimp2_1220_01212015_SRI_Aug0_Rot_-7_sd0
+(103/532) train vimp2_1220_01212015_SRI_Aug1_Rot_-1_sd0
+(104/532) train vimp2_1220_01212015_SRI_Aug1_Rot_-1_sd2
+(105/532) train vimp2_1220_01212015_SRI_Aug1_Rot_-4_sd1
+(106/532) train vimp2_1276_02052015_SRI_Aug0_Rot_-1_sd0
+(107/532) train vimp2_1276_02052015_SRI_Aug0_Rot_2_sd2
+(108/532) train vimp2_1276_02052015_SRI_Aug0_Rot_7_sd1
+(109/532) train vimp2_1276_02052015_SRI_Aug1_Rot_-2_sd1
+(110/532) train vimp2_1276_02052015_SRI_Aug1_Rot_-4_sd2
+(111/532) train vimp2_1276_02052015_SRI_Aug1_Rot_-6_sd0
+(112/532) train vimp2_1278_02062015_SRI_Aug0_Rot_3_sd1
+(113/532) train vimp2_1278_02062015_SRI_Aug0_Rot_3_sd2
+(114/532) train vimp2_1278_02062015_SRI_Aug0_Rot_-5_sd0
+(115/532) train vimp2_1278_02062015_SRI_Aug1_Rot_1_sd1
+(116/532) train vimp2_1278_02062015_SRI_Aug1_Rot_-4_sd0
+(117/532) train vimp2_1278_02062015_SRI_Aug1_Rot_5_sd2
+(118/532) train vimp2_1400_03132015_SRI_Aug0_Rot_2_sd2
+(119/532) train vimp2_1400_03132015_SRI_Aug0_Rot_-4_sd0
+(120/532) train vimp2_1400_03132015_SRI_Aug0_Rot_-4_sd1
+(121/532) train vimp2_1400_03132015_SRI_Aug1_Rot_1_sd1
+(122/532) train vimp2_1400_03132015_SRI_Aug1_Rot_-2_sd2
+(123/532) train vimp2_1400_03132015_SRI_Aug1_Rot_-6_sd0
+(124/532) train vimp2_1410_03172015_SRI_Aug0_Rot_2_sd1
+(125/532) train vimp2_1410_03172015_SRI_Aug0_Rot_-3_sd0
+(126/532) train vimp2_1410_03172015_SRI_Aug0_Rot_-5_sd2
+(127/532) train vimp2_1410_03172015_SRI_Aug1_Rot_-3_sd1
+(128/532) train vimp2_1410_03172015_SRI_Aug1_Rot_5_sd2
+(129/532) train vimp2_1410_03172015_SRI_Aug1_Rot_6_sd0
+(130/532) train vimp2_1443_08122015_SRI_Aug0_Rot_1_sd2
+(131/532) train vimp2_1443_08122015_SRI_Aug0_Rot_-5_sd0
+(132/532) train vimp2_1443_08122015_SRI_Aug0_Rot_-7_sd1
+(133/532) train vimp2_1443_08122015_SRI_Aug1_Rot_-1_sd1
+(134/532) train vimp2_1443_08122015_SRI_Aug1_Rot_2_sd0
+(135/532) train vimp2_1443_08122015_SRI_Aug1_Rot_7_sd2
+(136/532) train vimp2_1448_08132015_SRI_Aug0_Rot_-1_sd0
+(137/532) train vimp2_1448_08132015_SRI_Aug0_Rot_2_sd2
+(138/532) train vimp2_1448_08132015_SRI_Aug0_Rot_-6_sd1
+(139/532) train vimp2_1448_08132015_SRI_Aug1_Rot_1_sd1
+(140/532) train vimp2_1448_08132015_SRI_Aug1_Rot_-3_sd0
+(141/532) train vimp2_1448_08132015_SRI_Aug1_Rot_5_sd2
+(142/532) train vimp2_1452_10162014_SRI_Aug0_Rot_-4_sd1
+(143/532) train vimp2_1452_10162014_SRI_Aug0_Rot_-5_sd0
+(144/532) train vimp2_1452_10162014_SRI_Aug0_Rot_6_sd2
+(145/532) train vimp2_1452_10162014_SRI_Aug1_Rot_-4_sd1
+(146/532) train vimp2_1452_10162014_SRI_Aug1_Rot_-4_sd2
+(147/532) train vimp2_1452_10162014_SRI_Aug1_Rot_7_sd0
+(148/532) train vimp2_1510_04202015_SRI_Aug0_Rot_1_sd2
+(149/532) train vimp2_1510_04202015_SRI_Aug0_Rot_3_sd0
+(150/532) train vimp2_1510_04202015_SRI_Aug0_Rot_-7_sd1
+(151/532) train vimp2_1510_04202015_SRI_Aug1_Rot_-1_sd2
+(152/532) train vimp2_1510_04202015_SRI_Aug1_Rot_3_sd0
+(153/532) train vimp2_1510_04202015_SRI_Aug1_Rot_4_sd1
+(154/532) train vimp2_1510_09022015_SRI_Aug0_Rot_-2_sd1
+(155/532) train vimp2_1510_09022015_SRI_Aug0_Rot_3_sd0
+(156/532) train vimp2_1510_09022015_SRI_Aug0_Rot_3_sd2
+(157/532) train vimp2_1510_09022015_SRI_Aug1_Rot_3_sd0
+(158/532) train vimp2_1510_09022015_SRI_Aug1_Rot_-5_sd2
+(159/532) train vimp2_1510_09022015_SRI_Aug1_Rot_7_sd1
+(160/532) train vimp2_1519_04212015_SRI_Aug0_Rot_1_sd0
+(161/532) train vimp2_1519_04212015_SRI_Aug0_Rot_2_sd2
+(162/532) train vimp2_1519_04212015_SRI_Aug0_Rot_5_sd1
+(163/532) train vimp2_1519_04212015_SRI_Aug1_Rot_1_sd1
+(164/532) train vimp2_1519_04212015_SRI_Aug1_Rot_2_sd2
+(165/532) train vimp2_1519_04212015_SRI_Aug1_Rot_-6_sd0
+(166/532) train vimp2_1530_04232015_SRI_Aug0_Rot_1_sd0
+(167/532) train vimp2_1530_04232015_SRI_Aug0_Rot_1_sd2
+(168/532) train vimp2_1530_04232015_SRI_Aug0_Rot_-5_sd1
+(169/532) train vimp2_1530_04232015_SRI_Aug1_Rot_3_sd0
+(170/532) train vimp2_1530_04232015_SRI_Aug1_Rot_-3_sd2
+(171/532) train vimp2_1530_04232015_SRI_Aug1_Rot_-4_sd1
+(172/532) train vimp2_1557_05062015_SRI_Aug0_Rot_-2_sd2
+(173/532) train vimp2_1557_05062015_SRI_Aug0_Rot_4_sd1
+(174/532) train vimp2_1557_05062015_SRI_Aug0_Rot_5_sd0
+(175/532) train vimp2_1557_05062015_SRI_Aug1_Rot_-1_sd0
+(176/532) train vimp2_1557_05062015_SRI_Aug1_Rot_-2_sd2
+(177/532) train vimp2_1557_05062015_SRI_Aug1_Rot_3_sd1
+(178/532) train vimp2_1559_05062015_SRI_Aug0_Rot_4_sd1
+(179/532) train vimp2_1559_05062015_SRI_Aug0_Rot_-7_sd0
+(180/532) train vimp2_1559_05062015_SRI_Aug0_Rot_7_sd2
+(181/532) train vimp2_1559_05062015_SRI_Aug1_Rot_3_sd0
+(182/532) train vimp2_1559_05062015_SRI_Aug1_Rot_-6_sd1
+(183/532) train vimp2_1559_05062015_SRI_Aug1_Rot_-7_sd2
+(184/532) train vimp2_1564_05072015_SRI_Aug0_Rot_-2_sd1
+(185/532) train vimp2_1564_05072015_SRI_Aug0_Rot_6_sd2
+(186/532) train vimp2_1564_05072015_SRI_Aug0_Rot_-7_sd0
+(187/532) train vimp2_1564_05072015_SRI_Aug1_Rot_-1_sd0
+(188/532) train vimp2_1564_05072015_SRI_Aug1_Rot_-4_sd1
+(189/532) train vimp2_1564_05072015_SRI_Aug1_Rot_6_sd2
+(190/532) train vimp2_1595_05202015_SRI_Aug0_Rot_3_sd0
+(191/532) train vimp2_1595_05202015_SRI_Aug0_Rot_-6_sd2
+(192/532) train vimp2_1595_05202015_SRI_Aug0_Rot_-7_sd1
+(193/532) train vimp2_1595_05202015_SRI_Aug1_Rot_1_sd0
+(194/532) train vimp2_1595_05202015_SRI_Aug1_Rot_2_sd1
+(195/532) train vimp2_1595_05202015_SRI_Aug1_Rot_-2_sd2
+(196/532) train vimp2_1604_10092015_SRI_Aug0_Rot_-1_sd2
+(197/532) train vimp2_1604_10092015_SRI_Aug0_Rot_-4_sd1
+(198/532) train vimp2_1604_10092015_SRI_Aug0_Rot_7_sd0
+(199/532) train vimp2_1604_10092015_SRI_Aug1_Rot_1_sd2
+(200/532) train vimp2_1604_10092015_SRI_Aug1_Rot_2_sd1
+(201/532) train vimp2_1604_10092015_SRI_Aug1_Rot_5_sd0
+(202/532) train vimp2_1620_05292015_SRI_Aug0_Rot_-6_sd1
+(203/532) train vimp2_1620_05292015_SRI_Aug0_Rot_7_sd0
+(204/532) train vimp2_1620_05292015_SRI_Aug0_Rot_7_sd2
+(205/532) train vimp2_1620_05292015_SRI_Aug1_Rot_1_sd1
+(206/532) train vimp2_1620_05292015_SRI_Aug1_Rot_3_sd2
+(207/532) train vimp2_1620_05292015_SRI_Aug1_Rot_-4_sd0
+(208/532) train vimp2_1621_05292015_SRI_Aug0_Rot_0_sd1
+(209/532) train vimp2_1621_05292015_SRI_Aug0_Rot_4_sd2
+(210/532) train vimp2_1621_05292015_SRI_Aug0_Rot_-7_sd0
+(211/532) train vimp2_1621_05292015_SRI_Aug1_Rot_1_sd0
+(212/532) train vimp2_1621_05292015_SRI_Aug1_Rot_2_sd1
+(213/532) train vimp2_1621_05292015_SRI_Aug1_Rot_6_sd2
+(214/532) train vimp2_1621_10162015_SRI_Aug0_Rot_1_sd1
+(215/532) train vimp2_1621_10162015_SRI_Aug0_Rot_-2_sd0
+(216/532) train vimp2_1621_10162015_SRI_Aug0_Rot_3_sd2
+(217/532) train vimp2_1621_10162015_SRI_Aug1_Rot_-1_sd1
+(218/532) train vimp2_1621_10162015_SRI_Aug1_Rot_2_sd0
+(219/532) train vimp2_1621_10162015_SRI_Aug1_Rot_-4_sd2
+(220/532) train vimp2_1622_05292015_SRI_Aug0_Rot_-1_sd0
+(221/532) train vimp2_1622_05292015_SRI_Aug0_Rot_-1_sd1
+(222/532) train vimp2_1622_05292015_SRI_Aug0_Rot_-5_sd2
+(223/532) train vimp2_1622_05292015_SRI_Aug1_Rot_3_sd0
+(224/532) train vimp2_1622_05292015_SRI_Aug1_Rot_3_sd2
+(225/532) train vimp2_1622_05292015_SRI_Aug1_Rot_-5_sd1
+(226/532) train vimp2_1623_05292015_SRI_Aug0_Rot_-3_sd0
+(227/532) train vimp2_1623_05292015_SRI_Aug0_Rot_-3_sd2
+(228/532) train vimp2_1623_05292015_SRI_Aug0_Rot_-4_sd1
+(229/532) train vimp2_1623_05292015_SRI_Aug1_Rot_6_sd2
+(230/532) train vimp2_1623_05292015_SRI_Aug1_Rot_7_sd0
+(231/532) train vimp2_1623_05292015_SRI_Aug1_Rot_7_sd1
+(232/532) train vimp2_1632_10232015_SRI_Aug0_Rot_0_sd2
+(233/532) train vimp2_1632_10232015_SRI_Aug0_Rot_1_sd1
+(234/532) train vimp2_1632_10232015_SRI_Aug0_Rot_-6_sd0
+(235/532) train vimp2_1632_10232015_SRI_Aug1_Rot_-3_sd1
+(236/532) train vimp2_1632_10232015_SRI_Aug1_Rot_4_sd2
+(237/532) train vimp2_1632_10232015_SRI_Aug1_Rot_7_sd0
+(238/532) train vimp2_1648_10282015_SRI_Aug0_Rot_-1_sd2
+(239/532) train vimp2_1648_10282015_SRI_Aug0_Rot_3_sd0
+(240/532) train vimp2_1648_10282015_SRI_Aug0_Rot_-4_sd1
+(241/532) train vimp2_1648_10282015_SRI_Aug1_Rot_1_sd0
+(242/532) train vimp2_1648_10282015_SRI_Aug1_Rot_2_sd2
+(243/532) train vimp2_1648_10282015_SRI_Aug1_Rot_-3_sd1
+(244/532) train vimp2_1662_10302015_SRI_Aug0_Rot_-3_sd0
+(245/532) train vimp2_1662_10302015_SRI_Aug0_Rot_3_sd2
+(246/532) train vimp2_1662_10302015_SRI_Aug0_Rot_-6_sd1
+(247/532) train vimp2_1662_10302015_SRI_Aug1_Rot_-3_sd1
+(248/532) train vimp2_1662_10302015_SRI_Aug1_Rot_-7_sd0
+(249/532) train vimp2_1662_10302015_SRI_Aug1_Rot_-7_sd2
+(250/532) train vimp2_1689_06262015_SRI_Aug0_Rot_-4_sd2
+(251/532) train vimp2_1689_06262015_SRI_Aug0_Rot_5_sd0
+(252/532) train vimp2_1689_06262015_SRI_Aug0_Rot_-7_sd1
+(253/532) train vimp2_1689_06262015_SRI_Aug1_Rot_-1_sd0
+(254/532) train vimp2_1689_06262015_SRI_Aug1_Rot_-2_sd1
+(255/532) train vimp2_1689_06262015_SRI_Aug1_Rot_6_sd2
+(256/532) train vimp2_1709_07072015_SRI_Aug0_Rot_5_sd1
+(257/532) train vimp2_1709_07072015_SRI_Aug0_Rot_6_sd0
+(258/532) train vimp2_1709_07072015_SRI_Aug0_Rot_-6_sd2
+(259/532) train vimp2_1709_07072015_SRI_Aug1_Rot_0_sd2
+(260/532) train vimp2_1709_07072015_SRI_Aug1_Rot_1_sd0
+(261/532) train vimp2_1709_07072015_SRI_Aug1_Rot_-1_sd1
+(262/532) train vimp2_1712_11162015_SRI_Aug0_Rot_3_sd0
+(263/532) train vimp2_1712_11162015_SRI_Aug0_Rot_-3_sd1
+(264/532) train vimp2_1712_11162015_SRI_Aug0_Rot_-3_sd2
+(265/532) train vimp2_1712_11162015_SRI_Aug1_Rot_-4_sd0
+(266/532) train vimp2_1712_11162015_SRI_Aug1_Rot_7_sd1
+(267/532) train vimp2_1712_11162015_SRI_Aug1_Rot_7_sd2
+(268/532) train vimp2_1724_11202015_SRI_Aug0_Rot_4_sd0
+(269/532) train vimp2_1724_11202015_SRI_Aug0_Rot_4_sd1
+(270/532) train vimp2_1724_11202015_SRI_Aug0_Rot_-4_sd2
+(271/532) train vimp2_1724_11202015_SRI_Aug1_Rot_2_sd1
+(272/532) train vimp2_1724_11202015_SRI_Aug1_Rot_-3_sd2
+(273/532) train vimp2_1724_11202015_SRI_Aug1_Rot_4_sd0
+(274/532) train vimp2_1739_11242015_SRI_Aug0_Rot_-3_sd0
+(275/532) train vimp2_1739_11242015_SRI_Aug0_Rot_-4_sd2
+(276/532) train vimp2_1739_11242015_SRI_Aug0_Rot_-5_sd1
+(277/532) train vimp2_1739_11242015_SRI_Aug1_Rot_5_sd0
+(278/532) train vimp2_1739_11242015_SRI_Aug1_Rot_-5_sd1
+(279/532) train vimp2_1739_11242015_SRI_Aug1_Rot_7_sd2
+(280/532) train vimp2_1751_12022015_SRI_Aug0_Rot_-1_sd1
+(281/532) train vimp2_1751_12022015_SRI_Aug0_Rot_5_sd2
+(282/532) train vimp2_1751_12022015_SRI_Aug0_Rot_6_sd0
+(283/532) train vimp2_1751_12022015_SRI_Aug1_Rot_-4_sd2
+(284/532) train vimp2_1751_12022015_SRI_Aug1_Rot_5_sd0
+(285/532) train vimp2_1751_12022015_SRI_Aug1_Rot_-6_sd1
+(286/532) train vimp2_1756_12032015_SRI_Aug0_Rot_-3_sd0
+(287/532) train vimp2_1756_12032015_SRI_Aug0_Rot_5_sd2
+(288/532) train vimp2_1756_12032015_SRI_Aug0_Rot_6_sd1
+(289/532) train vimp2_1756_12032015_SRI_Aug1_Rot_-1_sd0
+(290/532) train vimp2_1756_12032015_SRI_Aug1_Rot_5_sd1
+(291/532) train vimp2_1756_12032015_SRI_Aug1_Rot_-7_sd2
+(292/532) train vimp2_1761_12042015_SRI_Aug0_Rot_2_sd1
+(293/532) train vimp2_1761_12042015_SRI_Aug0_Rot_7_sd0
+(294/532) train vimp2_1761_12042015_SRI_Aug0_Rot_7_sd2
+(295/532) train vimp2_1761_12042015_SRI_Aug1_Rot_1_sd2
+(296/532) train vimp2_1761_12042015_SRI_Aug1_Rot_4_sd0
+(297/532) train vimp2_1761_12042015_SRI_Aug1_Rot_-5_sd1
+(298/532) train vimp2_1844_01142016_SRI_Aug0_Rot_1_sd1
+(299/532) train vimp2_1844_01142016_SRI_Aug0_Rot_-1_sd2
+(300/532) train vimp2_1844_01142016_SRI_Aug0_Rot_-2_sd0
+(301/532) train vimp2_1844_01142016_SRI_Aug1_Rot_-2_sd1
+(302/532) train vimp2_1844_01142016_SRI_Aug1_Rot_-2_sd2
+(303/532) train vimp2_1844_01142016_SRI_Aug1_Rot_6_sd0
+(304/532) train vimp2_1847_01152016_SRI_Aug0_Rot_-3_sd1
+(305/532) train vimp2_1847_01152016_SRI_Aug0_Rot_4_sd2
+(306/532) train vimp2_1847_01152016_SRI_Aug0_Rot_-5_sd0
+(307/532) train vimp2_1847_01152016_SRI_Aug1_Rot_-2_sd2
+(308/532) train vimp2_1847_01152016_SRI_Aug1_Rot_5_sd0
+(309/532) train vimp2_1847_01152016_SRI_Aug1_Rot_-6_sd1
+(310/532) train vimp2_1875_01262016_SRI_Aug0_Rot_3_sd0
+(311/532) train vimp2_1875_01262016_SRI_Aug0_Rot_-3_sd1
+(312/532) train vimp2_1875_01262016_SRI_Aug0_Rot_-3_sd2
+(313/532) train vimp2_1875_01262016_SRI_Aug1_Rot_-2_sd1
+(314/532) train vimp2_1875_01262016_SRI_Aug1_Rot_-4_sd2
+(315/532) train vimp2_1875_01262016_SRI_Aug1_Rot_6_sd0
+(316/532) train vimp2_1888_01292016_SRI_Aug0_Rot_2_sd0
+(317/532) train vimp2_1888_01292016_SRI_Aug0_Rot_4_sd2
+(318/532) train vimp2_1888_01292016_SRI_Aug0_Rot_-6_sd1
+(319/532) train vimp2_1888_01292016_SRI_Aug1_Rot_-1_sd2
+(320/532) train vimp2_1888_01292016_SRI_Aug1_Rot_-2_sd1
+(321/532) train vimp2_1888_01292016_SRI_Aug1_Rot_4_sd0
+(322/532) train vimp2_1907_02052016_SRI_Aug0_Rot_0_sd2
+(323/532) train vimp2_1907_02052016_SRI_Aug0_Rot_-2_sd0
+(324/532) train vimp2_1907_02052016_SRI_Aug0_Rot_-7_sd1
+(325/532) train vimp2_1907_02052016_SRI_Aug1_Rot_-1_sd1
+(326/532) train vimp2_1907_02052016_SRI_Aug1_Rot_2_sd0
+(327/532) train vimp2_1907_02052016_SRI_Aug1_Rot_5_sd2
+(328/532) train vimp2_2039_03182016_SRI_Aug0_Rot_-1_sd0
+(329/532) train vimp2_2039_03182016_SRI_Aug0_Rot_2_sd2
+(330/532) train vimp2_2039_03182016_SRI_Aug0_Rot_5_sd1
+(331/532) train vimp2_2039_03182016_SRI_Aug1_Rot_-1_sd1
+(332/532) train vimp2_2039_03182016_SRI_Aug1_Rot_-5_sd0
+(333/532) train vimp2_2039_03182016_SRI_Aug1_Rot_5_sd2
+(334/532) train vimp2_2119_04142016_SRI_Aug0_Rot_-2_sd2
+(335/532) train vimp2_2119_04142016_SRI_Aug0_Rot_-3_sd0
+(336/532) train vimp2_2119_04142016_SRI_Aug0_Rot_-4_sd1
+(337/532) train vimp2_2119_04142016_SRI_Aug1_Rot_2_sd2
+(338/532) train vimp2_2119_04142016_SRI_Aug1_Rot_-3_sd0
+(339/532) train vimp2_2119_04142016_SRI_Aug1_Rot_3_sd1
+(340/532) train vimp2_2309_07072016_SRI_Aug0_Rot_-1_sd1
+(341/532) train vimp2_2309_07072016_SRI_Aug0_Rot_-6_sd2
+(342/532) train vimp2_2309_07072016_SRI_Aug0_Rot_7_sd0
+(343/532) train vimp2_2309_07072016_SRI_Aug1_Rot_-5_sd0
+(344/532) train vimp2_2309_07072016_SRI_Aug1_Rot_5_sd1
+(345/532) train vimp2_2309_07072016_SRI_Aug1_Rot_-6_sd2
+(346/532) train vimp2_2390_07272016_SRI_Aug0_Rot_1_sd0
+(347/532) train vimp2_2390_07272016_SRI_Aug0_Rot_-5_sd1
+(348/532) train vimp2_2390_07272016_SRI_Aug0_Rot_-5_sd2
+(349/532) train vimp2_2390_07272016_SRI_Aug1_Rot_-3_sd1
+(350/532) train vimp2_2390_07272016_SRI_Aug1_Rot_5_sd0
+(351/532) train vimp2_2390_07272016_SRI_Aug1_Rot_5_sd2
+(352/532) train vimp2_2398_07292016_SRI_Aug0_Rot_-2_sd1
+(353/532) train vimp2_2398_07292016_SRI_Aug0_Rot_-6_sd0
+(354/532) train vimp2_2398_07292016_SRI_Aug0_Rot_6_sd2
+(355/532) train vimp2_2398_07292016_SRI_Aug1_Rot_-2_sd0
+(356/532) train vimp2_2398_07292016_SRI_Aug1_Rot_-3_sd2
+(357/532) train vimp2_2398_07292016_SRI_Aug1_Rot_-4_sd1
+(358/532) train vimp2_2438_08122016_SRI_Aug0_Rot_-1_sd1
+(359/532) train vimp2_2438_08122016_SRI_Aug0_Rot_-5_sd2
+(360/532) train vimp2_2438_08122016_SRI_Aug0_Rot_6_sd0
+(361/532) train vimp2_2438_08122016_SRI_Aug1_Rot_4_sd0
+(362/532) train vimp2_2438_08122016_SRI_Aug1_Rot_-4_sd2
+(363/532) train vimp2_2438_08122016_SRI_Aug1_Rot_-6_sd1
+(364/532) train vimp2_2450_08172016_SRI_Aug0_Rot_2_sd2
+(365/532) train vimp2_2450_08172016_SRI_Aug0_Rot_5_sd1
+(366/532) train vimp2_2450_08172016_SRI_Aug0_Rot_-7_sd0
+(367/532) train vimp2_2450_08172016_SRI_Aug1_Rot_2_sd0
+(368/532) train vimp2_2450_08172016_SRI_Aug1_Rot_-4_sd2
+(369/532) train vimp2_2450_08172016_SRI_Aug1_Rot_6_sd1
+(370/532) train vimp2_2459_08192016_SRI_Aug0_Rot_-2_sd1
+(371/532) train vimp2_2459_08192016_SRI_Aug0_Rot_-5_sd0
+(372/532) train vimp2_2459_08192016_SRI_Aug0_Rot_6_sd2
+(373/532) train vimp2_2459_08192016_SRI_Aug1_Rot_-2_sd0
+(374/532) train vimp2_2459_08192016_SRI_Aug1_Rot_-4_sd2
+(375/532) train vimp2_2459_08192016_SRI_Aug1_Rot_-5_sd1
+(376/532) train vimp2_2460_08192016_SRI_Aug0_Rot_2_sd1
+(377/532) train vimp2_2460_08192016_SRI_Aug0_Rot_5_sd2
+(378/532) train vimp2_2460_08192016_SRI_Aug0_Rot_6_sd0
+(379/532) train vimp2_2460_08192016_SRI_Aug1_Rot_-4_sd0
+(380/532) train vimp2_2460_08192016_SRI_Aug1_Rot_5_sd1
+(381/532) train vimp2_2460_08192016_SRI_Aug1_Rot_-6_sd2
+(382/532) train vimp2_2462_08192016_Test_NewCases_SRI_Aug0_Rot_-1_sd0
+(383/532) train vimp2_2462_08192016_Test_NewCases_SRI_Aug0_Rot_-2_sd2
+(384/532) train vimp2_2462_08192016_Test_NewCases_SRI_Aug0_Rot_3_sd1
+(385/532) train vimp2_2462_08192016_Test_NewCases_SRI_Aug1_Rot_5_sd1
+(386/532) train vimp2_2462_08192016_Test_NewCases_SRI_Aug1_Rot_5_sd2
+(387/532) train vimp2_2462_08192016_Test_NewCases_SRI_Aug1_Rot_-6_sd0
+(388/532) train vimp2_2476_08242016_SRI_Aug0_Rot_3_sd1
+(389/532) train vimp2_2476_08242016_SRI_Aug0_Rot_3_sd2
+(390/532) train vimp2_2476_08242016_SRI_Aug0_Rot_6_sd0
+(391/532) train vimp2_2476_08242016_SRI_Aug1_Rot_5_sd1
+(392/532) train vimp2_2476_08242016_SRI_Aug1_Rot_6_sd0
+(393/532) train vimp2_2476_08242016_SRI_Aug1_Rot_7_sd2
+(394/532) train vimp2_2484_08252016_SRI_Aug0_Rot_5_sd1
+(395/532) train vimp2_2484_08252016_SRI_Aug0_Rot_6_sd0
+(396/532) train vimp2_2484_08252016_SRI_Aug0_Rot_-7_sd2
+(397/532) train vimp2_2484_08252016_SRI_Aug1_Rot_-1_sd0
+(398/532) train vimp2_2484_08252016_SRI_Aug1_Rot_-1_sd1
+(399/532) train vimp2_2484_08252016_SRI_Aug1_Rot_-5_sd2
+(400/532) train vimp2_2485_08252016_SRI_Aug0_Rot_-1_sd0
+(401/532) train vimp2_2485_08252016_SRI_Aug0_Rot_3_sd1
+(402/532) train vimp2_2485_08252016_SRI_Aug0_Rot_-7_sd2
+(403/532) train vimp2_2485_08252016_SRI_Aug1_Rot_4_sd2
+(404/532) train vimp2_2485_08252016_SRI_Aug1_Rot_7_sd0
+(405/532) train vimp2_2485_08252016_SRI_Aug1_Rot_7_sd1
+(406/532) train vimp2_2499_08302016_SRI_Aug0_Rot_3_sd1
+(407/532) train vimp2_2499_08302016_SRI_Aug0_Rot_-6_sd0
+(408/532) train vimp2_2499_08302016_SRI_Aug0_Rot_7_sd2
+(409/532) train vimp2_2499_08302016_SRI_Aug1_Rot_1_sd0
+(410/532) train vimp2_2499_08302016_SRI_Aug1_Rot_2_sd1
+(411/532) train vimp2_2499_08302016_SRI_Aug1_Rot_4_sd2
+(412/532) train vimp2_2617_10262016_SRI_Aug0_Rot_-3_sd2
+(413/532) train vimp2_2617_10262016_SRI_Aug0_Rot_4_sd0
+(414/532) train vimp2_2617_10262016_SRI_Aug0_Rot_-7_sd1
+(415/532) train vimp2_2617_10262016_SRI_Aug1_Rot_-4_sd2
+(416/532) train vimp2_2617_10262016_SRI_Aug1_Rot_5_sd0
+(417/532) train vimp2_2617_10262016_SRI_Aug1_Rot_5_sd1
+(418/532) train vimp2_2618_10262016_SRI_Aug0_Rot_-1_sd1
+(419/532) train vimp2_2618_10262016_SRI_Aug0_Rot_-2_sd0
+(420/532) train vimp2_2618_10262016_SRI_Aug0_Rot_-3_sd2
+(421/532) train vimp2_2618_10262016_SRI_Aug1_Rot_5_sd0
+(422/532) train vimp2_2618_10262016_SRI_Aug1_Rot_-5_sd1
+(423/532) train vimp2_2618_10262016_SRI_Aug1_Rot_7_sd2
+(424/532) train vimp2_2628_10282016_SRI_Aug0_Rot_3_sd1
+(425/532) train vimp2_2628_10282016_SRI_Aug0_Rot_4_sd2
+(426/532) train vimp2_2628_10282016_SRI_Aug0_Rot_6_sd0
+(427/532) train vimp2_2628_10282016_SRI_Aug1_Rot_-7_sd0
+(428/532) train vimp2_2628_10282016_SRI_Aug1_Rot_-7_sd1
+(429/532) train vimp2_2628_10282016_SRI_Aug1_Rot_-7_sd2
+(430/532) train vimp2_2846_01112017_SRI_Aug0_Rot_1_sd1
+(431/532) train vimp2_2846_01112017_SRI_Aug0_Rot_-3_sd0
+(432/532) train vimp2_2846_01112017_SRI_Aug0_Rot_7_sd2
+(433/532) train vimp2_2846_01112017_SRI_Aug1_Rot_1_sd2
+(434/532) train vimp2_2846_01112017_SRI_Aug1_Rot_3_sd1
+(435/532) train vimp2_2846_01112017_SRI_Aug1_Rot_5_sd0
+(436/532) train vimp2_2878_01262017_SRI_Aug0_Rot_-3_sd0
+(437/532) train vimp2_2878_01262017_SRI_Aug0_Rot_4_sd2
+(438/532) train vimp2_2878_01262017_SRI_Aug0_Rot_-6_sd1
+(439/532) train vimp2_2878_01262017_SRI_Aug1_Rot_3_sd1
+(440/532) train vimp2_2878_01262017_SRI_Aug1_Rot_-5_sd2
+(441/532) train vimp2_2878_01262017_SRI_Aug1_Rot_7_sd0
+(442/532) train vimp2_2914_02162017_Test_NewCases_SRI_Aug0_Rot_-3_sd2
+(443/532) train vimp2_2914_02162017_Test_NewCases_SRI_Aug0_Rot_6_sd0
+(444/532) train vimp2_2914_02162017_Test_NewCases_SRI_Aug0_Rot_7_sd1
+(445/532) train vimp2_2914_02162017_Test_NewCases_SRI_Aug1_Rot_-3_sd2
+(446/532) train vimp2_2914_02162017_Test_NewCases_SRI_Aug1_Rot_6_sd1
+(447/532) train vimp2_2914_02162017_Test_NewCases_SRI_Aug1_Rot_-7_sd0
+(448/532) train vimp2_2926_02222017_Test_NewCases_SRI_Aug0_Rot_-1_sd0
+(449/532) train vimp2_2926_02222017_Test_NewCases_SRI_Aug0_Rot_3_sd2
+(450/532) train vimp2_2926_02222017_Test_NewCases_SRI_Aug0_Rot_-7_sd1
+(451/532) train vimp2_2926_02222017_Test_NewCases_SRI_Aug1_Rot_1_sd0
+(452/532) train vimp2_2926_02222017_Test_NewCases_SRI_Aug1_Rot_-5_sd2
+(453/532) train vimp2_2926_02222017_Test_NewCases_SRI_Aug1_Rot_7_sd1
+(454/532) train vimp2_2946_03032017_Test_NewCases_SRI_Aug0_Rot_0_sd1
+(455/532) train vimp2_2946_03032017_Test_NewCases_SRI_Aug0_Rot_1_sd2
+(456/532) train vimp2_2946_03032017_Test_NewCases_SRI_Aug0_Rot_-5_sd0
+(457/532) train vimp2_2946_03032017_Test_NewCases_SRI_Aug1_Rot_0_sd0
+(458/532)2019-06-30 21:57:59.403258: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-06-30 21:58:03.196621: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:85:00.0
+totalMemory: 15.89GiB freeMemory: 15.60GiB
+2019-06-30 21:58:03.196711: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-06-30 21:58:04.115910: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-06-30 21:58:04.116004: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-06-30 21:58:04.116024: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-06-30 21:58:04.116610: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:85:00.0, compute capability: 6.0)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+Using TensorFlow backend.
+Loading train:   0%|          | 0/456 [00:00<?, ?it/s]Loading train:   0%|          | 1/456 [00:04<30:36,  4.04s/it]Loading train:   0%|          | 2/456 [00:07<30:05,  3.98s/it]Loading train:   1%|          | 3/456 [00:09<25:11,  3.34s/it]Loading train:   1%|          | 4/456 [00:12<23:31,  3.12s/it]Loading train:   1%|          | 5/456 [00:15<23:31,  3.13s/it]Loading train:   1%|▏         | 6/456 [00:18<22:18,  2.97s/it]Loading train:   2%|▏         | 7/456 [00:19<19:38,  2.62s/it]Loading train:   2%|▏         | 8/456 [00:21<17:32,  2.35s/it]Loading train:   2%|▏         | 9/456 [00:23<16:13,  2.18s/it]Loading train:   2%|▏         | 10/456 [00:25<15:18,  2.06s/it]Loading train:   2%|▏         | 11/456 [00:26<14:15,  1.92s/it]Loading train:   3%|▎         | 12/456 [00:28<13:33,  1.83s/it]Loading train:   3%|▎         | 13/456 [00:29<12:57,  1.76s/it]Loading train:   3%|▎         | 14/456 [00:31<13:27,  1.83s/it]Loading train:   3%|▎         | 15/456 [00:33<12:31,  1.70s/it]Loading train:   4%|▎         | 16/456 [00:35<12:28,  1.70s/it]Loading train:   4%|▎         | 17/456 [00:36<12:13,  1.67s/it]Loading train:   4%|▍         | 18/456 [00:37<11:10,  1.53s/it]Loading train:   4%|▍         | 19/456 [00:39<11:12,  1.54s/it]Loading train:   4%|▍         | 20/456 [00:41<12:14,  1.68s/it]Loading train:   5%|▍         | 21/456 [00:43<12:58,  1.79s/it]Loading train:   5%|▍         | 22/456 [00:45<13:10,  1.82s/it]Loading train:   5%|▌         | 23/456 [00:47<13:22,  1.85s/it]Loading train:   5%|▌         | 24/456 [00:48<11:48,  1.64s/it]Loading train:   5%|▌         | 25/456 [00:50<13:04,  1.82s/it]Loading train:   6%|▌         | 26/456 [00:52<13:47,  1.92s/it]Loading train:   6%|▌         | 27/456 [00:54<13:14,  1.85s/it]Loading train:   6%|▌         | 28/456 [00:56<13:09,  1.84s/it]Loading train:   6%|▋         | 29/456 [00:58<13:30,  1.90s/it]Loading train:   7%|▋         | 30/456 [01:00<13:21,  1.88s/it]Loading train:   7%|▋         | 31/456 [01:01<12:17,  1.73s/it]Loading train:   7%|▋         | 32/456 [01:03<12:36,  1.78s/it]Loading train:   7%|▋         | 33/456 [01:05<13:36,  1.93s/it]Loading train:   7%|▋         | 34/456 [01:07<13:39,  1.94s/it]Loading train:   8%|▊         | 35/456 [01:09<13:41,  1.95s/it]Loading train:   8%|▊         | 36/456 [01:12<14:50,  2.12s/it]Loading train:   8%|▊         | 37/456 [01:14<14:29,  2.07s/it]Loading train:   8%|▊         | 38/456 [01:16<13:55,  2.00s/it]Loading train:   9%|▊         | 39/456 [01:17<12:48,  1.84s/it]Loading train:   9%|▉         | 40/456 [01:19<12:07,  1.75s/it]Loading train:   9%|▉         | 41/456 [01:20<11:34,  1.67s/it]Loading train:   9%|▉         | 42/456 [01:21<11:00,  1.59s/it]Loading train:   9%|▉         | 43/456 [01:23<10:56,  1.59s/it]Loading train:  10%|▉         | 44/456 [01:25<10:50,  1.58s/it]Loading train:  10%|▉         | 45/456 [01:26<10:22,  1.51s/it]Loading train:  10%|█         | 46/456 [01:28<11:19,  1.66s/it]Loading train:  10%|█         | 47/456 [01:30<11:55,  1.75s/it]Loading train:  11%|█         | 48/456 [01:31<11:22,  1.67s/it]Loading train:  11%|█         | 49/456 [01:33<10:58,  1.62s/it]Loading train:  11%|█         | 50/456 [01:34<10:13,  1.51s/it]Loading train:  11%|█         | 51/456 [01:36<10:22,  1.54s/it]Loading train:  11%|█▏        | 52/456 [01:38<11:03,  1.64s/it]Loading train:  12%|█▏        | 53/456 [01:39<10:14,  1.53s/it]Loading train:  12%|█▏        | 54/456 [01:41<11:05,  1.66s/it]Loading train:  12%|█▏        | 55/456 [01:43<11:14,  1.68s/it]Loading train:  12%|█▏        | 56/456 [01:44<11:10,  1.68s/it]Loading train:  12%|█▎        | 57/456 [01:46<10:25,  1.57s/it]Loading train:  13%|█▎        | 58/456 [01:47<10:18,  1.55s/it]Loading train:  13%|█▎        | 59/456 [01:49<11:12,  1.69s/it]Loading train:  13%|█▎        | 60/456 [01:51<11:42,  1.77s/it]Loading train:  13%|█▎        | 61/456 [01:53<11:52,  1.80s/it]Loading train:  14%|█▎        | 62/456 [01:55<11:57,  1.82s/it]Loading train:  14%|█▍        | 63/456 [01:56<11:13,  1.71s/it]Loading train:  14%|█▍        | 64/456 [01:58<11:14,  1.72s/it]Loading train:  14%|█▍        | 65/456 [02:00<10:55,  1.68s/it]Loading train:  14%|█▍        | 66/456 [02:01<11:11,  1.72s/it]Loading train:  15%|█▍        | 67/456 [02:03<11:04,  1.71s/it]Loading train:  15%|█▍        | 68/456 [02:05<11:26,  1.77s/it]Loading train:  15%|█▌        | 69/456 [02:07<11:57,  1.85s/it]Loading train:  15%|█▌        | 70/456 [02:09<12:36,  1.96s/it]Loading train:  16%|█▌        | 71/456 [02:11<12:48,  2.00s/it]Loading train:  16%|█▌        | 72/456 [02:13<12:17,  1.92s/it]Loading train:  16%|█▌        | 73/456 [02:15<11:58,  1.88s/it]Loading train:  16%|█▌        | 74/456 [02:17<12:10,  1.91s/it]Loading train:  16%|█▋        | 75/456 [02:19<11:59,  1.89s/it]Loading train:  17%|█▋        | 76/456 [02:20<11:26,  1.81s/it]Loading train:  17%|█▋        | 77/456 [02:22<10:25,  1.65s/it]Loading train:  17%|█▋        | 78/456 [02:23<10:40,  1.69s/it]Loading train:  17%|█▋        | 79/456 [02:26<11:33,  1.84s/it]Loading train:  18%|█▊        | 80/456 [02:27<11:09,  1.78s/it]Loading train:  18%|█▊        | 81/456 [02:29<11:19,  1.81s/it]Loading train:  18%|█▊        | 82/456 [02:31<12:07,  1.95s/it]Loading train:  18%|█▊        | 83/456 [02:34<13:29,  2.17s/it]

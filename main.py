@@ -242,7 +242,8 @@ def EXP_3_SRI_Main_US2_m2_(UserInfoB):
     UserInfoB['Model_Method'] = 'HCascade'
     UserInfoB['simulation'].batch_size = 30
     # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 50 # , 50
-    
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     for UserInfoB['TypeExperiment'] in [1, 2]:
         Run(UserInfoB, IV)
 
@@ -255,6 +256,8 @@ def EXP_2_ET_superGroups_Only_HCascade_finetune(UserInfoB):
     UserInfoB['temp_just_superGroups'] = True
     UserInfoB['simulation'].nucleus_Index = [1.1, 1.2, 1.3, 1.4]
     UserInfoB['simulation'].batch_size = 100
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     for UserInfoB['simulation'].num_Layers in [3, 4]:
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]: 
             Run(UserInfoB, IV)
@@ -266,6 +269,8 @@ def EXP_2b_ET_Cascade_finetune(UserInfoB):
     UserInfoB['upsample'].Scale = 1
     UserInfoB['TypeExperiment'] = 4
     UserInfoB['simulation'].batch_size = 200
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     for UserInfoB['simulation'].num_Layers in [3, 4]:
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]: 
             Run(UserInfoB, IV)
@@ -276,6 +281,8 @@ def EXP_1_FM10_allMethods_HCascade(UserInfoB):
     UserInfoB['simulation'].num_Layers = 4
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 10
     UserInfoB['simulation'].batch_size = 100
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     for UserInfoB['TypeExperiment'] in [1 ,2 ,4]: 
         Run(UserInfoB, IV)
 
@@ -298,7 +305,8 @@ def EXP5_Resnet_Cascade_3T_and_Main(UserInfoB):
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 10
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['simulation'].slicingDim = [0]
-    
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     for UserInfoB['architectureType'] in ['Res_Unet' , 'SegNet_Unet']: # 'Res_Unet' , 'FCN_Unet', 'SegNet_Unet']:
         for UserInfoB['TypeExperiment'] in [1,2]:
             Run(UserInfoB, IV)
@@ -307,7 +315,8 @@ def EXP5_Resnet_Cascade_3T_and_Main(UserInfoB):
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].num_Layers = 4
     UserInfoB['simulation'].slicingDim = [1]
-    
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     for UserInfoB['architectureType'] in ['Res_Unet' , 'SegNet_Unet']: # 'Res_Unet' , 'FCN_Unet', 'SegNet_Unet']:
         for UserInfoB['TypeExperiment'] in [1,2]:
             Run(UserInfoB, IV)
@@ -316,7 +325,8 @@ def EXP5_Resnet_Cascade_3T_and_Main(UserInfoB):
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['simulation'].slicingDim = [2]
-    
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     for UserInfoB['architectureType'] in ['Res_Unet' , 'SegNet_Unet']: # 'Res_Unet' , 'FCN_Unet', 'SegNet_Unet']:
         for UserInfoB['TypeExperiment'] in [1,2]:
             Run(UserInfoB, IV)
@@ -330,6 +340,7 @@ def EXP6_Resnet_HCascade_3T_and_Main(UserInfoB):
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['simulation'].slicingDim = [0]
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
     for UserInfoB['architectureType'] in ['Res_Unet' , 'SegNet_Unet']: # 'Res_Unet' , 'FCN_Unet', 'SegNet_Unet']:
         for UserInfoB['TypeExperiment'] in [1,2]:
@@ -339,6 +350,7 @@ def EXP6_Resnet_HCascade_3T_and_Main(UserInfoB):
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
     UserInfoB['simulation'].num_Layers = 4
     UserInfoB['simulation'].slicingDim = [1]
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
     for UserInfoB['architectureType'] in ['Res_Unet' , 'SegNet_Unet']: # 'Res_Unet' , 'FCN_Unet', 'SegNet_Unet']:
         for UserInfoB['TypeExperiment'] in [1,2]:
@@ -348,6 +360,7 @@ def EXP6_Resnet_HCascade_3T_and_Main(UserInfoB):
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['simulation'].slicingDim = [2]
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
     for UserInfoB['architectureType'] in ['Res_Unet' , 'SegNet_Unet']: # 'Res_Unet' , 'FCN_Unet', 'SegNet_Unet']:
         for UserInfoB['TypeExperiment'] in [1,2]:
@@ -362,6 +375,7 @@ def EXP7_Resnet_Cascade_3T_Main_ET(UserInfoB):
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['simulation'].slicingDim = [0,1]
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
     for UserInfoB['architectureType'] in ['Res_Unet' , 'SegNet_Unet']: # 'Res_Unet' , 'FCN_Unet', 'SegNet_Unet']:
         for UserInfoB['TypeExperiment'] in [1,2,4]:
@@ -375,7 +389,8 @@ def EXP8_Resnet_HCascade_3T_Main_ET(UserInfoB):
     UserInfoB['Model_Method'] = 'HCascade'
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].num_Layers = 3
-    UserInfoB['simulation'].slicingDim = [0,1,2]
+    UserInfoB['simulation'].slicingDim = [2,1,0]
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
     for UserInfoB['architectureType'] in ['Res_Unet' ,'SegNet_Unet']: #  'FCN_Unet', 'Res_Unet' , 'FCN_Unet', 'SegNet_Unet']:
         for UserInfoB['TypeExperiment'] in [1,2,4]:
@@ -388,10 +403,11 @@ def EXP9_ET_HCascade(UserInfoB):
     UserInfoB['Model_Method'] = 'HCascade'
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].num_Layers = 3
-    UserInfoB['simulation'].slicingDim = [0,1,2]
+    UserInfoB['simulation'].slicingDim = [2,1,0]
     UserInfoB['tag_temp'] = '_NEW' 
     UserInfoB['Experiments'].Index = '7'
     UserInfoB['architectureType'] = 'U-Net4'
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
     for UserInfoB['TypeExperiment'] in [4,5]:
         Run(UserInfoB, IV)
@@ -409,16 +425,22 @@ def EXP10_Unet_Cascade_Main_OtherFolds(UserInfoB):
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 10
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['simulation'].slicingDim = [0]
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     Run(UserInfoB, IV)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].num_Layers = 4
     UserInfoB['simulation'].slicingDim = [1]
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     Run(UserInfoB, IV)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['simulation'].slicingDim = [2]
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     Run(UserInfoB, IV)
 
 def EXP11_Unet_HCascade_Main_OtherFolds(UserInfoB):
@@ -434,17 +456,23 @@ def EXP11_Unet_HCascade_Main_OtherFolds(UserInfoB):
     # ! HCascade   Main Init 3T
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
     UserInfoB['simulation'].num_Layers = 3
-    UserInfoB['simulation'].slicingDim = [0]
+    UserInfoB['simulation'].slicingDim = [2,0]
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     Run(UserInfoB, IV)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
     UserInfoB['simulation'].num_Layers = 4
     UserInfoB['simulation'].slicingDim = [1]
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     Run(UserInfoB, IV)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['simulation'].slicingDim = [2]
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     Run(UserInfoB, IV)
 
 def EXP12_SingleClass(UserInfoB):
@@ -453,6 +481,7 @@ def EXP12_SingleClass(UserInfoB):
     UserInfoB['Experiments'].Index = '6'
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].num_Layers = 3
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
 
     for UserInfoB['Model_Method'] in ['Cascade' , 'HCascade' , 'mUnet']: 
@@ -466,14 +495,16 @@ def EXP_13_CSFn2_Cascade_finetune(UserInfoB):
     UserInfoB['upsample'].Scale = 1
     UserInfoB['TypeExperiment'] = 8
     UserInfoB['simulation'].batch_size = 100
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
     for UserInfoB['simulation'].num_Layers in [3, 4]:
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]: 
+            
             Run(UserInfoB, IV)
 
 UserInfoB, K = preMode(UserInfo.__dict__)
-IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-EXP_13_CSFn2_Cascade_finetune(UserInfoB)
-
+EXP10_Unet_Cascade_Main_OtherFolds(UserInfoB)
+EXP11_Unet_HCascade_Main_OtherFolds(UserInfoB)
 
 K.clear_session()

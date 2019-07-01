@@ -15265,3 +15265,195 @@ Epoch 34/300
 Epoch 00034: val_mDice improved from 0.93802 to 0.94010, saving model to /array/ssd/msmajdi/experiments/keras/exp7/models/sE8_Cascade_FM20_Res_Unet_NL4_LS_MyBCE_US1/1-THALAMUS/sd2/best_model_weights.h5
 Epoch 35/300
  - 200s - loss: 790.6195 - acc: 0.9978 - mDice: 0.9565 - val_loss: 1146.3070 - val_acc: 0.9984 - val_mDice: 0.9376
+
+Epoch 00035: val_mDice did not improve from 0.94010
+Epoch 36/300
+ - 201s - loss: 946.0507 - acc: 0.9976 - mDice: 0.9486 - val_loss: 1111.5616 - val_acc: 0.9984 - val_mDice: 0.9325
+
+Epoch 00036: val_mDice did not improve from 0.94010
+Epoch 37/300
+ - 204s - loss: 823.3206 - acc: 0.9977 - mDice: 0.9547 - val_loss: 1068.8723 - val_acc: 0.9985 - val_mDice: 0.9361
+
+Epoch 00037: val_mDice did not improve from 0.94010
+Epoch 38/300
+ - 203s - loss: 786.6028 - acc: 0.9978 - mDice: 0.9567 - val_loss: 1071.7834 - val_acc: 0.9985 - val_mDice: 0.9375
+
+Epoch 00038: val_mDice did not improve from 0.94010
+Epoch 39/300
+ - 199s - loss: 769.7227 - acc: 0.9978 - mDice: 0.9576 - val_loss: 1117.6983 - val_acc: 0.9985 - val_mDice: 0.9372
+
+Epoch 00039: val_mDice did not improve from 0.94010
+Epoch 40/300
+ - 199s - loss: 765.6868 - acc: 0.9978 - mDice: 0.9579 - val_loss: 1081.1179 - val_acc: 0.9985 - val_mDice: 0.9388
+
+Epoch 00040: val_mDice did not improve from 0.94010
+Epoch 41/300
+ - 199s - loss: 758.4721 - acc: 0.9978 - mDice: 0.9583 - val_loss: 1065.1723 - val_acc: 0.9985 - val_mDice: 0.9388
+
+Epoch 00041: val_mDice did not improve from 0.94010
+Epoch 42/300
+ - 200s - loss: 757.3863 - acc: 0.9978 - mDice: 0.9583 - val_loss: 1077.9230 - val_acc: 0.9985 - val_mDice: 0.9390
+
+Epoch 00042: val_mDice did not improve from 0.94010
+Epoch 43/300
+ - 200s - loss: 750.0316 - acc: 0.9978 - mDice: 0.9587 - val_loss: 1085.7256 - val_acc: 0.9985 - val_mDice: 0.9383
+
+Epoch 00043: val_mDice did not improve from 0.94010
+Epoch 44/300
+ - 201s - loss: 750.5934 - acc: 0.9978 - mDice: 0.9587 - val_loss: 1096.6534 - val_acc: 0.9985 - val_mDice: 0.9400
+
+Epoch 00044: val_mDice did not improve from 0.94010
+Epoch 45/300
+ - 204s - loss: 739.4033 - acc: 0.9978 - mDice: 0.9592 - val_loss: 1058.1239 - val_acc: 0.9985 - val_mDice: 0.9422
+
+Epoch 00045: val_mDice improved from 0.94010 to 0.94222, saving model to /array/ssd/msmajdi/experiments/keras/exp7/models/sE8_Cascade_FM20_Res_Unet_NL4_LS_MyBCE_US1/1-THALAMUS/sd2/best_model_weights.h5
+Epoch 46/300
+ - 204s - loss: 737.6016 - acc: 0.9978 - mDice: 0.9594 - val_loss: 1069.4273 - val_acc: 0.9985 - val_mDice: 0.9406
+
+Epoch 00046: val_mDice did not improve from 0.94222
+Epoch 47/300
+ - 203s - loss: 732.7451 - acc: 0.9978 - mDice: 0.9597 - val_loss: 1187.3049 - val_acc: 0.9984 - val_mDice: 0.9364
+
+Epoch 00047: val_mDice did not improve from 0.94222
+Epoch 48/300
+ - 199s - loss: 730.9832 - acc: 0.9978 - mDice: 0.9597 - val_loss: 1063.5150 - val_acc: 0.9986 - val_mDice: 0.9416
+
+Epoch 00048: val_mDice did not improve from 0.94222
+Epoch 49/300
+ - 199s - loss: 727.4123 - acc: 0.9978 - mDice: 0.9599 - val_loss: 1068.5693 - val_acc: 0.9986 - val_mDice: 0.9429
+
+Epoch 00049: val_mDice improved from 0.94222 to 0.94286, saving model to /array/ssd/msmajdi/experiments/keras/exp7/models/sE8_Cascade_FM20_Res_Unet_NL4_LS_MyBCE_US1/1-THALAMUS/sd2/best_model_weights.h5
+Epoch 50/300
+ - 200s - loss: 723.2205 - acc: 0.9979 - mDice: 0.9602 - val_loss: 1087.3021 - val_acc: 0.9985 - val_mDice: 0.9409
+
+Epoch 00050: val_mDice did not improve from 0.94286
+Epoch 51/300
+ - 200s - loss: 718.7200 - acc: 0.9979 - mDice: 0.9604 - val_loss: 1074.2540 - val_acc: 0.9985 - val_mDice: 0.9421
+
+Epoch 00051: val_mDice did not improve from 0.94286
+Epoch 52/300
+ - 199s - loss: 718.4782 - acc: 0.9979 - mDice: 0.9604 - val_loss: 1143.4046 - val_acc: 0.9985 - val_mDice: 0.9399
+
+Epoch 00052: val_mDice did not improve from 0.94286
+Epoch 53/300
+ - 202s - loss: 711.5959 - acc: 0.9979 - mDice: 0.9608 - val_loss: 1061.6086 - val_acc: 0.9986 - val_mDice: 0.9430
+
+Epoch 00053: val_mDice improved from 0.94286 to 0.94301, saving model to /array/ssd/msmajdi/experiments/keras/exp7/models/sE8_Cascade_FM20_Res_Unet_NL4_LS_MyBCE_US1/1-THALAMUS/sd2/best_model_weights.h5
+Epoch 54/300
+ - 204s - loss: 706.7017 - acc: 0.9979 - mDice: 0.9611 - val_loss: 1075.3228 - val_acc: 0.9985 - val_mDice: 0.9417
+
+Epoch 00054: val_mDice did not improve from 0.94301
+Epoch 55/300
+ - 201s - loss: 705.4244 - acc: 0.9979 - mDice: 0.9611 - val_loss: 1074.2450 - val_acc: 0.9985 - val_mDice: 0.9431
+
+Epoch 00055: val_mDice improved from 0.94301 to 0.94314, saving model to /array/ssd/msmajdi/experiments/keras/exp7/models/sE8_Cascade_FM20_Res_Unet_NL4_LS_MyBCE_US1/1-THALAMUS/sd2/best_model_weights.h5
+Epoch 56/300
+ - 199s - loss: 700.2645 - acc: 0.9979 - mDice: 0.9614 - val_loss: 1086.8249 - val_acc: 0.9985 - val_mDice: 0.9423
+
+Epoch 00056: val_mDice did not improve from 0.94314
+Epoch 57/300
+ - 199s - loss: 698.3451 - acc: 0.9979 - mDice: 0.9615 - val_loss: 1069.0921 - val_acc: 0.9986 - val_mDice: 0.9430
+
+Epoch 00057: val_mDice did not improve from 0.94314
+Epoch 58/300
+ - 200s - loss: 695.5576 - acc: 0.9979 - mDice: 0.9616 - val_loss: 1054.9937 - val_acc: 0.9986 - val_mDice: 0.9436
+
+Epoch 00058: val_mDice improved from 0.94314 to 0.94359, saving model to /array/ssd/msmajdi/experiments/keras/exp7/models/sE8_Cascade_FM20_Res_Unet_NL4_LS_MyBCE_US1/1-THALAMUS/sd2/best_model_weights.h5
+Epoch 59/300
+ - 200s - loss: 690.4716 - acc: 0.9979 - mDice: 0.9620 - val_loss: 1084.3269 - val_acc: 0.9985 - val_mDice: 0.9417
+
+Epoch 00059: val_mDice did not improve from 0.94359
+Epoch 60/300
+ - 201s - loss: 690.8648 - acc: 0.9979 - mDice: 0.9619 - val_loss: 1072.7000 - val_acc: 0.9985 - val_mDice: 0.9409
+
+Epoch 00060: val_mDice did not improve from 0.94359
+Epoch 61/300
+ - 207s - loss: 685.2727 - acc: 0.9979 - mDice: 0.9623 - val_loss: 1057.2548 - val_acc: 0.9986 - val_mDice: 0.9430
+
+Epoch 00061: val_mDice did not improve from 0.94359
+Epoch 62/300
+ - 207s - loss: 683.6388 - acc: 0.9979 - mDice: 0.9624 - val_loss: 1060.7956 - val_acc: 0.9986 - val_mDice: 0.9449
+
+Epoch 00062: val_mDice improved from 0.94359 to 0.94495, saving model to /array/ssd/msmajdi/experiments/keras/exp7/models/sE8_Cascade_FM20_Res_Unet_NL4_LS_MyBCE_US1/1-THALAMUS/sd2/best_model_weights.h5
+Epoch 63/300
+ - 206s - loss: 680.9372 - acc: 0.9979 - mDice: 0.9625 - val_loss: 1094.6132 - val_acc: 0.9986 - val_mDice: 0.9431
+
+Epoch 00063: val_mDice did not improve from 0.94495
+Epoch 64/300
+ - 202s - loss: 677.9857 - acc: 0.9979 - mDice: 0.9627 - val_loss: 1128.7944 - val_acc: 0.9985 - val_mDice: 0.9412
+
+Epoch 00064: val_mDice did not improve from 0.94495
+Epoch 65/300
+ - 202s - loss: 677.6822 - acc: 0.9979 - mDice: 0.9627 - val_loss: 1088.6623 - val_acc: 0.9985 - val_mDice: 0.9424
+
+Epoch 00065: val_mDice did not improve from 0.94495
+Epoch 66/300
+ - 203s - loss: 671.1828 - acc: 0.9979 - mDice: 0.9631 - val_loss: 1089.7477 - val_acc: 0.9986 - val_mDice: 0.9449
+
+Epoch 00066: val_mDice improved from 0.94495 to 0.94495, saving model to /array/ssd/msmajdi/experiments/keras/exp7/models/sE8_Cascade_FM20_Res_Unet_NL4_LS_MyBCE_US1/1-THALAMUS/sd2/best_model_weights.h5
+Epoch 67/300
+ - 199s - loss: 670.5949 - acc: 0.9979 - mDice: 0.9631 - val_loss: 1063.7595 - val_acc: 0.9986 - val_mDice: 0.9447
+
+Epoch 00067: val_mDice did not improve from 0.94495
+Epoch 68/300
+ - 200s - loss: 668.5672 - acc: 0.9979 - mDice: 0.9632 - val_loss: 1089.9139 - val_acc: 0.9986 - val_mDice: 0.9430
+
+Epoch 00068: val_mDice did not improve from 0.94495
+Epoch 69/300
+ - 200s - loss: 666.6000 - acc: 0.9979 - mDice: 0.9633 - val_loss: 1071.3079 - val_acc: 0.9986 - val_mDice: 0.9451
+
+Epoch 00069: val_mDice improved from 0.94495 to 0.94509, saving model to /array/ssd/msmajdi/experiments/keras/exp7/models/sE8_Cascade_FM20_Res_Unet_NL4_LS_MyBCE_US1/1-THALAMUS/sd2/best_model_weights.h5
+Epoch 70/300
+ - 201s - loss: 662.2294 - acc: 0.9979 - mDice: 0.9635 - val_loss: 1096.1608 - val_acc: 0.9986 - val_mDice: 0.9446
+
+Epoch 00070: val_mDice did not improve from 0.94509
+Epoch 71/300
+ - 204s - loss: 661.8444 - acc: 0.9979 - mDice: 0.9635 - val_loss: 1092.1082 - val_acc: 0.9986 - val_mDice: 0.9449
+
+Epoch 00071: val_mDice did not improve from 0.94509
+Epoch 72/300
+ - 201s - loss: 657.1644 - acc: 0.9979 - mDice: 0.9638 - val_loss: 1097.3587 - val_acc: 0.9986 - val_mDice: 0.9456
+
+Epoch 00072: val_mDice improved from 0.94509 to 0.94559, saving model to /array/ssd/msmajdi/experiments/keras/exp7/models/sE8_Cascade_FM20_Res_Unet_NL4_LS_MyBCE_US1/1-THALAMUS/sd2/best_model_weights.h5
+Epoch 73/300
+ - 199s - loss: 657.8196 - acc: 0.9979 - mDice: 0.9638 - val_loss: 1080.0299 - val_acc: 0.9986 - val_mDice: 0.9448
+
+Epoch 00073: val_mDice did not improve from 0.94559
+Epoch 74/300
+ - 199s - loss: 654.2113 - acc: 0.9979 - mDice: 0.9640 - val_loss: 1094.9853 - val_acc: 0.9986 - val_mDice: 0.9453
+
+Epoch 00074: val_mDice did not improve from 0.94559
+Epoch 75/300
+ - 199s - loss: 652.9265 - acc: 0.9979 - mDice: 0.9641 - val_loss: 1071.2275 - val_acc: 0.9986 - val_mDice: 0.9451
+
+Epoch 00075: val_mDice did not improve from 0.94559
+Epoch 76/300
+ - 200s - loss: 647.6881 - acc: 0.9979 - mDice: 0.9643 - val_loss: 1197.7723 - val_acc: 0.9985 - val_mDice: 0.9429
+
+Epoch 00076: val_mDice did not improve from 0.94559
+Epoch 77/300
+ - 200s - loss: 646.5594 - acc: 0.9979 - mDice: 0.9644 - val_loss: 1102.9943 - val_acc: 0.9986 - val_mDice: 0.9440
+
+Epoch 00077: val_mDice did not improve from 0.94559
+Epoch 78/300
+ - 200s - loss: 644.9460 - acc: 0.9979 - mDice: 0.9645 - val_loss: 1124.5207 - val_acc: 0.9985 - val_mDice: 0.9445
+
+Epoch 00078: val_mDice did not improve from 0.94559
+Epoch 79/300
+ - 201s - loss: 646.1073 - acc: 0.9979 - mDice: 0.9645 - val_loss: 1101.2536 - val_acc: 0.9986 - val_mDice: 0.9453
+
+Epoch 00079: val_mDice did not improve from 0.94559
+Epoch 80/300
+ - 204s - loss: 643.8513 - acc: 0.9979 - mDice: 0.9645 - val_loss: 1089.6963 - val_acc: 0.9986 - val_mDice: 0.9449
+
+Epoch 00080: val_mDice did not improve from 0.94559
+Epoch 81/300
+ - 204s - loss: 639.4418 - acc: 0.9979 - mDice: 0.9648 - val_loss: 1142.8486 - val_acc: 0.9986 - val_mDice: 0.9446
+
+Epoch 00081: val_mDice did not improve from 0.94559
+Epoch 82/300
+ - 199s - loss: 636.4021 - acc: 0.9979 - mDice: 0.9650 - val_loss: 1097.3105 - val_acc: 0.9986 - val_mDice: 0.9460
+
+Epoch 00082: val_mDice improved from 0.94559 to 0.94603, saving model to /array/ssd/msmajdi/experiments/keras/exp7/models/sE8_Cascade_FM20_Res_Unet_NL4_LS_MyBCE_US1/1-THALAMUS/sd2/best_model_weights.h5
+Epoch 83/300
+ - 199s - loss: 637.2693 - acc: 0.9979 - mDice: 0.9649 - val_loss: 1118.5217 - val_acc: 0.9986 - val_mDice: 0.9459
