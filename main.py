@@ -194,10 +194,11 @@ def Run(UserInfoB, InitValues):
                                 
             params = paramFunc.Run(UserInfoB, terminal=False)
             Flag_3T = ('sE8' in params.WhichExperiment.SubExperiment.name)
+            Flag_CSFn1 = ('CSFn1_Init' in params.WhichExperiment.SubExperiment.name)
 
             print_func(UserInfoB, params)
             Read = params.WhichExperiment.Dataset.ReadTrain
-            if (1 in NI ) and (UserInfoB['CrossVal'].index == ['a']) and (not Flag_3T): print('  ') #  func_copy_Thalamus_preds(params)
+            if (1 in NI ) and (UserInfoB['CrossVal'].index == ['a']) and (not Flag_3T): func_copy_Thalamus_preds(params)  #  and (not Flag_CSFn1)
             # elif (1.2 in NI) and UserInfoB['simulation'].Multi_Class_Mode and (Read.ET): print('skipped')
             elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
             else: normal_run(params)
@@ -308,8 +309,11 @@ def EXP4_FCN_Unet(UserInfoB):
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].batch_size = 100
-    for UserInfoB['simulation'].FCN_FeatureMaps in [10 ,20 , 60]: 
-        for UserInfoB['TypeExperiment'] in [1 ,2 ,4]: 
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    
+    for UserInfoB['simulation'].FCN_FeatureMaps in [10 ,20 , 60]:
+        for UserInfoB['TypeExperiment'] in [4, 5]: 
             Run(UserInfoB, IV)
 
 def EXP5_Resnet_Cascade_3T_and_Main(UserInfoB):
@@ -444,34 +448,34 @@ def EXP10_Unet_Cascade_Main_OtherFolds(UserInfoB):
 
     Run(UserInfoB, IV)
 
-    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
-    UserInfoB['simulation'].num_Layers = 4
-    UserInfoB['simulation'].slicingDim = [1]
-    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    # UserInfoB['simulation'].num_Layers = 4
+    # UserInfoB['simulation'].slicingDim = [1]
+    # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-    Run(UserInfoB, IV)
+    # Run(UserInfoB, IV)
 
-    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
-    UserInfoB['simulation'].num_Layers = 3
-    UserInfoB['simulation'].slicingDim = [2]
-    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    # UserInfoB['simulation'].num_Layers = 3
+    # UserInfoB['simulation'].slicingDim = [2]
+    # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-    Run(UserInfoB, IV)
+    # Run(UserInfoB, IV)
 
 def EXP11_Unet_HCascade_Main_OtherFolds(UserInfoB):
 
-    # UserInfoB['simulation'].GPU_Index = "5"
     UserInfoB['CrossVal'].index   = ['b']
     UserInfoB['TypeExperiment']   = 2
     UserInfoB['architectureType'] = 'U-Net4'
     UserInfoB['Model_Method']     = 'HCascade'
     UserInfoB['Experiments'].Index = '6'
-
+    UserInfoB['temp_just_superGroups'] = False
 
     # ! HCascade   Main Init 3T
+
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
     UserInfoB['simulation'].num_Layers = 3
-    UserInfoB['simulation'].slicingDim = [2,0]
+    UserInfoB['simulation'].slicingDim = [0]
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
     Run(UserInfoB, IV)
@@ -517,8 +521,23 @@ def EXP_13_CSFn2_Cascade_finetune(UserInfoB):
             
             Run(UserInfoB, IV)
 
+def EXP_14_CSFn1_Cascade_finetune(UserInfoB):
+    
+    # UserInfoB['simulation'].GPU_Index = "0"
+    UserInfoB['Model_Method'] = 'Cascade' # , 'HCascade']:
+    UserInfoB['upsample'].Scale = 1
+    UserInfoB['TypeExperiment'] = 6
+    UserInfoB['simulation'].batch_size = 50
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    for UserInfoB['simulation'].num_Layers in [3, 4]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]:             
+            Run(UserInfoB, IV)
+
+
 UserInfoB, K = preMode(UserInfo.__dict__)
 
-EXP_2_ET_superGroups_Only_HCascade_finetune(UserInfoB)
+EXP4_FCN_Unet(UserInfoB)
+# EXP_14_CSFn1_Cascade_finetune(UserInfoB)
 
 K.clear_session()
