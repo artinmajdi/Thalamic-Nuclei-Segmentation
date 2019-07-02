@@ -27,7 +27,7 @@ readAugments_Mode = True
 lossFunction_Index = 3
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
-testOnly = True
+testOnly = False
 
 # class Transfer_Learning:
 #     Mode   = False

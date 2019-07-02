@@ -258,10 +258,10 @@ def EXP_2_ET_superGroups_Only_HCascade_finetune(UserInfoB):
     UserInfoB['simulation'].batch_size = 100
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-    UserInfoB['simulation'].num_Layers = 3
-    # for UserInfoB['simulation'].num_Layers in [3, 4]:
-    #     for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]: 
-    Run(UserInfoB, IV)
+    # UserInfoB['simulation'].num_Layers = 3
+    for UserInfoB['simulation'].num_Layers in [3, 4]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]: 
+            Run(UserInfoB, IV)
 
 def EXP_2c_ET_nuclei_Only_HCascade_finetune(UserInfoB):
     
