@@ -39,7 +39,8 @@ def func_class_weights(weighted_Mode, Mask):
             TRUE_Count = len(np.where(Mask[...,ix] > 0.5)[0])
             NUM_SAMPLES = np.prod(sz[:3])
             class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
-
+    
+    class_weights = class_weights/np.sum(class_weights)
     print('class_weights' , class_weights)
     # # ! zero weight for foreground
     # for i in [0,2,5,7]: class_weights[i] = 0

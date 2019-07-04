@@ -78,7 +78,7 @@ def Run(UserInfoB, InitValues):
 
                 print('************ stage 3 ************')
                 if not UserInfoB['temp_just_superGroups']:
-                    for parent in [1.1, 1.2, 1.3]:
+                    for parent in [ 1.1, 1.2, 1.3]:
                         CC = smallFuncs.Nuclei_Class(parent,'HCascade')
                         UserInfoB['simulation'].nucleus_Index = CC.child
                         if not check_if_num_Layers_fit(UserInfoB):
@@ -194,7 +194,8 @@ def Run(UserInfoB, InitValues):
                                 
             params = paramFunc.Run(UserInfoB, terminal=False)
             Flag_3T = ('sE8' in params.WhichExperiment.SubExperiment.name)
-            Flag_CSFn1 = ('CSFn1_Init' in params.WhichExperiment.SubExperiment.name)
+            # Flag_CSFn1 = ('CSFn1_Init' in params.WhichExperiment.SubExperiment.name)
+            Flag_Unet = (params.WhichExperiment.HardParams.Model.architectureType == 'U-Net4')
 
             print_func(UserInfoB, params)
             Read = params.WhichExperiment.Dataset.ReadTrain
@@ -248,18 +249,32 @@ def EXP_3_SRI_Main_US2_m2_(UserInfoB):
     for UserInfoB['TypeExperiment'] in [1, 2]:
         Run(UserInfoB, IV)
 
-def EXP_2_ET_superGroups_Only_HCascade_finetune(UserInfoB):
+def EXP_15_ET_HCascade_finetune(UserInfoB):
     
-    UserInfoB['simulation'].GPU_Index = "1"
-    UserInfoB['Model_Method'] = 'HCascade' # , 'HCascade']:
+    UserInfoB['Model_Method'] = 'HCascade'
     UserInfoB['upsample'].Scale = 1
     UserInfoB['TypeExperiment'] = 4
-    UserInfoB['temp_just_superGroups'] = True
+    UserInfoB['temp_just_superGroups'] = False
     UserInfoB['simulation'].nucleus_Index = [1.1, 1.2, 1.3, 1.4]
     UserInfoB['simulation'].batch_size = 100
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    UserInfoB['lossFunction_Index'] = 3
+    
+    for UserInfoB['simulation'].num_Layers in [3, 4]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]: 
+            Run(UserInfoB, IV)
 
-    # UserInfoB['simulation'].num_Layers = 3
+def EXP_15b_ET_HCascade_finetune_JointLoss(UserInfoB):
+    
+    UserInfoB['Model_Method'] = 'HCascade'
+    UserInfoB['upsample'].Scale = 1
+    UserInfoB['TypeExperiment'] = 4
+    UserInfoB['temp_just_superGroups'] = False
+    UserInfoB['simulation'].nucleus_Index = [1.1, 1.2, 1.3, 1.4]
+    UserInfoB['simulation'].batch_size = 100
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    UserInfoB['lossFunction_Index'] = 5
+    
     for UserInfoB['simulation'].num_Layers in [3, 4]:
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]: 
             Run(UserInfoB, IV)
@@ -309,12 +324,16 @@ def EXP4_FCN_Unet(UserInfoB):
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].batch_size = 100
+    UserInfoB['architectureType'] = 'FCN_Unet'
+    UserInfoB['Experiments'].Index = '7'
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-
     
-    for UserInfoB['simulation'].FCN_FeatureMaps in [10 ,20 , 60]:
-        for UserInfoB['TypeExperiment'] in [4, 5]: 
-            Run(UserInfoB, IV)
+    # for UserInfoB['simulation'].FCN_FeatureMaps in [10 ,20 , 60]:
+    #     for UserInfoB['TypeExperiment'] in [4, 5, 8 , 10]: 
+
+    UserInfoB['simulation'].FCN_FeatureMaps = 10
+    UserInfoB['TypeExperiment'] = 4
+    Run(UserInfoB, IV)
 
 def EXP5_Resnet_Cascade_3T_and_Main(UserInfoB):
     UserInfoB['simulation'].GPU_Index = "6"
@@ -473,26 +492,23 @@ def EXP11_Unet_HCascade_Main_OtherFolds(UserInfoB):
 
     # ! HCascade   Main Init 3T
 
-    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
-    UserInfoB['simulation'].num_Layers = 3
-    UserInfoB['simulation'].slicingDim = [0]
-    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-
-    Run(UserInfoB, IV)
+    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
+    # UserInfoB['simulation'].num_Layers = 3
+    # UserInfoB['simulation'].slicingDim = [0]
+    # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    # Run(UserInfoB, IV)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
-    UserInfoB['simulation'].num_Layers = 4
+    UserInfoB['simulation'].num_Layers = 3
     UserInfoB['simulation'].slicingDim = [1]
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-
     Run(UserInfoB, IV)
 
-    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
-    UserInfoB['simulation'].num_Layers = 3
-    UserInfoB['simulation'].slicingDim = [2]
-    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-
-    Run(UserInfoB, IV)
+    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
+    # UserInfoB['simulation'].num_Layers = 3
+    # UserInfoB['simulation'].slicingDim = [2]
+    # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    # Run(UserInfoB, IV)
 
 def EXP12_SingleClass(UserInfoB):
     UserInfoB['simulation'].Multi_Class_Mode = False    
@@ -537,7 +553,8 @@ def EXP_14_CSFn1_Cascade_finetune(UserInfoB):
 
 UserInfoB, K = preMode(UserInfo.__dict__)
 
-EXP4_FCN_Unet(UserInfoB)
-# EXP_14_CSFn1_Cascade_finetune(UserInfoB)
+# EXP_15_ET_HCascade_finetune(UserInfoB)
+EXP_15b_ET_HCascade_finetune_JointLoss(UserInfoB)
+
 
 K.clear_session()

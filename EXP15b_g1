@@ -1,0 +1,808 @@
+*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
+(0/342) train vimp2_B_7T_ET
+(1/342) train vimp2_C_3T_ET
+(2/342) train vimp2_D_3T_ET
+(3/342) train vimp2_D_7T_ET
+(4/342) train vimp2_B_3T_ET
+(5/342) train vimp2_C_7T_ET
+(6/342) train vimp2_B_3T_ET_Aug0_Rot_2_sd0
+(7/342) train vimp2_B_3T_ET_Aug0_Rot_2_sd2
+(8/342) train vimp2_B_3T_ET_Aug0_Rot_4_sd1
+(9/342) train vimp2_B_3T_ET_Aug1_Rot_-1_sd2
+(10/342) train vimp2_B_3T_ET_Aug1_Rot_4_sd0
+(11/342) train vimp2_B_3T_ET_Aug1_Rot_6_sd1
+(12/342) train vimp2_B_3T_ET_Aug2_Rot_-3_sd2
+(13/342) train vimp2_B_3T_ET_Aug2_Rot_-4_sd0
+(14/342) train vimp2_B_3T_ET_Aug2_Rot_-7_sd1
+(15/342) train vimp2_B_3T_ET_Aug3_Rot_1_sd2
+(16/342) train vimp2_B_3T_ET_Aug3_Rot_3_sd0
+(17/342) train vimp2_B_3T_ET_Aug3_Rot_-4_sd1
+(18/342) train vimp2_B_3T_ET_Aug4_Rot_-1_sd2
+(19/342) train vimp2_B_3T_ET_Aug4_Rot_-2_sd0
+(20/342) train vimp2_B_3T_ET_Aug4_Rot_6_sd1
+(21/342) train vimp2_B_3T_ET_Aug5_Rot_-3_sd0
+(22/342) train vimp2_B_3T_ET_Aug5_Rot_4_sd1
+(23/342) train vimp2_B_3T_ET_Aug5_Rot_7_sd2
+(24/342) train vimp2_B_7T_ET_Aug0_Rot_2_sd1
+(25/342) train vimp2_B_7T_ET_Aug0_Rot_-3_sd0
+(26/342) train vimp2_B_7T_ET_Aug0_Rot_3_sd2
+(27/342) train vimp2_B_7T_ET_Aug1_Rot_1_sd2
+(28/342) train vimp2_B_7T_ET_Aug1_Rot_3_sd0
+(29/342) train vimp2_B_7T_ET_Aug1_Rot_-3_sd1
+(30/342) train vimp2_B_7T_ET_Aug2_Rot_1_sd0
+(31/342) train vimp2_B_7T_ET_Aug2_Rot_2_sd2
+(32/342) train vimp2_B_7T_ET_Aug2_Rot_4_sd1
+(33/342) train vimp2_B_7T_ET_Aug3_Rot_4_sd1
+(34/342) train vimp2_B_7T_ET_Aug3_Rot_-5_sd0
+(35/342) train vimp2_B_7T_ET_Aug3_Rot_-5_sd2
+(36/342) train vimp2_B_7T_ET_Aug4_Rot_-1_sd0
+(37/342) train vimp2_B_7T_ET_Aug4_Rot_-4_sd1
+(38/342) train vimp2_B_7T_ET_Aug4_Rot_5_sd2
+(39/342) train vimp2_B_7T_ET_Aug5_Rot_2_sd2
+(40/342) train vimp2_B_7T_ET_Aug5_Rot_-3_sd1
+(41/342) train vimp2_B_7T_ET_Aug5_Rot_-4_sd0
+(42/342) train vimp2_C_3T_ET_Aug0_Rot_4_sd2
+(43/342) train vimp2_C_3T_ET_Aug0_Rot_-5_sd0
+(44/342) train vimp2_C_3T_ET_Aug0_Rot_5_sd1
+(45/342) train vimp2_C_3T_ET_Aug1_Rot_-3_sd2
+(46/342) train vimp2_C_3T_ET_Aug1_Rot_6_sd1
+(47/342) train vimp2_C_3T_ET_Aug1_Rot_-7_sd0
+(48/342) train vimp2_C_3T_ET_Aug2_Rot_3_sd1
+(49/342) train vimp2_C_3T_ET_Aug2_Rot_3_sd2
+(50/342) train vimp2_C_3T_ET_Aug2_Rot_-7_sd0
+(51/342) train vimp2_C_3T_ET_Aug3_Rot_1_sd0
+(52/342) train vimp2_C_3T_ET_Aug3_Rot_1_sd2
+(53/342) train vimp2_C_3T_ET_Aug3_Rot_2_sd1
+(54/342) train vimp2_C_3T_ET_Aug4_Rot_-1_sd0
+(55/342) train vimp2_C_3T_ET_Aug4_Rot_3_sd1
+(56/342) train vimp2_C_3T_ET_Aug4_Rot_3_sd2
+(57/342) train vimp2_C_3T_ET_Aug5_Rot_1_sd2
+(58/342) train vimp2_C_3T_ET_Aug5_Rot_4_sd0
+(59/342) train vimp2_C_3T_ET_Aug5_Rot_6_sd1
+(60/342) train vimp2_C_7T_ET_Aug0_Rot_1_sd0
+(61/342) train vimp2_C_7T_ET_Aug0_Rot_-5_sd1
+(62/342) train vimp2_C_7T_ET_Aug0_Rot_-7_sd2
+(63/342) train vimp2_C_7T_ET_Aug1_Rot_2_sd0
+(64/342) train vimp2_C_7T_ET_Aug1_Rot_-4_sd2
+(65/342) train vimp2_C_7T_ET_Aug1_Rot_-7_sd1
+(66/342) train vimp2_C_7T_ET_Aug2_Rot_-1_sd0
+(67/342) train vimp2_C_7T_ET_Aug2_Rot_-2_sd2
+(68/342) train vimp2_C_7T_ET_Aug2_Rot_4_sd1
+(69/342) train vimp2_C_7T_ET_Aug3_Rot_-5_sd0
+(70/342) train vimp2_C_7T_ET_Aug3_Rot_5_sd1
+(71/342) train vimp2_C_7T_ET_Aug3_Rot_-5_sd2
+(72/342) train vimp2_C_7T_ET_Aug4_Rot_2_sd1
+(73/342) train vimp2_C_7T_ET_Aug4_Rot_2_sd2
+(74/342) train vimp2_C_7T_ET_Aug4_Rot_6_sd0
+(75/342) train vimp2_C_7T_ET_Aug5_Rot_-2_sd2
+(76/342) train vimp2_C_7T_ET_Aug5_Rot_-4_sd0
+(77/342) train vimp2_C_7T_ET_Aug5_Rot_6_sd1
+(78/342) train vimp2_D_3T_ET_Aug0_Rot_-3_sd2
+(79/342) train vimp2_D_3T_ET_Aug0_Rot_-4_sd0
+(80/342) train vimp2_D_3T_ET_Aug0_Rot_-7_sd1
+(81/342) train vimp2_D_3T_ET_Aug1_Rot_1_sd1
+(82/342) train vimp2_D_3T_ET_Aug1_Rot_5_sd0
+(83/342) train vimp2_D_3T_ET_Aug1_Rot_-5_sd2
+(84/342) train vimp2_D_3T_ET_Aug2_Rot_2_sd0
+(85/342) train vimp2_D_3T_ET_Aug2_Rot_-2_sd2
+(86/342) train vimp2_D_3T_ET_Aug2_Rot_5_sd1
+(87/342) train vimp2_D_3T_ET_Aug3_Rot_-2_sd1
+(88/342) train vimp2_D_3T_ET_Aug3_Rot_3_sd2
+(89/342) train vimp2_D_3T_ET_Aug3_Rot_-5_sd0
+(90/342) train vimp2_D_3T_ET_Aug4_Rot_4_sd0
+(91/342) train vimp2_D_3T_ET_Aug4_Rot_-7_sd1
+(92/342) train vimp2_D_3T_ET_Aug4_Rot_-7_sd2
+(93/342) train vimp2_D_3T_ET_Aug5_Rot_2_sd0
+(94/342) train vimp2_D_3T_ET_Aug5_Rot_4_sd2
+(95/342) train vimp2_D_3T_ET_Aug5_Rot_5_sd1
+(96/342) train vimp2_D_7T_ET_Aug0_Rot_-4_sd0
+(97/342) train vimp2_D_7T_ET_Aug0_Rot_-5_sd1
+(98/342) train vimp2_D_7T_ET_Aug0_Rot_7_sd2
+(99/342) train vimp2_D_7T_ET_Aug1_Rot_2_sd0
+(100/342) train vimp2_D_7T_ET_Aug1_Rot_-2_sd1
+(101/342) train vimp2_D_7T_ET_Aug1_Rot_-4_sd2
+(102/342) train vimp2_D_7T_ET_Aug2_Rot_-2_sd1
+(103/342) train vimp2_D_7T_ET_Aug2_Rot_4_sd0
+(104/342) train vimp2_D_7T_ET_Aug2_Rot_4_sd2
+(105/342) train vimp2_D_7T_ET_Aug3_Rot_2_sd0
+(106/342) train vimp2_D_7T_ET_Aug3_Rot_4_sd1
+(107/342) train vimp2_D_7T_ET_Aug3_Rot_4_sd2
+(108/342) train vimp2_D_7T_ET_Aug4_Rot_-1_sd2
+(109/342) train vimp2_D_7T_ET_Aug4_Rot_4_sd0
+(110/342) train vimp2_D_7T_ET_Aug4_Rot_-4_sd1
+(111/342) train vimp2_D_7T_ET_Aug5_Rot_2_sd2
+(112/342) train vimp2_D_7T_ET_Aug5_Rot_4_sd0
+(113/342) train vimp2_D_7T_ET_Aug5_Rot_7_sd1
+(114/342) train vimp2_F_7T_ET
+(115/342) train vimp2_F_3T_ET
+(116/342) train vimp2_H_3T_ET
+(117/342) train vimp2_H_7T_ET
+(118/342) train vimp2_I_3T_ET
+(119/342) train vimp2_I_7T_ET
+(120/342) train vimp2_F_3T_ET_Aug0_Rot_4_sd2
+(121/342) train vimp2_F_3T_ET_Aug0_Rot_-5_sd0
+(122/342) train vimp2_F_3T_ET_Aug0_Rot_-7_sd1
+(123/342) train vimp2_F_3T_ET_Aug1_Rot_4_sd2
+(124/342) train vimp2_F_3T_ET_Aug1_Rot_-5_sd1
+(125/342) train vimp2_F_3T_ET_Aug1_Rot_-6_sd0
+(126/342) train vimp2_F_3T_ET_Aug2_Rot_-2_sd0
+(127/342) train vimp2_F_3T_ET_Aug2_Rot_-2_sd1
+(128/342) train vimp2_F_3T_ET_Aug2_Rot_5_sd2
+(129/342) train vimp2_F_3T_ET_Aug3_Rot_-1_sd0
+(130/342) train vimp2_F_3T_ET_Aug3_Rot_-4_sd2
+(131/342) train vimp2_F_3T_ET_Aug3_Rot_6_sd1
+(132/342) train vimp2_F_3T_ET_Aug4_Rot_-3_sd2
+(133/342) train vimp2_F_3T_ET_Aug4_Rot_5_sd0
+(134/342) train vimp2_F_3T_ET_Aug4_Rot_7_sd1
+(135/342) train vimp2_F_3T_ET_Aug5_Rot_-1_sd0
+(136/342) train vimp2_F_3T_ET_Aug5_Rot_3_sd2
+(137/342) train vimp2_F_3T_ET_Aug5_Rot_-4_sd1
+(138/342) train vimp2_F_7T_ET_Aug0_Rot_3_sd1
+(139/342) train vimp2_F_7T_ET_Aug0_Rot_6_sd0
+(140/342) train vimp2_F_7T_ET_Aug0_Rot_-6_sd2
+(141/342) train vimp2_F_7T_ET_Aug1_Rot_5_sd0
+(142/342) train vimp2_F_7T_ET_Aug1_Rot_-6_sd1
+(143/342) train vimp2_F_7T_ET_Aug1_Rot_6_sd2
+(144/342) train vimp2_F_7T_ET_Aug2_Rot_-2_sd1
+(145/342) train vimp2_F_7T_ET_Aug2_Rot_4_sd2
+(146/342) train vimp2_F_7T_ET_Aug2_Rot_7_sd0
+(147/342) train vimp2_F_7T_ET_Aug3_Rot_4_sd0
+(148/342) train vimp2_F_7T_ET_Aug3_Rot_4_sd2
+(149/342) train vimp2_F_7T_ET_Aug3_Rot_-7_sd1
+(150/342) train vimp2_F_7T_ET_Aug4_Rot_1_sd0
+(151/342) train vimp2_F_7T_ET_Aug4_Rot_-2_sd2
+(152/342) train vimp2_F_7T_ET_Aug4_Rot_-5_sd1
+(153/342) train vimp2_F_7T_ET_Aug5_Rot_-1_sd1
+(154/342) train vimp2_F_7T_ET_Aug5_Rot_4_sd0
+(155/342) train vimp2_F_7T_ET_Aug5_Rot_-4_sd2
+(156/342) train vimp2_H_3T_ET_Aug0_Rot_-2_sd0
+(157/342) train vimp2_H_3T_ET_Aug0_Rot_-4_sd1
+(158/342) train vimp2_H_3T_ET_Aug0_Rot_5_sd2
+(159/342) train vimp2_H_3T_ET_Aug1_Rot_2_sd2
+(160/342) train vimp2_H_3T_ET_Aug1_Rot_-6_sd1
+(161/342) train vimp2_H_3T_ET_Aug1_Rot_-7_sd0
+(162/342) train vimp2_H_3T_ET_Aug2_Rot_1_sd2
+(163/342) train vimp2_H_3T_ET_Aug2_Rot_4_sd1
+(164/342) train vimp2_H_3T_ET_Aug2_Rot_-5_sd0
+(165/342) train vimp2_H_3T_ET_Aug3_Rot_-1_sd2
+(166/342) train vimp2_H_3T_ET_Aug3_Rot_3_sd0
+(167/342) train vimp2_H_3T_ET_Aug3_Rot_5_sd1
+(168/342) train vimp2_H_3T_ET_Aug4_Rot_2_sd0
+(169/342) train vimp2_H_3T_ET_Aug4_Rot_-3_sd2
+(170/342) train vimp2_H_3T_ET_Aug4_Rot_5_sd1
+(171/342) train vimp2_H_3T_ET_Aug5_Rot_4_sd2
+(172/342) train vimp2_H_3T_ET_Aug5_Rot_-5_sd0
+(173/342) train vimp2_H_3T_ET_Aug5_Rot_7_sd1
+(174/342) train vimp2_H_7T_ET_Aug0_Rot_3_sd0
+(175/342) train vimp2_H_7T_ET_Aug0_Rot_-4_sd2
+(176/342) train vimp2_H_7T_ET_Aug0_Rot_-6_sd1
+(177/342) train vimp2_H_7T_ET_Aug1_Rot_3_sd1
+(178/342) train vimp2_H_7T_ET_Aug1_Rot_4_sd2
+(179/342) train vimp2_H_7T_ET_Aug1_Rot_-7_sd0
+(180/342) train vimp2_H_7T_ET_Aug2_Rot_-2_sd0
+(181/342) train vimp2_H_7T_ET_Aug2_Rot_-2_sd1
+(182/342) train vimp2_H_7T_ET_Aug2_Rot_5_sd2
+(183/342) train vimp2_H_7T_ET_Aug3_Rot_0_sd2
+(184/342) train vimp2_H_7T_ET_Aug3_Rot_-2_sd0
+(185/342)2019-07-03 18:02:05.017928: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-07-03 18:02:05.350455: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:05:00.0
+totalMemory: 15.89GiB freeMemory: 13.70GiB
+2019-07-03 18:02:05.350521: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-07-03 18:02:05.730344: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-07-03 18:02:05.730399: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-07-03 18:02:05.730411: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-07-03 18:02:05.730839: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 13270 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:05:00.0, compute capability: 6.0)
+mkdir: cannot create directory ‘/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_HCascade_FM20_U-Net4_NL3_LS_MyJoint_US1_ET_Init_Main_CV_a’: File exists
+mkdir: cannot create directory ‘/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_HCascade_FM20_U-Net4_NL3_LS_MyJoint_US1_ET_Init_Main_CV_a’: File exists
+ train vimp2_H_7T_ET_Aug3_Rot_-6_sd1
+(186/342) train vimp2_H_7T_ET_Aug4_Rot_1_sd2
+(187/342) train vimp2_H_7T_ET_Aug4_Rot_3_sd0
+(188/342) train vimp2_H_7T_ET_Aug4_Rot_3_sd1
+(189/342) train vimp2_H_7T_ET_Aug5_Rot_-1_sd1
+(190/342) train vimp2_H_7T_ET_Aug5_Rot_1_sd2
+(191/342) train vimp2_H_7T_ET_Aug5_Rot_-6_sd0
+(192/342) train vimp2_I_3T_ET_Aug0_Rot_-3_sd1
+(193/342) train vimp2_I_3T_ET_Aug0_Rot_-3_sd2
+(194/342) train vimp2_I_3T_ET_Aug0_Rot_7_sd0
+(195/342) train vimp2_I_3T_ET_Aug1_Rot_-2_sd0
+(196/342) train vimp2_I_3T_ET_Aug1_Rot_-3_sd1
+(197/342) train vimp2_I_3T_ET_Aug1_Rot_-3_sd2
+(198/342) train vimp2_I_3T_ET_Aug2_Rot_2_sd0
+(199/342) train vimp2_I_3T_ET_Aug2_Rot_3_sd1
+(200/342) train vimp2_I_3T_ET_Aug2_Rot_-5_sd2
+(201/342) train vimp2_I_3T_ET_Aug3_Rot_2_sd0
+(202/342) train vimp2_I_3T_ET_Aug3_Rot_4_sd1
+(203/342) train vimp2_I_3T_ET_Aug3_Rot_7_sd2
+(204/342) train vimp2_I_3T_ET_Aug4_Rot_1_sd2
+(205/342) train vimp2_I_3T_ET_Aug4_Rot_-2_sd1
+(206/342) train vimp2_I_3T_ET_Aug4_Rot_-5_sd0
+(207/342) train vimp2_I_3T_ET_Aug5_Rot_-3_sd1
+(208/342) train vimp2_I_3T_ET_Aug5_Rot_4_sd0
+(209/342) train vimp2_I_3T_ET_Aug5_Rot_7_sd2
+(210/342) train vimp2_I_7T_ET_Aug0_Rot_7_sd2
+(211/342) train vimp2_I_7T_ET_Aug0_Rot_-5_sd0
+(212/342) train vimp2_I_7T_ET_Aug0_Rot_-7_sd1
+(213/342) train vimp2_I_7T_ET_Aug1_Rot_-5_sd2
+(214/342) train vimp2_I_7T_ET_Aug1_Rot_7_sd0
+(215/342) train vimp2_I_7T_ET_Aug1_Rot_7_sd1
+(216/342) train vimp2_I_7T_ET_Aug2_Rot_1_sd1
+(217/342) train vimp2_I_7T_ET_Aug2_Rot_-4_sd0
+(218/342) train vimp2_I_7T_ET_Aug2_Rot_7_sd2
+(219/342) train vimp2_I_7T_ET_Aug3_Rot_-1_sd0
+(220/342) train vimp2_I_7T_ET_Aug3_Rot_4_sd2
+(221/342) train vimp2_I_7T_ET_Aug3_Rot_7_sd1
+(222/342) train vimp2_I_7T_ET_Aug4_Rot_-1_sd0
+(223/342) train vimp2_I_7T_ET_Aug4_Rot_-4_sd2
+(224/342) train vimp2_I_7T_ET_Aug4_Rot_-7_sd1
+(225/342) train vimp2_I_7T_ET_Aug5_Rot_-4_sd2
+(226/342) train vimp2_I_7T_ET_Aug5_Rot_5_sd0
+(227/342) train vimp2_I_7T_ET_Aug5_Rot_-5_sd1
+(228/342) train vimp2_K_7T_ET
+(229/342) train vimp2_K_3T_ET
+(230/342) train vimp2_J_7T_ET
+(231/342) train vimp2_L_3T_ET
+(232/342) train vimp2_L_7T_ET
+(233/342) train vimp2_J_3T_ET
+(234/342) train vimp2_J_3T_ET_Aug0_Rot_4_sd2
+(235/342) train vimp2_J_3T_ET_Aug0_Rot_5_sd0
+(236/342) train vimp2_J_3T_ET_Aug0_Rot_-6_sd1
+(237/342) train vimp2_J_3T_ET_Aug1_Rot_-2_sd2
+(238/342) train vimp2_J_3T_ET_Aug1_Rot_3_sd0
+(239/342) train vimp2_J_3T_ET_Aug1_Rot_-5_sd1
+(240/342) train vimp2_J_3T_ET_Aug2_Rot_-5_sd1
+(241/342) train vimp2_J_3T_ET_Aug2_Rot_6_sd2
+(242/342) train vimp2_J_3T_ET_Aug2_Rot_-7_sd0
+(243/342) train vimp2_J_3T_ET_Aug3_Rot_-2_sd0
+(244/342) train vimp2_J_3T_ET_Aug3_Rot_4_sd1
+(245/342) train vimp2_J_3T_ET_Aug3_Rot_-4_sd2
+(246/342) train vimp2_J_3T_ET_Aug4_Rot_-2_sd1
+(247/342) train vimp2_J_3T_ET_Aug4_Rot_-4_sd0
+(248/342) train vimp2_J_3T_ET_Aug4_Rot_-5_sd2
+(249/342) train vimp2_J_3T_ET_Aug5_Rot_2_sd0
+(250/342) train vimp2_J_3T_ET_Aug5_Rot_4_sd2
+(251/342) train vimp2_J_3T_ET_Aug5_Rot_-6_sd1
+(252/342) train vimp2_J_7T_ET_Aug0_Rot_2_sd1
+(253/342) train vimp2_J_7T_ET_Aug0_Rot_-4_sd0
+(254/342) train vimp2_J_7T_ET_Aug0_Rot_7_sd2
+(255/342) train vimp2_J_7T_ET_Aug1_Rot_-5_sd0
+(256/342) train vimp2_J_7T_ET_Aug1_Rot_5_sd2
+(257/342) train vimp2_J_7T_ET_Aug1_Rot_7_sd1
+(258/342) train vimp2_J_7T_ET_Aug2_Rot_4_sd0
+(259/342) train vimp2_J_7T_ET_Aug2_Rot_6_sd2
+(260/342) train vimp2_J_7T_ET_Aug2_Rot_7_sd1
+(261/342) train vimp2_J_7T_ET_Aug3_Rot_1_sd1
+(262/342) train vimp2_J_7T_ET_Aug3_Rot_3_sd2
+(263/342) train vimp2_J_7T_ET_Aug3_Rot_-5_sd0
+(264/342) train vimp2_J_7T_ET_Aug4_Rot_2_sd0
+(265/342) train vimp2_J_7T_ET_Aug4_Rot_3_sd1
+(266/342) train vimp2_J_7T_ET_Aug4_Rot_-3_sd2
+(267/342) train vimp2_J_7T_ET_Aug5_Rot_-5_sd0
+(268/342) train vimp2_J_7T_ET_Aug5_Rot_6_sd1
+(269/342) train vimp2_J_7T_ET_Aug5_Rot_6_sd2
+(270/342) train vimp2_K_3T_ET_Aug0_Rot_-1_sd0
+(271/342) train vimp2_K_3T_ET_Aug0_Rot_6_sd1
+(272/342) train vimp2_K_3T_ET_Aug0_Rot_6_sd2
+(273/342) train vimp2_K_3T_ET_Aug1_Rot_-1_sd1
+(274/342) train vimp2_K_3T_ET_Aug1_Rot_6_sd0
+(275/342) train vimp2_K_3T_ET_Aug1_Rot_-6_sd2
+(276/342) train vimp2_K_3T_ET_Aug2_Rot_-1_sd0
+(277/342) train vimp2_K_3T_ET_Aug2_Rot_-3_sd1
+(278/342) train vimp2_K_3T_ET_Aug2_Rot_-5_sd2
+(279/342) train vimp2_K_3T_ET_Aug3_Rot_2_sd1
+(280/342) train vimp2_K_3T_ET_Aug3_Rot_5_sd0
+(281/342) train vimp2_K_3T_ET_Aug3_Rot_7_sd2
+(282/342) train vimp2_K_3T_ET_Aug4_Rot_-1_sd0
+(283/342) train vimp2_K_3T_ET_Aug4_Rot_1_sd1
+(284/342) train vimp2_K_3T_ET_Aug4_Rot_5_sd2
+(285/342) train vimp2_K_3T_ET_Aug5_Rot_2_sd1
+(286/342) train vimp2_K_3T_ET_Aug5_Rot_3_sd0
+(287/342) train vimp2_K_3T_ET_Aug5_Rot_3_sd2
+(288/342) train vimp2_K_7T_ET_Aug0_Rot_4_sd2
+(289/342) train vimp2_K_7T_ET_Aug0_Rot_5_sd0
+(290/342) train vimp2_K_7T_ET_Aug0_Rot_5_sd1
+(291/342) train vimp2_K_7T_ET_Aug1_Rot_1_sd1
+(292/342) train vimp2_K_7T_ET_Aug1_Rot_-4_sd0
+(293/342) train vimp2_K_7T_ET_Aug1_Rot_4_sd2
+(294/342) train vimp2_K_7T_ET_Aug2_Rot_-3_sd1
+(295/342) train vimp2_K_7T_ET_Aug2_Rot_4_sd0
+(296/342) train vimp2_K_7T_ET_Aug2_Rot_-6_sd2
+(297/342) train vimp2_K_7T_ET_Aug3_Rot_-1_sd2
+(298/342) train vimp2_K_7T_ET_Aug3_Rot_2_sd1
+(299/342) train vimp2_K_7T_ET_Aug3_Rot_6_sd0
+(300/342) train vimp2_K_7T_ET_Aug4_Rot_-1_sd0
+(301/342) train vimp2_K_7T_ET_Aug4_Rot_-3_sd1
+(302/342) train vimp2_K_7T_ET_Aug4_Rot_-4_sd2
+(303/342) train vimp2_K_7T_ET_Aug5_Rot_-3_sd0
+(304/342) train vimp2_K_7T_ET_Aug5_Rot_3_sd2
+(305/342) train vimp2_K_7T_ET_Aug5_Rot_-4_sd1
+(306/342) train vimp2_L_3T_ET_Aug0_Rot_-3_sd0
+(307/342) train vimp2_L_3T_ET_Aug0_Rot_3_sd1
+(308/342) train vimp2_L_3T_ET_Aug0_Rot_-6_sd2
+(309/342) train vimp2_L_3T_ET_Aug1_Rot_4_sd0
+(310/342) train vimp2_L_3T_ET_Aug1_Rot_6_sd1
+(311/342) train vimp2_L_3T_ET_Aug1_Rot_-7_sd2
+(312/342) train vimp2_L_3T_ET_Aug2_Rot_-2_sd0
+(313/342) train vimp2_L_3T_ET_Aug2_Rot_-5_sd2
+(314/342) train vimp2_L_3T_ET_Aug2_Rot_-7_sd1
+(315/342) train vimp2_L_3T_ET_Aug3_Rot_1_sd1
+(316/342) train vimp2_L_3T_ET_Aug3_Rot_-3_sd2
+(317/342) train vimp2_L_3T_ET_Aug3_Rot_-5_sd0
+(318/342) train vimp2_L_3T_ET_Aug4_Rot_2_sd1
+(319/342) train vimp2_L_3T_ET_Aug4_Rot_5_sd0
+(320/342) train vimp2_L_3T_ET_Aug4_Rot_-6_sd2
+(321/342) train vimp2_L_3T_ET_Aug5_Rot_-4_sd0
+(322/342) train vimp2_L_3T_ET_Aug5_Rot_4_sd2
+(323/342) train vimp2_L_3T_ET_Aug5_Rot_7_sd1
+(324/342) train vimp2_L_7T_ET_Aug0_Rot_-4_sd0
+(325/342) train vimp2_L_7T_ET_Aug0_Rot_-7_sd1
+(326/342) train vimp2_L_7T_ET_Aug0_Rot_7_sd2
+(327/342) train vimp2_L_7T_ET_Aug1_Rot_2_sd1
+(328/342) train vimp2_L_7T_ET_Aug1_Rot_-5_sd0
+(329/342) train vimp2_L_7T_ET_Aug1_Rot_5_sd2
+(330/342) train vimp2_L_7T_ET_Aug2_Rot_1_sd1
+(331/342) train vimp2_L_7T_ET_Aug2_Rot_2_sd2
+(332/342) train vimp2_L_7T_ET_Aug2_Rot_6_sd0
+(333/342) train vimp2_L_7T_ET_Aug3_Rot_-1_sd1
+(334/342) train vimp2_L_7T_ET_Aug3_Rot_3_sd0
+(335/342) train vimp2_L_7T_ET_Aug3_Rot_-4_sd2
+(336/342) train vimp2_L_7T_ET_Aug4_Rot_-6_sd0
+(337/342) train vimp2_L_7T_ET_Aug4_Rot_6_sd1
+(338/342) train vimp2_L_7T_ET_Aug4_Rot_-6_sd2
+(339/342) train vimp2_L_7T_ET_Aug5_Rot_-2_sd0
+(340/342) train vimp2_L_7T_ET_Aug5_Rot_6_sd1
+(341/342) train vimp2_L_7T_ET_Aug5_Rot_6_sd2
+(0/6) test vimp2_A_7T_ET
+(1/6) test vimp2_A_3T_ET
+(2/6) test vimp2_M_7T_ET
+(3/6) test vimp2_G_3T_ET
+(4/6) test vimp2_M_3T_ET
+(5/6) test vimp2_G_7T_ET
+************ stage 1 ************
+---------------------- check Layers Step ------------------------------
+ N: [1]  | GPU: 1  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  HCascade |  FM 20 |  Upsample 1
+
+ #layer 3 #layers changed False
+---------------------------------------------------------------
+ Nucleus: [1]  | GPU: 1  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  HCascade |  FM 20 |  Upsample 1
+Experiment: exp6
+SubExperiment: sE12_HCascade_FM20_U-Net4_NL3_LS_MyJoint_US1_ET_Init_Main_CV_a
+---------------------------------------------------------------
+---------------------------------------------------------------
+ Nucleus: [1]  | GPU: 1  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  HCascade |  FM 20 |  Upsample 1
+Experiment: exp6
+SubExperiment: sE12_HCascade_FM20_U-Net4_NL3_LS_MyJoint_US1_ET_Init_Main_CV_a
+---------------------------------------------------------------
+************ stage 2 ************
+---------------------- check Layers Step ------------------------------
+ N: [1.1, 1.2, 1.3, 2]/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+Using TensorFlow backend.
+Loading train:   0%|          | 0/342 [00:00<?, ?it/s]Loading train:   0%|          | 1/342 [00:00<03:54,  1.45it/s]Loading train:   1%|          | 2/342 [00:01<03:29,  1.63it/s]Loading train:   1%|          | 3/342 [00:01<03:06,  1.82it/s]Loading train:   1%|          | 4/342 [00:01<02:54,  1.94it/s]Loading train:   1%|▏         | 5/342 [00:02<02:39,  2.11it/s]Loading train:   2%|▏         | 6/342 [00:02<02:19,  2.40it/s]Loading train:   2%|▏         | 7/342 [00:03<02:17,  2.43it/s]Loading train:   2%|▏         | 8/342 [00:03<02:22,  2.34it/s]Loading train:   3%|▎         | 9/342 [00:03<02:15,  2.46it/s]Loading train:   3%|▎         | 10/342 [00:04<02:07,  2.61it/s]
+  | GPU: 1  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  HCascade |  FM 20 |  Upsample 1
+
+ #layer 3 #layers changed False
+---------------------------------------------------------------
+ Nucleus: [1.1, 1.2, 1.3, 2]  | GPU: 1  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  HCascade |  FM 20 |  Upsample 1
+Experiment: exp6
+SubExperiment: sE12_HCascade_FM20_U-Net4_NL3_LS_MyJoint_US1_ET_Init_Main_CV_a
+---------------------------------------------------------------
+Traceback (most recent call last):
+  File "main.py", line 557, in <module>
+    EXP_15b_ET_HCascade_finetune_JointLoss(UserInfoB)
+  File "main.py", line 280, in EXP_15b_ET_HCascade_finetune_JointLoss
+    Run(UserInfoB, IV)
+  File "main.py", line 216, in Run
+    if UserInfoB['simulation'].Multi_Class_Mode: HierarchicalStages_Multi_Class(UserInfoB)
+  File "main.py", line 77, in HierarchicalStages_Multi_Class
+    Run_Main(UserInfoB)
+  File "main.py", line 213, in Run_Main
+    Loop_slicing_orientations(UserInfoB, InitValues)
+  File "main.py", line 211, in Loop_slicing_orientations
+    subRun(UserInfoB)
+  File "main.py", line 205, in subRun
+    else: normal_run(params)
+  File "main.py", line 191, in normal_run
+    Data, params = datasets.loadDataset(params)                             
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 384, in loadDataset
+    Data = main_ReadingDataset(params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 364, in main_ReadingDataset
+    DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 336, in readingAllSubjects
+    im, msk = upsample_Image(im, msk , scale)    
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 315, in upsample_Image
+    Image3[i ,: ,: ,ch] = warp( np.squeeze(Image[i ,: ,: ,ch]), tform.inverse, output_shape=newShape, order=3)
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/skimage/transform/_warps.py", line 839, in warp
+    matrix = np.linalg.inv(six.get_method_self(inverse_map).params)
+KeyboardInterrupt
+*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
+(0/342) train vimp2_B_7T_ET
+(1/342) train vimp2_C_3T_ET
+(2/342) train vimp2_D_3T_ET
+(3/342) train vimp2_D_7T_ET
+(4/342) train vimp2_B_3T_ET
+(5/342) train vimp2_C_7T_ET
+(6/342) train vimp2_B_3T_ET_Aug0_Rot_2_sd0
+(7/342) train vimp2_B_3T_ET_Aug0_Rot_2_sd2
+(8/342) train vimp2_B_3T_ET_Aug0_Rot_4_sd1
+(9/342) train vimp2_B_3T_ET_Aug1_Rot_-1_sd2
+(10/342) train vimp2_B_3T_ET_Aug1_Rot_4_sd0
+(11/342) train vimp2_B_3T_ET_Aug1_Rot_6_sd1
+(12/342) train vimp2_B_3T_ET_Aug2_Rot_-3_sd2
+(13/342) train vimp2_B_3T_ET_Aug2_Rot_-4_sd0
+(14/342) train vimp2_B_3T_ET_Aug2_Rot_-7_sd1
+(15/342) train vimp2_B_3T_ET_Aug3_Rot_1_sd2
+(16/342) train vimp2_B_3T_ET_Aug3_Rot_3_sd0
+(17/342) train vimp2_B_3T_ET_Aug3_Rot_-4_sd1
+(18/342) train vimp2_B_3T_ET_Aug4_Rot_-1_sd2
+(19/342) train vimp2_B_3T_ET_Aug4_Rot_-2_sd0
+(20/342) train vimp2_B_3T_ET_Aug4_Rot_6_sd1
+(21/342) train vimp2_B_3T_ET_Aug5_Rot_-3_sd0
+(22/342) train vimp2_B_3T_ET_Aug5_Rot_4_sd1
+(23/342) train vimp2_B_3T_ET_Aug5_Rot_7_sd2
+(24/342) train vimp2_B_7T_ET_Aug0_Rot_2_sd1
+(25/342) train vimp2_B_7T_ET_Aug0_Rot_-3_sd0
+(26/342) train vimp2_B_7T_ET_Aug0_Rot_3_sd2
+(27/342) train vimp2_B_7T_ET_Aug1_Rot_1_sd2
+(28/342) train vimp2_B_7T_ET_Aug1_Rot_3_sd0
+(29/342) train vimp2_B_7T_ET_Aug1_Rot_-3_sd1
+(30/342) train vimp2_B_7T_ET_Aug2_Rot_1_sd0
+(31/342) train vimp2_B_7T_ET_Aug2_Rot_2_sd2
+(32/342) train vimp2_B_7T_ET_Aug2_Rot_4_sd1
+(33/342) train vimp2_B_7T_ET_Aug3_Rot_4_sd1
+(34/342) train vimp2_B_7T_ET_Aug3_Rot_-5_sd0
+(35/342) train vimp2_B_7T_ET_Aug3_Rot_-5_sd2
+(36/342) train vimp2_B_7T_ET_Aug4_Rot_-1_sd0
+(37/342) train vimp2_B_7T_ET_Aug4_Rot_-4_sd1
+(38/342) train vimp2_B_7T_ET_Aug4_Rot_5_sd2
+(39/342) train vimp2_B_7T_ET_Aug5_Rot_2_sd2
+(40/342) train vimp2_B_7T_ET_Aug5_Rot_-3_sd1
+(41/342) train vimp2_B_7T_ET_Aug5_Rot_-4_sd0
+(42/342) train vimp2_C_3T_ET_Aug0_Rot_4_sd2
+(43/342) train vimp2_C_3T_ET_Aug0_Rot_-5_sd0
+(44/342) train vimp2_C_3T_ET_Aug0_Rot_5_sd1
+(45/342) train vimp2_C_3T_ET_Aug1_Rot_-3_sd2
+(46/342) train vimp2_C_3T_ET_Aug1_Rot_6_sd1
+(47/342) train vimp2_C_3T_ET_Aug1_Rot_-7_sd0
+(48/342) train vimp2_C_3T_ET_Aug2_Rot_3_sd1
+(49/342) train vimp2_C_3T_ET_Aug2_Rot_3_sd2
+(50/342) train vimp2_C_3T_ET_Aug2_Rot_-7_sd0
+(51/342) train vimp2_C_3T_ET_Aug3_Rot_1_sd0
+(52/342) train vimp2_C_3T_ET_Aug3_Rot_1_sd2
+(53/342) train vimp2_C_3T_ET_Aug3_Rot_2_sd1
+(54/342) train vimp2_C_3T_ET_Aug4_Rot_-1_sd0
+(55/342) train vimp2_C_3T_ET_Aug4_Rot_3_sd1
+(56/342) train vimp2_C_3T_ET_Aug4_Rot_3_sd2
+(57/342) train vimp2_C_3T_ET_Aug5_Rot_1_sd2
+(58/342) train vimp2_C_3T_ET_Aug5_Rot_4_sd0
+(59/342) train vimp2_C_3T_ET_Aug5_Rot_6_sd1
+(60/342) train vimp2_C_7T_ET_Aug0_Rot_1_sd0
+(61/342) train vimp2_C_7T_ET_Aug0_Rot_-5_sd1
+(62/342) train vimp2_C_7T_ET_Aug0_Rot_-7_sd2
+(63/342) train vimp2_C_7T_ET_Aug1_Rot_2_sd0
+(64/342) train vimp2_C_7T_ET_Aug1_Rot_-4_sd2
+(65/342) train vimp2_C_7T_ET_Aug1_Rot_-7_sd1
+(66/342) train vimp2_C_7T_ET_Aug2_Rot_-1_sd0
+(67/342) train vimp2_C_7T_ET_Aug2_Rot_-2_sd2
+(68/342) train vimp2_C_7T_ET_Aug2_Rot_4_sd1
+(69/342) train vimp2_C_7T_ET_Aug3_Rot_-5_sd0
+(70/342) train vimp2_C_7T_ET_Aug3_Rot_5_sd1
+(71/342) train vimp2_C_7T_ET_Aug3_Rot_-5_sd2
+(72/342) train vimp2_C_7T_ET_Aug4_Rot_2_sd1
+(73/342) train vimp2_C_7T_ET_Aug4_Rot_2_sd2
+(74/342) train vimp2_C_7T_ET_Aug4_Rot_6_sd0
+(75/342) train vimp2_C_7T_ET_Aug5_Rot_-2_sd2
+(76/342) train vimp2_C_7T_ET_Aug5_Rot_-4_sd0
+(77/342) train vimp2_C_7T_ET_Aug5_Rot_6_sd1
+(78/342) train vimp2_D_3T_ET_Aug0_Rot_-3_sd2
+(79/342) train vimp2_D_3T_ET_Aug0_Rot_-4_sd0
+(80/342) train vimp2_D_3T_ET_Aug0_Rot_-7_sd1
+(81/342) train vimp2_D_3T_ET_Aug1_Rot_1_sd1
+(82/342) train vimp2_D_3T_ET_Aug1_Rot_5_sd0
+(83/342) train vimp2_D_3T_ET_Aug1_Rot_-5_sd2
+(84/342) train vimp2_D_3T_ET_Aug2_Rot_2_sd0
+(85/342) train vimp2_D_3T_ET_Aug2_Rot_-2_sd2
+(86/342) train vimp2_D_3T_ET_Aug2_Rot_5_sd1
+(87/342) train vimp2_D_3T_ET_Aug3_Rot_-2_sd1
+(88/342) train vimp2_D_3T_ET_Aug3_Rot_3_sd2
+(89/342) train vimp2_D_3T_ET_Aug3_Rot_-5_sd0
+(90/342) train vimp2_D_3T_ET_Aug4_Rot_4_sd0
+(91/342) train vimp2_D_3T_ET_Aug4_Rot_-7_sd1
+(92/342) train vimp2_D_3T_ET_Aug4_Rot_-7_sd2
+(93/342) train vimp2_D_3T_ET_Aug5_Rot_2_sd0
+(94/342) train vimp2_D_3T_ET_Aug5_Rot_4_sd2
+(95/342) train vimp2_D_3T_ET_Aug5_Rot_5_sd1
+(96/342) train vimp2_D_7T_ET_Aug0_Rot_-4_sd0
+(97/342) train vimp2_D_7T_ET_Aug0_Rot_-5_sd1
+(98/342) train vimp2_D_7T_ET_Aug0_Rot_7_sd2
+(99/342) train vimp2_D_7T_ET_Aug1_Rot_2_sd0
+(100/342) train vimp2_D_7T_ET_Aug1_Rot_-2_sd1
+(101/342) train vimp2_D_7T_ET_Aug1_Rot_-4_sd2
+(102/342) train vimp2_D_7T_ET_Aug2_Rot_-2_sd1
+(103/342) train vimp2_D_7T_ET_Aug2_Rot_4_sd0
+(104/342) train vimp2_D_7T_ET_Aug2_Rot_4_sd2
+(105/342) train vimp2_D_7T_ET_Aug3_Rot_2_sd0
+(106/342) train vimp2_D_7T_ET_Aug3_Rot_4_sd1
+(107/342) train vimp2_D_7T_ET_Aug3_Rot_4_sd2
+(108/342) train vimp2_D_7T_ET_Aug4_Rot_-1_sd2
+(109/342) train vimp2_D_7T_ET_Aug4_Rot_4_sd0
+(110/342) train vimp2_D_7T_ET_Aug4_Rot_-4_sd1
+(111/342) train vimp2_D_7T_ET_Aug5_Rot_2_sd2
+(112/342) train vimp2_D_7T_ET_Aug5_Rot_4_sd0
+(113/342) train vimp2_D_7T_ET_Aug5_Rot_7_sd1
+(114/342) train vimp2_F_7T_ET
+(115/342) train vimp2_F_3T_ET
+(116/342) train vimp2_H_3T_ET
+(117/342) train vimp2_H_7T_ET
+(118/342) train vimp2_I_3T_ET
+(119/342) train vimp2_I_7T_ET
+(120/342) train vimp2_F_3T_ET_Aug0_Rot_4_sd2
+(121/342) train vimp2_F_3T_ET_Aug0_Rot_-5_sd0
+(122/342) train vimp2_F_3T_ET_Aug0_Rot_-7_sd1
+(123/342) train vimp2_F_3T_ET_Aug1_Rot_4_sd2
+(124/342) train vimp2_F_3T_ET_Aug1_Rot_-5_sd1
+(125/342) train vimp2_F_3T_ET_Aug1_Rot_-6_sd0
+(126/342) train vimp2_F_3T_ET_Aug2_Rot_-2_sd0
+(127/342) train vimp2_F_3T_ET_Aug2_Rot_-2_sd1
+(128/342) train vimp2_F_3T_ET_Aug2_Rot_5_sd2
+(129/342) train vimp2_F_3T_ET_Aug3_Rot_-1_sd0
+(130/342) train vimp2_F_3T_ET_Aug3_Rot_-4_sd2
+(131/342) train vimp2_F_3T_ET_Aug3_Rot_6_sd1
+(132/342) train vimp2_F_3T_ET_Aug4_Rot_-3_sd2
+(133/342) train vimp2_F_3T_ET_Aug4_Rot_5_sd0
+(134/342) train vimp2_F_3T_ET_Aug4_Rot_7_sd1
+(135/342) train vimp2_F_3T_ET_Aug5_Rot_-1_sd0
+(136/342) train vimp2_F_3T_ET_Aug5_Rot_3_sd2
+(137/342) train vimp2_F_3T_ET_Aug5_Rot_-4_sd1
+(138/342) train vimp2_F_7T_ET_Aug0_Rot_3_sd1
+(139/342) train vimp2_F_7T_ET_Aug0_Rot_6_sd0
+(140/342) train vimp2_F_7T_ET_Aug0_Rot_-6_sd2
+(141/342) train vimp2_F_7T_ET_Aug1_Rot_5_sd0
+(142/342) train vimp2_F_7T_ET_Aug1_Rot_-6_sd1
+(143/342) train vimp2_F_7T_ET_Aug1_Rot_6_sd2
+(144/342) train vimp2_F_7T_ET_Aug2_Rot_-2_sd1
+(145/342) train vimp2_F_7T_ET_Aug2_Rot_4_sd2
+(146/342) train vimp2_F_7T_ET_Aug2_Rot_7_sd0
+(147/342) train vimp2_F_7T_ET_Aug3_Rot_4_sd0
+(148/342) train vimp2_F_7T_ET_Aug3_Rot_4_sd2
+(149/342) train vimp2_F_7T_ET_Aug3_Rot_-7_sd1
+(150/342) train vimp2_F_7T_ET_Aug4_Rot_1_sd0
+(151/342) train vimp2_F_7T_ET_Aug4_Rot_-2_sd2
+(152/342) train vimp2_F_7T_ET_Aug4_Rot_-5_sd1
+(153/342) train vimp2_F_7T_ET_Aug5_Rot_-1_sd1
+(154/342) train vimp2_F_7T_ET_Aug5_Rot_4_sd0
+(155/342) train vimp2_F_7T_ET_Aug5_Rot_-4_sd2
+(156/342) train vimp2_H_3T_ET_Aug0_Rot_-2_sd0
+(157/342) train vimp2_H_3T_ET_Aug0_Rot_-4_sd1
+(158/342) train vimp2_H_3T_ET_Aug0_Rot_5_sd2
+(159/342) train vimp2_H_3T_ET_Aug1_Rot_2_sd2
+(160/342) train vimp2_H_3T_ET_Aug1_Rot_-6_sd1
+(161/342) train vimp2_H_3T_ET_Aug1_Rot_-7_sd0
+(162/342) train vimp2_H_3T_ET_Aug2_Rot_1_sd2
+(163/342) train vimp2_H_3T_ET_Aug2_Rot_4_sd1
+(164/342) train vimp2_H_3T_ET_Aug2_Rot_-5_sd0
+(165/342) train vimp2_H_3T_ET_Aug3_Rot_-1_sd2
+(166/342) train vimp2_H_3T_ET_Aug3_Rot_3_sd0
+(167/342) train vimp2_H_3T_ET_Aug3_Rot_5_sd1
+(168/342) train vimp2_H_3T_ET_Aug4_Rot_2_sd0
+(169/342) train vimp2_H_3T_ET_Aug4_Rot_-3_sd2
+(170/342) train vimp2_H_3T_ET_Aug4_Rot_5_sd1
+(171/342) train vimp2_H_3T_ET_Aug5_Rot_4_sd2
+(172/342) train vimp2_H_3T_ET_Aug5_Rot_-5_sd0
+(173/342) train vimp2_H_3T_ET_Aug5_Rot_7_sd1
+(174/342) train vimp2_H_7T_ET_Aug0_Rot_3_sd0
+(175/342) train vimp2_H_7T_ET_Aug0_Rot_-4_sd2
+(176/342) train vimp2_H_7T_ET_Aug0_Rot_-6_sd1
+(177/342) train vimp2_H_7T_ET_Aug1_Rot_3_sd1
+(178/342) train vimp2_H_7T_ET_Aug1_Rot_4_sd2
+(179/342) train vimp2_H_7T_ET_Aug1_Rot_-7_sd0
+(180/342) train vimp2_H_7T_ET_Aug2_Rot_-2_sd0
+(181/342) train vimp2_H_7T_ET_Aug2_Rot_-2_sd1
+(182/342) train vimp2_H_7T_ET_Aug2_Rot_5_sd2
+(183/342) train vimp2_H_7T_ET_Aug3_Rot_0_sd2
+(184/342) train vimp2_H_7T_ET_Aug3_Rot_-2_sd0
+(185/342)2019-07-03 18:04:52.156001: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-07-03 18:04:52.481989: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:05:00.0
+totalMemory: 15.89GiB freeMemory: 13.70GiB
+2019-07-03 18:04:52.482045: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-07-03 18:04:52.866239: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-07-03 18:04:52.866317: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-07-03 18:04:52.866332: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-07-03 18:04:52.866766: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 13270 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:05:00.0, compute capability: 6.0)
+mkdir: cannot create directory ‘/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_HCascade_FM20_U-Net4_NL3_LS_MyJoint_US1_ET_Init_Main_CV_a’: File exists
+mkdir: cannot create directory ‘/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_HCascade_FM20_U-Net4_NL3_LS_MyJoint_US1_ET_Init_Main_CV_a’: File exists
+ train vimp2_H_7T_ET_Aug3_Rot_-6_sd1
+(186/342) train vimp2_H_7T_ET_Aug4_Rot_1_sd2
+(187/342) train vimp2_H_7T_ET_Aug4_Rot_3_sd0
+(188/342) train vimp2_H_7T_ET_Aug4_Rot_3_sd1
+(189/342) train vimp2_H_7T_ET_Aug5_Rot_-1_sd1
+(190/342) train vimp2_H_7T_ET_Aug5_Rot_1_sd2
+(191/342) train vimp2_H_7T_ET_Aug5_Rot_-6_sd0
+(192/342) train vimp2_I_3T_ET_Aug0_Rot_-3_sd1
+(193/342) train vimp2_I_3T_ET_Aug0_Rot_-3_sd2
+(194/342) train vimp2_I_3T_ET_Aug0_Rot_7_sd0
+(195/342) train vimp2_I_3T_ET_Aug1_Rot_-2_sd0
+(196/342) train vimp2_I_3T_ET_Aug1_Rot_-3_sd1
+(197/342) train vimp2_I_3T_ET_Aug1_Rot_-3_sd2
+(198/342) train vimp2_I_3T_ET_Aug2_Rot_2_sd0
+(199/342) train vimp2_I_3T_ET_Aug2_Rot_3_sd1
+(200/342) train vimp2_I_3T_ET_Aug2_Rot_-5_sd2
+(201/342) train vimp2_I_3T_ET_Aug3_Rot_2_sd0
+(202/342) train vimp2_I_3T_ET_Aug3_Rot_4_sd1
+(203/342) train vimp2_I_3T_ET_Aug3_Rot_7_sd2
+(204/342) train vimp2_I_3T_ET_Aug4_Rot_1_sd2
+(205/342) train vimp2_I_3T_ET_Aug4_Rot_-2_sd1
+(206/342) train vimp2_I_3T_ET_Aug4_Rot_-5_sd0
+(207/342) train vimp2_I_3T_ET_Aug5_Rot_-3_sd1
+(208/342) train vimp2_I_3T_ET_Aug5_Rot_4_sd0
+(209/342) train vimp2_I_3T_ET_Aug5_Rot_7_sd2
+(210/342) train vimp2_I_7T_ET_Aug0_Rot_7_sd2
+(211/342) train vimp2_I_7T_ET_Aug0_Rot_-5_sd0
+(212/342) train vimp2_I_7T_ET_Aug0_Rot_-7_sd1
+(213/342) train vimp2_I_7T_ET_Aug1_Rot_-5_sd2
+(214/342) train vimp2_I_7T_ET_Aug1_Rot_7_sd0
+(215/342) train vimp2_I_7T_ET_Aug1_Rot_7_sd1
+(216/342) train vimp2_I_7T_ET_Aug2_Rot_1_sd1
+(217/342) train vimp2_I_7T_ET_Aug2_Rot_-4_sd0
+(218/342) train vimp2_I_7T_ET_Aug2_Rot_7_sd2
+(219/342) train vimp2_I_7T_ET_Aug3_Rot_-1_sd0
+(220/342) train vimp2_I_7T_ET_Aug3_Rot_4_sd2
+(221/342) train vimp2_I_7T_ET_Aug3_Rot_7_sd1
+(222/342) train vimp2_I_7T_ET_Aug4_Rot_-1_sd0
+(223/342) train vimp2_I_7T_ET_Aug4_Rot_-4_sd2
+(224/342) train vimp2_I_7T_ET_Aug4_Rot_-7_sd1
+(225/342) train vimp2_I_7T_ET_Aug5_Rot_-4_sd2
+(226/342) train vimp2_I_7T_ET_Aug5_Rot_5_sd0
+(227/342) train vimp2_I_7T_ET_Aug5_Rot_-5_sd1
+(228/342) train vimp2_K_7T_ET
+(229/342) train vimp2_K_3T_ET
+(230/342) train vimp2_J_7T_ET
+(231/342) train vimp2_L_3T_ET
+(232/342) train vimp2_L_7T_ET
+(233/342) train vimp2_J_3T_ET
+(234/342) train vimp2_J_3T_ET_Aug0_Rot_4_sd2
+(235/342) train vimp2_J_3T_ET_Aug0_Rot_5_sd0
+(236/342) train vimp2_J_3T_ET_Aug0_Rot_-6_sd1
+(237/342) train vimp2_J_3T_ET_Aug1_Rot_-2_sd2
+(238/342) train vimp2_J_3T_ET_Aug1_Rot_3_sd0
+(239/342) train vimp2_J_3T_ET_Aug1_Rot_-5_sd1
+(240/342) train vimp2_J_3T_ET_Aug2_Rot_-5_sd1
+(241/342) train vimp2_J_3T_ET_Aug2_Rot_6_sd2
+(242/342) train vimp2_J_3T_ET_Aug2_Rot_-7_sd0
+(243/342) train vimp2_J_3T_ET_Aug3_Rot_-2_sd0
+(244/342) train vimp2_J_3T_ET_Aug3_Rot_4_sd1
+(245/342) train vimp2_J_3T_ET_Aug3_Rot_-4_sd2
+(246/342) train vimp2_J_3T_ET_Aug4_Rot_-2_sd1
+(247/342) train vimp2_J_3T_ET_Aug4_Rot_-4_sd0
+(248/342) train vimp2_J_3T_ET_Aug4_Rot_-5_sd2
+(249/342) train vimp2_J_3T_ET_Aug5_Rot_2_sd0
+(250/342) train vimp2_J_3T_ET_Aug5_Rot_4_sd2
+(251/342) train vimp2_J_3T_ET_Aug5_Rot_-6_sd1
+(252/342) train vimp2_J_7T_ET_Aug0_Rot_2_sd1
+(253/342) train vimp2_J_7T_ET_Aug0_Rot_-4_sd0
+(254/342) train vimp2_J_7T_ET_Aug0_Rot_7_sd2
+(255/342) train vimp2_J_7T_ET_Aug1_Rot_-5_sd0
+(256/342) train vimp2_J_7T_ET_Aug1_Rot_5_sd2
+(257/342) train vimp2_J_7T_ET_Aug1_Rot_7_sd1
+(258/342) train vimp2_J_7T_ET_Aug2_Rot_4_sd0
+(259/342) train vimp2_J_7T_ET_Aug2_Rot_6_sd2
+(260/342) train vimp2_J_7T_ET_Aug2_Rot_7_sd1
+(261/342) train vimp2_J_7T_ET_Aug3_Rot_1_sd1
+(262/342) train vimp2_J_7T_ET_Aug3_Rot_3_sd2
+(263/342) train vimp2_J_7T_ET_Aug3_Rot_-5_sd0
+(264/342) train vimp2_J_7T_ET_Aug4_Rot_2_sd0
+(265/342) train vimp2_J_7T_ET_Aug4_Rot_3_sd1
+(266/342) train vimp2_J_7T_ET_Aug4_Rot_-3_sd2
+(267/342) train vimp2_J_7T_ET_Aug5_Rot_-5_sd0
+(268/342) train vimp2_J_7T_ET_Aug5_Rot_6_sd1
+(269/342) train vimp2_J_7T_ET_Aug5_Rot_6_sd2
+(270/342) train vimp2_K_3T_ET_Aug0_Rot_-1_sd0
+(271/342) train vimp2_K_3T_ET_Aug0_Rot_6_sd1
+(272/342) train vimp2_K_3T_ET_Aug0_Rot_6_sd2
+(273/342) train vimp2_K_3T_ET_Aug1_Rot_-1_sd1
+(274/342) train vimp2_K_3T_ET_Aug1_Rot_6_sd0
+(275/342) train vimp2_K_3T_ET_Aug1_Rot_-6_sd2
+(276/342) train vimp2_K_3T_ET_Aug2_Rot_-1_sd0
+(277/342) train vimp2_K_3T_ET_Aug2_Rot_-3_sd1
+(278/342) train vimp2_K_3T_ET_Aug2_Rot_-5_sd2
+(279/342) train vimp2_K_3T_ET_Aug3_Rot_2_sd1
+(280/342) train vimp2_K_3T_ET_Aug3_Rot_5_sd0
+(281/342) train vimp2_K_3T_ET_Aug3_Rot_7_sd2
+(282/342) train vimp2_K_3T_ET_Aug4_Rot_-1_sd0
+(283/342) train vimp2_K_3T_ET_Aug4_Rot_1_sd1
+(284/342) train vimp2_K_3T_ET_Aug4_Rot_5_sd2
+(285/342) train vimp2_K_3T_ET_Aug5_Rot_2_sd1
+(286/342) train vimp2_K_3T_ET_Aug5_Rot_3_sd0
+(287/342) train vimp2_K_3T_ET_Aug5_Rot_3_sd2
+(288/342) train vimp2_K_7T_ET_Aug0_Rot_4_sd2
+(289/342) train vimp2_K_7T_ET_Aug0_Rot_5_sd0
+(290/342) train vimp2_K_7T_ET_Aug0_Rot_5_sd1
+(291/342) train vimp2_K_7T_ET_Aug1_Rot_1_sd1
+(292/342) train vimp2_K_7T_ET_Aug1_Rot_-4_sd0
+(293/342) train vimp2_K_7T_ET_Aug1_Rot_4_sd2
+(294/342) train vimp2_K_7T_ET_Aug2_Rot_-3_sd1
+(295/342) train vimp2_K_7T_ET_Aug2_Rot_4_sd0
+(296/342) train vimp2_K_7T_ET_Aug2_Rot_-6_sd2
+(297/342) train vimp2_K_7T_ET_Aug3_Rot_-1_sd2
+(298/342) train vimp2_K_7T_ET_Aug3_Rot_2_sd1
+(299/342) train vimp2_K_7T_ET_Aug3_Rot_6_sd0
+(300/342) train vimp2_K_7T_ET_Aug4_Rot_-1_sd0
+(301/342) train vimp2_K_7T_ET_Aug4_Rot_-3_sd1
+(302/342) train vimp2_K_7T_ET_Aug4_Rot_-4_sd2
+(303/342) train vimp2_K_7T_ET_Aug5_Rot_-3_sd0
+(304/342) train vimp2_K_7T_ET_Aug5_Rot_3_sd2
+(305/342) train vimp2_K_7T_ET_Aug5_Rot_-4_sd1
+(306/342) train vimp2_L_3T_ET_Aug0_Rot_-3_sd0
+(307/342) train vimp2_L_3T_ET_Aug0_Rot_3_sd1
+(308/342) train vimp2_L_3T_ET_Aug0_Rot_-6_sd2
+(309/342) train vimp2_L_3T_ET_Aug1_Rot_4_sd0
+(310/342) train vimp2_L_3T_ET_Aug1_Rot_6_sd1
+(311/342) train vimp2_L_3T_ET_Aug1_Rot_-7_sd2
+(312/342) train vimp2_L_3T_ET_Aug2_Rot_-2_sd0
+(313/342) train vimp2_L_3T_ET_Aug2_Rot_-5_sd2
+(314/342) train vimp2_L_3T_ET_Aug2_Rot_-7_sd1
+(315/342) train vimp2_L_3T_ET_Aug3_Rot_1_sd1
+(316/342) train vimp2_L_3T_ET_Aug3_Rot_-3_sd2
+(317/342) train vimp2_L_3T_ET_Aug3_Rot_-5_sd0
+(318/342) train vimp2_L_3T_ET_Aug4_Rot_2_sd1
+(319/342) train vimp2_L_3T_ET_Aug4_Rot_5_sd0
+(320/342) train vimp2_L_3T_ET_Aug4_Rot_-6_sd2
+(321/342) train vimp2_L_3T_ET_Aug5_Rot_-4_sd0
+(322/342) train vimp2_L_3T_ET_Aug5_Rot_4_sd2
+(323/342) train vimp2_L_3T_ET_Aug5_Rot_7_sd1
+(324/342) train vimp2_L_7T_ET_Aug0_Rot_-4_sd0
+(325/342) train vimp2_L_7T_ET_Aug0_Rot_-7_sd1
+(326/342) train vimp2_L_7T_ET_Aug0_Rot_7_sd2
+(327/342) train vimp2_L_7T_ET_Aug1_Rot_2_sd1
+(328/342) train vimp2_L_7T_ET_Aug1_Rot_-5_sd0
+(329/342) train vimp2_L_7T_ET_Aug1_Rot_5_sd2
+(330/342) train vimp2_L_7T_ET_Aug2_Rot_1_sd1
+(331/342) train vimp2_L_7T_ET_Aug2_Rot_2_sd2
+(332/342) train vimp2_L_7T_ET_Aug2_Rot_6_sd0
+(333/342) train vimp2_L_7T_ET_Aug3_Rot_-1_sd1
+(334/342) train vimp2_L_7T_ET_Aug3_Rot_3_sd0
+(335/342) train vimp2_L_7T_ET_Aug3_Rot_-4_sd2
+(336/342) train vimp2_L_7T_ET_Aug4_Rot_-6_sd0
+(337/342) train vimp2_L_7T_ET_Aug4_Rot_6_sd1
+(338/342) train vimp2_L_7T_ET_Aug4_Rot_-6_sd2
+(339/342) train vimp2_L_7T_ET_Aug5_Rot_-2_sd0
+(340/342) train vimp2_L_7T_ET_Aug5_Rot_6_sd1
+(341/342) train vimp2_L_7T_ET_Aug5_Rot_6_sd2
+(0/6) test vimp2_A_7T_ET
+(1/6) test vimp2_A_3T_ET
+(2/6) test vimp2_M_7T_ET
+(3/6) test vimp2_G_3T_ET
+(4/6) test vimp2_M_3T_ET
+(5/6) test vimp2_G_7T_ET
+************ stage 1 ************
+---------------------- check Layers Step ------------------------------
+ N: [1]  | GPU: 1  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  HCascade |  FM 20 |  Upsample 1
+
+ #layer 3 #layers changed False
+---------------------------------------------------------------
+ Nucleus: [1]  | GPU: 1  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  HCascade |  FM 20 |  Upsample 1
+Experiment: exp6
+SubExperiment: sE12_HCascade_FM20_U-Net4_NL3_LS_MyJoint_US1_ET_Init_Main_CV_a
+---------------------------------------------------------------
+---------------------------------------------------------------
+ Nucleus: [1]  | GPU: 1  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  HCascade |  FM 20 |  Upsample 1
+Experiment: exp6
+SubExperiment: sE12_HCascade_FM20_U-Net4_NL3_LS_MyJoint_US1_ET_Init_Main_CV_a
+---------------------------------------------------------------
+************ stage 2 ************
+---------------------- check Layers Step ------------------------------
+ N: [1.1, 1.2, 1.3, 2]/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+Using TensorFlow backend.
+Loading train:   0%|          | 0/342 [00:00<?, ?it/s]Loading train:   0%|          | 1/342 [00:00<03:49,  1.48it/s]Loading train:   1%|          | 2/342 [00:00<03:12,  1.77it/s]
