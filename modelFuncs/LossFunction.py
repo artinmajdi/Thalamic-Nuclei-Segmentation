@@ -23,7 +23,7 @@ def LossInfo(loss_Index):
     return switcher.get(loss_Index, 'WARNING: Invalid loss function index')
 
 def func_Loss_Dice(x , y):
-    return -tf.log( tf.reduce_sum(tf.multiply(x,y))*2/( tf.reduce_sum(x) + tf.reduce_sum(y) + 1e-7) )
+    return -tf.log( (tf.reduce_sum(tf.multiply(x,y)) + 1e-7)*2/( tf.reduce_sum(x) + tf.reduce_sum(y) + 1e-7) )
    
 def func_Average(loss, NUM_CLASSES):
     return tf.divide(tf.reduce_sum(loss), tf.cast(NUM_CLASSES,tf.float32))

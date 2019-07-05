@@ -288,6 +288,8 @@ def func_WhichExperiment(UserInfo):
                 
                 verbose = 1
                 num_Layers = ''
+                FCN1_NLayers = 3
+                FCN2_NLayers = 2
                 InputDimensions = ''
                 Layer_Params = layer_Params()
                 showHistory = True
@@ -550,7 +552,6 @@ def func_WhichExperiment(UserInfo):
 
             Layer_Params.FirstLayer_FeatureMap_Num = UserInfo['simulation'].FirstLayer_FeatureMap_Num
             Layer_Params.FCN_FeatureMaps           = UserInfo['simulation'].FCN_FeatureMaps
-            
             Layer_Params.ConvLayer.Kernel_size = kernel_size()
             Layer_Params.MaxPooling = maxPooling()
             Layer_Params.Dropout.Value = UserInfo['DropoutValue']
@@ -565,6 +566,8 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.metrics, _    = Metrics.MetricInfo(UserInfo['MetricIx'])
         HardParams.Model.optimizer, _  = Optimizers.OptimizerInfo(1, UserInfo['simulation'].Learning_Rate)
         HardParams.Model.num_Layers    = UserInfo['simulation'].num_Layers
+        HardParams.Model.FCN1_NLayers  = UserInfo['simulation'].FCN1_NLayers
+        HardParams.Model.FCN2_NLayers  = UserInfo['simulation'].FCN2_NLayers
         HardParams.Model.batch_size    = UserInfo['simulation'].batch_size
         HardParams.Model.epochs        = UserInfo['simulation'].epochs
         HardParams.Model.verbose       = UserInfo['simulation'].verbose

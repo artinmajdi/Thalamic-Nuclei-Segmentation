@@ -2,7 +2,7 @@
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'U-Net4' # 'Res_Unet' 'FCN_Unet' #  'SegNet_Unet' # 'SegNet' #    'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
-gpu = "1"
+gpu = "0"
 
 # TypeExperiment == 1: # 3T      Init Rn
 
@@ -74,6 +74,8 @@ class simulation:
     GPU_Index     = gpu
     Learning_Rate = 1e-3
     num_Layers    = 3 
+    FCN1_NLayers  = 3
+    FCN2_NLayers  = 2
     nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
     slicingDim    = [2,1,0]
     batch_size    = 100
