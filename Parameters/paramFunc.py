@@ -103,7 +103,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 8:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_CSFn2_Init_Main'),
                 9:  (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_CSFn1'),
                 10: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T   =True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_Main'),
-
+                11: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_Main'),
                 }                                           
             return switcher.get(TypeExperiment , 'wrong Index')
 
@@ -117,6 +117,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
     UserInfoB['SubExperiment'].Tag   = e + UserInfoB['tag_temp']  
 
 
+    if UserInfoB['TypeExperiment'] == 11: UserInfoB['architectureType'] = 'FCN_Unet_TL' 
     # if UserInfoB['upsample'].Scale == 1: UserInfoB['upsample'].Mode = False
         
     return UserInfoB
@@ -255,6 +256,8 @@ def func_WhichExperiment(UserInfo):
             class classWeight:
                 Weight = {0:1 , 1:1}
                 Mode = False
+
+
             class layer_Params:
                 FirstLayer_FeatureMap_Num = 64
                 FCN_FeatureMaps    =  30
@@ -554,7 +557,7 @@ def func_WhichExperiment(UserInfo):
             Layer_Params.FCN_FeatureMaps           = UserInfo['simulation'].FCN_FeatureMaps
             Layer_Params.ConvLayer.Kernel_size = kernel_size()
             Layer_Params.MaxPooling = maxPooling()
-            Layer_Params.Dropout.Value = UserInfo['DropoutValue']
+            Layer_Params.Dropout.Value     = UserInfo['DropoutValue']
             Layer_Params.class_weight.Mode = UserInfo['simulation'].Weighted_Class_Mode
 
             return Layer_Params
@@ -621,6 +624,35 @@ def func_WhichExperiment(UserInfo):
     WhichExperiment.Nucleus       = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.Mode)
     WhichExperiment.Dataset       = func_Dataset()
         
+
+    def adding_TransferLearningParams(WhichExperiment):
+        class best_WMn_Model:
+
+            architectureType = 'U-Net4'
+            EXP_address = '/array/ssd/msmajdi/experiments/keras/exp6/models/'
+
+            Model_Method = WhichExperiment.HardParams.Model.Method.Type
+            sdTag = WhichExperiment.Dataset.slicingInfo.slicingDim
+            
+            if Model_Method == 'Cascade':
+                if sdTag == 0:   FM , NL = 10, 3
+                elif sdTag == 1: FM , NL = 20, 4
+                elif sdTag == 2: FM , NL = 20, 3
+
+            elif Model_Method == 'HCascade':
+                if sdTag == 0:   FM , NL = 30, 3
+                elif sdTag == 1: FM , NL = 40, 4
+                elif sdTag == 2: FM , NL = 40, 3
+
+                    
+            sdTag   = '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim)        
+            Tag     = 'sE12_' + Model_Method + '_FM' + str(FM) + '_' + architectureType + '_NL' + str(NL) + '_LS_MyBCE_US1_Main_Init_3T_CV_a/'
+            address = EXP_address + Tag  + WhichExperiment.Nucleus.name + sdTag + '/model.h5'
+        return best_WMn_Model()
+
+    WhichExperiment.HardParams.Model.Best_WMn_Model = adding_TransferLearningParams(WhichExperiment)
+
+
     # if UserInfo['simulation'].TestOnly: 
     #     InputDimensions, num_Layers = ReadInputDimensions_NLayers(experiment.address + '/models/' + subExperiment.name + '/' + WhichExperiment.Nucleus.name + '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim) )
     #     WhichExperiment.HardParams.Model.InputDimensions = InputDimensions

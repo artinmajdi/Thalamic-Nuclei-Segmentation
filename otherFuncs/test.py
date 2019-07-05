@@ -116,3 +116,4 @@ for l in tqdm(range(2,len(best_WMn_model.layers)-1)):
     modelNew.layers[l+FCN1_NLayers*4].set_weights(best_WMn_model.layers[l].get_weights())
 
 print('finished')
+

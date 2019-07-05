@@ -592,8 +592,6 @@ def architecture(ModelParam):
 
             WB = Layer(featureMaps, trainable, WB)
             WB = Layer(featureMaps, trainable, WB)     
-
-            # if DT.Mode and trainable: WB = KLayers.Dropout(DT.Value)(WB)
             WB = KLayers.Dropout(DT.Value)(WB)
             
             return WB
@@ -977,8 +975,7 @@ def architecture(ModelParam):
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
         
-    def FCN_Unet_TF(ModelParam):
-        dir = '/array/ssd/msmajdi/experiments/keras/exp6/models/sE12_Cascade_FM20_U-Net4_NL3_LS_MyBCE_US1_Main_Init_3T_CV_a/MultiClass_24567891011121314/sd2/'
+    def FCN_Unet_TL(ModelParam):
 
         TF = ModelParam.Transfer_Learning
         LP = ModelParam.Layer_Params        
@@ -987,7 +984,6 @@ def architecture(ModelParam):
         DT = ModelParam.Layer_Params.Dropout
         FM_FCN = ModelParam.Layer_Params.FCN_FeatureMaps
 
-        # input_shape = tuple(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
         padding      = ModelParam.Layer_Params.ConvLayer.padding        
         FCN1_NLayers = ModelParam.FCN1_NLayers
         FCN2_NLayers = ModelParam.FCN2_NLayers
@@ -1000,8 +996,8 @@ def architecture(ModelParam):
             return KLayers.Activation(AC.layers)(conv) 
 
         def best_Unet(Unet_input):  
-            FM      = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
-            NLayers = ModelParam.num_Layers    
+            FM      = ModelParam.Best_WMn_Model.FM # ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
+            NLayers = ModelParam.Best_WMn_Model.NL # ModelParam.num_Layers
 
             def Unet_sublayer_Contracting(inputs):
                 def main_USC(WBp, nL):
@@ -1009,11 +1005,12 @@ def architecture(ModelParam):
                     featureMaps = FM*(2**nL)
 
                     conv = Layer(featureMaps, trainable, WBp)
-                    conv = Layer(featureMaps, trainable, conv)                                              
+                    conv = Layer(featureMaps, trainable, conv)
                     
                     pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)                                
                     
-                    if trainable: pool = KLayers.Dropout(DT.Value)(pool)  
+                    # if DT.Mode and trainable: pool = KLayers.Dropout(DT.Value)(pool)  
+                    pool = KLayers.Dropout(DT.Value)(pool)  
                                     
                     return pool, conv
                 
@@ -1034,22 +1031,23 @@ def architecture(ModelParam):
                     conv = Layer(featureMaps, trainable, UP)
                     conv = Layer(featureMaps, trainable, conv)
                     
-                    if DT.Mode and trainable: conv = KLayers.Dropout(DT.Value)(conv)
+                    # if DT.Mode and trainable: conv = KLayers.Dropout(DT.Value)(conv)
+                    conv = KLayers.Dropout(DT.Value)(conv)
                     return conv
 
                 for nL in reversed(range(NLayers -1)):  
                     WB = main_USE(WB, nL, Conv_Out)
 
                 return WB
-
+                
             def Unet_MiddleLayer(WB, nL):
                 trainable = TF.U_Net4.Middle if TF.Mode else True
                 featureMaps = FM*(2**nL)
 
                 WB = Layer(featureMaps, trainable, WB)
-                WB = Layer(featureMaps, trainable, WB)   
+                WB = Layer(featureMaps, trainable, WB)     
+                WB = KLayers.Dropout(DT.Value)(WB)  
 
-                if DT.Mode and trainable: WB = KLayers.Dropout(DT.Value)(WB)
                 return WB
                                     
             WB, Conv_Out = Unet_sublayer_Contracting(Unet_input)
@@ -1072,10 +1070,11 @@ def architecture(ModelParam):
         output = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(FCN2)
         modelNew = kerasmodels.Model(inputs=[inputs], outputs=[output])
 
-        best_WMn_model = kerasmodels.load_model(dir + 'model.h5') # num_Layers 43
-        for l in range(1,len(best_WMn_model.layers)):
+        best_WMn_model = kerasmodels.load_model(ModelParam.Best_WMn_Model.address) # num_Layers 43
+        for l in tqdm(range(2,len(best_WMn_model.layers)-1)):
             modelNew.layers[l+FCN1_NLayers*4].set_weights(best_WMn_model.layers[l].get_weights())
-        
+
+        return modelNew
     """
     def FCN_3D(ModelParam):
 
@@ -1106,7 +1105,10 @@ def architecture(ModelParam):
 
     elif  ModelParam.architectureType == 'FCN_Unet':
         model = FCN_Unet(ModelParam)
-    
+
+    elif  ModelParam.architectureType == 'FCN_Unet_TL':
+        model = FCN_Unet_TL(ModelParam)
+
     elif  ModelParam.architectureType == 'SegNet_Unet':
         model = SegNet_Unet(ModelParam)
 

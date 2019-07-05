@@ -554,7 +554,8 @@ def EXP_14_CSFn1_Cascade_finetune(UserInfoB):
 
 UserInfoB, K = preMode(UserInfo.__dict__)
 
-EXP12_SingleClass(UserInfoB)
-
+# EXP12_SingleClass(UserInfoB)
+IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+Run(UserInfoB, IV)
 
 K.clear_session()
