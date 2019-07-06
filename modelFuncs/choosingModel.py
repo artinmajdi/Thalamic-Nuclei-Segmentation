@@ -623,11 +623,116 @@ def architecture(ModelParam):
         NLayers     = ModelParam.num_Layers
         num_classes = ModelParam.MultiClass.num_classes
         pool_size   = ModelParam.Layer_Params.MaxPooling.pool_size
+        FCN1_NLayers = ModelParam.FCN1_NLayers
+        FCN2_NLayers = ModelParam.FCN2_NLayers
+
+        FM      = ModelParam.Best_WMn_Model.FM # ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
+        NLayers = ModelParam.Best_WMn_Model.NL # ModelParam.num_Layers     
+        
 
         def Layer(featureMaps, trainable, input):
             conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(input)
             conv = KLayers.BatchNormalization()(conv)  
             return KLayers.Activation(AC.layers)(conv) 
+
+        def FCN_Layer(inputs, num_layers):
+            for nL in range(num_layers):
+                if nL == 0: conv = Layer(FM_FCN, True, inputs) 
+                else:       conv = Layer(FM_FCN, True, conv) 
+                    
+                conv = KLayers.Dropout(DT.Value)(conv)  
+            return conv        
+        
+        def best_Unet(Unet_input):
+       
+            def Unet_sublayer_Contracting(inputs):
+                def main_USC(WBp, nL):
+                    trainable = TF.U_Net4.Contracting[nL] if TF.Mode else True
+                    featureMaps = FM*(2**nL)
+
+                    conv = Layer(featureMaps, trainable, WBp)
+                    conv = Layer(featureMaps, trainable, conv)                                              
+                    
+                    pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)                                
+                    
+                    if trainable: pool = KLayers.Dropout(DT.Value)(pool)  
+                                    
+                    return pool, conv
+                
+                for nL in range(NLayers -1):  
+                    if nL == 0: WB, Conv_Out = inputs , {}
+                    WB, Conv_Out[nL+1] = main_USC(WB, nL)  
+
+                return WB, Conv_Out
+
+            def Unet_sublayer_Expanding(WB , Conv_Out):
+                def main_USE(WBp, nL, contracting_Info):
+                    trainable = TF.U_Net4.Expanding[nL] if TF.Mode else True
+                    featureMaps = FM*(2**nL)
+
+                    WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2,2), padding=padding, activation=AC.layers, trainable=trainable)(WBp)
+                    UP = KLayers.merge.concatenate( [WBp, contracting_Info[nL+1]] , axis=3)
+
+                    conv = Layer(featureMaps, trainable, UP)
+                    conv = Layer(featureMaps, trainable, conv)
+                    
+                    if DT.Mode and trainable: conv = KLayers.Dropout(DT.Value)(conv)
+                    return conv
+
+                for nL in reversed(range(NLayers -1)):  
+                    WB = main_USE(WB, nL, Conv_Out)
+
+                return WB
+
+            def Unet_MiddleLayer(WB, nL):
+                trainable = TF.U_Net4.Middle if TF.Mode else True
+                featureMaps = FM*(2**nL)
+
+                WB = Layer(featureMaps, trainable, WB)
+                WB = Layer(featureMaps, trainable, WB)   
+
+                WB = KLayers.Dropout(DT.Value)(WB)
+                return WB
+                
+            WB, Conv_Out = Unet_sublayer_Contracting(conv)
+            WB = Unet_MiddleLayer(WB , NLayers-1)
+            WB = Unet_sublayer_Expanding(WB , Conv_Out)
+
+            return WB
+
+        inputs = KLayers.Input(input_shape)
+
+        conv = FCN_Layer(inputs, FCN1_NLayers)  if FCN1_NLayers > 0  else inputs    # num layers: nL * 4 + 1
+        WB = best_Unet(conv)
+        if FCN2_NLayers > 0: WB = FCN_Layer(WB, FCN2_NLayers) 
+        final = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
+
+        return kerasmodels.Model(inputs=[inputs], outputs=[final])
+                       
+    """
+    def FCN_Unet_new(ModelParam):
+
+        TF = ModelParam.Transfer_Learning
+        LP = ModelParam.Layer_Params        
+        KN = ModelParam.Layer_Params.ConvLayer.Kernel_size        
+        AC = ModelParam.Layer_Params.Activitation
+        DT = ModelParam.Layer_Params.Dropout
+        FM_FCN = ModelParam.Layer_Params.FCN_FeatureMaps
+
+        padding      = ModelParam.Layer_Params.ConvLayer.padding        
+        FCN1_NLayers = ModelParam.FCN1_NLayers
+        FCN2_NLayers = ModelParam.FCN2_NLayers
+        num_classes  = ModelParam.MultiClass.num_classes
+        pool_size    = ModelParam.Layer_Params.MaxPooling.pool_size
+
+        def Layer(featureMaps, trainable, input):
+            conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(input)
+            conv = KLayers.BatchNormalization()(conv)  
+            return KLayers.Activation(AC.layers)(conv) 
+
+        # def best_Unet(Unet_input):  
+        FM      = ModelParam.Best_WMn_Model.FM # ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
+        NLayers = ModelParam.Best_WMn_Model.NL # ModelParam.num_Layers
 
         def Unet_sublayer_Contracting(inputs):
             def main_USC(WBp, nL):
@@ -675,29 +780,37 @@ def architecture(ModelParam):
             WB = Layer(featureMaps, trainable, WB)
             WB = Layer(featureMaps, trainable, WB)   
 
-            if DT.Mode and trainable: WB = KLayers.Dropout(DT.Value)(WB)
-            return WB
-                
-        def FCN_Layer(inputs):
-            for nL in range(3):
+            WB = KLayers.Dropout(DT.Value)(WB)
+            return WB                    
+        # WB, Conv_Out = Unet_sublayer_Contracting(Unet_input)
+        # WB = Unet_MiddleLayer(WB , NLayers-1)
+        # WB = Unet_sublayer_Expanding(WB , Conv_Out)
+
+            # return WB
+
+        def FCN_Layer(inputs, num_Layers):
+            for nL in range(num_Layers):
                 if nL == 0: conv = Layer(FM_FCN, True, inputs) 
-                else:       conv = Layer(FM_FCN, True, conv) 
-                    
+                else:       conv = Layer(FM_FCN, True, conv)                     
                 conv = KLayers.Dropout(DT.Value)(conv)  
             return conv
 
         inputs = KLayers.Input(input_shape)
-        conv = FCN_Layer(inputs)    
+
+        if FCN1_NLayers > 0: conv = FCN_Layer(inputs, FCN1_NLayers)    # num layers: nL * 4 + 1
+        else: conv = inputs
+
         WB, Conv_Out = Unet_sublayer_Contracting(conv)
-
         WB = Unet_MiddleLayer(WB , NLayers-1)
-
         WB = Unet_sublayer_Expanding(WB , Conv_Out)
 
-        final = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
+        if FCN2_NLayers > 0: conv = FCN_Layer(WB, FCN2_NLayers) 
+        else: conv = WB
 
-        return kerasmodels.Model(inputs=[inputs], outputs=[final])
-                       
+        output = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(conv)
+        return kerasmodels.Model(inputs=[inputs], outputs=[output])
+    """
+    
     def FCN(ModelParam):  #  Conv -> BatchNorm -> Relu ) -> (Conv -> BatchNorm -> Relu)  -> maxpooling  -> Dropout
                     
         TF = ModelParam.Transfer_Learning
@@ -989,15 +1102,16 @@ def architecture(ModelParam):
         FCN2_NLayers = ModelParam.FCN2_NLayers
         num_classes  = ModelParam.MultiClass.num_classes
         pool_size    = ModelParam.Layer_Params.MaxPooling.pool_size
-
+        FM      = ModelParam.Best_WMn_Model.FM # ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
+        NLayers = ModelParam.Best_WMn_Model.NL # ModelParam.num_Layers
+        
         def Layer(featureMaps, trainable, input):
             conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(input)
             conv = KLayers.BatchNormalization()(conv)  
             return KLayers.Activation(AC.layers)(conv) 
 
         def best_Unet(Unet_input):  
-            FM      = ModelParam.Best_WMn_Model.FM # ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
-            NLayers = ModelParam.Best_WMn_Model.NL # ModelParam.num_Layers
+
 
             def Unet_sublayer_Contracting(inputs):
                 def main_USC(WBp, nL):
@@ -1063,18 +1177,25 @@ def architecture(ModelParam):
             return conv
 
         inputs = KLayers.Input(input_shape)
-        FCN1   = FCN_Layer(inputs, FCN1_NLayers)    # num layers: nL * 4 + 1
-        Unet1  = best_Unet(FCN1)
-        FCN2   = FCN_Layer(Unet1, FCN2_NLayers) 
 
-        output = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(FCN2)
+        if FCN1_NLayers > 0: conv = FCN_Layer(inputs, FCN1_NLayers)    # num layers: nL * 4 + 1
+        else: conv = inputs
+
+        conv = best_Unet(conv)
+
+        if FCN2_NLayers > 0: conv = FCN_Layer(conv, FCN2_NLayers) 
+
+        output = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(conv)
         modelNew = kerasmodels.Model(inputs=[inputs], outputs=[output])
 
         best_WMn_model = kerasmodels.load_model(ModelParam.Best_WMn_Model.address) # num_Layers 43
-        for l in tqdm(range(2,len(best_WMn_model.layers)-1)):
+        for l in tqdm(range(2,len(best_WMn_model.layers)-1), 'loading the weights for Unet'):
             modelNew.layers[l+FCN1_NLayers*4].set_weights(best_WMn_model.layers[l].get_weights())
 
         return modelNew
+
+
+
     """
     def FCN_3D(ModelParam):
 

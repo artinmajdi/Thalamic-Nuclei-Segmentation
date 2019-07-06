@@ -91,7 +91,7 @@ def Run(UserInfoB, InitValues):
                 if not check_if_num_Layers_fit(UserInfoB): Run_Main(UserInfoB)
 
         else:
-                      
+
             UserInfoB['simulation'].nucleus_Index = [1]
             if not check_if_num_Layers_fit(UserInfoB): 
                 Run_Main(UserInfoB)
@@ -555,7 +555,39 @@ def EXP_14_CSFn1_Cascade_finetune(UserInfoB):
 UserInfoB, K = preMode(UserInfo.__dict__)
 
 # EXP12_SingleClass(UserInfoB)
-IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-Run(UserInfoB, IV)
+
+
+def EXP15a_TL_CSFn2(UserInfoB):
+    
+    UserInfoB['TypeExperiment'] = 11
+    UserInfoB['Model_Method'] = 'Cascade' 
+    UserInfoB['architectureType'] = 'FCN_Unet_TL'
+    UserInfoB['simulation'].FCN1_NLayers = 3
+    UserInfoB['simulation'].FCN2_NLayers = 0
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    for UserInfoB['simulation'].FCN_FeatureMaps in [10, 20 , 30 , 40, 50]:
+        try:
+            Run(UserInfoB, IV)
+        except Exception as e:
+            print(e)
+
+
+def EXP15b_TL_CSFn2(UserInfoB):
+    UserInfoB['TypeExperiment'] = 11
+    UserInfoB['Model_Method'] = 'Cascade' 
+    UserInfoB['architectureType'] = 'FCN_Unet_TL'
+    UserInfoB['simulation'].FCN1_NLayers = 3
+    UserInfoB['simulation'].FCN2_NLayers = 1
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    for UserInfoB['simulation'].FCN_FeatureMaps in [10, 20 , 30 , 40, 50]:
+        try:
+            Run(UserInfoB, IV)
+        except Exception as e:
+            print(e)
+
+
+EXP15b_TL_CSFn2(UserInfoB)
 
 K.clear_session()

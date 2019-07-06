@@ -66,9 +66,9 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 def __init__(self, Mode=False , FrozenLayers = [0] , Tag = '_TF' , Stage = 0):
                     
                     class unet_Freeze():
-                        Contracting = {0:True, 1:True, 2:True, 3:False, 4:False, 5:False }
+                        Contracting = {0:True, 1:True, 2:False, 3:False, 4:False, 5:False }
                         Expanding   = {0:True, 1:False, 2:False, 3:False, 4:False, 5:False }
-                        Middle      = True                        
+                        Middle      = False                        
                     
                     self.Mode         = Mode
                     self.FrozenLayers = FrozenLayers
@@ -104,6 +104,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 9:  (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_CSFn1'),
                 10: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T   =True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_Main'),
                 11: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_Main'),
+                12: (13  ,   self.ReadTrainC(Main=1)         , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True) , '_Main_test_TL_Main'),
                 }                                           
             return switcher.get(TypeExperiment , 'wrong Index')
 
@@ -152,7 +153,7 @@ def func_Exp_subExp_Names(UserInfo):
         GAP = '' # _gap' + str(UserInfo['gapDilation'])
         SC = '_SingleClass' if not UserInfo['simulation'].Multi_Class_Mode else '' 
 
-        FCN = '_FCNFM_' + str(UserInfo['simulation'].FCN_FeatureMaps) if (UserInfo['architectureType']  == 'FCN_Unet') else ''
+        FCN = '_FCNA' + str(UserInfo['simulation'].FCN1_NLayers)+'_FCNB' + str(UserInfo['simulation'].FCN2_NLayers) if ('FCN_Unet' in UserInfo['architectureType']) else ''
 
         method = UserInfo['Model_Method']                                                                      
                

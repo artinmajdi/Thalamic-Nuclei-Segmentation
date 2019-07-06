@@ -1,8 +1,8 @@
 
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
-architectureType = 'FCN_Unet_TL' # 'FCN_Unet' # 'U-Net4' # 'Res_Unet'  'SegNet_Unet' # 'SegNet' #    'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
-gpu = "7"
+architectureType = 'FCN_Unet_TL' # 'FCN_Unet' # 'U-Net4' # 'FCN_Unet_TL' # 'Res_Unet'  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
+gpu = "5"
 
 # TypeExperiment == 1: # 3T      Init Rn
 
@@ -20,6 +20,7 @@ gpu = "7"
 # TypeExperiment == 9  # CSFn2  Transfer Learn from CSFn1
 # TypeExperiment == 10 # CSFn2  Transfer Learn from Main
 # TypeExperiment == 11 # CSFn2  Transfer Learn from Main with 'FCN_Unet_TL'  architecture
+# TypeExperiment == 12: # Main  Transfer Learn from Main
 
 TypeExperiment = 11
 
@@ -30,6 +31,8 @@ lossFunction_Index = 3
 tag_temp = '' # _NEW' # _temp_fixed_BB
 testOnly = False
 
+fCN1_NLayers = 3
+fCN2_NLayers = 1
 
 class normalize:
     Mode = True
@@ -72,10 +75,10 @@ class simulation:
     GPU_Index     = gpu
     Learning_Rate = 1e-3
     num_Layers    = 3 
-    FCN1_NLayers  = 3
-    FCN2_NLayers  = 2
+    FCN1_NLayers  = fCN1_NLayers
+    FCN2_NLayers  = fCN2_NLayers
     nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
-    slicingDim    = [2,1,0]
+    slicingDim    = [2 ,1 ,0]
     batch_size    = 100
     InputImage2Dvs3D = 2
     FirstLayer_FeatureMap_Num = 20
