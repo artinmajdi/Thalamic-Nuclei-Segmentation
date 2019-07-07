@@ -1,0 +1,476 @@
+*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
+(0/456) train vimp2_845_05312013_VZ
+(1/456) train vimp2_823_05202013_AJ
+(2/456) train vimp2_915_07112013_LC
+(3/456) train vimp2_901_07052013_AS
+(4/456) train vimp2_ctrl_911_07082013_TTO
+(5/456) train vimp2_ctrl_925_07152013_LS
+(6/456) train vimp2_869_06142013_BL
+(7/456) train vimp2_ANON724_03272013
+(8/456) train vimp2_819_05172013_DS
+(9/456) train vimp2_ctrl_918_07112013_TQ
+(10/456) train vimp2_ctrl_902_07052013_SI
+(11/456) train vimp2_ANON606_20130110
+(12/456) train vimp2_943_07242013_PA
+(13/456) train vimp2_824_05212013_JS
+(14/456) train vimp2_ANON624_20130117
+(15/456) train vimp2_ctrl_920_07122013_SW
+(16/456) train vimp2_884_06272013_TS
+(17/456) train vimp2_668_02282013_CD
+(18/456) train vimp2_964_08092013_TG
+(19/456) train vimp2_ctrl_921_07122013_MP
+(20/456) train vimp2_972_08152013_DC
+(21/456) train vimp2_988_08302013_CB
+(22/456) train vimp2_ANON702_03152013
+(23/456) train vimp2_ANON714_03222013
+(24/456) train vimp2_972_08152013_DC_Aug0_Rot_-1_sd0
+(25/456) train vimp2_972_08152013_DC_Aug0_Rot_1_sd2
+(26/456) train vimp2_972_08152013_DC_Aug0_Rot_-7_sd1
+(27/456) train vimp2_972_08152013_DC_Aug1_Rot_2_sd0
+(28/456) train vimp2_972_08152013_DC_Aug1_Rot_5_sd1
+(29/456) train vimp2_972_08152013_DC_Aug1_Rot_6_sd2
+(30/456) train vimp2_972_08152013_DC_Aug2_Rot_-3_sd1
+(31/456) train vimp2_972_08152013_DC_Aug2_Rot_-3_sd2
+(32/456) train vimp2_972_08152013_DC_Aug2_Rot_-5_sd0
+(33/456) train vimp2_972_08152013_DC_Aug3_Rot_2_sd1
+(34/456) train vimp2_972_08152013_DC_Aug3_Rot_-3_sd0
+(35/456) train vimp2_972_08152013_DC_Aug3_Rot_-6_sd2
+(36/456) train vimp2_972_08152013_DC_Aug4_Rot_-2_sd2
+(37/456) train vimp2_972_08152013_DC_Aug4_Rot_3_sd0
+(38/456) train vimp2_972_08152013_DC_Aug4_Rot_6_sd1
+(39/456) train vimp2_972_08152013_DC_Aug5_Rot_-1_sd2
+(40/456) train vimp2_972_08152013_DC_Aug5_Rot_7_sd0
+(41/456) train vimp2_972_08152013_DC_Aug5_Rot_7_sd1
+(42/456) train vimp2_988_08302013_CB_Aug0_Rot_-3_sd2
+(43/456) train vimp2_988_08302013_CB_Aug0_Rot_4_sd0
+(44/456) train vimp2_988_08302013_CB_Aug0_Rot_-5_sd1
+(45/456) train vimp2_988_08302013_CB_Aug1_Rot_-2_sd2
+(46/456) train vimp2_988_08302013_CB_Aug1_Rot_-3_sd0
+(47/456) train vimp2_988_08302013_CB_Aug1_Rot_-6_sd1
+(48/456) train vimp2_988_08302013_CB_Aug2_Rot_-2_sd0
+(49/456) train vimp2_988_08302013_CB_Aug2_Rot_4_sd1
+(50/456) train vimp2_988_08302013_CB_Aug2_Rot_-5_sd2
+(51/456) train vimp2_988_08302013_CB_Aug3_Rot_2_sd2
+(52/456) train vimp2_988_08302013_CB_Aug3_Rot_-3_sd0
+(53/456) train vimp2_988_08302013_CB_Aug3_Rot_3_sd1
+(54/456) train vimp2_988_08302013_CB_Aug4_Rot_-2_sd0
+(55/456) train vimp2_988_08302013_CB_Aug4_Rot_-6_sd1
+(56/456) train vimp2_988_08302013_CB_Aug4_Rot_7_sd2
+(57/456) train vimp2_988_08302013_CB_Aug5_Rot_-1_sd0
+(58/456) train vimp2_988_08302013_CB_Aug5_Rot_-6_sd1
+(59/456) train vimp2_988_08302013_CB_Aug5_Rot_7_sd2
+(60/456) train vimp2_ANON702_03152013_Aug0_Rot_-2_sd1
+(61/456) train vimp2_ANON702_03152013_Aug0_Rot_-3_sd2
+(62/456) train vimp2_ANON702_03152013_Aug0_Rot_-4_sd0
+(63/456) train vimp2_ANON702_03152013_Aug1_Rot_-4_sd1
+(64/456) train vimp2_ANON702_03152013_Aug1_Rot_-5_sd2
+(65/456) train vimp2_ANON702_03152013_Aug1_Rot_-7_sd0
+(66/456) train vimp2_ANON702_03152013_Aug2_Rot_6_sd0
+(67/456) train vimp2_ANON702_03152013_Aug2_Rot_6_sd2
+(68/456) train vimp2_ANON702_03152013_Aug2_Rot_-7_sd1
+(69/456) train vimp2_ANON702_03152013_Aug3_Rot_-1_sd2
+(70/456) train vimp2_ANON702_03152013_Aug3_Rot_-3_sd0
+(71/456) train vimp2_ANON702_03152013_Aug3_Rot_-6_sd1
+(72/456) train vimp2_ANON702_03152013_Aug4_Rot_-2_sd0
+(73/456) train vimp2_ANON702_03152013_Aug4_Rot_-3_sd2
+(74/456) train vimp2_ANON702_03152013_Aug4_Rot_-7_sd1
+(75/456) train vimp2_ANON702_03152013_Aug5_Rot_3_sd0
+(76/456) train vimp2_ANON702_03152013_Aug5_Rot_3_sd2
+(77/456) train vimp2_ANON702_03152013_Aug5_Rot_4_sd1
+(78/456) train vimp2_ANON714_03222013_Aug0_Rot_-1_sd2
+(79/456) train vimp2_ANON714_03222013_Aug0_Rot_-2_sd1
+(80/456) train vimp2_ANON714_03222013_Aug0_Rot_4_sd0
+(81/456) train vimp2_ANON714_03222013_Aug1_Rot_0_sd0
+(82/456) train vimp2_ANON714_03222013_Aug1_Rot_1_sd1
+(83/456) train vimp2_ANON714_03222013_Aug1_Rot_-6_sd2
+(84/456) train vimp2_ANON714_03222013_Aug2_Rot_-2_sd0
+(85/456) train vimp2_ANON714_03222013_Aug2_Rot_4_sd1
+(86/456) train vimp2_ANON714_03222013_Aug2_Rot_6_sd2
+(87/456) train vimp2_ANON714_03222013_Aug3_Rot_2_sd0
+(88/456) train vimp2_ANON714_03222013_Aug3_Rot_-3_sd2
+(89/456) train vimp2_ANON714_03222013_Aug3_Rot_-7_sd1
+(90/456) train vimp2_ANON714_03222013_Aug4_Rot_1_sd0
+(91/456) train vimp2_ANON714_03222013_Aug4_Rot_-2_sd1
+(92/456) train vimp2_ANON714_03222013_Aug4_Rot_4_sd2
+(93/456) train vimp2_ANON714_03222013_Aug5_Rot_1_sd0
+(94/456) train vimp2_ANON714_03222013_Aug5_Rot_6_sd1
+(95/456) train vimp2_ANON714_03222013_Aug5_Rot_-7_sd2
+(96/456) train vimp2_668_02282013_CD_Aug0_Rot_7_sd0
+(97/456) train vimp2_668_02282013_CD_Aug1_Rot_-1_sd0
+(98/456) train vimp2_668_02282013_CD_Aug2_Rot_-4_sd0
+(99/456) train vimp2_668_02282013_CD_Aug3_Rot_3_sd0
+(100/456) train vimp2_668_02282013_CD_Aug4_Rot_-5_sd0
+(101/456) train vimp2_668_02282013_CD_Aug5_Rot_-6_sd0
+(102/456) train vimp2_819_05172013_DS_Aug0_Rot_1_sd0
+(103/456) train vimp2_819_05172013_DS_Aug1_Rot_5_sd0
+(104/456) train vimp2_819_05172013_DS_Aug2_Rot_-4_sd0
+(105/456) train vimp2_819_05172013_DS_Aug3_Rot_2_sd0
+(106/456) train vimp2_819_05172013_DS_Aug4_Rot_5_sd0
+(107/456) train vimp2_819_05172013_DS_Aug5_Rot_4_sd0
+(108/456) train vimp2_823_05202013_AJ_Aug0_Rot_-7_sd0
+(109/456) train vimp2_823_05202013_AJ_Aug1_Rot_7_sd0
+(110/456) train vimp2_823_05202013_AJ_Aug2_Rot_3_sd0
+(111/456) train vimp2_823_05202013_AJ_Aug3_Rot_-5_sd0
+(112/456) train vimp2_823_05202013_AJ_Aug4_Rot_-3_sd0
+(113/456) train vimp2_823_05202013_AJ_Aug5_Rot_1_sd0
+(114/456) train vimp2_824_05212013_JS_Aug0_Rot_-2_sd0
+(115/456) train vimp2_824_05212013_JS_Aug1_Rot_6_sd0
+(116/456) train vimp2_824_05212013_JS_Aug2_Rot_1_sd0
+(117/456) train vimp2_824_05212013_JS_Aug3_Rot_-4_sd0
+(118/456) train vimp2_824_05212013_JS_Aug4_Rot_7_sd0
+(119/456) train vimp2_824_05212013_JS_Aug5_Rot_2_sd0
+(120/456) train vimp2_845_05312013_VZ_Aug0_Rot_1_sd0
+(121/456) train vimp2_845_05312013_VZ_Aug1_Rot_5_sd0
+(122/456) train vimp2_845_05312013_VZ_Aug2_Rot_-6_sd0
+(123/456) train vimp2_845_05312013_VZ_Aug3_Rot_3_sd0
+(124/456) train vimp2_845_05312013_VZ_Aug4_Rot_-2_sd0
+(125/456) train vimp2_845_05312013_VZ_Aug5_Rot_5_sd0
+(126/456) train vimp2_869_06142013_BL_Aug0_Rot_-2_sd0
+(127/456) train vimp2_869_06142013_BL_Aug1_Rot_-4_sd0
+(128/456) train vimp2_869_06142013_BL_Aug2_Rot_-1_sd0
+(129/456) train vimp2_869_06142013_BL_Aug3_Rot_3_sd0
+(130/456) train vimp2_869_06142013_BL_Aug4_Rot_3_sd0
+(131/456) train vimp2_869_06142013_BL_Aug5_Rot_1_sd0
+(132/456) train vimp2_884_06272013_TS_Aug0_Rot_-7_sd0
+(133/456) train vimp2_884_06272013_TS_Aug1_Rot_7_sd0
+(134/456) train vimp2_884_06272013_TS_Aug2_Rot_-5_sd0
+(135/456) train vimp2_884_06272013_TS_Aug3_Rot_-2_sd0
+(136/456) train vimp2_884_06272013_TS_Aug4_Rot_6_sd0
+(137/456) train vimp2_884_06272013_TS_Aug5_Rot_-1_sd0
+(138/456) train vimp2_901_07052013_AS_Aug0_Rot_-4_sd0
+(139/456) train vimp2_901_07052013_AS_Aug1_Rot_-2_sd0
+(140/456) train vimp2_901_07052013_AS_Aug2_Rot_1_sd0
+(141/456) train vimp2_901_07052013_AS_Aug3_Rot_2_sd0
+(142/456) train vimp2_901_07052013_AS_Aug4_Rot_-7_sd0
+(143/456) train vimp2_901_07052013_AS_Aug5_Rot_-5_sd0
+(144/456) train vimp2_915_07112013_LC_Aug0_Rot_-2_sd0
+(145/456) train vimp2_915_07112013_LC_Aug1_Rot_4_sd0
+(146/456) train vimp2_915_07112013_LC_Aug2_Rot_-2_sd0
+(147/456) train vimp2_915_07112013_LC_Aug3_Rot_-1_sd0
+(148/456) train vimp2_915_07112013_LC_Aug4_Rot_1_sd0
+(149/456) train vimp2_915_07112013_LC_Aug5_Rot_4_sd0
+(150/456) train vimp2_943_07242013_PA_Aug0_Rot_-5_sd0
+(151/456) train vimp2_943_07242013_PA_Aug1_Rot_-7_sd0
+(152/456) train vimp2_943_07242013_PA_Aug2_Rot_-4_sd0
+(153/456) train vimp2_943_07242013_PA_Aug3_Rot_6_sd0
+(154/456) train vimp2_943_07242013_PA_Aug4_Rot_6_sd0
+(155/456) train vimp2_943_07242013_PA_Aug5_Rot_5_sd0
+(156/456) train vimp2_964_08092013_TG_Aug0_Rot_5_sd0
+(157/456) train vimp2_964_08092013_TG_Aug1_Rot_-4_sd0
+(158/456) train vimp2_964_08092013_TG_Aug2_Rot_7_sd0
+(159/456) train vimp2_964_08092013_TG_Aug3_Rot_-1_sd0
+(160/456) train vimp2_964_08092013_TG_Aug4_Rot_-1_sd0
+(161/456) train vimp2_964_08092013_TG_Aug5_Rot_2_sd0
+(162/456) train vimp2_ANON606_20130110_Aug0_Rot_1_sd0
+(163/456) train vimp2_ANON606_20130110_Aug1_Rot_2_sd0
+(164/456) train vimp2_ANON606_20130110_Aug2_Rot_-5_sd0
+(165/456) train vimp2_ANON606_20130110_Aug3_Rot_-5_sd0
+(166/456) train vimp2_ANON606_20130110_Aug4_Rot_3_sd0
+(167/456) train vimp2_ANON606_20130110_Aug5_Rot_-1_sd0
+(168/456) train vimp2_ANON624_20130117_Aug0_Rot_1_sd0
+(169/456) train vimp2_ANON624_20130117_Aug1_Rot_-2_sd0
+(170/456) train vimp2_ANON624_20130117_Aug2_Rot_5_sd0
+(171/456) train vimp2_ANON624_20130117_Aug3_Rot_1_sd0
+(172/456) train vimp2_ANON624_20130117_Aug4_Rot_-5_sd0
+(173/456) train vimp2_ANON624_20130117_Aug5_Rot_3_sd0
+(174/456) train vimp2_ANON724_03272013_Aug0_Rot_-4_sd0
+(175/456) train vimp2_ANON724_03272013_Aug1_Rot_-3_sd0
+(176/456) train vimp2_ANON724_03272013_Aug2_Rot_-4_sd0
+(177/456) train vimp2_ANON724_03272013_Aug3_Rot_5_sd0
+(178/456) train vimp2_ANON724_03272013_Aug4_Rot_5_sd0
+(179/456) train vimp2_ANON724_03272013_Aug5_Rot_-6_sd0
+(180/456) train vimp2_ctrl_902_07052013_SI_Aug0_Rot_5_sd0
+(181/456) train vimp2_ctrl_902_07052013_SI_Aug1_Rot_7_sd0
+(182/456) train vimp2_ctrl_902_07052013_SI_Aug2_Rot_4_sd0
+(183/456) train vimp2_ctrl_902_07052013_SI_Aug3_Rot_-4_sd0
+(184/456) train vimp2_ctrl_902_07052013_SI_Aug4_Rot_3_sd0
+(185/456) train vimp2_ctrl_902_07052013_SI_Aug5_Rot_-7_sd0
+(186/456) train vimp2_ctrl_911_07082013_TTO_Aug0_Rot_6_sd0
+(187/456) train vimp2_ctrl_911_07082013_TTO_Aug1_Rot_1_sd0
+(188/456) train vimp2_ctrl_911_07082013_TTO_Aug2_Rot_4_sd0
+(189/456) train vimp2_ctrl_911_07082013_TTO_Aug3_Rot_-2_sd0
+(190/456) train vimp2_ctrl_911_07082013_TTO_Aug4_Rot_6_sd0
+(191/456) train vimp2_ctrl_911_07082013_TTO_Aug5_Rot_-2_sd0
+(192/456) train vimp2_ctrl_918_07112013_TQ_Aug0_Rot_5_sd0
+(193/456) train vimp2_ctrl_918_07112013_TQ_Aug1_Rot_-3_sd0
+(194/456) train vimp2_ctrl_918_07112013_TQ_Aug2_Rot_-4_sd0
+(195/456) train vimp2_ctrl_918_07112013_TQ_Aug3_Rot_1_sd0
+(196/456) train vimp2_ctrl_918_07112013_TQ_Aug4_Rot_3_sd0
+(197/456) train vimp2_ctrl_918_07112013_TQ_Aug5_Rot_7_sd0
+(198/456) train vimp2_ctrl_920_07122013_SW_Aug0_Rot_7_sd0
+(199/456) train vimp2_ctrl_920_07122013_SW_Aug1_Rot_-6_sd0
+(200/456) train vimp2_ctrl_920_07122013_SW_Aug2_Rot_-4_sd0
+(201/456) train vimp2_ctrl_920_07122013_SW_Aug3_Rot_1_sd0
+(202/456) train vimp2_ctrl_920_07122013_SW_Aug4_Rot_-2_sd0
+(203/456) train vimp2_ctrl_920_07122013_SW_Aug5_Rot_4_sd0
+(204/456) train vimp2_ctrl_921_07122013_MP_Aug0_Rot_-1_sd0
+(205/456) train vimp2_ctrl_921_07122013_MP_Aug1_Rot_-3_sd0
+(206/456) train vimp2_ctrl_921_07122013_MP_Aug2_Rot_6_sd0
+(207/456) train vimp2_ctrl_921_07122013_MP_Aug3_Rot_3_sd0
+(208/456) train vimp2_ctrl_921_07122013_MP_Aug4_Rot_1_sd0
+(209/456) train vimp2_ctrl_921_07122013_MP_Aug5_Rot_-5_sd0
+(210/456) train vimp2_ctrl_925_07152013_LS_Aug0_Rot_-5_sd0
+(211/456) train vimp2_ctrl_925_07152013_LS_Aug1_Rot_-2_sd0
+(212/456) train vimp2_ctrl_925_07152013_LS_Aug2_Rot_5_sd0
+(213/456) train vimp2_ctrl_925_07152013_LS_Aug3_Rot_3_sd0
+(214/456) train vimp2_ctrl_925_07152013_LS_Aug4_Rot_4_sd0
+(215/456) train vimp2_ctrl_925_07152013_LS_Aug5_Rot_-7_sd0
+(216/456) train vimp2_668_02282013_CD_Aug0_Rot_-5_sd1
+(217/456) train vimp2_668_02282013_CD_Aug1_Rot_-6_sd1
+(218/456) train vimp2_668_02282013_CD_Aug2_Rot_3_sd1
+(219/456) train vimp2_668_02282013_CD_Aug3_Rot_4_sd1
+(220/456) train vimp2_668_02282013_CD_Aug4_Rot_-6_sd1
+(221/456) train vimp2_668_02282013_CD_Aug5_Rot_-2_sd1
+(222/456) train vimp2_819_05172013_DS_Aug0_Rot_-1_sd1
+(223/456) train vimp2_819_05172013_DS_Aug1_Rot_3_sd1
+(224/456) train vimp2_819_05172013_DS_Aug2_Rot_6_sd1
+(225/456) train vimp2_819_05172013_DS_Aug3_Rot_3_sd1
+(226/456) train vimp2_819_05172013_DS_Aug4_Rot_-7_sd1
+(227/456) train vimp2_819_05172013_DS_Aug5_Rot_-5_sd1
+(228/456) train vimp2_823_05202013_AJ_Aug0_Rot_-7_sd1
+(229/456) train vimp2_823_05202013_AJ_Aug1_Rot_3_sd1
+(230/456) train vimp2_823_05202013_AJ_Aug2_Rot_6_sd1
+(231/456) train vimp2_823_05202013_AJ_Aug3_Rot_-7_sd1
+(232/456) train vimp2_823_05202013_AJ_Aug4_Rot_-4_sd1
+(233/456) train vimp2_823_05202013_AJ_Aug5_Rot_-4_sd1
+(234/456) train vimp2_824_05212013_JS_Aug0_Rot_7_sd1
+(235/456) train vimp2_824_05212013_JS_Aug1_Rot_3_sd1
+(236/456) train vimp2_824_05212013_JS_Aug2_Rot_3_sd1
+(237/456) train vimp2_824_05212013_JS_Aug3_Rot_-4_sd1
+(238/456) train vimp2_824_05212013_JS_Aug4_Rot_4_sd1
+(239/456) train vimp2_824_05212013_JS_Aug5_Rot_6_sd1
+(240/456) train vimp2_845_05312013_VZ_Aug0_Rot_5_sd1
+(241/456) train vimp2_845_05312013_VZ_Aug1_Rot_6_sd1
+(242/456) train vimp2_845_05312013_VZ_Aug2_Rot_1_sd1
+(243/456) train vimp2_845_05312013_VZ_Aug3_Rot_-6_sd1
+(244/456) train vimp2_845_05312013_VZ_Aug4_Rot_-2_sd1
+(245/456) train vimp2_845_05312013_VZ_Aug5_Rot_-6_sd1
+(246/456) train vimp2_869_06142013_BL_Aug0_Rot_-4_sd1
+(247/456) train vimp2_869_06142013_BL_Aug1_Rot_-3_sd1
+(248/456) train vimp2_869_06142013_BL_Aug2_Rot_-4_sd1
+(249/456) train vimp2_869_06142013_BL_Aug3_Rot_1_sd1
+(250/456) train vimp2_869_06142013_BL_Aug4_Rot_7_sd1
+(251/456) train vimp2_869_06142013_BL_Aug5_Rot_5_sd1
+(252/456) train vimp2_884_06272013_TS_Aug0_Rot_5_sd1
+(253/456) train vimp2_884_06272013_TS_Aug1_Rot_-1_sd1
+(254/456) train vimp2_884_06272013_TS_Aug2_Rot_-1_sd1
+(255/456) train vimp2_884_06272013_TS_Aug3_Rot_3_sd1
+(256/456) train vimp2_884_06272013_TS_Aug4_Rot_4_sd1
+(257/456) train vimp2_884_06272013_TS_Aug5_Rot_3_sd1
+(258/456) train vimp2_901_07052013_AS_Aug0_Rot_3_sd1
+(259/456) train vimp2_901_07052013_AS_Aug1_Rot_5_sd1
+(260/456) train vimp2_901_07052013_AS_Aug2_Rot_-5_sd1
+(261/456) train vimp2_901_07052013_AS_Aug3_Rot_7_sd1
+(262/456) train vimp2_901_07052013_AS_Aug4_Rot_7_sd1
+(263/456) train vimp2_901_07052013_AS_Aug5_Rot_6_sd1
+(264/456) train vimp2_915_07112013_LC_Aug0_Rot_-6_sd1
+(265/456) train vimp2_915_07112013_LC_Aug1_Rot_-5_sd1
+(266/456) train vimp2_915_07112013_LC_Aug2_Rot_7_sd1
+(267/456) train vimp2_915_07112013_LC_Aug3_Rot_1_sd1
+(268/456) train vimp2_915_07112013_LC_Aug4_Rot_6_sd1
+(269/456) train vimp2_915_07112013_LC_Aug5_Rot_-7_sd1
+(270/456) train vimp2_943_07242013_PA_Aug0_Rot_1_sd1
+(271/456) train vimp2_943_07242013_PA_Aug1_Rot_6_sd1
+(272/456) train vimp2_943_07242013_PA_Aug2_Rot_3_sd1
+(273/456) train vimp2_943_07242013_PA_Aug3_Rot_6_sd1
+(274/456) train vimp2_943_07242013_PA_Aug4_Rot_3_sd1
+(275/456) train vimp2_943_07242013_PA_Aug5_Rot_3_sd1
+(276/456) train vimp2_964_08092013_TG_Aug0_Rot_6_sd1
+(277/456) train vimp2_964_08092013_TG_Aug1_Rot_-4_sd1
+(278/456) train vimp2_964_08092013_TG_Aug2_Rot_5_sd1
+(279/456) train vimp2_964_08092013_TG_Aug3_Rot_0_sd1
+(280/456) train vimp2_964_08092013_TG_Aug4_Rot_3_sd1
+(281/456) train vimp2_964_08092013_TG_Aug5_Rot_-1_sd1
+(282/456) train vimp2_ANON606_20130110_Aug0_Rot_-6_sd1
+(283/456) train vimp2_ANON606_20130110_Aug1_Rot_7_sd1
+(284/456) train vimp2_ANON606_20130110_Aug2_Rot_1_sd1
+(285/456) train vimp2_ANON606_20130110_Aug3_Rot_1_sd1
+(286/456) train vimp2_ANON606_20130110_Aug4_Rot_4_sd1
+(287/456) train vimp2_ANON606_20130110_Aug5_Rot_4_sd1
+(288/456) train vimp2_ANON624_20130117_Aug0_Rot_7_sd1
+(289/456) train vimp2_ANON624_20130117_Aug1_Rot_6_sd1
+(290/456) train vimp2_ANON624_20130117_Aug2_Rot_-1_sd1
+(291/456) train vimp2_ANON624_20130117_Aug3_Rot_1_sd1
+(292/456) train vimp2_ANON624_20130117_Aug4_Rot_-5_sd1
+(293/456) train vimp2_ANON624_20130117_Aug5_Rot_4_sd1
+(294/456) train vimp2_ANON724_03272013_Aug0_Rot_-2_sd1
+(295/456) train vimp2_ANON724_03272013_Aug1_Rot_4_sd1
+(296/456) train vimp2_ANON724_03272013_Aug2_Rot_-1_sd1
+(297/456) train vimp2_ANON724_03272013_Aug3_Rot_-6_sd1
+(298/456) train vimp2_ANON724_03272013_Aug4_Rot_-5_sd1
+(299/456) train vimp2_ANON724_03272013_Aug5_Rot_-4_sd1
+(300/456) train vimp2_ctrl_902_07052013_SI_Aug0_Rot_-2_sd1
+(301/456) train vimp2_ctrl_902_07052013_SI_Aug1_Rot_7_sd1
+(302/456) train vimp2_ctrl_902_07052013_SI_Aug2_Rot_2_sd1
+(303/456) train vimp2_ctrl_902_07052013_SI_Aug3_Rot_-4_sd1
+(304/456) train vimp2_ctrl_902_07052013_SI_Aug4_Rot_-1_sd1
+(305/456) train vimp2_ctrl_902_07052013_SI_Aug5_Rot_-4_sd1
+(306/456) train vimp2_ctrl_911_07082013_TTO_Aug0_Rot_7_sd1
+(307/456) train vimp2_ctrl_911_07082013_TTO_Aug1_Rot_-1_sd1
+(308/456) train vimp2_ctrl_911_07082013_TTO_Aug2_Rot_-5_sd1
+(309/456) train vimp2_ctrl_911_07082013_TTO_Aug3_Rot_-3_sd1
+(310/456) train vimp2_ctrl_911_07082013_TTO_Aug4_Rot_6_sd1
+(311/456) train vimp2_ctrl_911_07082013_TTO_Aug5_Rot_6_sd1
+(312/456) train vimp2_ctrl_918_07112013_TQ_Aug0_Rot_1_sd1
+(313/456) train vimp2_ctrl_918_07112013_TQ_Aug1_Rot_-2_sd1
+(314/456) train vimp2_ctrl_918_07112013_TQ_Aug2_Rot_3_sd1
+(315/456) train vimp2_ctrl_918_07112013_TQ_Aug3_Rot_-1_sd1
+(316/456) train vimp2_ctrl_918_07112013_TQ_Aug4_Rot_7_sd1
+(317/456) train vimp2_ctrl_918_07112013_TQ_Aug5_Rot_6_sd1
+(318/456) train vimp2_ctrl_920_07122013_SW_Aug0_Rot_-3_sd1
+(319/456) train vimp2_ctrl_920_07122013_SW_Aug1_Rot_7_sd1
+(320/456) train vimp2_ctrl_920_07122013_SW_Aug2_Rot_-4_sd1
+(321/456) train vimp2_ctrl_920_07122013_SW_Aug3_Rot_-1_sd1
+(322/456) train vimp2_ctrl_920_07122013_SW_Aug4_Rot_-5_sd1
+(323/456) train vimp2_ctrl_920_07122013_SW_Aug5_Rot_-5_sd1
+(324/456) train vimp2_ctrl_921_07122013_MP_Aug0_Rot_4_sd1
+(325/456) train vimp2_ctrl_921_07122013_MP_Aug1_Rot_3_sd1
+(326/456) train vimp2_ctrl_921_07122013_MP_Aug2_Rot_-1_sd1
+(327/456) train vimp2_ctrl_921_07122013_MP_Aug3_Rot_-2_sd1
+(328/456) train vimp2_ctrl_921_07122013_MP_Aug4_Rot_2_sd1
+(329/456) train vimp2_ctrl_921_07122013_MP_Aug5_Rot_4_sd1
+(330/456) train vimp2_ctrl_925_07152013_LS_Aug0_Rot_-2_sd1
+(331/456) train vimp2_ctrl_925_07152013_LS_Aug1_Rot_4_sd1
+(332/456) train vimp2_ctrl_925_07152013_LS_Aug2_Rot_-2_sd1
+(333/456) train vimp2_ctrl_925_07152013_LS_Aug3_Rot_2_sd1
+(334/456) train vimp2_ctrl_925_07152013_LS_Aug4_Rot_3_sd1
+(335/456) train vimp2_ctrl_925_07152013_LS_Aug5_Rot_-4_sd1
+(336/456) train vimp2_668_02282013_CD_Aug0_Rot_-3_sd2
+(337/456) train vimp2_668_02282013_CD_Aug1_Rot_6_sd2
+(338/456) train vimp2_668_02282013_CD_Aug2_Rot_-6_sd2
+(339/456) train vimp2_668_02282013_CD_Aug3_Rot_7_sd2
+(340/456) train vimp2_668_02282013_CD_Aug4_Rot_1_sd2
+(341/456) train vimp2_668_02282013_CD_Aug5_Rot_7_sd2
+(342/456) train vimp2_819_05172013_DS_Aug0_Rot_3_sd2
+(343/456) train vimp2_819_05172013_DS_Aug1_Rot_-1_sd2
+(344/456) train vimp2_819_05172013_DS_Aug2_Rot_-2_sd2
+(345/456) train vimp2_819_05172013_DS_Aug3_Rot_-1_sd2
+(346/456) train vimp2_819_05172013_DS_Aug4_Rot_7_sd2
+(347/456) train vimp2_819_05172013_DS_Aug5_Rot_3_sd2
+(348/456) train vimp2_823_05202013_AJ_Aug0_Rot_-6_sd2
+(349/456) train vimp2_823_05202013_AJ_Aug1_Rot_-7_sd2
+(350/456) train vimp2_823_05202013_AJ_Aug2_Rot_7_sd2
+(351/456) train vimp2_823_05202013_AJ_Aug3_Rot_-2_sd2
+(352/456) train vimp2_823_05202013_AJ_Aug4_Rot_1_sd2
+(353/456) train vimp2_823_05202013_AJ_Aug5_Rot_1_sd2
+(354/456) train vimp2_824_05212013_JS_Aug0_Rot_-5_sd2
+(355/456) train vimp2_824_05212013_JS_Aug1_Rot_3_sd2
+(356/456) train vimp2_824_05212013_JS_Aug2_Rot_5_sd2
+(357/456) train vimp2_824_05212013_JS_Aug3_Rot_2_sd2
+(358/456) train vimp2_824_05212013_JS_Aug4_Rot_5_sd2
+(359/456) train vimp2_824_05212013_JS_Aug5_Rot_-7_sd2
+(360/456) train vimp2_845_05312013_VZ_Aug0_Rot_-5_sd2
+(361/456) train vimp2_845_05312013_VZ_Aug1_Rot_3_sd2
+(362/456) train vimp2_845_05312013_VZ_Aug2_Rot_-3_sd2
+(363/456) train vimp2_845_05312013_VZ_Aug3_Rot_-1_sd2
+(364/456) train vimp2_845_05312013_VZ_Aug4_Rot_4_sd2
+(365/456) train vimp2_845_05312013_VZ_Aug5_Rot_-2_sd2
+(366/456) train vimp2_869_06142013_BL_Aug0_Rot_3_sd2
+(367/456) train vimp2_869_06142013_BL_Aug1_Rot_7_sd2
+(368/456) train vimp2_869_06142013_BL_Aug2_Rot_4_sd2
+(369/456) train vimp2_869_06142013_BL_Aug3_Rot_1_sd2
+(370/456) train vimp2_869_06142013_BL_Aug4_Rot_1_sd2
+(371/456) train vimp2_869_06142013_BL_Aug5_Rot_1_sd2
+(372/456) train vimp2_884_06272013_TS_Aug0_Rot_3_sd2
+(373/456) train vimp2_884_06272013_TS_Aug1_Rot_-5_sd2
+(374/456) train vimp2_884_06272013_TS_Aug2_Rot_-7_sd2
+(375/456) train vimp2_884_06272013_TS_Aug3_Rot_-6_sd2
+(376/456) train vimp2_884_06272013_TS_Aug4_Rot_-2_sd2
+(377/456) train vimp2_884_06272013_TS_Aug5_Rot_-6_sd2
+(378/456) train vimp2_901_07052013_AS_Aug0_Rot_2_sd2
+(379/456) train vimp2_901_07052013_AS_Aug1_Rot_-3_sd2
+(380/456) train vimp2_901_07052013_AS_Aug2_Rot_-6_sd2
+(381/456) train vimp2_901_07052013_AS_Aug3_Rot_6_sd2
+(382/456) train vimp2_901_07052013_AS_Aug4_Rot_-5_sd2
+(383/456) train vimp2_901_07052013_AS_Aug5_Rot_1_sd2
+(384/456) train vimp2_915_07112013_LC_Aug0_Rot_1_sd2
+(385/456) train vimp2_915_07112013_LC_Aug1_Rot_7_sd2
+(386/456) train vimp2_915_07112013_LC_Aug2_Rot_3_sd2
+(387/456) train vimp2_915_07112013_LC_Aug3_Rot_6_sd2
+(388/456) train vimp2_915_07112013_LC_Aug4_Rot_4_sd2
+(389/456) train vimp2_915_07112013_LC_Aug5_Rot_4_sd2
+(390/456) train vimp2_943_07242013_PA_Aug0_Rot_3_sd2
+(391/456) train vimp2_943_07242013_PA_Aug1_Rot_-4_sd2
+(392/456) train vimp2_943_07242013_PA_Aug2_Rot_3_sd2
+(393/456) train vimp2_943_07242013_PA_Aug3_Rot_2_sd2
+(394/456) train vimp2_943_07242013_PA_Aug4_Rot_-1_sd2
+(395/456) train vimp2_943_07242013_PA_Aug5_Rot_-3_sd2
+(396/456) train vimp2_964_08092013_TG_Aug0_Rot_2_sd2
+(397/456) train vimp2_964_08092013_TG_Aug1_Rot_-6_sd2
+(398/456) train vimp2_964_08092013_TG_Aug2_Rot_5_sd2
+(399/456) train vimp2_964_08092013_TG_Aug3_Rot_-7_sd2
+(400/456) train vimp2_964_08092013_TG_Aug4_Rot_-6_sd2
+(401/456) train vimp2_964_08092013_TG_Aug5_Rot_5_sd2
+(402/456) train vimp2_ANON606_20130110_Aug0_Rot_-6_sd2
+(403/456) train vimp2_ANON606_20130110_Aug1_Rot_-5_sd2
+(404/456) train vimp2_ANON606_20130110_Aug2_Rot_-3_sd2
+(405/456) train vimp2_ANON606_20130110_Aug3_Rot_3_sd2
+(406/456) train vimp2_ANON606_20130110_Aug4_Rot_-2_sd2
+(407/456) train vimp2_ANON606_20130110_Aug5_Rot_-3_sd2
+(408/456) train vimp2_ANON624_20130117_Aug0_Rot_2_sd2
+(409/456) train vimp2_ANON624_20130117_Aug1_Rot_-2_sd2
+(410/456) train vimp2_ANON624_20130117_Aug2_Rot_-6_sd2
+(411/456) train vimp2_ANON624_20130117_Aug3_Rot_1_sd2
+(412/456) train vimp2_ANON624_20130117_Aug4_Rot_-5_sd2
+(413/456) train vimp2_ANON624_20130117_Aug5_Rot_-7_sd2
+(414/456) train vimp2_ANON724_03272013_Aug0_Rot_-5_sd2
+(415/456) train vimp2_ANON724_03272013_Aug1_Rot_6_sd2
+(416/456) train vimp2_ANON724_03272013_Aug2_Rot_-3_sd2
+(417/456) train vimp2_ANON724_03272013_Aug3_Rot_-6_sd2
+(418/456) train vimp2_ANON724_03272013_Aug4_Rot_-1_sd2
+(419/456) train vimp2_ANON724_03272013_Aug5_Rot_-7_sd2
+(420/456) train vimp2_ctrl_902_07052013_SI_Aug0_Rot_-4_sd2
+(421/456) train vimp2_ctrl_902_07052013_SI_Aug1_Rot_-3_sd2
+(422/456) train vimp2_ctrl_902_07052013_SI_Aug2_Rot_-5_sd2
+(423/456) train vimp2_ctrl_902_07052013_SI_Aug3_Rot_5_sd2
+(424/456) train vimp2_ctrl_902_07052013_SI_Aug4_Rot_-2_sd2
+(425/456) train vimp2_ctrl_902_07052013_SI_Aug5_Rot_5_sd2
+(426/456) train vimp2_ctrl_911_07082013_TTO_Aug0_Rot_-3_sd2
+(427/456) train vimp2_ctrl_911_07082013_TTO_Aug1_Rot_7_sd2
+(428/456) train vimp2_ctrl_911_07082013_TTO_Aug2_Rot_3_sd2
+(429/456) train vimp2_ctrl_911_07082013_TTO_Aug3_Rot_5_sd2
+(430/456) train vimp2_ctrl_911_07082013_TTO_Aug4_Rot_7_sd2
+(431/456) train vimp2_ctrl_911_07082013_TTO_Aug5_Rot_2_sd2
+(432/456) train vimp2_ctrl_918_07112013_TQ_Aug0_Rot_-7_sd2
+(433/456) train vimp2_ctrl_918_07112013_TQ_Aug1_Rot_5_sd2
+(434/456) train vimp2_ctrl_918_07112013_TQ_Aug2_Rot_5_sd2
+(435/456) train vimp2_ctrl_918_07112013_TQ_Aug3_Rot_4_sd2
+(436/456) train vimp2_ctrl_918_07112013_TQ_Aug4_Rot_5_sd2
+(437/456) train vimp2_ctrl_918_07112013_TQ_Aug5_Rot_-4_sd2
+(438/456) train vimp2_ctrl_920_07122013_SW_Aug0_Rot_7_sd2
+(439/456) train vimp2_ctrl_920_07122013_SW_Aug1_Rot_-2_sd2
+(440/456) train vimp2_ctrl_920_07122013_SW_Aug2_Rot_1_sd2
+(441/456) train vimp2_ctrl_920_07122013_SW_Aug3_Rot_-7_sd2
+(442/456) train vimp2_ctrl_920_07122013_SW_Aug4_Rot_-3_sd2
+(443/456) train vimp2_ctrl_920_07122013_SW_Aug5_Rot_7_sd2
+(444/456) train vimp2_ctrl_921_07122013_MP_Aug0_Rot_1_sd2
+(445/456) train vimp2_ctrl_921_07122013_MP_Aug1_Rot_-7_sd2
+(446/456) train vimp2_ctrl_921_07122013_MP_Aug2_Rot_6_sd2
+(447/456) train vimp2_ctrl_921_07122013_MP_Aug3_Rot_-2_sd2
+(448/456) train vimp2_ctrl_921_07122013_MP_Aug4_Rot_-5_sd2
+(449/456) train vimp2_ctrl_921_07122013_MP_Aug5_Rot_6_sd2
+(450/456) train vimp2_ctrl_925_07152013_LS_Aug0_Rot_2_sd2
+(451/456) train vimp2_ctrl_925_07152013_LS_Aug1_Rot_5_sd2
+(452/456) train vimp2_ctrl_925_07152013_LS_Aug2_Rot_2_sd2
+(453/456) train vimp2_ctrl_925_07152013_LS_Aug3_Rot_5_sd2
+(454/456) train vimp2_ctrl_925_07152013_LS_Aug4_Rot_-4_sd2
+(455/456) train vimp2_ctrl_925_07152013_LS_Aug5_Rot_-3_sd22019-07-07 01:37:54.689078: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-07-07 01:37:55.055545: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:08:00.0
+totalMemory: 15.89GiB freeMemory: 14.65GiB
+2019-07-07 01:37:55.055612: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-07-07 01:37:55.433371: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-07-07 01:37:55.433448: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-07-07 01:37:55.433461: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-07-07 01:37:55.433920: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14197 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:08:00.0, compute capability: 6.0)
+mkdir: cannot create directory ‘/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM10_Res_Unet_NL3_LS_MyJoint_US1_CSFn2_Init_Main_CV_a’: File exists
+mkdir: cannot create directory ‘/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM10_Res_Unet_NL3_LS_MyJoint_US1_CSFn2_Init_Main_CV_a’: File exists
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+Using TensorFlow backend.
+Loading train:   0%|          | 0/285 [00:00<?, ?it/s]Loading train:   0%|          | 1/285 [00:01<05:55,  1.25s/it]Loading train:   1%|          | 2/285 [00:02<05:53,  1.25s/it]Loading train:   1%|          | 3/285 [00:03<05:31,  1.18s/it]Loading train:   1%|▏         | 4/285 [00:04<05:56,  1.27s/it]Loading train:   2%|▏         | 5/285 [00:06<05:36,  1.20s/it]Loading train:   2%|▏         | 6/285 [00:07<05:53,  1.27s/it]Loading train:   2%|▏         | 7/285 [00:09<06:17,  1.36s/it]Loading train:   3%|▎         | 8/285 [00:10<06:34,  1.42s/it]Loading train:   3%|▎         | 9/285 [00:11<06:12,  1.35s/it]Loading train:   4%|▎         | 10/285 [00:12<05:43,  1.25s/it]Loading train:   4%|▍         | 11/285 [00:14<05:39,  1.24s/it]Loading train:   4%|▍         | 12/285 [00:15<05:31,  1.22s/it]Loading train:   5%|▍         | 13/285 [00:16<05:20,  1.18s/it]Loading train:   5%|▍         | 14/285 [00:17<05:14,  1.16s/it]Loading train:   5%|▌         | 15/285 [00:18<05:00,  1.11s/it]Loading train:   6%|▌         | 16/285 [00:19<04:58,  1.11s/it]Loading train:   6%|▌         | 17/285 [00:20<04:41,  1.05s/it]Loading train:   6%|▋         | 18/285 [00:21<04:50,  1.09s/it]Loading train:   7%|▋         | 19/285 [00:22<04:37,  1.04s/it]Loading train:   7%|▋         | 20/285 [00:23<04:43,  1.07s/it]Loading train:   7%|▋         | 21/285 [00:24<04:36,  1.05s/it]Loading train:   8%|▊         | 22/285 [00:25<04:52,  1.11s/it]Loading train:   8%|▊         | 23/285 [00:26<04:36,  1.06s/it]Loading train:   8%|▊         | 24/285 [00:27<04:28,  1.03s/it]Loading train:   9%|▉         | 25/285 [00:28<04:24,  1.02s/it]Loading train:   9%|▉         | 26/285 [00:29<04:23,  1.02s/it]Loading train:   9%|▉         | 27/285 [00:30<04:29,  1.04s/it]Loading train:  10%|▉         | 28/285 [00:31<04:22,  1.02s/it]Loading train:  10%|█         | 29/285 [00:32<04:18,  1.01s/it]Loading train:  11%|█         | 30/285 [00:33<04:08,  1.03it/s]Loading train:  11%|█         | 31/285 [00:34<04:18,  1.02s/it]Loading train:  11%|█         | 32/285 [00:35<04:13,  1.00s/it]Loading train:  12%|█▏        | 33/285 [00:36<04:04,  1.03it/s]Loading train:  12%|█▏        | 34/285 [00:37<03:55,  1.06it/s]Loading train:  12%|█▏        | 35/285 [00:38<03:59,  1.04it/s]Loading train:  13%|█▎        | 36/285 [00:39<03:58,  1.04it/s]Loading train:  13%|█▎        | 37/285 [00:40<04:12,  1.02s/it]Loading train:  13%|█▎        | 38/285 [00:41<04:07,  1.00s/it]Loading train:  14%|█▎        | 39/285 [00:42<04:16,  1.04s/it]Loading train:  14%|█▍        | 40/285 [00:43<04:08,  1.01s/it]Loading train:  14%|█▍        | 41/285 [00:44<04:15,  1.05s/it]Loading train:  15%|█▍        | 42/285 [00:45<04:00,  1.01it/s]Loading train:  15%|█▌        | 43/285 [00:46<03:53,  1.04it/s]Loading train:  15%|█▌        | 44/285 [00:47<03:51,  1.04it/s]Loading train:  16%|█▌        | 45/285 [00:48<03:53,  1.03it/s]Loading train:  16%|█▌        | 46/285 [00:49<03:49,  1.04it/s]Loading train:  16%|█▋        | 47/285 [00:50<03:34,  1.11it/s]Loading train:  17%|█▋        | 48/285 [00:51<03:27,  1.14it/s]Loading train:  17%|█▋        | 49/285 [00:51<03:21,  1.17it/s]Loading train:  18%|█▊        | 50/285 [00:52<03:15,  1.20it/s]Loading train:  18%|█▊        | 51/285 [00:53<03:08,  1.24it/s]

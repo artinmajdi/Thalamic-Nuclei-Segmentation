@@ -105,6 +105,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 10: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T   =True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_Main'),
                 11: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_Main'),
                 12: (13  ,   self.ReadTrainC(Main=1)         , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True) , '_Main_test_TL_Main'),
+                13: (13  ,   self.ReadTrainC(CSFn1=1,CSFn2=1)   , self.InitializeB(From_7T   =True)  ,  self.Transfer_LearningC()          , '_CSFn2_CSFn1_Init_Main'),
                 }                                           
             return switcher.get(TypeExperiment , 'wrong Index')
 

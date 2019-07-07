@@ -347,7 +347,7 @@ def EXP5_Resnet_JointDice(UserInfoB):
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
 
-    for UserInfoB['TypeExperiment'] in [1, 2, 4]:
+    for UserInfoB['TypeExperiment'] in [8, 6, 7]: # 1, 2, 4]:
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15 , 20, 30]:        
             Run(UserInfoB, IV)
 
@@ -618,7 +618,7 @@ UserInfoB, K = preMode(UserInfo.__dict__)
 
 # UserInfoB['simulation'].ReadAugments_Mode = False
 
-EXP5d_Resnet_JointDice_GeomtericalMean(UserInfoB)
+EXP5_Resnet_JointDice(UserInfoB)
 # EXP15b_TL_CSFn2(UserInfoB)
 
 K.clear_session()
