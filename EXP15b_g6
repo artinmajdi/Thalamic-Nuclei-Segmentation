@@ -1,581 +1,0 @@
-*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
-(0/285) train vimp2_ANON967_CSFn2
-(1/285) train vimp2_E_CSFn2
-(2/285) train vimp2_G_CSFn2
-(3/285) train vimp2_J_CSFn2
-(4/285) train vimp2_K_CSFn2
-(5/285) train vimp2_L_CSFn2
-(6/285) train vimp2_ANON911_CSFn2
-(7/285) train vimp2_D_CSFn2
-(8/285) train vimp2_F_CSFn2
-(9/285) train vimp2_ANON911_CSFn_Aug0_Rot_-4_sd0
-(10/285) train vimp2_ANON911_CSFn_Aug0_Rot_-4_sd1
-(11/285) train vimp2_ANON911_CSFn_Aug0_Rot_7_sd2
-(12/285) train vimp2_ANON911_CSFn_Aug1_Rot_1_sd2
-(13/285) train vimp2_ANON911_CSFn_Aug1_Rot_3_sd1
-(14/285) train vimp2_ANON911_CSFn_Aug1_Rot_4_sd0
-(15/285) train vimp2_ANON911_CSFn_Aug2_Rot_1_sd1
-(16/285) train vimp2_ANON911_CSFn_Aug2_Rot_2_sd2
-(17/285) train vimp2_ANON911_CSFn_Aug2_Rot_5_sd0
-(18/285) train vimp2_ANON911_CSFn_Aug3_Rot_-4_sd0
-(19/285) train vimp2_ANON911_CSFn_Aug3_Rot_6_sd1
-(20/285) train vimp2_ANON911_CSFn_Aug3_Rot_7_sd2
-(21/285) train vimp2_ANON911_CSFn_Aug4_Rot_-2_sd1
-(22/285) train vimp2_ANON911_CSFn_Aug4_Rot_7_sd0
-(23/285) train vimp2_ANON911_CSFn_Aug4_Rot_7_sd2
-(24/285) train vimp2_ANON911_CSFn_Aug5_Rot_1_sd0
-(25/285) train vimp2_ANON911_CSFn_Aug5_Rot_-6_sd1
-(26/285) train vimp2_ANON911_CSFn_Aug5_Rot_7_sd2
-(27/285) train vimp2_D_CSFn_Aug0_Rot_4_sd0
-(28/285) train vimp2_D_CSFn_Aug0_Rot_-5_sd2
-(29/285) train vimp2_D_CSFn_Aug0_Rot_7_sd1
-(30/285) train vimp2_D_CSFn_Aug1_Rot_-2_sd1
-(31/285) train vimp2_D_CSFn_Aug1_Rot_-4_sd0
-(32/285) train vimp2_D_CSFn_Aug1_Rot_5_sd2
-(33/285) train vimp2_D_CSFn_Aug2_Rot_1_sd1
-(34/285) train vimp2_D_CSFn_Aug2_Rot_-1_sd2
-(35/285) train vimp2_D_CSFn_Aug2_Rot_-5_sd0
-(36/285) train vimp2_D_CSFn_Aug3_Rot_-3_sd0
-(37/285) train vimp2_D_CSFn_Aug3_Rot_-3_sd1
-(38/285) train vimp2_D_CSFn_Aug3_Rot_3_sd2
-(39/285) train vimp2_D_CSFn_Aug4_Rot_-4_sd0
-(40/285) train vimp2_D_CSFn_Aug4_Rot_-5_sd2
-(41/285) train vimp2_D_CSFn_Aug4_Rot_6_sd1
-(42/285) train vimp2_D_CSFn_Aug5_Rot_1_sd2
-(43/285) train vimp2_D_CSFn_Aug5_Rot_2_sd0
-(44/285) train vimp2_D_CSFn_Aug5_Rot_7_sd1
-(45/285) train vimp2_F_CSFn_Aug0_Rot_-1_sd2
-(46/285) train vimp2_F_CSFn_Aug0_Rot_5_sd0
-(47/285) train vimp2_F_CSFn_Aug0_Rot_7_sd1
-(48/285) train vimp2_F_CSFn_Aug1_Rot_-5_sd2
-(49/285) train vimp2_F_CSFn_Aug1_Rot_-7_sd0
-(50/285) train vimp2_F_CSFn_Aug1_Rot_-7_sd1
-(51/285) train vimp2_F_CSFn_Aug2_Rot_-3_sd1
-(52/285) train vimp2_F_CSFn_Aug2_Rot_4_sd0
-(53/285) train vimp2_F_CSFn_Aug2_Rot_-7_sd2
-(54/285) train vimp2_F_CSFn_Aug3_Rot_2_sd0
-(55/285) train vimp2_F_CSFn_Aug3_Rot_-3_sd2
-(56/285) train vimp2_F_CSFn_Aug3_Rot_-7_sd1
-(57/285) train vimp2_F_CSFn_Aug4_Rot_-1_sd0
-(58/285) train vimp2_F_CSFn_Aug4_Rot_-2_sd1
-(59/285) train vimp2_F_CSFn_Aug4_Rot_-2_sd2
-(60/285) train vimp2_F_CSFn_Aug5_Rot_-1_sd1
-(61/285) train vimp2_F_CSFn_Aug5_Rot_4_sd0
-(62/285) train vimp2_F_CSFn_Aug5_Rot_-5_sd2
-(63/285) train vimp2_ANON972_CSFn2
-(64/285) train vimp2_H_CSFn2
-(65/285) train vimp2_I_CSFn2
-(66/285) train vimp2_ANON972_CSFn_Aug0_Rot_-1_sd1
-(67/285) train vimp2_ANON972_CSFn_Aug0_Rot_3_sd0
-(68/285) train vimp2_ANON972_CSFn_Aug0_Rot_5_sd2
-(69/285) train vimp2_ANON972_CSFn_Aug1_Rot_3_sd1
-(70/285) train vimp2_ANON972_CSFn_Aug1_Rot_3_sd2
-(71/285) train vimp2_ANON972_CSFn_Aug1_Rot_-5_sd0
-(72/285) train vimp2_ANON972_CSFn_Aug2_Rot_1_sd1
-(73/285) train vimp2_ANON972_CSFn_Aug2_Rot_-5_sd2
-(74/285) train vimp2_ANON972_CSFn_Aug2_Rot_7_sd0
-(75/285) train vimp2_ANON972_CSFn_Aug3_Rot_-3_sd0
-(76/285) train vimp2_ANON972_CSFn_Aug3_Rot_-6_sd1
-(77/285) train vimp2_ANON972_CSFn_Aug3_Rot_7_sd2
-(78/285) train vimp2_ANON972_CSFn_Aug4_Rot_-4_sd0
-(79/285) train vimp2_ANON972_CSFn_Aug4_Rot_4_sd1
-(80/285) train vimp2_ANON972_CSFn_Aug4_Rot_4_sd2
-(81/285) train vimp2_ANON972_CSFn_Aug5_Rot_-1_sd0
-(82/285) train vimp2_ANON972_CSFn_Aug5_Rot_2_sd2
-(83/285) train vimp2_ANON972_CSFn_Aug5_Rot_-4_sd1
-(84/285) train vimp2_H_CSFn_Aug0_Rot_-3_sd2
-(85/285) train vimp2_H_CSFn_Aug0_Rot_-4_sd0
-(86/285) train vimp2_H_CSFn_Aug0_Rot_-4_sd1
-(87/285) train vimp2_H_CSFn_Aug1_Rot_-1_sd2
-(88/285) train vimp2_H_CSFn_Aug1_Rot_-2_sd0
-(89/285) train vimp2_H_CSFn_Aug1_Rot_-4_sd1
-(90/285) train vimp2_H_CSFn_Aug2_Rot_-1_sd1
-(91/285) train vimp2_H_CSFn_Aug2_Rot_2_sd2
-(92/285) train vimp2_H_CSFn_Aug2_Rot_6_sd0
-(93/285) train vimp2_H_CSFn_Aug3_Rot_-1_sd0
-(94/285) train vimp2_H_CSFn_Aug3_Rot_1_sd1
-(95/285) train vimp2_H_CSFn_Aug3_Rot_-1_sd2
-(96/285) train vimp2_H_CSFn_Aug4_Rot_-3_sd0
-(97/285) train vimp2_H_CSFn_Aug4_Rot_4_sd1
-(98/285) train vimp2_H_CSFn_Aug4_Rot_5_sd2
-(99/285) train vimp2_H_CSFn_Aug5_Rot_-1_sd2
-(100/285) train vimp2_H_CSFn_Aug5_Rot_-2_sd1
-(101/285) train vimp2_H_CSFn_Aug5_Rot_-3_sd0
-(102/285) train vimp2_I_CSFn_Aug0_Rot_1_sd1
-(103/285) train vimp2_I_CSFn_Aug0_Rot_6_sd2
-(104/285) train vimp2_I_CSFn_Aug0_Rot_-7_sd0
-(105/285) train vimp2_I_CSFn_Aug1_Rot_2_sd0
-(106/285) train vimp2_I_CSFn_Aug1_Rot_-5_sd2
-(107/285) train vimp2_I_CSFn_Aug1_Rot_-6_sd1
-(108/285) train vimp2_I_CSFn_Aug2_Rot_1_sd1
-(109/285) train vimp2_I_CSFn_Aug2_Rot_-6_sd0
-(110/285) train vimp2_I_CSFn_Aug2_Rot_-7_sd2
-(111/285) train vimp2_I_CSFn_Aug3_Rot_-1_sd0
-(112/285) train vimp2_I_CSFn_Aug3_Rot_-1_sd2
-(113/285) train vimp2_I_CSFn_Aug3_Rot_-5_sd1
-(114/285) train vimp2_I_CSFn_Aug4_Rot_2_sd1
-(115/285) train vimp2_I_CSFn_Aug4_Rot_-6_sd0
-(116/285) train vimp2_I_CSFn_Aug4_Rot_6_sd2
-(117/285) train vimp2_I_CSFn_Aug5_Rot_-2_sd1
-(118/285) train vimp2_I_CSFn_Aug5_Rot_3_sd2
-(119/285) train vimp2_I_CSFn_Aug5_Rot_5_sd0
-(120/285) train vimp2_ANON988_CSFn2
-(121/285) train vimp2_M_CSFn2
-(122/285) train vimp2_N_CSFn2
-(123/285) train vimp2_ANON988_CSFn_Aug0_Rot_2_sd0
-(124/285) train vimp2_ANON988_CSFn_Aug0_Rot_-2_sd2
-(125/285) train vimp2_ANON988_CSFn_Aug0_Rot_4_sd1
-(126/285) train vimp2_ANON988_CSFn_Aug1_Rot_-2_sd0
-(127/285) train vimp2_ANON988_CSFn_Aug1_Rot_3_sd1
-(128/285) train vimp2_ANON988_CSFn_Aug1_Rot_5_sd2
-(129/285) train vimp2_ANON988_CSFn_Aug2_Rot_-6_sd2
-(130/285) train vimp2_ANON988_CSFn_Aug2_Rot_-7_sd0
-(131/285) train vimp2_ANON988_CSFn_Aug2_Rot_-7_sd1
-(132/285) train vimp2_ANON988_CSFn_Aug3_Rot_-5_sd0
-(133/285) train vimp2_ANON988_CSFn_Aug3_Rot_-7_sd1
-(134/285) train vimp2_ANON988_CSFn_Aug3_Rot_-7_sd2
-(135/285) train vimp2_ANON988_CSFn_Aug4_Rot_-1_sd0
-(136/285) train vimp2_ANON988_CSFn_Aug4_Rot_2_sd1
-(137/285) train vimp2_ANON988_CSFn_Aug4_Rot_-4_sd2
-(138/285) train vimp2_ANON988_CSFn_Aug5_Rot_2_sd0
-(139/285) train vimp2_ANON988_CSFn_Aug5_Rot_4_sd2
-(140/285) train vimp2_ANON988_CSFn_Aug5_Rot_-5_sd1
-(141/285) train vimp2_M_CSFn_Aug0_Rot_-1_sd1
-(142/285) train vimp2_M_CSFn_Aug0_Rot_1_sd2
-(143/285) train vimp2_M_CSFn_Aug0_Rot_-2_sd0
-(144/285) train vimp2_M_CSFn_Aug1_Rot_-3_sd2
-(145/285) train vimp2_M_CSFn_Aug1_Rot_-5_sd0
-(146/285) train vimp2_M_CSFn_Aug1_Rot_-5_sd1
-(147/285) train vimp2_M_CSFn_Aug2_Rot_-2_sd1
-(148/285) train vimp2_M_CSFn_Aug2_Rot_4_sd2
-(149/285) train vimp2_M_CSFn_Aug2_Rot_7_sd0
-(150/285) train vimp2_M_CSFn_Aug3_Rot_2_sd1
-(151/285) train vimp2_M_CSFn_Aug3_Rot_-3_sd0
-(152/285) train vimp2_M_CSFn_Aug3_Rot_4_sd2
-(153/285) train vimp2_M_CSFn_Aug4_Rot_4_sd0
-(154/285) train vimp2_M_CSFn_Aug4_Rot_-5_sd1
-(155/285) train vimp2_M_CSFn_Aug4_Rot_7_sd2
-(156/285) train vimp2_M_CSFn_Aug5_Rot_-3_sd2
-(157/285) train vimp2_M_CSFn_Aug5_Rot_4_sd1
-(158/285) train vimp2_M_CSFn_Aug5_Rot_7_sd0
-(159/285) train vimp2_N_CSFn_Aug0_Rot_2_sd0
-(160/285) train vimp2_N_CSFn_Aug0_Rot_3_sd1
-(161/285) train vimp2_N_CSFn_Aug0_Rot_6_sd2
-(162/285) train vimp2_N_CSFn_Aug1_Rot_2_sd2
-(163/285) train vimp2_N_CSFn_Aug1_Rot_3_sd1
-(164/285) train vimp2_N_CSFn_Aug1_Rot_-4_sd0
-(165/285) train vimp2_N_CSFn_Aug2_Rot_-1_sd1
-(166/285) train vimp2_N_CSFn_Aug2_Rot_2_sd2
-(167/285) train vimp2_N_CSFn_Aug2_Rot_5_sd0
-(168/285) train vimp2_N_CSFn_Aug3_Rot_4_sd0
-(169/285) train vimp2_N_CSFn_Aug3_Rot_6_sd1
-(170/285) train vimp2_N_CSFn_Aug3_Rot_-6_sd2
-(171/285) train vimp2_N_CSFn_Aug4_Rot_-1_sd0
-(172/285) train vimp2_N_CSFn_Aug4_Rot_-1_sd2
-(173/285) train vimp2_N_CSFn_Aug4_Rot_-2_sd1
-(174/285) train vimp2_N_CSFn_Aug5_Rot_-1_sd0
-(175/285) train vimp2_N_CSFn_Aug5_Rot_5_sd1
-(176/285) train vimp2_N_CSFn_Aug5_Rot_-5_sd2
-(177/285) train vimp2_ANON967_CSFn_Aug0_Rot_-3_sd0
-(178/285) train vimp2_ANON967_CSFn_Aug0_Rot_-5_sd2
-(179/285) train vimp2_ANON967_CSFn_Aug0_Rot_7_sd1
-(180/285) train vimp2_ANON967_CSFn_Aug1_Rot_1_sd2
-(181/285) train 2019-07-05 17:40:17.760133: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
-2019-07-05 17:40:18.367014: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
-name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
-pciBusID: 0000:88:00.0
-totalMemory: 15.89GiB freeMemory: 15.60GiB
-2019-07-05 17:40:18.367078: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
-2019-07-05 17:40:18.760538: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
-2019-07-05 17:40:18.760636: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
-2019-07-05 17:40:18.760654: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
-2019-07-05 17:40:18.761275: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:88:00.0, compute capability: 6.0)
-mkdir: cannot create directory ‘/array/ssd/msmajdi/experiments/keras/exp6/results/sE13_Cascade_FM20_FCN_Unet_TL_NL3_LS_MyBCE_US1_FCNA3_FCNB1_CSFn2_TL_Main_CV_a’: File exists
-mkdir: cannot create directory ‘/array/ssd/msmajdi/experiments/keras/exp6/results/sE13_Cascade_FM20_FCN_Unet_TL_NL3_LS_MyBCE_US1_FCNA3_FCNB1_CSFn2_TL_Main_CV_a’: File exists
-/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-Using TensorFlow backend.
-Loading train:   0%|          | 0/285 [00:00<?, ?it/s]Loading train:   0%|          | 1/285 [00:01<08:47,  1.86s/it]Loading train:   1%|          | 2/285 [00:04<09:16,  1.97s/it]Loading train:   1%|          | 3/285 [00:05<08:45,  1.86s/it]Loading train:   1%|▏         | 4/285 [00:07<08:56,  1.91s/it]Loading train:   2%|▏         | 5/285 [00:10<09:34,  2.05s/it]Loading train:   2%|▏         | 6/285 [00:12<10:10,  2.19s/it]Loading train:   2%|▏         | 7/285 [00:15<10:34,  2.28s/it]Loading train:   3%|▎         | 8/285 [00:17<10:19,  2.24s/it]Loading train:   3%|▎         | 9/285 [00:19<10:00,  2.18s/it]Loading train:   4%|▎         | 10/285 [00:21<09:49,  2.14s/it]Loading train:   4%|▍         | 11/285 [00:23<09:16,  2.03s/it]Loading train:   4%|▍         | 12/285 [00:25<09:35,  2.11s/it]Loading train:   5%|▍         | 13/285 [00:27<09:18,  2.05s/it]Loading train:   5%|▍         | 14/285 [00:28<08:23,  1.86s/it]Loading train:   5%|▌         | 15/285 [00:30<08:00,  1.78s/it]vimp2_ANON967_CSFn_Aug1_Rot_3_sd0
-(182/285) train vimp2_ANON967_CSFn_Aug1_Rot_-6_sd1
-(183/285) train vimp2_ANON967_CSFn_Aug2_Rot_4_sd2
-(184/285) train vimp2_ANON967_CSFn_Aug2_Rot_-5_sd0
-(185/285) train vimp2_ANON967_CSFn_Aug2_Rot_-7_sd1
-(186/285) train vimp2_ANON967_CSFn_Aug3_Rot_4_sd2
-(187/285) train vimp2_ANON967_CSFn_Aug3_Rot_5_sd1
-(188/285) train vimp2_ANON967_CSFn_Aug3_Rot_-7_sd0
-(189/285) train vimp2_ANON967_CSFn_Aug4_Rot_-4_sd0
-(190/285) train vimp2_ANON967_CSFn_Aug4_Rot_6_sd1
-(191/285) train vimp2_ANON967_CSFn_Aug4_Rot_6_sd2
-(192/285) train vimp2_ANON967_CSFn_Aug5_Rot_-5_sd1
-(193/285) train vimp2_ANON967_CSFn_Aug5_Rot_-7_sd0
-(194/285) train vimp2_ANON967_CSFn_Aug5_Rot_-7_sd2
-(195/285) train vimp2_E_CSFn_Aug0_Rot_-3_sd0
-(196/285) train vimp2_E_CSFn_Aug0_Rot_-3_sd2
-(197/285) train vimp2_E_CSFn_Aug0_Rot_6_sd1
-(198/285) train vimp2_E_CSFn_Aug1_Rot_0_sd1
-(199/285) train vimp2_E_CSFn_Aug1_Rot_1_sd0
-(200/285) train vimp2_E_CSFn_Aug1_Rot_4_sd2
-(201/285) train vimp2_E_CSFn_Aug2_Rot_2_sd1
-(202/285) train vimp2_E_CSFn_Aug2_Rot_-3_sd0
-(203/285) train vimp2_E_CSFn_Aug2_Rot_-7_sd2
-(204/285) train vimp2_E_CSFn_Aug3_Rot_-1_sd2
-(205/285) train vimp2_E_CSFn_Aug3_Rot_5_sd1
-(206/285) train vimp2_E_CSFn_Aug3_Rot_7_sd0
-(207/285) train vimp2_E_CSFn_Aug4_Rot_-5_sd1
-(208/285) train vimp2_E_CSFn_Aug4_Rot_-5_sd2
-(209/285) train vimp2_E_CSFn_Aug4_Rot_7_sd0
-(210/285) train vimp2_E_CSFn_Aug5_Rot_-1_sd2
-(211/285) train vimp2_E_CSFn_Aug5_Rot_6_sd0
-(212/285) train vimp2_E_CSFn_Aug5_Rot_-6_sd1
-(213/285) train vimp2_G_CSFn_Aug0_Rot_-6_sd1
-(214/285) train vimp2_G_CSFn_Aug0_Rot_-7_sd0
-(215/285) train vimp2_G_CSFn_Aug0_Rot_7_sd2
-(216/285) train vimp2_G_CSFn_Aug1_Rot_2_sd0
-(217/285) train vimp2_G_CSFn_Aug1_Rot_-2_sd2
-(218/285) train vimp2_G_CSFn_Aug1_Rot_-5_sd1
-(219/285) train vimp2_G_CSFn_Aug2_Rot_1_sd0
-(220/285) train vimp2_G_CSFn_Aug2_Rot_-1_sd2
-(221/285) train vimp2_G_CSFn_Aug2_Rot_4_sd1
-(222/285) train vimp2_G_CSFn_Aug3_Rot_-5_sd2
-(223/285) train vimp2_G_CSFn_Aug3_Rot_-6_sd0
-(224/285) train vimp2_G_CSFn_Aug3_Rot_7_sd1
-(225/285) train vimp2_G_CSFn_Aug4_Rot_-2_sd0
-(226/285) train vimp2_G_CSFn_Aug4_Rot_2_sd1
-(227/285) train vimp2_G_CSFn_Aug4_Rot_-6_sd2
-(228/285) train vimp2_G_CSFn_Aug5_Rot_-1_sd2
-(229/285) train vimp2_G_CSFn_Aug5_Rot_4_sd0
-(230/285) train vimp2_G_CSFn_Aug5_Rot_4_sd1
-(231/285) train vimp2_J_CSFn_Aug0_Rot_1_sd1
-(232/285) train vimp2_J_CSFn_Aug0_Rot_-3_sd2
-(233/285) train vimp2_J_CSFn_Aug0_Rot_-4_sd0
-(234/285) train vimp2_J_CSFn_Aug1_Rot_-2_sd2
-(235/285) train vimp2_J_CSFn_Aug1_Rot_4_sd0
-(236/285) train vimp2_J_CSFn_Aug1_Rot_-6_sd1
-(237/285) train vimp2_J_CSFn_Aug2_Rot_4_sd1
-(238/285) train vimp2_J_CSFn_Aug2_Rot_-4_sd2
-(239/285) train vimp2_J_CSFn_Aug2_Rot_7_sd0
-(240/285) train vimp2_J_CSFn_Aug3_Rot_-1_sd1
-(241/285) train vimp2_J_CSFn_Aug3_Rot_-2_sd0
-(242/285) train vimp2_J_CSFn_Aug3_Rot_-3_sd2
-(243/285) train vimp2_J_CSFn_Aug4_Rot_4_sd2
-(244/285) train vimp2_J_CSFn_Aug4_Rot_5_sd0
-(245/285) train vimp2_J_CSFn_Aug4_Rot_7_sd1
-(246/285) train vimp2_J_CSFn_Aug5_Rot_4_sd2
-(247/285) train vimp2_J_CSFn_Aug5_Rot_-6_sd1
-(248/285) train vimp2_J_CSFn_Aug5_Rot_-7_sd0
-(249/285) train vimp2_K_CSFn_Aug0_Rot_-2_sd2
-(250/285) train vimp2_K_CSFn_Aug0_Rot_-6_sd0
-(251/285) train vimp2_K_CSFn_Aug0_Rot_-6_sd1
-(252/285) train vimp2_K_CSFn_Aug1_Rot_1_sd1
-(253/285) train vimp2_K_CSFn_Aug1_Rot_1_sd2
-(254/285) train vimp2_K_CSFn_Aug1_Rot_-5_sd0
-(255/285) train vimp2_K_CSFn_Aug2_Rot_0_sd0
-(256/285) train vimp2_K_CSFn_Aug2_Rot_-2_sd1
-(257/285) train vimp2_K_CSFn_Aug2_Rot_-5_sd2
-(258/285) train vimp2_K_CSFn_Aug3_Rot_5_sd2
-(259/285) train vimp2_K_CSFn_Aug3_Rot_6_sd0
-(260/285) train vimp2_K_CSFn_Aug3_Rot_-6_sd1
-(261/285) train vimp2_K_CSFn_Aug4_Rot_-1_sd0
-(262/285) train vimp2_K_CSFn_Aug4_Rot_2_sd2
-(263/285) train vimp2_K_CSFn_Aug4_Rot_-6_sd1
-(264/285) train vimp2_K_CSFn_Aug5_Rot_-2_sd1
-(265/285) train vimp2_K_CSFn_Aug5_Rot_-2_sd2
-(266/285) train vimp2_K_CSFn_Aug5_Rot_-3_sd0
-(267/285) train vimp2_L_CSFn_Aug0_Rot_4_sd0
-(268/285) train vimp2_L_CSFn_Aug0_Rot_5_sd2
-(269/285) train vimp2_L_CSFn_Aug0_Rot_-7_sd1
-(270/285) train vimp2_L_CSFn_Aug1_Rot_3_sd0
-(271/285) train vimp2_L_CSFn_Aug1_Rot_5_sd1
-(272/285) train vimp2_L_CSFn_Aug1_Rot_-5_sd2
-(273/285) train vimp2_L_CSFn_Aug2_Rot_-4_sd1
-(274/285) train vimp2_L_CSFn_Aug2_Rot_5_sd0
-(275/285) train vimp2_L_CSFn_Aug2_Rot_-7_sd2
-(276/285) train vimp2_L_CSFn_Aug3_Rot_5_sd2
-(277/285) train vimp2_L_CSFn_Aug3_Rot_-7_sd0
-(278/285) train vimp2_L_CSFn_Aug3_Rot_7_sd1
-(279/285) train vimp2_L_CSFn_Aug4_Rot_-1_sd0
-(280/285) train vimp2_L_CSFn_Aug4_Rot_3_sd2
-(281/285) train vimp2_L_CSFn_Aug4_Rot_-7_sd1
-(282/285) train vimp2_L_CSFn_Aug5_Rot_-1_sd0
-(283/285) train vimp2_L_CSFn_Aug5_Rot_-5_sd1
-(284/285) train vimp2_L_CSFn_Aug5_Rot_6_sd2
-(0/3) test vimp2_A_CSFn2
-(1/3) test vimp2_ANON765_CSFn2
-(2/3) test vimp2_B_CSFn2
----------------------- check Layers Step ------------------------------
- N: [1]  | GPU: 6  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
-
- #layer 3 #layers changed False
----------------------------------------------------------------
- Nucleus: [1]  | GPU: 6  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
-Experiment: exp6
-SubExperiment: sE13_Cascade_FM20_FCN_Unet_TL_NL3_LS_MyBCE_US1_FCNA3_FCNB1_CSFn2_TL_Main_CV_a
----------------------------------------------------------------
----------------------------------------------------------------
- Nucleus: [1]  | GPU: 6  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
-Experiment: exp6
-SubExperiment: sE13_Cascade_FM20_FCN_Unet_TL_NL3_LS_MyBCE_US1_FCNA3_FCNB1_CSFn2_TL_Main_CV_a
----------------------------------------------------------------
----------------------- check Layers Step ------------------------------
- N: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 6  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
-
- #layer 3 #layers changed False
----------------------------------------------------------------
- Nucleus: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 6  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
-Experiment: exp6
-SubExperiment: sE13_Cascade_FM20_FCN_Unet_TL_NL3_LS_MyBCE_US1_FCNA3_FCNB1_CSFn2_TL_Main_CV_a
----------------------------------------------------------------
-Error in label values min 0.0 max 9.0      2-AV
-Error in label values min 0.0 max 2.0      4-VA
-Error in label values min 0.0 max 4.0      5-VLa
-Error in label values min 0.0 max 9.0      6-VLP
-Error in label values min 0.0 max 5.0      7-VPL
-Error in label values min 0.0 max 4.0      9-LGN
-Error in label values min 0.0 max 4.0      10-MGN
-Error in label values min 0.0 max 2.0      11-CM
-Error in label values min 0.0 max 4.0      12-MD-Pf
-Traceback (most recent call last):
-  File "main.py", line 584, in <module>
-    print(e)
-  File "main.py", line 581, in EXP15b_TL_CSFn2
-    try:
-  File "main.py", line 219, in Run
-    else: Loop_Over_Nuclei(UserInfoB)
-  File "main.py", line 101, in Loop_Over_Nuclei
-    if not check_if_num_Layers_fit(UserInfoB): Run_Main(UserInfoB)
-  File "main.py", line 213, in Run_Main
-    Loop_slicing_orientations(UserInfoB, InitValues)
-  File "main.py", line 211, in Loop_slicing_orientations
-    subRun(UserInfoB)
-  File "main.py", line 205, in subRun
-    else: normal_run(params)
-  File "main.py", line 191, in normal_run
-    Data, params = datasets.loadDataset(params)                             
-  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 384, in loadDataset
-    Data = main_ReadingDataset(params)
-  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 364, in main_ReadingDataset
-    DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
-  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 329, in readingAllSubjects
-    origMsk , msk = readingNuclei(params, subject, imF.shape)
-  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 193, in readingNuclei
-    origMsk = origMsk1N if cnt == 0 else np.concatenate((origMsk, origMsk1N) ,axis=3).astype('float32')
-KeyboardInterrupt
-Exception ignored in: <bound method tqdm.__del__ of Loading train:   5%|▌         | 15/285 [00:31<08:00,  1.78s/it]>
-Traceback (most recent call last):
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_tqdm.py", line 931, in __del__
-    self.close()
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_tqdm.py", line 1133, in close
-    self._decr_instances(self)
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_tqdm.py", line 496, in _decr_instances
-    cls.monitor.exit()
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_monitor.py", line 52, in exit
-    self.join()
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/threading.py", line 1053, in join
-    raise RuntimeError("cannot join current thread")
-RuntimeError: cannot join current thread
-*** DATASET ALREADY EXIST; PLEASE REMOVE 'train' & 'test' SUBFOLDERS ***
-(0/285) train vimp2_ANON967_CSFn2
-(1/285) train vimp2_E_CSFn2
-(2/285) train vimp2_G_CSFn2
-(3/285) train vimp2_J_CSFn2
-(4/285) train vimp2_K_CSFn2
-(5/285) train vimp2_L_CSFn2
-(6/285) train vimp2_ANON911_CSFn2
-(7/285) train vimp2_D_CSFn2
-(8/285) train vimp2_F_CSFn2
-(9/285) train vimp2_ANON911_CSFn_Aug0_Rot_-4_sd0
-(10/285) train vimp2_ANON911_CSFn_Aug0_Rot_-4_sd1
-(11/285) train vimp2_ANON911_CSFn_Aug0_Rot_7_sd2
-(12/285) train vimp2_ANON911_CSFn_Aug1_Rot_1_sd2
-(13/285) train vimp2_ANON911_CSFn_Aug1_Rot_3_sd1
-(14/285) train vimp2_ANON911_CSFn_Aug1_Rot_4_sd0
-(15/285) train vimp2_ANON911_CSFn_Aug2_Rot_1_sd1
-(16/285) train vimp2_ANON911_CSFn_Aug2_Rot_2_sd2
-(17/285) train vimp2_ANON911_CSFn_Aug2_Rot_5_sd0
-(18/285) train vimp2_ANON911_CSFn_Aug3_Rot_-4_sd0
-(19/285) train vimp2_ANON911_CSFn_Aug3_Rot_6_sd1
-(20/285) train vimp2_ANON911_CSFn_Aug3_Rot_7_sd2
-(21/285) train vimp2_ANON911_CSFn_Aug4_Rot_-2_sd1
-(22/285) train vimp2_ANON911_CSFn_Aug4_Rot_7_sd0
-(23/285) train vimp2_ANON911_CSFn_Aug4_Rot_7_sd2
-(24/285) train vimp2_ANON911_CSFn_Aug5_Rot_1_sd0
-(25/285) train vimp2_ANON911_CSFn_Aug5_Rot_-6_sd1
-(26/285) train vimp2_ANON911_CSFn_Aug5_Rot_7_sd2
-(27/285) train vimp2_D_CSFn_Aug0_Rot_4_sd0
-(28/285) train vimp2_D_CSFn_Aug0_Rot_-5_sd2
-(29/285) train vimp2_D_CSFn_Aug0_Rot_7_sd1
-(30/285) train vimp2_D_CSFn_Aug1_Rot_-2_sd1
-(31/285) train vimp2_D_CSFn_Aug1_Rot_-4_sd0
-(32/285) train vimp2_D_CSFn_Aug1_Rot_5_sd2
-(33/285) train vimp2_D_CSFn_Aug2_Rot_1_sd1
-(34/285) train vimp2_D_CSFn_Aug2_Rot_-1_sd2
-(35/285) train vimp2_D_CSFn_Aug2_Rot_-5_sd0
-(36/285) train vimp2_D_CSFn_Aug3_Rot_-3_sd0
-(37/285) train vimp2_D_CSFn_Aug3_Rot_-3_sd1
-(38/285) train vimp2_D_CSFn_Aug3_Rot_3_sd2
-(39/285) train vimp2_D_CSFn_Aug4_Rot_-4_sd0
-(40/285) train vimp2_D_CSFn_Aug4_Rot_-5_sd2
-(41/285) train vimp2_D_CSFn_Aug4_Rot_6_sd1
-(42/285) train vimp2_D_CSFn_Aug5_Rot_1_sd2
-(43/285) train vimp2_D_CSFn_Aug5_Rot_2_sd0
-(44/285) train vimp2_D_CSFn_Aug5_Rot_7_sd1
-(45/285) train vimp2_F_CSFn_Aug0_Rot_-1_sd2
-(46/285) train vimp2_F_CSFn_Aug0_Rot_5_sd0
-(47/285) train vimp2_F_CSFn_Aug0_Rot_7_sd1
-(48/285) train vimp2_F_CSFn_Aug1_Rot_-5_sd2
-(49/285) train vimp2_F_CSFn_Aug1_Rot_-7_sd0
-(50/285) train vimp2_F_CSFn_Aug1_Rot_-7_sd1
-(51/285) train vimp2_F_CSFn_Aug2_Rot_-3_sd1
-(52/285) train vimp2_F_CSFn_Aug2_Rot_4_sd0
-(53/285) train vimp2_F_CSFn_Aug2_Rot_-7_sd2
-(54/285) train vimp2_F_CSFn_Aug3_Rot_2_sd0
-(55/285) train vimp2_F_CSFn_Aug3_Rot_-3_sd2
-(56/285) train vimp2_F_CSFn_Aug3_Rot_-7_sd1
-(57/285) train vimp2_F_CSFn_Aug4_Rot_-1_sd0
-(58/285) train vimp2_F_CSFn_Aug4_Rot_-2_sd1
-(59/285) train vimp2_F_CSFn_Aug4_Rot_-2_sd2
-(60/285) train vimp2_F_CSFn_Aug5_Rot_-1_sd1
-(61/285) train vimp2_F_CSFn_Aug5_Rot_4_sd0
-(62/285) train vimp2_F_CSFn_Aug5_Rot_-5_sd2
-(63/285) train vimp2_ANON972_CSFn2
-(64/285) train vimp2_H_CSFn2
-(65/285) train vimp2_I_CSFn2
-(66/285) train vimp2_ANON972_CSFn_Aug0_Rot_-1_sd1
-(67/285) train vimp2_ANON972_CSFn_Aug0_Rot_3_sd0
-(68/285) train vimp2_ANON972_CSFn_Aug0_Rot_5_sd2
-(69/285) train vimp2_ANON972_CSFn_Aug1_Rot_3_sd1
-(70/285) train vimp2_ANON972_CSFn_Aug1_Rot_3_sd2
-(71/285) train vimp2_ANON972_CSFn_Aug1_Rot_-5_sd0
-(72/285) train vimp2_ANON972_CSFn_Aug2_Rot_1_sd1
-(73/285) train vimp2_ANON972_CSFn_Aug2_Rot_-5_sd2
-(74/285) train vimp2_ANON972_CSFn_Aug2_Rot_7_sd0
-(75/285) train vimp2_ANON972_CSFn_Aug3_Rot_-3_sd0
-(76/285) train vimp2_ANON972_CSFn_Aug3_Rot_-6_sd1
-(77/285) train vimp2_ANON972_CSFn_Aug3_Rot_7_sd2
-(78/285) train vimp2_ANON972_CSFn_Aug4_Rot_-4_sd0
-(79/285) train vimp2_ANON972_CSFn_Aug4_Rot_4_sd1
-(80/285) train vimp2_ANON972_CSFn_Aug4_Rot_4_sd2
-(81/285) train vimp2_ANON972_CSFn_Aug5_Rot_-1_sd0
-(82/285) train vimp2_ANON972_CSFn_Aug5_Rot_2_sd2
-(83/285) train vimp2_ANON972_CSFn_Aug5_Rot_-4_sd1
-(84/285) train vimp2_H_CSFn_Aug0_Rot_-3_sd2
-(85/285) train vimp2_H_CSFn_Aug0_Rot_-4_sd0
-(86/285) train vimp2_H_CSFn_Aug0_Rot_-4_sd1
-(87/285) train vimp2_H_CSFn_Aug1_Rot_-1_sd2
-(88/285) train vimp2_H_CSFn_Aug1_Rot_-2_sd0
-(89/285) train vimp2_H_CSFn_Aug1_Rot_-4_sd1
-(90/285) train vimp2_H_CSFn_Aug2_Rot_-1_sd1
-(91/285) train vimp2_H_CSFn_Aug2_Rot_2_sd2
-(92/285) train vimp2_H_CSFn_Aug2_Rot_6_sd0
-(93/285) train vimp2_H_CSFn_Aug3_Rot_-1_sd0
-(94/285) train vimp2_H_CSFn_Aug3_Rot_1_sd1
-(95/285) train vimp2_H_CSFn_Aug3_Rot_-1_sd2
-(96/285) train vimp2_H_CSFn_Aug4_Rot_-3_sd0
-(97/285) train vimp2_H_CSFn_Aug4_Rot_4_sd1
-(98/285) train vimp2_H_CSFn_Aug4_Rot_5_sd2
-(99/285) train vimp2_H_CSFn_Aug5_Rot_-1_sd2
-(100/285) train vimp2_H_CSFn_Aug5_Rot_-2_sd1
-(101/285) train vimp2_H_CSFn_Aug5_Rot_-3_sd0
-(102/285) train vimp2_I_CSFn_Aug0_Rot_1_sd1
-(103/285) train vimp2_I_CSFn_Aug0_Rot_6_sd2
-(104/285) train vimp2_I_CSFn_Aug0_Rot_-7_sd0
-(105/285) train vimp2_I_CSFn_Aug1_Rot_2_sd0
-(106/285) train vimp2_I_CSFn_Aug1_Rot_-5_sd2
-(107/285) train vimp2_I_CSFn_Aug1_Rot_-6_sd1
-(108/285) train vimp2_I_CSFn_Aug2_Rot_1_sd1
-(109/285) train vimp2_I_CSFn_Aug2_Rot_-6_sd0
-(110/285) train vimp2_I_CSFn_Aug2_Rot_-7_sd2
-(111/285) train vimp2_I_CSFn_Aug3_Rot_-1_sd0
-(112/285) train vimp2_I_CSFn_Aug3_Rot_-1_sd2
-(113/285) train vimp2_I_CSFn_Aug3_Rot_-5_sd1
-(114/285) train vimp2_I_CSFn_Aug4_Rot_2_sd1
-(115/285) train vimp2_I_CSFn_Aug4_Rot_-6_sd0
-(116/285) train vimp2_I_CSFn_Aug4_Rot_6_sd2
-(117/285) train vimp2_I_CSFn_Aug5_Rot_-2_sd1
-(118/285) train vimp2_I_CSFn_Aug5_Rot_3_sd2
-(119/285) train vimp2_I_CSFn_Aug5_Rot_5_sd0
-(120/285) train vimp2_ANON988_CSFn2
-(121/285) train vimp2_M_CSFn2
-(122/285) train vimp2_N_CSFn2
-(123/285) train vimp2_ANON988_CSFn_Aug0_Rot_2_sd0
-(124/285) train vimp2_ANON988_CSFn_Aug0_Rot_-2_sd2
-(125/285) train vimp2_ANON988_CSFn_Aug0_Rot_4_sd1
-(126/285) train vimp2_ANON988_CSFn_Aug1_Rot_-2_sd0
-(127/285) train vimp2_ANON988_CSFn_Aug1_Rot_3_sd1
-(128/285) train vimp2_ANON988_CSFn_Aug1_Rot_5_sd2
-(129/285) train vimp2_ANON988_CSFn_Aug2_Rot_-6_sd2
-(130/285) train vimp2_ANON988_CSFn_Aug2_Rot_-7_sd0
-(131/285) train vimp2_ANON988_CSFn_Aug2_Rot_-7_sd1
-(132/285) train vimp2_ANON988_CSFn_Aug3_Rot_-5_sd0
-(133/285) train vimp2_ANON988_CSFn_Aug3_Rot_-7_sd1
-(134/285) train vimp2_ANON988_CSFn_Aug3_Rot_-7_sd2
-(135/285) train vimp2_ANON988_CSFn_Aug4_Rot_-1_sd0
-(136/285) train vimp2_ANON988_CSFn_Aug4_Rot_2_sd1
-(137/285) train vimp2_ANON988_CSFn_Aug4_Rot_-4_sd2
-(138/285) train vimp2_ANON988_CSFn_Aug5_Rot_2_sd0
-(139/285) train vimp2_ANON988_CSFn_Aug5_Rot_4_sd2
-(140/285) train vimp2_ANON988_CSFn_Aug5_Rot_-5_sd1
-(141/285) train vimp2_M_CSFn_Aug0_Rot_-1_sd1
-(142/285) train vimp2_M_CSFn_Aug0_Rot_1_sd2
-(143/285) train vimp2_M_CSFn_Aug0_Rot_-2_sd0
-(144/285) train vimp2_M_CSFn_Aug1_Rot_-3_sd2
-(145/285) train vimp2_M_CSFn_Aug1_Rot_-5_sd0
-(146/285) train vimp2_M_CSFn_Aug1_Rot_-5_sd1
-(147/285) train vimp2_M_CSFn_Aug2_Rot_-2_sd1
-(148/285) train vimp2_M_CSFn_Aug2_Rot_4_sd2
-(149/285) train vimp2_M_CSFn_Aug2_Rot_7_sd0
-(150/285) train vimp2_M_CSFn_Aug3_Rot_2_sd1
-(151/285) train vimp2_M_CSFn_Aug3_Rot_-3_sd0
-(152/285) train vimp2_M_CSFn_Aug3_Rot_4_sd2
-(153/285) train vimp2_M_CSFn_Aug4_Rot_4_sd0
-(154/285) train vimp2_M_CSFn_Aug4_Rot_-5_sd1
-(155/285) train vimp2_M_CSFn_Aug4_Rot_7_sd2
-(156/285) train vimp2_M_CSFn_Aug5_Rot_-3_sd2
-(157/285) train vimp2_M_CSFn_Aug5_Rot_4_sd1
-(158/285) train vimp2_M_CSFn_Aug5_Rot_7_sd0
-(159/285) train vimp2_N_CSFn_Aug0_Rot_2_sd0
-(160/285) train vimp2_N_CSFn_Aug0_Rot_3_sd1
-(161/285) train vimp2_N_CSFn_Aug0_Rot_6_sd2
-(162/285) train vimp2_N_CSFn_Aug1_Rot_2_sd2
-(163/285) train vimp2_N_CSFn_Aug1_Rot_3_sd1
-(164/285) train vimp2_N_CSFn_Aug1_Rot_-4_sd0
-(165/285) train vimp2_N_CSFn_Aug2_Rot_-1_sd1
-(166/285) train vimp2_N_CSFn_Aug2_Rot_2_sd2
-(167/285) train vimp2_N_CSFn_Aug2_Rot_5_sd0
-(168/285) train vimp2_N_CSFn_Aug3_Rot_4_sd0
-(169/285) train vimp2_N_CSFn_Aug3_Rot_6_sd1
-(170/285) train vimp2_N_CSFn_Aug3_Rot_-6_sd2
-(171/285) train vimp2_N_CSFn_Aug4_Rot_-1_sd0
-(172/285) train vimp2_N_CSFn_Aug4_Rot_-1_sd2
-(173/285) train vimp2_N_CSFn_Aug4_Rot_-2_sd1
-(174/285) train vimp2_N_CSFn_Aug5_Rot_-1_sd0
-(175/285) train vimp2_N_CSFn_Aug5_Rot_5_sd1
-(176/285) train vimp2_N_CSFn_Aug5_Rot_-5_sd2
-(177/285) train vimp2_ANON967_CSFn_Aug0_Rot_-3_sd0
-(178/285) train vimp2_ANON967_CSFn_Aug0_Rot_-5_sd2
-(179/285) train vimp2_ANON967_CSFn_Aug0_Rot_7_sd1
-(180/285) train vimp2_ANON967_CSFn_Aug1_Rot_1_sd2
-(181/285) train 2019-07-05 17:42:03.174329: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
-2019-07-05 17:42:04.189843: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
-name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
-pciBusID: 0000:88:00.0
-totalMemory: 15.89GiB freeMemory: 15.60GiB
-2019-07-05 17:42:04.189910: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
-2019-07-05 17:42:04.577974: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
-2019-07-05 17:42:04.578040: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
-2019-07-05 17:42:04.578053: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
-2019-07-05 17:42:04.578583: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:88:00.0, compute capability: 6.0)
-mkdir: cannot create directory ‘/array/ssd/msmajdi/experiments/keras/exp6/results/sE13_Cascade_FM20_FCN_Unet_TL_NL3_LS_MyBCE_US1_FCNA3_FCNB1_CSFn2_TL_Main_CV_a’: File exists
-mkdir: cannot create directory ‘/array/ssd/msmajdi/experiments/keras/exp6/results/sE13_Cascade_FM20_FCN_Unet_TL_NL3_LS_MyBCE_US1_FCNA3_FCNB1_CSFn2_TL_Main_CV_a’: File exists
-/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-Using TensorFlow backend.
-Loading train:   0%|          | 0/285 [00:00<?, ?it/s]Loading train:   0%|          | 1/285 [00:01<07:37,  1.61s/it]Loading train:   1%|          | 2/285 [00:03<07:40,  1.63s/it]Loading train:   1%|          | 3/285 [00:04<07:35,  1.61s/it]Loading train:   1%|▏         | 4/285 [00:07<08:32,  1.83s/it]Loading train:   2%|▏         | 5/285 [00:08<08:17,  1.78s/it]Loading train:   2%|▏         | 6/285 [00:11<08:51,  1.90s/it]Loading train:   2%|▏         | 7/285 [00:13<09:01,  1.95s/it]Loading train:   3%|▎         | 8/285 [00:15<09:15,  2.01s/it]Loading train:   3%|▎         | 9/285 [00:16<08:42,  1.89s/it]Loading train:   4%|▎         | 10/285 [00:18<08:22,  1.83s/it]Loading train:   4%|▍         | 11/285 [00:20<08:38,  1.89s/it]Loading train:   4%|▍         | 12/285 [00:22<08:54,  1.96s/it]Loading train:   5%|▍         | 13/285 [00:24<08:35,  1.90s/it]Loading train:   5%|▍         | 14/285 [00:26<08:50,  1.96s/it]Loading train:   5%|▌         | 15/285 [00:28<08:24,  1.87s/it]Loading train:   6%|▌         | 16/285 [00:30<08:16,  1.85s/it]Loading train:   6%|▌         | 17/285 [00:31<07:48,  1.75s/it]Loading train:   6%|▋         | 18/285 [00:33<08:00,  1.80s/it]Loading train:   7%|▋         | 19/285 [00:35<08:00,  1.80s/it]Loading train:   7%|▋         | 20/285 [00:37<08:29,  1.92s/it]Loading train:   7%|▋         | 21/285 [00:39<08:43,  1.98s/it]Loading train:   8%|▊         | 22/285 [00:41<09:03,  2.07s/it]Loading train:   8%|▊         | 23/285 [00:43<08:49,  2.02s/it]Loading train:   8%|▊         | 24/285 [00:45<08:35,  1.97s/it]Loading train:   9%|▉         | 25/285 [00:47<08:11,  1.89s/it]Loading train:   9%|▉         | 26/285 [00:48<07:36,  1.76s/it]Loading train:   9%|▉         | 27/285 [00:50<07:34,  1.76s/it]Loading train:  10%|▉         | 28/285 [00:52<07:38,  1.79s/it]Loading train:  10%|█         | 29/285 [00:54<07:38,  1.79s/it]Loading train:  11%|█         | 30/285 [00:56<07:56,  1.87s/it]Loading train:  11%|█         | 31/285 [00:57<07:42,  1.82s/it]Loading train:  11%|█         | 32/285 [01:00<08:00,  1.90s/it]Loading train:  12%|█▏        | 33/285 [01:02<08:43,  2.08s/it]Loading train:  12%|█▏        | 34/285 [01:04<08:19,  1.99s/it]Loading train:  12%|█▏        | 35/285 [01:06<08:28,  2.04s/it]Loading train:  13%|█▎        | 36/285 [01:07<07:44,  1.86s/it]Loading train:  13%|█▎        | 37/285 [01:09<07:16,  1.76s/it]Loading train:  13%|█▎        | 38/285 [01:11<07:01,  1.71s/it]Loading train:  14%|█▎        | 39/285 [01:12<07:05,  1.73s/it]Loading train:  14%|█▍        | 40/285 [01:14<06:34,  1.61s/it]Loading train:  14%|█▍        | 41/285 [01:16<06:56,  1.71s/it]Loading train:  15%|█▍        | 42/285 [01:17<07:09,  1.77s/it]Loading train:  15%|█▌        | 43/285 [01:20<07:35,  1.88s/it]Loading train:  15%|█▌        | 44/285 [01:22<07:55,  1.97s/it]Loading train:  16%|█▌        | 45/285 [01:24<08:11,  2.05s/it]Loading train:  16%|█▌        | 46/285 [01:26<08:08,  2.04s/it]Loading train:  16%|█▋        | 47/285 [01:28<07:48,  1.97s/it]Loading train:  17%|█▋        | 48/285 [01:29<07:04,  1.79s/it]Loading train:  17%|█▋        | 49/285 [01:31<07:01,  1.79s/it]Loading train:  18%|█▊        | 50/285 [01:33<07:08,  1.82s/it]Loading train:  18%|█▊        | 51/285 [01:35<07:06,  1.82s/it]Loading train:  18%|█▊        | 52/285 [01:36<06:52,  1.77s/it]Loading train:  19%|█▊        | 53/285 [01:38<06:10,  1.60s/it]Loading train:  19%|█▉        | 54/285 [01:39<06:00,  1.56s/it]Loading train:  19%|█▉        | 55/285 [01:41<06:08,  1.60s/it]Loading train:  20%|█▉        | 56/285 [01:42<05:56,  1.56s/it]Loading train:  20%|██        | 57/285 [01:44<06:20,  1.67s/it]Loading train:  20%|██        | 58/285 [01:46<06:16,  1.66s/it]Loading train:  21%|██        | 59/285 [01:48<06:45,  1.79s/it]Loading train:  21%|██        | 60/285 [01:49<06:29,  1.73s/it]Loading train:  21%|██▏       | 61/285 [01:51<06:02,  1.62s/it]Loading train:  22%|██▏       | 62/285 [01:53<06:09,  1.66s/it]Loading train:  22%|██▏       | 63/285 [01:54<06:08,  1.66s/it]Loading train:  22%|██▏       | 64/285 [01:56<06:24,  1.74s/it]Loading train:  23%|██▎       | 65/285 [01:58<06:58,  1.90s/it]Loading train:  23%|██▎       | 66/285 [02:02<08:19,  2.28s/it]Loading train:  24%|██▎       | 67/285 [02:04<08:09,  2.25s/it]Loading train:  24%|██▍       | 68/285 [02:06<07:50,  2.17s/it]Loading train:  24%|██▍       | 69/285 [02:08<07:28,  2.08s/it]Loading train:  25%|██▍       | 70/285 [02:10<07:31,  2.10s/it]Loading train:  25%|██▍       | 71/285 [02:11<07:01,  1.97s/it]Loading train:  25%|██▌       | 72/285 [02:13<06:45,  1.90s/it]Loading train:  26%|██▌       | 73/285 [02:15<06:24,  1.82s/it]Loading train:  26%|██▌       | 74/285 [02:17<06:38,  1.89s/it]Loading train:  26%|██▋       | 75/285 [02:19<06:33,  1.87s/it]Loading train:  27%|██▋       | 76/285 [02:21<06:47,  1.95s/it]Loading train:  27%|██▋       | 77/285 [02:23<06:46,  1.95s/it]Loading train:  27%|██▋       | 78/285 [02:24<06:21,  1.84s/it]Loading train:  28%|██▊       | 79/285 [02:26<06:20,  1.85s/it]Loading train:  28%|██▊       | 80/285 [02:28<06:23,  1.87s/it]Loading train:  28%|██▊       | 81/285 [02:30<06:07,  1.80s/it]Loading train:  29%|██▉       | 82/285 [02:32<06:06,  1.80s/it]Loading train:  29%|██▉       | 83/285 [02:33<05:38,  1.68s/it]Loading train:  29%|██▉       | 84/285 [02:34<05:14,  1.57s/it]Loading train:  30%|██▉       | 85/285 [02:36<05:25,  1.63s/it]Loading train:  30%|███       | 86/285 [02:38<05:21,  1.62s/it]Loading train:  31%|███       | 87/285 [02:39<05:22,  1.63s/it]Loading train:  31%|███       | 88/285 [02:41<05:21,  1.63s/it]Loading train:  31%|███       | 89/285 [02:43<05:19,  1.63s/it]Loading train:  32%|███▏      | 90/285 [02:45<05:35,  1.72s/it]Loading train:  32%|███▏      | 91/285 [02:46<05:22,  1.66s/it]Loading train:  32%|███▏      | 92/285 [02:48<05:26,  1.69s/it]Loading train:  33%|███▎      | 93/285 [02:50<05:30,  1.72s/it]Loading train:  33%|███▎      | 94/285 [02:51<05:25,  1.70s/it]Loading train:  33%|███▎      | 95/285 [02:54<06:06,  1.93s/it]Loading train:  34%|███▎      | 96/285 [02:55<05:36,  1.78s/it]Loading train:  34%|███▍      | 97/285 [02:57<05:29,  1.75s/it]Loading train:  34%|███▍      | 98/285 [02:59<05:38,  1.81s/it]Loading train:  35%|███▍      | 99/285 [03:00<05:10,  1.67s/it]Loading train:  35%|███▌      | 100/285 [03:02<05:03,  1.64s/it]Loading train:  35%|███▌      | 101/285 [03:03<04:51,  1.58s/it]Loading train:  36%|███▌      | 102/285 [03:05<05:00,  1.64s/it]Loading train:  36%|███▌      | 103/285 [03:06<04:55,  1.62s/it]Loading train:  36%|███▋      | 104/285 [03:08<04:55,  1.63s/it]Loading train:  37%|███▋      | 105/285 [03:10<04:43,  1.57s/it]Loading train:  37%|███▋      | 106/285 [03:12<05:31,  1.85s/it]Loading train:  38%|███▊      | 107/285 [03:15<06:03,  2.04s/it]Loading train:  38%|███▊      | 108/285 [03:16<05:54,  2.00s/it]Loading train:  38%|███▊      | 109/285 [03:18<05:33,  1.90s/it]Loading train:  39%|███▊      | 110/285 [03:20<05:14,  1.80s/it]Loading train:  39%|███▉      | 111/285 [03:21<04:43,  1.63s/it]Loading train:  39%|███▉      | 112/285 [03:23<04:48,  1.67s/it]Loading train:  40%|███▉      | 113/285 [03:24<04:34,  1.59s/it]Loading train:  40%|████      | 114/285 [03:26<05:09,  1.81s/it]Loading train:  40%|████      | 115/285 [03:28<05:11,  1.83s/it]Loading train:  41%|████      | 116/285 [03:30<04:51,  1.72s/it]Loading train:  41%|████      | 117/285 [03:31<04:49,  1.72s/it]Loading train:  41%|████▏     | 118/285 [03:33<04:49,  1.73s/it]Loading train:  42%|████▏     | 119/285 [03:35<04:57,  1.79s/it]Loading train:  42%|████▏     | 120/285 [03:37<05:14,  1.91s/it]Loading train:  42%|████▏     | 121/285 [03:39<05:11,  1.90s/it]Loading train:  43%|████▎     | 122/285 [03:41<04:58,  1.83s/it]Loading train:  43%|████▎     | 123/285 [03:43<04:46,  1.77s/it]Loading train:  44%|████▎     | 124/285 [03:44<04:34,  1.70s/it]Loading train:  44%|████▍     | 125/285 [03:45<04:13,  1.58s/it]Loading train:  44%|████▍     | 126/285 [03:47<04:25,  1.67s/it]Loading train:  45%|████▍     | 127/285 [03:49<04:14,  1.61s/it]Loading train:  45%|████▍     | 128/285 [03:50<04:11,  1.60s/it]Loading train:  45%|████▌     | 129/285 [03:52<04:00,  1.54s/it]Loading train:  46%|████▌     | 130/285 [03:53<03:46,  1.46s/it]Loading train:  46%|████▌     | 131/285 [03:54<03:39,  1.43s/it]Loading train:  46%|████▋     | 132/285 [03:56<03:34,  1.40s/it]Loading train:  47%|████▋     | 133/285 [03:57<03:44,  1.47s/it]Loading train:  47%|████▋     | 134/285 [03:59<03:41,  1.47s/it]Loading train:  47%|████▋     | 135/285 [04:00<03:45,  1.50s/it]Loading train:  48%|████▊     | 136/285 [04:02<03:47,  1.53s/it]Loading train:  48%|████▊     | 137/285 [04:04<04:01,  1.63s/it]Loading train:  48%|████▊     | 138/285 [04:05<03:42,  1.52s/it]Loading train:  49%|████▉     | 139/285 [04:06<03:31,  1.45s/it]Loading train:  49%|████▉     | 140/285 [04:08<03:33,  1.47s/it]Loading train:  49%|████▉     | 141/285 [04:09<03:23,  1.41s/it]Loading train:  50%|████▉     | 142/285 [04:11<03:29,  1.47s/it]Loading train:  50%|█████     | 143/285 [04:12<03:21,  1.42s/it]Loading train:  51%|█████     | 144/285 [04:14<03:38,  1.55s/it]Loading train:  51%|█████     | 145/285 [04:15<03:27,  1.48s/it]Loading train:  51%|█████     | 146/285 [04:17<03:35,  1.55s/it]Loading train:  52%|█████▏    | 147/285 [04:18<03:33,  1.55s/it]Loading train:  52%|█████▏    | 148/285 [04:20<03:23,  1.48s/it]Loading train:  52%|█████▏    | 149/285 [04:21<03:19,  1.47s/it]Loading train:  53%|█████▎    | 150/285 [04:23<03:35,  1.60s/it]Loading train:  53%|█████▎    | 151/285 [04:25<03:40,  1.64s/it]Loading train:  53%|█████▎    | 152/285 [04:26<03:28,  1.57s/it]Loading train:  54%|█████▎    | 153/285 [04:28<03:30,  1.60s/it]Loading train:  54%|█████▍    | 154/285 [04:29<03:23,  1.55s/it]Loading train:  54%|█████▍    | 155/285 [04:31<03:19,  1.53s/it]Loading train:  55%|█████▍    | 156/285 [04:32<03:14,  1.51s/it]Loading train:  55%|█████▌    | 157/285 [04:34<03:07,  1.47s/it]Loading train:  55%|█████▌    | 158/285 [04:35<03:01,  1.43s/it]Loading train:  56%|█████▌    | 159/285 [04:37<03:02,  1.45s/it]Loading train:  56%|█████▌    | 160/285 [04:39<03:39,  1.75s/it]Loading train:  56%|█████▋    | 161/285 [04:41<03:34,  1.73s/it]Loading train:  57%|█████▋    | 162/285 [04:42<03:27,  1.69s/it]Loading train:  57%|█████▋    | 163/285 [04:44<03:36,  1.77s/it]Loading train:  58%|█████▊    | 164/285 [04:46<03:36,  1.79s/it]Loading train:  58%|█████▊    | 165/285 [04:48<03:41,  1.84s/it]Loading train:  58%|█████▊    | 166/285 [04:50<03:28,  1.75s/it]Loading train:  59%|█████▊    | 167/285 [04:51<03:19,  1.69s/it]Loading train:  59%|█████▉    | 168/285 [04:52<03:03,  1.57s/it]Loading train:  59%|█████▉    | 169/285 [04:54<02:59,  1.55s/it]Loading train:  60%|█████▉    | 170/285 [04:56<03:02,  1.59s/it]Loading train:  60%|██████    | 171/285 [04:57<02:56,  1.55s/it]Loading train:  60%|██████    | 172/285 [04:58<02:49,  1.50s/it]Loading train:  61%|██████    | 173/285 [05:00<02:49,  1.51s/it]Loading train:  61%|██████    | 174/285 [05:01<02:48,  1.51s/it]Loading train:  61%|██████▏   | 175/285 [05:03<03:02,  1.66s/it]Loading train:  62%|██████▏   | 176/285 [05:05<02:54,  1.60s/it]Loading train:  62%|██████▏   | 177/285 [05:07<02:55,  1.62s/it]Loading train:  62%|██████▏   | 178/285 [05:08<02:44,  1.54s/it]Loading train:  63%|██████▎   | 179/285 [05:09<02:36,  1.48s/it]Loading train:  63%|██████▎   | 180/285 [05:11<02:38,  1.51s/it]Loading train:  64%|██████▎   | 181/285 [05:13<02:41,  1.55s/it]Loading train:  64%|██████▍   | 182/285 [05:14<02:31,  1.47s/it]Loading train:  64%|██████▍   | 183/285 [05:16<02:37,  1.54s/it]Loading train:  65%|██████▍   | 184/285 [05:17<02:28,  1.47s/it]Loading train:  65%|██████▍   | 185/285 [05:18<02:32,  1.52s/it]Loading train:  65%|██████▌   | 186/285 [05:20<02:28,  1.50s/it]Loading train:  66%|██████▌   | 187/285 [05:21<02:18,  1.42s/it]Loading train:  66%|██████▌   | 188/285 [05:23<02:16,  1.41s/it]Loading train:  66%|██████▋   | 189/285 [05:24<02:11,  1.37s/it]Loading train:  67%|██████▋   | 190/285 [05:25<02:16,  1.44s/it]Loading train:  67%|██████▋   | 191/285 [05:27<02:13,  1.42s/it]Loading train:  67%|██████▋   | 192/285 [05:29<02:21,  1.52s/it]Loading train:  68%|██████▊   | 193/285 [05:30<02:24,  1.57s/it]Loading train:  68%|██████▊   | 194/285 [05:32<02:27,  1.62s/it]Loading train:  68%|██████▊   | 195/285 [05:33<02:20,  1.57s/it]Loading train:  69%|██████▉   | 196/285 [05:35<02:17,  1.54s/it]Loading train:  69%|██████▉   | 197/285 [05:37<02:41,  1.83s/it]Loading train:  69%|██████▉   | 198/285 [05:39<02:39,  1.83s/it]Loading train:  70%|██████▉   | 199/285 [05:41<02:32,  1.77s/it]Loading train:  70%|███████   | 200/285 [05:42<02:24,  1.70s/it]Loading train:  71%|███████   | 201/285 [05:45<02:35,  1.86s/it]Loading train:  71%|███████   | 202/285 [05:46<02:28,  1.79s/it]Loading train:  71%|███████   | 203/285 [05:48<02:16,  1.67s/it]Loading train:  72%|███████▏  | 204/285 [05:49<02:08,  1.59s/it]

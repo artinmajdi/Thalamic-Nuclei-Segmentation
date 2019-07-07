@@ -335,7 +335,7 @@ def EXP4_FCN_Unet(UserInfoB):
     UserInfoB['TypeExperiment'] = 4
     Run(UserInfoB, IV)
 
-def EXP5_Resnet_JointDice_Cascade_3T_and_Main(UserInfoB):
+def EXP5_Resnet_JointDice(UserInfoB):
     
     # Cascade   Main Init 3T
     UserInfoB['Model_Method'] = 'Cascade'
@@ -348,6 +348,39 @@ def EXP5_Resnet_JointDice_Cascade_3T_and_Main(UserInfoB):
 
 
     for UserInfoB['TypeExperiment'] in [1, 2, 4]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15 , 20, 30]:        
+            Run(UserInfoB, IV)
+
+def EXP5c_Resnet_BCE_Cascade(UserInfoB):
+    
+    # Cascade   Main Init 3T
+    UserInfoB['simulation'].Multi_Class_Mode = True
+    UserInfoB['Model_Method'] = 'Cascade'
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [2,1,0]
+    UserInfoB['architectureType'] = 'Res_Unet'
+    UserInfoB['lossFunction_Index'] = 3
+    UserInfoB['Experiments'].Index = '6'
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+
+    for UserInfoB['TypeExperiment'] in [1, 2, 4]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15 , 20, 30]:        
+            Run(UserInfoB, IV)
+
+def EXP5d_Resnet_JointDice_GeomtericalMean(UserInfoB):
+    
+    # Cascade   Main Init 3T
+    UserInfoB['Model_Method'] = 'Cascade'
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [2,1,0]
+    UserInfoB['architectureType'] = 'Res_Unet'
+    UserInfoB['lossFunction_Index'] = 6
+    UserInfoB['Experiments'].Index = '6'
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+
+    for UserInfoB['TypeExperiment'] in [1, 2, 4, 8]:
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15 , 20, 30]:        
             Run(UserInfoB, IV)
 
@@ -501,8 +534,8 @@ def EXP12_SingleClass(UserInfoB):
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
 
-    for UserInfoB['Model_Method'] in [ 'HCascade' , 'mUnet']:  # 'Cascade' ,
-        for UserInfoB['TypeExperiment'] in [1, 2, 4, 8]: 
+    for UserInfoB['Model_Method'] in ['mUnet']:  # 'HCascade' , 'Cascade' ,
+        for UserInfoB['TypeExperiment'] in [1, 2, 4]: 
             Run(UserInfoB, IV)
 
 def EXP12b_SingleClass(UserInfoB):
@@ -551,12 +584,6 @@ def EXP_14_CSFn1_Cascade_finetune(UserInfoB):
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 ,30 ,40]:             
             Run(UserInfoB, IV)
 
-
-UserInfoB, K = preMode(UserInfo.__dict__)
-
-# EXP12_SingleClass(UserInfoB)
-
-
 def EXP15a_TL_CSFn2(UserInfoB):
     
     UserInfoB['TypeExperiment'] = 11
@@ -567,11 +594,10 @@ def EXP15a_TL_CSFn2(UserInfoB):
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
     for UserInfoB['simulation'].FCN_FeatureMaps in [10, 20 , 30 , 40, 50]:
-        try:
-            Run(UserInfoB, IV)
-        except Exception as e:
-            print(e)
-
+        # try:
+        Run(UserInfoB, IV)
+        # except Exception as e:
+            # print(e)
 
 def EXP15b_TL_CSFn2(UserInfoB):
     UserInfoB['TypeExperiment'] = 11
@@ -582,12 +608,17 @@ def EXP15b_TL_CSFn2(UserInfoB):
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
     for UserInfoB['simulation'].FCN_FeatureMaps in [10, 20 , 30 , 40, 50]:
-        try:
-            Run(UserInfoB, IV)
-        except Exception as e:
-            print(e)
+        # try:
+        Run(UserInfoB, IV)
+        # except Exception as e:
+        #     print(e)
 
 
-EXP15b_TL_CSFn2(UserInfoB)
+UserInfoB, K = preMode(UserInfo.__dict__)
+
+# UserInfoB['simulation'].ReadAugments_Mode = False
+
+EXP5d_Resnet_JointDice_GeomtericalMean(UserInfoB)
+# EXP15b_TL_CSFn2(UserInfoB)
 
 K.clear_session()

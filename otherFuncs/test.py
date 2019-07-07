@@ -5,8 +5,14 @@ import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 import keras.layers as KLayers
 from tqdm import tqdm
+import numpy as np
 
 dir = '/array/ssd/msmajdi/experiments/keras/exp6/models/sE12_Cascade_FM20_U-Net4_NL3_LS_MyBCE_US1_Main_Init_3T_CV_a/MultiClass_24567891011121314/sd2/'
+
+
+a = [1,2,3]
+b= [5,4,3]
+
 
 params = paramFunc.Run(UserInfo.__dict__, terminal=False)
 ModelParam = params.WhichExperiment.HardParams.Model

@@ -1,8 +1,8 @@
 
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
-architectureType = 'FCN_Unet_TL' # 'FCN_Unet' # 'U-Net4' # 'FCN_Unet_TL' # 'Res_Unet'  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
-gpu = "5"
+architectureType = 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
+gpu = "6"
 
 # TypeExperiment == 1: # 3T      Init Rn
 
@@ -22,7 +22,7 @@ gpu = "5"
 # TypeExperiment == 11 # CSFn2  Transfer Learn from Main with 'FCN_Unet_TL'  architecture
 # TypeExperiment == 12: # Main  Transfer Learn from Main
 
-TypeExperiment = 11
+TypeExperiment = 2
 
 multi_Class_Mode = True
 readAugments_Mode = True

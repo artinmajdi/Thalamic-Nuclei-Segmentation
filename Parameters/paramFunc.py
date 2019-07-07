@@ -153,7 +153,7 @@ def func_Exp_subExp_Names(UserInfo):
         GAP = '' # _gap' + str(UserInfo['gapDilation'])
         SC = '_SingleClass' if not UserInfo['simulation'].Multi_Class_Mode else '' 
 
-        FCN = '_FCNA' + str(UserInfo['simulation'].FCN1_NLayers)+'_FCNB' + str(UserInfo['simulation'].FCN2_NLayers) if ('FCN_Unet' in UserInfo['architectureType']) else ''
+        FCN = '_FCNA' + str(UserInfo['simulation'].FCN1_NLayers)+'_FCNB' + str(UserInfo['simulation'].FCN2_NLayers) + '_FM' + str(UserInfo['simulation'].FCN_FeatureMaps) if ('FCN_Unet' in UserInfo['architectureType']) else ''
 
         method = UserInfo['Model_Method']                                                                      
                
@@ -171,21 +171,12 @@ def func_Exp_subExp_Names(UserInfo):
        
         tag = method + FM + ACH + NL + LF + US + FCN + SC + SE.Tag
         
-        # tag +=  '_' + UserInfo['normalize'].Method  
-        # if not UserInfo['simulation'].Weighted_Class_Mode: tag += '_NotWeighted'
-        # else: tag += '_Weighted'
-
-        # if not UserInfo['simulation'].Multi_Class_Mode: tag += '_SingleClass'
         if UserInfo['simulation'].LR_Scheduler: tag += '_wLRScheduler'
         
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
-        # print('Initialize Tags:  ')
-        # print('    Init From 3T Tag'  , A.name_Init_from_3T)
-        # print('    Init From 7T Tag'  , A.name_Init_from_7T)
-        # print('    Init From CSFn1 Tag', A.name_Init_from_CSFn1)
 
-        # A.name = 'sE12_Cascade_CSFn2_BestNetwork_CVa'
+        # A.name = 'sE12_Cascade_Main_BestNetwork_CVa_ResUnet_JointLoss'
         return A
 
     def func_Experiment():
@@ -637,13 +628,15 @@ def func_WhichExperiment(UserInfo):
             
             if Model_Method == 'Cascade':
                 if sdTag == 0:   FM , NL = 10, 3
-                elif sdTag == 1: FM , NL = 20, 4
+                elif sdTag == 1: FM , NL = 20, 3
                 elif sdTag == 2: FM , NL = 20, 3
 
             elif Model_Method == 'HCascade':
                 if sdTag == 0:   FM , NL = 30, 3
-                elif sdTag == 1: FM , NL = 40, 4
+                elif sdTag == 1: FM , NL = 40, 3
                 elif sdTag == 2: FM , NL = 40, 3
+            else:
+                 FM , NL = 20, 3
 
                     
             sdTag   = '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim)        

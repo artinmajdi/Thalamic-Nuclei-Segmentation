@@ -143,22 +143,11 @@ def func_DecisionTree(Info , params):
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
-# UserInfoB['Model_Method'] = 'Cascade' # , 'HCascade']:
-# UserInfoB['upsample'].Scale = 1
-# UserInfoB['simulation'].num_Layers = 3
-# UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
-# UserInfoB['simulation'].batch_size = 100
-# UserInfoB['architectureType'] = 'FCN_Unet'
-# UserInfoB['Experiments'].Index = '7'
-# #     for UserInfoB['TypeExperiment'] in [4, 5, 8 , 10]: 
+UserInfoB['Experiments'].Index = '7'
+UserInfoB['TypeExperiment'] = 2
+# for UserInfoB['TypeExperiment'] in [1, 2, 4]:
+#     for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15 , 20, 30]:        
 
-# UserInfoB['simulation'].FCN_FeatureMaps = 10
-# UserInfoB['TypeExperiment'] = 10
-
-# try:
 params = paramFunc.Run(UserInfoB, terminal=False)
 InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
 func_MajorityVoting(InfoS , params)
-# func_DecisionTree(InfoS , params)
-# except Exception as e:
-#     print(e)
