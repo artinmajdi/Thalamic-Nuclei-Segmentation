@@ -1088,6 +1088,97 @@ def architecture(ModelParam):
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
         
+    def Res_Unet2(ModelParam):  #  Conv -> BatchNorm -> Relu ) -> (Conv -> BatchNorm -> Relu)  -> maxpooling  -> Dropout
+                    
+        TF = ModelParam.Transfer_Learning
+        LP = ModelParam.Layer_Params        
+        KN = ModelParam.Layer_Params.ConvLayer.Kernel_size        
+        AC = ModelParam.Layer_Params.Activitation
+        DT = ModelParam.Layer_Params.Dropout
+        FM = ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
+
+        # input_shape = tuple(Input_Dimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+        padding     = ModelParam.Layer_Params.ConvLayer.padding
+        NLayers     = ModelParam.num_Layers
+        num_classes = ModelParam.MultiClass.num_classes
+        pool_size   = ModelParam.Layer_Params.MaxPooling.pool_size
+
+        def Layer(featureMaps, trainable, input):
+            conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(input)
+            conv = KLayers.BatchNormalization()(conv)  
+            return KLayers.Activation(AC.layers)(conv) 
+
+        def Unet_sublayer_Contracting(inputs):
+            def main_USC(WBp, nL):
+                trainable = TF.U_Net4.Contracting[nL] if TF.Mode else True
+                featureMaps = FM*(2**nL)
+
+                conv = Layer(featureMaps, trainable, WBp)
+                conv = Layer(featureMaps, trainable, conv)                                              
+                
+                #! Residual Part
+                if nL > 0: conv = KLayers.merge.concatenate( [WBp, conv] , axis=3)  
+
+                pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)                                
+                
+                if trainable: pool = KLayers.Dropout(DT.Value)(pool)  
+                                
+                return pool, conv
+            
+            for nL in range(NLayers -1):  
+                if nL == 0: WB, Conv_Out = inputs , {}
+                WB, Conv_Out[nL+1] = main_USC(WB, nL)  
+
+            return WB, Conv_Out
+
+        def Unet_sublayer_Expanding(WB , Conv_Out):
+            def main_USE(WBp, nL, contracting_Info):
+                trainable = TF.U_Net4.Expanding[nL] if TF.Mode else True
+                featureMaps = FM*(2**nL)
+
+                WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2,2), padding=padding, activation=AC.layers, trainable=trainable)(WBp)
+                UP = KLayers.merge.concatenate( [WBp, contracting_Info[nL+1]] , axis=3)
+
+                conv = Layer(featureMaps, trainable, UP)
+                conv = Layer(featureMaps, trainable, conv)
+                
+                #! Residual Part
+                conv = KLayers.merge.concatenate( [UP, conv] , axis=3)  
+
+                if DT.Mode and trainable: conv = KLayers.Dropout(DT.Value)(conv)
+                return conv
+
+            for nL in reversed(range(NLayers -1)):  
+                WB = main_USE(WB, nL, Conv_Out)
+
+            return WB
+
+        def Unet_MiddleLayer(input, nL):
+            trainable = TF.U_Net4.Middle if TF.Mode else True
+            featureMaps = FM*(2**nL)
+
+            WB = Layer(featureMaps, trainable, input)
+            WB = Layer(featureMaps, trainable, WB)
+
+            #! Residual Part
+            WB = KLayers.merge.concatenate( [input, WB] , axis=3)  
+
+
+            if DT.Mode and trainable: WB = KLayers.Dropout(DT.Value)(WB)
+            return WB
+                
+        inputs = KLayers.Input(input_shape)
+
+        WB, Conv_Out = Unet_sublayer_Contracting(inputs)
+
+        WB = Unet_MiddleLayer(WB , NLayers-1)
+
+        WB = Unet_sublayer_Expanding(WB , Conv_Out)
+
+        final = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
+
+        return kerasmodels.Model(inputs=[inputs], outputs=[final])
+
     def FCN_Unet_TL(ModelParam):
 
         TF = ModelParam.Transfer_Learning
@@ -1194,7 +1285,192 @@ def architecture(ModelParam):
 
         return modelNew
 
+    def ResFCN_ResUnet_TL(ModelParam):
 
+        TF = ModelParam.Transfer_Learning
+        LP = ModelParam.Layer_Params        
+        KN = ModelParam.Layer_Params.ConvLayer.Kernel_size        
+        AC = ModelParam.Layer_Params.Activitation
+        DT = ModelParam.Layer_Params.Dropout
+        FM_FCN = ModelParam.Layer_Params.FCN_FeatureMaps
+
+        padding      = ModelParam.Layer_Params.ConvLayer.padding        
+        FCN1_NLayers = ModelParam.FCN1_NLayers
+        FCN2_NLayers = ModelParam.FCN2_NLayers
+        num_classes  = ModelParam.MultiClass.num_classes
+        pool_size    = ModelParam.Layer_Params.MaxPooling.pool_size
+        FM      = ModelParam.Best_WMn_Model.FM # ModelParam.Layer_Params.FirstLayer_FeatureMap_Num
+        NLayers = ModelParam.Best_WMn_Model.NL # ModelParam.num_Layers
+        
+        def Layer(featureMaps, trainable, input):
+            conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(input)
+            conv = KLayers.BatchNormalization()(conv)  
+            return KLayers.Activation(AC.layers)(conv) 
+
+        def Unet(Unet_input):  
+
+
+            def Unet_sublayer_Contracting(inputs):
+                def main_USC(WBp, nL):
+                    trainable = TF.U_Net4.Contracting[nL] if TF.Mode else True
+                    featureMaps = FM*(2**nL)
+
+                    conv = Layer(featureMaps, trainable, WBp)
+                    conv = Layer(featureMaps, trainable, conv)
+                    
+                    pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)                                
+                    
+                    # if DT.Mode and trainable: pool = KLayers.Dropout(DT.Value)(pool)  
+                    pool = KLayers.Dropout(DT.Value)(pool)  
+                                    
+                    return pool, conv
+                
+                for nL in range(NLayers -1):  
+                    if nL == 0: WB, Conv_Out = inputs , {}
+                    WB, Conv_Out[nL+1] = main_USC(WB, nL)  
+
+                return WB, Conv_Out
+
+            def Unet_sublayer_Expanding(WB , Conv_Out):
+                def main_USE(WBp, nL, contracting_Info):
+                    trainable = TF.U_Net4.Expanding[nL] if TF.Mode else True
+                    featureMaps = FM*(2**nL)
+
+                    WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2,2), padding=padding, activation=AC.layers, trainable=trainable)(WBp)
+                    UP = KLayers.merge.concatenate( [WBp, contracting_Info[nL+1]] , axis=3)
+
+                    conv = Layer(featureMaps, trainable, UP)
+                    conv = Layer(featureMaps, trainable, conv)
+                    
+                    # if DT.Mode and trainable: conv = KLayers.Dropout(DT.Value)(conv)
+                    conv = KLayers.Dropout(DT.Value)(conv)
+                    return conv
+
+                for nL in reversed(range(NLayers -1)):  
+                    WB = main_USE(WB, nL, Conv_Out)
+
+                return WB
+                
+            def Unet_MiddleLayer(WB, nL):
+                trainable = TF.U_Net4.Middle if TF.Mode else True
+                featureMaps = FM*(2**nL)
+
+                WB = Layer(featureMaps, trainable, WB)
+                WB = Layer(featureMaps, trainable, WB)     
+                WB = KLayers.Dropout(DT.Value)(WB)  
+
+                return WB
+                                    
+            WB, Conv_Out = Unet_sublayer_Contracting(Unet_input)
+            WB = Unet_MiddleLayer(WB , NLayers-1)
+            WB = Unet_sublayer_Expanding(WB , Conv_Out)
+
+            return WB
+
+        def ResUnet2(ResUnet_input):
+
+            def Unet_sublayer_Contracting(inputs):
+                def main_USC(WBp, nL):
+                    trainable = TF.U_Net4.Contracting[nL] if TF.Mode else True
+                    featureMaps = FM*(2**nL)
+
+                    conv = Layer(featureMaps, trainable, WBp)
+                    conv = Layer(featureMaps, trainable, conv)                                              
+                    
+                    #! Residual Part
+                    if nL > 0: conv = KLayers.merge.concatenate( [WBp, conv] , axis=3)  
+
+                    pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)                                
+                    
+                    pool = KLayers.Dropout(DT.Value)(pool)  
+                                    
+                    return pool, conv
+                
+                for nL in range(NLayers -1):  
+                    if nL == 0: WB, Conv_Out = inputs , {}
+                    WB, Conv_Out[nL+1] = main_USC(WB, nL)  
+
+                return WB, Conv_Out
+
+            def Unet_sublayer_Expanding(WB , Conv_Out):
+                def main_USE(WBp, nL, contracting_Info):
+                    trainable = TF.U_Net4.Expanding[nL] if TF.Mode else True
+                    featureMaps = FM*(2**nL)
+
+                    WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2,2), padding=padding, activation=AC.layers, trainable=trainable)(WBp)
+                    UP = KLayers.merge.concatenate( [WBp, contracting_Info[nL+1]] , axis=3)
+
+                    conv = Layer(featureMaps, trainable, UP)
+                    conv = Layer(featureMaps, trainable, conv)
+                    
+                    #! Residual Part
+                    conv = KLayers.merge.concatenate( [UP, conv] , axis=3)  
+
+                    conv = KLayers.Dropout(DT.Value)(conv)
+                    return conv
+
+                for nL in reversed(range(NLayers -1)):  
+                    WB = main_USE(WB, nL, Conv_Out)
+
+                return WB
+
+            def Unet_MiddleLayer(input, nL):
+                trainable = TF.U_Net4.Middle if TF.Mode else True
+                featureMaps = FM*(2**nL)
+
+                WB = Layer(featureMaps, trainable, input)
+                WB = Layer(featureMaps, trainable, WB)
+
+                #! Residual Part
+                WB = KLayers.merge.concatenate( [input, WB] , axis=3)  
+
+
+                WB = KLayers.Dropout(DT.Value)(WB)
+                return WB
+                    
+            WB, Conv_Out = Unet_sublayer_Contracting(ResUnet_input)
+            WB = Unet_MiddleLayer(WB , NLayers-1)
+            WB = Unet_sublayer_Expanding(WB , Conv_Out)
+
+            return WB
+       
+        def FCN_Layer(conv,num_Layers):
+
+            for _ in range(num_Layers):
+                conv = Layer(FM_FCN, True, conv)                     
+                conv = KLayers.Dropout(DT.Value)(conv)                 
+
+            return conv            
+
+        def ResFCN_Layer(inputs,num_Layers):
+            for nL in range(num_Layers):
+                if nL == 0: conv = Layer(FM_FCN, True, inputs)
+                else: conv = Layer(FM_FCN, True, conv)
+                                     
+                conv = KLayers.Dropout(DT.Value)(conv)  
+
+            conv = KLayers.merge.concatenate( [inputs, conv] , axis=3) 
+
+            return conv       
+
+        inputs = KLayers.Input(input_shape)
+       
+        if FCN1_NLayers > 0: conv = ResFCN_Layer(inputs, FCN1_NLayers)
+        else: conv = inputs
+
+        conv = ResUnet2(conv)
+
+        if FCN2_NLayers > 0: conv = ResFCN_Layer(conv, FCN2_NLayers) 
+
+        output = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(conv)
+        modelNew = kerasmodels.Model(inputs=[inputs], outputs=[output])
+
+        best_WMn_model = kerasmodels.load_model(ModelParam.Best_WMn_Model.address) # num_Layers 43
+        for l in tqdm(range(2,len(best_WMn_model.layers)-1), 'loading the weights for Res Unet'):
+            modelNew.layers[l+FCN1_NLayers*4+1].set_weights(best_WMn_model.layers[l].get_weights())
+            # modelNew.layers[l].set_weights(best_WMn_model.layers[l].get_weights())
+
+        return modelNew
 
     """
     def FCN_3D(ModelParam):
@@ -1235,7 +1511,12 @@ def architecture(ModelParam):
 
     elif  ModelParam.architectureType == 'Res_Unet':
         model = Res_Unet(ModelParam)
-
+    elif  ModelParam.architectureType == 'Res_Unet2':
+        model = Res_Unet2(ModelParam)        
+    elif  ModelParam.architectureType == 'ResFCN_ResUnet_TL':
+        model = ResFCN_ResUnet_TL(ModelParam)    
+            
+    
     model.summary()
 
     return model

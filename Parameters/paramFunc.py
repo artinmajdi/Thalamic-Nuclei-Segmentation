@@ -119,7 +119,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
     UserInfoB['SubExperiment'].Tag   = e + UserInfoB['tag_temp']  
 
 
-    if UserInfoB['TypeExperiment'] == 11: UserInfoB['architectureType'] = 'FCN_Unet_TL' 
+    # if UserInfoB['TypeExperiment'] == 11: UserInfoB['architectureType'] = 'FCN_Unet_TL' 
     # if UserInfoB['upsample'].Scale == 1: UserInfoB['upsample'].Mode = False
         
     return UserInfoB
@@ -618,7 +618,7 @@ def func_WhichExperiment(UserInfo):
     WhichExperiment.Dataset       = func_Dataset()
         
 
-    def adding_TransferLearningParams(WhichExperiment):
+    def old_adding_TransferLearningParams(WhichExperiment):
         class best_WMn_Model:
 
             architectureType = 'U-Net4'
@@ -645,6 +645,59 @@ def func_WhichExperiment(UserInfo):
             address = EXP_address + Tag  + WhichExperiment.Nucleus.name + sdTag + '/model.h5'
         return best_WMn_Model()
 
+    def adding_TransferLearningParams(WhichExperiment):
+
+        def params_bestUnet(Model_Method, sdTag):
+            if Model_Method == 'Cascade':
+                if sdTag == 0:   FM , NL = 10, 3
+                elif sdTag == 1: FM , NL = 20, 3
+                elif sdTag == 2: FM , NL = 20, 3
+
+            elif Model_Method == 'HCascade':
+                if sdTag == 0:   FM , NL = 30, 3
+                elif sdTag == 1: FM , NL = 40, 3
+                elif sdTag == 2: FM , NL = 40, 3
+            else:
+                FM , NL = 20, 3
+
+            return FM , NL , 'U-Net4'
+
+        def params_bestResUnet(Model_Method, sdTag):
+            if Model_Method == 'Cascade':
+                if sdTag == 0:   FM , NL = 15, 3
+                elif sdTag == 1: FM , NL = 20, 3
+                elif sdTag == 2: FM , NL = 10, 3
+
+            else:
+                FM , NL = 20, 3
+ 
+            return FM , NL, 'Res_Unet'
+
+        class best_WMn_Model:
+
+
+            LossFunction = 'MyJoint'
+            EXP_address = '/array/ssd/msmajdi/experiments/keras/exp6/models/'
+            Model_Method = WhichExperiment.HardParams.Model.Method.Type
+            sdTag = WhichExperiment.Dataset.slicingInfo.slicingDim
+
+            if WhichExperiment.HardParams.Model.architectureType in ['FCN_Unet_TL', 'U-Net4']: 
+                FM , NL, architectureType = params_bestUnet(Model_Method, sdTag)
+            elif WhichExperiment.HardParams.Model.architectureType in ['Res_Unet' , 'FCN_ResUnet_TL', 'ResFCN_ResUnet_TL']: 
+                FM , NL, architectureType = params_bestResUnet(Model_Method, sdTag)
+            else:
+                FM , NL, architectureType = 20, 3, 'Res_Unet2'
+                
+
+                    
+            sdTag   = '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim)        
+            Tag     = 'sE12_' + Model_Method + '_FM' + str(FM) + '_' + architectureType + '_NL' + str(NL) + '_LS_' + LossFunction + '_US1_Main_Init_3T_CV_a/'
+
+            address = EXP_address + Tag  + WhichExperiment.Nucleus.name + sdTag + '/model.h5'
+
+        return best_WMn_Model()
+
+        
     WhichExperiment.HardParams.Model.Best_WMn_Model = adding_TransferLearningParams(WhichExperiment)
 
 
