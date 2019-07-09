@@ -1455,7 +1455,12 @@ def architecture(ModelParam):
 
         inputs = KLayers.Input(input_shape)
        
-        if FCN1_NLayers > 0: conv = ResFCN_Layer(inputs, FCN1_NLayers)
+        gap = 0
+        if FCN1_NLayers > 0: 
+            conv = ResFCN_Layer(inputs, FCN1_NLayers)
+            gap  = FCN1_NLayers*4+1
+
+
         else: conv = inputs
 
         conv = ResUnet2(conv)
@@ -1466,8 +1471,9 @@ def architecture(ModelParam):
         modelNew = kerasmodels.Model(inputs=[inputs], outputs=[output])
 
         best_WMn_model = kerasmodels.load_model(ModelParam.Best_WMn_Model.address) # num_Layers 43
+        print( 'ResNet model address' , ModelParam.Best_WMn_Model.address )
         for l in tqdm(range(2,len(best_WMn_model.layers)-1), 'loading the weights for Res Unet'):
-            modelNew.layers[l+FCN1_NLayers*4+1].set_weights(best_WMn_model.layers[l].get_weights())
+            modelNew.layers[l+gap].set_weights(best_WMn_model.layers[l].get_weights())
             # modelNew.layers[l].set_weights(best_WMn_model.layers[l].get_weights())
 
         return modelNew

@@ -143,18 +143,14 @@ def func_DecisionTree(Info , params):
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
-# UserInfoB['simulation'].num_Layers = 3
-# UserInfoB['simulation'].slicingDim = [2,1,0]
-# UserInfoB['architectureType'] = 'Res_Unet'
-# UserInfoB['lossFunction_Index'] = 3
-UserInfoB['Experiments'].Index = '6'
-UserInfoB['TypeExperiment'] = 2
-UserInfoB['Model_Method'] = 'Cascade' 
-# UserInfoB['architectureType'] = 'FCN_Unet_TL'
-# UserInfoB['simulation'].FCN1_NLayers = 3
+UserInfoB['Model_Method'] = 'Cascade'
+UserInfoB['simulation'].num_Layers = 3
+UserInfoB['simulation'].slicingDim = [2,1,0]
+UserInfoB['architectureType'] = 'Res_Unet'
+UserInfoB['lossFunction_Index'] = 5
+UserInfoB['Experiments'].Index = '7'
+UserInfoB['TypeExperiment'] = 6 # [1, 2, 4, 8, 6, 7]
 
-# for UserInfoB['simulation'].FCN2_NLayers in [0,1]:
-#     for UserInfoB['simulation'].FCN_FeatureMaps in [10, 20 , 30 , 40, 50]:     
 
 params = paramFunc.Run(UserInfoB, terminal=False)
 InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)

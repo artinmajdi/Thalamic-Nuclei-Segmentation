@@ -154,7 +154,7 @@ def func_Exp_subExp_Names(UserInfo):
         GAP = '' # _gap' + str(UserInfo['gapDilation'])
         SC = '_SingleClass' if not UserInfo['simulation'].Multi_Class_Mode else '' 
 
-        FCN = '_FCNA' + str(UserInfo['simulation'].FCN1_NLayers)+'_FCNB' + str(UserInfo['simulation'].FCN2_NLayers) + '_FM' + str(UserInfo['simulation'].FCN_FeatureMaps) if ('FCN_Unet' in UserInfo['architectureType']) else ''
+        FCN = '_FCNA' + str(UserInfo['simulation'].FCN1_NLayers)+'_FCNB' + str(UserInfo['simulation'].FCN2_NLayers) + '_FM' + str(UserInfo['simulation'].FCN_FeatureMaps) if ('TL' in UserInfo['architectureType']) and ('FCN' in UserInfo['architectureType']) else ''
 
         method = UserInfo['Model_Method']                                                                      
                
@@ -177,7 +177,7 @@ def func_Exp_subExp_Names(UserInfo):
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
 
-        # A.name = 'sE12_Cascade_Main_BestNetwork_CVa_ResUnet_JointLoss'
+        A.name = 'sE12_Cascade_CSFn1_InitMain_ResUnet_JoinLoss_BestNetwork_CVa'
         return A
 
     def func_Experiment():
@@ -662,16 +662,27 @@ def func_WhichExperiment(UserInfo):
 
             return FM , NL , 'U-Net4'
 
-        def params_bestResUnet(Model_Method, sdTag):
+        # def params_bestResUnet(Model_Method, sdTag):
+        #     if Model_Method == 'Cascade':
+        #         if sdTag == 0:   FM , NL = 15, 3
+        #         elif sdTag == 1: FM , NL = 20, 3
+        #         elif sdTag == 2: FM , NL = 10, 3
+
+        #     else:
+        #         FM , NL = 20, 3
+ 
+        #     return FM , NL, 'Res_Unet'
+
+        def params_bestResUnet2(Model_Method, sdTag):
             if Model_Method == 'Cascade':
                 if sdTag == 0:   FM , NL = 15, 3
                 elif sdTag == 1: FM , NL = 20, 3
-                elif sdTag == 2: FM , NL = 10, 3
+                elif sdTag == 2: FM , NL = 30, 3
 
             else:
                 FM , NL = 20, 3
  
-            return FM , NL, 'Res_Unet'
+            return FM , NL, 'Res_Unet2'
 
         class best_WMn_Model:
 
@@ -683,8 +694,8 @@ def func_WhichExperiment(UserInfo):
 
             if WhichExperiment.HardParams.Model.architectureType in ['FCN_Unet_TL', 'U-Net4']: 
                 FM , NL, architectureType = params_bestUnet(Model_Method, sdTag)
-            elif WhichExperiment.HardParams.Model.architectureType in ['Res_Unet' , 'FCN_ResUnet_TL', 'ResFCN_ResUnet_TL']: 
-                FM , NL, architectureType = params_bestResUnet(Model_Method, sdTag)
+            elif WhichExperiment.HardParams.Model.architectureType in ['Res_Unet' , 'ResFCN_ResUnet_TL']: 
+                FM , NL, architectureType = params_bestResUnet2(Model_Method, sdTag)
             else:
                 FM , NL, architectureType = 20, 3, 'Res_Unet2'
                 
