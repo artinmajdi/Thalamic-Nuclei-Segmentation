@@ -6,8 +6,9 @@ gpu = "2"
 
 # TypeExperiment == 1: # 3T      Init Rn
 
-# TypeExperiment == 2: # Main       Init 3T
-# TypeExperiment == 3  # Main + 3T  Init 3T
+# TypeExperiment == 2:  # Main       Init 3T
+# TypeExperiment == 14: # Main       Init Rn
+# TypeExperiment == 3   # Main + 3T  Init 3T
 
 # TypeExperiment == 4: # ET      Init Main
 # TypeExperiment == 5: # ET Transfer Learn from Main

@@ -105,7 +105,8 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 10: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T   =True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_Main'),
                 11: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_Main'),
                 12: (13  ,   self.ReadTrainC(Main=1)         , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True) , '_Main_test_TL_Main'),
-                13: (13  ,   self.ReadTrainC(CSFn1=1,CSFn2=1)   , self.InitializeB(From_7T   =True)  ,  self.Transfer_LearningC()          , '_CSFn2_CSFn1_Init_Main'),
+                13: (13  ,   self.ReadTrainC(CSFn1=1,CSFn2=1) , self.InitializeB(From_7T   =True)    ,  self.Transfer_LearningC()          , '_CSFn2_CSFn1_Init_Main'),
+                14: (12  ,   self.ReadTrainC(Main=1)         , self.InitializeB()                    ,  self.Transfer_LearningC()          , '_Main_Init_Rn' ),
                 }                                           
             return switcher.get(TypeExperiment , 'wrong Index')
 
@@ -153,6 +154,7 @@ def func_Exp_subExp_Names(UserInfo):
         LF = '_' + a
         GAP = '' # _gap' + str(UserInfo['gapDilation'])
         SC = '_SingleClass' if not UserInfo['simulation'].Multi_Class_Mode else '' 
+        LR = '_wLRScheduler' if UserInfo['simulation'].LR_Scheduler else ''
 
         FCN = '_FCNA' + str(UserInfo['simulation'].FCN1_NLayers)+'_FCNB' + str(UserInfo['simulation'].FCN2_NLayers) + '_FM' + str(UserInfo['simulation'].FCN_FeatureMaps) if ('TL' in UserInfo['architectureType']) and ('FCN' in UserInfo['architectureType']) else ''
 
@@ -165,19 +167,19 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_thalamus = ''            
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
                 self.name_Init_from_3T    = 'sE8_'  + method + FM + ACH + NL + LF + US + FCN + SC
-                self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + LF + US + FCN + SC + '_Main_Init_3T_CV_a' 
-                self.name_Init_from_CSFn1 = 'sE9_'  + method + FM + ACH + NL + LF + US + FCN + SC + '_CSFn1_Init_Main_CV_a'   # this needs to be fixed
+                self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + LF + US + FCN + SC + LR + '_Main_Init_3T_CV_a' 
+                self.name_Init_from_CSFn1 = 'sE9_'  + method + FM + ACH + NL + LF + US + FCN + SC + LR + '_CSFn1_Init_Main_CV_a'   # this needs to be fixed
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
        
-        tag = method + FM + ACH + NL + LF + US + FCN + SC + SE.Tag
+        tag = method + FM + ACH + NL + LF + US + FCN + SC + LR + SE.Tag
         
-        if UserInfo['simulation'].LR_Scheduler: tag += '_wLRScheduler'
+        
         
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
 
-        A.name = 'sE12_Cascade_CSFn1_InitMain_ResUnet_JoinLoss_BestNetwork_CVa'
+        # A.name = 'sE12_Cascade_CSFn2_BestNetwork_ResUnet_JointLoss_TL_Main'
         return A
 
     def func_Experiment():
@@ -694,7 +696,7 @@ def func_WhichExperiment(UserInfo):
 
             if WhichExperiment.HardParams.Model.architectureType in ['FCN_Unet_TL', 'U-Net4']: 
                 FM , NL, architectureType = params_bestUnet(Model_Method, sdTag)
-            elif WhichExperiment.HardParams.Model.architectureType in ['Res_Unet' , 'ResFCN_ResUnet_TL']: 
+            elif WhichExperiment.HardParams.Model.architectureType in ['Res_Unet' , 'Res_Unet2' , 'ResFCN_ResUnet_TL']: 
                 FM , NL, architectureType = params_bestResUnet2(Model_Method, sdTag)
             else:
                 FM , NL, architectureType = 20, 3, 'Res_Unet2'

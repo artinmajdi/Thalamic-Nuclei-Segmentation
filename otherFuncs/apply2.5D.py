@@ -143,14 +143,11 @@ def func_DecisionTree(Info , params):
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
-UserInfoB['Model_Method'] = 'Cascade'
-UserInfoB['simulation'].num_Layers = 3
-UserInfoB['simulation'].slicingDim = [2,1,0]
-UserInfoB['architectureType'] = 'Res_Unet'
+UserInfoB['TypeExperiment'] = 11
+UserInfoB['Model_Method'] = 'Cascade' 
+UserInfoB['architectureType'] = 'ResFCN_ResUnet_TL'
 UserInfoB['lossFunction_Index'] = 5
 UserInfoB['Experiments'].Index = '7'
-UserInfoB['TypeExperiment'] = 6 # [1, 2, 4, 8, 6, 7]
-
 
 params = paramFunc.Run(UserInfoB, terminal=False)
 InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)

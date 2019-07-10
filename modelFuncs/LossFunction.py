@@ -60,8 +60,8 @@ def My_BCE_unweighted_Loss(W):
 def My_LogDice_Loss(W):
 
     def func_loss(y_true,y_pred):
-        NUM_CLASSES = y_pred.shape[3] - 1
-        loss = [ W[d]*func_Loss_Dice(y_true[...,d],y_pred[...,d]) for d in range(NUM_CLASSES)]
+        NUM_CLASSES = y_pred.shape[3]
+        loss = [ func_Loss_Dice(y_true[...,d],y_pred[...,d]) for d in range(NUM_CLASSES)]
         return func_Average(loss, NUM_CLASSES)
 
     return func_loss

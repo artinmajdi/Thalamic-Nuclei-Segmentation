@@ -653,23 +653,9 @@ def EXP17a_Resnet2_JointDice(UserInfoB):
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
     for UserInfoB['TypeExperiment'] in [1, 2, 4]:
-        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15 , 20]:        
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15 , 20 , 30, 40]:        
             Run(UserInfoB, IV)
 
-def EXP17b_Resnet2_JointDice(UserInfoB):
-    
-    # Cascade   Main Init 3T
-    UserInfoB['Model_Method'] = 'Cascade'
-    UserInfoB['simulation'].num_Layers = 3
-    UserInfoB['simulation'].slicingDim = [2,1,0]
-    UserInfoB['architectureType'] = 'Res_Unet2'
-    UserInfoB['lossFunction_Index'] = 5
-    UserInfoB['Experiments'].Index = '6'
-    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-
-    for UserInfoB['TypeExperiment'] in [1, 2, 4]:
-        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [30, 40]:        
-            Run(UserInfoB, IV)
 
 def EXP18a_TL_CSFn2_ResNet2_JointLoss(UserInfoB):
     
@@ -690,7 +676,7 @@ def EXP18a_TL_CSFn2_ResNet2_JointLoss(UserInfoB):
                 for UserInfoB['simulation'].FCN_FeatureMaps in [10, 20 , 30 , 40]:
                     Run(UserInfoB, IV)
 
-def EXP18b_TL_CSFn2_ResNet2_JointLoss(UserInfoB):
+def EXP18b2_TL_CSFn2_ResNet2_JointLoss(UserInfoB):
     
     UserInfoB['TypeExperiment'] = 11
     UserInfoB['Model_Method'] = 'Cascade' 
@@ -700,10 +686,15 @@ def EXP18b_TL_CSFn2_ResNet2_JointLoss(UserInfoB):
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
     for UserInfoB['simulation'].FCN1_NLayers in [1]:
-        for UserInfoB['simulation'].FCN2_NLayers in [0, 1, 2]:
-
+        for UserInfoB['simulation'].FCN2_NLayers in [2]: # 0, 1,
             for UserInfoB['simulation'].FCN_FeatureMaps in [10, 20 , 30 , 40]:
                 Run(UserInfoB, IV)
+
+    for UserInfoB['simulation'].FCN1_NLayers in [2]:
+        for UserInfoB['simulation'].FCN2_NLayers in [2]: # 0, 1, 
+            for UserInfoB['simulation'].FCN_FeatureMaps in [20 , 30 , 40]:  # 10, 
+                Run(UserInfoB, IV)
+
 
 def EXP18c_TL_CSFn2_ResNet2_JointLoss(UserInfoB):
     
@@ -715,19 +706,113 @@ def EXP18c_TL_CSFn2_ResNet2_JointLoss(UserInfoB):
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
     for UserInfoB['simulation'].FCN1_NLayers in [2]:
-        for UserInfoB['simulation'].FCN2_NLayers in [0, 1, 2]:
+        for UserInfoB['simulation'].FCN2_NLayers in [2]: # 0, 1, 
 
-            for UserInfoB['simulation'].FCN_FeatureMaps in [10, 20 , 30 , 40]:
+            for UserInfoB['simulation'].FCN_FeatureMaps in [20 , 30 , 40]:  # 10, 
                 Run(UserInfoB, IV)
+
+
+
+
+def EXP19a_Resnet2_LogDice(UserInfoB):
+    
+    # Cascade   Main Init 3T
+    UserInfoB['Model_Method'] = 'Cascade'
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [2,1,0]
+    UserInfoB['architectureType'] = 'Res_Unet2'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '6'
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    for UserInfoB['TypeExperiment'] in [2, 4, 8]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15]:    
+            Run(UserInfoB, IV)
+
+def EXP19b_Resnet2_LogDice(UserInfoB):
+    
+    # Cascade   Main Init 3T
+    UserInfoB['Model_Method'] = 'Cascade'
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [2,1,0]
+    UserInfoB['architectureType'] = 'Res_Unet2'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '6'
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    for UserInfoB['TypeExperiment'] in [2, 4, 8]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [20 , 30]:
+            Run(UserInfoB, IV)
+
+def EXP19c_Resnet2_LogDice(UserInfoB):
+    
+    # Cascade   Main Init 3T
+    UserInfoB['Model_Method'] = 'Cascade'
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [2,1,0]
+    UserInfoB['architectureType'] = 'Res_Unet2'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '6'
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    for UserInfoB['TypeExperiment'] in [2, 4, 8]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [40]:
+            Run(UserInfoB, IV)
+
+def EXP20_Resnet_LogDice(UserInfoB):
+    
+    # Cascade   Main Init 3T
+    UserInfoB['Model_Method'] = 'Cascade'
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [2,1,0]
+    UserInfoB['architectureType'] = 'Res_Unet'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '6'
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    for UserInfoB['TypeExperiment'] in [2, 4]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15, 20, 30 , 40]:
+            Run(UserInfoB, IV)
+
+def EXP21_Resnet2_LogDice_InitRn(UserInfoB):
+    
+    # Cascade   Main Init 3T
+    UserInfoB['Model_Method'] = 'Cascade'
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [2,1,0]
+    UserInfoB['architectureType'] = 'Res_Unet2'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '6'
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    for UserInfoB['TypeExperiment'] in [14]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15, 20 , 30, 40]:
+            Run(UserInfoB, IV)
+
+
+def EXP22_Resnet2_LogDice_LRScheduler(UserInfoB):
+    
+    # Cascade   Main Init 3T
+    UserInfoB['Model_Method'] = 'Cascade'
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [2,1,0]
+    UserInfoB['architectureType'] = 'Res_Unet2'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['simulation'].LR_Scheduler = True
+    UserInfoB['Experiments'].Index = '6'
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    for UserInfoB['TypeExperiment'] in [2, 4]:
+        for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15, 20 , 30 , 40]:    
+            Run(UserInfoB, IV)
 
 
 UserInfoB, K = preMode(UserInfo.__dict__)
 
 # UserInfoB['simulation'].ReadAugments_Mode = False
+# UserInfoB['lossFunction_Index'] = 4
 
-# EXP15c2_TL_CSFn2_ResNet_JointLoss(UserInfoB)  # nohup python main.py -n all -sd all -g 6 >> EXP15c2_g6 &
-
-EXP18c_TL_CSFn2_ResNet2_JointLoss(UserInfoB)
+EXP22_Resnet2_LogDice_LRScheduler(UserInfoB)
 
 
 K.clear_session()

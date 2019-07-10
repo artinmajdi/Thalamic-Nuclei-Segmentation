@@ -263,22 +263,24 @@ def trainingExperiment(Data, params):
         # Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = 'loss', factor=0.5, min_delta=0.005 , patience=4, verbose=1, \
         #     save_best_only=True, mode='min' , min_lr=0.9e-4 , )
         
-        def step_decay_schedule(initial_lr=1e-2, decay_factor=0.5, step_size=70):
+        def step_decay_schedule(initial_lr=1e-4, decay_factor=0.5, step_size=20):
             def schedule(epoch):
-                return initial_lr * (decay_factor ** np.floor(epoch/step_size))            
+                # if np.floor(epoch/step_size) <= 2: 
+                return initial_lr * (decay_factor ** np.floor(epoch/step_size))
+                # else: return initial_lr * (decay_factor ** 2)
+
             return keras.callbacks.LearningRateScheduler(schedule)
         
         Reduce_LR = step_decay_schedule()
 
         # Progbar = keras.callbacks.Progba
-        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=30, verbose=1, mode=mode, \
+        EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=40, verbose=1, mode=mode, \
             baseline=0, restore_best_weights=True)
 
         # TensorBoard = keras.callbacks.TensorBoard(log_dir= Dir_Save + '/logs', histogram_freq=1, batch_size=batch_size, \
         #     write_graph=False, write_grads=False, write_images=False, embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None, \
                 # embeddings_data=None, update_freq='epoch')
 
-        
         if params.UserInfo['simulation'].LR_Scheduler: return [checkpointer  , EarlyStopping , Reduce_LR]
         else: return [checkpointer  , EarlyStopping] # TQDMCallback()
         
