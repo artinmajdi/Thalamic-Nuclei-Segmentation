@@ -145,9 +145,11 @@ UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
 UserInfoB['TypeExperiment'] = 11
 UserInfoB['Model_Method'] = 'Cascade' 
-UserInfoB['architectureType'] = 'ResFCN_ResUnet_TL'
+UserInfoB['architectureType'] = 'ResFCN_ResUnet2_TL'
 UserInfoB['lossFunction_Index'] = 5
 UserInfoB['Experiments'].Index = '7'
+
+UserInfoB['TypeExperiment'] = 8  # , 4, 8]:
 
 params = paramFunc.Run(UserInfoB, terminal=False)
 InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)

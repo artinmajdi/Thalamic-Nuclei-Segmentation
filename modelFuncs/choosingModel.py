@@ -1287,7 +1287,7 @@ def architecture(ModelParam):
 
         return modelNew
 
-    def ResFCN_ResUnet_TL(ModelParam):
+    def ResFCN_ResUnet2_TL(ModelParam):
 
         TF = ModelParam.Transfer_Learning
         LP = ModelParam.Layer_Params        
@@ -1521,8 +1521,8 @@ def architecture(ModelParam):
         model = Res_Unet(ModelParam)
     elif  ModelParam.architectureType == 'Res_Unet2':
         model = Res_Unet2(ModelParam)        
-    elif  ModelParam.architectureType == 'ResFCN_ResUnet_TL':
-        model = ResFCN_ResUnet_TL(ModelParam)    
+    elif  ModelParam.architectureType == 'ResFCN_ResUnet2_TL':
+        model = ResFCN_ResUnet2_TL(ModelParam)    
             
     
     model.summary()
