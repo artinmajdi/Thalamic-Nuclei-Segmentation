@@ -206,7 +206,7 @@ def Run(UserInfoB, InitValues):
 
         def Loop_slicing_orientations(UserInfoB, InitValues):
             for sd in InitValues.slicingDim:            
-                if not (sd == 0 and NI == [1]):                    
+                if not (sd == 0 and NI == [1]) or UserInfoB['temp_copy_sd0']:                    
                     UserInfoB['simulation'].slicingDim = [sd]
                     subRun(UserInfoB)
 
@@ -853,10 +853,11 @@ def EXP24_SingleClass_AV(UserInfoB):
     UserInfoB['simulation'].nucleus_Index = [1,2] 
     # UserInfoB['simulation'].epochs = 30 
     
-    # UserInfoB['simulation'].slicingDim = [0] # 2,1,0]
+    UserInfoB['simulation'].slicingDim = [0] # 2,1,0]
     UserInfoB['architectureType'] = 'Res_Unet2'
     UserInfoB['Experiments'].Index = '6'
     UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['temp_copy_sd0'] = True
     # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['Model_Method'] = 'Cascade'
@@ -869,13 +870,14 @@ def EXP24_SingleClass_AV(UserInfoB):
 def EXP24b_SingleClass_AV(UserInfoB):
     UserInfoB['simulation'].Multi_Class_Mode = False  
     UserInfoB['simulation'].nucleus_Index = [1,2] 
-    UserInfoB['simulation'].epochs = 30 
+    # UserInfoB['simulation'].epochs = 30 
     # UserInfoB['simulation'].slicingDim = [0] # 2,1,0]
     UserInfoB['architectureType'] = 'Res_Unet2'
     UserInfoB['Experiments'].Index = '6'
     UserInfoB['lossFunction_Index'] = 4
     UserInfoB['upsample'].Scale = 2
     UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['temp_copy_sd0'] = True
     UserInfoB['Model_Method'] = 'Cascade'
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
