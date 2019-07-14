@@ -2875,3 +2875,145 @@ conv2d_11 (Conv2D)              (None, 168, 112, 2)  122         dropout_5[0][0]
 2019-07-14 15:42:14.888180: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
 2019-07-14 15:42:14.888191: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
 2019-07-14 15:42:14.888573: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:04:00.0, compute capability: 6.0)
+
+Total params: 223,162
+Trainable params: 222,362
+Non-trainable params: 800
+__________________________________________________________________________________________________
+------------------------------------------------------------------
+class_weights [0.99722137 0.00277863]
+Train on 19871 samples, validate on 569 samples
+Epoch 1/300
+ - 63s - loss: 0.5052 - acc: 0.9687 - mDice: 0.5316 - val_loss: 0.1358 - val_acc: 0.9839 - val_mDice: 0.7700
+
+Epoch 00001: val_mDice improved from -inf to 0.76999, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE8_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US2_SingleClass/2-AV/sd0/best_model_weights.h5
+Epoch 2/300
+ - 56s - loss: 0.1642 - acc: 0.9828 - mDice: 0.7291 - val_loss: 0.1355 - val_acc: 0.9839 - val_mDice: 0.7698
+
+Epoch 00002: val_mDice did not improve from 0.76999
+Epoch 3/300
+ - 56s - loss: 0.1393 - acc: 0.9830 - mDice: 0.7653 - val_loss: 0.1242 - val_acc: 0.9840 - val_mDice: 0.7874
+
+Epoch 00003: val_mDice improved from 0.76999 to 0.78740, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE8_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US2_SingleClass/2-AV/sd0/best_model_weights.h5
+Epoch 4/300
+ - 57s - loss: 0.1325 - acc: 0.9831 - mDice: 0.7760 - val_loss: 0.1402 - val_acc: 0.9839 - val_mDice: 0.7627
+
+Epoch 00004: val_mDice did not improve from 0.78740
+Epoch 5/300
+ - 58s - loss: 0.1198 - acc: 0.9833 - mDice: 0.7952 - val_loss: 0.1161 - val_acc: 0.9842 - val_mDice: 0.8004
+
+Epoch 00005: val_mDice improved from 0.78740 to 0.80043, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE8_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US2_SingleClass/2-AV/sd0/best_model_weights.h5
+Epoch 6/300
+ - 58s - loss: 0.1128 - acc: 0.9834 - mDice: 0.8061 - val_loss: 0.1151 - val_acc: 0.9841 - val_mDice: 0.8021
+
+Epoch 00006: val_mDice improved from 0.80043 to 0.80211, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE8_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US2_SingleClass/2-AV/sd0/best_model_weights.h5
+Epoch 7/300
+ - 59s - loss: 0.1151 - acc: 0.9834 - mDice: 0.8024 - val_loss: 0.1272 - val_acc: 0.9840 - val_mDice: 0.7830
+
+Epoch 00007: val_mDice did not improve from 0.80211
+Epoch 8/300
+ - 58s - loss: 0.1048 - acc: 0.9836 - mDice: 0.8186 - val_loss: 0.1048 - val_acc: 0.9842 - val_mDice: 0.8177
+
+Epoch 00008: val_mDice improved from 0.80211 to 0.81769, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE8_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US2_SingleClass/2-AV/sd0/best_model_weights.h5
+Epoch 9/300
+ - 58s - loss: 0.1056 - acc: 0.9836 - mDice: 0.8172 - val_loss: 0.1118 - val_acc: 0.9841 - val_mDice: 0.8067
+
+Epoch 00009: val_mDice did not improve from 0.81769
+Epoch 10/300
+ - 57s - loss: 0.1006 - acc: 0.9837 - mDice: 0.8253 - val_loss: 0.1012 - val_acc: 0.9842 - val_mDice: 0.8239
+
+Epoch 00010: val_mDice improved from 0.81769 to 0.82392, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE8_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US2_SingleClass/2-AV/sd0/best_model_weights.h5
+Epoch 11/300
+ - 58s - loss: 0.0967 - acc: 0.9837 - mDice: 0.8314 - val_loss: 0.1025 - val_acc: 0.9842 - val_mDice: 0.8214
+
+Epoch 00011: val_mDice did not improve from 0.82392
+Epoch 12/300
+ - 58s - loss: 0.0972 - acc: 0.9837 - mDice: 0.8308 - val_loss: 0.1132 - val_acc: 0.9842 - val_mDice: 0.8043
+
+Epoch 00012: val_mDice did not improve from 0.82392
+Epoch 13/300
+ - 58s - loss: 0.0941 - acc: 0.9837 - mDice: 0.8357 - val_loss: 0.1091 - val_acc: 0.9842 - val_mDice: 0.8111
+
+Epoch 00013: val_mDice did not improve from 0.82392
+Epoch 14/300
+ - 57s - loss: 0.0913 - acc: 0.9838 - mDice: 0.8405 - val_loss: 0.1032 - val_acc: 0.9843 - val_mDice: 0.8205
+
+Epoch 00014: val_mDice did not improve from 0.82392
+Epoch 15/300
+ - 58s - loss: 0.0914 - acc: 0.9838 - mDice: 0.8402 - val_loss: 0.1137 - val_acc: 0.9842 - val_mDice: 0.8034
+
+Epoch 00015: val_mDice did not improve from 0.82392
+Epoch 16/300
+ - 57s - loss: 0.0890 - acc: 0.9838 - mDice: 0.8443 - val_loss: 0.0999 - val_acc: 0.9843 - val_mDice: 0.8257
+
+Epoch 00016: val_mDice improved from 0.82392 to 0.82574, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE8_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US2_SingleClass/2-AV/sd0/best_model_weights.h5
+Epoch 17/300
+ - 58s - loss: 0.0887 - acc: 0.9838 - mDice: 0.8448 - val_loss: 0.1132 - val_acc: 0.9841 - val_mDice: 0.8042
+
+Epoch 00017: val_mDice did not improve from 0.82574
+Epoch 18/300
+ - 58s - loss: 0.0890 - acc: 0.9838 - mDice: 0.8442 - val_loss: 0.1116 - val_acc: 0.9842 - val_mDice: 0.8068
+
+Epoch 00018: val_mDice did not improve from 0.82574
+Epoch 19/300
+ - 58s - loss: 0.0875 - acc: 0.9838 - mDice: 0.8467 - val_loss: 0.1018 - val_acc: 0.9842 - val_mDice: 0.8226
+
+Epoch 00019: val_mDice did not improve from 0.82574
+Epoch 20/300
+ - 58s - loss: 0.0858 - acc: 0.9838 - mDice: 0.8496 - val_loss: 0.1013 - val_acc: 0.9842 - val_mDice: 0.8236
+
+Epoch 00020: val_mDice did not improve from 0.82574
+Epoch 21/300
+ - 58s - loss: 0.0877 - acc: 0.9838 - mDice: 0.8464 - val_loss: 0.1059 - val_acc: 0.9842 - val_mDice: 0.8161
+
+Epoch 00021: val_mDice did not improve from 0.82574
+Epoch 22/300
+ - 58s - loss: 0.0867 - acc: 0.9838 - mDice: 0.8483 - val_loss: 0.0988 - val_acc: 0.9843 - val_mDice: 0.8276
+
+Epoch 00022: val_mDice improved from 0.82574 to 0.82759, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE8_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US2_SingleClass/2-AV/sd0/best_model_weights.h5
+Epoch 23/300
+ - 58s - loss: 0.0836 - acc: 0.9838 - mDice: 0.8533 - val_loss: 0.1336 - val_acc: 0.9841 - val_mDice: 0.7729
+
+Epoch 00023: val_mDice did not improve from 0.82759
+Epoch 24/300
+ - 58s - loss: 0.0829 - acc: 0.9838 - mDice: 0.8545 - val_loss: 0.0992 - val_acc: 0.9842 - val_mDice: 0.8272
+
+Epoch 00024: val_mDice did not improve from 0.82759
+Epoch 25/300
+ - 58s - loss: 0.0831 - acc: 0.9838 - mDice: 0.8542 - val_loss: 0.0980 - val_acc: 0.9843 - val_mDice: 0.8292
+
+Epoch 00025: val_mDice improved from 0.82759 to 0.82916, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE8_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US2_SingleClass/2-AV/sd0/best_model_weights.h5
+Epoch 26/300
+ - 58s - loss: 0.0810 - acc: 0.9839 - mDice: 0.8577 - val_loss: 0.0990 - val_acc: 0.9843 - val_mDice: 0.8274
+
+Epoch 00026: val_mDice did not improve from 0.82916
+Epoch 27/300
+ - 59s - loss: 0.0811 - acc: 0.9839 - mDice: 0.8575 - val_loss: 0.1056 - val_acc: 0.9842 - val_mDice: 0.8166
+
+Epoch 00027: val_mDice did not improve from 0.82916
+Epoch 28/300
+ - 58s - loss: 0.0799 - acc: 0.9839 - mDice: 0.8596 - val_loss: 0.1002 - val_acc: 0.9843 - val_mDice: 0.8253
+
+Epoch 00028: val_mDice did not improve from 0.82916
+Epoch 29/300
+ - 59s - loss: 0.0795 - acc: 0.9839 - mDice: 0.8602 - val_loss: 0.0992 - val_acc: 0.9842 - val_mDice: 0.8270
+
+Epoch 00029: val_mDice did not improve from 0.82916
+Epoch 30/300
+ - 58s - loss: 0.0787 - acc: 0.9839 - mDice: 0.8615 - val_loss: 0.1049 - val_acc: 0.9843 - val_mDice: 0.8177
+
+Epoch 00030: val_mDice did not improve from 0.82916
+Epoch 31/300
+ - 59s - loss: 0.0787 - acc: 0.9839 - mDice: 0.8617 - val_loss: 0.1030 - val_acc: 0.9842 - val_mDice: 0.8209
+
+Epoch 00031: val_mDice did not improve from 0.82916
+Epoch 32/300
+ - 58s - loss: 0.0779 - acc: 0.9839 - mDice: 0.8630 - val_loss: 0.0998 - val_acc: 0.9843 - val_mDice: 0.8262
+
+Epoch 00032: val_mDice did not improve from 0.82916
+Epoch 33/300
+ - 59s - loss: 0.0774 - acc: 0.9839 - mDice: 0.8639 - val_loss: 0.0969 - val_acc: 0.9843 - val_mDice: 0.8310
+
+Epoch 00033: val_mDice improved from 0.82916 to 0.83095, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE8_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US2_SingleClass/2-AV/sd0/best_model_weights.h5
+Epoch 34/300
+ - 58s - loss: 0.0762 - acc: 0.9839 - mDice: 0.8660 - val_loss: 0.0927 - val_acc: 0.9843 - val_mDice: 0.8378

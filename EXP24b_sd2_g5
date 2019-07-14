@@ -1661,3 +1661,95 @@ Epoch 76/300
 Epoch 00076: val_mDice did not improve from 0.83662
 Epoch 77/300
  - 89s - loss: 0.0669 - acc: 0.9840 - mDice: 0.8821 - val_loss: 0.1030 - val_acc: 0.9843 - val_mDice: 0.8214
+
+Epoch 00077: val_mDice did not improve from 0.83662
+Epoch 78/300
+ - 90s - loss: 0.0660 - acc: 0.9840 - mDice: 0.8835 - val_loss: 0.0974 - val_acc: 0.9843 - val_mDice: 0.8303
+
+Epoch 00078: val_mDice did not improve from 0.83662
+Epoch 79/300
+ - 59s - loss: 0.0669 - acc: 0.9840 - mDice: 0.8820 - val_loss: 0.1066 - val_acc: 0.9843 - val_mDice: 0.8157
+
+Epoch 00079: val_mDice did not improve from 0.83662
+Epoch 80/300
+ - 50s - loss: 0.0659 - acc: 0.9840 - mDice: 0.8837 - val_loss: 0.0989 - val_acc: 0.9843 - val_mDice: 0.8279
+
+Epoch 00080: val_mDice did not improve from 0.83662
+Epoch 81/300
+ - 48s - loss: 0.0666 - acc: 0.9840 - mDice: 0.8824 - val_loss: 0.1014 - val_acc: 0.9843 - val_mDice: 0.8239
+
+Epoch 00081: val_mDice did not improve from 0.83662
+Epoch 82/300
+ - 45s - loss: 0.0662 - acc: 0.9840 - mDice: 0.8833 - val_loss: 0.1130 - val_acc: 0.9843 - val_mDice: 0.8055
+
+Epoch 00082: val_mDice did not improve from 0.83662
+Epoch 83/300
+ - 68s - loss: 0.0659 - acc: 0.9840 - mDice: 0.8837 - val_loss: 0.1012 - val_acc: 0.9843 - val_mDice: 0.8242
+
+Epoch 00083: val_mDice did not improve from 0.83662
+Epoch 84/300
+ - 90s - loss: 0.0664 - acc: 0.9840 - mDice: 0.8828 - val_loss: 0.1014 - val_acc: 0.9843 - val_mDice: 0.8240
+
+Epoch 00084: val_mDice did not improve from 0.83662
+Epoch 85/300
+ - 90s - loss: 0.0657 - acc: 0.9840 - mDice: 0.8841 - val_loss: 0.0968 - val_acc: 0.9843 - val_mDice: 0.8316
+
+Epoch 00085: val_mDice did not improve from 0.83662
+Epoch 86/300
+ - 91s - loss: 0.0655 - acc: 0.9840 - mDice: 0.8845 - val_loss: 0.0984 - val_acc: 0.9843 - val_mDice: 0.8287
+
+Epoch 00086: val_mDice did not improve from 0.83662
+Epoch 87/300
+ - 91s - loss: 0.0654 - acc: 0.9840 - mDice: 0.8847 - val_loss: 0.1019 - val_acc: 0.9843 - val_mDice: 0.8231
+
+Epoch 00087: val_mDice did not improve from 0.83662
+Epoch 88/300
+ - 91s - loss: 0.0662 - acc: 0.9840 - mDice: 0.8832 - val_loss: 0.1013 - val_acc: 0.9843 - val_mDice: 0.8241
+
+Epoch 00088: val_mDice did not improve from 0.83662
+Epoch 89/300
+ - 92s - loss: 0.0654 - acc: 0.9840 - mDice: 0.8847 - val_loss: 0.1023 - val_acc: 0.9842 - val_mDice: 0.8223
+
+Epoch 00089: val_mDice did not improve from 0.83662
+Epoch 90/300
+ - 92s - loss: 0.0655 - acc: 0.9840 - mDice: 0.8845 - val_loss: 0.1014 - val_acc: 0.9843 - val_mDice: 0.8238
+
+Epoch 00090: val_mDice did not improve from 0.83662
+Epoch 91/300
+ - 92s - loss: 0.0648 - acc: 0.9840 - mDice: 0.8858 - val_loss: 0.1041 - val_acc: 0.9843 - val_mDice: 0.8195
+
+Epoch 00091: val_mDice did not improve from 0.83662
+Epoch 92/300
+ - 93s - loss: 0.0649 - acc: 0.9840 - mDice: 0.8855 - val_loss: 0.1137 - val_acc: 0.9842 - val_mDice: 0.8042
+
+Epoch 00092: val_mDice did not improve from 0.83662
+Epoch 93/300
+ - 92s - loss: 0.0639 - acc: 0.9840 - mDice: 0.8873 - val_loss: 0.1071 - val_acc: 0.9843 - val_mDice: 0.8148
+
+Epoch 00093: val_mDice did not improve from 0.83662
+Epoch 94/300
+ - 92s - loss: 0.0642 - acc: 0.9840 - mDice: 0.8867 - val_loss: 0.1091 - val_acc: 0.9843 - val_mDice: 0.8120
+
+Epoch 00094: val_mDice did not improve from 0.83662
+Epoch 95/300
+ - 92s - loss: 0.0638 - acc: 0.9840 - mDice: 0.8875 - val_loss: 0.0978 - val_acc: 0.9843 - val_mDice: 0.8297
+
+Epoch 00095: val_mDice did not improve from 0.83662
+Epoch 96/300
+ - 93s - loss: 0.0634 - acc: 0.9840 - mDice: 0.8882 - val_loss: 0.1034 - val_acc: 0.9843 - val_mDice: 0.8208
+
+Epoch 00096: val_mDice did not improve from 0.83662
+Epoch 97/300
+ - 93s - loss: 0.0638 - acc: 0.9840 - mDice: 0.8874 - val_loss: 0.1025 - val_acc: 0.9843 - val_mDice: 0.8222
+
+Epoch 00097: val_mDice did not improve from 0.83662
+Epoch 98/300
+ - 93s - loss: 0.0637 - acc: 0.9840 - mDice: 0.8876 - val_loss: 0.1064 - val_acc: 0.9843 - val_mDice: 0.8158
+
+Epoch 00098: val_mDice did not improve from 0.83662
+Epoch 99/300
+ - 92s - loss: 0.0633 - acc: 0.9840 - mDice: 0.8884 - val_loss: 0.1183 - val_acc: 0.9843 - val_mDice: 0.7972
+
+Epoch 00099: val_mDice did not improve from 0.83662
+Epoch 100/300
+ - 93s - loss: 0.0636 - acc: 0.9840 - mDice: 0.8879 - val_loss: 0.0988 - val_acc: 0.9842 - val_mDice: 0.8281

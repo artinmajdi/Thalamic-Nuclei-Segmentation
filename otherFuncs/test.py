@@ -8,13 +8,16 @@ import sys, os
 import numpy as np
 # from scipy.spatial import distance
 import nibabel as nib
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, f1_score
 import matplotlib.pyplot as plt
 
-dir = '/home/artinl/Documents/vimp2_0699_04302014_SRI/'
+subject = 'vimp2_0781_05292014_SRI/'
+# dir = '/home/artinl/Documents/vimp2_0699_04302014_SRI/'
+dir = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE8_Cascade_FM10_Res_Unet2_NL3_LS_MyLogDice_US1_SingleClass/sd0/' + subject
 y_pred = nib.load(dir+'2-AV.nii.gz').get_data()
 
-dir = '/home/artinl/Documents/vimp2_0699_04302014_SRI/Label/'
+# dir = '/home/artinl/Documents/vimp2_0699_04302014_SRI/Label/'
+dir = '/array/ssd/msmajdi/experiments/keras/exp6/test/SRI/' + subject + 'Label/'
 y_true = nib.load(dir+'2-AV_PProcessed.nii.gz').get_data()
 
 
@@ -25,6 +28,8 @@ def mDice(msk1,msk2):
 
 yp1 = np.reshape(y_pred,[-1,1])
 yt1 = np.reshape(y_true,[-1,1])
+
+# mDice(y_pred > 0.5,y_true)
 
 D = confusion_matrix(yt1, yp1 > 0.5)
 TN, FP, FN , TP = D[0,0] , D[0,1] , D[1,0] , D[1,1]
@@ -40,8 +45,10 @@ fpr, tpr, _ = roc_curve(yt1, yp1,pos_label=[0])
 auc(fpr, tpr)
 # plt.plot(fpr, tpr)
 
-precision, recall, _ = precision_recall_curve(yt1, yp1)
+precision, recall, thresholds = precision_recall_curve(yt1, yp1)
 average_precision = average_precision_score(yt1, yp1)
+
+# f1 = f1_score(precision, recall)
 
 plt.figure()
 plt.step(recall, precision, color='b', alpha=0.2, where='post')

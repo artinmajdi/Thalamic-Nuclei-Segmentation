@@ -1,6 +1,12 @@
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import tensorflow as tf
+from sklearn.metrics import confusion_matrix
+import numpy as np
+from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
+import matplotlib.pyplot as plt
+
+
 
 def MetricInfo(Metric_Index):
     switcher = {
@@ -40,8 +46,41 @@ def VSI(y_true,y_pred):
 
 def confusionMatrix(y_true,y_pred):
     
-    ms1 = np.reshape(msk1,[-1,1])
-    ms2 = np.reshape(msk2,[-1,1])
+    yp1 = np.reshape(y_pred,[-1,1])
+    yt1 = np.reshape(y_true,[-1,1])
 
-    D = confusion_matrix(ms1, ms2)
+    D = confusion_matrix(yt1, yp1 > 0.5)
 
+    class metrics():
+        TN, FP, FN , TP = D[0,0] , D[0,1] , D[1,0] , D[1,1]
+        Recall = TP / (TP + FN)
+        Sensitivity = TP / (TP + FN)
+        Specificity = TN/(TN + FP)
+        Precision   = TP/(TP + FP)
+
+    return metrics()
+
+def ROC_Curve(y_true,y_pred):
+    yp1 = np.reshape(y_pred,[-1,1])
+    yt1 = np.reshape(y_true,[-1,1])
+
+    fpr, tpr, _ = roc_curve(yt1, yp1,pos_label=[0])
+    auc(fpr, tpr)
+    # plt.plot(fpr, tpr)
+
+def Precision_Recall_Curve(y_true,y_pred):
+
+    yp1 = np.reshape(y_pred,[-1,1])
+    yt1 = np.reshape(y_true,[-1,1])
+
+    precision, recall, thresholds = precision_recall_curve(yt1, yp1)
+    average_precision = average_precision_score(yt1, yp1)
+
+    plt.figure()
+    plt.step(recall, precision, color='b', alpha=0.2, where='post')
+    plt.fill_between(recall, precision, alpha=0.2, color='b')
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.ylim([0.0, 1.05])
+    plt.xlim([0.0, 1.0])
+    plt.title('Average precision score, micro-averaged over all classes: AP={0:0.2f}'.format(average_precision))
