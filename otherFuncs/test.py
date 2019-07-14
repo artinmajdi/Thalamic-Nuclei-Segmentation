@@ -1,20 +1,20 @@
 import keras.models as kmodel
 import sys, os
-sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-import Parameters.UserInfo as UserInfo
-import Parameters.paramFunc as paramFunc
-import keras.layers as KLayers
-from tqdm import tqdm
+# sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+# import Parameters.UserInfo as UserInfo
+# import Parameters.paramFunc as paramFunc
+# import keras.layers as KLayers
+# from tqdm import tqdm
 import numpy as np
-from scipy.spatial import distance
+# from scipy.spatial import distance
 import nibabel as nib
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 
-dir = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE8_Cascade_FM10_Res_Unet2_NL3_LS_MyLogDice_US1_SingleClass/sd0/vimp2_0699_04302014_SRI/'
+dir = '/home/artinl/Documents/vimp2_0699_04302014_SRI/'
 y_pred = nib.load(dir+'2-AV.nii.gz').get_data()
 
-dir = '/array/ssd/msmajdi/experiments/keras/exp6/test/SRI/vimp2_0699_04302014_SRI/Label/'
+dir = '/home/artinl/Documents/vimp2_0699_04302014_SRI/Label/'
 y_true = nib.load(dir+'2-AV_PProcessed.nii.gz').get_data()
 
 
@@ -45,10 +45,9 @@ average_precision = average_precision_score(yt1, yp1)
 
 plt.figure()
 plt.step(recall, precision, color='b', alpha=0.2, where='post')
-plt.fill_between(recall["micro"], precision["micro"], alpha=0.2, color='b', **step_kwargs)
+plt.fill_between(recall, precision, alpha=0.2, color='b')
 plt.xlabel('Recall')
 plt.ylabel('Precision')
 plt.ylim([0.0, 1.05])
 plt.xlim([0.0, 1.0])
 plt.title('Average precision score, micro-averaged over all classes: AP={0:0.2f}'.format(average_precision))
-
