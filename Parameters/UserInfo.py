@@ -30,7 +30,7 @@ readAugments_Mode = True
 lossFunction_Index = 3
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
-testOnly = False
+testOnly = True
 
 fCN1_NLayers = 3
 fCN2_NLayers = 1

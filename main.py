@@ -863,7 +863,7 @@ def EXP24_SingleClass_AV(UserInfoB):
     UserInfoB['Model_Method'] = 'Cascade'
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-    for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15, 20, 30 , 40]:
+    for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10, 15, 20, 30, 40]:
         for UserInfoB['TypeExperiment'] in [1, 2, 4]:         
             Run(UserInfoB, IV)
 
@@ -889,9 +889,9 @@ def EXP24b_SingleClass_AV(UserInfoB):
 
 UserInfoB, K = preMode(UserInfo.__dict__)
 
-# UserInfoB['simulation'].ReadAugments_Mode = False
+UserInfoB['simulation'].ReadAugments_Mode = False
 
-EXP24b_SingleClass_AV(UserInfoB)
+EXP24_SingleClass_AV(UserInfoB)
 
 
 K.clear_session()

@@ -109,19 +109,20 @@ def testingExeriment(model, Data, params):
             def closeMask(mask):
                 struc = ndimage.generate_binary_structure(3,2)
                 return ndimage.binary_closing(mask, structure=struc)
+            
+            pred1N = np.squeeze(pred1Class)
+            
+            pred = cascade_paddingToOrigSize(pred1N)
+            pred = np.transpose(pred , params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
 
-            pred1N = binarizing( np.squeeze(pred1Class) )
-            # pred1N = np.squeeze(pred1Class) 
+            pred_Binary = binarizing( pred)
             
             if params.WhichExperiment.HardParams.Model.Method.ImClosePrediction: 
-                pred1N = closeMask(pred1N)
-            
-            pred1N_origShape = cascade_paddingToOrigSize(pred1N)
-            pred1N_origShape = np.transpose(pred1N_origShape,params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
+                pred_Binary = closeMask(pred_Binary)
 
-            Dice = [ NucleiIndex , smallFuncs.mDice(pred1N_origShape , binarizing(origMsk1N)) ]
+            Dice = [ NucleiIndex , smallFuncs.mDice(pred_Binary , binarizing(origMsk1N)) ]
 
-            return pred1N_origShape, Dice
+            return pred, Dice
 
         def savingOutput(pred1N_BtO, NucleiIndex):
             dirSave = smallFuncs.mkDir(ResultDir + '/' + subject.subjectName)
