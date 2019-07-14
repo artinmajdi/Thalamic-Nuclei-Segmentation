@@ -1,0 +1,19 @@
+2019-07-14 10:26:07.320773: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-07-14 10:26:07.916532: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:85:00.0
+totalMemory: 15.89GiB freeMemory: 14.13GiB
+2019-07-14 10:26:07.916592: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-07-14 10:26:08.460733: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-07-14 10:26:08.460795: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-07-14 10:26:08.460808: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-07-14 10:26:08.461238: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 13693 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:85:00.0, compute capability: 6.0)
+mkdir: cannot create directory ‘/array/ssd/msmajdi/experiments/keras/exp6/results/sE8_Cascade_FM10_Res_Unet2_NL3_LS_MyLogDice_US2_SingleClass’: File exists
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+Using TensorFlow backend.
+Loading train:   0%|          | 0/532 [00:00<?, ?it/s]Loading train:   0%|          | 1/532 [00:00<02:57,  3.00it/s]

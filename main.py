@@ -199,7 +199,7 @@ def Run(UserInfoB, InitValues):
 
             print_func(UserInfoB, params)
             Read = params.WhichExperiment.Dataset.ReadTrain
-            if (1 in NI ) and (UserInfoB['CrossVal'].index == ['a']): func_copy_Thalamus_preds(params)  #   and (not Flag_3T)  and (not Flag_CSFn1)
+            if (1 in NI ) and (  (UserInfoB['CrossVal'].index == ['a']) or Flag_3T): func_copy_Thalamus_preds(params)  #   and (not Flag_3T)  and (not Flag_CSFn1)
             # elif (1.2 in NI) and UserInfoB['simulation'].Multi_Class_Mode and (Read.ET): print('skipped')
             elif (NI == [1.4]) and (not UserInfoB['simulation'].Multi_Class_Mode): save_Anteior_BBox(params)
             else: normal_run(params)
@@ -656,7 +656,6 @@ def EXP17a_Resnet2_JointDice(UserInfoB):
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15 , 20 , 30, 40]:        
             Run(UserInfoB, IV)
 
-
 def EXP18a_TL_CSFn2_ResNet2_JointLoss(UserInfoB):
     
     UserInfoB['TypeExperiment'] = 11
@@ -709,9 +708,6 @@ def EXP18c_TL_CSFn2_ResNet2_JointLoss(UserInfoB):
 
             for UserInfoB['simulation'].FCN_FeatureMaps in [20 , 30 , 40]:  # 10, 
                 Run(UserInfoB, IV)
-
-
-
 
 def EXP19a_Resnet2_LogDice(UserInfoB):
     
@@ -788,7 +784,6 @@ def EXP21_Resnet2_LogDice_InitRn(UserInfoB):
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15, 20 , 30, 40]:
             Run(UserInfoB, IV)
 
-
 def EXP22_Resnet2_LogDice_LRScheduler(UserInfoB):
     
     # Cascade   Main Init 3T
@@ -804,8 +799,6 @@ def EXP22_Resnet2_LogDice_LRScheduler(UserInfoB):
     for UserInfoB['TypeExperiment'] in [2, 4]:
         for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15, 20 , 30 , 40]:    
             Run(UserInfoB, IV)
-
-
 
 def EXP23a_TL_CSFn2_ResNet2_DiceLoss(UserInfoB):
     
@@ -854,11 +847,49 @@ def EXP23c_TL_CSFn2_ResNet2_DiceLoss(UserInfoB):
             for UserInfoB['simulation'].FCN_FeatureMaps in [10, 20 , 30 , 40]:
                 Run(UserInfoB, IV)
 
+
+def EXP24_SingleClass_AV(UserInfoB):
+    UserInfoB['simulation'].Multi_Class_Mode = False  
+    UserInfoB['simulation'].nucleus_Index = [1,2] 
+    # UserInfoB['simulation'].epochs = 30 
+    
+    # UserInfoB['simulation'].slicingDim = [0] # 2,1,0]
+    UserInfoB['architectureType'] = 'Res_Unet2'
+    UserInfoB['Experiments'].Index = '6'
+    UserInfoB['lossFunction_Index'] = 4
+    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['Model_Method'] = 'Cascade'
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15, 20, 30 , 40]:
+        for UserInfoB['TypeExperiment'] in [1, 2, 4]:         
+            Run(UserInfoB, IV)
+
+def EXP24b_SingleClass_AV(UserInfoB):
+    UserInfoB['simulation'].Multi_Class_Mode = False  
+    UserInfoB['simulation'].nucleus_Index = [1,2] 
+    UserInfoB['simulation'].epochs = 30 
+    # UserInfoB['simulation'].slicingDim = [0] # 2,1,0]
+    UserInfoB['architectureType'] = 'Res_Unet2'
+    UserInfoB['Experiments'].Index = '6'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['upsample'].Scale = 2
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['Model_Method'] = 'Cascade'
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10 , 15, 20, 30 , 40]:
+        for UserInfoB['TypeExperiment'] in [1, 2, 4]:         
+            Run(UserInfoB, IV)
+
+
+
 UserInfoB, K = preMode(UserInfo.__dict__)
 
 # UserInfoB['simulation'].ReadAugments_Mode = False
 
-EXP23c_TL_CSFn2_ResNet2_DiceLoss(UserInfoB)
+EXP24b_SingleClass_AV(UserInfoB)
 
 
 K.clear_session()

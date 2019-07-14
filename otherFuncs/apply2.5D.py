@@ -146,11 +146,21 @@ UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 UserInfoB['TypeExperiment'] = 11
 UserInfoB['Model_Method'] = 'Cascade' 
 UserInfoB['architectureType'] = 'ResFCN_ResUnet2_TL'
-UserInfoB['lossFunction_Index'] = 5
+UserInfoB['lossFunction_Index'] = 4
 UserInfoB['Experiments'].Index = '7'
 
-UserInfoB['TypeExperiment'] = 8  # , 4, 8]:
+# for UserInfoB['simulation'].FCN1_NLayers in [0,1,2]:
+#     for UserInfoB['simulation'].FCN2_NLayers in [0, 1, 2]:
 
+#         if (UserInfoB['simulation'].FCN1_NLayers == 0) and (UserInfoB['simulation'].FCN2_NLayers == 0):
+#             UserInfoB['simulation'].FCN_FeatureMaps = 0
+
+#             params = paramFunc.Run(UserInfoB, terminal=False)
+#             InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
+#             func_MajorityVoting(InfoS , params)
+
+#         else:
+#             for UserInfoB['simulation'].FCN_FeatureMaps in [10, 20 , 30 , 40]:                
 params = paramFunc.Run(UserInfoB, terminal=False)
 InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
-func_MajorityVoting(InfoS , params)
+func_MajorityVoting(InfoS , params)                
