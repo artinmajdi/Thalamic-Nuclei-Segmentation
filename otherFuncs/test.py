@@ -11,13 +11,13 @@ import nibabel as nib
 from sklearn.metrics import confusion_matrix, f1_score
 import matplotlib.pyplot as plt
 
-subject = 'vimp2_0781_05292014_SRI/'
+subject = 'vimp2_A_3T_ET/'
 # dir = '/home/artinl/Documents/vimp2_0699_04302014_SRI/'
-dir = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE8_Cascade_FM10_Res_Unet2_NL3_LS_MyLogDice_US1_SingleClass/sd0/' + subject
+dir = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_SingleClass_ET_Init_Main_CV_a/sd2/' + subject
 y_pred = nib.load(dir+'2-AV.nii.gz').get_data()
 
 # dir = '/home/artinl/Documents/vimp2_0699_04302014_SRI/Label/'
-dir = '/array/ssd/msmajdi/experiments/keras/exp6/test/SRI/' + subject + 'Label/'
+dir = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/ET/a/' + subject + 'Label/'
 y_true = nib.load(dir+'2-AV_PProcessed.nii.gz').get_data()
 
 
@@ -29,7 +29,7 @@ def mDice(msk1,msk2):
 yp1 = np.reshape(y_pred,[-1,1])
 yt1 = np.reshape(y_true,[-1,1])
 
-# mDice(y_pred > 0.5,y_true)
+# mDice(y_pred > 0.8,y_true)
 
 D = confusion_matrix(yt1, yp1 > 0.5)
 TN, FP, FN , TP = D[0,0] , D[0,1] , D[1,0] , D[1,1]

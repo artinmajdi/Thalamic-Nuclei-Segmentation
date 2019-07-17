@@ -23,14 +23,14 @@ gpu = "2"
 # TypeExperiment == 11 # CSFn2  Transfer Learn from Main with new structure wher it only takes the wweights for part of the network
 # TypeExperiment == 13  # CSFn1 + CSFn2 Init Main
 
-TypeExperiment = 1
+TypeExperiment = 4
 
 multi_Class_Mode = True
 readAugments_Mode = True
 lossFunction_Index = 3
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
-testOnly = True
+testOnly = False
 
 fCN1_NLayers = 3
 fCN2_NLayers = 1

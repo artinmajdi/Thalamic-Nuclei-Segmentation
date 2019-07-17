@@ -660,8 +660,8 @@ def func_WhichExperiment(UserInfo):
             #     if sdTag == 0:   FM , NL = 30, 3
             #     elif sdTag == 1: FM , NL = 40, 3
             #     elif sdTag == 2: FM , NL = 40, 3
-            # else:
-            #     FM , NL = 20, 3
+            else:
+                FM , NL = 20, 3
 
             return FM , NL , 'U-Net4'
 
@@ -670,31 +670,32 @@ def func_WhichExperiment(UserInfo):
                 if sdTag == 0:   FM , NL = 20, 3
                 elif sdTag == 1: FM , NL = 20, 3
                 elif sdTag == 2: FM , NL = 15, 3
-            # else:
-            #     FM , NL = 20, 3
+            else:
+                FM , NL = 20, 3
  
             return FM , NL, 'Res_Unet2'
         
         class best_WMn_Model:
             def __init__(self, WhichExperiment):
                 
+                SD = WhichExperiment.Dataset.slicingInfo.slicingDim
+
                 LossFunction = 'MyLogDice' # 'MyJoint'
-                EXP_address = '/array/ssd/msmajdi/experiments/keras/exp6/models/'
+                EXP_address = '/array/ssd/msmajdi/experiments/keras/exp7/models/'
                 Model_Method = WhichExperiment.HardParams.Model.Method.Type
-                sdTag = WhichExperiment.Dataset.slicingInfo.slicingDim
                                 
                 if WhichExperiment.HardParams.Model.architectureType in ['FCN_Unet_TL', 'U-Net4']: 
-                    self.FM , self.NL, architectureType = params_bestUnet(Model_Method, sdTag)
+                    self.FM , self.NL, architectureType = params_bestUnet(Model_Method, SD)
                 elif WhichExperiment.HardParams.Model.architectureType in ['Res_Unet' , 'Res_Unet2' , 'ResFCN_ResUnet2_TL' , 'ResFCN_ResUnet2_TL']: 
-                    self.FM , self.NL, architectureType = params_bestResUnet2(Model_Method, sdTag)
+                    self.FM , self.NL, architectureType = params_bestResUnet2(Model_Method, SD)
                 else:
                     self.FM , self.NL, architectureType = 20, 3, 'Res_Unet2'
                 
                     
-                sdTag   = '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim)        
+                # if 
                 Tag     = 'sE12_' + Model_Method + '_FM' + str(self.FM) + '_' + architectureType + '_NL' + str(self.NL) + '_LS_' + LossFunction + '_US1_wLRScheduler_Main_Init_3T_CV_a/'
 
-                self.address = EXP_address + Tag  + WhichExperiment.Nucleus.name + sdTag + '/model.h5'
+                self.address = EXP_address + Tag  + WhichExperiment.Nucleus.name + '/sd' + str(SD) + '/model.h5'
 
         return best_WMn_Model(WhichExperiment)
 

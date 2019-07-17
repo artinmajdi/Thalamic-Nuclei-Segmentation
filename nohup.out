@@ -1,0 +1,15 @@
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+Using TensorFlow backend.
+Traceback (most recent call last):
+  File "main.py", line 948, in <module>
+    UserInfoB, K = preMode(UserInfo.__dict__)
+  File "main.py", line 220, in preMode
+    UserInfoB = smallFuncs.terminalEntries(UserInfoB)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/smallFuncs.py", line 339, in terminalEntries
+    UserInfo['simulation'].nucleus_Index = [float(sys.argv[en+1])] # [int(sys.argv[en+1])]
+ValueError: could not convert string to float: 'allcd'
