@@ -264,13 +264,13 @@ def trainingExperiment(Data, params):
         # Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = 'loss', factor=0.5, min_delta=0.005 , patience=4, verbose=1, \
         #     save_best_only=True, mode='min' , min_lr=0.9e-4 , )
         
-        def step_decay_schedule(initial_lr=1e-4, decay_factor=0.5, step_size=20):
+        def step_decay_schedule(initial_lr=1e-3, decay_factor=0.5, step_size=18):
             def schedule(epoch):
                 # if np.floor(epoch/step_size) <= 2: 
                 return initial_lr * (decay_factor ** np.floor(epoch/step_size))
                 # else: return initial_lr * (decay_factor ** 2)
 
-            return keras.callbacks.LearningRateScheduler(schedule)
+            return keras.callbacks.LearningRateScheduler(schedule, verbose=1)
         
         Reduce_LR = step_decay_schedule()
 

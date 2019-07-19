@@ -2,12 +2,15 @@
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
-gpu = "2"
+gpu = "1"
 
 # TypeExperiment == 1: # 3T      Init Rn
 
-# TypeExperiment == 2:  # Main       Init 3T
-# TypeExperiment == 14: # Main       Init Rn
+# TypeExperiment == 2:  # Main        Init 3T
+# TypeExperiment == 14: # Main        Init Rn
+# TypeExperiment == 15: # Main+ET     Init 3T
+# TypeExperiment == 16: # 3T+Main+ET  Init 3T
+
 # TypeExperiment == 3   # Main + 3T  Init 3T
 
 # TypeExperiment == 4: # ET      Init Main

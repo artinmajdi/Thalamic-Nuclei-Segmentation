@@ -153,11 +153,18 @@ class mergingDiceValues:
                     pd_sE = pd.DataFrame()
 
                     pd_sE['subject'] = [s['subject'] for s in sE_Dices]
-                    for nucleus in All_Nuclei_Names: 
-                        try:
-                            if nucleus in sE_Dices[0]: pd_sE[nucleus] = [s[nucleus] for s in sE_Dices] # .astype(np.float16)
-                        except Exception as e:
-                            print(e)
+                    for nucleus in All_Nuclei_Names:
+
+                        # try:
+                        A = np.nan*np.ones(len(sE_Dices))
+                        for ix, s in enumerate(sE_Dices):
+                            if nucleus in s: A[ix] = s[nucleus]
+                        
+                        pd_sE[nucleus] = A
+
+                        #     if nucleus in sE_Dices[0]: pd_sE[nucleus] = [s[nucleus] for s in sE_Dices] # .astype(np.float16)
+                        # except Exception as e:
+                            # print(e)
 
                     pd_sE.to_excel(  self.writer, sheet_name=self.plane.tagList[0] )    
                 save_Dices_subExp_In_ExcelFormat(self , sE_Dices)
@@ -182,7 +189,11 @@ class mergingDiceValues:
 
                         Average_Dices = np.nan*np.ones(len(All_Nuclei_Names))
                         for ix, nucleus in enumerate(All_Nuclei_Names):
-                            if nucleus in subjectDiceList[0]: Average_Dices[ix] = np.round(1e3*np.nanmean([s[nucleus] for s in subjectDiceList] , axis=0))/1e3
+                            A = np.nan*np.ones(len(subjectDiceList))
+                            for ct, s in enumerate(subjectDiceList):
+                                if nucleus in s: A[ct] = s[nucleus]
+
+                            Average_Dices[ix] = np.round(1e3*np.nanmean(A, axis=0))/1e3
                                                         
                         return Average_Dices
 
@@ -217,7 +228,7 @@ class mergingDiceValues:
 
             A = zip(self.Info.Experiment.List_subExperiments , self.Info.Experiment.TagsList)
             for self.subExperiment, tag in tqdm( A , desc='Dices:'):
-
+                # try: 
                 self.subExperiment.Tag = tag
                 # print(self.subExperiment.name)
                 smallActions.add_space(self)
@@ -227,6 +238,8 @@ class mergingDiceValues:
                         # try: 
                         func_Load_Subexperiment(self)
                         # except: print('failed' ,self.subExperiment )                                            
+                # except Exception as e:
+                #     print(e)
 
             smallActions.save_All_Dices(self.All_Subjs_Ns)
 
@@ -235,14 +248,14 @@ class mergingDiceValues:
 
 
 print(Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List)
-for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[-3:]:
+for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[-2:-1]:
 
     # print(Experiment_Name)
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')
     mergingDiceValues(Info)
 
-    Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
-    savingHistory_AsExcel(Info)
+    # Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
+    # savingHistory_AsExcel(Info)
 
 os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
 

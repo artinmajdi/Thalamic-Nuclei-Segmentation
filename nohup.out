@@ -13,3 +13,95 @@ Traceback (most recent call last):
   File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/smallFuncs.py", line 339, in terminalEntries
     UserInfo['simulation'].nucleus_Index = [float(sys.argv[en+1])] # [int(sys.argv[en+1])]
 ValueError: could not convert string to float: 'allcd'
+2019-07-18 18:01:11.241615: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-07-18 18:01:14.634999: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:88:00.0
+totalMemory: 15.89GiB freeMemory: 7.06GiB
+2019-07-18 18:01:14.635059: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-07-18 18:01:15.372500: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-07-18 18:01:15.372577: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-07-18 18:01:15.372591: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-07-18 18:01:15.373480: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 6813 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:88:00.0, compute capability: 6.0)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+Using TensorFlow backend.
+Loading train:   0%|          | 0/342 [00:00<?, ?it/s]Loading train:   0%|          | 1/342 [00:01<06:28,  1.14s/it]Loading train:   1%|          | 2/342 [00:02<06:03,  1.07s/it]Loading train:   1%|          | 3/342 [00:02<05:13,  1.08it/s]Loading train:   1%|          | 4/342 [00:03<05:37,  1.00it/s]Loading train:   1%|▏         | 5/342 [00:04<05:48,  1.03s/it]Loading train:   2%|▏         | 6/342 [00:05<05:26,  1.03it/s]Loading train:   2%|▏         | 7/342 [00:06<05:17,  1.05it/s]Loading train:   2%|▏         | 8/342 [00:07<05:30,  1.01it/s]Loading train:   3%|▎         | 9/342 [00:08<04:59,  1.11it/s]Loading train:   3%|▎         | 10/342 [00:09<05:31,  1.00it/s]Loading train:   3%|▎         | 11/342 [00:10<05:03,  1.09it/s]Loading train:   4%|▎         | 12/342 [00:10<04:30,  1.22it/s]Loading train:   4%|▍         | 13/342 [00:12<05:22,  1.02it/s]Loading train:   4%|▍         | 14/342 [00:13<05:05,  1.07it/s]Loading train:   4%|▍         | 15/342 [00:13<04:39,  1.17it/s]Loading train:   5%|▍         | 16/342 [00:14<04:56,  1.10it/s]Loading train:   5%|▍         | 17/342 [00:15<04:55,  1.10it/s]Loading train:   5%|▌         | 18/342 [00:16<04:24,  1.22it/s]Loading train:   6%|▌         | 19/342 [00:17<04:12,  1.28it/s]Loading train:   6%|▌         | 20/342 [00:18<04:41,  1.15it/s]Loading train:   6%|▌         | 21/342 [00:18<04:29,  1.19it/s]Loading train:   6%|▋         | 22/342 [00:19<04:16,  1.25it/s]Loading train:   7%|▋         | 23/342 [00:20<04:30,  1.18it/s]Loading train:   7%|▋         | 24/342 [00:21<04:59,  1.06it/s]Loading train:   7%|▋         | 25/342 [00:22<04:53,  1.08it/s]Loading train:   8%|▊         | 26/342 [00:23<04:53,  1.08it/s]Loading train:   8%|▊         | 27/342 [00:24<05:07,  1.03it/s]---------------------- check Layers Step ------------------------------
+ N: [1]  | GPU: 6  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
+
+ #layer 3 #layers changed False
+---------------------------------------------------------------
+ Nucleus: [1]  | GPU: 6  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
+Experiment: exp7
+SubExperiment: sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_ET_Init_Main_LR1e3_CV_b
+---------------------------------------------------------------
+---------------------- check Layers Step ------------------------------
+ N: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 6  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
+
+ #layer 3 #layers changed False
+---------------------------------------------------------------
+ Nucleus: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 6  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
+Experiment: exp7
+SubExperiment: sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_ET_Init_Main_LR1e3_CV_b
+---------------------------------------------------------------
+Traceback (most recent call last):
+  File "main.py", line 1126, in <module>
+    EXP25b_Unet_Cascade_ET_OtherFolds(UserInfoB)
+  File "main.py", line 987, in EXP25b_Unet_Cascade_ET_OtherFolds
+    Run(UserInfoB, IV)    
+  File "main.py", line 221, in Run
+    else: Loop_Over_Nuclei(UserInfoB)
+  File "main.py", line 102, in Loop_Over_Nuclei
+    if UserI['simulation'].nucleus_Index and (not check_if_num_Layers_fit(UserI)): Run_Main(UserI)
+  File "main.py", line 215, in Run_Main
+    Loop_slicing_orientations(UserInfoB, InitValues)
+  File "main.py", line 213, in Loop_slicing_orientations
+    subRun(UserInfoB)
+  File "main.py", line 207, in subRun
+    else: normal_run(params)
+  File "main.py", line 193, in normal_run
+    Data, params = datasets.loadDataset(params)                             
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 384, in loadDataset
+    Data = main_ReadingDataset(params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 364, in main_ReadingDataset
+    DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 329, in readingAllSubjects
+    origMsk , msk = readingNuclei(params, subject, imF.shape)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 187, in readingNuclei
+    origMsk1N = readingOriginalMask(NucInd)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 176, in readingOriginalMask
+    origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape)
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/dataobj_images.py", line 203, in get_data
+    data = np.asanyarray(self._dataobj)
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/numpy/core/numeric.py", line 553, in asanyarray
+    return array(a, dtype, copy=False, order=order, subok=True)
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/arrayproxy.py", line 355, in __array__
+    raw_data = self.get_unscaled()
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/arrayproxy.py", line 350, in get_unscaled
+    mmap=self._mmap)
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/volumeutils.py", line 524, in array_from_file
+    n_read = infile.readinto(data_bytes)
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/gzip.py", line 276, in read
+    return self._buffer.read(size)
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/_compression.py", line 68, in readinto
+    data = self.read(len(byte_view))
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/gzip.py", line 471, in read
+    uncompress = self._decompressor.decompress(buf, size)
+KeyboardInterrupt
+Exception ignored in: <bound method tqdm.__del__ of Loading train:   8%|▊         | 27/342 [00:25<05:07,  1.03it/s]>
+Traceback (most recent call last):
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_tqdm.py", line 931, in __del__
+    self.close()
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_tqdm.py", line 1133, in close
+    self._decr_instances(self)
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_tqdm.py", line 496, in _decr_instances
+    cls.monitor.exit()
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_monitor.py", line 52, in exit
+    self.join()
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/threading.py", line 1053, in join
+    raise RuntimeError("cannot join current thread")
+RuntimeError: cannot join current thread

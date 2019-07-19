@@ -377,14 +377,10 @@ def terminalEntries(UserInfo):
         elif entry.lower() in ('--scheduler'):
             UserInfo['simulation'].LR_Scheduler = True 
 
-                
-            # elif int(sys.argv[en+1]) == 5:
-            #     UserInfo['Model_Method'] = 'FCN_with_SkipConnection' 
-                # UserInfo['architectureType'] = 'FCN_with_SkipConnection' 
-            
-
         elif entry.lower() in ('-ci','--CrossVal_Index'):
             UserInfo['CrossVal'].index = [sys.argv[en+1]]
+            print('------------')
+            print(UserInfo['CrossVal'].index)
                 
     return UserInfo
 

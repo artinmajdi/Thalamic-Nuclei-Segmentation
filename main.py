@@ -21,7 +21,6 @@ from tqdm import tqdm
 from preprocess import BashCallingFunctionsA, croppingA
 
 
-
 class InitValues:
     def __init__(self, Nuclei_Indexes=1 , slicingDim=2):
         self.slicingDim     = slicingDim 
@@ -84,22 +83,23 @@ def Run(UserInfoB, InitValues):
                         if not check_if_num_Layers_fit(UserInfoB):
                             Run_Main(UserInfoB)
 
-    def Loop_Over_Nuclei(UserInfoB):
-
-        if not UserInfoB['simulation'].Multi_Class_Mode:
-            for UserInfoB['simulation'].nucleus_Index in InitValues.Nuclei_Indexes:
-                if not check_if_num_Layers_fit(UserInfoB): Run_Main(UserInfoB)
+    def Loop_Over_Nuclei(UserI):
+        
+        if not UserI['simulation'].Multi_Class_Mode:
+            for UserI['simulation'].nucleus_Index in InitValues.Nuclei_Indexes:
+                if not check_if_num_Layers_fit(UserI): Run_Main(UserI)
 
         else:
 
-            UserInfoB['simulation'].nucleus_Index = [1]
-            if not check_if_num_Layers_fit(UserInfoB): 
-                Run_Main(UserInfoB)
-
+            UserI['simulation'].nucleus_Index = [1]
+            Flag_Thalmaus_NLayers = check_if_num_Layers_fit(UserI)
+            if not Flag_Thalmaus_NLayers: 
+                if 1 in InitValues.Nuclei_Indexes: Run_Main(UserI)
+            
                 BB = smallFuncs.Nuclei_Class(1,'Cascade')            
                 A = [InitValues.Nuclei_Indexes] if not isinstance(InitValues.Nuclei_Indexes, list) else InitValues.Nuclei_Indexes
-                UserInfoB['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(A) # BB.All_Nuclei().Indexes))
-                if UserInfoB['simulation'].nucleus_Index and (not check_if_num_Layers_fit(UserInfoB)): Run_Main(UserInfoB)
+                UserI['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(A) # BB.All_Nuclei().Indexes))
+                if UserI['simulation'].nucleus_Index and (not check_if_num_Layers_fit(UserI)): Run_Main(UserI)
 
     def Run_Main(UserInfoB):
 
@@ -115,12 +115,11 @@ def Run(UserInfoB, InitValues):
                     # output_model = params.WhichExperiment.Experiment.address + '/models/' + params.WhichExperiment.SubExperiment.name
                     # os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
 
-
-                    CV = '/CV' + params.WhichExperiment.SubExperiment.crossVal.index[0]
+                    CV = '/CV' + params.WhichExperiment.SubExperiment.crossVal.index[0] if 'SRI' not in name_Thalmus_network else ''                    
                     SD = '/sd' + str(params.WhichExperiment.Dataset.slicingInfo.slicingDim)
                     input_model  = params.WhichExperiment.Experiment.address + '/results/' + name_Thalmus_network + CV + SD # params.WhichExperiment.SubExperiment.name_Thalmus_network
                     output_model = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name + SD
-                    os.system('mkdir %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
+                    os.system('mkdir -p %s ; cp -r %s/* %s/'%(output_model , input_model , output_model))
 
                 ReadTrain = params.WhichExperiment.Dataset.ReadTrain                
                 if ReadTrain.SRI:    func_mainCopy('Predictions_Full_THALAMUS/SRI') 
@@ -227,6 +226,8 @@ def preMode(UserInfoB):
     # applyPreprocess.main(params, 'experiment')
     K = smallFuncs.gpuSetting(params.WhichExperiment.HardParams.Machine.GPU_Index)
     return UserInfoB, K
+
+UserInfoB, K = preMode(UserInfo.__dict__)
 
 def Run_tryExcept(UserInfoB, IV):
     try:        
@@ -896,16 +897,17 @@ def EXP25_Unet_Cascade_Main_OtherFolds(UserInfoB):
     def predict_Thalamus_For_SD0(UserI):
 
         UserI['simulation'].slicingDim = [2]
-        UserI['simulation'].nucleus_Index = 1
+        UserI['simulation'].nucleus_Index = [1]
         IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
 
-        UserI['simulation'].LR_Scheduler = False
-        UserI['TypeExperiment'] = 1
-        Run(UserI, IV)
+        # UserI['simulation'].LR_Scheduler = False
+        # UserI['TypeExperiment'] = 1
+        # Run(UserI, IV)
         
         UserI['simulation'].LR_Scheduler = True
         UserI['TypeExperiment'] = 2
         Run(UserI, IV)
+
 
     UserInfoB['CrossVal'].index   = ['b']
     UserInfoB['TypeExperiment']   = 2
@@ -915,78 +917,55 @@ def EXP25_Unet_Cascade_Main_OtherFolds(UserInfoB):
     UserInfoB['lossFunction_Index'] = 4
     UserInfoB['simulation'].LR_Scheduler = True
     UserInfoB['Experiments'].Index = '7'
-    UserInfoB['simulation'].num_Layers = 3
     # UserInfoB['temp_copy_sd0'] = False
     UserInfoB['copy_Thalamus'] = False
 
 
-
-    # UserInfoB['simulation'].nucleus_Index = 1
+    # # UserInfoB['simulation'].nucleus_Index = [1]
     # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 15
     # UserInfoB['simulation'].slicingDim = [2]
+    # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] 
+    # UserInfoB['simulation'].num_Layers = 3
+
     # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
     # Run(UserInfoB, IV)
 
     # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     # UserInfoB['simulation'].slicingDim = [1]
+    # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] 
+    # UserInfoB['simulation'].num_Layers = 3
     # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
     # Run(UserInfoB, IV)
 
 
-    # sagittal orientation
+    # # sagittal orientation
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
-    predict_Thalamus_For_SD0(UserInfoB)
+    # predict_Thalamus_For_SD0(UserInfoB)
 
 
     UserInfoB['simulation'].slicingDim = [0]
-    UserInfoB['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]
+    UserInfoB['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14] 
+    UserInfoB['simulation'].num_Layers = 3
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
     Run(UserInfoB, IV)    
 
 def EXP25b_Unet_Cascade_ET_OtherFolds(UserInfoB):
     # Cascade   Main Init 3T
-
-    def main_separateThalamus(UserI):
-        
-        # UserI['simulation'].slicingDim = [2]
-        UserI['simulation'].nucleus_Index = 1
-        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
-
-        UserI['simulation'].LR_Scheduler = False
-        UserI['TypeExperiment'] = 1
-        Run(UserI, IV)
-        
-        UserI['simulation'].LR_Scheduler = True
-        for UserI['TypeExperiment'] in [2, 4]:
-            Run(UserI, IV)
-
-        UserI['TypeExperiment'] = 4
-        UserI['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]
-        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
-        Run(UserI, IV)
-        
     def main_separateThalamus_sagittal(UserI):
         
         UserI['simulation'].slicingDim = [2]
-        UserI['simulation'].nucleus_Index = 1
+        UserI['simulation'].nucleus_Index = 1                
         IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
-
-        UserI['simulation'].LR_Scheduler = False
-        UserI['TypeExperiment'] = 1
         Run(UserI, IV)
-        
-        UserI['simulation'].LR_Scheduler = True
-        for UserI['TypeExperiment'] in [2, 4]:
-            Run(UserI, IV)
 
+        
         UserI['simulation'].slicingDim = [0]
-        UserI['TypeExperiment'] = 4
         UserI['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]
         IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
         Run(UserI, IV)
-
-
-    # UserInfoB['CrossVal'].index   = ['b', 'c', 'd']
+        
+    UserInfoB['tag_temp'] = '_LR1e3'
+    UserInfoB['copy_Thalamus'] = True
     UserInfoB['TypeExperiment']   = 4
     UserInfoB['Model_Method'] = 'Cascade'
     UserInfoB['simulation'].num_Layers = 3
@@ -994,35 +973,62 @@ def EXP25b_Unet_Cascade_ET_OtherFolds(UserInfoB):
     UserInfoB['lossFunction_Index'] = 4
     UserInfoB['simulation'].LR_Scheduler = True
     UserInfoB['Experiments'].Index = '7'
-    UserInfoB['simulation'].num_Layers = 3
-    UserInfoB['temp_copy_sd0'] = False
 
-    # sagittal
-    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
-    UserInfoB['simulation'].slicingDim = [2]    
-    main_separateThalamus(UserInfoB)
-    
-    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
-    UserInfoB['simulation'].slicingDim = [1]
-    main_separateThalamus(UserInfoB)
+    # UserInfoB['temp_copy_sd0'] = False
 
-    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
-    UserInfoB['simulation'].slicingDim = [0]
-    main_separateThalamus_sagittal(UserInfoB)
+    for UserInfoB['CrossVal'].index in ['b', 'c', 'd']:
+
+        UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+        UserInfoB['simulation'].slicingDim = [2]  
+        UserInfoB['simulation'].num_Layers = 3
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]           
+        IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+        Run(UserInfoB, IV)    
+
+        UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
+        UserInfoB['simulation'].slicingDim = [1]
+        UserInfoB['simulation'].num_Layers = 3
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]    
+        IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+        Run(UserInfoB, IV) 
+
+        UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
+        UserInfoB['simulation'].slicingDim = [0]
+        UserInfoB['simulation'].num_Layers = 3
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
+        # Run(UserInfoB, IV) 
+        main_separateThalamus_sagittal(UserInfoB)
 
 def EXP25c_TL_CSFn2_ResNet2_DiceLoss_OtherFolds(UserInfoB):
     
+    def main_separateThalamus_sagittal(UserI):
+        
+        UserI['simulation'].slicingDim = [2]
+        UserI['simulation'].nucleus_Index = [1]                
+        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
+        Run(UserI, IV)
+
+        
+        UserI['simulation'].slicingDim = [0]
+        UserI['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]
+        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
+        Run(UserI, IV)
+
     UserInfoB['TypeExperiment'] = 11
     UserInfoB['Model_Method'] = 'Cascade' 
     UserInfoB['architectureType'] = 'ResFCN_ResUnet2_TL'
     UserInfoB['lossFunction_Index'] = 4
     UserInfoB['Experiments'].Index = '7'
+    UserInfoB['copy_Thalamus'] = False
+    UserInfoB['simulation'].LR_Scheduler = False
 
     for UserInfoB['CrossVal'].index in ['b', 'c', 'd']:
+        
         UserInfoB['simulation'].FCN_FeatureMaps = 40
         UserInfoB['simulation'].FCN1_NLayers = 2
         UserInfoB['simulation'].FCN2_NLayers = 0
         UserInfoB['simulation'].slicingDim = [2]
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]          
         IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)    
         Run(UserInfoB, IV)
 
@@ -1030,6 +1036,7 @@ def EXP25c_TL_CSFn2_ResNet2_DiceLoss_OtherFolds(UserInfoB):
         UserInfoB['simulation'].FCN1_NLayers = 0
         UserInfoB['simulation'].FCN2_NLayers = 0
         UserInfoB['simulation'].slicingDim = [1]
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]          
         IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
         Run(UserInfoB, IV)
 
@@ -1037,8 +1044,65 @@ def EXP25c_TL_CSFn2_ResNet2_DiceLoss_OtherFolds(UserInfoB):
         UserInfoB['simulation'].FCN1_NLayers = 1
         UserInfoB['simulation'].FCN2_NLayers = 1
         UserInfoB['simulation'].slicingDim = [0]
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]  
+        # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+        # Run(UserInfoB, IV)
+        main_separateThalamus_sagittal(UserInfoB)    
+
+
+def EXP25c2_TL_CSFn2_ResNet2_DiceLoss_OtherFolds(UserInfoB):
+    
+    def main_separateThalamus_sagittal(UserI):
+        
+        UserI['simulation'].slicingDim = [2]
+        UserI['simulation'].nucleus_Index = [1]                
+        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
+        Run(UserI, IV)
+
+        
+        UserI['simulation'].slicingDim = [0]
+        UserI['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]
+        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
+        Run(UserI, IV)
+
+    UserInfoB['tag_temp'] = '_FrozenLayers2'
+    UserInfoB['TypeExperiment'] = 11
+    UserInfoB['Model_Method'] = 'Cascade' 
+    UserInfoB['architectureType'] = 'ResFCN_ResUnet2_TL'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '7'
+    UserInfoB['copy_Thalamus'] = False
+    UserInfoB['simulation'].LR_Scheduler = False
+
+    for UserInfoB['CrossVal'].index in ['b', 'c', 'd']:
+        
+        UserInfoB['simulation'].FCN_FeatureMaps = 40
+        UserInfoB['simulation'].FCN1_NLayers = 2
+        UserInfoB['simulation'].FCN2_NLayers = 0
+        UserInfoB['simulation'].slicingDim = [2]
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]          
+        IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)    
+        Run(UserInfoB, IV)
+
+        UserInfoB['simulation'].FCN_FeatureMaps = 0
+        UserInfoB['simulation'].FCN1_NLayers = 0
+        UserInfoB['simulation'].FCN2_NLayers = 0
+        UserInfoB['simulation'].slicingDim = [1]
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]          
         IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-        Run(UserInfoB, IV)    
+        Run(UserInfoB, IV)
+
+        UserInfoB['simulation'].FCN_FeatureMaps = 40
+        UserInfoB['simulation'].FCN1_NLayers = 1
+        UserInfoB['simulation'].FCN2_NLayers = 1
+        UserInfoB['simulation'].slicingDim = [0]
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]  
+        # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+        # Run(UserInfoB, IV)
+        main_separateThalamus_sagittal(UserInfoB)  
+        
+
+
 
 def EXP26a_JustThalmaus_3T_Main(UserInfoB):
     UserInfoB['Model_Method'] = 'Cascade'
@@ -1084,13 +1148,47 @@ def EXP26b_JustThalmaus_3T_Main(UserInfoB):
         Run(UserInfoB, IV)
 
 
+def EXP27a_Resnet2_LogDice_fineTune_ET_Ps_Main(UserInfoB):
+    
+    UserInfoB['Model_Method'] = 'Cascade'
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [2,1,0]
+    UserInfoB['architectureType'] = 'Res_Unet2'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '6'
+    UserInfoB['copy_Thalamus'] = True
+    UserInfoB['TypeExperiment'] = 15
+    UserInfoB['simulation'].LR_Scheduler = False    
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 
-UserInfoB, K = preMode(UserInfo.__dict__)
+
+    for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10, 15, 20, 30, 40]:    
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]   
+        Run(UserInfoB, IV)
+
+def EXP27b_Resnet2_LogDice_fineTune_ET_Ps_Main(UserInfoB):
+    
+    UserInfoB['Model_Method'] = 'Cascade'
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [2,1,0]
+    UserInfoB['architectureType'] = 'Res_Unet2'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '6'
+    UserInfoB['copy_Thalamus'] = True
+    UserInfoB['TypeExperiment'] = 16
+    UserInfoB['simulation'].LR_Scheduler = False    
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+
+    for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10, 15, 20, 30, 40]:    
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]   
+        Run(UserInfoB, IV)
 
 # UserInfoB['simulation'].epochs = 20
 # UserInfoB['simulation'].ReadAugments_Mode = False 
-# UserInfoB['CrossVal'].index   = ['b']
-EXP26b_JustThalmaus_3T_Main(UserInfoB)
+# UserInfoB['simulation'].TestOnly = True
+# UserInfoB['CrossVal'].index   = ['c']
+# EXP25_Unet_Cascade_Main_OtherFolds(UserInfoB)
+EXP27b_Resnet2_LogDice_fineTune_ET_Ps_Main(UserInfoB)
 
 
 K.clear_session()
