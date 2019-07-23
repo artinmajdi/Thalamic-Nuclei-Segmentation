@@ -1,0 +1,182 @@
+2019-07-21 01:30:19.062735: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-07-21 01:30:21.587742: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:05:00.0
+totalMemory: 15.89GiB freeMemory: 15.60GiB
+2019-07-21 01:30:21.587807: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-07-21 01:30:22.013104: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-07-21 01:30:22.013154: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-07-21 01:30:22.013167: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-07-21 01:30:22.013597: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:05:00.0, compute capability: 6.0)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+Using TensorFlow backend.
+---------------------- check Layers Step ------------------------------
+ N: [1]  | GPU: 1  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 10 |  Upsample 1
+
+ #layer 3 #layers changed False
+---------------------------------------------------------------
+ Nucleus: [1]  | GPU: 1  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 10 |  Upsample 1
+Experiment: exp6
+SubExperiment: sE13_Cascade_FM10_U-Net4_NL3_LS_MyBCE_US1_CSFn2_CSFn1_Init_Main_CV_a
+---------------------------------------------------------------
+Traceback (most recent call last):
+  File "main.py", line 1326, in <module>
+    EXP_31_CSFn2_CSFn1_Cascade_finetune(UserInfoB)
+  File "main.py", line 1319, in EXP_31_CSFn2_CSFn1_Cascade_finetune
+    Run(UserInfoB, IV)
+  File "main.py", line 220, in Run
+    else: Loop_Over_Nuclei(UserInfoB)
+  File "main.py", line 97, in Loop_Over_Nuclei
+    if 1 in InitValues.Nuclei_Indexes: Run_Main(UserI)
+  File "main.py", line 214, in Run_Main
+    Loop_slicing_orientations(UserInfoB, InitValues)
+  File "main.py", line 212, in Loop_slicing_orientations
+    subRun(UserInfoB)
+  File "main.py", line 203, in subRun
+    if (1 in NI) and UserInfoB['copy_Thalamus']: func_copy_Thalamus_preds(params)  #   and ( (UserInfoB['CrossVal'].index == ['a']) or Flag_3T)     #   and (not Flag_3T)  and (not Flag_CSFn1)
+KeyError: 'copy_Thalamus'
+2019-07-21 01:32:36.209408: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-07-21 01:32:38.234238: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:05:00.0
+totalMemory: 15.89GiB freeMemory: 15.60GiB
+2019-07-21 01:32:38.234285: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-07-21 01:32:38.629007: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-07-21 01:32:38.629050: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-07-21 01:32:38.629063: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-07-21 01:32:38.629513: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:05:00.0, compute capability: 6.0)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+Using TensorFlow backend.
+---------------------- check Layers Step ------------------------------
+ N: [1]  | GPU: 1  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 10 |  Upsample 1
+
+ #layer 3 #layers changed False
+---------------------------------------------------------------
+ Nucleus: [1]  | GPU: 1  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 10 |  Upsample 1
+Experiment: exp6
+SubExperiment: sE13_Cascade_FM10_U-Net4_NL3_LS_MyBCE_US1_CSFn2_CSFn1_Init_Main_CV_a
+---------------------------------------------------------------
+Traceback (most recent call last):
+  File "main.py", line 1326, in <module>
+    EXP_31_CSFn2_CSFn1_Cascade_finetune(UserInfoB)
+  File "main.py", line 1319, in EXP_31_CSFn2_CSFn1_Cascade_finetune
+    Run(UserInfoB, IV)
+  File "main.py", line 220, in Run
+    else: Loop_Over_Nuclei(UserInfoB)
+  File "main.py", line 97, in Loop_Over_Nuclei
+    if 1 in InitValues.Nuclei_Indexes: Run_Main(UserI)
+  File "main.py", line 214, in Run_Main
+    Loop_slicing_orientations(UserInfoB, InitValues)
+  File "main.py", line 212, in Loop_slicing_orientations
+    subRun(UserInfoB)
+  File "main.py", line 203, in subRun
+    if (1 in NI) and UserInfoB['copy_Thalamus']: func_copy_Thalamus_preds(params)  #   and ( (UserInfoB['CrossVal'].index == ['a']) or Flag_3T)     #   and (not Flag_3T)  and (not Flag_CSFn1)
+KeyError: 'copy_Thalamus'
+2019-07-21 01:34:31.573231: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-07-21 01:34:32.694169: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:05:00.0
+totalMemory: 15.89GiB freeMemory: 15.60GiB
+2019-07-21 01:34:32.694237: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-07-21 01:34:33.057884: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-07-21 01:34:33.057937: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-07-21 01:34:33.057952: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-07-21 01:34:33.058418: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:05:00.0, compute capability: 6.0)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+Using TensorFlow backend.
+Loading train:   0%|          | 0/596 [00:00<?, ?it/s]Loading train:   0%|          | 1/596 [00:16<2:45:42, 16.71s/it]Loading train:   0%|          | 2/596 [00:26<2:23:46, 14.52s/it]Loading train:   1%|          | 3/596 [00:37<2:15:23, 13.70s/it]Loading train:   1%|          | 4/596 [00:49<2:09:01, 13.08s/it]Loading train:   1%|          | 5/596 [01:00<2:01:08, 12.30s/it]Loading train:   1%|          | 6/596 [01:11<1:58:14, 12.02s/it]Loading train:   1%|          | 7/596 [01:13<1:29:55,  9.16s/it]Loading train:   1%|▏         | 8/596 [01:16<1:09:56,  7.14s/it]Loading train:   2%|▏         | 9/596 [01:18<56:40,  5.79s/it]  Loading train:   2%|▏         | 10/596 [01:21<46:20,  4.75s/it]Loading train:   2%|▏         | 11/596 [01:23<39:51,  4.09s/it]Loading train:   2%|▏         | 12/596 [01:27<37:24,  3.84s/it]Loading train:   2%|▏         | 13/596 [01:39<1:02:17,  6.41s/it]Loading train:   2%|▏         | 14/596 [01:53<1:24:30,  8.71s/it]Loading train:   3%|▎         | 15/596 [02:07<1:39:51, 10.31s/it]Loading train:   3%|▎         | 16/596 [02:19<1:43:48, 10.74s/it]Loading train:   3%|▎         | 17/596 [02:34<1:57:23, 12.16s/it]Loading train:   3%|▎         | 18/596 [02:50<2:08:36, 13.35s/it]Loading train:   3%|▎         | 19/596 [03:02<2:04:34, 12.95s/it]Loading train:   3%|▎         | 20/596 [03:17<2:07:47, 13.31s/it]Loading train:   4%|▎         | 21/596 [03:20<1:37:47, 10.20s/it]Loading train:   4%|▎         | 22/596 [03:23<1:16:58,  8.05s/it]Loading train:   4%|▍         | 23/596 [03:25<1:01:41,  6.46s/it]Loading train:   4%|▍         | 24/596 [03:27<49:07,  5.15s/it]  Loading train:   4%|▍         | 25/596 [03:30<41:06,  4.32s/it]Loading train:   4%|▍         | 26/596 [03:32<36:02,  3.79s/it]Loading train:   5%|▍         | 27/596 [03:35<31:35,  3.33s/it]Loading train:   5%|▍         | 28/596 [03:37<29:31,  3.12s/it]Loading train:   5%|▍         | 29/596 [03:40<28:10,  2.98s/it]Loading train:   5%|▌         | 30/596 [03:42<26:07,  2.77s/it]Loading train:   5%|▌         | 31/596 [03:44<24:14,  2.57s/it]Loading train:   5%|▌         | 32/596 [03:47<23:43,  2.52s/it]Loading train:   6%|▌         | 33/596 [03:49<22:22,  2.38s/it]Loading train:   6%|▌         | 34/596 [03:52<24:22,  2.60s/it]Loading train:   6%|▌         | 35/596 [03:54<23:41,  2.53s/it]Loading train:   6%|▌         | 36/596 [03:57<22:57,  2.46s/it]Loading train:   6%|▌         | 37/596 [03:59<23:16,  2.50s/it]Loading train:   6%|▋         | 38/596 [04:01<22:33,  2.43s/it]Loading train:   7%|▋         | 39/596 [04:04<22:13,  2.39s/it]Loading train:   7%|▋         | 40/596 [04:06<22:16,  2.40s/it]Loading train:   7%|▋         | 41/596 [04:09<23:07,  2.50s/it]Loading train:   7%|▋         | 42/596 [04:11<21:21,  2.31s/it]Loading train:   7%|▋         | 43/596 [04:13<20:57,  2.27s/it]Loading train:   7%|▋         | 44/596 [04:15<20:01,  2.18s/it]Loading train:   8%|▊         | 45/596 [04:17<18:45,  2.04s/it]Loading train:   8%|▊         | 46/596 [04:19<19:25,  2.12s/it]Loading train:   8%|▊         | 47/596 [04:21<19:40,  2.15s/it]Loading train:   8%|▊         | 48/596 [04:23<19:39,  2.15s/it]Loading train:   8%|▊         | 49/596 [04:25<18:58,  2.08s/it]Loading train:   8%|▊         | 50/596 [04:28<21:12,  2.33s/it]Loading train:   9%|▊         | 51/596 [04:30<20:37,  2.27s/it]Loading train:   9%|▊         | 52/596 [04:33<21:09,  2.33s/it]Loading train:   9%|▉         | 53/596 [04:35<20:44,  2.29s/it]Loading train:   9%|▉         | 54/596 [04:38<22:08,  2.45s/it]Loading train:   9%|▉         | 55/596 [04:41<23:03,  2.56s/it]Loading train:   9%|▉         | 56/596 [04:43<23:19,  2.59s/it]Loading train:  10%|▉         | 57/596 [04:46<23:44,  2.64s/it]Loading train:  10%|▉         | 58/596 [04:48<23:18,  2.60s/it]Loading train:  10%|▉         | 59/596 [04:51<22:25,  2.51s/it]Loading train:  10%|█         | 60/596 [04:53<22:05,  2.47s/it]Loading train:  10%|█         | 61/596 [04:55<20:38,  2.31s/it]Loading train:  10%|█         | 62/596 [04:57<20:34,  2.31s/it]Loading train:  11%|█         | 63/596 [05:00<21:32,  2.43s/it]Loading train:  11%|█         | 64/596 [05:03<21:29,  2.42s/it]Loading train:  11%|█         | 65/596 [05:05<20:47,  2.35s/it]Loading train:  11%|█         | 66/596 [05:08<22:27,  2.54s/it]Loading train:  11%|█         | 67/596 [05:10<22:23,  2.54s/it]Loading train:  11%|█▏        | 68/596 [05:13<23:56,  2.72s/it]Loading train:  12%|█▏        | 69/596 [05:16<22:46,  2.59s/it]Loading train:  12%|█▏        | 70/596 [05:19<24:11,  2.76s/it]Loading train:  12%|█▏        | 71/596 [05:21<23:26,  2.68s/it]Loading train:  12%|█▏        | 72/596 [05:24<22:23,  2.56s/it]Loading train:  12%|█▏        | 73/596 [05:26<22:21,  2.57s/it]Loading train:  12%|█▏        | 74/596 [05:28<21:20,  2.45s/it]Loading train:  13%|█▎        | 75/596 [05:31<22:01,  2.54s/it]Loading train:  13%|█▎        | 76/596 [05:33<21:08,  2.44s/it]Loading train:  13%|█▎        | 77/596 [05:36<21:31,  2.49s/it]Loading train:  13%|█▎        | 78/596 [05:39<23:55,  2.77s/it]Loading train:  13%|█▎        | 79/596 [05:43<26:40,  3.10s/it]Loading train:  13%|█▎        | 80/596 [05:47<28:18,  3.29s/it]Loading train:  14%|█▎        | 81/596 [05:49<26:08,  3.04s/it]Loading train:  14%|█▍        | 82/596 [05:52<25:48,  3.01s/it]Loading train:  14%|█▍        | 83/596 [05:55<26:06,  3.05s/it]Loading train:  14%|█▍        | 84/596 [05:58<24:14,  2.84s/it]Loading train:  14%|█▍        | 85/596 [06:00<21:38,  2.54s/it]Loading train:  14%|█▍        | 86/596 [06:02<21:30,  2.53s/it]Loading train:  15%|█▍        | 87/596 [06:05<21:47,  2.57s/it]Loading train:  15%|█▍        | 88/596 [06:08<22:02,  2.60s/it]Loading train:  15%|█▍        | 89/596 [06:10<22:54,  2.71s/it]Loading train:  15%|█▌        | 90/596 [06:13<22:38,  2.69s/it]Loading train:  15%|█▌        | 91/596 [06:15<21:34,  2.56s/it]Loading train:  15%|█▌        | 92/596 [06:18<22:12,  2.64s/it]Loading train:  16%|█▌        | 93/596 [06:21<23:32,  2.81s/it]Loading train:  16%|█▌        | 94/596 [06:24<22:30,  2.69s/it]Loading train:  16%|█▌        | 95/596 [06:27<23:26,  2.81s/it]Loading train:  16%|█▌        | 96/596 [06:30<23:17,  2.79s/it]Loading train:  16%|█▋        | 97/596 [06:32<22:24,  2.70s/it]Loading train:  16%|█▋        | 98/596 [06:35<22:18,  2.69s/it]Loading train:  17%|█▋        | 99/596 [06:38<23:44,  2.87s/it]Loading train:  17%|█▋        | 100/596 [06:41<23:31,  2.85s/it]Loading train:  17%|█▋        | 101/596 [06:43<22:29,  2.73s/it]Loading train:  17%|█▋        | 102/596 [06:46<22:26,  2.73s/it]Loading train:  17%|█▋        | 103/596 [06:49<23:10,  2.82s/it]Loading train:  17%|█▋        | 104/596 [06:52<23:14,  2.83s/it]Loading train:  18%|█▊        | 105/596 [06:55<23:35,  2.88s/it]Loading train:  18%|█▊        | 106/596 [06:58<24:00,  2.94s/it]Loading train:  18%|█▊        | 107/596 [07:01<24:01,  2.95s/it]Loading train:  18%|█▊        | 108/596 [07:04<23:33,  2.90s/it]Loading train:  18%|█▊        | 109/596 [07:08<25:45,  3.17s/it]Loading train:  18%|█▊        | 110/596 [07:10<23:13,  2.87s/it]Loading train:  19%|█▊        | 111/596 [07:12<21:00,  2.60s/it]Loading train:  19%|█▉        | 112/596 [07:14<20:15,  2.51s/it]Loading train:  19%|█▉        | 113/596 [07:17<20:16,  2.52s/it]Loading train:  19%|█▉        | 114/596 [07:20<22:04,  2.75s/it]Loading train:  19%|█▉        | 115/596 [07:23<22:54,  2.86s/it]Loading train:  19%|█▉        | 116/596 [07:26<24:08,  3.02s/it]Loading train:  20%|█▉        | 117/596 [07:29<23:54,  2.99s/it]Loading train:  20%|█▉        | 118/596 [07:33<24:29,  3.07s/it]Loading train:  20%|█▉        | 119/596 [07:36<24:17,  3.06s/it]Loading train:  20%|██        | 120/596 [07:42<33:11,  4.18s/it]Loading train:  20%|██        | 121/596 [07:46<30:38,  3.87s/it]Loading train:  20%|██        | 122/596 [07:48<27:43,  3.51s/it]Loading train:  21%|██        | 123/596 [07:51<26:14,  3.33s/it]Loading train:  21%|██        | 124/596 [07:54<25:15,  3.21s/it]Loading train:  21%|██        | 125/596 [07:57<23:32,  3.00s/it]Loading train:  21%|██        | 126/596 [07:59<22:43,  2.90s/it]Loading train:  21%|██▏       | 127/596 [08:02<22:01,  2.82s/it]Loading train:  21%|██▏       | 128/596 [08:05<22:25,  2.87s/it]Loading train:  22%|██▏       | 129/596 [08:08<22:52,  2.94s/it]Loading train:  22%|██▏       | 130/596 [08:12<24:17,  3.13s/it]Loading train:  22%|██▏       | 131/596 [08:14<23:07,  2.98s/it]Loading train:  22%|██▏       | 132/596 [08:17<21:59,  2.84s/it]Loading train:  22%|██▏       | 133/596 [08:20<22:11,  2.88s/it]Loading train:  22%|██▏       | 134/596 [08:22<21:32,  2.80s/it]Loading train:  23%|██▎       | 135/596 [08:26<22:51,  2.98s/it]Loading train:  23%|██▎       | 136/596 [08:29<24:21,  3.18s/it]Loading train:  23%|██▎       | 137/596 [08:32<22:50,  2.99s/it]Loading train:  23%|██▎       | 138/596 [08:35<22:52,  3.00s/it]Loading train:  23%|██▎       | 139/596 [08:38<22:53,  3.01s/it]Loading train:  23%|██▎       | 140/596 [08:41<22:17,  2.93s/it]Loading train:  24%|██▎       | 141/596 [08:44<22:30,  2.97s/it]Loading train:  24%|██▍       | 142/596 [08:46<21:16,  2.81s/it]Loading train:  24%|██▍       | 143/596 [08:50<22:35,  2.99s/it]Loading train:  24%|██▍       | 144/596 [08:52<22:12,  2.95s/it]Loading train:  24%|██▍       | 145/596 [08:56<23:35,  3.14s/it]Loading train:  24%|██▍       | 146/596 [09:00<24:36,  3.28s/it]Loading train:  25%|██▍       | 147/596 [09:03<24:46,  3.31s/it]Loading train:  25%|██▍       | 148/596 [09:07<25:28,  3.41s/it]Loading train:  25%|██▌       | 149/596 [09:09<23:24,  3.14s/it]Loading train:  25%|██▌       | 150/596 [09:12<22:52,  3.08s/it]Loading train:  25%|██▌       | 151/596 [09:16<24:06,  3.25s/it]Loading train:  26%|██▌       | 152/596 [09:19<24:37,  3.33s/it]Loading train:  26%|██▌       | 153/596 [09:23<24:51,  3.37s/it]Loading train:  26%|██▌       | 154/596 [09:26<24:06,  3.27s/it]Loading train:  26%|██▌       | 155/596 [09:29<23:06,  3.14s/it]Loading train:  26%|██▌       | 156/596 [09:31<22:02,  3.01s/it]Loading train:  26%|██▋       | 157/596 [09:34<22:28,  3.07s/it]Loading train:  27%|██▋       | 158/596 [09:39<25:19,  3.47s/it]Loading train:  27%|██▋       | 159/596 [09:43<25:38,  3.52s/it]Loading train:  27%|██▋       | 160/596 [09:45<22:56,  3.16s/it]Loading train:  27%|██▋       | 161/596 [09:48<21:52,  3.02s/it]Loading train:  27%|██▋       | 162/596 [09:50<21:43,  3.00s/it]Loading train:  27%|██▋       | 163/596 [09:53<20:49,  2.89s/it]Loading train:  28%|██▊       | 164/596 [09:56<20:54,  2.90s/it]Loading train:  28%|██▊       | 165/596 [10:00<22:42,  3.16s/it]Loading train:  28%|██▊       | 166/596 [10:03<23:27,  3.27s/it]Loading train:  28%|██▊       | 167/596 [10:05<20:08,  2.82s/it]Loading train:  28%|██▊       | 168/596 [10:09<21:56,  3.08s/it]Loading train:  28%|██▊       | 169/596 [10:11<21:06,  2.97s/it]Loading train:  29%|██▊       | 170/596 [10:15<21:24,  3.01s/it]Loading train:  29%|██▊       | 171/596 [10:17<20:37,  2.91s/it]Loading train:  29%|██▉       | 172/596 [10:19<18:12,  2.58s/it]Loading train:  29%|██▉       | 173/596 [10:23<20:44,  2.94s/it]Loading train:  29%|██▉       | 174/596 [10:25<19:27,  2.77s/it]Loading train:  29%|██▉       | 175/596 [10:28<19:27,  2.77s/it]Loading train:  30%|██▉       | 176/596 [10:31<18:54,  2.70s/it]Loading train:  30%|██▉       | 177/596 [10:34<19:46,  2.83s/it]Loading train:  30%|██▉       | 178/596 [10:37<19:55,  2.86s/it]Loading train:  30%|███       | 179/596 [10:40<20:59,  3.02s/it]Loading train:  30%|███       | 180/596 [10:44<22:07,  3.19s/it]Loading train:  30%|███       | 181/596 [10:47<21:57,  3.17s/it]Loading train:  31%|███       | 182/596 [10:49<20:19,  2.95s/it]Loading train:  31%|███       | 183/596 [10:51<17:18,  2.51s/it]Loading train:  31%|███       | 184/596 [10:54<18:03,  2.63s/it]Loading train:  31%|███       | 185/596 [10:56<17:57,  2.62s/it]Loading train:  31%|███       | 186/596 [10:59<18:27,  2.70s/it]Loading train:  31%|███▏      | 187/596 [11:02<19:07,  2.81s/it]Loading train:  32%|███▏      | 188/596 [11:06<20:57,  3.08s/it]Loading train:  32%|███▏      | 189/596 [11:09<20:29,  3.02s/it]Loading train:  32%|███▏      | 190/596 [11:11<18:50,  2.78s/it]Loading train:  32%|███▏      | 191/596 [11:14<20:12,  2.99s/it]Loading train:  32%|███▏      | 192/596 [11:32<49:23,  7.33s/it]Loading train:  32%|███▏      | 193/596 [11:51<1:13:23, 10.93s/it]Loading train:  33%|███▎      | 194/596 [12:11<1:31:48, 13.70s/it]Loading train:  33%|███▎      | 195/596 [12:30<1:42:00, 15.26s/it]Loading train:  33%|███▎      | 196/596 [12:47<1:44:38, 15.70s/it]Loading train:  33%|███▎      | 197/596 [13:06<1:50:22, 16.60s/it]Loading train:  33%|███▎      | 198/596 [13:21<1:47:57, 16.27s/it]Loading train:  33%|███▎      | 199/596 [13:41<1:54:07, 17.25s/it]Loading train:  34%|███▎      | 200/596 [14:00<1:57:06, 17.74s/it]Loading train:  34%|███▎      | 201/596 [14:18<1:57:56, 17.91s/it]Loading train:  34%|███▍      | 202/596 [14:38<2:01:24, 18.49s/it]Loading train:  34%|███▍      | 203/596 [14:57<2:02:48, 18.75s/it]Loading train:  34%|███▍      | 204/596 [15:16<2:03:37, 18.92s/it]Loading train:  34%|███▍      | 205/596 [15:37<2:05:57, 19.33s/it]Loading train:  35%|███▍      | 206/596 [15:52<1:58:18, 18.20s/it]Loading train:  35%|███▍      | 207/596 [16:09<1:54:37, 17.68s/it]Loading train:  35%|███▍      | 208/596 [16:24<1:50:10, 17.04s/it]Loading train:  35%|███▌      | 209/596 [16:41<1:50:09, 17.08s/it]Loading train:  35%|███▌      | 210/596 [16:50<1:34:01, 14.61s/it]Loading train:  35%|███▌      | 211/596 [16:58<1:21:13, 12.66s/it]Loading train:  36%|███▌      | 212/596 [17:08<1:15:47, 11.84s/it]Loading train:  36%|███▌      | 213/596 [17:17<1:10:01, 10.97s/it]Loading train:  36%|███▌      | 214/596 [17:27<1:07:06, 10.54s/it]Loading train:  36%|███▌      | 215/596 [17:38<1:07:19, 10.60s/it]Loading train:  36%|███▌      | 216/596 [17:51<1:12:53, 11.51s/it]Loading train:  36%|███▋      | 217/596 [18:08<1:22:11, 13.01s/it]Loading train:  37%|███▋      | 218/596 [18:17<1:14:39, 11.85s/it]Loading train:  37%|███▋      | 219/596 [18:27<1:10:21, 11.20s/it]Loading train:  37%|███▋      | 220/596 [18:37<1:09:20, 11.07s/it]Loading train:  37%|███▋      | 221/596 [18:50<1:12:32, 11.61s/it]Loading train:  37%|███▋      | 222/596 [19:00<1:09:01, 11.07s/it]Loading train:  37%|███▋      | 223/596 [19:18<1:21:49, 13.16s/it]Loading train:  38%|███▊      | 224/596 [19:27<1:13:31, 11.86s/it]Loading train:  38%|███▊      | 225/596 [19:36<1:07:56, 10.99s/it]Loading train:  38%|███▊      | 226/596 [19:45<1:04:20, 10.43s/it]Loading train:  38%|███▊      | 227/596 [19:55<1:04:03, 10.42s/it]Loading train:  38%|███▊      | 228/596 [20:09<1:10:17, 11.46s/it]Loading train:  38%|███▊      | 229/596 [20:25<1:17:59, 12.75s/it]Loading train:  39%|███▊      | 230/596 [20:37<1:15:43, 12.41s/it]Loading train:  39%|███▉      | 231/596 [20:48<1:14:21, 12.22s/it]Loading train:  39%|███▉      | 232/596 [21:01<1:15:32, 12.45s/it]Loading train:  39%|███▉      | 233/596 [21:16<1:19:56, 13.21s/it]Loading train:  39%|███▉      | 234/596 [21:28<1:17:32, 12.85s/it]Loading train:  39%|███▉      | 235/596 [21:39<1:12:55, 12.12s/it]Loading train:  40%|███▉      | 236/596 [21:48<1:07:29, 11.25s/it]Loading train:  40%|███▉      | 237/596 [21:58<1:04:34, 10.79s/it]Loading train:  40%|███▉      | 238/596 [22:06<1:00:12, 10.09s/it]Loading train:  40%|████      | 239/596 [22:15<58:27,  9.82s/it]  Loading train:  40%|████      | 240/596 [22:25<58:19,  9.83s/it]Loading train:  40%|████      | 241/596 [22:35<58:01,  9.81s/it]Loading train:  41%|████      | 242/596 [22:47<1:02:39, 10.62s/it]Loading train:  41%|████      | 243/596 [22:59<1:04:14, 10.92s/it]Loading train:  41%|████      | 244/596 [23:07<58:28,  9.97s/it]  Loading train:  41%|████      | 245/596 [23:14<53:43,  9.18s/it]Loading train:  41%|████▏     | 246/596 [23:21<49:37,  8.51s/it]Loading train:  41%|████▏     | 247/596 [23:29<47:50,  8.22s/it]Loading train:  42%|████▏     | 248/596 [23:37<48:09,  8.30s/it]Loading train:  42%|████▏     | 249/596 [23:46<48:19,  8.36s/it]Loading train:  42%|████▏     | 250/596 [23:54<48:15,  8.37s/it]Loading train:  42%|████▏     | 251/596 [24:02<48:00,  8.35s/it]Loading train:  42%|████▏     | 252/596 [24:13<51:21,  8.96s/it]Loading train:  42%|████▏     | 253/596 [24:22<51:00,  8.92s/it]Loading train:  43%|████▎     | 254/596 [24:32<54:07,  9.50s/it]Loading train:  43%|████▎     | 255/596 [24:41<52:54,  9.31s/it]Loading train:  43%|████▎     | 256/596 [24:49<49:56,  8.81s/it]Loading train:  43%|████▎     | 257/596 [24:59<51:10,  9.06s/it]Loading train:  43%|████▎     | 258/596 [25:11<56:00,  9.94s/it]Loading train:  43%|████▎     | 259/596 [25:19<53:36,  9.54s/it]Loading train:  44%|████▎     | 260/596 [25:28<51:49,  9.26s/it]Loading train:  44%|████▍     | 261/596 [25:37<51:58,  9.31s/it]Loading train:  44%|████▍     | 262/596 [26:02<1:17:21, 13.90s/it]Loading train:  44%|████▍     | 263/596 [26:09<1:06:39, 12.01s/it]Loading train:  44%|████▍     | 264/596 [26:18<1:00:23, 10.91s/it]Loading train:  44%|████▍     | 265/596 [26:27<56:43, 10.28s/it]  Loading train:  45%|████▍     | 266/596 [26:35<53:49,  9.79s/it]Loading train:  45%|████▍     | 267/596 [26:44<51:16,  9.35s/it]Loading train:  45%|████▍     | 268/596 [26:51<48:43,  8.91s/it]Loading train:  45%|████▌     | 269/596 [26:59<46:56,  8.61s/it]Loading train:  45%|████▌     | 270/596 [27:07<45:53,  8.45s/it]Loading train:  45%|████▌     | 271/596 [27:16<45:55,  8.48s/it]Loading train:  46%|████▌     | 272/596 [27:24<45:52,  8.49s/it]Loading train:  46%|████▌     | 273/596 [27:34<46:43,  8.68s/it]Loading train:  46%|████▌     | 274/596 [27:45<51:45,  9.64s/it]Loading train:  46%|████▌     | 275/596 [27:54<49:04,  9.17s/it]Loading train:  46%|████▋     | 276/596 [28:02<47:33,  8.92s/it]Loading train:  46%|████▋     | 277/596 [28:10<46:12,  8.69s/it]Loading train:  47%|████▋     | 278/596 [28:18<44:38,  8.42s/it]Loading train:  47%|████▋     | 279/596 [28:26<44:13,  8.37s/it]Loading train:  47%|████▋     | 280/596 [28:35<44:50,  8.51s/it]Loading train:  47%|████▋     | 281/596 [28:44<45:32,  8.67s/it]Loading train:  47%|████▋     | 282/596 [28:52<45:05,  8.62s/it]Loading train:  47%|████▋     | 283/596 [29:01<44:21,  8.50s/it]Loading train:  48%|████▊     | 284/596 [29:09<43:45,  8.42s/it]Loading train:  48%|████▊     | 285/596 [29:18<44:24,  8.57s/it]Loading train:  48%|████▊     | 286/596 [29:27<44:36,  8.63s/it]Loading train:  48%|████▊     | 287/596 [29:35<43:42,  8.49s/it]Loading train:  48%|████▊     | 288/596 [29:43<42:45,  8.33s/it]Loading train:  48%|████▊     | 289/596 [29:51<42:51,  8.38s/it]Loading train:  49%|████▊     | 290/596 [29:59<42:22,  8.31s/it]Loading train:  49%|████▉     | 291/596 [30:13<51:02, 10.04s/it]Loading train:  49%|████▉     | 292/596 [30:28<56:58, 11.24s/it]Loading train:  49%|████▉     | 293/596 [30:40<59:15, 11.74s/it]Loading train:  49%|████▉     | 294/596 [30:54<1:01:11, 12.16s/it]Loading train:  49%|████▉     | 295/596 [31:07<1:02:30, 12.46s/it]Loading train:  50%|████▉     | 296/596 [31:19<1:02:07, 12.43s/it]Loading train:  50%|████▉     | 297/596 [31:32<1:02:03, 12.45s/it]Loading train:  50%|█████     | 298/596 [31:44<1:01:50, 12.45s/it]Loading train:  50%|█████     | 299/596 [31:57<1:03:06, 12.75s/it]Loading train:  50%|█████     | 300/596 [32:10<1:03:03, 12.78s/it]Loading train:  51%|█████     | 301/596 [32:24<1:03:33, 12.93s/it]Loading train:  51%|█████     | 302/596 [32:37<1:03:23, 12.94s/it]Loading train:  51%|█████     | 303/596 [32:53<1:08:54, 14.11s/it]Loading train:  51%|█████     | 304/596 [33:06<1:06:26, 13.65s/it]Loading train:  51%|█████     | 305/596 [33:18<1:04:26, 13.29s/it]Loading train:  51%|█████▏    | 306/596 [33:30<1:02:28, 12.93s/it]Loading train:  52%|█████▏    | 307/596 [33:44<1:02:57, 13.07s/it]Loading train:  52%|█████▏    | 308/596 [33:56<1:00:44, 12.65s/it]Loading train:  52%|█████▏    | 309/596 [34:02<52:06, 10.89s/it]  Loading train:  52%|█████▏    | 310/596 [34:10<47:40, 10.00s/it]Loading train:  52%|█████▏    | 311/596 [34:17<43:12,  9.10s/it]Loading train:  52%|█████▏    | 312/596 [34:24<39:21,  8.32s/it]Loading train:  53%|█████▎    | 313/596 [34:31<37:49,  8.02s/it]Loading train:  53%|█████▎    | 314/596 [34:38<36:42,  7.81s/it]Loading train:  53%|█████▎    | 315/596 [34:46<35:58,  7.68s/it]Loading train:  53%|█████▎    | 316/596 [34:54<36:20,  7.79s/it]Loading train:  53%|█████▎    | 317/596 [35:01<35:09,  7.56s/it]Loading train:  53%|█████▎    | 318/596 [35:08<34:06,  7.36s/it]Loading train:  54%|█████▎    | 319/596 [35:15<33:46,  7.32s/it]Loading train:  54%|█████▎    | 320/596 [35:23<34:19,  7.46s/it]Loading train:  54%|█████▍    | 321/596 [35:30<33:56,  7.41s/it]Loading train:  54%|█████▍    | 322/596 [35:37<33:15,  7.28s/it]Loading train:  54%|█████▍    | 323/596 [35:44<32:50,  7.22s/it]Loading train:  54%|█████▍    | 324/596 [35:51<32:27,  7.16s/it]Loading train:  55%|█████▍    | 325/596 [35:59<33:01,  7.31s/it]Loading train:  55%|█████▍    | 326/596 [36:06<33:09,  7.37s/it]Loading train:  55%|█████▍    | 327/596 [36:15<35:23,  7.89s/it]Loading train:  55%|█████▌    | 328/596 [36:24<36:32,  8.18s/it]Loading train:  55%|█████▌    | 329/596 [36:33<36:38,  8.23s/it]Loading train:  55%|█████▌    | 330/596 [36:41<36:39,  8.27s/it]Loading train:  56%|█████▌    | 331/596 [36:49<36:19,  8.22s/it]Loading train:  56%|█████▌    | 332/596 [36:57<35:51,  8.15s/it]Loading train:  56%|█████▌    | 333/596 [37:06<36:17,  8.28s/it]Loading train:  56%|█████▌    | 334/596 [37:14<35:51,  8.21s/it]Loading train:  56%|█████▌    | 335/596 [37:22<36:10,  8.32s/it]Loading train:  56%|█████▋    | 336/596 [37:30<35:39,  8.23s/it]Loading train:  57%|█████▋    | 337/596 [37:42<39:23,  9.12s/it]Loading train:  57%|█████▋    | 338/596 [37:50<38:13,  8.89s/it]Loading train:  57%|█████▋    | 339/596 [37:58<37:16,  8.70s/it]Loading train:  57%|█████▋    | 340/596 [38:07<36:44,  8.61s/it]Loading train:  57%|█████▋    | 341/596 [38:15<36:45,  8.65s/it]Loading train:  57%|█████▋    | 342/596 [38:23<35:57,  8.49s/it]Loading train:  58%|█████▊    | 343/596 [38:31<35:13,  8.35s/it]Loading train:  58%|█████▊    | 344/596 [38:40<35:32,  8.46s/it]Loading train:  58%|█████▊    | 345/596 [38:48<35:08,  8.40s/it]Loading train:  58%|█████▊    | 346/596 [38:56<34:28,  8.27s/it]Loading train:  58%|█████▊    | 347/596 [39:05<34:40,  8.35s/it]Loading train:  58%|█████▊    | 348/596 [39:13<34:31,  8.35s/it]Loading train:  59%|█████▊    | 349/596 [39:21<34:08,  8.29s/it]Loading train:  59%|█████▊    | 350/596 [39:30<34:08,  8.33s/it]Loading train:  59%|█████▉    | 351/596 [39:39<34:28,  8.44s/it]Loading train:  59%|█████▉    | 352/596 [39:50<37:45,  9.28s/it]---------------------- check Layers Step ------------------------------
+ N: [1]  | GPU: 1  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 10 |  Upsample 1
+
+ #layer 3 #layers changed False
+---------------------------------------------------------------
+ Nucleus: [1]  | GPU: 1  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 10 |  Upsample 1
+Experiment: exp6
+SubExperiment: sE13_Cascade_FM10_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_CSFn1_Init_Main_CV_a
+---------------------------------------------------------------
+---------------------- check Layers Step ------------------------------
+ N: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 1  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 10 |  Upsample 1
+
+ #layer 3 #layers changed False
+---------------------------------------------------------------
+ Nucleus: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 1  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 10 |  Upsample 1
+Experiment: exp6
+SubExperiment: sE13_Cascade_FM10_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_CSFn1_Init_Main_CV_a
+---------------------------------------------------------------
+Error in label values min 0.0 max 9.0      2-AV
+Error in label values min 0.0 max 2.0      4-VA
+Error in label values min 0.0 max 4.0      5-VLa
+Error in label values min 0.0 max 9.0      6-VLP
+Error in label values min 0.0 max 5.0      7-VPL
+Error in label values min 0.0 max 4.0      9-LGN
+Error in label values min 0.0 max 4.0      10-MGN
+Error in label values min 0.0 max 2.0      11-CM
+Error in label values min 0.0 max 4.0      12-MD-Pf
+Error in label values min 0.0 max 7.0      2-AV
+Error in label values min 0.0 max 4.0      4-VA
+Error in label values min 0.0 max 16.0      5-VLa
+Error in label values min 0.0 max 20.0      6-VLP
+Error in label values min 0.0 max 13.0      7-VPL
+Error in label values min 0.0 max 3.0      9-LGN
+Error in label values min 0.0 max 2.0      10-MGN
+Error in label values min 0.0 max 2.0      11-CM
+Error in label values min 0.0 max 5.0      12-MD-Pf
+Error in label values min 0.0 max 30.0      13-Hb
+Error in label values min 0.0 max 4.0      14-MTT
+Traceback (most recent call last):
+  File "main.py", line 1331, in <module>
+    # UserInfoB['CrossVal'].index   = ['c']
+  File "main.py", line 1324, in EXP_31_CSFn2_CSFn1_Cascade_finetune
+    # UserInfoB['simulation'].slicingDim = [2,1,0]
+  File "main.py", line 220, in Run
+    else: Loop_Over_Nuclei(UserInfoB)
+  File "main.py", line 102, in Loop_Over_Nuclei
+    if UserI['simulation'].nucleus_Index and (not check_if_num_Layers_fit(UserI)): Run_Main(UserI)
+  File "main.py", line 214, in Run_Main
+    Loop_slicing_orientations(UserInfoB, InitValues)
+  File "main.py", line 212, in Loop_slicing_orientations
+    subRun(UserInfoB)
+  File "main.py", line 206, in subRun
+    else: normal_run(params)
+  File "main.py", line 192, in normal_run
+    Data, params = datasets.loadDataset(params)                             
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 384, in loadDataset
+    Data = main_ReadingDataset(params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 364, in main_ReadingDataset
+    DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 329, in readingAllSubjects
+    origMsk , msk = readingNuclei(params, subject, imF.shape)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 187, in readingNuclei
+    origMsk1N = readingOriginalMask(NucInd)
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/datasets.py", line 176, in readingOriginalMask
+    origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape)
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/nibabel/loadsave.py", line 53, in load
+    filename)
+nibabel.filebasedimages.ImageFileError: Cannot work out file type of "/array/ssd/msmajdi/experiments/keras/exp6/train/CSFn1/Augments/sd/vimp2_case4_CSFn_Aug3_Rot_3_sd1/Label/7-VPL_PProcessed.nii.gz"
+Exception ignored in: <bound method tqdm.__del__ of Loading train:  59%|█████▉    | 352/596 [40:26<37:45,  9.28s/it]>
+Traceback (most recent call last):
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_tqdm.py", line 931, in __del__
+    self.close()
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_tqdm.py", line 1133, in close
+    self._decr_instances(self)
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_tqdm.py", line 496, in _decr_instances
+    cls.monitor.exit()
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_monitor.py", line 52, in exit
+    self.join()
+  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/threading.py", line 1053, in join
+    raise RuntimeError("cannot join current thread")
+RuntimeError: cannot join current thread

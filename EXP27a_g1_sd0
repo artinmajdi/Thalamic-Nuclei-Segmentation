@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "main.py", line 4, in <module>
+    import otherFuncs.smallFuncs as smallFuncs
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/smallFuncs.py", line 1, in <module>
+    import nibabel as nib
+  File "/array/ssd/msmajdi/anaconda3/lib/python3.6/site-packages/nibabel/__init__.py", line 38, in <module>
+    from . import analyze as ana
+  File "/array/ssd/msmajdi/anaconda3/lib/python3.6/site-packages/nibabel/analyze.py", line 87, in <module>
+    from .volumeutils import (native_code, swapped_code, make_dt_codes,
+  File "/array/ssd/msmajdi/anaconda3/lib/python3.6/site-packages/nibabel/volumeutils.py", line 23, in <module>
+    from .casting import (shared_range, type_info, OK_FLOATS)
+  File "/array/ssd/msmajdi/anaconda3/lib/python3.6/site-packages/nibabel/casting.py", line 11, in <module>
+    from .testing import setup_test  # flake8: noqa F401
+  File "/array/ssd/msmajdi/anaconda3/lib/python3.6/site-packages/nibabel/testing/__init__.py", line 19, in <module>
+    from numpy.testing import assert_array_equal
+ImportError: cannot import name 'assert_array_equal'

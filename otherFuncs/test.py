@@ -8,9 +8,25 @@ import sys, os
 import numpy as np
 # from scipy.spatial import distance
 import nibabel as nib
+import pickle
 from sklearn.metrics import confusion_matrix, f1_score
 import matplotlib.pyplot as plt
+import h5py
+from keras import models
+dir = '/array/ssd/msmajdi/experiments/keras/exp6/models/sE12_Cascade_FM10_Res_Unet2_NL3_LS_MyLogDice_US1_Main_Init_3T_CV_a/MultiClass_24567891011121314/sd2/'
 
+with open(dir + 'hist_history.pkl','rb') as a:
+    b = pickle.load(a)
+
+# with h5py.File(dir + 'model.h') as a:
+#     print(a)
+
+# a = h5py.File(dir+'model.h')
+
+model = models.load_model(dir+'model.h5')
+
+print(model.summary)
+"""
 subject = 'vimp2_A_3T_ET/'
 # dir = '/home/artinl/Documents/vimp2_0699_04302014_SRI/'
 dir = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_SingleClass_ET_Init_Main_CV_a/sd2/' + subject
@@ -58,3 +74,4 @@ plt.ylabel('Precision')
 plt.ylim([0.0, 1.05])
 plt.xlim([0.0, 1.0])
 plt.title('Average precision score, micro-averaged over all classes: AP={0:0.2f}'.format(average_precision))
+"""
