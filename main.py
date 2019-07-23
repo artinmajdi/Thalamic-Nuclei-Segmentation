@@ -1184,6 +1184,23 @@ def EXP27a2_Resnet2_LogDice_fineTune_ET_Ps_Main(UserInfoB):
         UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]   
         Run(UserInfoB, IV)
 
+def EXP27a3_Resnet2_LogDice_fineTune_ET_Ps_Main(UserInfoB):
+    
+    UserInfoB['Model_Method'] = 'normal'
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['simulation'].slicingDim = [2,1,0]
+    UserInfoB['architectureType'] = 'Res_Unet2'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '6'
+    UserInfoB['copy_Thalamus'] = True
+    UserInfoB['TypeExperiment'] = 15
+    UserInfoB['simulation'].LR_Scheduler = False    
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20    
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
+    # UserInfoB['dataGenerator'].Mode = True
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    Run(UserInfoB, IV)
+
 
 def EXP27b_Resnet2_LogDice_fineTune_ET_Ps_Main_Ps_SRI(UserInfoB):
     
@@ -1349,7 +1366,7 @@ def EXP_31_CSFn2_CSFn1_Cascade_finetune(UserInfoB):
 # UserInfoB['simulation'].TestOnly = True
 # UserInfoB['CrossVal'].index   = ['c']
 # EXP25_Unet_Cascade_Main_OtherFolds(UserInfoB)
-EXP27a_Resnet2_LogDice_fineTune_ET_Ps_Main(UserInfoB)
+EXP27a3_Resnet2_LogDice_fineTune_ET_Ps_Main(UserInfoB)
 
 
 K.clear_session()

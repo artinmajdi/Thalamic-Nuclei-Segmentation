@@ -2,7 +2,7 @@
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
-gpu = "2"
+gpu = "7"
 
 # TypeExperiment == 1: # 3T      Init Rn
 
