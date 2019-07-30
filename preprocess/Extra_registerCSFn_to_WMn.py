@@ -45,6 +45,7 @@ class register_cls():
 
         IN  = self.dir_in  
         os.system('antsRegistration  -d 3 --float 0 --output \[ %s/aff,%s/affine.nii.gz\] -r \[ %s/crop_t1.nii.gz, %s/crop_wmn.nii.gz,1\] -t Rigid\[0.1\] --metric MI\[ %s/crop_t1.nii.gz, %s/crop_wmn.nii.gz,1,32,Regular,0.25\] --convergence \[1000x500x250x100,1e-7,10\] -v -f 8x4x2x1 -s 3x2x1x0vox -v -t Affine\[0.1\] --metric MI\[ %s/crop_t1.nii.gz, %s/crop_wmn.nii.gz,1,32,Regular,0.25\] --convergence \[1000x500x250x100,5e-8,10\] -f 8x4x2x1 -s 3x2x1x0vox' % (IN,IN,IN,IN,IN,IN,IN,IN) )
+        # os.system('antsRegistration  -d 3 --float 0 --output \[ %s/aff,%s/affine.nii.gz\] -r \[ %s/crop_t1.nii.gz, %s/crop_wmn.nii.gz,1\] -t Rigid\[0.1\] --metric MI\[ %s/crop_t1.nii.gz, %s/crop_wmn.nii.gz,1,32,Regular,0.25\] --convergence \[1000x500x250x100,1e-7,10\] -v -f 8x4x2x1 -s 3x2x1x0vox -v -t Affine\[0.1\]' % (IN,IN,IN,IN,IN,IN) )
         warp_nuclei(self)
         warp_AV_Mask(self)
 

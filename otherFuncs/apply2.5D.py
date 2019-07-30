@@ -143,18 +143,16 @@ def func_DecisionTree(Info , params):
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
-UserInfoB['Model_Method'] = 'Cascade'
-UserInfoB['simulation'].num_Layers = 3
-UserInfoB['simulation'].slicingDim = [2,1,0]
-UserInfoB['architectureType'] = 'Res_Unet2'
+UserInfoB['TypeExperiment'] = 11
+UserInfoB['Model_Method'] = 'Cascade' 
+UserInfoB['architectureType'] = 'ResFCN_ResUnet2_TL'
 UserInfoB['lossFunction_Index'] = 4
 UserInfoB['Experiments'].Index = '6'
-UserInfoB['copy_Thalamus'] = True
-UserInfoB['TypeExperiment'] = 16
-UserInfoB['simulation'].LR_Scheduler = False     
-
-for UserInfoB['simulation'].FirstLayer_FeatureMap_Num in [10, 15, 20, 30, 40]:  
-            
-    params = paramFunc.Run(UserInfoB, terminal=False)
-    InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
-    func_MajorityVoting(InfoS , params)                
+UserInfoB['simulation'].FCN1_NLayers = 0
+UserInfoB['copy_Thalamus'] = False
+UserInfoB['tempThalamus'] = True
+UserInfoB['simulation'].batch_size = 50      
+        
+params = paramFunc.Run(UserInfoB, terminal=False)
+InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
+func_MajorityVoting(InfoS , params)                

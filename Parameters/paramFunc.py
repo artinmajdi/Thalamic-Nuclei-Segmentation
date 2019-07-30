@@ -97,7 +97,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 5:  (13  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC(Mode=True) , '_ET_TL_Main'),
 
                 6:  (12  ,   self.ReadTrainC(CSFn1=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_CSFn1_Init_Main'),
-                11: (12  ,   self.ReadTrainC(CSFn1=1)        , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC()          , '_CSFn1_Init_3T'),
+                # 11: (12  ,   self.ReadTrainC(CSFn1=1)        , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC()          , '_CSFn1_Init_3T'),
 
                 7:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC()          , '_CSFn2_Init_CSFn1'),
                 8:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_CSFn2_Init_Main'),
@@ -168,9 +168,9 @@ def func_Exp_subExp_Names(UserInfo):
                 self.tag = tag
                 self.name_thalamus = ''            
                 self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
-                self.name_Init_from_3T    = 'sE8_'  + method + FM + ACH + NL + LF + US + FCN + SC
-                self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + LF + US + FCN + SC + LR + '_Main_Init_3T_CV_a' 
-                self.name_Init_from_CSFn1 = 'sE9_'  + method + FM + ACH + NL + LF + US + FCN + SC + LR + '_CSFn1_Init_Main_CV_a'   # this needs to be fixed
+                self.name_Init_from_3T    = 'sE8_'  + method + FM + ACH + NL + '_LS_MyLogDice' + US + SC
+                self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + LF + US + SC + '_wLRScheduler_Main_Ps_ET_Init_3T_CV_a' 
+                self.name_Init_from_CSFn1 = 'sE9_'  + method + FM + ACH + NL + LF + US + SC + '_CSFn1_Init_Main_CV_a'  
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']()
        
@@ -181,7 +181,7 @@ def func_Exp_subExp_Names(UserInfo):
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
 
-        # A.name = 'sE12_CSFn2_TL_DiceLoss_BestNetwork'
+        A.name = 'sE12_CSFn2_InitMainPsET_Best_a'
 
         return A
 
@@ -669,9 +669,9 @@ def func_WhichExperiment(UserInfo):
 
         def params_bestResUnet2(Model_Method, sdTag):
             if Model_Method == 'Cascade':
-                if sdTag == 0:   FM , NL = 20, 3
-                elif sdTag == 1: FM , NL = 20, 3
-                elif sdTag == 2: FM , NL = 15, 3
+                if sdTag == 0:   FM , NL = 40, 3
+                elif sdTag == 1: FM , NL = 30, 3
+                elif sdTag == 2: FM , NL = 20, 3
             else:
                 FM , NL = 20, 3
  
@@ -683,7 +683,7 @@ def func_WhichExperiment(UserInfo):
                 SD = WhichExperiment.Dataset.slicingInfo.slicingDim
 
                 LossFunction = 'MyLogDice' # 'MyJoint'
-                EXP_address = '/array/ssd/msmajdi/experiments/keras/exp7/models/'
+                EXP_address = '/array/ssd/msmajdi/experiments/keras/exp6/models/'
                 Model_Method = WhichExperiment.HardParams.Model.Method.Type
                                 
                 if WhichExperiment.HardParams.Model.architectureType in ['FCN_Unet_TL', 'U-Net4']: 
@@ -694,8 +694,8 @@ def func_WhichExperiment(UserInfo):
                     self.FM , self.NL, architectureType = 20, 3, 'Res_Unet2'
                 
                     
-                # if 
-                Tag     = 'sE12_' + Model_Method + '_FM' + str(self.FM) + '_' + architectureType + '_NL' + str(self.NL) + '_LS_' + LossFunction + '_US1_wLRScheduler_Main_Init_3T_CV_a/'
+                # if sE12_Cascade_FM15_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a
+                Tag     = 'sE12_' + Model_Method + '_FM' + str(self.FM) + '_' + architectureType + '_NL' + str(self.NL) + '_LS_' + LossFunction + '_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/'
 
                 self.address = EXP_address + Tag  + WhichExperiment.Nucleus.name + '/sd' + str(SD) + '/model.h5'
 

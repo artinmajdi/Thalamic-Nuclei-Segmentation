@@ -585,11 +585,11 @@ def search_ExperimentDirectory(whichExperiment):
 
         if Read.ReadAugments.Mode and not (modeData == 'test'):
             
-            if Read.Main  and os.path.exists(DirAug + '/Main' + sdTag2): Input = LoopReadingData(Input, DirAug + '/Main' + sdTag2)
-            if Read.ET    and os.path.exists(DirAug + '/ET'   + sdTag2): Input = LoopReadingData(Input, DirAug + '/ET'   + sdTag2)
-            if Read.SRI   and os.path.exists(DirAug + '/SRI'  + sdTag2): Input = LoopReadingData(Input, DirAug + '/SRI'  + sdTag2)
-            if Read.CSFn1 and os.path.exists(DirAug + '/CSFn1' + sdTag2): Input = LoopReadingData(Input, DirAug + '/CSFn1' + sdTag2)
-            if Read.CSFn2 and os.path.exists(DirAug + '/CSFn2' + sdTag2): Input = LoopReadingData(Input, DirAug + '/CSFn2' + sdTag2)
+            # if Read.Main  and os.path.exists(DirAug + '/Main' + sdTag2): Input = LoopReadingData(Input, DirAug + '/Main' + sdTag2)
+            # if Read.ET    and os.path.exists(DirAug + '/ET'   + sdTag2): Input = LoopReadingData(Input, DirAug + '/ET'   + sdTag2)
+            # if Read.SRI   and os.path.exists(DirAug + '/SRI'  + sdTag2): Input = LoopReadingData(Input, DirAug + '/SRI'  + sdTag2)
+            # if Read.CSFn1 and os.path.exists(DirAug + '/CSFn1' + sdTag2): Input = LoopReadingData(Input, DirAug + '/CSFn1' + sdTag2)
+            # if Read.CSFn2 and os.path.exists(DirAug + '/CSFn2' + sdTag2): Input = LoopReadingData(Input, DirAug + '/CSFn2' + sdTag2)
                              
              
             if Read.Main  and os.path.exists(Dir + '/Main/Augments' + sdTag2):  Input = LoopReadingData(Input, Dir + '/Main/Augments'  + sdTag2)

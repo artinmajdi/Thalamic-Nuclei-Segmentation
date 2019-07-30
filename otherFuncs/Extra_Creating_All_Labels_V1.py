@@ -19,17 +19,17 @@ def sliceDim(SD):
     elif SD == 1: return ([2,0,1] , [1,2,0])
     elif SD == 2: return ([0,1,2] , [0,1,2])
     
-def Save_AllNuclei_inOne(Directory):
+def Save_AllNuclei_inOne(Directory,mode):
     A = smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei()
     Mask = []
     for cnt , name in zip(A.Indexes , A.Names):                                
         if cnt != 1:
-            msk = nib.load( Directory + '/' + name + '.nii.gz' ).get_data()  
+            msk = nib.load( Directory + '/' + name + mode + '.nii.gz' ).get_data()  
             Mask = cnt*msk if Mask == [] else Mask + cnt*msk 
         else:
-            im = nib.load( Directory + '/' + name + '.nii.gz' )  
+            im = nib.load( Directory + '/' + name + mode + '.nii.gz' )  
 
-    smallFuncs.saveImage( Mask , im.affine , im.header, Directory + 'AllLabels.nii.gz')
+    smallFuncs.saveImage( Mask , im.affine , im.header, Directory + '/AllLabels.nii.gz')
 
 
 def applyMain(Dir,mode):
@@ -234,8 +234,8 @@ class Input_cls():
 
 
 # Dir = '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/results/sE12_HCascade_FM20_DO0.3_Main_Plus_3T_InitFrom_3T_NoSchedular_CV_a/2.5D_MV/' # '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/results/sE12_Cascade_FM20_DO0.3_CSFn__Init_3T_CV_a/2.5D_MV/'
-IC = Input_cls()
-applyMain(IC.dir_in , '_PProcessed') # '') #
+# IC = Input_cls()
+# applyMain(IC.dir_in , '') # '_PProcessed'
 
 # Dir = '/array/ssd/msmajdi/experiments/keras/exp4/results/sE11_Cascade_FM20_DO0.3_ET_Init_Main_AllAugs_CV_a/sd2'
 # for exp in ['exp5_CSFn']:
@@ -250,10 +250,10 @@ applyMain(IC.dir_in , '_PProcessed') # '') #
 #         for sd in ['sd0/' , 'sd1/' , 'sd2/']:
 #             Dir = '/array/ssd/msmajdi/experiments/keras/' + exp + '/test/' + ds + '/AugData/' + sd  # params.directories.Test.Input.Subjects  + '/' # 
 
-# input = Input_cls()
+input = Input_cls()
 
-# input.dir_in = '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/crossVal/CSFn_Dataset1/a/vimp2_case17_CSFn_withSuperNuclei/Label/'
-# Save_AllNuclei_inOne(input.dir_in)
+input.dir_in = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/CSFn2/a/vimp2_A_CSFn2/Label'
+Save_AllNuclei_inOne(input.dir_in,'_PProcessed')
 
 # creatingFullMaskWithAll4Supernuclei(input.dir_in , '_PProcessed')
 # # applyMain(Dir ,'_PProcessed')

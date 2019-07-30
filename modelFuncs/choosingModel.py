@@ -122,7 +122,7 @@ def testingExeriment(model, Data, params):
 
             Dice = [ NucleiIndex , smallFuncs.mDice(pred_Binary , binarizing(origMsk1N)) ]
 
-            return pred, Dice
+            return pred_Binary, Dice
 
         def savingOutput(pred1N_BtO, NucleiIndex):
             dirSave = smallFuncs.mkDir(ResultDir + '/' + subject.subjectName)
