@@ -181,7 +181,7 @@ def func_Exp_subExp_Names(UserInfo):
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
 
-        A.name = 'sE12_CSFn2_InitMainPsET_Best_a'
+        # A.name = 'sE12_Cascade_FMx_Res_Unet2_NL3_LS_MyBCE_US1_wLRScheduler_Main_Ps_ET_Init_3T_CVs'
 
         return A
 

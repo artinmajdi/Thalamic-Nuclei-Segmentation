@@ -1560,6 +1560,133 @@ def EXP34_Resnet2_LogEDice_fineTune_ET_Ps_Main_NonCascade(UserInfoB):
 
 
 
+def EXP35_CSFn2_Cascade_finetune_All_folds(UserInfoB):
+    
+    def predict_Thalamus_For_SD0(UserI):
+
+        UserI['simulation'].slicingDim = [2]
+        UserI['simulation'].nucleus_Index = [1]
+        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
+        Run(UserI, IV)
+
+        UserI['simulation'].slicingDim = [0]
+        UserI['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]
+        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
+        Run(UserI, IV)
+    
+    UserInfoB['Model_Method'] = 'Cascade' 
+    UserInfoB['upsample'].Scale = 1
+    UserInfoB['TypeExperiment'] = 8
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['architectureType'] = 'Res_Unet2'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '6'
+    UserInfoB['copy_Thalamus'] = False
+    UserInfoB['tempThalamus']  = True    
+    UserInfoB['simulation'].LR_Scheduler = False  
+    UserInfoB['simulation'].batch_size = 50
+    UserInfoB['simulation'].num_Layers = 3
+    
+
+    for x in ['b','c','d']:
+        UserInfoB['CrossVal'].index   = [x]
+
+        UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
+        UserInfoB['simulation'].slicingDim = [0]
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+        predict_Thalamus_For_SD0(UserInfoB)
+
+        UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+        UserInfoB['simulation'].slicingDim = [1]
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+        IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+        Run(UserInfoB, IV)
+
+        UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
+        UserInfoB['simulation'].slicingDim = [2]
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+        IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+        Run(UserInfoB, IV)  
+
+def EXP36_CSFn2_Cascade_TL_Res_FCN_Unet_finetune_All_folds(UserInfoB):
+    
+    def predict_Thalamus_For_SD0(UserI):
+
+        UserI['simulation'].slicingDim = [2]
+        UserI['simulation'].nucleus_Index = [1]
+        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
+        Run(UserI, IV)
+
+        UserI['simulation'].slicingDim = [0]
+        UserI['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]
+        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
+        Run(UserI, IV)
+    
+    UserInfoB['TypeExperiment'] = 11
+    UserInfoB['Model_Method'] = 'Cascade' 
+    UserInfoB['architectureType'] = 'ResFCN_ResUnet2_TL'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '6'
+    UserInfoB['copy_Thalamus'] = False
+    UserInfoB['tempThalamus'] = True
+    UserInfoB['simulation'].batch_size = 50
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20    
+
+    for x in ['b','c','d']:
+        UserInfoB['CrossVal'].index   = [x]
+
+        
+        UserInfoB['simulation'].slicingDim = [0]
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]   
+        UserInfoB['simulation'].FCN1_NLayers = 2
+        UserInfoB['simulation'].FCN2_NLayers = 1   
+        UserInfoB['simulation'].FCN_FeatureMaps = 30 
+        predict_Thalamus_For_SD0(UserInfoB)
+
+        UserInfoB['simulation'].slicingDim = [1]
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+        UserInfoB['simulation'].FCN1_NLayers = 0
+        UserInfoB['simulation'].FCN2_NLayers = 1   
+        UserInfoB['simulation'].FCN_FeatureMaps = 10
+        IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+        Run(UserInfoB, IV)
+
+        UserInfoB['simulation'].slicingDim = [2]
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] 
+        UserInfoB['simulation'].FCN1_NLayers = 2
+        UserInfoB['simulation'].FCN2_NLayers = 1   
+        UserInfoB['simulation'].FCN_FeatureMaps = 40
+        IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+        Run(UserInfoB, IV)  
+
+def EXP37_CSFn2_Cascade_TL_Res_Unet_finetune_All_folds(UserInfoB):
+        
+    UserInfoB['TypeExperiment'] = 11
+    UserInfoB['Model_Method'] = 'Cascade' 
+    UserInfoB['architectureType'] = 'ResFCN_ResUnet2_TL'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '6'
+    UserInfoB['copy_Thalamus'] = False
+    UserInfoB['tempThalamus'] = True
+    UserInfoB['simulation'].batch_size = 50
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20    
+
+    for x in ['b','c','d']:
+        UserInfoB['CrossVal'].index   = [x]
+
+        for x in [2,1,0]:
+            UserInfoB['simulation'].slicingDim = [x]
+            UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+            UserInfoB['simulation'].FCN1_NLayers = 0
+            UserInfoB['simulation'].FCN2_NLayers = 0  
+            UserInfoB['simulation'].FCN_FeatureMaps = 0
+            IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+            Run(UserInfoB, IV)
+
+  
+
+
+
 # UserInfoB['simulation'].epochs = 10
 # UserInfoB['simulation'].ReadAugments_Mode = False 
 # UserInfoB['simulation'].TestOnly = True
@@ -1567,7 +1694,7 @@ def EXP34_Resnet2_LogEDice_fineTune_ET_Ps_Main_NonCascade(UserInfoB):
 # UserInfoB['CrossVal'].index   = ['c']
 # EXP25_Unet_Cascade_Main_OtherFolds(UserInfoB)
 
-EXP33_Resnet2_BCEDice_fineTune_ET_Ps_Main_All_folds(UserInfoB)
+EXP37_CSFn2_Cascade_TL_Res_Unet_finetune_All_folds(UserInfoB)
 
 
 K.clear_session()
