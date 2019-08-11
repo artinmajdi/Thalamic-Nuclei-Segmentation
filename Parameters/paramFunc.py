@@ -66,10 +66,13 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 def __init__(self, Mode=False , FrozenLayers = [0] , Tag = '_TF' , Stage = 0):
                     
                     class unet_Freeze():
-                        Contracting = {0:True, 1:True, 2:False, 3:False, 4:False, 5:False }
-                        Expanding   = {0:True, 1:False, 2:False, 3:False, 4:False, 5:False }
-                        Middle      = False                        
-                    
+                        # Contracting = {0:True, 1:True, 2:False, 3:False, 4:False, 5:False }
+                        # Expanding   = {0:True, 1:False, 2:False, 3:False, 4:False, 5:False }
+                        # Middle      = False                        
+                        Contracting = {0:True, 1:True, 2:True, 3:True, 4:True, 5:True }
+                        Expanding   = {0:True, 1:True, 2:True, 3:True, 4:True, 5:True }
+                        Middle      = True                        
+
                     self.Mode         = Mode
                     self.FrozenLayers = FrozenLayers
                     self.Stage        = Stage
@@ -181,7 +184,9 @@ def func_Exp_subExp_Names(UserInfo):
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
         A = subExperiment(tag)
 
-        # A.name = 'sE12_Cascade_FMx_Res_Unet2_NL3_LS_MyBCE_US1_wLRScheduler_Main_Ps_ET_Init_3T_CVs'
+        if UserInfo['best_network_MPlanar']:
+            x = UserInfo['CrossVal'].index[0]
+            A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_' + x + '_Best'
 
         return A
 

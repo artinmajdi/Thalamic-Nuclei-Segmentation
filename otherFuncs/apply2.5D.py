@@ -11,6 +11,8 @@ from tqdm import tqdm
 from otherFuncs.smallFuncs import Experiment_Folder_Search
 import matplotlib.pylab as plt
 from sklearn import tree
+import modelFuncs.Metrics as metrics
+
 
 class infoSave:
     def __init__(self, Image = [] , subject = '', nucleus='' , mode = '' , address=''):                
@@ -26,7 +28,8 @@ class nucleus:
         self.index = index        
 
 def saveImageDice(InfoSave, ManualLabel):
-    smallFuncs.saveImage( InfoSave.Image , ManualLabel.affine, ManualLabel.header, InfoSave.address  + InfoSave.nucleus.name + '.nii.gz')
+    #TODO needs to be checked
+    smallFuncs.saveImage( InfoSave.Image , ManualLabel.affine, ManualLabel.header, InfoSave.address  + '/' + InfoSave.nucleus.name + '.nii.gz')
     
     Label = smallFuncs.fixMaskMinMax(ManualLabel.get_data(),'ML') > 0.5
 
@@ -139,21 +142,68 @@ def func_DecisionTree(Info , params):
         clf = training(params , Info)
         testing(params, Info , clf)
 
+def func_OtherMetrics_justFor_MV(Info , params):
+             
+    print('subExperiment:' , Info.subExperiment.name)
+    Info.subExperiment.address = Info.Experiment.address + '/results/' + Info.subExperiment.name + '/'
 
+    subjects = [s for s in params.directories.Test.Input.Subjects if 'ERROR' not in s]
+    for sj in tqdm(subjects):
+        subject = params.directories.Test.Input.Subjects[sj]
+
+        a = smallFuncs.Nuclei_Class().All_Nuclei()
+        num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes  
+        VSI       = np.zeros((num_classes-1,2))
+        # Dice      = np.zeros((num_classes-1,2))
+        HD        = np.zeros((num_classes-1,2))
+        # Precision = np.zeros((num_classes-1,2))
+        # Recall    = np.zeros((num_classes-1,2))
+
+
+        for cnt, (nucleusNm , nucleiIx) in enumerate(zip(a.Names , a.Indexes)):
+
+            address = Info.subExperiment.address + '2.5D_MV/' + subject.subjectName + '/'
+
+            if not os.path.exists(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz') or not os.path.isfile(address + nucleusNm + '.nii.gz'): continue
+            Ref = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
+            ManualLabel = Ref.get_data()
+                                              
+            predMV = nib.load(address + nucleusNm + '.nii.gz').get_data()                      
+            VSI[cnt,:]  = [nucleiIx , metrics.VSI_AllClasses(predMV, ManualLabel).VSI()]
+            HD[cnt,:]   = [nucleiIx , metrics.HD_AllClasses(predMV, ManualLabel).HD()]
+            # Dice[cnt,:] = [nucleiIx , smallFuncs.mDice(predMV, ManualLabel)]
+
+            # confusionMatrix = metrics.confusionMatrix(predMV, ManualLabel)
+            # Recall[cnt,:]    = [nucleiIx , confusionMatrix.Recall]
+            # Precision[cnt,:] = [nucleiIx , confusionMatrix.Precision]
+            
+            # np.savetxt( address + 'VSI_' + InfoSave.nucleus.name + '.txt' ,Dice , fmt='%1.1f %1.4f')
+        
+        np.savetxt( address + 'VSI_All.txt'       ,VSI , fmt='%1.1f %1.4f')
+        np.savetxt( address + 'HD_All.txt'        ,HD , fmt='%1.1f %1.4f')
+        # np.savetxt( address + 'Dice_All.txt'        ,Dice , fmt='%1.1f %1.4f')
+        # np.savetxt( address + 'Recall_All.txt'    ,Recall , fmt='%1.1f %1.4f')
+        # np.savetxt( address + 'Precision_All.txt' ,Precision , fmt='%1.1f %1.4f')
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
+
+UserInfoB['best_network_MPlanar'] = True
 
 UserInfoB['Model_Method'] = 'Cascade'
 UserInfoB['simulation'].num_Layers = 3
 # UserInfoB['simulation'].slicingDim = [2,1,0]
 UserInfoB['architectureType'] = 'Res_Unet2'
-UserInfoB['lossFunction_Index'] = 3
+UserInfoB['lossFunction_Index'] = 4
 UserInfoB['Experiments'].Index = '6'
 UserInfoB['copy_Thalamus'] = False
 UserInfoB['TypeExperiment'] = 15
 UserInfoB['simulation'].LR_Scheduler = True    
-UserInfoB['tempThalamus'] = True 
-        
-params = paramFunc.Run(UserInfoB, terminal=False)
-InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
-func_MajorityVoting(InfoS , params)                
+UserInfoB['tempThalamus'] = True
+UserInfoB['simulation'].ReadAugments_Mode = False 
+UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+
+for x in ['a', 'b', 'c']:
+    UserInfoB['CrossVal'].index = [x]
+    params = paramFunc.Run(UserInfoB, terminal=False)
+    InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
+    func_OtherMetrics(InfoS , params)                

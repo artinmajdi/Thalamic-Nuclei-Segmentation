@@ -1,0 +1,29 @@
+#!/bin/tcsh
+# Extract thalamic labels from a FS mgz file 
+
+# Usage: fs2thomas <mgz file of segmentation>  <WMn image to reslice FS to> <1=bilateral, default 0 left>
+if ($#argv < 1) then
+echo "Usage: fs2thomas <seg file mgz> [opt:Wmn or T1 to reslice to] [opt: bilateral/unilateral not implemented]"
+endif
+
+
+mkdir leftfs
+mri_extract_label $1 8103 leftfs/2-AV.nii.gz
+mri_extract_label $1 8126 leftfs/4-VA.nii.gz
+mri_extract_label $1 8128 leftfs/5-VLa.nii.gz
+mri_extract_label $1 8129 leftfs/6-VLp.nii.gz
+mri_extract_label $1 8133 leftfs/7-VPL.nii.gz
+mri_extract_label $1 8120 8121 8122 8123 leftfs/8-Pul.nii.gz
+mri_extract_label $1 8109 leftfs/9-LGN.nii.gz
+mri_extract_label $1 8115 leftfs/10-MGN.nii.gz
+mri_extract_label $1 8106 leftfs/11-CM.nii.gz
+mri_extract_label $1 8112 8113 8118 leftfs/12-MD-Pf.nii.gz 
+
+foreach x (leftfs/*.nii.gz)
+mri_binarize --i $x --min 0.1 --o $x 
+if ($#argv >= 2) then
+mri_convert -rt nearest -rl $2 $x $x
+endif
+end
+
+cd ..

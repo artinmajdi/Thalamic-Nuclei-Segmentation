@@ -5,7 +5,7 @@ from sklearn.metrics import confusion_matrix
 import numpy as np
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
 import matplotlib.pyplot as plt
-
+from scipy.spatial.distance import directed_hausdorff
 
 
 def MetricInfo(Metric_Index):
@@ -34,14 +34,52 @@ def JAC(y_true,y_pred):
     return Intersection(Sum - Intersection) 
 
 
-def VSI(y_true,y_pred):
-    def main_VSI(yy, xx):
-        X = tf.reduce_sum(xx)
-        Y = tf.reduce_sum(yy)    
-        return 1 - ( tf.abs(X-Y) / (X+Y) )
 
-    nmCl = max(y_pred.shape[3] - 1,1)  
-    return tf.reduce_sum( [main_VSI(y_true[...,d], y_pred[...,d]) for d in range(nmCl)] )
+    
+class VSI_AllClasses_TF():
+    def __init__(self, y_true,y_pred):
+        self.true = y_true
+        self.pred = y_pred
+
+    def VSI(self):
+        X = tf.reduce_sum(self.true)
+        Y = tf.reduce_sum(self.pred)    
+        return 1 - ( tf.abs(X-Y) / (X+Y) )
+        
+    def apply_to_all_classes(self):
+        nmCl = max(self.pred.shape[3] - 1,1)  
+        return tf.reduce_sum( [VSI_AllClasses(self.true[...,d], self.pred[...,d]).VSI() for d in range(nmCl)] )
+
+class VSI_AllClasses():
+    def __init__(self, y_true,y_pred):
+        self.true = y_true
+        self.pred = y_pred
+
+    def VSI(self):
+        X = self.true.sum()
+        Y = self.pred.sum()   
+        return 1 - ( np.abs(X-Y) / (X+Y) )
+        
+    def apply_to_all_classes(self):
+        nmCl = max(self.pred.shape[3] - 1,1)  
+        return [VSI_AllClasses(self.true[...,d], self.pred[...,d]).VSI() for d in range(nmCl)].mean()
+
+class HD_AllClasses():
+    def __init__(self, y_true,y_pred):
+        self.true = y_true
+        self.pred = y_pred
+
+    def HD(self):
+        a = np.zeros((self.true.shape[2],2))
+        for i in range(self.true.shape[2]): a[i,:] = [self.true[...,i].sum(), directed_hausdorff(self.true[...,i],self.pred[...,i])[0]]
+
+        return np.sum(a[:,0]*a[:,1]) / np.sum(a[:,0])
+             
+        
+    def apply_to_all_classes(self):
+        nmCl = max(self.pred.shape[3] - 1,1)  
+        return [directed_hausdorff(self.true[...,d], self.pred[...,d]) for d in range(nmCl)].mean()
+
 
 
 def confusionMatrix(y_true,y_pred):
@@ -52,13 +90,15 @@ def confusionMatrix(y_true,y_pred):
     D = confusion_matrix(yt1, yp1 > 0.5)
 
     class metrics():
-        TN, FP, FN , TP = D[0,0] , D[0,1] , D[1,0] , D[1,1]
-        Recall = TP / (TP + FN)
-        Sensitivity = TP / (TP + FN)
-        Specificity = TN/(TN + FP)
-        Precision   = TP/(TP + FP)
-
-    return metrics()
+        def __init__(self, D):
+                
+            TN, FP, FN , TP = D[0,0] , D[0,1] , D[1,0] , D[1,1]
+            self.Recall = TP / (TP + FN)
+            self.Sensitivity = TP / (TP + FN)
+            self.Specificity = TN/(TN + FP)
+            self.Precision   = TP/(TP + FP)
+    
+    return metrics(D)
 
 def ROC_Curve(y_true,y_pred):
     yp1 = np.reshape(y_pred,[-1,1])

@@ -1608,7 +1608,7 @@ def EXP35_CSFn2_Cascade_finetune_All_folds(UserInfoB):
         IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
         Run(UserInfoB, IV)  
 
-def EXP36_CSFn2_Cascade_TL_Res_FCN_Unet_finetune_All_folds(UserInfoB):
+def EXP36_CSFn2_Cascade_TL_Res_FCN_Unet_full_finetune_All_folds(UserInfoB):
     
     def predict_Thalamus_For_SD0(UserI):
 
@@ -1631,11 +1631,12 @@ def EXP36_CSFn2_Cascade_TL_Res_FCN_Unet_finetune_All_folds(UserInfoB):
     UserInfoB['tempThalamus'] = True
     UserInfoB['simulation'].batch_size = 50
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20    
+    UserInfoB['tag_temp'] = '_Full_FineTune'
+    UserInfoB['best_network_MPlanar'] = False
 
-    for x in ['b','c','d']:
+    for x in ['a', 'b','c','d']:
         UserInfoB['CrossVal'].index   = [x]
 
-        
         UserInfoB['simulation'].slicingDim = [0]
         UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]   
         UserInfoB['simulation'].FCN1_NLayers = 2
@@ -1683,6 +1684,9 @@ def EXP37_CSFn2_Cascade_TL_Res_Unet_finetune_All_folds(UserInfoB):
             IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
             Run(UserInfoB, IV)
 
+def EXP38_WMn_Cascade_Res_FCN_Unet_full_finetune_All_folds(UserInfoB):
+    
+    
   
 
 
@@ -1694,7 +1698,7 @@ def EXP37_CSFn2_Cascade_TL_Res_Unet_finetune_All_folds(UserInfoB):
 # UserInfoB['CrossVal'].index   = ['c']
 # EXP25_Unet_Cascade_Main_OtherFolds(UserInfoB)
 
-EXP37_CSFn2_Cascade_TL_Res_Unet_finetune_All_folds(UserInfoB)
+EXP36_CSFn2_Cascade_TL_Res_FCN_Unet_full_finetune_All_folds(UserInfoB)
 
 
 K.clear_session()

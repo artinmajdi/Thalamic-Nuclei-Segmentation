@@ -1,18 +1,0 @@
-2019-07-30 16:31:50.239870: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
-2019-07-30 16:31:52.861243: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
-name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
-pciBusID: 0000:08:00.0
-totalMemory: 15.89GiB freeMemory: 15.60GiB
-2019-07-30 16:31:52.861352: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
-2019-07-30 16:31:53.365862: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
-2019-07-30 16:31:53.365967: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
-2019-07-30 16:31:53.365989: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
-2019-07-30 16:31:53.366672: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:08:00.0, compute capability: 6.0)
-/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-Using TensorFlow backend.
-Loading train:   0%|          | 0/247 [00:00<?, ?it/s]Loading train:   0%|          | 1/247 [00:02<08:37,  2.10s/it]Loading train:   1%|          | 2/247 [00:02<07:03,  1.73s/it]Loading train:   1%|          | 3/247 [00:03<05:51,  1.44s/it]Loading train:   2%|▏         | 4/247 [00:04<05:32,  1.37s/it]Loading train:   2%|▏         | 5/247 [00:06<05:26,  1.35s/it]Loading train:   2%|▏         | 6/247 [00:07<05:49,  1.45s/it]Loading train:   3%|▎         | 7/247 [00:09<05:32,  1.39s/it]Loading train:   3%|▎         | 8/247 [00:10<05:17,  1.33s/it]Loading train:   4%|▎         | 9/247 [00:11<04:52,  1.23s/it]Loading train:   4%|▍         | 10/247 [00:12<04:27,  1.13s/it]Loading train:   4%|▍         | 11/247 [00:13<04:23,  1.12s/it]Loading train:   5%|▍         | 12/247 [00:14<04:29,  1.15s/it]Loading train:   5%|▌         | 13/247 [00:16<05:01,  1.29s/it]Loading train:   6%|▌         | 14/247 [00:16<04:28,  1.15s/it]Loading train:   6%|▌         | 15/247 [00:18<04:25,  1.14s/it]Loading train:   6%|▋         | 16/247 [00:19<04:17,  1.11s/it]Loading train:   7%|▋         | 17/247 [00:20<04:32,  1.19s/it]Loading train:   7%|▋         | 18/247 [00:21<04:46,  1.25s/it]Loading train:   8%|▊         | 19/247 [00:23<04:57,  1.30s/it]Loading train:   8%|▊         | 20/247 [00:24<04:52,  1.29s/it]

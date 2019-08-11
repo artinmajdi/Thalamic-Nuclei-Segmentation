@@ -12,7 +12,7 @@ import xlsxwriter
 from tqdm import tqdm
 import math
 # import shutil
-params = paramFunc.Run(UserInfo.__dict__, terminal=True)
+# params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 
 NumColumns , n_epochsMax = 19 , 300
 
@@ -85,7 +85,7 @@ class savingHistory_AsExcel:
 
         writer.close()
 
-class mergingDiceValues:
+class merging_Dice_Values:
     def __init__(self, Info):
         self.Info   = Info
         self.writer = pd.ExcelWriter(Info.Experiment.address + '/results/All_Dice.xlsx', engine='xlsxwriter')
@@ -246,13 +246,356 @@ class mergingDiceValues:
             self.writer.close()
         loopOver_Subexperiments(self)
 
+class merging_VSI_Values:
+    def __init__(self, Info):
+        self.Info   = Info
+        self.writer = pd.ExcelWriter(Info.Experiment.address + '/results/All_VSI.xlsx', engine='xlsxwriter')
+        
+        def save_TagList(self):
+            pd.DataFrame(data=self.Info.Experiment.TagsList).to_excel(self.writer, sheet_name='TagsList')
+            class All_Subjs_Ns:
+                def insertNuclei_Excel(self, sheetName):
+                    A = pd.DataFrame()
+                    A['Nuclei'] = All_Nuclei_Names # self.Info.Nuclei_Names[1:18]
+                    A.to_excel(self.writer, sheet_name=sheetName)
+
+                    class out:
+                        pd = A
+                        sheet_name = sheetName
+                    return out()
+                                    
+                ET    = insertNuclei_Excel(self, 'AllVSIs_ET')
+                Main  = insertNuclei_Excel(self, 'AllVSIs_Main')
+                CSFn1 = insertNuclei_Excel(self, 'AllVSIs_CSFn1')
+                CSFn2 = insertNuclei_Excel(self, 'AllVSIs_CSFn2')
+                SRI   = insertNuclei_Excel(self, 'AllVSIs_SRI')
+
+            self.All_Subjs_Ns = All_Subjs_Ns()
+        save_TagList(self)
+
+        def func_Load_Subexperiment(self):
+            
+            # if self.plane.Flag:
+
+            self.subExperiment.address = self.Info.Experiment.address + '/results/' + self.subExperiment.name +'/'+ self.plane.name
+            
+            def func_1subject_VSIs(self):                    
+                                                                     
+                def func_Search_Over_Single_Class(VSI_Single):
+                    for name in All_Nuclei_Names:
+                        Dir_subject = self.subExperiment.address + '/' + self.subject + '/VSI_' + name +'.txt'
+                        if os.path.isfile(Dir_subject): VSI_Single[name] = math.ceil( np.loadtxt(Dir_subject)[1] *1e3)/1e3
+                    return VSI_Single
+                
+                def func_Search_Over_Multi_Class(VSI_Single):
+
+                    for VSITag in ['/VSI_All' , '/VSI_All_Groups' , '/VSI_All_Medial' , '/VSI_All_lateral' , '/VSI_All_posterior']:
+                        Dir_subject = self.subExperiment.address + '/' + self.subject + VSITag + '.txt'
+                        if os.path.isfile(Dir_subject): 
+                            A = np.loadtxt(Dir_subject)
+
+                            if not isinstance(A[0],np.ndarray): 
+                                VSI_Single[smallFuncs.Nuclei_Class(index=A[0], method = 'HCascade').name] = math.ceil(  A[1]*1e3 )/1e3
+                            else:
+                                for id, nIx in enumerate(A[:,0]):
+                                    VSI_Single[smallFuncs.Nuclei_Class(index=nIx, method = 'HCascade').name] = math.ceil(  A[id,1]*1e3 )/1e3
+
+                    return VSI_Single
+
+                VSI_Single = {'subject':self.subject} 
+                VSI_Single = func_Search_Over_Single_Class(VSI_Single)   
+                VSI_Single = func_Search_Over_Multi_Class(VSI_Single)
+
+                return VSI_Single                                    
+            sE_VSIs = np.array([  func_1subject_VSIs(self)  for self.subject in self.plane.subject_List  ])
+
+            if len(sE_VSIs) > 0:
+                def save_VSIs_subExp_In_ExcelFormat(self , sE_VSIs):
+                    pd_sE = pd.DataFrame()
+
+                    pd_sE['subject'] = [s['subject'] for s in sE_VSIs]
+                    for nucleus in All_Nuclei_Names:
+
+                        # try:
+                        A = np.nan*np.ones(len(sE_VSIs))
+                        for ix, s in enumerate(sE_VSIs):
+                            if nucleus in s: A[ix] = s[nucleus]
+                        
+                        pd_sE[nucleus] = A
+
+                        #     if nucleus in sE_VSIs[0]: pd_sE[nucleus] = [s[nucleus] for s in sE_VSIs] # .astype(np.float16)
+                        # except Exception as e:
+                            # print(e)
+
+                    pd_sE.to_excel(  self.writer, sheet_name=self.plane.tagList[0] )    
+                save_VSIs_subExp_In_ExcelFormat(self , sE_VSIs)
+                
+                def divideSubjects_BasedOnModality(self, sE_VSIs):
+                    class subjectVSI:
+                        ET   = []
+                        Main = []
+                        CSFn1 = []
+                        CSFn2 = []
+                        SRI  = []
+
+                    # for sIx , subject in enumerate(sE_VSIs[:,0]):
+                    for s in sE_VSIs:
+                        if 'ET' in s['subject']:     subjectVSI.ET.append(s)
+                        elif 'CSFn1' in s['subject']: subjectVSI.CSFn1.append(s)
+                        elif 'CSFn2' in s['subject']: subjectVSI.CSFn2.append(s)
+                        elif 'SRI'  in s['subject']: subjectVSI.SRI.append(s)
+                        else:                        subjectVSI.Main.append(s)
+
+                    def func_Average(subjectVSIList):
+
+                        Average_VSIs = np.nan*np.ones(len(All_Nuclei_Names))
+                        for ix, nucleus in enumerate(All_Nuclei_Names):
+                            A = np.nan*np.ones(len(subjectVSIList))
+                            for ct, s in enumerate(subjectVSIList):
+                                if nucleus in s: A[ct] = s[nucleus]
+
+                            Average_VSIs[ix] = np.round(1e3*np.nanmean(A, axis=0))/1e3
+                                                        
+                        return Average_VSIs
+
+                    tag = self.plane.direction +'-' + self.plane.tagIndex    
+                    # for dataset in ['ET' , 'Main' , '1' , 'SRI']:
+                    #     A = subjectVSI.__getattribute__(dataset)
+                    #     if len(A) > 0  : self.All_Subjs_Ns.__getattribute__(dataset).pd[tag] = func_Average(A)                   
+                    #     # self.All_Subjs_Ns.__setattribute__(dataset) = A
+
+                    if len(subjectVSI.ET) > 0   : self.All_Subjs_Ns.ET.pd[  tag]  = func_Average(subjectVSI.ET)   
+                    if len(subjectVSI.Main) > 0 : self.All_Subjs_Ns.Main.pd[tag]  = func_Average(subjectVSI.Main) 
+                    if len(subjectVSI.CSFn1) > 0: self.All_Subjs_Ns.CSFn1.pd[tag] = func_Average(subjectVSI.CSFn1) 
+                    if len(subjectVSI.CSFn2) > 0: self.All_Subjs_Ns.CSFn2.pd[tag] = func_Average(subjectVSI.CSFn2) 
+                    if len(subjectVSI.SRI) > 0  : self.All_Subjs_Ns.SRI.pd[ tag]  = func_Average(subjectVSI.SRI)  
+                divideSubjects_BasedOnModality(self, sE_VSIs)
+
+        def loopOver_Subexperiments(self):
+            class smallActions():                                                                                              
+                def add_space(self):
+                    self.All_Subjs_Ns.ET.pd[  self.subExperiment.Tag[0]]  = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.Main.pd[self.subExperiment.Tag[0]]  = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.CSFn1.pd[self.subExperiment.Tag[0]] = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.CSFn2.pd[self.subExperiment.Tag[0]] = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.SRI.pd[ self.subExperiment.Tag[0]]  = np.nan*np.ones(17)
+
+                def save_All_VSIs(PD):
+                    PD.ET.pd.to_excel( self.writer , sheet_name=PD.ET.sheet_name  )
+                    PD.Main.pd.to_excel(self.writer, sheet_name=PD.Main.sheet_name)
+                    PD.CSFn1.pd.to_excel(self.writer, sheet_name=PD.CSFn1.sheet_name)
+                    PD.CSFn2.pd.to_excel(self.writer, sheet_name=PD.CSFn2.sheet_name)
+                    PD.SRI.pd.to_excel( self.writer, sheet_name=PD.SRI.sheet_name )
+
+            A = zip(self.Info.Experiment.List_subExperiments , self.Info.Experiment.TagsList)
+            for self.subExperiment, tag in tqdm( A , desc='VSIs:'):
+                # try: 
+                self.subExperiment.Tag = tag
+                # print(self.subExperiment.name)
+                smallActions.add_space(self)
+                for self.plane in self.subExperiment.multiPlanar:
+                    if self.plane.Flag:
+                        # print(self.subExperiment.name , self.plane.name)
+                        # try: 
+                        func_Load_Subexperiment(self)
+                        # except: print('failed' ,self.subExperiment )                                            
+                # except Exception as e:
+                #     print(e)
+
+            smallActions.save_All_VSIs(self.All_Subjs_Ns)
+
+            self.writer.close()
+        loopOver_Subexperiments(self)
+
+class merging_HD_Values:
+    def __init__(self, Info):
+        self.Info   = Info
+        self.writer = pd.ExcelWriter(Info.Experiment.address + '/results/All_HD.xlsx', engine='xlsxwriter')
+        
+        def save_TagList(self):
+            pd.DataFrame(data=self.Info.Experiment.TagsList).to_excel(self.writer, sheet_name='TagsList')
+            class All_Subjs_Ns:
+                def insertNuclei_Excel(self, sheetName):
+                    A = pd.DataFrame()
+                    A['Nuclei'] = All_Nuclei_Names # self.Info.Nuclei_Names[1:18]
+                    A.to_excel(self.writer, sheet_name=sheetName)
+
+                    class out:
+                        pd = A
+                        sheet_name = sheetName
+                    return out()
+                                    
+                ET    = insertNuclei_Excel(self, 'AllHDs_ET')
+                Main  = insertNuclei_Excel(self, 'AllHDs_Main')
+                CSFn1 = insertNuclei_Excel(self, 'AllHDs_CSFn1')
+                CSFn2 = insertNuclei_Excel(self, 'AllHDs_CSFn2')
+                SRI   = insertNuclei_Excel(self, 'AllHDs_SRI')
+
+            self.All_Subjs_Ns = All_Subjs_Ns()
+        save_TagList(self)
+
+        def func_Load_Subexperiment(self):
+            
+            # if self.plane.Flag:
+
+            self.subExperiment.address = self.Info.Experiment.address + '/results/' + self.subExperiment.name +'/'+ self.plane.name
+            
+            def func_1subject_HDs(self):                    
+                                                                     
+                def func_Search_Over_Single_Class(HD_Single):
+                    for name in All_Nuclei_Names:
+                        Dir_subject = self.subExperiment.address + '/' + self.subject + '/HD_' + name +'.txt'
+                        if os.path.isfile(Dir_subject): HD_Single[name] = math.ceil( np.loadtxt(Dir_subject)[1] *1e3)/1e3
+                    return HD_Single
+                
+                def func_Search_Over_Multi_Class(HD_Single):
+
+                    for HDTag in ['/HD_All' , '/HD_All_Groups' , '/HD_All_Medial' , '/HD_All_lateral' , '/HD_All_posterior']:
+                        Dir_subject = self.subExperiment.address + '/' + self.subject + HDTag + '.txt'
+                        if os.path.isfile(Dir_subject): 
+                            A = np.loadtxt(Dir_subject)
+
+                            if not isinstance(A[0],np.ndarray): 
+                                HD_Single[smallFuncs.Nuclei_Class(index=A[0], method = 'HCascade').name] = math.ceil(  A[1]*1e3 )/1e3
+                            else:
+                                for id, nIx in enumerate(A[:,0]):
+                                    HD_Single[smallFuncs.Nuclei_Class(index=nIx, method = 'HCascade').name] = math.ceil(  A[id,1]*1e3 )/1e3
+
+                    return HD_Single
+
+                HD_Single = {'subject':self.subject} 
+                HD_Single = func_Search_Over_Single_Class(HD_Single)   
+                HD_Single = func_Search_Over_Multi_Class(HD_Single)
+
+                return HD_Single                                    
+            sE_HDs = np.array([  func_1subject_HDs(self)  for self.subject in self.plane.subject_List  ])
+
+            if len(sE_HDs) > 0:
+                def save_HDs_subExp_In_ExcelFormat(self , sE_HDs):
+                    pd_sE = pd.DataFrame()
+
+                    pd_sE['subject'] = [s['subject'] for s in sE_HDs]
+                    for nucleus in All_Nuclei_Names:
+
+                        # try:
+                        A = np.nan*np.ones(len(sE_HDs))
+                        for ix, s in enumerate(sE_HDs):
+                            if nucleus in s: A[ix] = s[nucleus]
+                        
+                        pd_sE[nucleus] = A
+
+                        #     if nucleus in sE_HDs[0]: pd_sE[nucleus] = [s[nucleus] for s in sE_HDs] # .astype(np.float16)
+                        # except Exception as e:
+                            # print(e)
+
+                    pd_sE.to_excel(  self.writer, sheet_name=self.plane.tagList[0] )    
+                save_HDs_subExp_In_ExcelFormat(self , sE_HDs)
+                
+                def divideSubjects_BasedOnModality(self, sE_HDs):
+                    class subjectHD:
+                        ET   = []
+                        Main = []
+                        CSFn1 = []
+                        CSFn2 = []
+                        SRI  = []
+
+                    # for sIx , subject in enumerate(sE_HDs[:,0]):
+                    for s in sE_HDs:
+                        if 'ET' in s['subject']:     subjectHD.ET.append(s)
+                        elif 'CSFn1' in s['subject']: subjectHD.CSFn1.append(s)
+                        elif 'CSFn2' in s['subject']: subjectHD.CSFn2.append(s)
+                        elif 'SRI'  in s['subject']: subjectHD.SRI.append(s)
+                        else:                        subjectHD.Main.append(s)
+
+                    def func_Average(subjectHDList):
+
+                        Average_HDs = np.nan*np.ones(len(All_Nuclei_Names))
+                        for ix, nucleus in enumerate(All_Nuclei_Names):
+                            A = np.nan*np.ones(len(subjectHDList))
+                            for ct, s in enumerate(subjectHDList):
+                                if nucleus in s: A[ct] = s[nucleus]
+
+                            Average_HDs[ix] = np.round(1e3*np.nanmean(A, axis=0))/1e3
+                                                        
+                        return Average_HDs
+
+                    tag = self.plane.direction +'-' + self.plane.tagIndex    
+                    # for dataset in ['ET' , 'Main' , '1' , 'SRI']:
+                    #     A = subjectHD.__getattribute__(dataset)
+                    #     if len(A) > 0  : self.All_Subjs_Ns.__getattribute__(dataset).pd[tag] = func_Average(A)                   
+                    #     # self.All_Subjs_Ns.__setattribute__(dataset) = A
+
+                    if len(subjectHD.ET) > 0   : self.All_Subjs_Ns.ET.pd[  tag]  = func_Average(subjectHD.ET)   
+                    if len(subjectHD.Main) > 0 : self.All_Subjs_Ns.Main.pd[tag]  = func_Average(subjectHD.Main) 
+                    if len(subjectHD.CSFn1) > 0: self.All_Subjs_Ns.CSFn1.pd[tag] = func_Average(subjectHD.CSFn1) 
+                    if len(subjectHD.CSFn2) > 0: self.All_Subjs_Ns.CSFn2.pd[tag] = func_Average(subjectHD.CSFn2) 
+                    if len(subjectHD.SRI) > 0  : self.All_Subjs_Ns.SRI.pd[ tag]  = func_Average(subjectHD.SRI)  
+                divideSubjects_BasedOnModality(self, sE_HDs)
+
+        def loopOver_Subexperiments(self):
+            class smallActions():                                                                                              
+                def add_space(self):
+                    self.All_Subjs_Ns.ET.pd[  self.subExperiment.Tag[0]]  = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.Main.pd[self.subExperiment.Tag[0]]  = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.CSFn1.pd[self.subExperiment.Tag[0]] = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.CSFn2.pd[self.subExperiment.Tag[0]] = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.SRI.pd[ self.subExperiment.Tag[0]]  = np.nan*np.ones(17)
+
+                def save_All_HDs(PD):
+                    PD.ET.pd.to_excel( self.writer , sheet_name=PD.ET.sheet_name  )
+                    PD.Main.pd.to_excel(self.writer, sheet_name=PD.Main.sheet_name)
+                    PD.CSFn1.pd.to_excel(self.writer, sheet_name=PD.CSFn1.sheet_name)
+                    PD.CSFn2.pd.to_excel(self.writer, sheet_name=PD.CSFn2.sheet_name)
+                    PD.SRI.pd.to_excel( self.writer, sheet_name=PD.SRI.sheet_name )
+
+            A = zip(self.Info.Experiment.List_subExperiments , self.Info.Experiment.TagsList)
+            for self.subExperiment, tag in tqdm( A , desc='HDs:'):
+                # try: 
+                self.subExperiment.Tag = tag
+                # print(self.subExperiment.name)
+                smallActions.add_space(self)
+                for self.plane in self.subExperiment.multiPlanar:
+                    if self.plane.Flag:
+                        # print(self.subExperiment.name , self.plane.name)
+                        # try: 
+                        func_Load_Subexperiment(self)
+                        # except: print('failed' ,self.subExperiment )                                            
+                # except Exception as e:
+                #     print(e)
+
+            smallActions.save_All_HDs(self.All_Subjs_Ns)
+
+            self.writer.close()
+        loopOver_Subexperiments(self)
+
+
+
+UserInfoB = UserInfo.__dict__
+UserInfoB['best_network_MPlanar'] = True
+
+UserInfoB['Model_Method'] = 'Cascade'
+UserInfoB['simulation'].num_Layers = 3
+# UserInfoB['simulation'].slicingDim = [2,1,0]
+UserInfoB['architectureType'] = 'Res_Unet2'
+UserInfoB['lossFunction_Index'] = 4
+UserInfoB['Experiments'].Index = '6'
+UserInfoB['copy_Thalamus'] = False
+UserInfoB['TypeExperiment'] = 15
+UserInfoB['simulation'].LR_Scheduler = True    
+UserInfoB['tempThalamus'] = True
+UserInfoB['simulation'].ReadAugments_Mode = False 
+UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+
+params = paramFunc.Run(UserInfoB, terminal=True)
 
 print(Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List)
-for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[-2:]:
+for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[-3:]:
 
-    # print(Experiment_Name)
+    print(Experiment_Name)
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')
-    mergingDiceValues(Info)
+    merging_Dice_Values(Info)
+    merging_VSI_Values(Info)
+    merging_HD_Values(Info)
 
     # Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
     # savingHistory_AsExcel(Info)

@@ -32,6 +32,7 @@ readAugments_Mode = True
 lossFunction_Index = 3
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
+best_network_MPlanar = False
 testOnly = False
 
 fCN1_NLayers = 3
