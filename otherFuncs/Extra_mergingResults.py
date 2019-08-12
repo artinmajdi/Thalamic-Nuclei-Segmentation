@@ -459,7 +459,8 @@ class merging_HD_Values:
                                 HD_Single[smallFuncs.Nuclei_Class(index=A[0], method = 'HCascade').name] = math.ceil(  A[1]*1e3 )/1e3
                             else:
                                 for id, nIx in enumerate(A[:,0]):
-                                    HD_Single[smallFuncs.Nuclei_Class(index=nIx, method = 'HCascade').name] = math.ceil(  A[id,1]*1e3 )/1e3
+                                    if not np.isnan(A[id,1]): HD_Single[smallFuncs.Nuclei_Class(index=nIx, method = 'HCascade').name] = math.ceil(  A[id,1]*1e3 )/1e3
+                                    else: HD_Single[smallFuncs.Nuclei_Class(index=nIx, method = 'HCascade').name] = np.nan
 
                     return HD_Single
 
@@ -589,7 +590,7 @@ UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
 params = paramFunc.Run(UserInfoB, terminal=True)
 
 print(Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List)
-for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[-3:]:
+for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[-3:-2]:
 
     print(Experiment_Name)
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')

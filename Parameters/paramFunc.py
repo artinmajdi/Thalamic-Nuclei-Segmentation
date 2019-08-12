@@ -186,7 +186,7 @@ def func_Exp_subExp_Names(UserInfo):
 
         if UserInfo['best_network_MPlanar']:
             x = UserInfo['CrossVal'].index[0]
-            A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_' + x + '_Best'
+            A.name = 'sE13_Cascade_FM00_ResFCN_ResUnet2_TL_NL3_LS_MyLogDice_US1_FCNA00_FCNB00_FM00_CSFn2_TL_Main_CV_' + x + '_Best'
 
         return A
 

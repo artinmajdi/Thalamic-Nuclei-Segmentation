@@ -3,7 +3,7 @@ sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 # sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from otherFuncs import smallFuncs
 from preprocess import uncrop
-from nilearn import image as niImage
+# from nilearn import image as niImage
 import nibabel as nib
 import numpy as np
 from shutil import copyfile                              
@@ -43,9 +43,10 @@ class uncrop_cls():
         # uncrop.uncrop_by_mask(input_image=input_image, output_image=output_image , full_mask=full_mask)  
         
         for label in smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names:
-            input_image  = self.dir_in  + '/Label/' + label    + '.nii.gz'
+            input_image  = self.dir_in  + '/Label/' + label    + '_PProcessed.nii.gz'
             output_image = self.dir_out + '/Label/' + label    + '.nii.gz'
-            full_mask = self.dir_in  + '/Label/' + self.maskCrop + '.nii.gz' 
+            # full_mask = self.dir_in  + '/Label/' + self.maskCrop + '.nii.gz' 
+            full_mask = self.dir_in  + '/temp/CropMask.nii.gz' 
 
             uncrop.uncrop_by_mask(input_image=input_image, output_image=output_image , full_mask=full_mask)     
 
@@ -63,9 +64,9 @@ class uncrop_cls():
 
 
 UI = UserEntry()
-# UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn1/cropped_Image/step1_registered_labels_croppedInput'
-# UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn1/cropped_Image/step2_uncropped'
-# UI.mode    = 1
+UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/ManualLabels'
+UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/ManualLabels_uncropped'
+UI.mode    = 1
 if UI.mode == 0: 
     uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out, dir_mask = '' , maskCrop='mask_t1').apply_uncrop()
 elif UI.mode == 1:            

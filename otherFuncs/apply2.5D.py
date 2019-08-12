@@ -185,25 +185,83 @@ def func_OtherMetrics_justFor_MV(Info , params):
         # np.savetxt( address + 'Recall_All.txt'    ,Recall , fmt='%1.1f %1.4f')
         # np.savetxt( address + 'Precision_All.txt' ,Precision , fmt='%1.1f %1.4f')
 
+def func_AllMetrics_UserDirectory(Dir , params):
+        
+
+    subjects = [s for s in os.listdir(Dir) if 'vimp' in s]
+    
+    for subjectName in tqdm(subjects):
+        # subject = params.directories.Test.Input.Subjects[sj]
+        
+
+        a = smallFuncs.Nuclei_Class().All_Nuclei()
+        num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes  
+        VSI       = np.zeros((num_classes-1,2))
+        Dice      = np.zeros((num_classes-1,2))
+        HD        = np.zeros((num_classes-1,2))
+        # Precision = np.zeros((num_classes-1,2))
+        # Recall    = np.zeros((num_classes-1,2))
+
+
+        for cnt, (nucleusNm , nucleiIx) in enumerate(zip(a.Names , a.Indexes)):
+
+            # address = Info.subExperiment.address + '2.5D_MV/' + subject.subjectName + '/'
+            address = Dir + '/' + subjectName + '/'
+
+            # if not os.path.exists(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz') or not os.path.isfile(address + nucleusNm + '.nii.gz'): continue
+
+            Flag = os.path.exists(address + 'Prediction/' + nucleusNm + '.nii.gz')
+            # if os.path.exists(address + 'Label_uncropped/' + nucleusNm + '.nii.gz') and Flag:
+            #     manual_dir = address + 'Label_uncropped/' + nucleusNm + '.nii.gz'
+            if os.path.exists(address + 'Label/' + nucleusNm + '.nii.gz') and Flag:
+                manual_dir = address + 'Label/' + nucleusNm + '.nii.gz'
+            else:
+                continue
+
+            print(subjectName, nucleusNm)
+            ManualLabel = nib.load(manual_dir).get_data()                                              
+            prediction = nib.load(address + 'Prediction/' + nucleusNm + '.nii.gz').get_data()   
+            prediction = prediction > prediction.max()/2  
+
+            VSI[cnt,:]  = [nucleiIx , metrics.VSI_AllClasses(prediction, ManualLabel).VSI()]
+            HD[cnt,:]   = [nucleiIx , metrics.HD_AllClasses(prediction, ManualLabel).HD()]
+            Dice[cnt,:] = [nucleiIx , smallFuncs.mDice(prediction, ManualLabel)]
+
+            # confusionMatrix = metrics.confusionMatrix(predMV, ManualLabel)
+            # Recall[cnt,:]    = [nucleiIx , confusionMatrix.Recall]
+            # Precision[cnt,:] = [nucleiIx , confusionMatrix.Precision]
+                    
+        np.savetxt( address + 'VSI_All.txt'       ,VSI , fmt='%1.1f %1.4f')
+        np.savetxt( address + 'HD_All.txt'        ,HD , fmt='%1.1f %1.4f')
+        np.savetxt( address + 'Dice_All.txt'      ,Dice , fmt='%1.1f %1.4f')
+        # np.savetxt( address + 'Recall_All.txt'    ,Recall , fmt='%1.1f %1.4f')
+        # np.savetxt( address + 'Precision_All.txt' ,Precision , fmt='%1.1f %1.4f')
+
+
+
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
 UserInfoB['best_network_MPlanar'] = True
 
-UserInfoB['Model_Method'] = 'Cascade'
+UserInfoB['Model_Method'] = 'Cascade' 
+UserInfoB['upsample'].Scale = 1
+UserInfoB['TypeExperiment'] = 8
 UserInfoB['simulation'].num_Layers = 3
-# UserInfoB['simulation'].slicingDim = [2,1,0]
 UserInfoB['architectureType'] = 'Res_Unet2'
 UserInfoB['lossFunction_Index'] = 4
 UserInfoB['Experiments'].Index = '6'
 UserInfoB['copy_Thalamus'] = False
-UserInfoB['TypeExperiment'] = 15
-UserInfoB['simulation'].LR_Scheduler = True    
-UserInfoB['tempThalamus'] = True
-UserInfoB['simulation'].ReadAugments_Mode = False 
-UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+UserInfoB['tempThalamus']  = True    
+UserInfoB['simulation'].LR_Scheduler = False  
+UserInfoB['simulation'].batch_size = 50
+UserInfoB['simulation'].num_Layers = 3
 
-for x in ['a', 'b', 'c']:
+for x in ['a', 'b', 'c', 'd']:
     UserInfoB['CrossVal'].index = [x]
     params = paramFunc.Run(UserInfoB, terminal=False)
     InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
-    func_OtherMetrics(InfoS , params)                
+    func_OtherMetrics_justFor_MV(InfoS , params)                
+
+# params = paramFunc.Run(UserInfoB, terminal=False)
+# Dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/step2_freesurfer_wWMn/Done'
+# func_AllMetrics_UserDirectory(Dir , params)            
