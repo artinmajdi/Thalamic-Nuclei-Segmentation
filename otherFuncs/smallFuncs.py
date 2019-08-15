@@ -377,7 +377,7 @@ def terminalEntries(UserInfo):
         elif entry.lower() in ('--scheduler'):
             UserInfo['simulation'].LR_Scheduler = True 
 
-        elif entry.lower() in ('-ci','--CrossVal_Index'):
+        elif entry.lower() in ('-cv','--CrossVal_Index'):
             UserInfo['CrossVal'].index = [sys.argv[en+1]]
             print('------------')
             print(UserInfo['CrossVal'].index)
@@ -562,11 +562,12 @@ def search_ExperimentDirectory(whichExperiment):
 
             return Input
 
+
         Input = LoopReadingData(Input, Dir)
 
         # SRI_flag_test = False if (Read.Main or Read.ET) and (modeData == 'test') else True
-        # SRI_flag_test = True
-        
+        # SRI_flag_test = True        
+
         if Read.Main : Input = LoopReadingData(Input, Dir + '/Main')
         if Read.ET   : Input = LoopReadingData(Input, Dir + '/ET')                   
         if Read.SRI  : Input = LoopReadingData(Input, Dir + '/SRI')
@@ -581,17 +582,7 @@ def search_ExperimentDirectory(whichExperiment):
             if Read.CSFn1 : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn1/')  
             if Read.CSFn2 : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn2/')    
 
-
-
-        if Read.ReadAugments.Mode and not (modeData == 'test'):
-            
-            # if Read.Main  and os.path.exists(DirAug + '/Main' + sdTag2): Input = LoopReadingData(Input, DirAug + '/Main' + sdTag2)
-            # if Read.ET    and os.path.exists(DirAug + '/ET'   + sdTag2): Input = LoopReadingData(Input, DirAug + '/ET'   + sdTag2)
-            # if Read.SRI   and os.path.exists(DirAug + '/SRI'  + sdTag2): Input = LoopReadingData(Input, DirAug + '/SRI'  + sdTag2)
-            # if Read.CSFn1 and os.path.exists(DirAug + '/CSFn1' + sdTag2): Input = LoopReadingData(Input, DirAug + '/CSFn1' + sdTag2)
-            # if Read.CSFn2 and os.path.exists(DirAug + '/CSFn2' + sdTag2): Input = LoopReadingData(Input, DirAug + '/CSFn2' + sdTag2)
-                             
-             
+        if Read.ReadAugments.Mode and not (modeData == 'test'):                                                    
             if Read.Main  and os.path.exists(Dir + '/Main/Augments' + sdTag2):  Input = LoopReadingData(Input, Dir + '/Main/Augments'  + sdTag2)
             if Read.ET    and os.path.exists(Dir + '/ET/Augments'   + sdTag2):  Input = LoopReadingData(Input, Dir + '/ET/Augments'    + sdTag2)
             if Read.SRI   and os.path.exists(Dir + '/SRI/Augments'  + sdTag2):  Input = LoopReadingData(Input, Dir + '/SRI/Augments'   + sdTag2)

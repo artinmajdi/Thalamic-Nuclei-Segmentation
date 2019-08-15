@@ -187,12 +187,13 @@ def func_OtherMetrics_justFor_MV(Info , params):
 
 def func_AllMetrics_UserDirectory(Dir , params):
         
-
+    Dir_ManualLabels = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/ManualLabels2_uncropped'
     subjects = [s for s in os.listdir(Dir) if 'vimp' in s]
     
     for subjectName in tqdm(subjects):
         # subject = params.directories.Test.Input.Subjects[sj]
         
+        # try:
 
         a = smallFuncs.Nuclei_Class().All_Nuclei()
         num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes  
@@ -203,7 +204,7 @@ def func_AllMetrics_UserDirectory(Dir , params):
         # Recall    = np.zeros((num_classes-1,2))
 
 
-        for cnt, (nucleusNm , nucleiIx) in enumerate(zip(a.Names , a.Indexes)):
+        for cnt, (nucleusNm , nucleiIx) in enumerate(zip(a.Names[3:] , a.Indexes[3:])):
 
             # address = Info.subExperiment.address + '2.5D_MV/' + subject.subjectName + '/'
             address = Dir + '/' + subjectName + '/'
@@ -213,10 +214,12 @@ def func_AllMetrics_UserDirectory(Dir , params):
             Flag = os.path.exists(address + 'Prediction/' + nucleusNm + '.nii.gz')
             # if os.path.exists(address + 'Label_uncropped/' + nucleusNm + '.nii.gz') and Flag:
             #     manual_dir = address + 'Label_uncropped/' + nucleusNm + '.nii.gz'
-            if os.path.exists(address + 'Label/' + nucleusNm + '.nii.gz') and Flag:
-                manual_dir = address + 'Label/' + nucleusNm + '.nii.gz'
-            else:
-                continue
+
+            manual_dir = Dir_ManualLabels + '/' + subjectName + '/Label/' + nucleusNm + '.nii.gz'
+            # if os.path.exists(address + 'Label/' + nucleusNm + '.nii.gz') and Flag:
+            #     manual_dir = address + 'Label/' + nucleusNm + '.nii.gz'                
+            # else:
+            #     continue
 
             print(subjectName, nucleusNm)
             ManualLabel = nib.load(manual_dir).get_data()                                              
@@ -236,6 +239,9 @@ def func_AllMetrics_UserDirectory(Dir , params):
         np.savetxt( address + 'Dice_All.txt'      ,Dice , fmt='%1.1f %1.4f')
         # np.savetxt( address + 'Recall_All.txt'    ,Recall , fmt='%1.1f %1.4f')
         # np.savetxt( address + 'Precision_All.txt' ,Precision , fmt='%1.1f %1.4f')
+
+        # except Exception as e:
+        #     print(subjectName, e)
 
 
 
@@ -262,6 +268,6 @@ for x in ['a', 'b', 'c', 'd']:
     InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
     func_OtherMetrics_justFor_MV(InfoS , params)                
 
-# params = paramFunc.Run(UserInfoB, terminal=False)
-# Dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/step2_freesurfer_wWMn/Done'
+# params = paramFunc.Run(UserInfo.__dict__, terminal=False)
+# Dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/step2_freesurfer/Done/step2_resliced'
 # func_AllMetrics_UserDirectory(Dir , params)            

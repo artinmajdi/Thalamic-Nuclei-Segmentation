@@ -97,7 +97,10 @@ class reslice_cls():
         smallFuncs.mkDir(self.dir_out + '/Label/')
         for nucleus in smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names:  # [n for n in os.listdir(self.dir_in + '/Label/') if '.nii.gz' in n]: 
             print('Applying to',nucleus)
-            apply_to_mask(nucleus , self)
+            try:
+                apply_to_mask(nucleus , self)
+            except Exception as e:
+                print(e)
 
     def reslice_all(self):
         for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s]:

@@ -60,7 +60,9 @@ def check_Run(params, Data):
 
 def loadModel(params):
     model = architecture(params.WhichExperiment.HardParams.Model)
-    model.load_weights(params.directories.Train.Model + '/model_weights.h5')
+
+    A = params.directories.Train.model_Tag if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
+    model.load_weights(params.directories.Train.Model + '/model_weights' + A + '.h5')
     
     # model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')
     # ModelParam = params.WhichExperiment.HardParams.Model

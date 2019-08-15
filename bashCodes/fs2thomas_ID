@@ -1,0 +1,33 @@
+#!/bin/tcsh
+# Extract thalamic labels from a FS mgz file 
+
+# Usage: fs2thomas <mgz file of segmentation>  <WMn image to reslice FS to> <1=bilateral, default 0 left>
+if ($#argv < 1) then
+echo "Usage: fs2thomas <seg file mgz> [opt:Wmn or T1 to reslice to] [opt: bilateral/unilateral not implemented]"
+endif
+
+
+mkdir labels_IDs_Voxels
+
+
+foreach i (29)
+
+mri_extract_label $1 81$i labels_IDs_Voxels/81$i.nii.gz
+
+x=labels_IDs_Voxels/81$i.nii.gz
+mri_binarize --i $x --min 0.1 --o $x 
+if ($#argv >= 2) then
+mri_convert -rt nearest -rl $2 $x $x
+endif
+
+end
+
+
+#foreach x (labels_IDs_Voxels/*.nii.gz)
+#mri_binarize --i $x --min 0.1 --o $x 
+#if ($#argv >= 2) then
+#mri_convert -rt nearest -rl $2 $x $x
+#endif
+#end
+
+cd ..

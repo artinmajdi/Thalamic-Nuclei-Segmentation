@@ -17,9 +17,9 @@ class UserEntry():
         self.mode    = 0
 
         for en in range(len(sys.argv)):
-            if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = sys.argv[en+1]
-            elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = sys.argv[en+1]
-            elif sys.argv[en].lower() in ('-msk','--mask'): self.dir_mask = sys.argv[en+1]
+            if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1] 
+            elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1] 
+            elif sys.argv[en].lower() in ('-msk','--mask'): self.dir_mask = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1] 
             elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = int(sys.argv[en+1])
             
 class uncrop_cls():
@@ -64,9 +64,9 @@ class uncrop_cls():
 
 
 UI = UserEntry()
-UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/ManualLabels'
-UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/ManualLabels_uncropped'
-UI.mode    = 1
+# UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/ManualLabels2'
+# UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/ManualLabels2_uncropped'
+# UI.mode    = 1
 if UI.mode == 0: 
     uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out, dir_mask = '' , maskCrop='mask_t1').apply_uncrop()
 elif UI.mode == 1:            

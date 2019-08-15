@@ -1,8 +1,8 @@
 
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
-architectureType = 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
-gpu = "4"
+architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
+gpu = "2"
 
 # TypeExperiment == 1: # 3T      Init Rn
 
@@ -29,87 +29,111 @@ TypeExperiment = 4
 
 multi_Class_Mode = True
 readAugments_Mode = True
-lossFunction_Index = 3
+lossFunction_Index = 4
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
 best_network_MPlanar = False
 testOnly = False
 
-fCN1_NLayers = 3
-fCN2_NLayers = 1
+fCN1_NLayers = 0
+fCN2_NLayers = 0
 
-class normalize:
-    Mode = True
-    Method = '1Std0Mean' #  'MinMax' #  'Both' # 
-    per_Subject = True
-    per_Dataset = False
+class normalizeCs:
+    def __init__(self):
+            
+        self.Mode = True
+        self.Method = '1Std0Mean' #  'MinMax' #  'Both' # 
+        self.per_Subject = True
+        self.per_Dataset = False
 
+normalize = normalizeCs()
 
+class CrossValcs:
+    def __init__(self):
+        self.Mode = True
+        self.index = ['a']
+        self.All_Indexes = ['a' , 'b' , 'c' , 'd' , 'e' , 'f' , 'g' , 'h']
 
-class CrossVal:
-    Mode = True
-    index = ['a']
-    All_Indexes = ['a' , 'b' , 'c' , 'd']
+CrossVal = CrossValcs()
 
-class Experiments:
-    Index , Tag = '6' , '' # '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1'
+class Experimentscs:
+    def __init__(self):
+        self.Index , self.Tag = '6' , '' # '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1'
 
+Experiments = Experimentscs()
 
 DropoutValue = 0.3
 
-class SubExperiment:
-    Index = 12
-    Tag   = '' # '_zeroWeightFor0257' _equal_weights' '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
-    Mode_JustThis = False
-  
-class InitializeB:
-    FromThalamus   = False
-    FromOlderModel = False
-    From_3T        = False
-    From_7T        = False
-    From_CSFn      = False
+class SubExperimentcs:
+    def __init__(self):
+        self.Index = 12
+        self.Tag   = '' # '_zeroWeightFor0257' _equal_weights' '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
+        self.Mode_JustThis = False
 
-class upsample:
-    Mode = True
-    Scale = 1
+SubExperiment = SubExperimentcs()
 
-class simulation:
-    TestOnly      = testOnly
-    epochs        = 300
-    GPU_Index     = gpu
-    Learning_Rate = 1e-3
-    num_Layers    = 3 
-    FCN1_NLayers  = fCN1_NLayers
-    FCN2_NLayers  = fCN2_NLayers
-    nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
-    slicingDim    = [2 ,1 ,0]
-    batch_size    = 100
-    InputImage2Dvs3D = 2
-    FirstLayer_FeatureMap_Num = 20
-    FCN_FeatureMaps = 30
-    verbose = 2
-    Multiply_By_Thalmaus = False
-    Multiply_By_Rest_For_AV = False
+class InitializeBcs:
+    def __init__(self):
+        self.FromThalamus   = False
+        self.FromOlderModel = False
+        self.From_3T        = False
+        self.From_7T        = False
+        self.From_CSFn      = False
 
-    Weighted_Class_Mode = True
-    Initialize = InitializeB()
-    save_Best_Epoch_Model = True
-    Use_Coronal_Thalamus_InSagittal = True
-    Use_TestCases_For_Validation = True
-    ImClosePrediction =  True # False #
-    Multi_Class_Mode = multi_Class_Mode
-    LR_Scheduler = False
-    ReadAugments_Mode = readAugments_Mode
+InitializeB = InitializeBcs()
+
+class upsamplecs:
+    def __init__(self):
+        self.Mode = True
+        self.Scale = 1
+
+upsample = upsamplecs()
+
+class simulationcs:
+    def __init__(self):
+        self.TestOnly      = testOnly
+        self.epochs        = 300
+        self.GPU_Index     = gpu
+        self.Learning_Rate = 1e-3
+        self.num_Layers    = 3 
+        self.FCN1_NLayers  = fCN1_NLayers
+        self.FCN2_NLayers  = fCN2_NLayers
+        self.nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
+        self.slicingDim    = [2 ,1 ,0]
+        self.batch_size    = 100
+        self.InputImage2Dvs3D = 2
+        self.FirstLayer_FeatureMap_Num = 20
+        self.FCN_FeatureMaps = 30
+        self.verbose = 2
+        self.Multiply_By_Thalmaus = False
+        self.Multiply_By_Rest_For_AV = False
+
+        self.Weighted_Class_Mode = True
+        self.Initialize = InitializeB
+        self.save_Best_Epoch_Model = True
+        self.Use_Coronal_Thalamus_InSagittal = True
+        self.Use_TestCases_For_Validation = True
+        self.ImClosePrediction =  True # False #
+        self.Multi_Class_Mode = multi_Class_Mode
+        self.LR_Scheduler = False
+        self.ReadAugments_Mode = readAugments_Mode
     
+simulation = simulationcs()
 
-class dataGenerator:
-    Mode = False
-    NumSubjects_Per_batch = 5
+class dataGeneratorcs:
+    def __init__(self):
+        self.Mode = False
+        self.NumSubjects_Per_batch = 5
+
+dataGenerator = dataGeneratorcs()
 
 
-class InputPadding:
-    Automatic = True
-    HardDimensions = [116,144,84]
+class InputPaddingcs:
+    def __init__(self):
+        self.Automatic = True
+        self.HardDimensions = [116,144,84]
+
+InputPadding = InputPaddingcs()
 
 if Experiments.Index == '8': 
     InputPadding.HardDimensions = [228,288,168]
@@ -120,11 +144,14 @@ havingBackGround_AsExtraDimension = True
 
 gapDilation = 5
 
-class Template:
-    Image = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/origtemplate.nii.gz'
-    Mask = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/CropMaskV3.nii.gz'  # MyCrop_Template2_Gap20
-    # Mask_2AV = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/CropMask_AV.nii.gz' 
-    Address = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration/'
+class Templatecs:
+    def __init__(self):
+        self.Image = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/origtemplate.nii.gz'
+        self.Mask = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/CropMaskV3.nii.gz'  # MyCrop_Template2_Gap20
+        # self.Mask_2AV = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/CropMask_AV.nii.gz' 
+        self.Address = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration/'
+
+Template = Templatecs()
 
 
 #! metric function
@@ -141,22 +168,33 @@ Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 
 #! Preprocessing
-class preprocess:
-    Mode = False
-    BiasCorrection = False
+class preprocesscs:
+    def __init__(self):
+        self.Mode = False
+        self.BiasCorrection = False
+
+preprocess = preprocesscs()
 
 
 AugmentMode = False
 Augment_LinearMode = True
 Augment_Linear_Length = 2
 
-class Augment_Rotation:
-    Mode = True
-    AngleMax = 7 # '7_6cnts' # '7' # 7_4cnts
+class Augment_Rotationcs:
+    def __init__(self):
+        self.Mode = True
+        self.AngleMax = 7 # '7_6cnts' # '7' # 7_4cnts
 
-class Augment_Shear:
-    Mode = False
-    ShearMax = 4
+Augment_Rotation = Augment_Rotationcs()
+
+class Augment_Shearcs:
+    def __init__(self):
+        self.Mode = False
+        self.ShearMax = 4
+
+Augment_Shear = Augment_Shearcs()
+
+
 
 Augment_NonLinearMode = False
 

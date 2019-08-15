@@ -175,7 +175,7 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + LF + US + SC + '_wLRScheduler_Main_Ps_ET_Init_3T_CV_a' 
                 self.name_Init_from_CSFn1 = 'sE9_'  + method + FM + ACH + NL + LF + US + SC + '_CSFn1_Init_Main_CV_a'  
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
-                self.crossVal = UserInfo['CrossVal']()
+                self.crossVal = UserInfo['CrossVal']
        
         tag = method + FM + ACH + NL + LF + US + FCN + SC + LR + SE.Tag
         
@@ -565,7 +565,7 @@ def func_WhichExperiment(UserInfo):
 
             return Layer_Params
 
-        HardParams.Template = UserInfo['Template']()
+        HardParams.Template = UserInfo['Template']
         HardParams.Machine.GPU_Index = str(UserInfo['simulation'].GPU_Index)
 
      
@@ -577,10 +577,10 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.batch_size    = UserInfo['simulation'].batch_size
         HardParams.Model.epochs        = UserInfo['simulation'].epochs
         HardParams.Model.verbose       = UserInfo['simulation'].verbose
-        HardParams.Model.DataGenerator = UserInfo['dataGenerator']()                
+        HardParams.Model.DataGenerator = UserInfo['dataGenerator']                
         HardParams.Model.Initialize    = UserInfo['InitializeB']
         HardParams.Model.architectureType = UserInfo['architectureType'] 
-        HardParams.Model.Upsample      = UserInfo['upsample']()
+        HardParams.Model.Upsample      = UserInfo['upsample']
 
 
         HardParams.Model.loss, _ = LossFunction.LossInfo(UserInfo['lossFunction_Index'] ) 
@@ -626,7 +626,7 @@ def func_WhichExperiment(UserInfo):
     WhichExperiment.HardParams    = func_ModelParams()
     WhichExperiment.Nucleus       = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.Mode)
     WhichExperiment.Dataset       = func_Dataset()
-        
+    WhichExperiment.TestOnly = UserInfo['simulation'].TestOnly
 
     def old_adding_TransferLearningParams(WhichExperiment):
         class best_WMn_Model:
@@ -708,7 +708,7 @@ def func_WhichExperiment(UserInfo):
 
         
     WhichExperiment.HardParams.Model.Best_WMn_Model = adding_TransferLearningParams(WhichExperiment)
-
+    
 
     # if UserInfo['simulation'].TestOnly: 
     #     InputDimensions, num_Layers = ReadInputDimensions_NLayers(experiment.address + '/models/' + subExperiment.name + '/' + WhichExperiment.Nucleus.name + '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim) )
@@ -755,7 +755,7 @@ def func_preprocess(UserInfo):
 
     preprocess.Mode                = UserInfo['preprocess'].Mode
     preprocess.BiasCorrection.Mode = UserInfo['preprocess'].BiasCorrection
-    preprocess.Normalize           = UserInfo['normalize']()
+    preprocess.Normalize           = UserInfo['normalize']
     preprocess.TestOnly            = UserInfo['simulation'].TestOnly
     return preprocess
 
@@ -793,8 +793,8 @@ def func_Augment(UserInfo):
     Augment = Augment_Class()
 
     Augment.Mode            = UserInfo['AugmentMode']
-    Augment.Linear.Rotation = UserInfo['Augment_Rotation']()
-    Augment.Linear.Shear    = UserInfo['Augment_Shear']()
+    Augment.Linear.Rotation = UserInfo['Augment_Rotation']
+    Augment.Linear.Shear    = UserInfo['Augment_Shear']
     Augment.Linear.Length   = UserInfo['Augment_Linear_Length']
     Augment.NonLinear.Mode  = UserInfo['Augment_NonLinearMode']
     return Augment
