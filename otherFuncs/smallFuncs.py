@@ -356,6 +356,9 @@ def terminalEntries(UserInfo):
         elif entry.lower() in ('-nl','--num_Layers'):
             UserInfo['simulation'].num_Layers = int(sys.argv[en+1])
 
+        elif entry.lower() in ('-pi','--permutation_Index'):
+            UserInfo['permutation_Index'] = int(sys.argv[en+1])
+
         elif entry.lower() in ('-fm','--FirstLayer_FeatureMap_Num'):
             UserInfo['simulation'].FirstLayer_FeatureMap_Num = int(sys.argv[en+1])
 

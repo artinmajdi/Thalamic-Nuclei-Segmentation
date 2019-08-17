@@ -63,15 +63,55 @@ def temp_Experiments_preSet_V2(UserInfoB):
             self.ReadTrainC = ReadTrainC
 
             class Transfer_LearningC:
-                def __init__(self, Mode=False , FrozenLayers = [0] , Tag = '_TF' , Stage = 0):
+                def __init__(self, Mode=False , FrozenLayers = [0] , Tag = '_TF' , Stage = 0 , permutation_Index = 0):
                     
                     class unet_Freeze():
-                        # Contracting = {0:True, 1:True, 2:False, 3:False, 4:False, 5:False }
-                        # Expanding   = {0:True, 1:False, 2:False, 3:False, 4:False, 5:False }
-                        # Middle      = False                        
-                        Contracting = {0:True, 1:True, 2:True, 3:True, 4:True, 5:True }
-                        Expanding   = {0:True, 1:True, 2:True, 3:True, 4:True, 5:True }
-                        Middle      = True                        
+
+                        if permutation_Index == 0: # best
+                            Contracting = {0:True, 1:True, 2:False, 3:False, 4:False, 5:False }
+                            Expanding   = {0:True, 1:False, 2:False, 3:False, 4:False, 5:False }
+                            Middle      = False
+
+                        elif permutation_Index == 1:  # full fine tune
+                            Contracting = {0:True, 1:True, 2:True, 3:True, 4:True, 5:True }
+                            Expanding   = {0:True, 1:True, 2:True, 3:True, 4:True, 5:True }
+                            Middle      = True
+
+                        elif permutation_Index == 2: 
+                            Contracting = {0:False, 1:False, 2:False, 3:False, 4:False, 5:False }
+                            Expanding   = {0:True , 1:False, 2:False, 3:False, 4:False, 5:False }
+                            Middle      = False
+
+                        elif permutation_Index == 3:
+                            Contracting = {0:True , 1:False, 2:False, 3:False, 4:False, 5:False }
+                            Expanding   = {0:False, 1:False, 2:False, 3:False, 4:False, 5:False }
+                            Middle      = False
+
+                        elif permutation_Index == 4:
+                            Contracting = {0:True , 1:True , 2:False, 3:False, 4:False, 5:False }
+                            Expanding   = {0:False, 1:False, 2:False, 3:False, 4:False, 5:False }
+                            Middle      = False
+
+                        elif permutation_Index == 5:
+                            Contracting = {0:False , 1:False, 2:False, 3:False, 4:False, 5:False }
+                            Expanding   = {0:True  , 1:True, 2:False, 3:False, 4:False, 5:False }
+                            Middle      = False
+
+                        elif permutation_Index == 6:
+                            Contracting = {0:True , 1:False, 2:False, 3:False, 4:False, 5:False }
+                            Expanding   = {0:True , 1:False, 2:False, 3:False, 4:False, 5:False }
+                            Middle      = False                            
+
+                        elif permutation_Index == 7:
+                            Contracting = {0:False , 1:True, 2:False, 3:False, 4:False, 5:False }
+                            Expanding   = {0:False , 1:True, 2:False, 3:False, 4:False, 5:False }
+                            Middle      = True  
+
+                        elif permutation_Index == 8:
+                            Contracting = {0:False , 1:False, 2:True, 3:True, 4:True, 5:True }
+                            Expanding   = {0:False , 1:False, 2:True, 3:True, 4:True, 5:True }
+                            Middle      = True  
+
 
                     self.Mode         = Mode
                     self.FrozenLayers = FrozenLayers
@@ -89,7 +129,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
                     self.From_CSFn1     = From_CSFn1
             self.InitializeB = InitializeB
 
-        def main(self, TypeExperiment = 1):
+        def main(self, TypeExperiment = 1, perm_Index = 0):
             switcher = {
                 1:  (8   ,   self.ReadTrainC(SRI=1)          , self.InitializeB()                    ,  self.Transfer_LearningC()          , '' ),
 
@@ -97,17 +137,17 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 3:  (12  ,   self.ReadTrainC(SRI=1, Main=1)  , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC()          , '_3T7T_Init_3T'),
 
                 4:  (12  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_ET_Init_Main'),
-                5:  (13  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC(Mode=True) , '_ET_TL_Main'),
+                5:  (13  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_ET_TL_Main'),
 
                 6:  (12  ,   self.ReadTrainC(CSFn1=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_CSFn1_Init_Main'),
                 # 11: (12  ,   self.ReadTrainC(CSFn1=1)        , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC()          , '_CSFn1_Init_3T'),
 
                 7:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC()          , '_CSFn2_Init_CSFn1'),
                 8:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_CSFn2_Init_Main'),
-                9:  (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_CSFn1'),
-                10: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T   =True)     ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_Main'),
-                11: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True) , '_CSFn2_TL_Main'),
-                12: (13  ,   self.ReadTrainC(Main=1)         , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True) , '_Main_test_TL_Main'),
+                9:  (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_CSFn2_TL_CSFn1'),
+                10: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T   =True)     ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_CSFn2_TL_Main'),
+                11: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_CSFn2_TL_Main'),
+                12: (13  ,   self.ReadTrainC(Main=1)         , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_Main_test_TL_Main'),
                 13: (13  ,   self.ReadTrainC(CSFn1=1,CSFn2=1) , self.InitializeB(From_7T   =True)    ,  self.Transfer_LearningC()          , '_CSFn2_CSFn1_Init_Main'),
                 14: (12  ,   self.ReadTrainC(Main=1)         , self.InitializeB()                    ,  self.Transfer_LearningC()          , '_Main_Init_Rn' ),
                 15: (12  ,   self.ReadTrainC(Main=1,ET=1)         , self.InitializeB(From_3T=True)   ,  self.Transfer_LearningC()          , '_Main_Ps_ET_Init_3T' ),
@@ -115,7 +155,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 
-    a,b,c,d,e = TypeExperimentFuncs().main(UserInfoB['TypeExperiment'])
+    a,b,c,d,e = TypeExperimentFuncs().main(TypeExperiment=UserInfoB['TypeExperiment'], perm_Index=UserInfoB['permutation_Index'])
     b.ReadAugments.Mode = UserInfoB['simulation'].ReadAugments_Mode
     
     UserInfoB['SubExperiment'].Index = a
@@ -164,7 +204,8 @@ def func_Exp_subExp_Names(UserInfo):
         FCN = '_FCNA' + str(UserInfo['simulation'].FCN1_NLayers)+'_FCNB' + str(UserInfo['simulation'].FCN2_NLayers) + '_FM' + str(UserInfo['simulation'].FCN_FeatureMaps) if ('TL' in UserInfo['architectureType']) and ('FCN' in UserInfo['architectureType']) else ''
 
         method = UserInfo['Model_Method']                                                                      
-               
+        PI = '_permute' + str(UserInfo['permutation_Index'])
+
         class subExperiment:
             def __init__(self, tag):                
                 self.index = SE.Index
@@ -177,7 +218,7 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']
        
-        tag = method + FM + ACH + NL + LF + US + FCN + SC + LR + SE.Tag
+        tag = method + FM + ACH + NL + LF + US + FCN + SC + LR + PI + SE.Tag
         
         
         
@@ -186,7 +227,7 @@ def func_Exp_subExp_Names(UserInfo):
 
         if UserInfo['best_network_MPlanar']:
             x = UserInfo['CrossVal'].index[0]
-            A.name = 'sE13_Cascade_FM00_ResFCN_ResUnet2_TL_NL3_LS_MyLogDice_US1_FCNA00_FCNB00_FM00_CSFn2_TL_Main_CV_' + x + '_Best'
+            A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_' + x + '_Best'
 
         return A
 

@@ -569,6 +569,169 @@ class merging_HD_Values:
             self.writer.close()
         loopOver_Subexperiments(self)
 
+class merging_Volumes_Values:
+    def __init__(self, Info):
+        self.Info   = Info
+        self.writer = pd.ExcelWriter(Info.Experiment.address + '/results/All_Volumes.xlsx', engine='xlsxwriter')
+        
+        def save_TagList(self):
+            pd.DataFrame(data=self.Info.Experiment.TagsList).to_excel(self.writer, sheet_name='TagsList')
+            class All_Subjs_Ns:
+                def insertNuclei_Excel(self, sheetName):
+                    A = pd.DataFrame()
+                    A['Nuclei'] = All_Nuclei_Names # self.Info.Nuclei_Names[1:18]
+                    A.to_excel(self.writer, sheet_name=sheetName)
+
+                    class out:
+                        pd = A
+                        sheet_name = sheetName
+                    return out()
+                                    
+                ET    = insertNuclei_Excel(self, 'AllVolumess_ET')
+                Main  = insertNuclei_Excel(self, 'AllVolumess_Main')
+                CSFn1 = insertNuclei_Excel(self, 'AllVolumess_CSFn1')
+                CSFn2 = insertNuclei_Excel(self, 'AllVolumess_CSFn2')
+                SRI   = insertNuclei_Excel(self, 'AllVolumess_SRI')
+
+            self.All_Subjs_Ns = All_Subjs_Ns()
+        save_TagList(self)
+
+        def func_Load_Subexperiment(self):
+            
+            # if self.plane.Flag:
+
+            self.subExperiment.address = self.Info.Experiment.address + '/results/' + self.subExperiment.name +'/'+ self.plane.name
+            
+            def func_1subject_Volumess(self):                    
+                                                                     
+                def func_Search_Over_Single_Class(Volumes_Single):
+                    for name in All_Nuclei_Names:
+                        Dir_subject = self.subExperiment.address + '/' + self.subject + '/Volumes_' + name +'.txt'
+                        if os.path.isfile(Dir_subject): Volumes_Single[name] = math.ceil( np.loadtxt(Dir_subject)[1] *1e3)/1e3
+                    return Volumes_Single
+                
+                def func_Search_Over_Multi_Class(Volumes_Single):
+
+                    for VolumesTag in ['/Volumes_All' , '/Volumes_All_Groups' , '/Volumes_All_Medial' , '/Volumes_All_lateral' , '/Volumes_All_posterior']:
+                        Dir_subject = self.subExperiment.address + '/' + self.subject + VolumesTag + '.txt'
+                        if os.path.isfile(Dir_subject): 
+                            A = np.loadtxt(Dir_subject)
+
+                            if not isinstance(A[0],np.ndarray): 
+                                Volumes_Single[smallFuncs.Nuclei_Class(index=A[0], method = 'HCascade').name] = math.ceil(  A[1]*1e3 )/1e3
+                            else:
+                                for id, nIx in enumerate(A[:,0]):
+                                    if not np.isnan(A[id,1]): Volumes_Single[smallFuncs.Nuclei_Class(index=nIx, method = 'HCascade').name] = math.ceil(  A[id,1]*1e3 )/1e3
+                                    else: Volumes_Single[smallFuncs.Nuclei_Class(index=nIx, method = 'HCascade').name] = np.nan
+
+                    return Volumes_Single
+
+                Volumes_Single = {'subject':self.subject} 
+                Volumes_Single = func_Search_Over_Single_Class(Volumes_Single)   
+                Volumes_Single = func_Search_Over_Multi_Class(Volumes_Single)
+
+                return Volumes_Single                                    
+            sE_Volumess = np.array([  func_1subject_Volumess(self)  for self.subject in self.plane.subject_List  ])
+
+            if len(sE_Volumess) > 0:
+                def save_Volumess_subExp_In_ExcelFormat(self , sE_Volumess):
+                    pd_sE = pd.DataFrame()
+
+                    pd_sE['subject'] = [s['subject'] for s in sE_Volumess]
+                    for nucleus in All_Nuclei_Names:
+
+                        # try:
+                        A = np.nan*np.ones(len(sE_Volumess))
+                        for ix, s in enumerate(sE_Volumess):
+                            if nucleus in s: A[ix] = s[nucleus]
+                        
+                        pd_sE[nucleus] = A
+
+                        #     if nucleus in sE_Volumess[0]: pd_sE[nucleus] = [s[nucleus] for s in sE_Volumess] # .astype(np.float16)
+                        # except Exception as e:
+                            # print(e)
+
+                    pd_sE.to_excel(  self.writer, sheet_name=self.plane.tagList[0] )    
+                save_Volumess_subExp_In_ExcelFormat(self , sE_Volumess)
+                
+                def divideSubjects_BasedOnModality(self, sE_Volumess):
+                    class subjectVolumes:
+                        ET   = []
+                        Main = []
+                        CSFn1 = []
+                        CSFn2 = []
+                        SRI  = []
+
+                    # for sIx , subject in enumerate(sE_Volumess[:,0]):
+                    for s in sE_Volumess:
+                        if 'ET' in s['subject']:     subjectVolumes.ET.append(s)
+                        elif 'CSFn1' in s['subject']: subjectVolumes.CSFn1.append(s)
+                        elif 'CSFn2' in s['subject']: subjectVolumes.CSFn2.append(s)
+                        elif 'SRI'  in s['subject']: subjectVolumes.SRI.append(s)
+                        else:                        subjectVolumes.Main.append(s)
+
+                    def func_Average(subjectVolumesList):
+
+                        Average_Volumess = np.nan*np.ones(len(All_Nuclei_Names))
+                        for ix, nucleus in enumerate(All_Nuclei_Names):
+                            A = np.nan*np.ones(len(subjectVolumesList))
+                            for ct, s in enumerate(subjectVolumesList):
+                                if nucleus in s: A[ct] = s[nucleus]
+
+                            Average_Volumess[ix] = np.round(1e3*np.nanmean(A, axis=0))/1e3
+                                                        
+                        return Average_Volumess
+
+                    tag = self.plane.direction +'-' + self.plane.tagIndex    
+                    # for dataset in ['ET' , 'Main' , '1' , 'SRI']:
+                    #     A = subjectVolumes.__getattribute__(dataset)
+                    #     if len(A) > 0  : self.All_Subjs_Ns.__getattribute__(dataset).pd[tag] = func_Average(A)                   
+                    #     # self.All_Subjs_Ns.__setattribute__(dataset) = A
+
+                    if len(subjectVolumes.ET) > 0   : self.All_Subjs_Ns.ET.pd[  tag]  = func_Average(subjectVolumes.ET)   
+                    if len(subjectVolumes.Main) > 0 : self.All_Subjs_Ns.Main.pd[tag]  = func_Average(subjectVolumes.Main) 
+                    if len(subjectVolumes.CSFn1) > 0: self.All_Subjs_Ns.CSFn1.pd[tag] = func_Average(subjectVolumes.CSFn1) 
+                    if len(subjectVolumes.CSFn2) > 0: self.All_Subjs_Ns.CSFn2.pd[tag] = func_Average(subjectVolumes.CSFn2) 
+                    if len(subjectVolumes.SRI) > 0  : self.All_Subjs_Ns.SRI.pd[ tag]  = func_Average(subjectVolumes.SRI)  
+                divideSubjects_BasedOnModality(self, sE_Volumess)
+
+        def loopOver_Subexperiments(self):
+            class smallActions():                                                                                              
+                def add_space(self):
+                    self.All_Subjs_Ns.ET.pd[  self.subExperiment.Tag[0]]  = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.Main.pd[self.subExperiment.Tag[0]]  = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.CSFn1.pd[self.subExperiment.Tag[0]] = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.CSFn2.pd[self.subExperiment.Tag[0]] = np.nan*np.ones(17)
+                    self.All_Subjs_Ns.SRI.pd[ self.subExperiment.Tag[0]]  = np.nan*np.ones(17)
+
+                def save_All_Volumess(PD):
+                    PD.ET.pd.to_excel( self.writer , sheet_name=PD.ET.sheet_name  )
+                    PD.Main.pd.to_excel(self.writer, sheet_name=PD.Main.sheet_name)
+                    PD.CSFn1.pd.to_excel(self.writer, sheet_name=PD.CSFn1.sheet_name)
+                    PD.CSFn2.pd.to_excel(self.writer, sheet_name=PD.CSFn2.sheet_name)
+                    PD.SRI.pd.to_excel( self.writer, sheet_name=PD.SRI.sheet_name )
+
+            A = zip(self.Info.Experiment.List_subExperiments , self.Info.Experiment.TagsList)
+            for self.subExperiment, tag in tqdm( A , desc='Volumess:'):
+                # try: 
+                self.subExperiment.Tag = tag
+                # print(self.subExperiment.name)
+                smallActions.add_space(self)
+                for self.plane in self.subExperiment.multiPlanar:
+                    if self.plane.Flag:
+                        # print(self.subExperiment.name , self.plane.name)
+                        # try: 
+                        func_Load_Subexperiment(self)
+                        # except: print('failed' ,self.subExperiment )                                            
+                # except Exception as e:
+                #     print(e)
+
+            smallActions.save_All_Volumess(self.All_Subjs_Ns)
+
+            self.writer.close()
+        loopOver_Subexperiments(self)
+
+
 
 
 UserInfoB = UserInfo.__dict__
@@ -590,13 +753,15 @@ UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
 params = paramFunc.Run(UserInfoB, terminal=True)
 
 print(Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List)
-for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[-3:-2]:
+for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[4:5]:
 
     print(Experiment_Name)
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')
     merging_Dice_Values(Info)
     merging_VSI_Values(Info)
     merging_HD_Values(Info)
+    merging_Volumes_Values(Info)
+
 
     # Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
     # savingHistory_AsExcel(Info)

@@ -27,6 +27,8 @@ gpu = "2"
 
 TypeExperiment = 4
 
+permutation_Index = 0
+
 multi_Class_Mode = True
 readAugments_Mode = True
 lossFunction_Index = 4
