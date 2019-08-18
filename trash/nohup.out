@@ -1,572 +1,0 @@
-2019-07-27 13:24:38.263336: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
-2019-07-27 13:24:40.469564: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
-name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
-pciBusID: 0000:05:00.0
-totalMemory: 15.89GiB freeMemory: 15.60GiB
-2019-07-27 13:24:40.469630: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
-2019-07-27 13:24:40.858845: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
-2019-07-27 13:24:40.858896: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
-2019-07-27 13:24:40.858910: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
-2019-07-27 13:24:40.859381: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:05:00.0, compute capability: 6.0)
-/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-Using TensorFlow backend.
-Loading train:   0%|          | 0/41 [00:00<?, ?it/s]Loading train:   2%|▏         | 1/41 [00:01<00:43,  1.10s/it]Loading train:   5%|▍         | 2/41 [00:02<00:41,  1.06s/it]Loading train:   7%|▋         | 3/41 [00:02<00:36,  1.05it/s]Loading train:  10%|▉         | 4/41 [00:03<00:32,  1.14it/s]Loading train:  12%|█▏        | 5/41 [00:04<00:31,  1.16it/s]Loading train:  15%|█▍        | 6/41 [00:05<00:30,  1.15it/s]Loading train:  17%|█▋        | 7/41 [00:05<00:27,  1.22it/s]Loading train:  20%|█▉        | 8/41 [00:06<00:24,  1.32it/s]Loading train:  22%|██▏       | 9/41 [00:07<00:24,  1.33it/s]Loading train:  24%|██▍       | 10/41 [00:08<00:24,  1.27it/s]Loading train:  27%|██▋       | 11/41 [00:09<00:24,  1.21it/s]Loading train:  29%|██▉       | 12/41 [00:09<00:21,  1.33it/s]Loading train:  32%|███▏      | 13/41 [00:10<00:20,  1.35it/s]Loading train:  34%|███▍      | 14/41 [00:11<00:20,  1.29it/s]Loading train:  37%|███▋      | 15/41 [00:11<00:18,  1.44it/s]Loading train:  39%|███▉      | 16/41 [00:12<00:17,  1.42it/s]Loading train:  41%|████▏     | 17/41 [00:13<00:19,  1.22it/s]Loading train:  44%|████▍     | 18/41 [00:14<00:18,  1.22it/s]Loading train:  46%|████▋     | 19/41 [00:15<00:17,  1.25it/s]Loading train:  49%|████▉     | 20/41 [00:15<00:16,  1.26it/s]Loading train:  51%|█████     | 21/41 [00:17<00:18,  1.09it/s]Loading train:  54%|█████▎    | 22/41 [00:17<00:16,  1.13it/s]Loading train:  56%|█████▌    | 23/41 [00:18<00:14,  1.26it/s]Loading train:  59%|█████▊    | 24/41 [00:19<00:12,  1.31it/s]Loading train:  61%|██████    | 25/41 [00:19<00:12,  1.32it/s]Loading train:  63%|██████▎   | 26/41 [00:20<00:11,  1.31it/s]Loading train:  66%|██████▌   | 27/41 [00:21<00:11,  1.26it/s]Loading train:  68%|██████▊   | 28/41 [00:22<00:10,  1.25it/s]Loading train:  71%|███████   | 29/41 [00:23<00:09,  1.28it/s]Loading train:  73%|███████▎  | 30/41 [00:24<00:09,  1.19it/s]Loading train:  76%|███████▌  | 31/41 [00:24<00:07,  1.28it/s]Loading train:  78%|███████▊  | 32/41 [00:25<00:06,  1.32it/s]Loading train:  80%|████████  | 33/41 [00:26<00:05,  1.34it/s]Loading train:  83%|████████▎ | 34/41 [00:27<00:05,  1.25it/s]Loading train:  85%|████████▌ | 35/41 [00:28<00:05,  1.10it/s]Loading train:  88%|████████▊ | 36/41 [00:29<00:04,  1.06it/s]Loading train:  90%|█████████ | 37/41 [00:30<00:03,  1.06it/s]Loading train:  93%|█████████▎| 38/41 [00:31<00:02,  1.08it/s]Loading train:  95%|█████████▌| 39/41 [00:32<00:01,  1.03it/s]Loading train:  98%|█████████▊| 40/41 [00:33<00:00,  1.00it/s]Loading train: 100%|██████████| 41/41 [00:34<00:00,  1.05it/s]
-concatenating: train:   0%|          | 0/41 [00:00<?, ?it/s]concatenating: train:  49%|████▉     | 20/41 [00:00<00:00, 196.68it/s]concatenating: train: 100%|██████████| 41/41 [00:00<00:00, 228.09it/s]
-Loading test:   0%|          | 0/11 [00:00<?, ?it/s]Loading test:   9%|▉         | 1/11 [00:00<00:08,  1.19it/s]Loading test:  18%|█▊        | 2/11 [00:01<00:07,  1.21it/s]Loading test:  27%|██▋       | 3/11 [00:02<00:06,  1.24it/s]Loading test:  36%|███▋      | 4/11 [00:03<00:05,  1.32it/s]Loading test:  45%|████▌     | 5/11 [00:03<00:04,  1.33it/s]Loading test:  55%|█████▍    | 6/11 [00:04<00:03,  1.33it/s]Loading test:  64%|██████▎   | 7/11 [00:05<00:02,  1.34it/s]Loading test:  73%|███████▎  | 8/11 [00:05<00:02,  1.36it/s]Loading test:  82%|████████▏ | 9/11 [00:06<00:01,  1.34it/s]Loading test:  91%|█████████ | 10/11 [00:07<00:00,  1.31it/s]Loading test: 100%|██████████| 11/11 [00:08<00:00,  1.25it/s]
-concatenating: validation:   0%|          | 0/11 [00:00<?, ?it/s]concatenating: validation: 100%|██████████| 11/11 [00:00<00:00, 172.97it/s]---------------------- check Layers Step ------------------------------
- N: [1]  | GPU: 1  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
-
- #layer 3 #layers changed False
----------------------- check Layers Step ------------------------------
- N: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 1  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
-
- #layer 3 #layers changed False
----------------------------------------------------------------
- Nucleus: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 1  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
-Experiment: exp6
-SubExperiment: sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a
----------------------------------------------------------------
-__________________________________________________________________________________________________
-Layer (type)                    Output Shape         Param #     Connected to                     
-==================================================================================================
-input_1 (InputLayer)            (None, 52, 88, 1)    0                                            
-__________________________________________________________________________________________________
-conv2d_1 (Conv2D)               (None, 52, 88, 20)   200         input_1[0][0]                    
-__________________________________________________________________________________________________
-batch_normalization_1 (BatchNor (None, 52, 88, 20)   80          conv2d_1[0][0]                   
-__________________________________________________________________________________________________
-activation_1 (Activation)       (None, 52, 88, 20)   0           batch_normalization_1[0][0]      
-__________________________________________________________________________________________________
-conv2d_2 (Conv2D)               (None, 52, 88, 20)   3620        activation_1[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_2 (BatchNor (None, 52, 88, 20)   80          conv2d_2[0][0]                   
-__________________________________________________________________________________________________
-activation_2 (Activation)       (None, 52, 88, 20)   0           batch_normalization_2[0][0]      
-__________________________________________________________________________________________________
-max_pooling2d_1 (MaxPooling2D)  (None, 26, 44, 20)   0           activation_2[0][0]               
-__________________________________________________________________________________________________
-dropout_1 (Dropout)             (None, 26, 44, 20)   0           max_pooling2d_1[0][0]            
-__________________________________________________________________________________________________
-conv2d_3 (Conv2D)               (None, 26, 44, 40)   7240        dropout_1[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_3 (BatchNor (None, 26, 44, 40)   160         conv2d_3[0][0]                   
-__________________________________________________________________________________________________
-activation_3 (Activation)       (None, 26, 44, 40)   0           batch_normalization_3[0][0]      
-__________________________________________________________________________________________________
-conv2d_4 (Conv2D)               (None, 26, 44, 40)   14440       activation_3[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_4 (BatchNor (None, 26, 44, 40)   160         conv2d_4[0][0]                   
-__________________________________________________________________________________________________
-activation_4 (Activation)       (None, 26, 44, 40)   0           batch_normalization_4[0][0]      
-__________________________________________________________________________________________________
-concatenate_1 (Concatenate)     (None, 26, 44, 60)   0           dropout_1[0][0]                  
-                                                                 activation_4[0][0]               
-__________________________________________________________________________________________________
-max_pooling2d_2 (MaxPooling2D)  (None, 13, 22, 60)   0           concatenate_1[0][0]              
-__________________________________________________________________________________________________
-dropout_2 (Dropout)             (None, 13, 22, 60)   0           max_pooling2d_2[0][0]            
-__________________________________________________________________________________________________
-conv2d_5 (Conv2D)               (None, 13, 22, 80)   43280       dropout_2[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_5 (BatchNor (None, 13, 22, 80)   320         conv2d_5[0][0]                   
-__________________________________________________________________________________________________
-activation_5 (Activation)       (None, 13, 22, 80)   0           batch_normalization_5[0][0]      
-__________________________________________________________________________________________________
-conv2d_6 (Conv2D)               (None, 13, 22, 80)   57680       activation_5[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_6 (BatchNor (None, 13, 22, 80)   320         conv2d_6[0][0]                   
-__________________________________________________________________________________________________
-activation_6 (Activation)       (None, 13, 22, 80)   0           batch_normalization_6[0][0]      
-__________________________________________________________________________________________________
-concatenate_2 (Concatenate)     (None, 13, 22, 140)  0           dropout_2[0][0]                  
-                                                                 activation_6[0][0]               
-__________________________________________________________________________________________________
-dropout_3 (Dropout)             (None, 13, 22, 140)  0           concatenate_2[0][0]              
-__________________________________________________________________________________________________
-conv2d_transpose_1 (Conv2DTrans (None, 26, 44, 40)   22440       dropout_3[0][0]                  
-__________________________________________________________________________________________________
-concatenate_3 (Concatenate)     (None, 26, 44, 100)  0           conv2d_transpose_1[0][0]         
-                                                                 concatenate_1[0][0]              
-__________________________________________________________________________________________________
-conv2d_7 (Conv2D)               (None, 26, 44, 40)   36040       concatenate_3[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_7 (BatchNor (None, 26, 44, 40)   160         conv2d_7[0][0]                   
-__________________________________________________________________________________________________
-activation_7 (Activation)       (None, 26, 44, 40)   0           batch_normalization_7[0][0]      
-__________________________________________________________________________________________________
-conv2d_8 (Conv2D)               (None, 26, 44, 40)   14440       activation_7[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_8 (BatchNor (None, 26, 44, 40)   160         conv2d_8[0][0]                   
-__________________________________________________________________________________________________
-activation_8 (Activation)       (None, 26, 44, 40)   0           batch_normalization_8[0][0]      
-__________________________________________________________________________________________________
-concatenate_4 (Concatenate)     (None, 26, 44, 140)  0           concatenate_3[0][0]              
-predicting test subjects:   0%|          | 0/11 [00:00<?, ?it/s]predicting test subjects:   9%|▉         | 1/11 [00:04<00:47,  4.72s/it]predicting test subjects:  18%|█▊        | 2/11 [00:07<00:36,  4.07s/it]predicting test subjects:  27%|██▋       | 3/11 [00:09<00:29,  3.64s/it]predicting test subjects:  36%|███▋      | 4/11 [00:12<00:23,  3.36s/it]predicting test subjects:  45%|████▌     | 5/11 [00:14<00:18,  3.01s/it]predicting test subjects:  55%|█████▍    | 6/11 [00:17<00:14,  2.93s/it]predicting test subjects:  64%|██████▎   | 7/11 [00:19<00:11,  2.77s/it]predicting test subjects:  73%|███████▎  | 8/11 [00:22<00:07,  2.63s/it]predicting test subjects:  82%|████████▏ | 9/11 [00:24<00:04,  2.47s/it]predicting test subjects:  91%|█████████ | 10/11 [00:26<00:02,  2.38s/it]predicting test subjects: 100%|██████████| 11/11 [00:29<00:00,  2.53s/it]
-predicting train subjects:   0%|          | 0/41 [00:00<?, ?it/s]predicting train subjects:   2%|▏         | 1/41 [00:02<01:52,  2.80s/it]predicting train subjects:   5%|▍         | 2/41 [00:05<01:44,  2.68s/it]predicting train subjects:   7%|▋         | 3/41 [00:07<01:37,  2.56s/it]predicting train subjects:  10%|▉         | 4/41 [00:09<01:28,  2.40s/it]predicting train subjects:  12%|█▏        | 5/41 [00:13<01:39,  2.77s/it]predicting train subjects:  15%|█▍        | 6/41 [00:15<01:29,  2.55s/it]predicting train subjects:  17%|█▋        | 7/41 [00:16<01:19,  2.33s/it]predicting train subjects:  20%|█▉        | 8/41 [00:18<01:06,  2.03s/it]predicting train subjects:  22%|██▏       | 9/41 [00:20<01:07,  2.12s/it]predicting train subjects:  24%|██▍       | 10/41 [00:23<01:13,  2.37s/it]predicting train subjects:  27%|██▋       | 11/41 [00:27<01:20,  2.69s/it]predicting train subjects:  29%|██▉       | 12/41 [00:28<01:08,  2.35s/it]predicting train subjects:  32%|███▏      | 13/41 [00:31<01:08,  2.45s/it]predicting train subjects:  34%|███▍      | 14/41 [00:34<01:12,  2.70s/it]predicting train subjects:  37%|███▋      | 15/41 [00:36<01:05,  2.50s/it]predicting train subjects:  39%|███▉      | 16/41 [00:39<01:04,  2.58s/it]predicting train subjects:  41%|████▏     | 17/41 [00:43<01:12,  3.01s/it]predicting train subjects:  44%|████▍     | 18/41 [00:46<01:11,  3.10s/it]predicting train subjects:  46%|████▋     | 19/41 [00:49<01:08,  3.11s/it]predicting train subjects:  49%|████▉     | 20/41 [00:51<00:59,  2.82s/it]predicting train subjects:  51%|█████     | 21/41 [00:55<00:57,  2.89s/it]predicting train subjects:  54%|█████▎    | 22/41 [00:58<00:57,  3.03s/it]predicting train subjects:  56%|█████▌    | 23/41 [01:00<00:48,  2.68s/it]predicting train subjects:  59%|█████▊    | 24/41 [01:03<00:46,  2.76s/it]predicting train subjects:  61%|██████    | 25/41 [01:06<00:44,  2.79s/it]predicting train subjects:  63%|██████▎   | 26/41 [01:09<00:44,  2.97s/it]predicting train subjects:  66%|██████▌   | 27/41 [01:12<00:42,  3.03s/it]predicting train subjects:  68%|██████▊   | 28/41 [01:15<00:38,  2.98s/it]predicting train subjects:  71%|███████   | 29/41 [01:18<00:35,  2.99s/it]predicting train subjects:  73%|███████▎  | 30/41 [01:22<00:35,  3.20s/it]predicting train subjects:  76%|███████▌  | 31/41 [01:25<00:33,  3.32s/it]predicting train subjects:  78%|███████▊  | 32/41 [01:28<00:28,  3.20s/it]predicting train subjects:  80%|████████  | 33/41 [01:34<00:32,  4.09s/it]predicting train subjects:  83%|████████▎ | 34/41 [01:39<00:29,  4.21s/it]predicting train subjects:  85%|████████▌ | 35/41 [01:44<00:26,  4.48s/it]predicting train subjects:  88%|████████▊ | 36/41 [01:48<00:21,  4.39s/it]predicting train subjects:  90%|█████████ | 37/41 [01:52<00:16,  4.16s/it]predicting train subjects:  93%|█████████▎| 38/41 [01:54<00:11,  3.73s/it]predicting train subjects:  95%|█████████▌| 39/41 [01:58<00:07,  3.60s/it]predicting train subjects:  98%|█████████▊| 40/41 [02:01<00:03,  3.57s/it]predicting train subjects: 100%|██████████| 41/41 [02:05<00:00,  3.68s/it]
-Loading train:   0%|          | 0/41 [00:00<?, ?it/s]Loading train:   2%|▏         | 1/41 [00:01<00:52,  1.32s/it]Loading train:   5%|▍         | 2/41 [00:02<00:47,  1.22s/it]Loading train:   7%|▋         | 3/41 [00:03<00:43,  1.15s/it]Loading train:  10%|▉         | 4/41 [00:04<00:38,  1.04s/it]Loading train:  12%|█▏        | 5/41 [00:05<00:38,  1.08s/it]Loading train:  15%|█▍        | 6/41 [00:06<00:35,  1.01s/it]Loading train:  17%|█▋        | 7/41 [00:07<00:33,  1.01it/s]Loading train:  20%|█▉        | 8/41 [00:07<00:27,  1.19it/s]Loading train:  22%|██▏       | 9/41 [00:08<00:27,  1.16it/s]Loading train:  24%|██▍       | 10/41 [00:09<00:27,  1.14it/s]Loading train:  27%|██▋       | 11/41 [00:10<00:27,  1.09it/s]Loading train:  29%|██▉       | 12/41 [00:11<00:25,  1.13it/s]Loading train:  32%|███▏      | 13/41 [00:12<00:25,  1.09it/s]Loading train:  34%|███▍      | 14/41 [00:13<00:24,  1.10it/s]Loading train:  37%|███▋      | 15/41 [00:13<00:20,  1.26it/s]Loading train:  39%|███▉      | 16/41 [00:14<00:21,  1.16it/s]Loading train:  41%|████▏     | 17/41 [00:15<00:23,  1.02it/s]Loading train:  44%|████▍     | 18/41 [00:16<00:21,  1.07it/s]Loading train:  46%|████▋     | 19/41 [00:17<00:20,  1.09it/s]Loading train:  49%|████▉     | 20/41 [00:18<00:17,  1.17it/s]Loading train:  51%|█████     | 21/41 [00:19<00:18,  1.05it/s]Loading train:  54%|█████▎    | 22/41 [00:20<00:18,  1.03it/s]Loading train:  56%|█████▌    | 23/41 [00:21<00:15,  1.18it/s]Loading train:  59%|█████▊    | 24/41 [00:21<00:14,  1.16it/s]Loading train:  61%|██████    | 25/41 [00:22<00:14,  1.10it/s]Loading train:  63%|██████▎   | 26/41 [00:24<00:15,  1.03s/it]Loading train:  66%|██████▌   | 27/41 [00:25<00:15,  1.13s/it]Loading train:  68%|██████▊   | 28/41 [00:27<00:16,  1.24s/it]Loading train:  71%|███████   | 29/41 [00:28<00:14,  1.19s/it]Loading train:  73%|███████▎  | 30/41 [00:29<00:14,  1.27s/it]Loading train:  76%|███████▌  | 31/41 [00:30<00:12,  1.21s/it]Loading train:  78%|███████▊  | 32/41 [00:32<00:11,  1.28s/it]Loading train:  80%|████████  | 33/41 [00:33<00:10,  1.31s/it]Loading train:  83%|████████▎ | 34/41 [00:34<00:08,  1.24s/it]Loading train:  85%|████████▌ | 35/41 [00:35<00:07,  1.27s/it]Loading train:  88%|████████▊ | 36/41 [00:37<00:06,  1.34s/it]Loading train:  90%|█████████ | 37/41 [00:38<00:05,  1.27s/it]Loading train:  93%|█████████▎| 38/41 [00:39<00:03,  1.17s/it]Loading train:  95%|█████████▌| 39/41 [00:40<00:02,  1.09s/it]Loading train:  98%|█████████▊| 40/41 [00:41<00:01,  1.08s/it]Loading train: 100%|██████████| 41/41 [00:42<00:00,  1.04s/it]
-concatenating: train:   0%|          | 0/41 [00:00<?, ?it/s]concatenating: train:  68%|██████▊   | 28/41 [00:00<00:00, 269.49it/s]concatenating: train: 100%|██████████| 41/41 [00:00<00:00, 275.15it/s]
-Loading test:   0%|          | 0/11 [00:00<?, ?it/s]Loading test:   9%|▉         | 1/11 [00:00<00:08,  1.14it/s]Loading test:  18%|█▊        | 2/11 [00:01<00:07,  1.16it/s]Loading test:  27%|██▋       | 3/11 [00:02<00:07,  1.14it/s]Loading test:  36%|███▋      | 4/11 [00:03<00:05,  1.23it/s]Loading test:  45%|████▌     | 5/11 [00:04<00:04,  1.22it/s]Loading test:  55%|█████▍    | 6/11 [00:05<00:04,  1.18it/s]Loading test:  64%|██████▎   | 7/11 [00:05<00:03,  1.17it/s]Loading test:  73%|███████▎  | 8/11 [00:06<00:02,  1.19it/s]Loading test:  82%|████████▏ | 9/11 [00:07<00:01,  1.17it/s]Loading test:  91%|█████████ | 10/11 [00:08<00:00,  1.08it/s]Loading test: 100%|██████████| 11/11 [00:09<00:00,  1.07it/s]
-concatenating: validation:   0%|          | 0/11 [00:00<?, ?it/s]concatenating: validation: 100%|██████████| 11/11 [00:00<00:00, 235.51it/s]
-                                                                 activation_8[0][0]               
-__________________________________________________________________________________________________
-dropout_4 (Dropout)             (None, 26, 44, 140)  0           concatenate_4[0][0]              
-__________________________________________________________________________________________________
-conv2d_transpose_2 (Conv2DTrans (None, 52, 88, 20)   11220       dropout_4[0][0]                  
-__________________________________________________________________________________________________
-concatenate_5 (Concatenate)     (None, 52, 88, 40)   0           conv2d_transpose_2[0][0]         
-                                                                 activation_2[0][0]               
-__________________________________________________________________________________________________
-conv2d_9 (Conv2D)               (None, 52, 88, 20)   7220        concatenate_5[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_9 (BatchNor (None, 52, 88, 20)   80          conv2d_9[0][0]                   
-__________________________________________________________________________________________________
-activation_9 (Activation)       (None, 52, 88, 20)   0           batch_normalization_9[0][0]      
-__________________________________________________________________________________________________
-conv2d_10 (Conv2D)              (None, 52, 88, 20)   3620        activation_9[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_10 (BatchNo (None, 52, 88, 20)   80          conv2d_10[0][0]                  
-__________________________________________________________________________________________________
-activation_10 (Activation)      (None, 52, 88, 20)   0           batch_normalization_10[0][0]     
-__________________________________________________________________________________________________
-concatenate_6 (Concatenate)     (None, 52, 88, 60)   0           concatenate_5[0][0]              
-                                                                 activation_10[0][0]              
-__________________________________________________________________________________________________
-dropout_5 (Dropout)             (None, 52, 88, 60)   0           concatenate_6[0][0]              
-__________________________________________________________________________________________________
-conv2d_11 (Conv2D)              (None, 52, 88, 13)   793         dropout_5[0][0]                  
-==================================================================================================
-Total params: 223,833
-Trainable params: 223,033
-Non-trainable params: 800
-__________________________________________________________________________________________________
----------------------------------------------------------------
- Nucleus: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 1  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
-Experiment: exp6
-SubExperiment: sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a
----------------------------------------------------------------
-__________________________________________________________________________________________________
-Layer (type)                    Output Shape         Param #     Connected to                     
-==================================================================================================
-input_1 (InputLayer)            (None, 56, 52, 1)    0                                            
-__________________________________________________________________________________________________
-conv2d_1 (Conv2D)               (None, 56, 52, 20)   200         input_1[0][0]                    
-__________________________________________________________________________________________________
-batch_normalization_1 (BatchNor (None, 56, 52, 20)   80          conv2d_1[0][0]                   
-__________________________________________________________________________________________________
-activation_1 (Activation)       (None, 56, 52, 20)   0           batch_normalization_1[0][0]      
-__________________________________________________________________________________________________
-conv2d_2 (Conv2D)               (None, 56, 52, 20)   3620        activation_1[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_2 (BatchNor (None, 56, 52, 20)   80          conv2d_2[0][0]                   
-__________________________________________________________________________________________________
-activation_2 (Activation)       (None, 56, 52, 20)   0           batch_normalization_2[0][0]      
-__________________________________________________________________________________________________
-max_pooling2d_1 (MaxPooling2D)  (None, 28, 26, 20)   0           activation_2[0][0]               
-__________________________________________________________________________________________________
-dropout_1 (Dropout)             (None, 28, 26, 20)   0           max_pooling2d_1[0][0]            
-__________________________________________________________________________________________________
-conv2d_3 (Conv2D)               (None, 28, 26, 40)   7240        dropout_1[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_3 (BatchNor (None, 28, 26, 40)   160         conv2d_3[0][0]                   
-__________________________________________________________________________________________________
-activation_3 (Activation)       (None, 28, 26, 40)   0           batch_normalization_3[0][0]      
-__________________________________________________________________________________________________
-conv2d_4 (Conv2D)               (None, 28, 26, 40)   14440       activation_3[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_4 (BatchNor (None, 28, 26, 40)   160         conv2d_4[0][0]                   
-__________________________________________________________________________________________________
-activation_4 (Activation)       (None, 28, 26, 40)   0           batch_normalization_4[0][0]      
-__________________________________________________________________________________________________
-concatenate_1 (Concatenate)     (None, 28, 26, 60)   0           dropout_1[0][0]                  
-                                                                 activation_4[0][0]               
-__________________________________________________________________________________________________
-max_pooling2d_2 (MaxPooling2D)  (None, 14, 13, 60)   0           concatenate_1[0][0]              
-__________________________________________________________________________________________________
-dropout_2 (Dropout)             (None, 14, 13, 60)   0           max_pooling2d_2[0][0]            
-__________________________________________________________________________________________________
-conv2d_5 (Conv2D)               (None, 14, 13, 80)   43280       dropout_2[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_5 (BatchNor (None, 14, 13, 80)   320         conv2d_5[0][0]                   
-__________________________________________________________________________________________________
-activation_5 (Activation)       (None, 14, 13, 80)   0           batch_normalization_5[0][0]      
-__________________________________________________________________________________________________
-conv2d_6 (Conv2D)               (None, 14, 13, 80)   57680       activation_5[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_6 (BatchNor (None, 14, 13, 80)   320         conv2d_6[0][0]                   
-__________________________________________________________________________________________________2019-07-27 13:28:59.230295: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
-2019-07-27 13:28:59.230389: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
-2019-07-27 13:28:59.230405: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
-2019-07-27 13:28:59.230415: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
-2019-07-27 13:28:59.935785: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:05:00.0, compute capability: 6.0)
-
-predicting test subjects:   0%|          | 0/11 [00:00<?, ?it/s]predicting test subjects:   9%|▉         | 1/11 [00:03<00:31,  3.17s/it]predicting test subjects:  18%|█▊        | 2/11 [00:05<00:27,  3.02s/it]predicting test subjects:  27%|██▋       | 3/11 [00:08<00:24,  3.05s/it]predicting test subjects:  36%|███▋      | 4/11 [00:11<00:20,  2.90s/it]predicting test subjects:  45%|████▌     | 5/11 [00:13<00:16,  2.74s/it]predicting test subjects:  55%|█████▍    | 6/11 [00:17<00:14,  2.88s/it]predicting test subjects:  64%|██████▎   | 7/11 [00:19<00:11,  2.84s/it]predicting test subjects:  73%|███████▎  | 8/11 [00:22<00:08,  2.74s/it]predicting test subjects:  82%|████████▏ | 9/11 [00:24<00:05,  2.68s/it]predicting test subjects:  91%|█████████ | 10/11 [00:27<00:02,  2.69s/it]predicting test subjects: 100%|██████████| 11/11 [00:30<00:00,  2.82s/it]
-predicting train subjects:   0%|          | 0/41 [00:00<?, ?it/s]predicting train subjects:   2%|▏         | 1/41 [00:03<02:10,  3.27s/it]predicting train subjects:   5%|▍         | 2/41 [00:06<02:01,  3.13s/it]predicting train subjects:   7%|▋         | 3/41 [00:08<01:54,  3.01s/it]predicting train subjects:  10%|▉         | 4/41 [00:11<01:44,  2.82s/it]predicting train subjects:  12%|█▏        | 5/41 [00:14<01:50,  3.07s/it]predicting train subjects:  15%|█▍        | 6/41 [00:17<01:45,  3.01s/it]predicting train subjects:  17%|█▋        | 7/41 [00:20<01:36,  2.85s/it]predicting train subjects:  20%|█▉        | 8/41 [00:21<01:21,  2.46s/it]predicting train subjects:  22%|██▏       | 9/41 [00:24<01:23,  2.60s/it]predicting train subjects:  24%|██▍       | 10/41 [00:28<01:27,  2.82s/it]predicting train subjects:  27%|██▋       | 11/41 [00:31<01:27,  2.92s/it]predicting train subjects:  29%|██▉       | 12/41 [00:32<01:13,  2.53s/it]predicting train subjects:  32%|███▏      | 13/41 [00:35<01:13,  2.62s/it]predicting train subjects:  34%|███▍      | 14/41 [00:38<01:13,  2.73s/it]predicting train subjects:  37%|███▋      | 15/41 [00:40<01:02,  2.41s/it]predicting train subjects:  39%|███▉      | 16/41 [00:43<01:06,  2.66s/it]predicting train subjects:  41%|████▏     | 17/41 [00:47<01:10,  2.94s/it]predicting train subjects:  44%|████▍     | 18/41 [00:49<01:06,  2.91s/it]predicting train subjects:  46%|████▋     | 19/41 [00:52<01:02,  2.85s/it]predicting train subjects:  49%|████▉     | 20/41 [00:55<00:57,  2.73s/it]predicting train subjects:  51%|█████     | 21/41 [00:57<00:54,  2.72s/it]predicting train subjects:  54%|█████▎    | 22/41 [01:00<00:53,  2.81s/it]predicting train subjects:  56%|█████▌    | 23/41 [01:02<00:43,  2.42s/it]predicting train subjects:  59%|█████▊    | 24/41 [01:04<00:42,  2.48s/it]predicting train subjects:  61%|██████    | 25/41 [01:07<00:41,  2.59s/it]predicting train subjects:  63%|██████▎   | 26/41 [01:10<00:40,  2.71s/it]predicting train subjects:  66%|██████▌   | 27/41 [01:13<00:38,  2.78s/it]predicting train subjects:  68%|██████▊   | 28/41 [01:16<00:37,  2.89s/it]predicting train subjects:  71%|███████   | 29/41 [01:19<00:33,  2.78s/it]predicting train subjects:  73%|███████▎  | 30/41 [01:22<00:32,  2.93s/it]predicting train subjects:  76%|███████▌  | 31/41 [01:25<00:29,  2.93s/it]predicting train subjects:  78%|███████▊  | 32/41 [01:28<00:25,  2.83s/it]predicting train subjects:  80%|████████  | 33/41 [01:31<00:22,  2.86s/it]predicting train subjects:  83%|████████▎ | 34/41 [01:34<00:22,  3.15s/it]predicting train subjects:  85%|████████▌ | 35/41 [01:39<00:20,  3.43s/it]predicting train subjects:  88%|████████▊ | 36/41 [01:43<00:18,  3.62s/it]predicting train subjects:  90%|█████████ | 37/41 [01:46<00:14,  3.53s/it]predicting train subjects:  93%|█████████▎| 38/41 [01:49<00:10,  3.36s/it]predicting train subjects:  95%|█████████▌| 39/41 [01:52<00:06,  3.25s/it]predicting train subjects:  98%|█████████▊| 40/41 [01:55<00:03,  3.26s/it]predicting train subjects: 100%|██████████| 41/41 [01:58<00:00,  3.27s/it]
-Loading train:   0%|          | 0/41 [00:00<?, ?it/s]Loading train:   2%|▏         | 1/41 [00:00<00:34,  1.17it/s]Loading train:   5%|▍         | 2/41 [00:01<00:34,  1.14it/s]Loading train:   7%|▋         | 3/41 [00:02<00:32,  1.19it/s]Loading train:  10%|▉         | 4/41 [00:03<00:28,  1.28it/s]Loading train:  12%|█▏        | 5/41 [00:04<00:30,  1.19it/s]Loading train:  15%|█▍        | 6/41 [00:05<00:29,  1.17it/s]Loading train:  17%|█▋        | 7/41 [00:05<00:27,  1.22it/s]Loading train:  20%|█▉        | 8/41 [00:06<00:24,  1.36it/s]Loading train:  22%|██▏       | 9/41 [00:07<00:23,  1.37it/s]Loading train:  24%|██▍       | 10/41 [00:07<00:23,  1.33it/s]Loading train:  27%|██▋       | 11/41 [00:08<00:24,  1.21it/s]Loading train:  29%|██▉       | 12/41 [00:09<00:21,  1.36it/s]Loading train:  32%|███▏      | 13/41 [00:10<00:21,  1.29it/s]Loading train:  34%|███▍      | 14/41 [00:11<00:21,  1.27it/s]Loading train:  37%|███▋      | 15/41 [00:11<00:19,  1.34it/s]Loading train:  39%|███▉      | 16/41 [00:12<00:19,  1.28it/s]Loading train:  41%|████▏     | 17/41 [00:13<00:20,  1.15it/s]Loading train:  44%|████▍     | 18/41 [00:14<00:19,  1.19it/s]Loading train:  46%|████▋     | 19/41 [00:15<00:17,  1.27it/s]Loading train:  49%|████▉     | 20/41 [00:15<00:15,  1.34it/s]Loading train:  51%|█████     | 21/41 [00:16<00:15,  1.31it/s]Loading train:  54%|█████▎    | 22/41 [00:17<00:14,  1.28it/s]Loading train:  56%|█████▌    | 23/41 [00:17<00:13,  1.36it/s]Loading train:  59%|█████▊    | 24/41 [00:18<00:12,  1.34it/s]Loading train:  61%|██████    | 25/41 [00:19<00:12,  1.28it/s]Loading train:  63%|██████▎   | 26/41 [00:20<00:12,  1.24it/s]Loading train:  66%|██████▌   | 27/41 [00:21<00:11,  1.23it/s]Loading train:  68%|██████▊   | 28/41 [00:22<00:10,  1.21it/s]Loading train:  71%|███████   | 29/41 [00:22<00:09,  1.23it/s]Loading train:  73%|███████▎  | 30/41 [00:23<00:09,  1.16it/s]Loading train:  76%|███████▌  | 31/41 [00:24<00:08,  1.17it/s]Loading train:  78%|███████▊  | 32/41 [00:25<00:07,  1.19it/s]Loading train:  80%|████████  | 33/41 [00:26<00:06,  1.22it/s]Loading train:  83%|████████▎ | 34/41 [00:27<00:06,  1.09it/s]Loading train:  85%|████████▌ | 35/41 [00:28<00:06,  1.04s/it]Loading train:  88%|████████▊ | 36/41 [00:30<00:05,  1.09s/it]Loading train:  90%|█████████ | 37/41 [00:31<00:04,  1.09s/it]Loading train:  93%|█████████▎| 38/41 [00:31<00:02,  1.01it/s]Loading train:  95%|█████████▌| 39/41 [00:32<00:01,  1.07it/s]Loading train:  98%|█████████▊| 40/41 [00:33<00:00,  1.09it/s]Loading train: 100%|██████████| 41/41 [00:34<00:00,  1.09it/s]
-concatenating: train:   0%|          | 0/41 [00:00<?, ?it/s]concatenating: train:  29%|██▉       | 12/41 [00:00<00:00, 116.42it/s]concatenating: train: 100%|██████████| 41/41 [00:00<00:00, 141.46it/s]
-Loading test:   0%|          | 0/11 [00:00<?, ?it/s]Loading test:   9%|▉         | 1/11 [00:00<00:07,  1.28it/s]Loading test:  18%|█▊        | 2/11 [00:01<00:07,  1.28it/s]Loading test:  27%|██▋       | 3/11 [00:02<00:06,  1.23it/s]Loading test:  36%|███▋      | 4/11 [00:03<00:05,  1.22it/s]Loading test:  45%|████▌     | 5/11 [00:03<00:04,  1.27it/s]Loading test:  55%|█████▍    | 6/11 [00:04<00:03,  1.29it/s]Loading test:  64%|██████▎   | 7/11 [00:05<00:02,  1.34it/s]Loading test:  73%|███████▎  | 8/11 [00:06<00:02,  1.37it/s]Loading test:  82%|████████▏ | 9/11 [00:06<00:01,  1.37it/s]Loading test:  91%|█████████ | 10/11 [00:07<00:00,  1.30it/s]Loading test: 100%|██████████| 11/11 [00:08<00:00,  1.24it/s]
-concatenating: validation:   0%|          | 0/11 [00:00<?, ?it/s]concatenating: validation: 100%|██████████| 11/11 [00:00<00:00, 266.59it/s]
-activation_6 (Activation)       (None, 14, 13, 80)   0           batch_normalization_6[0][0]      
-__________________________________________________________________________________________________
-concatenate_2 (Concatenate)     (None, 14, 13, 140)  0           dropout_2[0][0]                  
-                                                                 activation_6[0][0]               
-__________________________________________________________________________________________________
-dropout_3 (Dropout)             (None, 14, 13, 140)  0           concatenate_2[0][0]              
-__________________________________________________________________________________________________
-conv2d_transpose_1 (Conv2DTrans (None, 28, 26, 40)   22440       dropout_3[0][0]                  
-__________________________________________________________________________________________________
-concatenate_3 (Concatenate)     (None, 28, 26, 100)  0           conv2d_transpose_1[0][0]         
-                                                                 concatenate_1[0][0]              
-__________________________________________________________________________________________________
-conv2d_7 (Conv2D)               (None, 28, 26, 40)   36040       concatenate_3[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_7 (BatchNor (None, 28, 26, 40)   160         conv2d_7[0][0]                   
-__________________________________________________________________________________________________
-activation_7 (Activation)       (None, 28, 26, 40)   0           batch_normalization_7[0][0]      
-__________________________________________________________________________________________________
-conv2d_8 (Conv2D)               (None, 28, 26, 40)   14440       activation_7[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_8 (BatchNor (None, 28, 26, 40)   160         conv2d_8[0][0]                   
-__________________________________________________________________________________________________
-activation_8 (Activation)       (None, 28, 26, 40)   0           batch_normalization_8[0][0]      
-__________________________________________________________________________________________________
-concatenate_4 (Concatenate)     (None, 28, 26, 140)  0           concatenate_3[0][0]              
-                                                                 activation_8[0][0]               
-__________________________________________________________________________________________________
-dropout_4 (Dropout)             (None, 28, 26, 140)  0           concatenate_4[0][0]              
-__________________________________________________________________________________________________
-conv2d_transpose_2 (Conv2DTrans (None, 56, 52, 20)   11220       dropout_4[0][0]                  
-__________________________________________________________________________________________________
-concatenate_5 (Concatenate)     (None, 56, 52, 40)   0           conv2d_transpose_2[0][0]         
-                                                                 activation_2[0][0]               
-__________________________________________________________________________________________________
-conv2d_9 (Conv2D)               (None, 56, 52, 20)   7220        concatenate_5[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_9 (BatchNor (None, 56, 52, 20)   80          conv2d_9[0][0]                   
-__________________________________________________________________________________________________
-activation_9 (Activation)       (None, 56, 52, 20)   0           batch_normalization_9[0][0]      
-__________________________________________________________________________________________________
-conv2d_10 (Conv2D)              (None, 56, 52, 20)   3620        activation_9[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_10 (BatchNo (None, 56, 52, 20)   80          conv2d_10[0][0]                  
-__________________________________________________________________________________________________
-activation_10 (Activation)      (None, 56, 52, 20)   0           batch_normalization_10[0][0]     
-__________________________________________________________________________________________________
-concatenate_6 (Concatenate)     (None, 56, 52, 60)   0           concatenate_5[0][0]              
-                                                                 activation_10[0][0]              
-__________________________________________________________________________________________________
-dropout_5 (Dropout)             (None, 56, 52, 60)   0           concatenate_6[0][0]              
-__________________________________________________________________________________________________
-conv2d_11 (Conv2D)              (None, 56, 52, 13)   793         dropout_5[0][0]                  
-==================================================================================================
-Total params: 223,833
-Trainable params: 223,033
-Non-trainable params: 800
-__________________________________________________________________________________________________
----------------------------------------------------------------
- Nucleus: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 1  | SD 0  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
-Experiment: exp6
-SubExperiment: sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a
----------------------------------------------------------------
-__________________________________________________________________________________________________
-Layer (type)                    Output Shape         Param #     Connected to                     
-==================================================================================================
-input_1 (InputLayer)            (None, 88, 56, 1)    0                                            
-__________________________________________________________________________________________________
-conv2d_1 (Conv2D)               (None, 88, 56, 20)   200         input_1[0][0]                    
-__________________________________________________________________________________________________
-batch_normalization_1 (BatchNor (None, 88, 56, 20)   80          conv2d_1[0][0]                   
-__________________________________________________________________________________________________
-activation_1 (Activation)       (None, 88, 56, 20)   0           batch_normalization_1[0][0]      
-__________________________________________________________________________________________________
-conv2d_2 (Conv2D)               (None, 88, 56, 20)   3620        activation_1[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_2 (BatchNor (None, 88, 56, 20)   80          conv2d_2[0][0]                   
-__________________________________________________________________________________________________
-activation_2 (Activation)       (None, 88, 56, 20)   0           batch_normalization_2[0][0]      
-__________________________________________________________________________________________________
-max_pooling2d_1 (MaxPooling2D)  (None, 44, 28, 20)   0           activation_2[0][0]               
-__________________________________________________________________________________________________
-dropout_1 (Dropout)             (None, 44, 28, 20)   0           max_pooling2d_1[0][0]            
-__________________________________________________________________________________________________
-conv2d_3 (Conv2D)               (None, 44, 28, 40)   7240        dropout_1[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_3 (BatchNor (None, 44, 28, 40)   160         conv2d_3[0][0]                   
-__________________________________________________________________________________________________2019-07-27 13:32:17.291491: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
-2019-07-27 13:32:17.291573: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
-2019-07-27 13:32:17.291590: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
-2019-07-27 13:32:17.291601: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
-2019-07-27 13:32:17.510250: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:05:00.0, compute capability: 6.0)
-
-predicting test subjects:   0%|          | 0/11 [00:00<?, ?it/s]predicting test subjects:   9%|▉         | 1/11 [00:03<00:30,  3.01s/it]predicting test subjects:  18%|█▊        | 2/11 [00:05<00:25,  2.87s/it]predicting test subjects:  27%|██▋       | 3/11 [00:08<00:22,  2.85s/it]predicting test subjects:  36%|███▋      | 4/11 [00:10<00:18,  2.67s/it]predicting test subjects:  45%|████▌     | 5/11 [00:12<00:15,  2.56s/it]predicting test subjects:  55%|█████▍    | 6/11 [00:15<00:13,  2.61s/it]predicting test subjects:  64%|██████▎   | 7/11 [00:18<00:10,  2.65s/it]predicting test subjects:  73%|███████▎  | 8/11 [00:21<00:08,  2.77s/it]predicting test subjects:  82%|████████▏ | 9/11 [00:24<00:05,  2.72s/it]predicting test subjects:  91%|█████████ | 10/11 [00:26<00:02,  2.74s/it]predicting test subjects: 100%|██████████| 11/11 [00:29<00:00,  2.86s/it]
-predicting train subjects:   0%|          | 0/41 [00:00<?, ?it/s]predicting train subjects:   2%|▏         | 1/41 [00:04<02:40,  4.00s/it]predicting train subjects:   5%|▍         | 2/41 [00:06<02:19,  3.57s/it]predicting train subjects:   7%|▋         | 3/41 [00:08<02:02,  3.21s/it]predicting train subjects:  10%|▉         | 4/41 [00:11<01:47,  2.90s/it]predicting train subjects:  12%|█▏        | 5/41 [00:14<01:49,  3.03s/it]predicting train subjects:  15%|█▍        | 6/41 [00:17<01:41,  2.90s/it]predicting train subjects:  17%|█▋        | 7/41 [00:19<01:33,  2.74s/it]predicting train subjects:  20%|█▉        | 8/41 [00:20<01:17,  2.36s/it]predicting train subjects:  22%|██▏       | 9/41 [00:23<01:18,  2.44s/it]predicting train subjects:  24%|██▍       | 10/41 [00:26<01:21,  2.63s/it]predicting train subjects:  27%|██▋       | 11/41 [00:29<01:21,  2.73s/it]predicting train subjects:  29%|██▉       | 12/41 [00:31<01:09,  2.39s/it]predicting train subjects:  32%|███▏      | 13/41 [00:33<01:08,  2.44s/it]predicting train subjects:  34%|███▍      | 14/41 [00:36<01:08,  2.52s/it]predicting train subjects:  37%|███▋      | 15/41 [00:37<00:58,  2.23s/it]predicting train subjects:  39%|███▉      | 16/41 [00:40<01:00,  2.43s/it]predicting train subjects:  41%|████▏     | 17/41 [00:44<01:04,  2.68s/it]predicting train subjects:  44%|████▍     | 18/41 [00:46<01:01,  2.67s/it]predicting train subjects:  46%|████▋     | 19/41 [00:49<00:56,  2.58s/it]predicting train subjects:  49%|████▉     | 20/41 [00:51<00:50,  2.42s/it]predicting train subjects:  51%|█████     | 21/41 [00:53<00:49,  2.47s/it]predicting train subjects:  54%|█████▎    | 22/41 [00:56<00:48,  2.54s/it]predicting train subjects:  56%|█████▌    | 23/41 [00:57<00:40,  2.22s/it]predicting train subjects:  59%|█████▊    | 24/41 [01:00<00:39,  2.30s/it]predicting train subjects:  61%|██████    | 25/41 [01:03<00:39,  2.44s/it]predicting train subjects:  63%|██████▎   | 26/41 [01:06<00:39,  2.61s/it]predicting train subjects:  66%|██████▌   | 27/41 [01:09<00:37,  2.67s/it]predicting train subjects:  68%|██████▊   | 28/41 [01:11<00:35,  2.72s/it]predicting train subjects:  71%|███████   | 29/41 [01:14<00:31,  2.66s/it]predicting train subjects:  73%|███████▎  | 30/41 [01:17<00:31,  2.85s/it]predicting train subjects:  76%|███████▌  | 31/41 [01:20<00:28,  2.82s/it]predicting train subjects:  78%|███████▊  | 32/41 [01:22<00:24,  2.73s/it]predicting train subjects:  80%|████████  | 33/41 [01:25<00:22,  2.78s/it]predicting train subjects:  83%|████████▎ | 34/41 [01:29<00:21,  3.01s/it]predicting train subjects:  85%|████████▌ | 35/41 [01:33<00:20,  3.35s/it]predicting train subjects:  88%|████████▊ | 36/41 [01:37<00:17,  3.54s/it]predicting train subjects:  90%|█████████ | 37/41 [01:40<00:13,  3.44s/it]predicting train subjects:  93%|█████████▎| 38/41 [01:43<00:09,  3.24s/it]predicting train subjects:  95%|█████████▌| 39/41 [01:46<00:06,  3.14s/it]predicting train subjects:  98%|█████████▊| 40/41 [01:49<00:03,  3.13s/it]predicting train subjects: 100%|██████████| 41/41 [01:52<00:00,  3.11s/it]
-activation_3 (Activation)       (None, 44, 28, 40)   0           batch_normalization_3[0][0]      
-__________________________________________________________________________________________________
-conv2d_4 (Conv2D)               (None, 44, 28, 40)   14440       activation_3[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_4 (BatchNor (None, 44, 28, 40)   160         conv2d_4[0][0]                   
-__________________________________________________________________________________________________
-activation_4 (Activation)       (None, 44, 28, 40)   0           batch_normalization_4[0][0]      
-__________________________________________________________________________________________________
-concatenate_1 (Concatenate)     (None, 44, 28, 60)   0           dropout_1[0][0]                  
-                                                                 activation_4[0][0]               
-__________________________________________________________________________________________________
-max_pooling2d_2 (MaxPooling2D)  (None, 22, 14, 60)   0           concatenate_1[0][0]              
-__________________________________________________________________________________________________
-dropout_2 (Dropout)             (None, 22, 14, 60)   0           max_pooling2d_2[0][0]            
-__________________________________________________________________________________________________
-conv2d_5 (Conv2D)               (None, 22, 14, 80)   43280       dropout_2[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_5 (BatchNor (None, 22, 14, 80)   320         conv2d_5[0][0]                   
-__________________________________________________________________________________________________
-activation_5 (Activation)       (None, 22, 14, 80)   0           batch_normalization_5[0][0]      
-__________________________________________________________________________________________________
-conv2d_6 (Conv2D)               (None, 22, 14, 80)   57680       activation_5[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_6 (BatchNor (None, 22, 14, 80)   320         conv2d_6[0][0]                   
-__________________________________________________________________________________________________
-activation_6 (Activation)       (None, 22, 14, 80)   0           batch_normalization_6[0][0]      
-__________________________________________________________________________________________________
-concatenate_2 (Concatenate)     (None, 22, 14, 140)  0           dropout_2[0][0]                  
-                                                                 activation_6[0][0]               
-__________________________________________________________________________________________________
-dropout_3 (Dropout)             (None, 22, 14, 140)  0           concatenate_2[0][0]              
-__________________________________________________________________________________________________
-conv2d_transpose_1 (Conv2DTrans (None, 44, 28, 40)   22440       dropout_3[0][0]                  
-__________________________________________________________________________________________________
-concatenate_3 (Concatenate)     (None, 44, 28, 100)  0           conv2d_transpose_1[0][0]         
-                                                                 concatenate_1[0][0]              
-__________________________________________________________________________________________________
-conv2d_7 (Conv2D)               (None, 44, 28, 40)   36040       concatenate_3[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_7 (BatchNor (None, 44, 28, 40)   160         conv2d_7[0][0]                   
-__________________________________________________________________________________________________
-activation_7 (Activation)       (None, 44, 28, 40)   0           batch_normalization_7[0][0]      
-__________________________________________________________________________________________________
-conv2d_8 (Conv2D)               (None, 44, 28, 40)   14440       activation_7[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_8 (BatchNor (None, 44, 28, 40)   160         conv2d_8[0][0]                   
-__________________________________________________________________________________________________
-activation_8 (Activation)       (None, 44, 28, 40)   0           batch_normalization_8[0][0]      
-__________________________________________________________________________________________________
-concatenate_4 (Concatenate)     (None, 44, 28, 140)  0           concatenate_3[0][0]              
-                                                                 activation_8[0][0]               
-__________________________________________________________________________________________________
-dropout_4 (Dropout)             (None, 44, 28, 140)  0           concatenate_4[0][0]              
-__________________________________________________________________________________________________
-conv2d_transpose_2 (Conv2DTrans (None, 88, 56, 20)   11220       dropout_4[0][0]                  
-__________________________________________________________________________________________________
-concatenate_5 (Concatenate)     (None, 88, 56, 40)   0           conv2d_transpose_2[0][0]         
-                                                                 activation_2[0][0]               
-__________________________________________________________________________________________________
-conv2d_9 (Conv2D)               (None, 88, 56, 20)   7220        concatenate_5[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_9 (BatchNor (None, 88, 56, 20)   80          conv2d_9[0][0]                   
-__________________________________________________________________________________________________
-activation_9 (Activation)       (None, 88, 56, 20)   0           batch_normalization_9[0][0]      
-__________________________________________________________________________________________________
-conv2d_10 (Conv2D)              (None, 88, 56, 20)   3620        activation_9[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_10 (BatchNo (None, 88, 56, 20)   80          conv2d_10[0][0]                  
-__________________________________________________________________________________________________
-activation_10 (Activation)      (None, 88, 56, 20)   0           batch_normalization_10[0][0]     
-__________________________________________________________________________________________________
-concatenate_6 (Concatenate)     (None, 88, 56, 60)   0           concatenate_5[0][0]              
-                                                                 activation_10[0][0]              
-__________________________________________________________________________________________________
-dropout_5 (Dropout)             (None, 88, 56, 60)   0           concatenate_6[0][0]              
-__________________________________________________________________________________________________
-conv2d_11 (Conv2D)              (None, 88, 56, 13)   793         dropout_5[0][0]                  
-==================================================================================================
-Total params: 223,833
-Trainable params: 223,033
-Non-trainable params: 800
-__________________________________________________________________________________________________
----------------------- check Layers Step ------------------------------
- N: [1]  | GPU: 1  | SD 0  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 30 |  Upsample 1
-
- #layer 3 #layers changed False
----------------------- check Layers Step ------------------------------
- N: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-Loading train:   0%|          | 0/41 [00:00<?, ?it/s]Loading train:   2%|▏         | 1/41 [00:00<00:38,  1.03it/s]Loading train:   5%|▍         | 2/41 [00:01<00:35,  1.11it/s]Loading train:   7%|▋         | 3/41 [00:02<00:31,  1.20it/s]Loading train:  10%|▉         | 4/41 [00:03<00:28,  1.30it/s]Loading train:  12%|█▏        | 5/41 [00:03<00:29,  1.20it/s]Loading train:  15%|█▍        | 6/41 [00:04<00:28,  1.21it/s]Loading train:  17%|█▋        | 7/41 [00:05<00:26,  1.28it/s]Loading train:  20%|█▉        | 8/41 [00:06<00:23,  1.39it/s]Loading train:  22%|██▏       | 9/41 [00:06<00:24,  1.33it/s]Loading train:  24%|██▍       | 10/41 [00:07<00:25,  1.20it/s]Loading train:  27%|██▋       | 11/41 [00:08<00:25,  1.15it/s]Loading train:  29%|██▉       | 12/41 [00:09<00:22,  1.30it/s]Loading train:  32%|███▏      | 13/41 [00:10<00:20,  1.36it/s]Loading train:  34%|███▍      | 14/41 [00:10<00:20,  1.32it/s]Loading train:  37%|███▋      | 15/41 [00:11<00:18,  1.39it/s]Loading train:  39%|███▉      | 16/41 [00:12<00:19,  1.31it/s]Loading train:  41%|████▏     | 17/41 [00:13<00:20,  1.18it/s]Loading train:  44%|████▍     | 18/41 [00:14<00:19,  1.18it/s]Loading train:  46%|████▋     | 19/41 [00:15<00:18,  1.20it/s]Loading train:  49%|████▉     | 20/41 [00:15<00:17,  1.22it/s]Loading train:  51%|█████     | 21/41 [00:16<00:16,  1.22it/s]Loading train:  54%|█████▎    | 22/41 [00:17<00:15,  1.19it/s]Loading train:  56%|█████▌    | 23/41 [00:18<00:13,  1.34it/s]Loading train:  59%|█████▊    | 24/41 [00:18<00:12,  1.34it/s]Loading train:  61%|██████    | 25/41 [00:19<00:12,  1.28it/s]Loading train:  63%|██████▎   | 26/41 [00:20<00:11,  1.30it/s]Loading train:  66%|██████▌   | 27/41 [00:21<00:11,  1.27it/s]Loading train:  68%|██████▊   | 28/41 [00:22<00:10,  1.27it/s]Loading train:  71%|███████   | 29/41 [00:22<00:08,  1.35it/s]Loading train:  73%|███████▎  | 30/41 [00:23<00:08,  1.32it/s]Loading train:  76%|███████▌  | 31/41 [00:24<00:07,  1.37it/s]Loading train:  78%|███████▊  | 32/41 [00:24<00:06,  1.37it/s]Loading train:  80%|████████  | 33/41 [00:25<00:05,  1.40it/s]Loading train:  83%|████████▎ | 34/41 [00:26<00:05,  1.28it/s]Loading train:  85%|████████▌ | 35/41 [00:27<00:05,  1.08it/s]Loading train:  88%|████████▊ | 36/41 [00:28<00:04,  1.02it/s]Loading train:  90%|█████████ | 37/41 [00:29<00:03,  1.07it/s]Loading train:  93%|█████████▎| 38/41 [00:30<00:02,  1.15it/s]Loading train:  95%|█████████▌| 39/41 [00:31<00:01,  1.20it/s]Loading train:  98%|█████████▊| 40/41 [00:32<00:00,  1.16it/s]Loading train: 100%|██████████| 41/41 [00:32<00:00,  1.20it/s]
-concatenating: train:   0%|          | 0/41 [00:00<?, ?it/s]concatenating: train:  24%|██▍       | 10/41 [00:00<00:00, 98.47it/s]concatenating: train: 100%|██████████| 41/41 [00:00<00:00, 123.73it/s]
-Loading test:   0%|          | 0/11 [00:00<?, ?it/s]Loading test:   9%|▉         | 1/11 [00:00<00:07,  1.29it/s]Loading test:  18%|█▊        | 2/11 [00:01<00:06,  1.37it/s]Loading test:  27%|██▋       | 3/11 [00:02<00:05,  1.35it/s]Loading test:  36%|███▋      | 4/11 [00:02<00:04,  1.44it/s]Loading test:  45%|████▌     | 5/11 [00:03<00:04,  1.40it/s]Loading test:  55%|█████▍    | 6/11 [00:04<00:03,  1.42it/s]Loading test:  64%|██████▎   | 7/11 [00:04<00:02,  1.37it/s]Loading test:  73%|███████▎  | 8/11 [00:05<00:02,  1.42it/s]Loading test:  82%|████████▏ | 9/11 [00:06<00:01,  1.41it/s]Loading test:  91%|█████████ | 10/11 [00:07<00:00,  1.36it/s]Loading test: 100%|██████████| 11/11 [00:08<00:00,  1.29it/s]
-concatenating: validation:   0%|          | 0/11 [00:00<?, ?it/s]concatenating: validation: 100%|██████████| 11/11 [00:00<00:00, 212.50it/s]  | GPU: 1  | SD 0  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 30 |  Upsample 1
-
- #layer 3 #layers changed False
----------------------------------------------------------------
- Nucleus: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 1  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 30 |  Upsample 1
-Experiment: exp6
-SubExperiment: sE12_Cascade_FM30_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a
----------------------------------------------------------------
-__________________________________________________________________________________________________
-Layer (type)                    Output Shape         Param #     Connected to                     
-==================================================================================================
-input_1 (InputLayer)            (None, 52, 88, 1)    0                                            
-__________________________________________________________________________________________________
-conv2d_1 (Conv2D)               (None, 52, 88, 30)   300         input_1[0][0]                    
-__________________________________________________________________________________________________
-batch_normalization_1 (BatchNor (None, 52, 88, 30)   120         conv2d_1[0][0]                   
-__________________________________________________________________________________________________
-activation_1 (Activation)       (None, 52, 88, 30)   0           batch_normalization_1[0][0]      
-__________________________________________________________________________________________________
-conv2d_2 (Conv2D)               (None, 52, 88, 30)   8130        activation_1[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_2 (BatchNor (None, 52, 88, 30)   120         conv2d_2[0][0]                   
-__________________________________________________________________________________________________
-activation_2 (Activation)       (None, 52, 88, 30)   0           batch_normalization_2[0][0]      
-__________________________________________________________________________________________________
-max_pooling2d_1 (MaxPooling2D)  (None, 26, 44, 30)   0           activation_2[0][0]               
-__________________________________________________________________________________________________
-dropout_1 (Dropout)             (None, 26, 44, 30)   0           max_pooling2d_1[0][0]            
-__________________________________________________________________________________________________
-conv2d_3 (Conv2D)               (None, 26, 44, 60)   16260       dropout_1[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_3 (BatchNor (None, 26, 44, 60)   240         conv2d_3[0][0]                   
-__________________________________________________________________________________________________
-activation_3 (Activation)       (None, 26, 44, 60)   0           batch_normalization_3[0][0]      
-__________________________________________________________________________________________________
-conv2d_4 (Conv2D)               (None, 26, 44, 60)   32460       activation_3[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_4 (BatchNor (None, 26, 44, 60)   240         conv2d_4[0][0]                   
-__________________________________________________________________________________________________
-activation_4 (Activation)       (None, 26, 44, 60)   0           batch_normalization_4[0][0]      
-__________________________________________________________________________________________________
-concatenate_1 (Concatenate)     (None, 26, 44, 90)   0           dropout_1[0][0]                  
-                                                                 activation_4[0][0]               
-__________________________________________________________________________________________________
-max_pooling2d_2 (MaxPooling2D)  (None, 13, 22, 90)   0           concatenate_1[0][0]              
-__________________________________________________________________________________________________
-dropout_2 (Dropout)             (None, 13, 22, 90)   0           max_pooling2d_2[0][0]            
-__________________________________________________________________________________________________
-conv2d_5 (Conv2D)               (None, 13, 22, 120)  97320       dropout_2[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_5 (BatchNor (None, 13, 22, 120)  480         conv2d_5[0][0]                   
-__________________________________________________________________________________________________
-activation_5 (Activation)       (None, 13, 22, 120)  0           batch_normalization_5[0][0]      
-__________________________________________________________________________________________________
-conv2d_6 (Conv2D)               (None, 13, 22, 120)  129720      activation_5[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_6 (BatchNor (None, 13, 22, 120)  480         conv2d_6[0][0]                   
-__________________________________________________________________________________________________
-activation_6 (Activation)       (None, 13, 22, 120)  0           batch_normalization_6[0][0]      
-__________________________________________________________________________________________________
-concatenate_2 (Concatenate)     (None, 13, 22, 210)  0           dropout_2[0][0]                  
-                                                                 activation_6[0][0]               
-__________________________________________________________________________________________________
-dropout_3 (Dropout)             (None, 13, 22, 210)  0           concatenate_2[0][0]              
-__________________________________________________________________________________________________
-conv2d_transpose_1 (Conv2DTrans (None, 26, 44, 60)   50460       dropout_3[0][0]                  
-__________________________________________________________________________________________________
-concatenate_3 (Concatenate)     (None, 26, 44, 150)  0           conv2d_transpose_1[0][0]         
-                                                                 concatenate_1[0][0]              
-__________________________________________________________________________________________________
-conv2d_7 (Conv2D)               (None, 26, 44, 60)   81060       concatenate_3[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_7 (BatchNor (None, 26, 44, 60)   240         conv2d_7[0][0]                   
-__________________________________________________________________________________________________
-activation_7 (Activation)       (None, 26, 44, 60)   0           batch_normalization_7[0][0]      
-__________________________________________________________________________________________________
-conv2d_8 (Conv2D)               (None, 26, 44, 60)   32460       activation_7[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_8 (BatchNor (None, 26, 44, 60)   240         conv2d_8[0][0]                   
-__________________________________________________________________________________________________
-activation_8 (Activation)       (None, 26, 44, 60)   0           batch_normalization_8[0][0]      
-__________________________________________________________________________________________________
-concatenate_4 (Concatenate)     (None, 26, 44, 210)  0           concatenate_3[0][0]              
-                                                                 activation_8[0][0]               
-__________________________________________________________________________________________________
-dropout_4 (Dropout)             (None, 26, 44, 210)  0           concatenate_4[0][0]              2019-07-27 13:35:26.750934: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
-2019-07-27 13:35:26.751036: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
-2019-07-27 13:35:26.751053: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
-2019-07-27 13:35:26.751063: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
-2019-07-27 13:35:26.752978: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:05:00.0, compute capability: 6.0)
-
-predicting test subjects:   0%|          | 0/11 [00:00<?, ?it/s]predicting test subjects:   9%|▉         | 1/11 [00:03<00:35,  3.58s/it]predicting test subjects:  18%|█▊        | 2/11 [00:06<00:29,  3.32s/it]predicting test subjects:  27%|██▋       | 3/11 [00:09<00:27,  3.42s/it]predicting test subjects:  36%|███▋      | 4/11 [00:12<00:21,  3.11s/it]predicting test subjects:  45%|████▌     | 5/11 [00:15<00:18,  3.08s/it]predicting test subjects:  55%|█████▍    | 6/11 [00:18<00:15,  3.06s/it]predicting test subjects:  64%|██████▎   | 7/11 [00:21<00:12,  3.08s/it]predicting test subjects:  73%|███████▎  | 8/11 [00:23<00:08,  2.88s/it]predicting test subjects:  82%|████████▏ | 9/11 [00:26<00:05,  2.82s/it]predicting test subjects:  91%|█████████ | 10/11 [00:29<00:02,  2.89s/it]predicting test subjects: 100%|██████████| 11/11 [00:33<00:00,  3.05s/it]
-predicting train subjects:   0%|          | 0/41 [00:00<?, ?it/s]predicting train subjects:   2%|▏         | 1/41 [00:03<02:11,  3.28s/it]predicting train subjects:   5%|▍         | 2/41 [00:06<02:02,  3.14s/it]predicting train subjects:   7%|▋         | 3/41 [00:08<01:53,  2.97s/it]predicting train subjects:  10%|▉         | 4/41 [00:11<01:44,  2.82s/it]predicting train subjects:  12%|█▏        | 5/41 [00:14<01:52,  3.12s/it]predicting train subjects:  15%|█▍        | 6/41 [00:18<01:51,  3.18s/it]predicting train subjects:  17%|█▋        | 7/41 [00:20<01:38,  2.90s/it]predicting train subjects:  20%|█▉        | 8/41 [00:22<01:23,  2.53s/it]predicting train subjects:  22%|██▏       | 9/41 [00:24<01:21,  2.56s/it]predicting train subjects:  24%|██▍       | 10/41 [00:28<01:25,  2.76s/it]predicting train subjects:  27%|██▋       | 11/41 [00:31<01:29,  2.98s/it]predicting train subjects:  29%|██▉       | 12/41 [00:33<01:16,  2.64s/it]predicting train subjects:  32%|███▏      | 13/41 [00:36<01:17,  2.78s/it]
-__________________________________________________________________________________________________
-conv2d_transpose_2 (Conv2DTrans (None, 52, 88, 30)   25230       dropout_4[0][0]                  
-__________________________________________________________________________________________________
-concatenate_5 (Concatenate)     (None, 52, 88, 60)   0           conv2d_transpose_2[0][0]         
-                                                                 activation_2[0][0]               
-__________________________________________________________________________________________________
-conv2d_9 (Conv2D)               (None, 52, 88, 30)   16230       concatenate_5[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_9 (BatchNor (None, 52, 88, 30)   120         conv2d_9[0][0]                   
-__________________________________________________________________________________________________
-activation_9 (Activation)       (None, 52, 88, 30)   0           batch_normalization_9[0][0]      
-__________________________________________________________________________________________________
-conv2d_10 (Conv2D)              (None, 52, 88, 30)   8130        activation_9[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_10 (BatchNo (None, 52, 88, 30)   120         conv2d_10[0][0]                  
-__________________________________________________________________________________________________
-activation_10 (Activation)      (None, 52, 88, 30)   0           batch_normalization_10[0][0]     
-__________________________________________________________________________________________________
-concatenate_6 (Concatenate)     (None, 52, 88, 90)   0           concatenate_5[0][0]              
-                                                                 activation_10[0][0]              
-__________________________________________________________________________________________________
-dropout_5 (Dropout)             (None, 52, 88, 90)   0           concatenate_6[0][0]              
-__________________________________________________________________________________________________
-conv2d_11 (Conv2D)              (None, 52, 88, 13)   1183        dropout_5[0][0]                  
-==================================================================================================
-Total params: 501,343
-Trainable params: 500,143
-Non-trainable params: 1,200
-__________________________________________________________________________________________________
-Traceback (most recent call last):
-  File "main.py", line 1412, in <module>
-    EXP27a2_Resnet2_LogDice_fineTune_ET_Ps_Main(UserInfoB)
-  File "main.py", line 1185, in EXP27a2_Resnet2_LogDice_fineTune_ET_Ps_Main
-    Run(UserInfoB, IV)
-  File "main.py", line 220, in Run
-    else: Loop_Over_Nuclei(UserInfoB)
-  File "main.py", line 102, in Loop_Over_Nuclei
-    if UserI['simulation'].nucleus_Index and (not check_if_num_Layers_fit(UserI)): Run_Main(UserI)
-  File "main.py", line 214, in Run_Main
-    Loop_slicing_orientations(UserInfoB, InitValues)
-  File "main.py", line 212, in Loop_slicing_orientations
-    subRun(UserInfoB)
-  File "main.py", line 206, in subRun
-    else: normal_run(params)
-  File "main.py", line 193, in normal_run
-    choosingModel.check_Run(params, Data)              
-  File "/array/ssd/msmajdi/code/thalamus/keras/modelFuncs/choosingModel.py", line 54, in check_Run
-    prediction = testingExeriment(model, Data, params)
-  File "/array/ssd/msmajdi/code/thalamus/keras/modelFuncs/choosingModel.py", line 244, in testingExeriment
-    prediction.Train = loopOver_Predicting_TrainSubjects(Data.Train_ForTest)
-  File "/array/ssd/msmajdi/code/thalamus/keras/modelFuncs/choosingModel.py", line 230, in loopOver_Predicting_TrainSubjects
-    prediction[name] = predictingTestSubject(DataTrain[name], params.directories.Train.Input.Subjects[name] , ResultDir)
-  File "/array/ssd/msmajdi/code/thalamus/keras/modelFuncs/choosingModel.py", line 207, in predictingTestSubject
-    return applyPrediction()
-  File "/array/ssd/msmajdi/code/thalamus/keras/modelFuncs/choosingModel.py", line 199, in applyPrediction
-    pred = downsample_Mask(pred , scale)
-  File "/array/ssd/msmajdi/code/thalamus/keras/modelFuncs/choosingModel.py", line 186, in downsample_Mask
-    Mask3[i ,: ,: ,ch]  = warp( np.squeeze(Mask[i ,: ,: ,ch]) ,  tform.inverse, output_shape=newShape, order=0)
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/skimage/transform/_warps.py", line 807, in warp
-    output_shape = safe_as_int(output_shape)
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/skimage/_shared/utils.py", line 148, in safe_as_int
-    np.testing.assert_allclose(mod, 0, atol=atol)
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/numpy/testing/_private/utils.py", line 1443, in assert_allclose
-    verbose=verbose, header=header, equal_nan=equal_nan)
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/numpy/testing/_private/utils.py", line 736, in assert_array_compare
-    flagged = func_assert_same_pos(x, y, func=isnan, hasval='nan')
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/numpy/testing/_private/utils.py", line 707, in func_assert_same_pos
-    if (x_id == y_id).all() != True:
-KeyboardInterrupt
-Exception ignored in: <bound method tqdm.__del__ of predicting train subjects:  32%|███▏      | 13/41 [00:36<01:17,  2.78s/it]>
-Traceback (most recent call last):
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_tqdm.py", line 931, in __del__
-    self.close()
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_tqdm.py", line 1133, in close
-    self._decr_instances(self)
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_tqdm.py", line 496, in _decr_instances
-    cls.monitor.exit()
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/site-packages/tqdm/_monitor.py", line 52, in exit
-    self.join()
-  File "/array/ssd/msmajdi/anaconda3/envs/keras-gpu/lib/python3.6/threading.py", line 1053, in join
-    raise RuntimeError("cannot join current thread")
-RuntimeError: cannot join current thread
