@@ -763,8 +763,8 @@ for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExpe
     merging_Volumes_Values(Info)
 
 
-    # Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
-    # savingHistory_AsExcel(Info)
+    Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
+    savingHistory_AsExcel(Info)
 
 os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
 

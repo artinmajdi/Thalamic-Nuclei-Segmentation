@@ -250,21 +250,23 @@ def func_AllMetrics_UserDirectory(Dir , params):
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
-UserInfoB['best_network_MPlanar'] = True
+UserInfoB['best_network_MPlanar'] = False
 
-UserInfoB['Model_Method'] = 'Cascade'
-UserInfoB['simulation'].num_Layers = 3
-# UserInfoB['simulation'].slicingDim = [2,1,0]
-UserInfoB['architectureType'] = 'Res_Unet2'
+UserInfoB['CrossVal'].index   = ['a']
+UserInfoB['TypeExperiment'] = 11
+UserInfoB['Model_Method'] = 'Cascade' 
+UserInfoB['architectureType'] = 'ResFCN_ResUnet2_TL'
 UserInfoB['lossFunction_Index'] = 4
 UserInfoB['Experiments'].Index = '6'
 UserInfoB['copy_Thalamus'] = False
-UserInfoB['TypeExperiment'] = 15
-UserInfoB['simulation'].LR_Scheduler = True 
+UserInfoB['simulation'].batch_size = 50
+UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20    
+UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+UserInfoB['simulation'].FCN1_NLayers = 0
+UserInfoB['simulation'].FCN2_NLayers = 0  
+UserInfoB['simulation'].FCN_FeatureMaps = 0
 
-
-for x in ['a', 'b', 'c']: # 'd', 'e', 'f', 'g' , 'h']:
-    UserInfoB['CrossVal'].index = [x]
+for UserInfoB['permutation_Index'] in range(9):
     params = paramFunc.Run(UserInfoB, terminal=False)
     InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
     func_MajorityVoting(InfoS , params)
