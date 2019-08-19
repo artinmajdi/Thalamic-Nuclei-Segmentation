@@ -15,11 +15,42 @@ import skimage
 import PIL
 from tqdm import tqdm
 
+UserInfo = UserInfo.__dict__  
+# UserInfo['CrossVal'].index   = ['a']
+# UserInfo['permutation_Index'] = 0
+# UserInfo['TypeExperiment'] = 11
+# UserInfo['Model_Method'] = 'Cascade' 
+# UserInfo['architectureType'] = 'ResFCN_ResUnet2_TL'
+# UserInfo['lossFunction_Index'] = 4
+# UserInfo['Experiments'].Index = '6'
+# UserInfo['copy_Thalamus'] = False
+# UserInfo['simulation'].batch_size = 50
+# UserInfo['simulation'].FirstLayer_FeatureMap_Num = 20    
+# UserInfo['simulation'].slicingDim = [2]
+# UserInfo['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+# UserInfo['simulation'].FCN1_NLayers = 0
+# UserInfo['simulation'].FCN2_NLayers = 0  
+# UserInfo['simulation'].FCN_FeatureMaps = 0
+
+UserInfo['CrossVal'].index   = ['a']
+UserInfo['Model_Method'] = 'Cascade'
+UserInfo['simulation'].num_Layers = 3
+UserInfo['architectureType'] = 'Res_Unet2'
+UserInfo['lossFunction_Index'] = 4
+UserInfo['Experiments'].Index = '6'
+UserInfo['copy_Thalamus'] = False
+UserInfo['TypeExperiment'] = 15
+UserInfo['simulation'].LR_Scheduler = True    
+UserInfo['simulation'].FirstLayer_FeatureMap_Num = 20
+UserInfo['simulation'].slicingDim = [2]
+UserInfo['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]   
+    
 class LoadingData:
     def __init__(self): pass
         
     def PreMode(self, UserInfo, *args):  
-        self.UserInfoB = UserInfo.__dict__  
+        # self.UserInfoB = UserInfo.__dict__  
+        self.UserInfoB = UserInfo 
 
         def UserInputs(self,args):  
             for ag in args: 
@@ -49,7 +80,10 @@ class LoadingData:
 
         # model = choosingModel.architecture(params)
         # model.load_weights(dir + '1-THALAMUS/model_weights.h5')
-        self.model = kerasmodels.load_model(self.params.directories.Train.Model + '/model.h5') # + '/model_CSFn.h5')
+        self.params = paramFunc.Run(self.UserInfoB, terminal=False)
+        A = self.params.directories.Train.model_Tag if self.params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
+        # model.load_weights(params.directories.Train.Model + '/model_weights' + A + '.h5')        
+        self.model = kerasmodels.load_model(self.params.directories.Train.Model + '/model' + A + '.h5') # + '/model_CSFn.h5')
 
         class Layers:
             Outputs = [layer.output for layer in self.model.layers[1:]]
@@ -135,7 +169,8 @@ VFM.PreMode(UserInfo,('GPU',"5"))
 Nuclei_Indexes = VFM.UserInfoB['simulation'].nucleus_Index.copy()
 
 print('ADDRESS',VFM.params.directories.Train.Model)
-for VFM.UserInfoB['simulation'].nucleus_Index in Nuclei_Indexes:  
+for x in [1]: # Nuclei_Indexes:  
+    VFM.UserInfoB['simulation'].nucleus_Index = [x]
     print('nucleus' , VFM.UserInfoB['simulation'].nucleus_Index )    
     VFM.ReadData()
     VFM.LoadModel()

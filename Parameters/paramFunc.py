@@ -204,7 +204,7 @@ def func_Exp_subExp_Names(UserInfo):
         FCN = '_FCNA' + str(UserInfo['simulation'].FCN1_NLayers)+'_FCNB' + str(UserInfo['simulation'].FCN2_NLayers) + '_FM' + str(UserInfo['simulation'].FCN_FeatureMaps) if ('TL' in UserInfo['architectureType']) and ('FCN' in UserInfo['architectureType']) else ''
 
         method = UserInfo['Model_Method']                                                                      
-        PI = '_permute' + str(UserInfo['permutation_Index'])
+        PI = '' # '_permute' + str(UserInfo['permutation_Index'])
 
         class subExperiment:
             def __init__(self, tag):                
@@ -222,7 +222,7 @@ def func_Exp_subExp_Names(UserInfo):
         
         
         
-        if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0]
+        if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0] # + '_for_paper' # '_for_percision_recall_curve'
         A = subExperiment(tag)
 
         if UserInfo['best_network_MPlanar']:

@@ -124,3 +124,4 @@ def Precision_Recall_Curve(y_true,y_pred):
     plt.ylim([0.0, 1.05])
     plt.xlim([0.0, 1.0])
     plt.title('Average precision score, micro-averaged over all classes: AP={0:0.2f}'.format(average_precision))
+    plt.show()
