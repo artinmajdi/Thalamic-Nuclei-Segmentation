@@ -1734,8 +1734,8 @@ def EXP38_CSFn2_Cascade_TL_Res_Unet_finetune_other_permutations(UserInfoB):
 
 # UserInfoB['simulation'].epochs = 10
 # UserInfoB['simulation'].ReadAugments_Mode = False 
-UserInfoB['simulation'].TestOnly = True
-UserInfoB['CrossVal'].index      = ['a']
+# UserInfoB['simulation'].TestOnly = True
+# UserInfoB['CrossVal'].index      = ['a']
 
 # EXP38_CSFn2_Cascade_TL_Res_Unet_finetune_other_permutations(UserInfoB)
 EXP32_Resnet2_LogDice_fineTune_ET_Ps_Main_OtherFolds(UserInfoB)

@@ -115,7 +115,7 @@ class simulationcs:
         self.save_Best_Epoch_Model = True
         self.Use_Coronal_Thalamus_InSagittal = True
         self.Use_TestCases_For_Validation = True
-        self.ImClosePrediction =  False # False #
+        self.ImClosePrediction =  True # False #
         self.Multi_Class_Mode = multi_Class_Mode
         self.LR_Scheduler = False
         self.ReadAugments_Mode = readAugments_Mode
