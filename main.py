@@ -1691,17 +1691,17 @@ def EXP32_Resnet2_LogDice_fineTune_ET_Ps_Main_OtherFolds(UserInfoB):
     UserInfoB['simulation'].LR_Scheduler = True    
     
 
-    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
-    # UserInfoB['simulation'].slicingDim = [0]
-    # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
-    # # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-    # predict_Thalamus_For_SD0(UserInfoB)
-
-    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
-    # UserInfoB['simulation'].slicingDim = [1]
-    # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
+    UserInfoB['simulation'].slicingDim = [0]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
     # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-    # Run(UserInfoB, IV)
+    predict_Thalamus_For_SD0(UserInfoB)
+
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
+    UserInfoB['simulation'].slicingDim = [1]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    Run(UserInfoB, IV)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].slicingDim = [2]
@@ -1734,7 +1734,7 @@ def EXP38_CSFn2_Cascade_TL_Res_Unet_finetune_other_permutations(UserInfoB):
 
 # UserInfoB['simulation'].epochs = 10
 # UserInfoB['simulation'].ReadAugments_Mode = False 
-# UserInfoB['simulation'].TestOnly = True
+UserInfoB['simulation'].TestOnly = True
 # UserInfoB['CrossVal'].index      = ['a']
 
 # EXP38_CSFn2_Cascade_TL_Res_Unet_finetune_other_permutations(UserInfoB)

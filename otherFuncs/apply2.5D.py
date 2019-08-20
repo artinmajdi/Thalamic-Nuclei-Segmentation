@@ -167,11 +167,11 @@ def func_OtherMetrics_justFor_MV(Info , params):
 
             if not os.path.exists(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz') or not os.path.isfile(address + nucleusNm + '.nii.gz'): continue
             Ref = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
-            ManualLabel = Ref.get_data()
+            # ManualLabel = Ref.get_data()
                                               
             predMV = nib.load(address + nucleusNm + '.nii.gz').get_data()                      
-            VSI[cnt,:]  = [nucleiIx , metrics.VSI_AllClasses(predMV, ManualLabel).VSI()]
-            HD[cnt,:]   = [nucleiIx , metrics.HD_AllClasses(predMV, ManualLabel).HD()]
+            # VSI[cnt,:]  = [nucleiIx , metrics.VSI_AllClasses(predMV, ManualLabel).VSI()]
+            # HD[cnt,:]   = [nucleiIx , metrics.HD_AllClasses(predMV, ManualLabel).HD()]
             # Dice[cnt,:] = [nucleiIx , smallFuncs.mDice(predMV, ManualLabel)]
             Volumes[cnt,:] = [nucleiIx , predMV.sum()]
 
@@ -181,8 +181,8 @@ def func_OtherMetrics_justFor_MV(Info , params):
             
             # np.savetxt( address + 'VSI_' + InfoSave.nucleus.name + '.txt' ,Dice , fmt='%1.1f %1.4f')
         
-        np.savetxt( address + 'VSI_All.txt'       ,VSI     , fmt='%1.1f %1.4f')
-        np.savetxt( address + 'HD_All.txt'        ,HD      , fmt='%1.1f %1.4f')
+        # np.savetxt( address + 'VSI_All.txt'       ,VSI     , fmt='%1.1f %1.4f')
+        # np.savetxt( address + 'HD_All.txt'        ,HD      , fmt='%1.1f %1.4f')
         # np.savetxt( address + 'Dice_All.txt'      ,Dice    , fmt='%1.1f %1.4f')
         np.savetxt( address + 'Volumes_All.txt'   ,Volumes , fmt='%1.1f %1.4f')
         # np.savetxt( address + 'Recall_All.txt'    ,Recall , fmt='%1.1f %1.4f')
@@ -250,27 +250,23 @@ def func_AllMetrics_UserDirectory(Dir , params):
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
-UserInfoB['best_network_MPlanar'] = False
+UserInfoB['best_network_MPlanar'] = True
 
 UserInfoB['CrossVal'].index   = ['a']
-UserInfoB['TypeExperiment'] = 11
-UserInfoB['Model_Method'] = 'Cascade' 
-UserInfoB['architectureType'] = 'ResFCN_ResUnet2_TL'
+UserInfoB['Model_Method'] = 'Cascade'
+UserInfoB['simulation'].num_Layers = 3
+UserInfoB['architectureType'] = 'Res_Unet2'
 UserInfoB['lossFunction_Index'] = 4
 UserInfoB['Experiments'].Index = '6'
 UserInfoB['copy_Thalamus'] = False
-UserInfoB['simulation'].batch_size = 50
-UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20    
-UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
-UserInfoB['simulation'].FCN1_NLayers = 0
-UserInfoB['simulation'].FCN2_NLayers = 0  
-UserInfoB['simulation'].FCN_FeatureMaps = 0
+UserInfoB['TypeExperiment'] = 15
+UserInfoB['simulation'].LR_Scheduler = True  
 
-for UserInfoB['permutation_Index'] in range(9):
-    params = paramFunc.Run(UserInfoB, terminal=False)
-    InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
-    func_MajorityVoting(InfoS , params)
-    func_OtherMetrics_justFor_MV(InfoS , params)                
+# for UserInfoB['permutation_Index'] in range(9):
+params = paramFunc.Run(UserInfoB, terminal=False)
+InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
+func_MajorityVoting(InfoS , params)
+func_OtherMetrics_justFor_MV(InfoS , params)                
 
 # params = paramFunc.Run(UserInfo.__dict__, terminal=False)
 # Dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/step2_freesurfer/Done/step2_resliced'
