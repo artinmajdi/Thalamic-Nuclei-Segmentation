@@ -10,6 +10,8 @@ from skimage import measure
 from copy import deepcopy
 import json
 from scipy import ndimage
+from tqdm import tqdm
+
 
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
 def NucleiSelection(ind = 1):
@@ -730,3 +732,26 @@ def closeMask(mask,cnt):
     struc = ndimage.generate_binary_structure(3,2)
     if cnt > 1: struc = ndimage.iterate_structure(struc, cnt)
     return ndimage.binary_closing(mask, structure=struc)  
+
+
+def apply_MajorityVoting(params):
+             
+    address = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name + '/'
+
+    for sj in tqdm(params.directories.Test.Input.Subjects):
+        subject = params.directories.Test.Input.Subjects[sj]
+        for nucleusNm in Nuclei_Class().All_Nuclei().Names:
+
+            ix , pred3Dims = 0 , ''
+            im = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+            for sdInfo in ['sd0', 'sd1' , 'sd2']:
+                address_nucleus = address + sdInfo + '/' + subject.subjectName + '/' + nucleusNm + '.nii.gz'
+                if os.path.isfile(address_nucleus):
+                    
+                    pred = nib.load(address_nucleus).get_data()[...,np.newaxis]                                                
+                    pred3Dims = pred if ix == 0 else np.concatenate((pred3Dims,pred),axis=3)
+                    ix += 1
+            
+            if ix > 0:  
+                predMV = pred3Dims.sum(axis=3) >= 2              
+                saveImage( predMV , im.affine, im.header, address + '2.5D_MV/' + subject.subjectName + '/' + nucleusNm+ '.nii.gz')

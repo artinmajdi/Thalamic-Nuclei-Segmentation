@@ -113,9 +113,9 @@ class reslice_cls():
 
 
 UI = UserEntry()
-#UI.dir_in  = '/home/artinl/Documents/MS/step0_orig'
-#UI.dir_out = '/home/artinl/Documents/MS/step1_resliced'
-#UI.mode = 'all'
+UI.dir_in  = '/array/ssd/msmajdi/experiments/keras/exp10_test_Manoj_cropped/test/step1'
+UI.dir_out = '/array/ssd/msmajdi/experiments/keras/exp10_test_Manoj_cropped/test/step2'
+UI.mode = 'all'
 
 if UI.mode == 'all': reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).reslice_all()
 else: reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).apply_reslice()

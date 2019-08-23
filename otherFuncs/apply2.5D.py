@@ -53,11 +53,12 @@ def func_MajorityVoting(Info , params):
         a = smallFuncs.Nuclei_Class().All_Nuclei()
         for nucleusNm , nucleiIx in zip(a.Names , a.Indexes):
 
-            if os.path.exists(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz'):
+            if 1: # os.path.exists(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz'):
                 Info.nucleus = nucleus(nucleusNm , nucleiIx)
 
                 ix , pred3Dims = 0 , ''
-                ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
+                # ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
+                ManualLabel = nib.load(subject.address + '/PProcessed.nii.gz')
                 for sdInfo in Info.subExperiment.multiPlanar:
                     # print(sdInfo)
                     if sdInfo.Flag and 'sd' in sdInfo.name:
@@ -70,7 +71,8 @@ def func_MajorityVoting(Info , params):
 
                 if ix > 0:
                     InfoSave = infoSave(Image = pred3Dims.sum(axis=3) >= 2 , subject = subject() , nucleus=nucleus(nucleusNm , nucleiIx) , mode = '2.5D_MV' , address=Info.subExperiment.address) 
-                    saveImageDice(InfoSave, ManualLabel)
+                    smallFuncs.saveImage( InfoSave.Image , ManualLabel.affine, ManualLabel.header, InfoSave.address  + '/' + InfoSave.nucleus.name + '.nii.gz')
+                    # saveImageDice(InfoSave, ManualLabel)
 
 def func_DecisionTree(Info , params):
 
@@ -154,7 +156,7 @@ def func_OtherMetrics_justFor_MV(Info , params):
         a = smallFuncs.Nuclei_Class().All_Nuclei()
         num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes  
         VSI       = np.zeros((num_classes-1,2))
-        # Dice      = np.zeros((num_classes-1,2))
+        Dice      = np.zeros((num_classes-1,2))
         HD        = np.zeros((num_classes-1,2))
         Volumes   = np.zeros((num_classes-1,2))
         # Precision = np.zeros((num_classes-1,2))
@@ -172,7 +174,7 @@ def func_OtherMetrics_justFor_MV(Info , params):
             predMV = nib.load(address + nucleusNm + '.nii.gz').get_data()                      
             # VSI[cnt,:]  = [nucleiIx , metrics.VSI_AllClasses(predMV, ManualLabel).VSI()]
             # HD[cnt,:]   = [nucleiIx , metrics.HD_AllClasses(predMV, ManualLabel).HD()]
-            # Dice[cnt,:] = [nucleiIx , smallFuncs.mDice(predMV, ManualLabel)]
+            Dice[cnt,:] = [nucleiIx , smallFuncs.mDice(predMV, ManualLabel)]
             Volumes[cnt,:] = [nucleiIx , predMV.sum()]
 
             # confusionMatrix = metrics.confusionMatrix(predMV, ManualLabel)
@@ -183,7 +185,7 @@ def func_OtherMetrics_justFor_MV(Info , params):
         
         # np.savetxt( address + 'VSI_All.txt'       ,VSI     , fmt='%1.1f %1.4f')
         # np.savetxt( address + 'HD_All.txt'        ,HD      , fmt='%1.1f %1.4f')
-        # np.savetxt( address + 'Dice_All.txt'      ,Dice    , fmt='%1.1f %1.4f')
+        np.savetxt( address + 'Dice_All.txt'      ,Dice    , fmt='%1.1f %1.4f')
         np.savetxt( address + 'Volumes_All.txt'   ,Volumes , fmt='%1.1f %1.4f')
         # np.savetxt( address + 'Recall_All.txt'    ,Recall , fmt='%1.1f %1.4f')
         # np.savetxt( address + 'Precision_All.txt' ,Precision , fmt='%1.1f %1.4f')
@@ -255,18 +257,20 @@ UserInfoB['best_network_MPlanar'] = True
 UserInfoB['CrossVal'].index   = ['a']
 UserInfoB['Model_Method'] = 'Cascade'
 UserInfoB['simulation'].num_Layers = 3
+# UserInfoB['simulation'].slicingDim = [2,1,0]
 UserInfoB['architectureType'] = 'Res_Unet2'
 UserInfoB['lossFunction_Index'] = 4
 UserInfoB['Experiments'].Index = '6'
 UserInfoB['copy_Thalamus'] = False
 UserInfoB['TypeExperiment'] = 15
-UserInfoB['simulation'].LR_Scheduler = True  
+UserInfoB['simulation'].LR_Scheduler = True    
+UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] 
 
 # for UserInfoB['permutation_Index'] in range(9):
 params = paramFunc.Run(UserInfoB, terminal=False)
 InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
 func_MajorityVoting(InfoS , params)
-func_OtherMetrics_justFor_MV(InfoS , params)                
+# func_OtherMetrics_justFor_MV(InfoS , params)                
 
 # params = paramFunc.Run(UserInfo.__dict__, terminal=False)
 # Dir = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/step2_freesurfer/Done/step2_resliced'

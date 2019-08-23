@@ -227,7 +227,7 @@ def func_Exp_subExp_Names(UserInfo):
 
         if UserInfo['best_network_MPlanar']:
             x = UserInfo['CrossVal'].index[0]
-            A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_' + x + '_for_paper_Best'
+            A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_Best_w20priors' # + x + '_for_paper_Best'
 
         return A
 
@@ -668,6 +668,7 @@ def func_WhichExperiment(UserInfo):
     WhichExperiment.Nucleus       = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.Mode)
     WhichExperiment.Dataset       = func_Dataset()
     WhichExperiment.TestOnly = UserInfo['simulation'].TestOnly
+    WhichExperiment.HardParams.Model.TestOnly = UserInfo['simulation'].TestOnly
 
     def old_adding_TransferLearningParams(WhichExperiment):
         class best_WMn_Model:

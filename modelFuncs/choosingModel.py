@@ -1475,11 +1475,12 @@ def architecture(ModelParam):
         output = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(conv)
         modelNew = kerasmodels.Model(inputs=[inputs], outputs=[output])
 
-        best_WMn_model = kerasmodels.load_model(ModelParam.Best_WMn_Model.address) # num_Layers 43
-        print( 'ResNet model address' , ModelParam.Best_WMn_Model.address )
-        for l in tqdm(range(2,len(best_WMn_model.layers)-1), 'loading the weights for Res Unet'):
-            modelNew.layers[l+gap].set_weights(best_WMn_model.layers[l].get_weights())
-            # modelNew.layers[l].set_weights(best_WMn_model.layers[l].get_weights())
+        if not ModelParam.TestOnly:
+            best_WMn_model = kerasmodels.load_model(ModelParam.Best_WMn_Model.address) # num_Layers 43
+            print( 'ResNet model address' , ModelParam.Best_WMn_Model.address )
+            for l in tqdm(range(2,len(best_WMn_model.layers)-1), 'loading the weights for Res Unet'):
+                modelNew.layers[l+gap].set_weights(best_WMn_model.layers[l].get_weights())
+                # modelNew.layers[l].set_weights(best_WMn_model.layers[l].get_weights())
 
         return modelNew
 

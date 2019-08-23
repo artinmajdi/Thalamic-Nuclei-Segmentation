@@ -430,7 +430,8 @@ def preAnalysis(params):
     def find_PaddingValues(params):
 
         def findingPaddedInputSize(params):
-            inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)  
+            inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly else np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
+            # inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)  
             
             num_Layers = params.WhichExperiment.HardParams.Model.num_Layers
             L = num_Layers if 'SegNet' in params.WhichExperiment.HardParams.Model.architectureType else num_Layers - 1
@@ -538,7 +539,8 @@ def preAnalysis(params):
 
             def func_MinInputSize(params):
                 if params.WhichExperiment.Dataset.InputPadding.Automatic: 
-                    inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
+                    inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly else np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
+
                     return np.min(inputSizes, axis=0)
                 else:
                     return params.WhichExperiment.Dataset.InputPadding.HardDimensions
