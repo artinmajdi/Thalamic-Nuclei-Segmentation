@@ -17,7 +17,9 @@ def RigidRegistration(subject , Template , preprocess):
         print('     Rigid Registration')
         if not os.path.isfile(LinearAffine): 
             os.system("ANTS 3 -m CC[%s, %s ,1,5] -o %s -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false" %(processed , Template.Image , subject.Temp.Deformation.address + '/linear') )
-        os.system("WarpImageMultiTransform 3 %s %s -R %s %s"%(Template.Mask , outP , processed , LinearAffine) )
+
+        if not os.path.isfile(outP): 
+            os.system("WarpImageMultiTransform 3 %s %s -R %s %s"%(Template.Mask , outP , processed , LinearAffine) )
 
 def BiasCorrection(subject , params):
     

@@ -1691,23 +1691,23 @@ def EXP32_Resnet2_LogDice_fineTune_ET_Ps_Main_OtherFolds(UserInfoB):
     # UserInfoB['simulation'].slicingDim = [2,1,0]
     UserInfoB['architectureType'] = 'Res_Unet2'
     UserInfoB['lossFunction_Index'] = 4
-    UserInfoB['Experiments'].Index = '6'
+    # UserInfoB['Experiments'].Index = '6'
     UserInfoB['copy_Thalamus'] = False
     UserInfoB['TypeExperiment'] = 15
     UserInfoB['simulation'].LR_Scheduler = True    
     
 
-    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
-    # UserInfoB['simulation'].slicingDim = [0]
-    # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
-    # # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-    # predict_Thalamus_For_SD0(UserInfoB)
-
-    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
-    # UserInfoB['simulation'].slicingDim = [1]
-    # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
+    UserInfoB['simulation'].slicingDim = [0]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
     # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-    # Run(UserInfoB, IV)
+    predict_Thalamus_For_SD0(UserInfoB)
+
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
+    UserInfoB['simulation'].slicingDim = [1]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    Run(UserInfoB, IV)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].slicingDim = [2]
@@ -1738,17 +1738,101 @@ def EXP38_CSFn2_Cascade_TL_Res_Unet_finetune_other_permutations(UserInfoB):
         IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
         Run(UserInfoB, IV)
 
+
+def EXP_CSFn_test_new_Cases(UserInfoB):
+        
+    UserInfoB['TypeExperiment'] = 11
+    UserInfoB['Model_Method'] = 'Cascade' 
+    UserInfoB['architectureType'] = 'ResFCN_ResUnet2_TL' # ''
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['copy_Thalamus'] = False
+    UserInfoB['simulation'].batch_size = 50
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20    
+    UserInfoB['simulation'].FCN1_NLayers = 0
+    UserInfoB['simulation'].FCN2_NLayers = 0  
+    UserInfoB['simulation'].FCN_FeatureMaps = 0
+
+    applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
+
+    for x in [2,1,0]:
+        UserInfoB['simulation'].slicingDim = [x]
+        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+        IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+        Run(UserInfoB, IV)
+
+    smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False))
+
+def EXP_WMn_test_new_Cases(UserInfoB):
+    
+    def predict_Thalamus_For_SD0(UserI):
+
+        UserI['simulation'].slicingDim = [2]
+        UserI['simulation'].nucleus_Index = [1]
+        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
+        Run(UserI, IV)
+
+        UserI['simulation'].slicingDim = [0]
+        UserI['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]
+        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
+        Run(UserI, IV)
+    
+    def merge_results_and_apply_25D(UserInfoB):
+
+        UserInfoB['best_network_MPlanar'] = True
+        params = paramFunc.Run(UserInfoB, terminal=True)
+        Directory = params.WhichExperiment.Experiment.address + '/results'
+        Output = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a'
+        os.system("mkdir %s; cd %s; mkdir sd0 sd1 sd2"%(Directory + '/' + Output, Directory + '/' + Output))
+        os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd0/vimp* %s/%s/sd0/"%(Directory, Directory, Output) )
+        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd1/vimp* %s/%s/sd1/"%(Directory, Directory, Output) )
+        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd2/vimp* %s/%s/sd2/"%(Directory, Directory, Output) )
+        
+        smallFuncs.apply_MajorityVoting(params)
+
+    UserInfoB['Model_Method'] = 'Cascade'
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['architectureType'] = 'Res_Unet2'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['copy_Thalamus'] = False
+    UserInfoB['TypeExperiment'] = 15
+    UserInfoB['simulation'].LR_Scheduler = True    
+    
+
+    applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
+    
+    
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
+    UserInfoB['simulation'].slicingDim = [0]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    predict_Thalamus_For_SD0(UserInfoB)
+
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
+    UserInfoB['simulation'].slicingDim = [1]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    Run(UserInfoB, IV)
+
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    UserInfoB['simulation'].slicingDim = [2]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    Run(UserInfoB, IV)    
+
+    
+    merge_results_and_apply_25D(UserInfoB)
+
+
+
 # UserInfoB['simulation'].epochs = 10
 # UserInfoB['simulation'].ReadAugments_Mode = False 
 UserInfoB['simulation'].TestOnly = True
 UserInfoB['CrossVal'].index      = ['a']
 
-# UserInfoB['Experiments'].Index = '10'
-# UserInfoB['Experiments'].Tag = 'test_Manoj_cropped'
-EXP32_Resnet2_LogDice_fineTune_ET_Ps_Main_OtherFolds(UserInfoB)
+UserInfoB['Experiments'].Index = '9'
+UserInfoB['Experiments'].Tag = 'test_Manoj'
 
 
-
+EXP_WMn_test_new_Cases(UserInfoB)
 
 K.clear_session()
 

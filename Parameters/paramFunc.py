@@ -227,7 +227,7 @@ def func_Exp_subExp_Names(UserInfo):
 
         if UserInfo['best_network_MPlanar']:
             x = UserInfo['CrossVal'].index[0]
-            A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_Best_w20priors' # + x + '_for_paper_Best'
+            A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a' # + x + '_for_paper_Best'
 
         return A
 
@@ -777,6 +777,9 @@ def func_preprocess(UserInfo):
         class biasCorrection:
             Mode = ''
 
+        class reslicing:
+            Mode = ''
+
         # TODO fix the justfornow
         class debug:
             doDebug = True
@@ -789,6 +792,7 @@ def func_preprocess(UserInfo):
             Debug = debug()
             # Augment = augment()
             Cropping = cropping()
+            Reslicing = reslicing()
             Normalize = normalize()
             BiasCorrection = biasCorrection()
 
@@ -797,6 +801,8 @@ def func_preprocess(UserInfo):
 
     preprocess.Mode                = UserInfo['preprocess'].Mode
     preprocess.BiasCorrection.Mode = UserInfo['preprocess'].BiasCorrection
+    preprocess.Cropping.Mode       = UserInfo['preprocess'].Cropping
+    preprocess.Reslicing.Mode      = UserInfo['preprocess'].Reslicing    
     preprocess.Normalize           = UserInfo['normalize']
     preprocess.TestOnly            = UserInfo['simulation'].TestOnly
     return preprocess

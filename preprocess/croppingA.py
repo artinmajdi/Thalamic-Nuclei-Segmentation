@@ -14,6 +14,7 @@ def main(subject , params):
 
     if params.preprocess.Mode and params.preprocess.Cropping.Mode:
         print('     Cropping')
+        # if os.path.exists(subject.Label.address):
         func_cropImage(params, subject)
     return True
 
@@ -45,8 +46,9 @@ def func_cropImage(params, subject):
                 os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
 
             elif 'python' in params.preprocess.Cropping.Method:
-                mskC = applyCropping( nib.load(inP))
-                nib.save(mskC , outP)
+                if os.path.exists(inP):
+                    mskC = applyCropping( nib.load(inP))
+                    nib.save(mskC , outP)
                 
             if params.preprocess.Debug.doDebug: copyfile(outP , outDebug)
                         
@@ -66,14 +68,14 @@ def func_cropImage(params, subject):
 
     check_crop(inP, outP, outDebug, CropCoordinates)
 
-    
-    for ind in params.WhichExperiment.Nucleus.FullIndexes:
-        try: 
-            inP, outP, outDebug = directoriesNuclei(subject, ind)
-            if not os.path.isfile(outDebug) and 'python' in params.preprocess.Cropping.Method and CropCoordinates == '': CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  
-            check_crop(inP, outP, outDebug, CropCoordinates)
-        except:
-            print('nucleus ' + str(ind) + ' failed')
+    if os.path.exists(subject.Label.address):
+        for ind in params.WhichExperiment.Nucleus.FullIndexes:
+            try: 
+                inP, outP, outDebug = directoriesNuclei(subject, ind)
+                if not os.path.isfile(outDebug) and 'python' in params.preprocess.Cropping.Method and CropCoordinates == '': CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  
+                check_crop(inP, outP, outDebug, CropCoordinates)
+            except:
+                print('nucleus ' + str(ind) + ' failed')
 
 def crop_AV(subject , params):
 

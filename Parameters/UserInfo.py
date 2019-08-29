@@ -27,6 +27,22 @@ gpu = "2"
 
 TypeExperiment = 4
 
+
+#! Preprocessing
+class preprocesscs:
+    def __init__(self):
+        self.Mode = True
+        self.BiasCorrection = False
+        self.Cropping = False
+        self.Reslicing = True
+
+preprocess = preprocesscs()
+
+
+
+
+
+
 permutation_Index = 0
 
 multi_Class_Mode = True
@@ -169,13 +185,7 @@ Learning_Rate = 1e-3
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 
-#! Preprocessing
-class preprocesscs:
-    def __init__(self):
-        self.Mode = False
-        self.BiasCorrection = False
 
-preprocess = preprocesscs()
 
 
 AugmentMode = False
