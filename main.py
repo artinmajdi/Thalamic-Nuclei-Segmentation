@@ -1648,7 +1648,7 @@ def EXP37_CSFn2_Cascade_TL_Res_Unet_finetune_All_folds(UserInfoB):
         
     UserInfoB['TypeExperiment'] = 11
     UserInfoB['Model_Method'] = 'Cascade' 
-    UserInfoB['architectureType'] = 'ResFCN_ResUnet2_TL' # ''
+    UserInfoB['architectureType'] = 'ResFCN_ResUnet2_TL' 
     UserInfoB['lossFunction_Index'] = 4
     UserInfoB['Experiments'].Index = '6'
     UserInfoB['copy_Thalamus'] = False
@@ -1657,6 +1657,8 @@ def EXP37_CSFn2_Cascade_TL_Res_Unet_finetune_All_folds(UserInfoB):
     UserInfoB['simulation'].FCN1_NLayers = 0
     UserInfoB['simulation'].FCN2_NLayers = 0  
     UserInfoB['simulation'].FCN_FeatureMaps = 0
+    UserInfoB['simulation'].LR_Scheduler = False
+
 
     UserInfoB['Experiments'].Tag = 'BC_CSFn'
 
@@ -1826,12 +1828,13 @@ def EXP_WMn_test_new_Cases(UserInfoB):
 # UserInfoB['simulation'].epochs = 10
 # UserInfoB['simulation'].ReadAugments_Mode = False 
 # UserInfoB['simulation'].TestOnly = True
-# UserInfoB['CrossVal'].index      = ['a']
 
 # UserInfoB['Experiments'].Index = '9'
 # UserInfoB['Experiments'].Tag = 'test_Manoj'
 
 
+# for x in ['b', 'c', 'd', 'a']: 
+# UserInfoB['CrossVal'].index      = ['a']
 EXP37_CSFn2_Cascade_TL_Res_Unet_finetune_All_folds(UserInfoB)
 
 K.clear_session()

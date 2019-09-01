@@ -1,0 +1,746 @@
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu_V2/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu_V2/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/array/ssd/msmajdi/anaconda3/envs/keras-gpu_V2/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+Using TensorFlow backend.
+2019-09-01 14:32:16.170015: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-09-01 14:32:20.582165: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1392] Found device 0 with properties: 
+name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:09:00.0
+totalMemory: 15.89GiB freeMemory: 15.60GiB
+2019-09-01 14:32:20.582251: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1471] Adding visible gpu devices: 0
+2019-09-01 14:32:20.952902: I tensorflow/core/common_runtime/gpu/gpu_device.cc:952] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-09-01 14:32:20.952961: I tensorflow/core/common_runtime/gpu/gpu_device.cc:958]      0 
+2019-09-01 14:32:20.952976: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] 0:   N 
+2019-09-01 14:32:20.953412: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1084] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15123 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:09:00.0, compute capability: 6.0)
+(0/4) test vimp2_A_CSFn2
+(1/4) test vimp2_ANON967_CSFn2
+(2/4) test vimp2_B_CSFn2
+(3/4) test vimp2_E_CSFn2
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---------------------- check Layers Step ------------------------------
+ N: [1]  | GPU: 3  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
+
+ #layer 3 #layers changed False
+---------------------------------------------------------------
+ Nucleus: [1]  | GPU: 3  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  Cascade |  FM 20 |  Upsample 1
+Experiment: exp6_BC_CSFn
+SubExperiment: sE13_Cascade_FM20_ResFCN_ResUnet2_TL_NL3_LS_MyLogDice_US1_FCNA0_FCNB0_FM0_CSFn2_TL_Main_wBiasCorrection_CV_a
+---------------------------------------------------------------
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+Loading train:   0%|          | 0/266 [00:00<?, ?it/s]WARNING: subject:  vimp2_J_CSFn2  padding error patience activated, Error: -6
+Error in label values min 0.0 max 2.0      1-THALAMUS
+Loading train:   0%|          | 1/266 [00:00<02:45,  1.60it/s]WARNING: subject:  vimp2_D_CSFn2  padding error patience activated, Error: -3
+Loading train:   1%|          | 2/266 [00:01<02:39,  1.65it/s]Loading train:   1%|          | 3/266 [00:01<02:24,  1.82it/s]Loading train:   2%|▏         | 4/266 [00:01<02:07,  2.06it/s]WARNING: subject:  vimp2_ANON911_CSFn2  padding error patience activated, Error: -6
+Loading train:   2%|▏         | 5/266 [00:02<02:02,  2.12it/s]Loading train:   2%|▏         | 6/266 [00:02<02:05,  2.07it/s]WARNING: subject:  vimp2_J_CSFn_Aug5_Rot_4_sd2  padding error patience activated, Error: -6
+Loading train:   3%|▎         | 7/266 [00:03<01:56,  2.22it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug4_Rot_-2_sd1  padding error patience activated, Error: -6
+Loading train:   3%|▎         | 8/266 [00:03<01:46,  2.42it/s]Loading train:   3%|▎         | 9/266 [00:03<01:37,  2.64it/s]Loading train:   4%|▍         | 10/266 [00:04<01:30,  2.82it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug5_Rot_1_sd0  padding error patience activated, Error: -6
+Loading train:   4%|▍         | 11/266 [00:04<01:35,  2.67it/s]Loading train:   5%|▍         | 12/266 [00:04<01:25,  2.96it/s]WARNING: subject:  vimp2_J_CSFn_Aug2_Rot_-4_sd2  padding error patience activated, Error: -6
+Loading train:   5%|▍         | 13/266 [00:05<01:27,  2.89it/s]WARNING: subject:  vimp2_D_CSFn_Aug4_Rot_-5_sd2  padding error patience activated, Error: -3
+Loading train:   5%|▌         | 14/266 [00:05<01:28,  2.84it/s]Loading train:   6%|▌         | 15/266 [00:05<01:26,  2.91it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug1_Rot_3_sd1  padding error patience activated, Error: -6
+Loading train:   6%|▌         | 16/266 [00:06<01:28,  2.83it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug3_Rot_7_sd2  padding error patience activated, Error: -6
+Loading train:   6%|▋         | 17/266 [00:06<01:30,  2.75it/s]Loading train:   7%|▋         | 18/266 [00:07<01:32,  2.67it/s]Loading train:   7%|▋         | 19/266 [00:07<01:41,  2.44it/s]WARNING: subject:  vimp2_D_CSFn_Aug2_Rot_1_sd1  padding error patience activated, Error: -3
+Loading train:   8%|▊         | 20/266 [00:07<01:39,  2.48it/s]Loading train:   8%|▊         | 21/266 [00:08<01:35,  2.56it/s]WARNING: subject:  vimp2_J_CSFn_Aug3_Rot_-1_sd1  padding error patience activated, Error: -6
+Loading train:   8%|▊         | 22/266 [00:08<01:33,  2.60it/s]WARNING: subject:  vimp2_D_CSFn_Aug3_Rot_-3_sd0  padding error patience activated, Error: -3
+Loading train:   9%|▊         | 23/266 [00:09<01:28,  2.76it/s]Loading train:   9%|▉         | 24/266 [00:09<01:25,  2.82it/s]WARNING: subject:  vimp2_J_CSFn_Aug5_Rot_-7_sd0  padding error patience activated, Error: -6
+Loading train:   9%|▉         | 25/266 [00:09<01:32,  2.61it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug2_Rot_5_sd0  padding error patience activated, Error: -6
+Loading train:  10%|▉         | 26/266 [00:10<01:39,  2.42it/s]Loading train:  10%|█         | 27/266 [00:10<01:30,  2.65it/s]Loading train:  11%|█         | 28/266 [00:10<01:25,  2.78it/s]WARNING: subject:  vimp2_D_CSFn_Aug1_Rot_5_sd2  padding error patience activated, Error: -3
+Loading train:  11%|█         | 29/266 [00:11<01:23,  2.83it/s]WARNING: subject:  vimp2_J_CSFn_Aug2_Rot_7_sd0  padding error patience activated, Error: -6
+Loading train:  11%|█▏        | 30/266 [00:11<01:29,  2.64it/s]Loading train:  12%|█▏        | 31/266 [00:11<01:23,  2.82it/s]Loading train:  12%|█▏        | 32/266 [00:12<01:18,  2.96it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug0_Rot_7_sd2  padding error patience activated, Error: -6
+Loading train:  12%|█▏        | 33/266 [00:12<01:29,  2.61it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug5_Rot_-6_sd1  padding error patience activated, Error: -6
+Loading train:  13%|█▎        | 34/266 [00:13<01:33,  2.48it/s]Loading train:  13%|█▎        | 35/266 [00:13<01:37,  2.37it/s]WARNING: subject:  vimp2_J_CSFn_Aug0_Rot_1_sd1  padding error patience activated, Error: -6
+Loading train:  14%|█▎        | 36/266 [00:14<01:53,  2.03it/s]WARNING: subject:  vimp2_D_CSFn_Aug0_Rot_4_sd0  padding error patience activated, Error: -3
+Loading train:  14%|█▍        | 37/266 [00:14<01:43,  2.21it/s]WARNING: subject:  vimp2_J_CSFn_Aug3_Rot_-3_sd2  padding error patience activated, Error: -6
+Loading train:  14%|█▍        | 38/266 [00:15<01:45,  2.17it/s]WARNING: subject:  vimp2_D_CSFn_Aug5_Rot_1_sd2  padding error patience activated, Error: -3
+Loading train:  15%|█▍        | 39/266 [00:15<01:46,  2.13it/s]Loading train:  15%|█▌        | 40/266 [00:16<01:43,  2.18it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug2_Rot_1_sd1  padding error patience activated, Error: -6
+Loading train:  15%|█▌        | 41/266 [00:16<01:34,  2.38it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug4_Rot_7_sd2  padding error patience activated, Error: -6
+Loading train:  16%|█▌        | 42/266 [00:16<01:42,  2.19it/s]Loading train:  16%|█▌        | 43/266 [00:17<01:57,  1.90it/s]Loading train:  17%|█▋        | 44/266 [00:17<01:43,  2.14it/s]WARNING: subject:  vimp2_D_CSFn_Aug3_Rot_-3_sd1  padding error patience activated, Error: -3
+Loading train:  17%|█▋        | 45/266 [00:18<01:40,  2.21it/s]WARNING: subject:  vimp2_J_CSFn_Aug4_Rot_7_sd1  padding error patience activated, Error: -6
+Loading train:  17%|█▋        | 46/266 [00:18<01:39,  2.21it/s]WARNING: subject:  vimp2_D_CSFn_Aug4_Rot_-4_sd0  padding error patience activated, Error: -3
+Loading train:  18%|█▊        | 47/266 [00:19<01:43,  2.12it/s]Loading train:  18%|█▊        | 48/266 [00:19<01:35,  2.28it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug3_Rot_-4_sd0  padding error patience activated, Error: -6
+Loading train:  18%|█▊        | 49/266 [00:20<01:31,  2.38it/s]Loading train:  19%|█▉        | 50/266 [00:20<01:27,  2.48it/s]WARNING: subject:  vimp2_J_CSFn_Aug0_Rot_-3_sd2  padding error patience activated, Error: -6
+Loading train:  19%|█▉        | 51/266 [00:21<01:37,  2.21it/s]WARNING: subject:  vimp2_D_CSFn_Aug2_Rot_-1_sd2  padding error patience activated, Error: -3
+Loading train:  20%|█▉        | 52/266 [00:21<01:38,  2.18it/s]WARNING: subject:  vimp2_J_CSFn_Aug3_Rot_-2_sd0  padding error patience activated, Error: -6
+Loading train:  20%|█▉        | 53/266 [00:21<01:33,  2.29it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug1_Rot_1_sd2  padding error patience activated, Error: -6
+Loading train:  20%|██        | 54/266 [00:22<01:42,  2.07it/s]Loading train:  21%|██        | 55/266 [00:23<01:47,  1.96it/s]Loading train:  21%|██        | 56/266 [00:23<01:39,  2.11it/s]WARNING: subject:  vimp2_D_CSFn_Aug0_Rot_7_sd1  padding error patience activated, Error: -3
+Loading train:  21%|██▏       | 57/266 [00:24<01:44,  2.00it/s]Loading train:  22%|██▏       | 58/266 [00:24<01:32,  2.24it/s]Loading train:  22%|██▏       | 59/266 [00:24<01:22,  2.51it/s]WARNING: subject:  vimp2_J_CSFn_Aug1_Rot_-6_sd1  padding error patience activated, Error: -6
+Loading train:  23%|██▎       | 60/266 [00:25<01:30,  2.28it/s]WARNING: subject:  vimp2_D_CSFn_Aug1_Rot_-4_sd0  padding error patience activated, Error: -3
+Loading train:  23%|██▎       | 61/266 [00:25<01:26,  2.36it/s]WARNING: subject:  vimp2_J_CSFn_Aug4_Rot_4_sd2  padding error patience activated, Error: -6
+Loading train:  23%|██▎       | 62/266 [00:25<01:21,  2.51it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug0_Rot_-4_sd0  padding error patience activated, Error: -6
+Loading train:  24%|██▎       | 63/266 [00:26<01:19,  2.57it/s]Loading train:  24%|██▍       | 64/266 [00:26<01:11,  2.83it/s]Loading train:  24%|██▍       | 65/266 [00:26<01:09,  2.89it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug5_Rot_7_sd2  padding error patience activated, Error: -6
+Loading train:  25%|██▍       | 66/266 [00:27<01:12,  2.74it/s]Loading train:  25%|██▌       | 67/266 [00:27<01:09,  2.88it/s]WARNING: subject:  vimp2_J_CSFn_Aug0_Rot_-4_sd0  padding error patience activated, Error: -6
+Loading train:  26%|██▌       | 68/266 [00:28<01:19,  2.48it/s]WARNING: subject:  vimp2_D_CSFn_Aug4_Rot_6_sd1  padding error patience activated, Error: -3
+Loading train:  26%|██▌       | 69/266 [00:28<01:24,  2.34it/s]Loading train:  26%|██▋       | 70/266 [00:28<01:17,  2.52it/s]WARNING: subject:  vimp2_J_CSFn_Aug5_Rot_-6_sd1  padding error patience activated, Error: -6
+Loading train:  27%|██▋       | 71/266 [00:29<01:12,  2.69it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug3_Rot_6_sd1  padding error patience activated, Error: -6
+Loading train:  27%|██▋       | 72/266 [00:29<01:11,  2.73it/s]WARNING: subject:  vimp2_D_CSFn_Aug5_Rot_2_sd0  padding error patience activated, Error: -3
+Loading train:  27%|██▋       | 73/266 [00:29<01:09,  2.78it/s]Loading train:  28%|██▊       | 74/266 [00:30<01:05,  2.91it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug4_Rot_7_sd0  padding error patience activated, Error: -6
+Loading train:  28%|██▊       | 75/266 [00:30<01:11,  2.66it/s]Loading train:  29%|██▊       | 76/266 [00:31<01:09,  2.73it/s]WARNING: subject:  vimp2_J_CSFn_Aug1_Rot_-2_sd2  padding error patience activated, Error: -6
+Loading train:  29%|██▉       | 77/266 [00:31<01:05,  2.89it/s]WARNING: subject:  vimp2_D_CSFn_Aug3_Rot_3_sd2  padding error patience activated, Error: -3
+Loading train:  29%|██▉       | 78/266 [00:31<01:05,  2.86it/s]Loading train:  30%|██▉       | 79/266 [00:31<01:03,  2.95it/s]WARNING: subject:  vimp2_J_CSFn_Aug4_Rot_5_sd0  padding error patience activated, Error: -6
+Loading train:  30%|███       | 80/266 [00:32<01:06,  2.81it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug2_Rot_2_sd2  padding error patience activated, Error: -6
+Loading train:  30%|███       | 81/266 [00:32<01:07,  2.75it/s]Loading train:  31%|███       | 82/266 [00:33<01:09,  2.65it/s]Loading train:  31%|███       | 83/266 [00:33<01:10,  2.59it/s]WARNING: subject:  vimp2_D_CSFn_Aug1_Rot_-2_sd1  padding error patience activated, Error: -3
+Loading train:  32%|███▏      | 84/266 [00:33<01:11,  2.55it/s]Loading train:  32%|███▏      | 85/266 [00:34<01:06,  2.71it/s]WARNING: subject:  vimp2_J_CSFn_Aug2_Rot_4_sd1  padding error patience activated, Error: -6
+Loading train:  32%|███▏      | 86/266 [00:34<01:09,  2.57it/s]WARNING: subject:  vimp2_D_CSFn_Aug2_Rot_-5_sd0  padding error patience activated, Error: -3
+Loading train:  33%|███▎      | 87/266 [00:35<01:22,  2.16it/s]Loading train:  33%|███▎      | 88/266 [00:35<01:25,  2.07it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug0_Rot_-4_sd1  padding error patience activated, Error: -6
+Loading train:  33%|███▎      | 89/266 [00:36<01:21,  2.16it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug1_Rot_4_sd0  padding error patience activated, Error: -6
+Loading train:  34%|███▍      | 90/266 [00:36<01:14,  2.35it/s]Loading train:  34%|███▍      | 91/266 [00:37<01:10,  2.48it/s]Loading train:  35%|███▍      | 92/266 [00:37<01:04,  2.70it/s]WARNING: subject:  vimp2_D_CSFn_Aug0_Rot_-5_sd2  padding error patience activated, Error: -3
+Loading train:  35%|███▍      | 93/266 [00:37<01:05,  2.62it/s]WARNING: subject:  vimp2_J_CSFn_Aug1_Rot_4_sd0  padding error patience activated, Error: -6
+Loading train:  35%|███▌      | 94/266 [00:38<01:06,  2.59it/s]WARNING: subject:  vimp2_D_CSFn_Aug5_Rot_7_sd1  padding error patience activated, Error: -3
+Loading train:  36%|███▌      | 95/266 [00:38<01:16,  2.22it/s]Loading train:  36%|███▌      | 96/266 [00:39<01:16,  2.22it/s]WARNING: subject:  vimp2_ANON972_CSFn2  padding error patience activated, Error: -3
+Loading train:  36%|███▋      | 97/266 [00:39<01:24,  2.01it/s]Loading train:  37%|███▋      | 98/266 [00:40<01:17,  2.17it/s]WARNING: subject:  vimp2_H_CSFn2  padding error patience activated, Error: -5
+Loading train:  37%|███▋      | 99/266 [00:40<01:31,  1.83it/s]WARNING: subject:  vimp2_I_CSFn2  padding error patience activated, Error: -2
+Loading train:  38%|███▊      | 100/266 [00:41<01:27,  1.89it/s]WARNING: subject:  vimp2_H_CSFn_Aug5_Rot_-2_sd1  padding error patience activated, Error: -5
+Loading train:  38%|███▊      | 101/266 [00:42<01:32,  1.78it/s]Loading train:  38%|███▊      | 102/266 [00:42<01:25,  1.91it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug4_Rot_4_sd1  padding error patience activated, Error: -3
+Loading train:  39%|███▊      | 103/266 [00:42<01:24,  1.92it/s]WARNING: subject:  vimp2_I_CSFn_Aug1_Rot_-5_sd2  padding error patience activated, Error: -2
+Loading train:  39%|███▉      | 104/266 [00:43<01:22,  1.97it/s]Loading train:  39%|███▉      | 105/266 [00:43<01:19,  2.04it/s]WARNING: subject:  vimp2_H_CSFn_Aug0_Rot_-3_sd2  padding error patience activated, Error: -5
+Loading train:  40%|███▉      | 106/266 [00:44<01:10,  2.26it/s]WARNING: subject:  vimp2_H_CSFn_Aug2_Rot_6_sd0  padding error patience activated, Error: -5
+Loading train:  40%|████      | 107/266 [00:44<01:16,  2.09it/s]Loading train:  41%|████      | 108/266 [00:45<01:25,  1.85it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug1_Rot_-5_sd0  padding error patience activated, Error: -3
+Loading train:  41%|████      | 109/266 [00:45<01:22,  1.90it/s]WARNING: subject:  vimp2_I_CSFn_Aug3_Rot_-5_sd1  padding error patience activated, Error: -2
+Loading train:  41%|████▏     | 110/266 [00:46<01:15,  2.08it/s]WARNING: subject:  vimp2_I_CSFn_Aug5_Rot_3_sd2  padding error patience activated, Error: -2
+Loading train:  42%|████▏     | 111/266 [00:46<01:15,  2.05it/s]WARNING: subject:  vimp2_H_CSFn_Aug2_Rot_-1_sd1  padding error patience activated, Error: -5
+Loading train:  42%|████▏     | 112/266 [00:47<01:23,  1.85it/s]WARNING: subject:  vimp2_H_CSFn_Aug4_Rot_5_sd2  padding error patience activated, Error: -5
+Loading train:  42%|████▏     | 113/266 [00:48<01:29,  1.71it/s]Loading train:  43%|████▎     | 114/266 [00:48<01:30,  1.69it/s]Loading train:  43%|████▎     | 115/266 [00:49<01:15,  2.00it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug1_Rot_3_sd1  padding error patience activated, Error: -3
+Loading train:  44%|████▎     | 116/266 [00:49<01:07,  2.21it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug3_Rot_7_sd2  padding error patience activated, Error: -3
+Loading train:  44%|████▍     | 117/266 [00:49<00:59,  2.52it/s]WARNING: subject:  vimp2_I_CSFn_Aug0_Rot_-7_sd0  padding error patience activated, Error: -2
+Loading train:  44%|████▍     | 118/266 [00:49<00:54,  2.71it/s]WARNING: subject:  vimp2_I_CSFn_Aug3_Rot_-1_sd0  padding error patience activated, Error: -2
+Loading train:  45%|████▍     | 119/266 [00:50<00:54,  2.71it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug5_Rot_-1_sd0  padding error patience activated, Error: -3
+Loading train:  45%|████▌     | 120/266 [00:50<00:50,  2.91it/s]Loading train:  45%|████▌     | 121/266 [00:50<00:47,  3.08it/s]Loading train:  46%|████▌     | 122/266 [00:51<00:52,  2.72it/s]WARNING: subject:  vimp2_I_CSFn_Aug0_Rot_1_sd1  padding error patience activated, Error: -2
+Loading train:  46%|████▌     | 123/266 [00:51<00:52,  2.74it/s]Loading train:  47%|████▋     | 124/266 [00:52<00:49,  2.88it/s]Loading train:  47%|████▋     | 125/266 [00:52<00:45,  3.13it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug0_Rot_5_sd2  padding error patience activated, Error: -3
+Loading train:  47%|████▋     | 126/266 [00:52<00:45,  3.10it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug5_Rot_-4_sd1  padding error patience activated, Error: -3
+Loading train:  48%|████▊     | 127/266 [00:52<00:45,  3.07it/s]WARNING: subject:  vimp2_I_CSFn_Aug2_Rot_-7_sd2  padding error patience activated, Error: -2
+Loading train:  48%|████▊     | 128/266 [00:53<00:48,  2.85it/s]Loading train:  48%|████▊     | 129/266 [00:53<00:47,  2.89it/s]WARNING: subject:  vimp2_H_CSFn_Aug1_Rot_-1_sd2  padding error patience activated, Error: -5
+Loading train:  49%|████▉     | 130/266 [00:54<00:50,  2.71it/s]Loading train:  49%|████▉     | 131/266 [00:54<00:57,  2.34it/s]WARNING: subject:  vimp2_H_CSFn_Aug3_Rot_-1_sd0  padding error patience activated, Error: -5
+Loading train:  50%|████▉     | 132/266 [00:55<00:57,  2.32it/s]Loading train:  50%|█████     | 133/266 [00:55<00:50,  2.62it/s]Loading train:  50%|█████     | 134/266 [00:55<00:44,  2.94it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug2_Rot_7_sd0  padding error patience activated, Error: -3
+Loading train:  51%|█████     | 135/266 [00:56<00:46,  2.85it/s]WARNING: subject:  vimp2_I_CSFn_Aug4_Rot_2_sd1  padding error patience activated, Error: -2
+Loading train:  51%|█████     | 136/266 [00:56<00:45,  2.87it/s]Loading train:  52%|█████▏    | 137/266 [00:56<00:48,  2.65it/s]WARNING: subject:  vimp2_H_CSFn_Aug3_Rot_1_sd1  padding error patience activated, Error: -5
+Loading train:  52%|█████▏    | 138/266 [00:57<01:02,  2.05it/s]Loading train:  52%|█████▏    | 139/266 [00:57<00:56,  2.23it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug2_Rot_1_sd1  padding error patience activated, Error: -3
+Loading train:  53%|█████▎    | 140/266 [00:58<00:51,  2.44it/s]WARNING: subject:  vimp2_H_CSFn_Aug5_Rot_-1_sd2  padding error patience activated, Error: -5
+Loading train:  53%|█████▎    | 141/266 [00:58<00:53,  2.35it/s]Loading train:  53%|█████▎    | 142/266 [00:59<00:59,  2.10it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug4_Rot_4_sd2  padding error patience activated, Error: -3
+Loading train:  54%|█████▍    | 143/266 [00:59<01:05,  1.89it/s]WARNING: subject:  vimp2_I_CSFn_Aug3_Rot_-1_sd2  padding error patience activated, Error: -2
+Loading train:  54%|█████▍    | 144/266 [01:00<00:59,  2.05it/s]WARNING: subject:  vimp2_H_CSFn_Aug0_Rot_-4_sd0  padding error patience activated, Error: -5
+Loading train:  55%|█████▍    | 145/266 [01:00<01:01,  1.98it/s]Loading train:  55%|█████▍    | 146/266 [01:01<01:07,  1.78it/s]Loading train:  55%|█████▌    | 147/266 [01:01<01:00,  1.97it/s]WARNING: subject:  vimp2_I_CSFn_Aug1_Rot_-6_sd1  padding error patience activated, Error: -2
+Loading train:  56%|█████▌    | 148/266 [01:02<00:54,  2.15it/s]Loading train:  56%|█████▌    | 149/266 [01:02<00:51,  2.28it/s]Loading train:  56%|█████▋    | 150/266 [01:03<00:53,  2.19it/s]WARNING: subject:  vimp2_H_CSFn_Aug0_Rot_-4_sd1  padding error patience activated, Error: -5
+Loading train:  57%|█████▋    | 151/266 [01:03<00:54,  2.11it/s]WARNING: subject:  vimp2_I_CSFn_Aug1_Rot_2_sd0  padding error patience activated, Error: -2
+Loading train:  57%|█████▋    | 152/266 [01:04<00:56,  2.03it/s]WARNING: subject:  vimp2_I_CSFn_Aug4_Rot_-6_sd0  padding error patience activated, Error: -2
+Loading train:  58%|█████▊    | 153/266 [01:04<00:50,  2.25it/s]Loading train:  58%|█████▊    | 154/266 [01:05<00:51,  2.18it/s]WARNING: subject:  vimp2_H_CSFn_Aug2_Rot_2_sd2  padding error patience activated, Error: -5
+Loading train:  58%|█████▊    | 155/266 [01:05<01:02,  1.77it/s]Loading train:  59%|█████▊    | 156/266 [01:06<00:58,  1.88it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug1_Rot_3_sd2  padding error patience activated, Error: -3
+Loading train:  59%|█████▉    | 157/266 [01:06<00:51,  2.13it/s]WARNING: subject:  vimp2_H_CSFn_Aug4_Rot_-3_sd0  padding error patience activated, Error: -5
+Loading train:  59%|█████▉    | 158/266 [01:07<00:48,  2.21it/s]Loading train:  60%|█████▉    | 159/266 [01:07<00:54,  1.98it/s]Loading train:  60%|██████    | 160/266 [01:07<00:46,  2.27it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug3_Rot_-3_sd0  padding error patience activated, Error: -3
+Loading train:  61%|██████    | 161/266 [01:08<00:46,  2.27it/s]WARNING: subject:  vimp2_I_CSFn_Aug5_Rot_-2_sd1  padding error patience activated, Error: -2
+Loading train:  61%|██████    | 162/266 [01:08<00:47,  2.18it/s]Loading train:  61%|██████▏   | 163/266 [01:09<00:44,  2.33it/s]WARNING: subject:  vimp2_H_CSFn_Aug4_Rot_4_sd1  padding error patience activated, Error: -5
+Loading train:  62%|██████▏   | 164/266 [01:09<00:46,  2.20it/s]Loading train:  62%|██████▏   | 165/266 [01:10<00:52,  1.93it/s]Loading train:  62%|██████▏   | 166/266 [01:10<00:48,  2.05it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug3_Rot_-6_sd1  padding error patience activated, Error: -3
+Loading train:  63%|██████▎   | 167/266 [01:11<00:47,  2.07it/s]WARNING: subject:  vimp2_I_CSFn_Aug0_Rot_6_sd2  padding error patience activated, Error: -2
+Loading train:  63%|██████▎   | 168/266 [01:11<00:46,  2.11it/s]Loading train:  64%|██████▎   | 169/266 [01:12<00:41,  2.33it/s]Loading train:  64%|██████▍   | 170/266 [01:12<00:38,  2.50it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug5_Rot_2_sd2  padding error patience activated, Error: -3
+Loading train:  64%|██████▍   | 171/266 [01:12<00:37,  2.56it/s]WARNING: subject:  vimp2_I_CSFn_Aug4_Rot_6_sd2  padding error patience activated, Error: -2
+Loading train:  65%|██████▍   | 172/266 [01:13<00:35,  2.66it/s]WARNING: subject:  vimp2_H_CSFn_Aug1_Rot_-2_sd0  padding error patience activated, Error: -5
+Loading train:  65%|██████▌   | 173/266 [01:13<00:43,  2.15it/s]Loading train:  65%|██████▌   | 174/266 [01:14<00:47,  1.96it/s]Loading train:  66%|██████▌   | 175/266 [01:14<00:40,  2.24it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug0_Rot_3_sd0  padding error patience activated, Error: -3
+Loading train:  66%|██████▌   | 176/266 [01:15<00:37,  2.40it/s]WARNING: subject:  vimp2_I_CSFn_Aug2_Rot_1_sd1  padding error patience activated, Error: -2
+Loading train:  67%|██████▋   | 177/266 [01:15<00:38,  2.30it/s]Loading train:  67%|██████▋   | 178/266 [01:16<00:37,  2.33it/s]WARNING: subject:  vimp2_H_CSFn_Aug1_Rot_-4_sd1  padding error patience activated, Error: -5
+Loading train:  67%|██████▋   | 179/266 [01:16<00:38,  2.27it/s]WARNING: subject:  vimp2_I_CSFn_Aug2_Rot_-6_sd0  padding error patience activated, Error: -2
+Loading train:  68%|██████▊   | 180/266 [01:16<00:37,  2.27it/s]WARNING: subject:  vimp2_I_CSFn_Aug5_Rot_5_sd0  padding error patience activated, Error: -2
+Loading train:  68%|██████▊   | 181/266 [01:17<00:34,  2.49it/s]WARNING: subject:  vimp2_H_CSFn_Aug3_Rot_-1_sd2  padding error patience activated, Error: -5
+Loading train:  68%|██████▊   | 182/266 [01:17<00:37,  2.25it/s]Loading train:  69%|██████▉   | 183/266 [01:18<00:33,  2.45it/s]Loading train:  69%|██████▉   | 184/266 [01:18<00:31,  2.61it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug0_Rot_-1_sd1  padding error patience activated, Error: -3
+Loading train:  70%|██████▉   | 185/266 [01:18<00:29,  2.77it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug2_Rot_-5_sd2  padding error patience activated, Error: -3
+Loading train:  70%|██████▉   | 186/266 [01:19<00:28,  2.82it/s]WARNING: subject:  vimp2_H_CSFn_Aug5_Rot_-3_sd0  padding error patience activated, Error: -5
+Loading train:  70%|███████   | 187/266 [01:19<00:28,  2.76it/s]Loading train:  71%|███████   | 188/266 [01:19<00:26,  2.93it/s]WARNING: subject:  vimp2_ANON972_CSFn_Aug4_Rot_-4_sd0  padding error patience activated, Error: -3
+Loading train:  71%|███████   | 189/266 [01:20<00:25,  2.99it/s]Loading train:  71%|███████▏  | 190/266 [01:20<00:23,  3.17it/s]Loading train:  72%|███████▏  | 191/266 [01:20<00:23,  3.17it/s]Loading train:  72%|███████▏  | 192/266 [01:21<00:24,  2.97it/s]Loading train:  73%|███████▎  | 193/266 [01:21<00:24,  3.01it/s]WARNING: subject:  vimp2_L_CSFn2  padding error patience activated, Error: -4
+Loading train:  73%|███████▎  | 194/266 [01:21<00:27,  2.65it/s]Loading train:  73%|███████▎  | 195/266 [01:22<00:27,  2.56it/s]Loading train:  74%|███████▎  | 196/266 [01:22<00:25,  2.77it/s]Loading train:  74%|███████▍  | 197/266 [01:22<00:26,  2.59it/s]Loading train:  74%|███████▍  | 198/266 [01:23<00:24,  2.76it/s]WARNING: subject:  vimp2_L_CSFn_Aug0_Rot_5_sd2  padding error patience activated, Error: -4
+Loading train:  75%|███████▍  | 199/266 [01:23<00:25,  2.66it/s]WARNING: subject:  vimp2_L_CSFn_Aug3_Rot_-7_sd0  padding error patience activated, Error: -4
+Loading train:  75%|███████▌  | 200/266 [01:24<00:24,  2.67it/s]Loading train:  76%|███████▌  | 201/266 [01:24<00:22,  2.92it/s]Loading train:  76%|███████▌  | 202/266 [01:24<00:20,  3.11it/s]Loading train:  76%|███████▋  | 203/266 [01:25<00:22,  2.79it/s]Loading train:  77%|███████▋  | 204/266 [01:25<00:23,  2.65it/s]WARNING: subject:  vimp2_L_CSFn_Aug0_Rot_4_sd0  padding error patience activated, Error: -4
+Loading train:  77%|███████▋  | 205/266 [01:25<00:22,  2.72it/s]WARNING: subject:  vimp2_L_CSFn_Aug4_Rot_-7_sd1  padding error patience activated, Error: -4
+Loading train:  77%|███████▋  | 206/266 [01:26<00:24,  2.41it/s]Loading train:  78%|███████▊  | 207/266 [01:26<00:27,  2.13it/s]Loading train:  78%|███████▊  | 208/266 [01:27<00:28,  2.05it/s]Loading train:  79%|███████▊  | 209/266 [01:27<00:24,  2.31it/s]Loading train:  79%|███████▉  | 210/266 [01:28<00:23,  2.36it/s]Loading train:  79%|███████▉  | 211/266 [01:28<00:21,  2.53it/s]WARNING: subject:  vimp2_L_CSFn_Aug1_Rot_5_sd1  padding error patience activated, Error: -4
+Loading train:  80%|███████▉  | 212/266 [01:29<00:23,  2.33it/s]WARNING: subject:  vimp2_L_CSFn_Aug4_Rot_3_sd2  padding error patience activated, Error: -4
+Loading train:  80%|████████  | 213/266 [01:29<00:26,  2.02it/s]Loading train:  80%|████████  | 214/266 [01:30<00:25,  2.06it/s]Loading train:  81%|████████  | 215/266 [01:30<00:26,  1.94it/s]Loading train:  81%|████████  | 216/266 [01:31<00:24,  2.04it/s]Loading train:  82%|████████▏ | 217/266 [01:31<00:22,  2.16it/s]Loading train:  82%|████████▏ | 218/266 [01:31<00:20,  2.40it/s]Loading train:  82%|████████▏ | 219/266 [01:32<00:19,  2.40it/s]Loading train:  83%|████████▎ | 220/266 [01:32<00:17,  2.59it/s]WARNING: subject:  vimp2_L_CSFn_Aug1_Rot_-5_sd2  padding error patience activated, Error: -4
+Loading train:  83%|████████▎ | 221/266 [01:33<00:17,  2.55it/s]WARNING: subject:  vimp2_L_CSFn_Aug4_Rot_-1_sd0  padding error patience activated, Error: -4
+Loading train:  83%|████████▎ | 222/266 [01:33<00:17,  2.54it/s]Loading train:  84%|████████▍ | 223/266 [01:33<00:16,  2.69it/s]Loading train:  84%|████████▍ | 224/266 [01:33<00:14,  2.96it/s]Loading train:  85%|████████▍ | 225/266 [01:34<00:15,  2.66it/s]Loading train:  85%|████████▍ | 226/266 [01:34<00:14,  2.72it/s]WARNING: subject:  vimp2_L_CSFn_Aug1_Rot_3_sd0  padding error patience activated, Error: -4
+Loading train:  85%|████████▌ | 227/266 [01:35<00:13,  2.84it/s]WARNING: subject:  vimp2_L_CSFn_Aug5_Rot_-5_sd1  padding error patience activated, Error: -4
+Loading train:  86%|████████▌ | 228/266 [01:35<00:13,  2.83it/s]Loading train:  86%|████████▌ | 229/266 [01:35<00:12,  2.98it/s]Loading train:  86%|████████▋ | 230/266 [01:36<00:12,  2.94it/s]Loading train:  87%|████████▋ | 231/266 [01:36<00:11,  3.02it/s]Loading train:  87%|████████▋ | 232/266 [01:36<00:10,  3.12it/s]Loading train:  88%|████████▊ | 233/266 [01:36<00:10,  3.26it/s]Loading train:  88%|████████▊ | 234/266 [01:37<00:11,  2.83it/s]WARNING: subject:  vimp2_L_CSFn_Aug2_Rot_-4_sd1  padding error patience activated, Error: -4
+Loading train:  88%|████████▊ | 235/266 [01:38<00:12,  2.43it/s]WARNING: subject:  vimp2_L_CSFn_Aug5_Rot_6_sd2  padding error patience activated, Error: -4
+Loading train:  89%|████████▊ | 236/266 [01:38<00:11,  2.62it/s]Loading train:  89%|████████▉ | 237/266 [01:38<00:11,  2.51it/s]Loading train:  89%|████████▉ | 238/266 [01:39<00:10,  2.74it/s]Loading train:  90%|████████▉ | 239/266 [01:39<00:09,  2.76it/s]Loading train:  90%|█████████ | 240/266 [01:39<00:08,  2.94it/s]WARNING: subject:  vimp2_L_CSFn_Aug5_Rot_-1_sd0  padding error patience activated, Error: -4
+Loading train:  91%|█████████ | 241/266 [01:40<00:08,  2.90it/s]Loading train:  91%|█████████ | 242/266 [01:40<00:07,  3.07it/s]Loading train:  91%|█████████▏| 243/266 [01:40<00:07,  2.94it/s]Loading train:  92%|█████████▏| 244/266 [01:40<00:06,  3.16it/s]WARNING: subject:  vimp2_L_CSFn_Aug2_Rot_-7_sd2  padding error patience activated, Error: -4
+Loading train:  92%|█████████▏| 245/266 [01:41<00:07,  2.85it/s]Loading train:  92%|█████████▏| 246/266 [01:41<00:06,  2.92it/s]Loading train:  93%|█████████▎| 247/266 [01:42<00:06,  2.93it/s]Loading train:  93%|█████████▎| 248/266 [01:42<00:05,  3.11it/s]Loading train:  94%|█████████▎| 249/266 [01:42<00:05,  3.05it/s]Loading train:  94%|█████████▍| 250/266 [01:43<00:05,  2.93it/s]WARNING: subject:  vimp2_L_CSFn_Aug2_Rot_5_sd0  padding error patience activated, Error: -4
+Loading train:  94%|█████████▍| 251/266 [01:43<00:06,  2.30it/s]Loading train:  95%|█████████▍| 252/266 [01:44<00:05,  2.35it/s]Loading train:  95%|█████████▌| 253/266 [01:44<00:05,  2.22it/s]Loading train:  95%|█████████▌| 254/266 [01:44<00:04,  2.42it/s]Loading train:  96%|█████████▌| 255/266 [01:45<00:04,  2.62it/s]Loading train:  96%|█████████▌| 256/266 [01:45<00:03,  2.55it/s]WARNING: subject:  vimp2_L_CSFn_Aug3_Rot_7_sd1  padding error patience activated, Error: -4
+Loading train:  97%|█████████▋| 257/266 [01:46<00:04,  2.14it/s]Loading train:  97%|█████████▋| 258/266 [01:46<00:03,  2.37it/s]Loading train:  97%|█████████▋| 259/266 [01:47<00:02,  2.34it/s]Loading train:  98%|█████████▊| 260/266 [01:47<00:02,  2.24it/s]Loading train:  98%|█████████▊| 261/266 [01:47<00:02,  2.43it/s]WARNING: subject:  vimp2_L_CSFn_Aug0_Rot_-7_sd1  padding error patience activated, Error: -4
+Loading train:  98%|█████████▊| 262/266 [01:48<00:01,  2.50it/s]WARNING: subject:  vimp2_L_CSFn_Aug3_Rot_5_sd2  padding error patience activated, Error: -4
+Loading train:  99%|█████████▉| 263/266 [01:48<00:01,  2.31it/s]Loading train:  99%|█████████▉| 264/266 [01:49<00:00,  2.34it/s]Loading train: 100%|█████████▉| 265/266 [01:49<00:00,  2.38it/s]Loading train: 100%|██████████| 266/266 [01:49<00:00,  2.53it/s]
+concatenating: train:   0%|          | 0/266 [00:00<?, ?it/s]concatenating: train:   0%|          | 1/266 [00:00<00:33,  7.93it/s]concatenating: train:   7%|▋         | 18/266 [00:00<00:22, 11.10it/s]concatenating: train:  17%|█▋        | 45/266 [00:00<00:14, 15.57it/s]concatenating: train:  26%|██▌       | 69/266 [00:00<00:09, 21.63it/s]concatenating: train:  35%|███▍      | 93/266 [00:00<00:05, 29.35it/s]concatenating: train:  41%|████      | 109/266 [00:00<00:04, 34.20it/s]concatenating: train:  52%|█████▏    | 138/266 [00:00<00:02, 46.44it/s]concatenating: train:  63%|██████▎   | 168/266 [00:01<00:01, 62.10it/s]concatenating: train:  74%|███████▎  | 196/266 [00:01<00:00, 80.97it/s]concatenating: train:  82%|████████▏ | 219/266 [00:01<00:00, 78.68it/s]concatenating: train:  99%|█████████▉| 263/266 [00:01<00:00, 104.26it/s]concatenating: train: 100%|██████████| 266/266 [00:01<00:00, 167.89it/s]
+Loading test:   0%|          | 0/4 [00:00<?, ?it/s]Loading test:  25%|██▌       | 1/4 [00:00<00:02,  1.49it/s]Loading test:  50%|█████     | 2/4 [00:01<00:01,  1.75it/s]Loading test:  75%|███████▌  | 3/4 [00:01<00:00,  1.80it/s]Loading test: 100%|██████████| 4/4 [00:01<00:00,  2.02it/s]
+concatenating: validation:   0%|          | 0/4 [00:00<?, ?it/s]concatenating: validation:  75%|███████▌  | 3/4 [00:00<00:00, 23.99it/s]concatenating: validation: 100%|██████████| 4/4 [00:00<00:00, 27.85it/s]
+Loading trainS:   0%|          | 0/266 [00:00<?, ?it/s]WARNING: subject:  vimp2_J_CSFn2  padding error patience activated, Error: -6
+Error in label values min 0.0 max 2.0      1-THALAMUS
+Loading trainS:   0%|          | 1/266 [00:00<01:46,  2.48it/s]WARNING: subject:  vimp2_D_CSFn2  padding error patience activated, Error: -3
+Loading trainS:   1%|          | 2/266 [00:00<01:50,  2.38it/s]Loading trainS:   1%|          | 3/266 [00:01<01:56,  2.27it/s]Loading trainS:   2%|▏         | 4/266 [00:01<02:10,  2.00it/s]WARNING: subject:  vimp2_ANON911_CSFn2  padding error patience activated, Error: -6
+Loading trainS:   2%|▏         | 5/266 [00:02<02:18,  1.89it/s]Loading trainS:   2%|▏         | 6/266 [00:02<01:59,  2.18it/s]WARNING: subject:  vimp2_J_CSFn_Aug5_Rot_4_sd2  padding error patience activated, Error: -6
+Loading trainS:   3%|▎         | 7/266 [00:03<01:55,  2.25it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug4_Rot_-2_sd1  padding error patience activated, Error: -6
+Loading trainS:   3%|▎         | 8/266 [00:03<01:52,  2.29it/s]Loading trainS:   3%|▎         | 9/266 [00:04<01:49,  2.34it/s]Loading trainS:   4%|▍         | 10/266 [00:04<01:41,  2.53it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug5_Rot_1_sd0  padding error patience activated, Error: -6
+Loading trainS:   4%|▍         | 11/266 [00:04<01:36,  2.65it/s]Loading trainS:   5%|▍         | 12/266 [00:05<01:30,  2.80it/s]WARNING: subject:  vimp2_J_CSFn_Aug2_Rot_-4_sd2  padding error patience activated, Error: -6
+Loading trainS:   5%|▍         | 13/266 [00:05<01:30,  2.78it/s]WARNING: subject:  vimp2_D_CSFn_Aug4_Rot_-5_sd2  padding error patience activated, Error: -3
+Loading trainS:   5%|▌         | 14/266 [00:05<01:41,  2.49it/s]Loading trainS:   6%|▌         | 15/266 [00:06<01:51,  2.26it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug1_Rot_3_sd1  padding error patience activated, Error: -6
+Loading trainS:   6%|▌         | 16/266 [00:06<01:45,  2.36it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug3_Rot_7_sd2  padding error patience activated, Error: -6
+Loading trainS:   6%|▋         | 17/266 [00:07<01:59,  2.09it/s]Loading trainS:   7%|▋         | 18/266 [00:07<01:48,  2.29it/s]Loading trainS:   7%|▋         | 19/266 [00:08<01:40,  2.45it/s]WARNING: subject:  vimp2_D_CSFn_Aug2_Rot_1_sd1  padding error patience activated, Error: -3
+Loading trainS:   8%|▊         | 20/266 [00:08<01:39,  2.48it/s]Loading trainS:   8%|▊         | 21/266 [00:08<01:37,  2.51it/s]WARNING: subject:  vimp2_J_CSFn_Aug3_Rot_-1_sd1  padding error patience activated, Error: -6
+Loading trainS:   8%|▊         | 22/266 [00:09<01:45,  2.31it/s]WARNING: subject:  vimp2_D_CSFn_Aug3_Rot_-3_sd0  padding error patience activated, Error: -3
+Loading trainS:   9%|▊         | 23/266 [00:09<01:43,  2.34it/s]Loading trainS:   9%|▉         | 24/266 [00:10<01:41,  2.40it/s]WARNING: subject:  vimp2_J_CSFn_Aug5_Rot_-7_sd0  padding error patience activated, Error: -6
+Loading trainS:   9%|▉         | 25/266 [00:10<01:50,  2.17it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug2_Rot_5_sd0  padding error patience activated, Error: -6
+Loading trainS:  10%|▉         | 26/266 [00:11<01:55,  2.07it/s]Loading trainS:  10%|█         | 27/266 [00:11<01:41,  2.35it/s]Loading trainS:  11%|█         | 28/266 [00:11<01:34,  2.52it/s]WARNING: subject:  vimp2_D_CSFn_Aug1_Rot_5_sd2  padding error patience activated, Error: -3
+Loading trainS:  11%|█         | 29/266 [00:12<01:39,  2.37it/s]WARNING: subject:  vimp2_J_CSFn_Aug2_Rot_7_sd0  padding error patience activated, Error: -6
+Loading trainS:  11%|█▏        | 30/266 [00:12<01:45,  2.23it/s]Loading trainS:  12%|█▏        | 31/266 [00:13<01:38,  2.39it/s]Loading trainS:  12%|█▏        | 32/266 [00:13<01:36,  2.43it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug0_Rot_7_sd2  padding error patience activated, Error: -6
+Loading trainS:  12%|█▏        | 33/266 [00:14<01:37,  2.39it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug5_Rot_-6_sd1  padding error patience activated, Error: -6
+Loading trainS:  13%|█▎        | 34/266 [00:14<01:48,  2.14it/s]Loading trainS:  13%|█▎        | 35/266 [00:15<01:53,  2.03it/s]WARNING: subject:  vimp2_J_CSFn_Aug0_Rot_1_sd1  padding error patience activated, Error: -6
+Loading trainS:  14%|█▎        | 36/266 [00:15<01:51,  2.07it/s]WARNING: subject:  vimp2_D_CSFn_Aug0_Rot_4_sd0  padding error patience activated, Error: -3
+Loading trainS:  14%|█▍        | 37/266 [00:16<01:49,  2.09it/s]WARNING: subject:  vimp2_J_CSFn_Aug3_Rot_-3_sd2  padding error patience activated, Error: -6
+Loading trainS:  14%|█▍        | 38/266 [00:16<01:44,  2.18it/s]WARNING: subject:  vimp2_D_CSFn_Aug5_Rot_1_sd2  padding error patience activated, Error: -3
+Loading trainS:  15%|█▍        | 39/266 [00:16<01:37,  2.32it/s]Loading trainS:  15%|█▌        | 40/266 [00:17<01:31,  2.46it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug2_Rot_1_sd1  padding error patience activated, Error: -6
+Loading trainS:  15%|█▌        | 41/266 [00:18<01:51,  2.01it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug4_Rot_7_sd2  padding error patience activated, Error: -6
+Loading trainS:  16%|█▌        | 42/266 [00:18<01:52,  1.99it/s]Loading trainS:  16%|█▌        | 43/266 [00:19<01:57,  1.89it/s]Loading trainS:  17%|█▋        | 44/266 [00:19<01:44,  2.13it/s]WARNING: subject:  vimp2_D_CSFn_Aug3_Rot_-3_sd1  padding error patience activated, Error: -3
+Loading trainS:  17%|█▋        | 45/266 [00:20<01:55,  1.92it/s]WARNING: subject:  vimp2_J_CSFn_Aug4_Rot_7_sd1  padding error patience activated, Error: -6
+Loading trainS:  17%|█▋        | 46/266 [00:20<01:56,  1.88it/s]WARNING: subject:  vimp2_D_CSFn_Aug4_Rot_-4_sd0  padding error patience activated, Error: -3
+Loading trainS:  18%|█▊        | 47/266 [00:21<01:46,  2.06it/s]Loading trainS:  18%|█▊        | 48/266 [00:21<01:36,  2.26it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug3_Rot_-4_sd0  padding error patience activated, Error: -6
+Loading trainS:  18%|█▊        | 49/266 [00:21<01:44,  2.08it/s]Loading trainS:  19%|█▉        | 50/266 [00:22<01:53,  1.90it/s]WARNING: subject:  vimp2_J_CSFn_Aug0_Rot_-3_sd2  padding error patience activated, Error: -6
+Loading trainS:  19%|█▉        | 51/266 [00:23<02:03,  1.74it/s]WARNING: subject:  vimp2_D_CSFn_Aug2_Rot_-1_sd2  padding error patience activated, Error: -3
+Loading trainS:  20%|█▉        | 52/266 [00:23<01:59,  1.79it/s]WARNING: subject:  vimp2_J_CSFn_Aug3_Rot_-2_sd0  padding error patience activated, Error: -6
+Loading trainS:  20%|█▉        | 53/266 [00:24<01:54,  1.85it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug1_Rot_1_sd2  padding error patience activated, Error: -6
+Loading trainS:  20%|██        | 54/266 [00:24<01:44,  2.03it/s]Loading trainS:  21%|██        | 55/266 [00:25<01:40,  2.10it/s]Loading trainS:  21%|██        | 56/266 [00:25<01:28,  2.37it/s]WARNING: subject:  vimp2_D_CSFn_Aug0_Rot_7_sd1  padding error patience activated, Error: -3
+Loading trainS:  21%|██▏       | 57/266 [00:25<01:37,  2.15it/s]Loading trainS:  22%|██▏       | 58/266 [00:26<01:23,  2.49it/s]Loading trainS:  22%|██▏       | 59/266 [00:26<01:23,  2.49it/s]WARNING: subject:  vimp2_J_CSFn_Aug1_Rot_-6_sd1  padding error patience activated, Error: -6
+Loading trainS:  23%|██▎       | 60/266 [00:26<01:19,  2.59it/s]WARNING: subject:  vimp2_D_CSFn_Aug1_Rot_-4_sd0  padding error patience activated, Error: -3
+Loading trainS:  23%|██▎       | 61/266 [00:27<01:14,  2.74it/s]WARNING: subject:  vimp2_J_CSFn_Aug4_Rot_4_sd2  padding error patience activated, Error: -6
+Loading trainS:  23%|██▎       | 62/266 [00:27<01:14,  2.74it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug0_Rot_-4_sd0  padding error patience activated, Error: -6
+Loading trainS:  24%|██▎       | 63/266 [00:28<01:17,  2.61it/s]Loading trainS:  24%|██▍       | 64/266 [00:28<01:18,  2.57it/s]Loading trainS:  24%|██▍       | 65/266 [00:28<01:14,  2.70it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug5_Rot_7_sd2  padding error patience activated, Error: -6
+Loading trainS:  25%|██▍       | 66/266 [00:29<01:17,  2.59it/s]Loading trainS:  25%|██▌       | 67/266 [00:29<01:16,  2.59it/s]WARNING: subject:  vimp2_J_CSFn_Aug0_Rot_-4_sd0  padding error patience activated, Error: -6
+Loading trainS:  26%|██▌       | 68/266 [00:29<01:11,  2.77it/s]WARNING: subject:  vimp2_D_CSFn_Aug4_Rot_6_sd1  padding error patience activated, Error: -3
+Loading trainS:  26%|██▌       | 69/266 [00:30<01:08,  2.88it/s]Loading trainS:  26%|██▋       | 70/266 [00:30<01:03,  3.10it/s]WARNING: subject:  vimp2_J_CSFn_Aug5_Rot_-6_sd1  padding error patience activated, Error: -6
+Loading trainS:  27%|██▋       | 71/266 [00:30<01:04,  3.02it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug3_Rot_6_sd1  padding error patience activated, Error: -6
+Loading trainS:  27%|██▋       | 72/266 [00:31<01:06,  2.92it/s]WARNING: subject:  vimp2_D_CSFn_Aug5_Rot_2_sd0  padding error patience activated, Error: -3
+Loading trainS:  27%|██▋       | 73/266 [00:31<01:04,  2.98it/s]Loading trainS:  28%|██▊       | 74/266 [00:31<01:10,  2.72it/s]WARNING: subject:  vimp2_ANON911_CSFn_Aug4_Rot_7_sd0  padding error patience activated, Error: -6
