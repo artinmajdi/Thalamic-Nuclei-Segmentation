@@ -31,10 +31,10 @@ TypeExperiment = 4
 #! Preprocessing
 class preprocesscs:
     def __init__(self):
-        self.Mode = True
+        self.Mode = False
         self.BiasCorrection = False
         self.Cropping = False
-        self.Reslicing = True
+        self.Reslicing = False
 
 preprocess = preprocesscs()
 

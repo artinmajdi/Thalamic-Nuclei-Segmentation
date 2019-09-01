@@ -4,6 +4,7 @@ from shutil import copyfile
 import matplotlib.pyplot as plt
 import os, sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 # import skimage
 # print(skimage.__version__)
 from skimage import measure
@@ -11,7 +12,7 @@ from copy import deepcopy
 import json
 from scipy import ndimage
 from tqdm import tqdm
-
+import modelFuncs.Metrics as metrics
 
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
 def NucleiSelection(ind = 1):
@@ -735,15 +736,36 @@ def closeMask(mask,cnt):
 
 
 def apply_MajorityVoting(params):
-             
+    
+    def func_manual_label(subject,nucleusNm):
+        class manualCs:
+            def __init__(self, flag, label):
+                self.Flag = flag
+                self.Label = label
+
+        dirr = subject.address + '/Label/' + nucleusNm + '_PProcessed.nii.gz'
+
+        if os.path.isfile(dirr): manual = manualCs(flag=True, label=nib.load(dirr).get_data())
+        else: manual = manualCs(flag=False,label='')
+
+        return manual
+
+
+
     address = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name + '/'
+    a = Nuclei_Class().All_Nuclei()
+    num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes  
 
     for sj in tqdm(params.directories.Test.Input.Subjects):
         subject = params.directories.Test.Input.Subjects[sj]
-        for nucleusNm in Nuclei_Class().All_Nuclei().Names:
+
+        VSI, Dice, HD= np.zeros((num_classes-1,2)) , np.zeros((num_classes-1,2)) , np.zeros((num_classes-1,2))
+        for cnt, (nucleusNm , nucleiIx) in enumerate(zip(a.Names , a.Indexes)):
 
             ix , pred3Dims = 0 , ''
             im = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
+
+            manual = func_manual_label(subject, nucleusNm)            
             for sdInfo in ['sd0', 'sd1' , 'sd2']:
                 address_nucleus = address + sdInfo + '/' + subject.subjectName + '/' + nucleusNm + '.nii.gz'
                 if os.path.isfile(address_nucleus):
@@ -753,5 +775,16 @@ def apply_MajorityVoting(params):
                     ix += 1
             
             if ix > 0:  
-                predMV = pred3Dims.sum(axis=3) >= 2              
+                predMV = pred3Dims.sum(axis=3) >= 2 
                 saveImage( predMV , im.affine, im.header, address + '2.5D_MV/' + subject.subjectName + '/' + nucleusNm+ '.nii.gz')
+
+
+                if manual.Flag:
+                    VSI[cnt,:]  = [nucleiIx , metrics.VSI_AllClasses(predMV, manual.Label).VSI()]
+                    HD[cnt,:]   = [nucleiIx , metrics.HD_AllClasses(predMV, manual.Label).HD()]
+                    Dice[cnt,:] = [nucleiIx , mDice(predMV, manual.Label)]
+                
+        if Dice[:,1].sum() > 0:
+            np.savetxt( address + '2.5D_MV/' + subject.subjectName + '/VSI_All.txt'  ,VSI  , fmt='%1.1f %1.4f')
+            np.savetxt( address + '2.5D_MV/' + subject.subjectName + '/HD_All.txt'   ,HD   , fmt='%1.1f %1.4f')
+            np.savetxt( address + '2.5D_MV/' + subject.subjectName + '/Dice_All.txt' ,Dice , fmt='%1.1f %1.4f')

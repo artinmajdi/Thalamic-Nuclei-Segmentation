@@ -1658,20 +1658,20 @@ def EXP37_CSFn2_Cascade_TL_Res_Unet_finetune_All_folds(UserInfoB):
     UserInfoB['simulation'].FCN2_NLayers = 0  
     UserInfoB['simulation'].FCN_FeatureMaps = 0
 
-    
+    UserInfoB['Experiments'].Tag = 'BC_CSFn'
+
+    applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
+
     for x in [2,1,0]:
         UserInfoB['simulation'].slicingDim = [x]
         UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
-        # UserInfoB['simulation'].FCN1_NLayers = 0
-        # UserInfoB['simulation'].FCN2_NLayers = 0  
-        # UserInfoB['simulation'].FCN_FeatureMaps = 0
         IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
         Run(UserInfoB, IV)
 
     smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False))
 
 # def EXP38_WMn_Cascade_Res_FCN_Unet_full_finetune_All_folds(UserInfoB):
-    
+
 def EXP32_Resnet2_LogDice_fineTune_ET_Ps_Main_OtherFolds(UserInfoB):
     
     def predict_Thalamus_For_SD0(UserI):
@@ -1825,14 +1825,14 @@ def EXP_WMn_test_new_Cases(UserInfoB):
 
 # UserInfoB['simulation'].epochs = 10
 # UserInfoB['simulation'].ReadAugments_Mode = False 
-UserInfoB['simulation'].TestOnly = True
-UserInfoB['CrossVal'].index      = ['a']
+# UserInfoB['simulation'].TestOnly = True
+# UserInfoB['CrossVal'].index      = ['a']
 
-UserInfoB['Experiments'].Index = '9'
-UserInfoB['Experiments'].Tag = 'test_Manoj'
+# UserInfoB['Experiments'].Index = '9'
+# UserInfoB['Experiments'].Tag = 'test_Manoj'
 
 
-EXP_WMn_test_new_Cases(UserInfoB)
+EXP37_CSFn2_Cascade_TL_Res_Unet_finetune_All_folds(UserInfoB)
 
 K.clear_session()
 

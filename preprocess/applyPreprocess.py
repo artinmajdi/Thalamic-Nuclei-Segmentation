@@ -62,7 +62,7 @@ def apply_Augmentation(params):
 
 def apply_reslice(subject, params):
 
-    print('     ReSlicing') 
+    
     class Reference():
         def __init__(self, nucleus='Image'): 
 
@@ -106,6 +106,7 @@ def apply_reslice(subject, params):
             copyfile(outDebug , output_image)
         else:
             im = niImage.resample_img(img=nib.load(input_image), target_affine=ref['affine'][:3,:3] , interpolation='continuous') #  , target_shape=ref['shape'] 
+            # im = niImage.resample_img(img=nib.load(input_image), target_affine=ref['affine'] , interpolation='continuous', target_shape=nib.load(input_image).shape) #  
             nib.save(im, output_image) 
             copyfile(output_image , outDebug)
 
@@ -130,6 +131,7 @@ def apply_reslice(subject, params):
             apply_reslicing_main(input_nucleus, output_nucleus, outDebug, 'nearest' , ref)    
 
     if params.preprocess.Reslicing.Mode and params.preprocess.Mode:
+        print('     ReSlicing') 
         apply_to_Image(subject)
         for nucleus in smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names:  apply_to_mask(subject)
 

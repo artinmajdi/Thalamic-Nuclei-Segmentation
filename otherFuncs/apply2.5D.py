@@ -209,7 +209,7 @@ def func_AllMetrics_UserDirectory(Dir , params):
         # Recall    = np.zeros((num_classes-1,2))
 
 
-        for cnt, (nucleusNm , nucleiIx) in enumerate(zip(a.Names[3:] , a.Indexes[3:])):
+        for cnt, (nucleusNm , nucleiIx) in enumerate(zip(a.Names , a.Indexes)):
 
             # address = Info.subExperiment.address + '2.5D_MV/' + subject.subjectName + '/'
             address = Dir + '/' + subjectName + '/'
