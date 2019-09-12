@@ -1662,13 +1662,13 @@ def EXP37_CSFn2_Cascade_TL_Res_Unet_finetune_All_folds(UserInfoB):
 
     UserInfoB['Experiments'].Tag = 'BC_CSFn'
 
-    applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
+    # applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
 
-    for x in [2,1,0]:
-        UserInfoB['simulation'].slicingDim = [x]
-        UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
-        IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-        Run(UserInfoB, IV)
+    # for x in [2,1,0]:
+    #     UserInfoB['simulation'].slicingDim = [x]
+    #     UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    #     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    #     Run(UserInfoB, IV)
 
     smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False))
 
@@ -1795,6 +1795,7 @@ def EXP_WMn_test_new_Cases(UserInfoB):
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['architectureType'] = 'Res_Unet2'
     UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '6'
     UserInfoB['copy_Thalamus'] = False
     UserInfoB['TypeExperiment'] = 15
     UserInfoB['simulation'].LR_Scheduler = True    
@@ -1835,7 +1836,8 @@ def EXP_WMn_test_new_Cases(UserInfoB):
 
 # for x in ['b', 'c', 'd', 'a']: 
 # UserInfoB['CrossVal'].index      = ['a']
-EXP37_CSFn2_Cascade_TL_Res_Unet_finetune_All_folds(UserInfoB)
+# UserInfoB['CrossVal'].index = 'd'
+EXP_WMn_test_new_Cases(UserInfoB)
 
 K.clear_session()
 

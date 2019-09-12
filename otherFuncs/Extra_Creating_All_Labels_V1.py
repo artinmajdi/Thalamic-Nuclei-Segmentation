@@ -252,8 +252,9 @@ class Input_cls():
 
 input = Input_cls()
 
-input.dir_in = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/ET/c/vimp2_F_3T_ET/Label'
-Save_AllNuclei_inOne(input.dir_in,'_PProcessed') # 
+# input.dir_in = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_Best_w20priors/2.5D_MV/temp/vimp2_967_08132013_KW'
+# Save_AllNuclei_inOne(input.dir_in,'_PProcessed') # 
+Save_AllNuclei_inOne(input.dir_in,'') 
 
 # creatingFullMaskWithAll4Supernuclei(input.dir_in , '_PProcessed')
 # # applyMain(Dir ,'_PProcessed')

@@ -20,7 +20,7 @@ class UserEntry():
             if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1] 
             elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1] 
             elif sys.argv[en].lower() in ('-msk','--mask'): self.dir_mask = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1] 
-            elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = int(sys.argv[en+1])
+            elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = sys.argv[en+1]
             
 class uncrop_cls():
     def __init__(self, dir_in = '' , dir_out = '' , dir_mask = '' , maskCrop=''):
@@ -45,8 +45,8 @@ class uncrop_cls():
         for label in smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names:
             input_image  = self.dir_in  + '/Label/' + label    + '.nii.gz'
             output_image = self.dir_out + '/Label/' + label    + '.nii.gz'
-            # full_mask = self.dir_in  + '/Label/' + self.maskCrop + '.nii.gz' 
-            full_mask = self.dir_in  + '/temp/CropMask.nii.gz' 
+            full_mask = self.dir_in  + '/Label/' + self.maskCrop + '.nii.gz' 
+            # full_mask = self.dir_in  + '/temp/CropMask.nii.gz' 
 
             uncrop.uncrop_by_mask(input_image=input_image, output_image=output_image , full_mask=full_mask)     
 
@@ -68,8 +68,8 @@ UI = UserEntry()
 # UI.dir_out = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/ManualLabels2_uncropped'
 # UI.mode    = 1
 if UI.mode == 0: 
-    uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out, dir_mask = '' , maskCrop='mask_t1').apply_uncrop()
-elif UI.mode == 1:            
-    uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out, dir_mask = '' , maskCrop='mask_t1').uncrop_All()
-elif UI.mode == 2:
+    uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out, dir_mask = '' , maskCrop='mask_inp').apply_uncrop()
+elif UI.mode == 'all':            
+    uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out, dir_mask = '' , maskCrop='mask_inp').uncrop_All()
+elif UI.mode == 'single':
     uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out, dir_mask = UI.dir_mask , maskCrop='').apply_individual()

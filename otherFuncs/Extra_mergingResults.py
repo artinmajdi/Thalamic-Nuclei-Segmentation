@@ -735,25 +735,25 @@ class merging_Volumes_Values:
 
 
 UserInfoB = UserInfo.__dict__
-UserInfoB['best_network_MPlanar'] = True
+# UserInfoB['best_network_MPlanar'] = True
 
-UserInfoB['Model_Method'] = 'Cascade'
-UserInfoB['simulation'].num_Layers = 3
-# UserInfoB['simulation'].slicingDim = [2,1,0]
-UserInfoB['architectureType'] = 'Res_Unet2'
-UserInfoB['lossFunction_Index'] = 4
-UserInfoB['Experiments'].Index = '6'
-UserInfoB['copy_Thalamus'] = False
-UserInfoB['TypeExperiment'] = 15
-UserInfoB['simulation'].LR_Scheduler = True    
-UserInfoB['tempThalamus'] = True
-UserInfoB['simulation'].ReadAugments_Mode = False 
-UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+# UserInfoB['Model_Method'] = 'Cascade'
+# UserInfoB['simulation'].num_Layers = 3
+# # UserInfoB['simulation'].slicingDim = [2,1,0]
+# UserInfoB['architectureType'] = 'Res_Unet2'
+# UserInfoB['lossFunction_Index'] = 4
+# UserInfoB['Experiments'].Index = '6'
+# UserInfoB['copy_Thalamus'] = False
+# UserInfoB['TypeExperiment'] = 15
+# UserInfoB['simulation'].LR_Scheduler = True    
+# UserInfoB['tempThalamus'] = True
+# UserInfoB['simulation'].ReadAugments_Mode = False 
+# UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
 
 params = paramFunc.Run(UserInfoB, terminal=True)
 
 print(Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List)
-for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[7:]:
+for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[7:8]:
 
     print(Experiment_Name)
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')

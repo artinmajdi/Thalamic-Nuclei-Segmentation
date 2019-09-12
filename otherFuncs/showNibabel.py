@@ -39,7 +39,15 @@ def show_middle_Slice():
 
 def showNibabel():
     Link = True if '-l' in sys.argv else False
-    inputs = [os.getcwd() + '/' + x for x  in sys.argv[1:] if '-l' not in x]
+
+    inputs = [ x for x  in sys.argv[1:] if '-l' not in x]
+
+    print(inputs)
+    for cnt, x in enumerate(inputs):
+        if '/array' not in x:
+            inputs[cnt] = os.getcwd() + '/' + inputs[cnt] 
+
+    print(inputs)
 
     a = {}
     for ix , dir in enumerate(inputs):
