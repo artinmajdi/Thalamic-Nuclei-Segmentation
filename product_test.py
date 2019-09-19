@@ -1,3 +1,4 @@
+
 import os
 import sys
 sys.path.append(os.path.dirname(__file__))  # sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
@@ -25,7 +26,6 @@ import keras.layers as KLayers
 from preprocess import BashCallingFunctionsA, croppingA
 from keras import models as kerasmodels
 from skimage.transform import AffineTransform , warp
-import Parameters.UserInfo as UserInfo
 
 
 def terminalEnteries(UserInfo):
@@ -35,8 +35,16 @@ def terminalEnteries(UserInfo):
         elif sysargv[0] == '[':       return [int(k) for k in sysargv.split('[')[1].split(']')[0].split(",")]
         else:                         return [int(sysargv)]
 
-    UserInfo['Input'].left = True
-    UserInfo['Input'].orientation = [2,1,0]
+    class input:
+        def __init__(self, *kwrd):
+            self.left = True
+            self.orientation = [2,1,0]
+            self.right = False
+            self.directory = ''
+            self.name      = ''
+            self.modality  = 'csfn'
+
+    UserInfo['Input'] = input()
 
     for en in range(len(sys.argv)):
         entry = sys.argv[en]
@@ -48,7 +56,9 @@ def terminalEnteries(UserInfo):
             UserInfo['Input'].orientation = func_slicingDim(sys.argv[en+1])
 
         elif (entry.lower() == '-wmn') or (entry.lower() == '-csfn'):
-            UserInfo['Input'].directory = sys.argv[en+1]
+            dir = sys.argv[en+1] if (sys.argv[en+1] [0] == '/') else os.getcwd() + sys.argv[en+1]
+            UserInfo['Input'].directory = os.path.basename(dir)
+            UserInfo['Input'].name      = os.path.dirname(dir)
             UserInfo['Input'].modality  = entry.lower().split('-')[1]
 
         elif entry in ('--no-cropping'):
@@ -63,10 +73,7 @@ def terminalEnteries(UserInfo):
         elif entry in ('--right'):
             UserInfo['Input'].right = True
 
-        return UserInfo
-
     return UserInfo
-
 
 def loadModel(params):
     model = architecture(params.WhichExperiment.HardParams.Model)
@@ -464,7 +471,6 @@ def architecture(ModelParam):
 
     return model
 
-
 def predictingTestSubject(model, params, Data, subject, ResultDir):
 
     def postProcessing(pred1Class, origMsk1N, NucleiIndex):
@@ -666,13 +672,33 @@ def EXP_WMn_test_new_Cases(UserInfoB):
     
     merge_results_and_apply_25D(UserInfoB)
 
+class loadData():
+    def __init__(self, UserInfoB):
+        im = nib.load(UserInfoB['Input'].directory + '/' + UserInfoB['Input'].name)
+        self.Image  = im.get_data()
+        self.Affine = im.affine()
+        self.Header = im.Header()
+
 def apply():
-    UserInfo = terminalEnteries(UserInfo)
+    UserInfoB = terminalEnteries(UserInfo.__dict__)
 
-    print(UserInfo['Input'].directory)
-    # data = nib.load(UserInfo['Input'].directory)
+    print('----------------------------')
+    print(UserInfoB['Input'].directory)
+    print(UserInfoB['Input'].modality)
+    print('----------------------------')
+
+    Data = loadData(UserInfoB)
+
+    params = paramFunc.Run(UserInfoB, terminal=False)
+    model  = loadModel(params)
+
+    predictingTestSubject(model, params, Data, subject, ResultDir)
 
 
 
+apply()
 
-# apply()
+
+
+# dir ='/array/ssd/msmajdi/experiments/keras/exp6/crossVal/Main/a/vimp2_siemense_3T/PProcessed.nii.gz'
+
