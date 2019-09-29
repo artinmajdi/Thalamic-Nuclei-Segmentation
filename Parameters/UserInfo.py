@@ -2,7 +2,7 @@
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
-gpu = "3"
+gpu = "6"
 
 # TypeExperiment == 1: # 3T      Init Rn
 
@@ -69,7 +69,7 @@ normalize = normalizeCs()
 class CrossValcs:
     def __init__(self):
         self.Mode = True
-        self.index = ['a']
+        self.index = ['d']
         self.All_Indexes = ['a' , 'b' , 'c' , 'd' , 'e' , 'f' , 'g' , 'h']
 
 CrossVal = CrossValcs()

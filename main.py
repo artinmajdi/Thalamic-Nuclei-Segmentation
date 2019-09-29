@@ -1827,7 +1827,7 @@ def EXP_WMn_test_new_Cases(UserInfoB):
 
 
 # UserInfoB['simulation'].epochs = 10
-# UserInfoB['simulation'].ReadAugments_Mode = False 
+UserInfoB['simulation'].ReadAugments_Mode = False 
 # UserInfoB['simulation'].TestOnly = True
 
 # UserInfoB['Experiments'].Index = '9'

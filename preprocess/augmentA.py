@@ -2,7 +2,7 @@
 # sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
 from random import shuffle
-from scipy.misc import imrotate
+# from scipy.misc import imrotate
 import nibabel as nib
 import preprocess.BashCallingFunctionsA as BashCallingFunctionsA
 import otherFuncs.smallFuncs as smallFuncs
