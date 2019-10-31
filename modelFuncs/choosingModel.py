@@ -376,7 +376,7 @@ def trainingExperiment(Data, params):
             modelS.save(params.directories.Train.Model + '/model' + A + '.h5', overwrite=True, include_optimizer=False )
             modelS.save_weights(params.directories.Train.Model + '/model_weights' + A + '.h5', overwrite=True )
 
-            keras.utils.plot_model(modelS,to_file=params.directories.Train.Model+'/Architecture.png',show_layer_names=True,show_shapes=True)
+            # keras.utils.plot_model(modelS,to_file=params.directories.Train.Model+'/Architecture.png',show_layer_names=True,show_shapes=True)
 
             return model
                 
