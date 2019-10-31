@@ -1,6 +1,6 @@
 {
     "python.linting.pylintEnabled": true,
-    "python.pythonPath": "/home/artin/anaconda3/envs/env1/bin/python",
+    "python.pythonPath": "/array/ssd/msmajdi/anaconda3/envs/env1/bin/python",
     "python.linting.enabled": true,
     "python.linting.banditEnabled": false,
     "python.linting.mypyEnabled": false,

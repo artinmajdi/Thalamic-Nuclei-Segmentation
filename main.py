@@ -1847,7 +1847,7 @@ applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
 
 
 UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
-UserInfoB['simulation'].slicingDim = [2]
+UserInfoB['simulation'].slicingDim = [1]
 UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 Run(UserInfoB, IV)  
