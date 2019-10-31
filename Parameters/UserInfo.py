@@ -4,6 +4,7 @@ Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
 gpu = "2"
 
+local_flag = True
 # TypeExperiment == 1: # 3T      Init Rn
 
 # TypeExperiment == 2:  # Main        Init 3T
@@ -118,7 +119,7 @@ class simulationcs:
         self.FCN2_NLayers  = fCN2_NLayers
         self.nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
         self.slicingDim    = [2 ,1 ,0]
-        self.batch_size    = 100
+        self.batch_size    = 10
         self.InputImage2Dvs3D = 2
         self.FirstLayer_FeatureMap_Num = 20
         self.FCN_FeatureMaps = 30
@@ -162,6 +163,8 @@ havingBackGround_AsExtraDimension = True
 
 gapDilation = 5
 
+
+
 class Templatecs:
     def __init__(self):
         self.Image = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/origtemplate.nii.gz'
@@ -185,7 +188,11 @@ Learning_Rate = 1e-3
 Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 
-
+if local_flag:
+    Experiments_Address = '/media/artin/SSD/RESEARCH/PhD/Experiments'
+    Template.Image = '/media/artin/SSD/RESEARCH/PhD/code/general/RigidRegistration/origtemplate.nii.gz'
+    Template.Mask = '/media/artin/SSD/RESEARCH/PhD/code/general/RigidRegistration/CropMaskV3.nii.gz'
+    Template.Address = '/media/artin/SSD/RESEARCH/PhD/code/general/RigidRegistration/'
 
 
 AugmentMode = False

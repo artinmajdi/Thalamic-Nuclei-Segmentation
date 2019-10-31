@@ -19,7 +19,8 @@ import nibabel as nib
 # from shutil import copyfile , copytree
 from tqdm import tqdm
 from preprocess import BashCallingFunctionsA, croppingA
-
+# import tensorflow.compat.v1 as tf2
+# tf2.disable_v2_behavior()
 
 class InitValues:
     def __init__(self, Nuclei_Indexes=1 , slicingDim=2):
