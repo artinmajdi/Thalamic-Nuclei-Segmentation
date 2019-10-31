@@ -1,6 +1,8 @@
 import os
 import sys
 sys.path.append(os.path.dirname(__file__))  # sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+# sys.path.append('/code')
+print('----------+++',os.path.dirname(__file__))
 import otherFuncs.smallFuncs as smallFuncs
 from otherFuncs.datasets import preAnalysis
 from otherFuncs import datasets
