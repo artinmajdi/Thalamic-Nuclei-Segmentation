@@ -5,6 +5,7 @@ architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_U
 gpu = "3"
 
 local_flag = False
+container_flag = True
 # TypeExperiment == 1: # 3T      Init Rn
 
 # TypeExperiment == 2:  # Main        Init 3T
@@ -193,6 +194,12 @@ if local_flag:
     Template.Image = '/media/artin/SSD/RESEARCH/PhD/code/general/RigidRegistration/origtemplate.nii.gz'
     Template.Mask = '/media/artin/SSD/RESEARCH/PhD/code/general/RigidRegistration/CropMaskV3.nii.gz'
     Template.Address = '/media/artin/SSD/RESEARCH/PhD/code/general/RigidRegistration/'
+
+if container_flag:
+    Experiments_Address = '/Experiments'
+    Template.Image = '/code/general/RigidRegistration/origtemplate.nii.gz'
+    Template.Mask = '/code/general/RigidRegistration/CropMaskV3.nii.gz'
+    Template.Address = '/code/general/RigidRegistration/'
 
 
 AugmentMode = False
