@@ -5,7 +5,7 @@ architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_U
 gpu = "3"
 
 local_flag = False
-container_flag = True
+container_flag = False
 # TypeExperiment == 1: # 3T      Init Rn
 
 # TypeExperiment == 2:  # Main        Init 3T

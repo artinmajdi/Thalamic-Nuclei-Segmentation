@@ -759,8 +759,8 @@ for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExpe
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')
     merging_Dice_Values(Info)
     merging_VSI_Values(Info)
-    merging_HD_Values(Info)
-    merging_Volumes_Values(Info)
+    # merging_HD_Values(Info)
+    # merging_Volumes_Values(Info)
 
 
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
