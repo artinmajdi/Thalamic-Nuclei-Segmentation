@@ -1,5 +1,5 @@
 import os, sys
-sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+sys.path.append('/code') # /array/ssd/msmajdi/code/thalamus/keras')
 # sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
 import pandas as pd
@@ -753,20 +753,20 @@ UserInfoB = UserInfo.__dict__
 params = paramFunc.Run(UserInfoB, terminal=True)
 
 print(Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List)
-for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List[7:8]:
+for Experiment_Name in Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List:
 
     print(Experiment_Name)
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')
     merging_Dice_Values(Info)
     merging_VSI_Values(Info)
-    # merging_HD_Values(Info)
+    merging_HD_Values(Info)
     # merging_Volumes_Values(Info)
 
 
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
     savingHistory_AsExcel(Info)
 
-os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
+# os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
 
 
 # shutil.make_archive(base_name='All',format='zip',root_dir='/array/ssd/msmajdi/experiments/keras/exp*/results/All_*',)

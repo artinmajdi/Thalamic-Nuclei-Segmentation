@@ -1842,7 +1842,7 @@ UserInfoB['simulation'].ReadAugments_Mode = False
 # UserInfoB['Experiments'].Index = '6'
 UserInfoB['copy_Thalamus'] = False
 # UserInfoB['TypeExperiment'] = 15
-# UserInfoB['simulation'].LR_Scheduler = True    
+UserInfoB['simulation'].LR_Scheduler = True    
 # UserInfoB['Experiments'].Index = '10_ProductionCode'
 
 applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
@@ -1852,9 +1852,13 @@ applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
 # UserInfoB['simulation'].slicingDim = [1]
 UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-Run(UserInfoB, IV)  
+# Run(UserInfoB, IV)  
 
-K.clear_session()
+for x in ['a', 'b', 'c', 'd']:
+    UserInfoB['CrossVal'].index = [x]
+    smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False)) 
+
+# K.clear_session()
 
 
 
