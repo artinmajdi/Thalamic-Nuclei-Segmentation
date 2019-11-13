@@ -5,7 +5,7 @@ architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_U
 gpu = "3"
 
 local_flag = False
-container_flag = False
+container_flag = True
 # TypeExperiment == 1: # 3T      Init Rn
 
 # TypeExperiment == 2:  # Main        Init 3T
@@ -27,7 +27,7 @@ container_flag = False
 # TypeExperiment == 11 # CSFn2  Transfer Learn from Main with new structure wher it only takes the wweights for part of the network
 # TypeExperiment == 13  # CSFn1 + CSFn2 Init Main
 
-TypeExperiment = 4
+TypeExperiment = 8
 
 
 #! Preprocessing
@@ -166,12 +166,13 @@ gapDilation = 5
 
 
 
+code_address = '/array/ssd/msmajdi/code/thalamus/keras/'
 class Templatecs:
     def __init__(self):
-        self.Image = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/origtemplate.nii.gz'
-        self.Mask = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/CropMaskV3.nii.gz'  # MyCrop_Template2_Gap20
+        self.Image = code_address + 'general/RigidRegistration' + '/origtemplate.nii.gz'
+        self.Mask = code_address + 'general/RigidRegistration' + '/CropMaskV3.nii.gz'  # MyCrop_Template2_Gap20
         # self.Mask_2AV = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/CropMask_AV.nii.gz' 
-        self.Address = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration/'
+        self.Address = code_address + 'general/RigidRegistration/'
 
 Template = Templatecs()
 
