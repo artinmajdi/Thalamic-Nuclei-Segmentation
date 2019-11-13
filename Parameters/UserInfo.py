@@ -205,7 +205,7 @@ if container_flag:
 
 AugmentMode = False
 Augment_LinearMode = True
-Augment_Linear_Length = 2
+Augment_Linear_Length = 4
 
 class Augment_Rotationcs:
     def __init__(self):
