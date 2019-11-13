@@ -1835,21 +1835,21 @@ UserInfoB['simulation'].ReadAugments_Mode = False
 # UserInfoB['simulation'].TestOnly = True
 # EXP_WMn_test_new_Cases(UserInfoB)
 
-UserInfoB['Model_Method'] = 'Cascade'
-UserInfoB['simulation'].num_Layers = 3
-UserInfoB['architectureType'] = 'Res_Unet2'
-UserInfoB['lossFunction_Index'] = 4
-UserInfoB['Experiments'].Index = '6'
+# UserInfoB['Model_Method'] = 'Cascade'
+# UserInfoB['simulation'].num_Layers = 3
+# UserInfoB['architectureType'] = 'Res_Unet2'
+# UserInfoB['lossFunction_Index'] = 4
+# UserInfoB['Experiments'].Index = '6'
 UserInfoB['copy_Thalamus'] = False
-UserInfoB['TypeExperiment'] = 15
-UserInfoB['simulation'].LR_Scheduler = True    
-UserInfoB['Experiments'].Index = '10_ProductionCode'
+# UserInfoB['TypeExperiment'] = 15
+# UserInfoB['simulation'].LR_Scheduler = True    
+# UserInfoB['Experiments'].Index = '10_ProductionCode'
 
 applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
 
 
-UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
-UserInfoB['simulation'].slicingDim = [1]
+# UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+# UserInfoB['simulation'].slicingDim = [1]
 UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 Run(UserInfoB, IV)  
