@@ -1854,10 +1854,15 @@ UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
 IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 # Run(UserInfoB, IV)  
 
-for x in ['a', 'b', 'c', 'd']:
+for x in ['a', 'b']:
+    UserInfoB['simulation'].LR_Scheduler = False
     UserInfoB['CrossVal'].index = [x]
     smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False)) 
 
+for x in ['c', 'd']:
+    UserInfoB['simulation'].LR_Scheduler = True
+    UserInfoB['CrossVal'].index = [x]
+    smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False)) 
 # K.clear_session()
 
 

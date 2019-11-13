@@ -747,7 +747,10 @@ def apply_MajorityVoting(params):
 
         dirr = subject.address + '/Label/' + nucleusNm + '_PProcessed.nii.gz'
 
-        if os.path.isfile(dirr): manual = manualCs(flag=True, label=nib.load(dirr).get_data())
+        if os.path.isfile(dirr): 
+            label = fixMaskMinMax(nib.load(dirr).get_data(),nucleusNm)
+            manual = manualCs(flag=True, label=label)
+                 
         else: manual = manualCs(flag=False,label='')
 
         return manual
