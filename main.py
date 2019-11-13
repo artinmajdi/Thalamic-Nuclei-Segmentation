@@ -1828,41 +1828,90 @@ def EXP_WMn_test_new_Cases(UserInfoB):
     
     merge_results_and_apply_25D(UserInfoB)
 
+def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
+    
+    def predict_Thalamus_For_SD0(UserI):
+
+        UserI['simulation'].slicingDim = [2]
+        UserI['simulation'].nucleus_Index = [1]
+        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
+        Run(UserI, IV)
+
+        UserI['simulation'].slicingDim = [0]
+        UserI['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]
+        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
+        Run(UserI, IV)
+    
+    def merge_results_and_apply_25D(UserInfoB):
+
+        UserInfoB['best_network_MPlanar'] = True
+        params = paramFunc.Run(UserInfoB, terminal=True)
+        Directory = params.WhichExperiment.Experiment.address + '/results'
+        Output = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a'
+        os.system("mkdir %s; cd %s; mkdir sd0 sd1 sd2"%(Directory + '/' + Output, Directory + '/' + Output))
+        os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_LS_MyLogDice_US1_Main_Ps_ET_Init_3T_CV_a/sd0/vimp* %s/%s/sd0/"%(Directory, Directory, Output) )
+        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd1/vimp* %s/%s/sd1/"%(Directory, Directory, Output) )
+        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd2/vimp* %s/%s/sd2/"%(Directory, Directory, Output) )
+        
+        smallFuncs.apply_MajorityVoting(params)
+
+    UserInfoB['Model_Method'] = 'Cascade'
+    UserInfoB['simulation'].num_Layers = 3
+    UserInfoB['architectureType'] = 'Res_Unet2'
+    UserInfoB['lossFunction_Index'] = 4
+    UserInfoB['Experiments'].Index = '7'
+    UserInfoB['copy_Thalamus'] = False
+    UserInfoB['TypeExperiment'] = 8
+    UserInfoB['simulation'].LR_Scheduler = True    
+    
+
+    applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
+    
+    
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
+    UserInfoB['simulation'].slicingDim = [0]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    predict_Thalamus_For_SD0(UserInfoB)
+
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
+    UserInfoB['simulation'].slicingDim = [1]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    Run(UserInfoB, IV)
+
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    UserInfoB['simulation'].slicingDim = [2]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    Run(UserInfoB, IV)    
+
+    
+    merge_results_and_apply_25D(UserInfoB)
+
+    # smallFuncs.Extra_mergingResults()
 
 
-UserInfoB['simulation'].epochs = 10
-UserInfoB['simulation'].ReadAugments_Mode = False 
+
+# UserInfoB['simulation'].epochs = 10
+# UserInfoB['simulation'].ReadAugments_Mode = False 
 # UserInfoB['simulation'].TestOnly = True
 # EXP_WMn_test_new_Cases(UserInfoB)
-
-# UserInfoB['Model_Method'] = 'Cascade'
-# UserInfoB['simulation'].num_Layers = 3
-# UserInfoB['architectureType'] = 'Res_Unet2'
-# UserInfoB['lossFunction_Index'] = 4
-# UserInfoB['Experiments'].Index = '6'
-UserInfoB['copy_Thalamus'] = False
-# UserInfoB['TypeExperiment'] = 15
-UserInfoB['simulation'].LR_Scheduler = True    
-# UserInfoB['Experiments'].Index = '10_ProductionCode'
-
-applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
-
-
-# UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
-# UserInfoB['simulation'].slicingDim = [1]
-UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
-IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+# UserInfoB['copy_Thalamus'] = False
+# UserInfoB['simulation'].LR_Scheduler = True    
+# applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
+# UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+# IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
 # Run(UserInfoB, IV)  
 
-for x in ['a', 'b']:
-    UserInfoB['simulation'].LR_Scheduler = False
-    UserInfoB['CrossVal'].index = [x]
-    smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False)) 
+# for x in ['a', 'b']:
+#     UserInfoB['simulation'].LR_Scheduler = False
+#     UserInfoB['CrossVal'].index = [x]
+#     smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False)) 
 
-for x in ['c', 'd']:
-    UserInfoB['simulation'].LR_Scheduler = True
-    UserInfoB['CrossVal'].index = [x]
-    smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False)) 
+# for x in ['c', 'd']:
+#     UserInfoB['simulation'].LR_Scheduler = True
+#     UserInfoB['CrossVal'].index = [x]
+#     smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False)) 
 # K.clear_session()
 
 
