@@ -1889,7 +1889,7 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
     merge_results_and_apply_25D(UserInfoB)
 
    
-
+# UserInfoB['simulation'].ReadAugments_Mode = False
 
 Run_Csfn_with_Best_WMn_architecture(UserInfoB)
 

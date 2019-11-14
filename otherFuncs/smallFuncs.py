@@ -382,13 +382,9 @@ def terminalEntries(UserInfo):
             #     UserInfo['Model_Method'] = 'FCN_with_SkipConnection' 
                 # UserInfo['architectureType'] = 'FCN_with_SkipConnection' 
 
-        elif entry.lower() in ('--scheduler'):
-            UserInfo['simulation'].LR_Scheduler = True 
-
         elif entry.lower() in ('-cv','--CrossVal_Index'):
             UserInfo['CrossVal'].index = [sys.argv[en+1]]
-            print('------------')
-            print(UserInfo['CrossVal'].index)
+            print('CrossVal' , UserInfo['CrossVal'].index)
                 
     return UserInfo
 
