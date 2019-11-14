@@ -1891,6 +1891,9 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
     # smallFuncs.Extra_mergingResults()
 
 
+
+UserInfoB['simulation'].ReadAugments_Mode = False
+
 Run_Csfn_with_Best_WMn_architecture(UserInfoB)
 
 # UserInfoB['simulation'].epochs = 10
