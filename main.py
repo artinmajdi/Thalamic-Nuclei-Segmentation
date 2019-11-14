@@ -1862,7 +1862,7 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
     UserInfoB['Experiments'].Index = '7'
     UserInfoB['copy_Thalamus'] = False
     UserInfoB['TypeExperiment'] = 8
-    UserInfoB['simulation'].LR_Scheduler = True    
+    UserInfoB['simulation'].LR_Scheduler = False    
     
 
     applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
@@ -1891,13 +1891,12 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
     # smallFuncs.Extra_mergingResults()
 
 
+Run_Csfn_with_Best_WMn_architecture(UserInfoB)
 
 # UserInfoB['simulation'].epochs = 10
 # UserInfoB['simulation'].ReadAugments_Mode = False 
 # UserInfoB['simulation'].TestOnly = True
-# EXP_WMn_test_new_Cases(UserInfoB)
-# UserInfoB['copy_Thalamus'] = False
-# UserInfoB['simulation'].LR_Scheduler = True    
+ 
 # applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
 # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
 # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
@@ -1907,12 +1906,6 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
 #     UserInfoB['simulation'].LR_Scheduler = False
 #     UserInfoB['CrossVal'].index = [x]
 #     smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False)) 
-
-# for x in ['c', 'd']:
-#     UserInfoB['simulation'].LR_Scheduler = True
-#     UserInfoB['CrossVal'].index = [x]
-#     smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False)) 
-# K.clear_session()
 
 
 
