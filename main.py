@@ -1888,27 +1888,13 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
     
     merge_results_and_apply_25D(UserInfoB)
 
-    # smallFuncs.Extra_mergingResults()
+   
 
-
-
-# UserInfoB['simulation'].ReadAugments_Mode = False
 
 Run_Csfn_with_Best_WMn_architecture(UserInfoB)
 
-# UserInfoB['simulation'].epochs = 10
 # UserInfoB['simulation'].ReadAugments_Mode = False 
-# UserInfoB['simulation'].TestOnly = True
- 
-# applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
-# UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
-# IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-# Run(UserInfoB, IV)  
-
-# for x in ['a', 'b']:
-#     UserInfoB['simulation'].LR_Scheduler = False
-#     UserInfoB['CrossVal'].index = [x]
-#     smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False)) 
-
+# smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False)) 
+ # smallFuncs.Extra_mergingResults()
 
 
