@@ -1847,11 +1847,11 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
         UserInfoB['best_network_MPlanar'] = True
         params = paramFunc.Run(UserInfoB, terminal=True)
         Directory = params.WhichExperiment.Experiment.address + '/results'
-        Output = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a'
+        Output = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_a'
         os.system("mkdir %s; cd %s; mkdir sd0 sd1 sd2"%(Directory + '/' + Output, Directory + '/' + Output))
-        os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_LS_MyLogDice_US1_Main_Ps_ET_Init_3T_CV_a/sd0/vimp* %s/%s/sd0/"%(Directory, Directory, Output) )
-        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd1/vimp* %s/%s/sd1/"%(Directory, Directory, Output) )
-        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd2/vimp* %s/%s/sd2/"%(Directory, Directory, Output) )
+        os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_a/sd0/vimp* %s/%s/sd0/"%(Directory, Directory, Output) )
+        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_a/sd1/vimp* %s/%s/sd1/"%(Directory, Directory, Output) )
+        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_a/sd2/vimp* %s/%s/sd2/"%(Directory, Directory, Output) )
         
         smallFuncs.apply_MajorityVoting(params)
 
