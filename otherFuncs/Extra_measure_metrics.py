@@ -1,6 +1,7 @@
 import os, sys
 # sys.path.append(os.path.dirname(__file__))
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+sys.path.append('/code')
 import otherFuncs.smallFuncs as smallFuncs
 import otherFuncs.datasets as datasets
 import nibabel as nib
@@ -52,8 +53,8 @@ class measure_Metrics_cls():
             
             if os.path.exists(self.dir_in + '/Label/' + nucleusNm + '.nii.gz'):
                 print(nucleusNm)
-                ManualLabel = nib.load(self.dir_label + '/Label/' + nucleusNm + '.nii.gz').get_data()                                              
-                prediction = nib.load(self.dir_in + '/Label/' + nucleusNm + '.nii.gz').get_data()   
+                ManualLabel = nib.load(self.dir_label + '/Label/' + nucleusNm + '_PProcessed.nii.gz').get_data()                                              
+                prediction = nib.load(self.dir_in + '/' + nucleusNm + '.nii.gz').get_data()   
                 prediction = prediction > prediction.max()/2  
 
                 VSI[cnt,:]  = [nucleiIx , metrics.VSI_AllClasses(prediction, ManualLabel).VSI()]
