@@ -1865,7 +1865,7 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
     UserInfoB['simulation'].LR_Scheduler = False    
     
 
-    #applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
+    applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
     
     
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40

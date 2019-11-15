@@ -760,7 +760,7 @@ def apply_MajorityVoting(params):
     for sj in tqdm(params.directories.Test.Input.Subjects):
         subject = params.directories.Test.Input.Subjects[sj]
 
-        VSI, Dice, HD= np.zeros((num_classes-1,2)) , np.zeros((num_classes-1,2)) , np.zeros((num_classes-1,2))
+        VSI, Dice, HD= np.zeros((num_classes,2)) , np.zeros((num_classes,2)) , np.zeros((num_classes,2))
         for cnt, (nucleusNm , nucleiIx) in enumerate(zip(a.Names , a.Indexes)):
 
             ix , pred3Dims = 0 , ''

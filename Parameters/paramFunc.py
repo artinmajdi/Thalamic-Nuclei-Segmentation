@@ -340,7 +340,7 @@ def func_WhichExperiment(UserInfo):
                 Layer_Params = layer_Params()
                 showHistory = True
                 LabelMaxValue = 1                
-                Measure_Dice_on_Train_Data = True
+                Measure_Dice_on_Train_Data = False
                 MultiClass = multiclass()
                 Initialize = InitializeB()
                 Method = method()
