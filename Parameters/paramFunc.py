@@ -226,8 +226,7 @@ def func_Exp_subExp_Names(UserInfo):
         A = subExperiment(tag)
 
         if UserInfo['best_network_MPlanar']:
-            x = UserInfo['CrossVal'].index[0]
-            A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_a'
+            A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s'%(UserInfo['CrossVal'].index[0])
 
         return A
 

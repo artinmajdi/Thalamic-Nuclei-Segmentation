@@ -1847,11 +1847,11 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
         UserInfoB['best_network_MPlanar'] = True
         params = paramFunc.Run(UserInfoB, terminal=True)
         Directory = params.WhichExperiment.Experiment.address + '/results'
-        Output = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_a'
+        Output = "sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s"%(UserInfoB['CrossVal'].index[0])
         os.system("mkdir %s; cd %s; mkdir sd0 sd1 sd2"%(Directory + '/' + Output, Directory + '/' + Output))
-        os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_a/sd0/vimp* %s/%s/sd0/"%(Directory, Directory, Output) )
-        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_a/sd1/vimp* %s/%s/sd1/"%(Directory, Directory, Output) )
-        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_a/sd2/vimp* %s/%s/sd2/"%(Directory, Directory, Output) )
+ 	os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s/sd0/vimp* %s/sd0/"%(Directory, UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
+        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s/sd1/vimp* %s/sd1/"%(Directory, UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
+        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s/sd2/vimp* %s/sd2/"%(Directory, UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
         
         smallFuncs.apply_MajorityVoting(params)
 
@@ -1865,25 +1865,25 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
     UserInfoB['simulation'].LR_Scheduler = False    
     
 
-    applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
+    #applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
     
     
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
     UserInfoB['simulation'].slicingDim = [0]
     UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
-    predict_Thalamus_For_SD0(UserInfoB)
+    #predict_Thalamus_For_SD0(UserInfoB)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
     UserInfoB['simulation'].slicingDim = [1]
     UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-    Run(UserInfoB, IV)
+    #Run(UserInfoB, IV)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].slicingDim = [2]
     UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-    Run(UserInfoB, IV)    
+    #Run(UserInfoB, IV)    
 
     
     merge_results_and_apply_25D(UserInfoB)
