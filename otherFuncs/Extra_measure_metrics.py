@@ -25,7 +25,7 @@ class UserEntry():
 
         for en in range(len(sys.argv)):
             if sys.argv[en].lower() in ('-i','--input'):    self.dir_in    = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1] 
-            elif sys.argv[en].lower() in ('-label'):        self.dir_label = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1] 
+            elif sys.argv[en].lower() in ('-l','--label'):        self.dir_label = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1] 
             elif sys.argv[en].lower() in ('-m','--mode'):   self.mode      = sys.argv[en+1]
             
 class measure_Metrics_cls():
@@ -50,11 +50,12 @@ class measure_Metrics_cls():
 
         for cnt, (nucleusNm , nucleiIx) in enumerate(zip(a.Names , a.Indexes)):
 
-            
-            if os.path.exists(self.dir_in + '/Label/' + nucleusNm + '.nii.gz'):
+            Dir_prediction = self.dir_in + '/' + nucleusNm + '.nii.gz'
+            Dir_Label = self.dir_label + '/Label/' + nucleusNm + '_PProcessed.nii.gz'
+            if os.path.exists(Dir_Label) and os.path.exists(Dir_prediction):
                 print(nucleusNm)
-                ManualLabel = nib.load(self.dir_label + '/Label/' + nucleusNm + '_PProcessed.nii.gz').get_data()                                              
-                prediction = nib.load(self.dir_in + '/' + nucleusNm + '.nii.gz').get_data()   
+                ManualLabel = nib.load(Dir_Label).get_data()                                              
+                prediction = nib.load(Dir_prediction).get_data()   
                 prediction = prediction > prediction.max()/2  
 
                 VSI[cnt,:]  = [nucleiIx , metrics.VSI_AllClasses(prediction, ManualLabel).VSI()]
@@ -79,9 +80,9 @@ class measure_Metrics_cls():
 
 
 UI = UserEntry()
-# UI.dir_in  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/step2_freesurfer/Done/step2_resliced'
-# UI.dir_label = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/ManualLabels2_uncropped'
-# UI.mode    = 'all'
+# UI.dir_label  = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset3_new_ctrl_ms_csfn/pre_steps/manual_Labels/csfn_step1_registered/vimp2_ctrl_991_08302013_JF'
+# UI.dir_in = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset3_new_ctrl_ms_csfn/pre_steps/manual_Labels/csfn_step1_registered/vimp2_ctrl_991_08302013_JF_prediction'
+# UI.mode    = 0 # 'all'
 
 if UI.mode == 'all':      
     measure_Metrics_cls(dir_in = UI.dir_in , dir_label = UI.dir_label).loop_All_subjects()
