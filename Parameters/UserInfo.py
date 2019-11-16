@@ -5,7 +5,7 @@ architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_U
 gpu = "3"
 
 local_flag = False
-container_flag = False
+container_flag = True
 # TypeExperiment == 1: # 3T      Init Rn
 
 # TypeExperiment == 2:  # Main        Init 3T
@@ -33,7 +33,7 @@ TypeExperiment = 8
 #! Preprocessing
 class preprocesscs:
     def __init__(self):
-        self.Mode = True
+        self.Mode = False
         self.BiasCorrection = False
         self.Cropping = True
         self.Reslicing = True
@@ -53,7 +53,7 @@ lossFunction_Index = 4
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
 best_network_MPlanar = False
-testOnly = False
+testOnly = True
 
 fCN1_NLayers = 0
 fCN2_NLayers = 0
