@@ -14,7 +14,7 @@ from time import time
 import nibabel as nib
 from scipy import ndimage
 from shutil import copyfile
-import pandas as pd
+# import pandas as pd
 import mat4py
 import pickle
 import skimage
@@ -98,8 +98,8 @@ def testingExeriment(model, Data, params):
         def postProcessing(pred1Class, origMsk1N, NucleiIndex):
 
             def binarizing(pred1N):
-                Thresh = max( skimage.filters.threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
-                return pred1N  > Thresh
+                # Thresh = max( skimage.filters.threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
+                return pred1N  > 0.5 # Thresh
 
             def cascade_paddingToOrigSize(im):
                 if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
@@ -296,7 +296,7 @@ def trainingExperiment(Data, params):
 
         if 'pickle' in method: savePickle(DirSave + '/' + name + '.pkl', data)
         elif 'mat'  in method: mat4py.savemat(DirSave + '/' + name + '.mat', data)
-        elif 'csv'  in method: pd.DataFrame(data=data,columns=list(data.keys())).to_csv( DirSave + '/' + name + '.csv')
+        # elif 'csv'  in method: pd.DataFrame(data=data,columns=list(data.keys())).to_csv( DirSave + '/' + name + '.csv')
 
     def saveTrainInfo(hist,a, params):
 

@@ -12,8 +12,8 @@ import Parameters.paramFunc as paramFunc
 import preprocess.applyPreprocess as applyPreprocess
 import tensorflow as tf
 from keras import backend as K
-import pandas as pd
-import xlsxwriter
+# import pandas as pd
+# import xlsxwriter
 import csv
 import numpy as np
 # import json

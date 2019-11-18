@@ -5,7 +5,7 @@ architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_U
 gpu = "3"
 
 local_flag = False
-container_flag = True
+container_flag = False
 # TypeExperiment == 1: # 3T      Init Rn
 
 # TypeExperiment == 2:  # Main        Init 3T
@@ -53,7 +53,7 @@ lossFunction_Index = 4
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
 best_network_MPlanar = False
-testOnly = True
+testOnly = False
 
 fCN1_NLayers = 0
 fCN2_NLayers = 0
