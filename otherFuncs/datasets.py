@@ -428,54 +428,6 @@ def movingFromDatasetToExperiments(params):
 
 def preAnalysis(params):
 
-    def find_PaddingValues(params):
-
-        def findingPaddedInputSize(params):
-            inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly else np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
-            # inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)  
-            
-            num_Layers = params.WhichExperiment.HardParams.Model.num_Layers
-            L = num_Layers if 'SegNet' in params.WhichExperiment.HardParams.Model.architectureType else num_Layers - 1
-                
-            a = 2**(L) 
-            return [  int(a * np.ceil(s / a)) if s % a != 0 else s for s in np.max(inputSizes, axis=0) ]
-            
-        def findingSubjectsFinalPaddingAmount(wFolder, Input, params):
-
-            def applyingPaddingDimOnSubjects(params, Input):
-                fullpadding = params.WhichExperiment.HardParams.Model.InputDimensions - Input.inputSizes
-                md = np.mod(fullpadding,2)
-                for sn, name in enumerate(list(Input.Subjects)):
-                    padding = [tuple([0,0])]*4
-                    
-                    for dim in range(params.WhichExperiment.HardParams.Model.Method.InputImage2Dvs3D): # params.WhichExperiment.Dataset.slicingInfo.slicingOrder[:2]:
-                        if md[sn, dim] == 0:
-                            padding[dim] = tuple([int(fullpadding[sn,dim]/2)]*2)
-                        else:
-                            padding[dim] = tuple([int(np.floor(fullpadding[sn,dim]/2) + 1) , int(np.floor(fullpadding[sn,dim]/2))])
-
-                    if np.min(tuple(padding)) < 0:
-                        print('---')
-                    Input.Subjects[name].Padding = tuple(padding)
-
-                return Input
-
-            return applyingPaddingDimOnSubjects(params, Input)
-
-        AA = findingPaddedInputSize( params ) if params.WhichExperiment.Dataset.InputPadding.Automatic else params.WhichExperiment.Dataset.InputPadding.HardDimensions
-        params.WhichExperiment.HardParams.Model.InputDimensions = AA
-
-        if params.directories.Train.Input.Subjects: params.directories.Train.Input = findingSubjectsFinalPaddingAmount('Train', params.directories.Train.Input, params)
-        if params.directories.Test.Input.Subjects:  params.directories.Test.Input  = findingSubjectsFinalPaddingAmount('Test', params.directories.Test.Input, params)
-
-        if params.WhichExperiment.Nucleus.Index[0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2:
-            if params.directories.Train.Input_Sagittal.Subjects: params.directories.Train.Input_Sagittal = findingSubjectsFinalPaddingAmount('Train', params.directories.Train.Input_Sagittal, params)
-            if params.directories.Test.Input_Sagittal.Subjects:  params.directories.Test.Input_Sagittal  = findingSubjectsFinalPaddingAmount('Test', params.directories.Test.Input_Sagittal, params)
-                            
-                
-
-        return params
-
     def find_AllInputSizes(params):
 
         def newCropedSize(subject, params, mode):
@@ -565,6 +517,52 @@ def preAnalysis(params):
                 print('# LAYERS  OLD:',num_Layers  ,  ' =>  NEW:',params.WhichExperiment.HardParams.Model.num_Layers)
                 params.WhichExperiment.HardParams.Model.num_Layers_changed = True
             
+        return params
+
+    def find_PaddingValues(params):
+
+        def findingPaddedInputSize(params):
+            inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly else np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
+            # inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)  
+            
+            num_Layers = params.WhichExperiment.HardParams.Model.num_Layers
+            L = num_Layers if 'SegNet' in params.WhichExperiment.HardParams.Model.architectureType else num_Layers - 1
+                
+            a = 2**(L) 
+            return [  int(a * np.ceil(s / a)) if s % a != 0 else s for s in np.max(inputSizes, axis=0) ]
+            
+        def findingSubjectsFinalPaddingAmount(wFolder, Input, params):
+
+            def applyingPaddingDimOnSubjects(params, Input):
+                fullpadding = params.WhichExperiment.HardParams.Model.InputDimensions - Input.inputSizes
+                md = np.mod(fullpadding,2)
+                for sn, name in enumerate(list(Input.Subjects)):
+                    padding = [tuple([0,0])]*4
+                    
+                    for dim in range(params.WhichExperiment.HardParams.Model.Method.InputImage2Dvs3D): # params.WhichExperiment.Dataset.slicingInfo.slicingOrder[:2]:
+                        if md[sn, dim] == 0:
+                            padding[dim] = tuple([int(fullpadding[sn,dim]/2)]*2)
+                        else:
+                            padding[dim] = tuple([int(np.floor(fullpadding[sn,dim]/2) + 1) , int(np.floor(fullpadding[sn,dim]/2))])
+
+                    if np.min(tuple(padding)) < 0:
+                        print('---')
+                    Input.Subjects[name].Padding = tuple(padding)
+
+                return Input
+
+            return applyingPaddingDimOnSubjects(params, Input)
+
+        AA = findingPaddedInputSize( params ) if params.WhichExperiment.Dataset.InputPadding.Automatic else params.WhichExperiment.Dataset.InputPadding.HardDimensions
+        params.WhichExperiment.HardParams.Model.InputDimensions = AA
+
+        if params.directories.Train.Input.Subjects: params.directories.Train.Input = findingSubjectsFinalPaddingAmount('Train', params.directories.Train.Input, params)
+        if params.directories.Test.Input.Subjects:  params.directories.Test.Input  = findingSubjectsFinalPaddingAmount('Test', params.directories.Test.Input, params)
+
+        if params.WhichExperiment.Nucleus.Index[0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2:
+            if params.directories.Train.Input_Sagittal.Subjects: params.directories.Train.Input_Sagittal = findingSubjectsFinalPaddingAmount('Train', params.directories.Train.Input_Sagittal, params)
+            if params.directories.Test.Input_Sagittal.Subjects:  params.directories.Test.Input_Sagittal  = findingSubjectsFinalPaddingAmount('Test', params.directories.Test.Input_Sagittal, params)
+                            
         return params
 
     params = find_AllInputSizes(params)

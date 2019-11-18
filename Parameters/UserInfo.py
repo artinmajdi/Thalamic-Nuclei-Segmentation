@@ -5,7 +5,7 @@ architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_U
 gpu = "3"
 
 local_flag = False
-container_flag = False
+container_flag = True
 # TypeExperiment == 1: # 3T      Init Rn
 
 # TypeExperiment == 2:  # Main        Init 3T
@@ -53,7 +53,7 @@ lossFunction_Index = 4
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
 best_network_MPlanar = False
-testOnly = False
+testOnly = True
 
 fCN1_NLayers = 0
 fCN2_NLayers = 0
@@ -112,7 +112,7 @@ upsample = upsamplecs()
 class simulationcs:
     def __init__(self):
         self.TestOnly      = testOnly
-        self.epochs        = 300
+        self.epochs        = 10
         self.GPU_Index     = gpu
         self.Learning_Rate = 1e-3
         self.num_Layers    = 3 

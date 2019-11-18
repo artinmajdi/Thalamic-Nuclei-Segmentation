@@ -751,10 +751,14 @@ def func_WhichExperiment(UserInfo):
     WhichExperiment.HardParams.Model.Best_WMn_Model = adding_TransferLearningParams(WhichExperiment)
     
 
-    # if UserInfo['simulation'].TestOnly: 
-    #     InputDimensions, num_Layers = ReadInputDimensions_NLayers(experiment.address + '/models/' + subExperiment.name + '/' + WhichExperiment.Nucleus.name + '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim) )
-    #     WhichExperiment.HardParams.Model.InputDimensions = InputDimensions
-    #     WhichExperiment.HardParams.Model.num_Layers = num_Layers
+    dir_input_dimension = experiment.address + '/models/' + subExperiment.name + '/' + WhichExperiment.Nucleus.name + '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim)
+    if UserInfo['simulation'].TestOnly and os.path.isfile(dir_input_dimension + '/UserInfo.json'): 
+        InputDimensions, num_Layers = ReadInputDimensions_NLayers(dir_input_dimension)
+
+        WhichExperiment.Dataset.InputPadding.Automatic = False
+        WhichExperiment.Dataset.InputPadding.HardDimensions = InputDimensions
+        WhichExperiment.HardParams.Model.InputDimensions = InputDimensions
+        WhichExperiment.HardParams.Model.num_Layers = num_Layers
 
     return WhichExperiment
     

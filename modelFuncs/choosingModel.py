@@ -67,6 +67,9 @@ def loadModel(params):
     # model = kerasmodels.load_model(params.directories.Train.Model + '/model.h5')
     # ModelParam = params.WhichExperiment.HardParams.Model
     # model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
+
+    # smallFuncs.Saving_UserInfo(params.directories.Train.Model, params)
+        
     return model
 
 def testingExeriment(model, Data, params):
@@ -370,8 +373,8 @@ def trainingExperiment(Data, params):
             if params.WhichExperiment.HardParams.Model.Method.save_Best_Epoch_Model:                
                 model.load_weights(params.directories.Train.Model + '/best_model_weights' + A + '.h5')
 
-            # model.save(params.directories.Train.Model + '/model' + A + '.h5', overwrite=True, include_optimizer=False )
-            # model.save_weights(params.directories.Train.Model + '/model_weights' + A + '.h5', overwrite=True )
+            model.save(params.directories.Train.Model + '/orig_model' + A + '.h5', overwrite=True, include_optimizer=False )
+            model.save_weights(params.directories.Train.Model + '/orig_model_weights' + A + '.h5', overwrite=True )
 
             modelS.save(params.directories.Train.Model + '/model' + A + '.h5', overwrite=True, include_optimizer=False )
             modelS.save_weights(params.directories.Train.Model + '/model_weights' + A + '.h5', overwrite=True )
@@ -518,7 +521,6 @@ def save_BoundingBox_Hierarchy(params, PRED):
     if params.WhichExperiment.Nucleus.Index[0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2:
         loop_Subjects_Sagittal(PRED.Sagittal_Test, 'test')
         loop_Subjects_Sagittal(PRED.Sagittal_Train, 'train')        
-
 
 def architecture(ModelParam):
 
