@@ -761,7 +761,7 @@ def func_WhichExperiment(UserInfo):
 
         WhichExperiment.Dataset.InputPadding.Automatic = False
 
-        InputDimensions = list( np.array(InputDimensions)[ WhichExperiment.Dataset.slicingInfo.slicingOrder ] )
+        # InputDimensions = list( np.array(InputDimensions)[ WhichExperiment.Dataset.slicingInfo.slicingOrder ] )
         WhichExperiment.Dataset.InputPadding.HardDimensions = InputDimensions        
         WhichExperiment.HardParams.Model.InputDimensions = InputDimensions
         WhichExperiment.HardParams.Model.num_Layers = num_Layers
