@@ -218,15 +218,19 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']
        
-        tag = method + FM + ACH + NL + LF + US + FCN + SC + LR + PI + SE.Tag + '_wBiasCorrection'
+        tag = method + FM + ACH + NL + LF + US + FCN + SC + LR + PI + SE.Tag
         
-        
+        if UserInfo['wmn_csfn'] == 'csfn':
+            tag += '_wBiasCorrection'       
         
         if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0] # + '_for_paper' # '_for_percision_recall_curve'
         A = subExperiment(tag)
 
         if UserInfo['best_network_MPlanar']:
-            A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s'%(UserInfo['CrossVal'].index[0])
+            if UserInfo['wmn_csfn'] == 'csfn':
+                A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s'%(UserInfo['CrossVal'].index[0])
+            elif UserInfo['wmn_csfn'] == 'wmn':
+                A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_%s'%(UserInfo['CrossVal'].index[0])
 
         return A
 
@@ -344,7 +348,7 @@ def func_WhichExperiment(UserInfo):
                 MultiClass = multiclass()
                 Initialize = InitializeB()
                 Method = method()
-                paddingErrorPatience = 20
+                paddingErrorPatience = 200
                 Transfer_Learning = transfer_Learning()
                 DataGenerator = dataGenerator()
                 Upsample = upsample()
@@ -756,7 +760,9 @@ def func_WhichExperiment(UserInfo):
         InputDimensions, num_Layers = ReadInputDimensions_NLayers(dir_input_dimension)
 
         WhichExperiment.Dataset.InputPadding.Automatic = False
-        WhichExperiment.Dataset.InputPadding.HardDimensions = InputDimensions
+
+        InputDimensions = list( np.array(InputDimensions)[ WhichExperiment.Dataset.slicingInfo.slicingOrder ] )
+        WhichExperiment.Dataset.InputPadding.HardDimensions = InputDimensions        
         WhichExperiment.HardParams.Model.InputDimensions = InputDimensions
         WhichExperiment.HardParams.Model.num_Layers = num_Layers
 

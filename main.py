@@ -1799,7 +1799,7 @@ def EXP_WMn_test_new_Cases(UserInfoB):
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['architectureType'] = 'Res_Unet2'
     UserInfoB['lossFunction_Index'] = 4
-    UserInfoB['Experiments'].Index = '6'
+    UserInfoB['Experiments'].Index = '7'
     UserInfoB['copy_Thalamus'] = False
     UserInfoB['TypeExperiment'] = 15
     UserInfoB['simulation'].LR_Scheduler = True    
@@ -1891,7 +1891,13 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
    
 # UserInfoB['simulation'].ReadAugments_Mode = False
 
-Run_Csfn_with_Best_WMn_architecture(UserInfoB)
+
+
+if UserInfoB['wmn_csfn'] == 'csfn':
+    Run_Csfn_with_Best_WMn_architecture(UserInfoB)
+elif UserInfoB['wmn_csfn'] == 'wmn':
+    EXP_WMn_test_new_Cases(UserInfoB)
+
 
 # UserInfoB['simulation'].ReadAugments_Mode = False 
 # smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False)) 
