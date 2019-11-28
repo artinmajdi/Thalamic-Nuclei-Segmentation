@@ -17,6 +17,7 @@ mskM = nib.load(dirM  + '8-Pul_PProcessed.nii.gz').get_data()
 
 
 plt.plot(np.unique(msk))
+plt.show()
 Precision_Recall_Curve(mskM,msk)
 
 print('---')
