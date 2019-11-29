@@ -9,7 +9,7 @@ import nibabel as nib
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
 
-dir = '/array/ssd/msmajdi/experiments/keras/exp7/crossVal/temp/Main/a/vimp2_967_08132013_KW/left/2.5D_MV/'
+dir = '/array/ssd/msmajdi/experiments/keras/exp7/crossVal/temp/Main/a/vimp2_967_08132013_KW/left/sd2/'
 dirM = '/array/ssd/msmajdi/experiments/keras/exp7/crossVal/temp/Main/a/vimp2_967_08132013_KW/Label/'
 a = smallFuncs.Nuclei_Class(index=1,method='Cascade').All_Nuclei()
 
@@ -22,11 +22,11 @@ plt.plot(np.unique(msk))
 # plt.show()
 Precision_Recall_Curve(mskM,msk)
 
-yp1 = np.reshape(mskM,[-1,1])
+ym1 = np.reshape(mskM,[-1,1])
 yt1 = np.reshape(msk,[-1,1])
 
-precision, recall, thresholds = precision_recall_curve(yt1, yp1)
-average_precision = average_precision_score(yt1, yp1)
+precision, recall, thresholds = precision_recall_curve(yt1, ym1)
+average_precision = average_precision_score(yt1, ym1)
 
 print(precision,recall)
 print('---')
