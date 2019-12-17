@@ -1,7 +1,8 @@
 import os
 import sys
 # sys.path.append(os.path.dirname(__file__))  # 
-sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+# sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+sys.path.append('/media/artin/SSD/RESEARCH/PhD/code')
 import otherFuncs.smallFuncs as smallFuncs
 from modelFuncs.Metrics import Precision_Recall_Curve
 import numpy as np
@@ -9,8 +10,9 @@ import nibabel as nib
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
 
-dir = '/array/ssd/msmajdi/experiments/keras/exp7/crossVal/temp/Main/a/vimp2_967_08132013_KW/left/sd2/'
-dirM = '/array/ssd/msmajdi/experiments/keras/exp7/crossVal/temp/Main/a/vimp2_967_08132013_KW/Label/'
+
+dir = '/media/artin/SSD/RESEARCH/PhD/vimp2_988_08302013_CB/Prediction/'
+dirM = '/media/artin/SSD/RESEARCH/PhD/vimp2_988_08302013_CB/Label/'
 a = smallFuncs.Nuclei_Class(index=1,method='Cascade').All_Nuclei()
 
 ind = 12
@@ -20,6 +22,7 @@ mskM = nib.load(dirM  + a.Names[ind] + '_PProcessed.nii.gz').get_data()
 
 plt.plot(np.unique(msk))
 # plt.show()
+
 Precision_Recall_Curve(mskM,msk)
 
 ym1 = np.reshape(mskM,[-1,1])
