@@ -49,7 +49,7 @@ def func_class_weights(weighted_Mode, Mask):
     
 def check_Run(params, Data):
 
-    # os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
+    os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
     model      = trainingExperiment(Data, params) if not params.preprocess.TestOnly else loadModel(params)
     prediction = testingExeriment(model, Data, params)
 

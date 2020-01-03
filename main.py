@@ -232,19 +232,6 @@ def preMode(UserInfoB):
 
 UserInfoB, K = preMode(UserInfo.__dict__)
 
-def Run_tryExcept(UserInfoB, IV):
-    try:        
-        Run(UserInfoB, IV)
-    except Exception as e:
-        print('Failed')
-        print('Failed')
-        print('Failed')
-        print(e)
-        print( 'US', UserInfoB['upsample'].Scale , 'NL', UserInfoB['simulation'].num_Layers , 'FM', UserInfoB['simulation'].FirstLayer_FeatureMap_Num)
-        print('Failed')
-        print('Failed')
-
-
 def func_all_experiments(UserInfoB):
     def EXP_3_SRI_Main_US2_m2_(UserInfoB):
         UserInfoB['upsample'].Scale = 2

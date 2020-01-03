@@ -2,12 +2,12 @@
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
-gpu = "3"
+gpu = "1"
 
 local_flag = False
-container_flag = True
+container_flag = False
 
-wmn_csfn = 'csfn' # 'wmn'
+wmn_csfn = 'wmn' # 'wmn'
 # TypeExperiment == 1: # 3T      Init Rn
 
 # TypeExperiment == 2:  # Main        Init 3T
@@ -29,7 +29,7 @@ wmn_csfn = 'csfn' # 'wmn'
 # TypeExperiment == 11 # CSFn2  Transfer Learn from Main with new structure wher it only takes the wweights for part of the network
 # TypeExperiment == 13  # CSFn1 + CSFn2 Init Main
 
-TypeExperiment = 8
+TypeExperiment = 3
 
 
 #! Preprocessing
@@ -50,12 +50,12 @@ preprocess = preprocesscs()
 permutation_Index = 0
 
 multi_Class_Mode = True
-readAugments_Mode = True
+readAugments_Mode = False
 lossFunction_Index = 4
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
 best_network_MPlanar = False
-testOnly = True
+testOnly = False
 
 fCN1_NLayers = 0
 fCN2_NLayers = 0
