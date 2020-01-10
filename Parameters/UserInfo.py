@@ -29,15 +29,15 @@ wmn_csfn = 'wmn' # 'wmn'
 # TypeExperiment == 11 # CSFn2  Transfer Learn from Main with new structure wher it only takes the wweights for part of the network
 # TypeExperiment == 13  # CSFn1 + CSFn2 Init Main
 
-TypeExperiment = 3
+TypeExperiment = 15
 
 
 #! Preprocessing
 class preprocesscs:
     def __init__(self):
-        self.Mode = False
+        self.Mode = True
         self.BiasCorrection = False
-        self.Cropping = True
+        self.Cropping = False
         self.Reslicing = True
 
 preprocess = preprocesscs()
@@ -49,7 +49,7 @@ preprocess = preprocesscs()
 
 permutation_Index = 0
 
-multi_Class_Mode = True
+multi_Class_Mode = False
 readAugments_Mode = False
 lossFunction_Index = 4
 
@@ -80,7 +80,7 @@ CrossVal = CrossValcs()
 
 class Experimentscs:
     def __init__(self):
-        self.Index , self.Tag = '7' , '' # '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1'
+        self.Index , self.Tag = '6' , 'uncropped' # '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1'
 
 Experiments = Experimentscs()
 
@@ -207,7 +207,7 @@ if container_flag:
 
 AugmentMode = False
 Augment_LinearMode = True
-Augment_Linear_Length = 3
+Augment_Linear_Length = 6
 
 class Augment_Rotationcs:
     def __init__(self):

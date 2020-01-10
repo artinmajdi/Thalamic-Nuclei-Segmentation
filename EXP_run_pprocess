@@ -1,0 +1,501 @@
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:523: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:524: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:526: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:527: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:532: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+Using TensorFlow backend.
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/sklearn/externals/joblib/__init__.py:15: DeprecationWarning: sklearn.externals.joblib is deprecated in 0.21 and will be removed in 0.23. Please import this functionality directly from joblib, which can be installed with: pip install joblib. If this warning is raised when loading pickled models, you may need to re-serialize those models with scikit-learn 0.21+.
+  warnings.warn(msg, category=DeprecationWarning)
+(0/41) train vimp2_972_08152013_DC
+     ReSlicing
+(1/41) train vimp2_ANON702_03152013
+     ReSlicing
+(2/41) train vimp2_ANON714_03222013
+     ReSlicing
+Traceback (most recent call last):
+  File "preprocess/run_preprocess.py", line 12, in <module>
+    applyPreprocess.main(params, 'experiment')
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/applyPreprocess.py", line 33, in main
+    if not params.preprocess.TestOnly: loopOverSubjects_PreProcessing(params, 'train')
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/applyPreprocess.py", line 29, in loopOverSubjects_PreProcessing
+    for Info.ind, Info.subjectName in enumerate(Info.Subjects): apply_On_Individual(params, Info)
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/applyPreprocess.py", line 45, in apply_On_Individual
+    apply_reslice(subject , params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/applyPreprocess.py", line 135, in apply_reslice
+    apply_to_Image(subject)
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/applyPreprocess.py", line 121, in apply_to_Image
+    apply_reslicing_main(input_image, output_image, outDebug, 'continuous' , ref)       
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/applyPreprocess.py", line 110, in apply_reslicing_main
+    nib.save(im, output_image) 
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nibabel/loadsave.py", line 99, in save
+    img.to_filename(filename)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nibabel/filebasedimages.py", line 335, in to_filename
+    self.to_file_map()
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nibabel/analyze.py", line 1049, in to_file_map
+    arr_writer.to_fileobj(imgf)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nibabel/arraywriters.py", line 562, in to_fileobj
+    nan2zero=self._needs_nan2zero())
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nibabel/volumeutils.py", line 660, in array_to_file
+    pre_clips=pre_clips)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nibabel/volumeutils.py", line 833, in _write_data
+    fileobj.write(dslice.tostring())
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nibabel/openers.py", line 220, in write
+    return self.fobj.write(*args, **kwargs)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/gzip.py", line 264, in write
+    self.fileobj.write(self.compress.compress(data))
+KeyboardInterrupt
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:523: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:524: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:526: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:527: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:532: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+Using TensorFlow backend.
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/sklearn/externals/joblib/__init__.py:15: DeprecationWarning: sklearn.externals.joblib is deprecated in 0.21 and will be removed in 0.23. Please import this functionality directly from joblib, which can be installed with: pip install joblib. If this warning is raised when loading pickled models, you may need to re-serialize those models with scikit-learn 0.21+.
+  warnings.warn(msg, category=DeprecationWarning)
+(0/41) train vimp2_972_08152013_DC
+     ReSlicing
+(1/41) train vimp2_ANON702_03152013
+     ReSlicing
+(2/41) train vimp2_ANON714_03222013
+     ReSlicing
+Traceback (most recent call last):
+  File "preprocess/run_preprocess.py", line 12, in <module>
+    applyPreprocess.main(params, 'experiment')
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/applyPreprocess.py", line 33, in main
+    if not params.preprocess.TestOnly: loopOverSubjects_PreProcessing(params, 'train')
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/applyPreprocess.py", line 29, in loopOverSubjects_PreProcessing
+    for Info.ind, Info.subjectName in enumerate(Info.Subjects): apply_On_Individual(params, Info)
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/applyPreprocess.py", line 45, in apply_On_Individual
+    apply_reslice(subject , params)
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/applyPreprocess.py", line 135, in apply_reslice
+    apply_to_Image(subject)
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/applyPreprocess.py", line 121, in apply_to_Image
+    apply_reslicing_main(input_image, output_image, outDebug, 'continuous' , ref)       
+  File "/array/ssd/msmajdi/code/thalamus/keras/preprocess/applyPreprocess.py", line 108, in apply_reslicing_main
+    im = niImage.resample_img(img=nib.load(input_image), target_affine=ref['affine'][:3,:3] , interpolation='continuous') #  , target_shape=ref['shape'] 
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py", line 420, in resample_img
+    img = _utils.check_niimg(img)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/_utils/niimg_conversions.py", line 271, in check_niimg
+    niimg = load_niimg(niimg, dtype=dtype)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/_utils/niimg.py", line 116, in load_niimg
+    dtype = _get_target_dtype(niimg.get_data().dtype, dtype)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nibabel/dataobj_images.py", line 203, in get_data
+    data = np.asanyarray(self._dataobj)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/numpy/core/_asarray.py", line 138, in asanyarray
+    return array(a, dtype, copy=False, order=order, subok=True)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nibabel/arrayproxy.py", line 355, in __array__
+    raw_data = self.get_unscaled()
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nibabel/arrayproxy.py", line 350, in get_unscaled
+    mmap=self._mmap)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nibabel/volumeutils.py", line 524, in array_from_file
+    n_read = infile.readinto(data_bytes)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/gzip.py", line 276, in read
+    return self._buffer.read(size)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/_compression.py", line 68, in readinto
+    data = self.read(len(byte_view))
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/gzip.py", line 471, in read
+    uncompress = self._decompressor.decompress(buf, size)
+zlib.error: Error -3 while decompressing data: invalid distance code
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:523: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:524: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:526: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:527: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:532: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+Using TensorFlow backend.
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/sklearn/externals/joblib/__init__.py:15: DeprecationWarning: sklearn.externals.joblib is deprecated in 0.21 and will be removed in 0.23. Please import this functionality directly from joblib, which can be installed with: pip install joblib. If this warning is raised when loading pickled models, you may need to re-serialize those models with scikit-learn 0.21+.
+  warnings.warn(msg, category=DeprecationWarning)
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/nilearn/image/resampling.py:510: UserWarning: Casting data from int16 to float32
+  warnings.warn("Casting data from %s to %s" % (data.dtype.name, aux))
+(0/41) train vimp2_972_08152013_DC
+     ReSlicing
+(1/41) train vimp2_ANON702_03152013
+     ReSlicing
+(2/41) train vimp2_ANON714_03222013
+     ReSlicing
+(3/41) train vimp2_765_04162013_AW
+     ReSlicing
+(4/41) train vimp2_988_08302013_CB
+     ReSlicing
+(5/41) train vimp2_668_02282013_CD
+     ReSlicing
+(6/41) train vimp2_819_05172013_DS
+     ReSlicing
+(7/41) train vimp2_ANON606_20130110
+     ReSlicing
+(8/41) train vimp2_ANON624_20130117
+     ReSlicing
+(9/41) train vimp2_823_05202013_AJ
+     ReSlicing
+(10/41) train vimp2_824_05212013_JS
+     ReSlicing
+(11/41) train vimp2_ANON724_03272013
+     ReSlicing
+(12/41) train vimp2_ctrl_902_07052013_SI
+     ReSlicing
+(13/41) train vimp2_845_05312013_VZ
+     ReSlicing
+(14/41) train vimp2_869_06142013_BL
+     ReSlicing
+(15/41) train vimp2_ctrl_911_07082013_TTO
+     ReSlicing
+(16/41) train vimp2_ctrl_918_07112013_TQ
+     ReSlicing
+(17/41) train vimp2_884_06272013_TS
+     ReSlicing
+(18/41) train vimp2_901_07052013_AS
+     ReSlicing
+(19/41) train vimp2_964_08092013_TG
+     ReSlicing
+(20/41) train vimp2_ctrl_920_07122013_SW
+     ReSlicing
+(21/41) train vimp2_915_07112013_LC
+     ReSlicing
+(22/41) train vimp2_943_07242013_PA
+     ReSlicing
+(23/41) train vimp2_ctrl_921_07122013_MP
+     ReSlicing
+(24/41) train vimp2_ctrl_925_07152013_LS
+     ReSlicing
+(25/41) train vimp2_B_3T_ET
+     ReSlicing
+(26/41) train vimp2_B_7T_ET
+     ReSlicing
+(27/41) train vimp2_C_3T_ET
+     ReSlicing
+(28/41) train vimp2_C_7T_ET
+     ReSlicing
+(29/41) train vimp2_D_3T_ET
+     ReSlicing
+(30/41) train vimp2_D_7T_ET
+     ReSlicing
+(31/41) train vimp2_K_3T_ET
+     ReSlicing
+(32/41) train vimp2_K_7T_ET
+     ReSlicing
+(33/41) train vimp2_F_3T_ET
+     ReSlicing
+(34/41) train vimp2_F_7T_ET
+     ReSlicing
+(35/41) train vimp2_H_3T_ET
+     ReSlicing
+(36/41) train vimp2_H_7T_ET
+     ReSlicing
+(37/41) train vimp2_I_3T_ET
+     ReSlicing
+(38/41) train vimp2_I_7T_ET
+     ReSlicing
+(39/41) train vimp2_L_3T_ET
+     ReSlicing
+(40/41) train vimp2_L_7T_ET
+     ReSlicing
+(0/11) test vimp2_967_08132013_KW
+     ReSlicing
+(1/11) test vimp2_ANON695_03132013
+     ReSlicing
+(2/11) test vimp2_ctrl_991_08302013_JF
+     ReSlicing
+(3/11) test vimp2_A_3T_ET
+     ReSlicing
+(4/11) test vimp2_A_7T_ET
+     ReSlicing
+(5/11) test vimp2_G_3T_ET
+     ReSlicing
+(6/11) test vimp2_G_7T_ET
+     ReSlicing
+(7/11) test vimp2_J_3T_ET
+     ReSlicing
+(8/11) test vimp2_J_7T_ET
+     ReSlicing
+(9/11) test vimp2_M_3T_ET
+     ReSlicing
+(10/11) test vimp2_M_7T_ET
+     ReSlicing
