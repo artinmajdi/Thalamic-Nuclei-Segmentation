@@ -29,7 +29,7 @@ wmn_csfn = 'wmn' # 'wmn'
 # TypeExperiment == 11 # CSFn2  Transfer Learn from Main with new structure wher it only takes the wweights for part of the network
 # TypeExperiment == 13  # CSFn1 + CSFn2 Init Main
 
-TypeExperiment = 15
+TypeExperiment = 8
 
 
 #! Preprocessing
