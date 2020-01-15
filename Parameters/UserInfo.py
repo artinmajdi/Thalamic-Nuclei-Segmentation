@@ -50,7 +50,7 @@ preprocess = preprocesscs()
 permutation_Index = 0
 
 multi_Class_Mode = True
-readAugments_Mode = False
+readAugments_Mode = True
 lossFunction_Index = 7
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
