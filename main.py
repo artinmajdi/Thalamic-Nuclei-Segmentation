@@ -1785,8 +1785,8 @@ def EXP_WMn_test_new_Cases(UserInfoB):
     UserInfoB['Model_Method'] = 'Cascade'
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['architectureType'] = 'Res_Unet2'
-    UserInfoB['lossFunction_Index'] = 4
-    UserInfoB['Experiments'].Index = '7'
+    UserInfoB['lossFunction_Index'] = 7 # 4
+    UserInfoB['Experiments'].Index = '6'
     UserInfoB['copy_Thalamus'] = False
     UserInfoB['TypeExperiment'] = 15
     UserInfoB['simulation'].LR_Scheduler = True    
@@ -1845,8 +1845,8 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
     UserInfoB['Model_Method'] = 'Cascade'
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['architectureType'] = 'Res_Unet2'
-    UserInfoB['lossFunction_Index'] = 4
-    UserInfoB['Experiments'].Index = '7'
+    UserInfoB['lossFunction_Index'] = 7 # 4
+    UserInfoB['Experiments'].Index = '6'
     UserInfoB['copy_Thalamus'] = False
     UserInfoB['TypeExperiment'] = 8
     UserInfoB['simulation'].LR_Scheduler = False    

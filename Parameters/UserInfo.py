@@ -2,7 +2,7 @@
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
-gpu = "1"
+gpu = "2"
 
 local_flag = False
 container_flag = False
@@ -29,15 +29,15 @@ wmn_csfn = 'wmn' # 'wmn'
 # TypeExperiment == 11 # CSFn2  Transfer Learn from Main with new structure wher it only takes the wweights for part of the network
 # TypeExperiment == 13  # CSFn1 + CSFn2 Init Main
 
-TypeExperiment = 8
+TypeExperiment = 15
 
 
 #! Preprocessing
 class preprocesscs:
     def __init__(self):
-        self.Mode = True
+        self.Mode = False
         self.BiasCorrection = False
-        self.Cropping = False
+        self.Cropping = True
         self.Reslicing = True
 
 preprocess = preprocesscs()
@@ -49,9 +49,9 @@ preprocess = preprocesscs()
 
 permutation_Index = 0
 
-multi_Class_Mode = False
+multi_Class_Mode = True
 readAugments_Mode = False
-lossFunction_Index = 4
+lossFunction_Index = 7
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
 best_network_MPlanar = False
@@ -80,7 +80,7 @@ CrossVal = CrossValcs()
 
 class Experimentscs:
     def __init__(self):
-        self.Index , self.Tag = '6' , 'uncropped' # '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1'
+        self.Index , self.Tag = '6' , '' # '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1' uncropped
 
 Experiments = Experimentscs()
 

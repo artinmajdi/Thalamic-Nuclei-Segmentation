@@ -1,0 +1,39 @@
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:523: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:524: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:526: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:527: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:532: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+----------+++ 
+Traceback (most recent call last):
+  File "main.py", line 6, in <module>
+    import otherFuncs.smallFuncs as smallFuncs
+  File "/array/ssd/msmajdi/code/thalamus/keras/otherFuncs/smallFuncs.py", line 15, in <module>
+    import modelFuncs.Metrics as metrics
+  File "/array/ssd/msmajdi/code/thalamus/keras/modelFuncs/Metrics.py", line 3, in <module>
+    import tensorflow as tf
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/__init__.py", line 24, in <module>
+    from tensorflow.python import pywrap_tensorflow  # pylint: disable=unused-import
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/__init__.py", line 79, in <module>
+    from tensorflow.python.ops.standard_ops import *
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/ops/standard_ops.py", line 34, in <module>
+    from tensorflow.python.ops import spectral_grad
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/ops/spectral_grad.py", line 184, in <module>
+    ops.RegisterGradient("RFFT2D")(_RFFTGradHelper(2, spectral_ops.irfft2d))
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/ops.py", line 2412, in __call__
+    _gradient_registry.register(f, self._op_type)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/registry.py", line 67, in register
+    stack = traceback.extract_stack()
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/traceback.py", line 211, in extract_stack
+    stack = StackSummary.extract(walk_stack(f), limit=limit)
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/traceback.py", line 364, in extract
+    f.line
+  File "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/traceback.py", line 286, in line
+    self._line = linecache.getline(self.filename, self.lineno).strip()
+KeyboardInterrupt
