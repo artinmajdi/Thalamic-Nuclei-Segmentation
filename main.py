@@ -20,6 +20,7 @@ import numpy as np
 import nibabel as nib
 # from shutil import copyfile , copytree
 from tqdm import tqdm
+import modelFuncs.LossFunction as LossFunction
 from preprocess import BashCallingFunctionsA, croppingA
 # import tensorflow.compat.v1 as tf2
 # tf2.disable_v2_behavior()
@@ -1774,11 +1775,17 @@ def EXP_WMn_test_new_Cases(UserInfoB):
         UserInfoB['best_network_MPlanar'] = True
         params = paramFunc.Run(UserInfoB, terminal=True)
         Directory = params.WhichExperiment.Experiment.address + '/results'
-        Output = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a'
+
+        _, loss_tag = LossFunction.LossInfo(UserInfoB['lossFunction_Index'] ) 
+        # loss_tag = 'MyDice' # 'MyLogDice'
+
+        Output = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_' + UserInfoB['CrossVal'].index[0]
         os.system("mkdir %s; cd %s; mkdir sd0 sd1 sd2"%(Directory + '/' + Output, Directory + '/' + Output))
-        os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd0/vimp* %s/%s/sd0/"%(Directory, Directory, Output) )
-        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd1/vimp* %s/%s/sd1/"%(Directory, Directory, Output) )
-        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd2/vimp* %s/%s/sd2/"%(Directory, Directory, Output) )
+
+        
+        os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_%s_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_%s/sd0/vimp* %s/%s/sd0/"%(Directory, loss_tag, UserInfoB['CrossVal'].index[0], Directory, Output) )
+        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_%s_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_%s/sd1/vimp* %s/%s/sd1/"%(Directory, loss_tag, UserInfoB['CrossVal'].index[0], Directory, Output) )
+        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_%s_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_%s/sd2/vimp* %s/%s/sd2/"%(Directory, loss_tag, UserInfoB['CrossVal'].index[0], Directory, Output) )
         
         smallFuncs.apply_MajorityVoting(params)
 
@@ -1834,11 +1841,16 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
         UserInfoB['best_network_MPlanar'] = True
         params = paramFunc.Run(UserInfoB, terminal=True)
         Directory = params.WhichExperiment.Experiment.address + '/results'
-        Output = "sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s"%(UserInfoB['CrossVal'].index[0])
+
+        _, loss_tag = LossFunction.LossInfo(UserInfoB['lossFunction_Index'] ) 
+
+        Output = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1_CSFn2_Init_Main_wBiasCorrection_CV_' + UserInfoB['CrossVal'].index[0]
+
+
         os.system("mkdir %s; cd %s; mkdir sd0 sd1 sd2"%(Directory + '/' + Output, Directory + '/' + Output))
-        os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s/sd0/vimp* %s/sd0/"%(Directory, UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
-        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s/sd1/vimp* %s/sd1/"%(Directory, UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
-        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s/sd2/vimp* %s/sd2/"%(Directory, UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
+        os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_%s_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s/sd0/vimp* %s/sd0/"%(Directory, loss_tag, UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
+        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_%s_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s/sd1/vimp* %s/sd1/"%(Directory, loss_tag, UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
+        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_%s_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s/sd2/vimp* %s/sd2/"%(Directory, loss_tag, UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
 
         smallFuncs.apply_MajorityVoting(params)
 

@@ -7,7 +7,7 @@ gpu = "2"
 local_flag = False
 container_flag = False
 
-wmn_csfn = 'wmn' # 'wmn'
+wmn_csfn = 'csfn' # 'wmn' # 
 # TypeExperiment == 1: # 3T      Init Rn
 
 # TypeExperiment == 2:  # Main        Init 3T

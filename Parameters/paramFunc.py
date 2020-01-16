@@ -227,10 +227,12 @@ def func_Exp_subExp_Names(UserInfo):
         A = subExperiment(tag)
 
         if UserInfo['best_network_MPlanar']:
+            _, loss_tag = LossFunction.LossInfo(UserInfo['lossFunction_Index'] ) 
+
             if UserInfo['wmn_csfn'] == 'csfn':
-                A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s'%(UserInfo['CrossVal'].index[0])
+                A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_%s_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s'%(loss_tag, UserInfo['CrossVal'].index[0])
             elif UserInfo['wmn_csfn'] == 'wmn':
-                A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_%s'%(UserInfo['CrossVal'].index[0])
+                A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_%s_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_%s'%(loss_tag, UserInfo['CrossVal'].index[0])
 
         return A
 

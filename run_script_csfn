@@ -1,0 +1,5 @@
+
+
+for x in a b c d; do python main.py -cv $x -g 2 ; done
+
+
