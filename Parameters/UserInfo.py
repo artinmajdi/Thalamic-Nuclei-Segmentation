@@ -114,7 +114,7 @@ upsample = upsamplecs()
 class simulationcs:
     def __init__(self):
         self.TestOnly      = testOnly
-        self.epochs        = 10
+        self.epochs        = 100
         self.GPU_Index     = gpu
         self.Learning_Rate = 1e-3
         self.num_Layers    = 3 

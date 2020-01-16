@@ -1,0 +1,8 @@
+
+
+
+
+
+for x in f g h; do python main.py -g 2 -cv $x -wc wmn -e 100 ; done
+
+

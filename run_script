@@ -3,16 +3,6 @@
 
 
 
-nohup python main.py -g 0 -cv a >> EXP_g0_cva &
-nohup python main.py -g 2 -cv b >> EXP_g2_cvb &
-nohup python main.py -g 3 -cv c >> EXP_g3_cvc & 
-nohup python main.py -g 4 -cv d >> EXP_g4_cvd &
-nohup python main.py -g 5 -cv e >> EXP_g5_cve &
-nohup python main.py -g 6 -cv f >> EXP_g6_cvf &
-nohup python main.py -g 7 -cv g >> EXP_g7_cvg &
-
-
-
-
+for x in b c d e; do python main.py -g 1 -cv $x -wc wmn -e 100 ; done
 
 

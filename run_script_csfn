@@ -1,5 +1,8 @@
 
 
-for x in a b c d; do python main.py -cv $x -g 2 ; done
+python main -cv a -g 0 -wc wmn -e 100
+
+
+for x in a b c d; do python main.py -cv $x -g 0 -wc csfn -e 100; done
 
 

@@ -385,7 +385,10 @@ def terminalEntries(UserInfo):
         elif entry.lower() in ('-cv','--CrossVal_Index'):
             UserInfo['CrossVal'].index = [sys.argv[en+1]]
             print('CrossVal' , UserInfo['CrossVal'].index)
-                
+        elif entry.lower() in ('-wc','--wmn_csfn'):
+            UserInfo['wmn_csfn'] = sys.argv[en+1]
+
+            :
     return UserInfo
 
 def search_ExperimentDirectory(whichExperiment):
