@@ -258,3 +258,9 @@ Epoch 2/100
 
 Epoch 00002: LearningRateScheduler setting learning rate to 0.001.
  - 180s - loss: 0.0434 - acc: 0.9961 - mDice: 0.9151 - val_loss: -9.1700e-03 - val_acc: 0.9959 - val_mDice: 0.5014
+
+Epoch 00002: val_mDice improved from 0.49365 to 0.50141, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_Cascade_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_b/1-THALAMUS/sd2/best_model_weights.h5
+Epoch 3/100
+
+Epoch 00003: LearningRateScheduler setting learning rate to 0.001.
+ - 183s - loss: 0.0422 - acc: 0.9963 - mDice: 0.9175 - val_loss: 0.0034 - val_acc: 0.9958 - val_mDice: 0.5078
