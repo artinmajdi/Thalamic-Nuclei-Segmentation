@@ -758,7 +758,7 @@ def func_WhichExperiment(UserInfo):
     
 
     dir_input_dimension = experiment.address + '/models/' + subExperiment.name + '/' + WhichExperiment.Nucleus.name + '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim)
-    if UserInfo['simulation'].TestOnly and os.path.isfile(dir_input_dimension + '/UserInfo.json'): 
+    if UserInfo['use_train_padding_size']  and UserInfo['simulation'].TestOnly and os.path.isfile(dir_input_dimension + '/UserInfo.json'): 
         InputDimensions, num_Layers = ReadInputDimensions_NLayers(dir_input_dimension)
 
         WhichExperiment.Dataset.InputPadding.Automatic = False

@@ -2,12 +2,13 @@
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
-gpu = "2"
+gpu = "0"
 
 local_flag = False
 container_flag = False
+use_train_padding_size = False
 
-wmn_csfn = 'csfn' # 'wmn' # 
+wmn_csfn = 'wmn' # 'wmn' 'csfn' 
 # TypeExperiment == 1: # 3T      Init Rn
 
 # TypeExperiment == 2:  # Main        Init 3T
@@ -37,8 +38,8 @@ class preprocesscs:
     def __init__(self):
         self.Mode = False
         self.BiasCorrection = False
-        self.Cropping = True
-        self.Reslicing = True
+        self.Cropping = False
+        self.Reslicing = False
 
 preprocess = preprocesscs()
 
@@ -55,7 +56,7 @@ lossFunction_Index = 7
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
 best_network_MPlanar = False
-testOnly = False
+testOnly = True
 
 fCN1_NLayers = 0
 fCN2_NLayers = 0
@@ -73,7 +74,7 @@ normalize = normalizeCs()
 class CrossValcs:
     def __init__(self):
         self.Mode = True
-        self.index = ['a']
+        self.index = ['b']
         self.All_Indexes = ['a' , 'b' , 'c' , 'd' , 'e' , 'f' , 'g' , 'h']
 
 CrossVal = CrossValcs()
