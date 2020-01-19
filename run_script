@@ -3,6 +3,7 @@
 
 
 
-for x in b c d e; do python main.py -g 1 -cv $x -wc wmn -e 100 ; done
+for x in g h; do python main.py -g 3 -cv $x -wc wmn -e 100 ; done
+
 
 

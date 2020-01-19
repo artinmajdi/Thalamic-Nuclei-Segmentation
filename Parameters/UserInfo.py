@@ -56,7 +56,7 @@ lossFunction_Index = 7
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
 best_network_MPlanar = False
-testOnly = True
+testOnly = False
 
 fCN1_NLayers = 0
 fCN2_NLayers = 0
@@ -74,7 +74,7 @@ normalize = normalizeCs()
 class CrossValcs:
     def __init__(self):
         self.Mode = True
-        self.index = ['b']
+        self.index = ['a']
         self.All_Indexes = ['a' , 'b' , 'c' , 'd' , 'e' , 'f' , 'g' , 'h']
 
 CrossVal = CrossValcs()
