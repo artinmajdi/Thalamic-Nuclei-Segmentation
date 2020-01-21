@@ -144,8 +144,9 @@ def temp_Experiments_preSet_V2(UserInfoB):
 
                 7:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC()          , '_CSFn2_Init_CSFn1'),
                 8:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_CSFn2_Init_Main'),
-                9:  (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_CSFn2_TL_CSFn1'),
-                10: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T   =True)     ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_CSFn2_TL_Main'),
+                9:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(FromThalamus=True)   ,  self.Transfer_LearningC()          , '_CSFn2_Init_Thalamus'),
+                10: (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB()                    ,  self.Transfer_LearningC()          , '_CSFn2_NoInit'),
+                #10: (13 ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T   =True)   ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_CSFn2_TL_Main'),
                 11: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_CSFn2_TL_Main'),
                 12: (13  ,   self.ReadTrainC(Main=1)         , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_Main_test_TL_Main'),
                 13: (13  ,   self.ReadTrainC(CSFn1=1,CSFn2=1) , self.InitializeB(From_7T   =True)    ,  self.Transfer_LearningC()          , '_CSFn2_CSFn1_Init_Main'),

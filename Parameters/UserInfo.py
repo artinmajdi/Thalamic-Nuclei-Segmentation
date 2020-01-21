@@ -2,7 +2,7 @@
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
-gpu = "0"
+gpu = "3"
 
 local_flag = False
 container_flag = False
@@ -73,8 +73,8 @@ normalize = normalizeCs()
 
 class CrossValcs:
     def __init__(self):
-        self.Mode = True
-        self.index = ['a']
+        self.Mode = False
+        self.index = ['b']
         self.All_Indexes = ['a' , 'b' , 'c' , 'd' , 'e' , 'f' , 'g' , 'h']
 
 CrossVal = CrossValcs()
@@ -111,13 +111,14 @@ class upsamplecs:
         self.Scale = 1
 
 upsample = upsamplecs()
+Learning_Rate = 1e-3
 
 class simulationcs:
     def __init__(self):
         self.TestOnly      = testOnly
-        self.epochs        = 100
+        self.epochs        = 300
         self.GPU_Index     = gpu
-        self.Learning_Rate = 1e-3
+        self.Learning_Rate = Learning_Rate
         self.num_Layers    = 3 
         self.FCN1_NLayers  = fCN1_NLayers
         self.FCN2_NLayers  = fCN2_NLayers
@@ -185,7 +186,7 @@ Template = Templatecs()
 #          2: 'Accuracy'
 #          3: 'Dice & Accuracy'
 MetricIx = 3
-Learning_Rate = 1e-3
+
 
 # if Local_Flag: 
 #     Experiments_Address = '/home/artinl/Documents/research'

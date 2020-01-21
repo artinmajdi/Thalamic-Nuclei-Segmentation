@@ -1,6 +1,6 @@
 {
     "python.linting.pylintEnabled": true,
-    "python.pythonPath": "/array/ssd/msmajdi/anaconda3/envs/new-env-fb/bin/python",
+    "python.pythonPath": "/array/ssd/msmajdi/anaconda3/envs/new-env-fb2/bin/python",
     "python.linting.enabled": true,
     "python.linting.banditEnabled": false,
     "python.linting.mypyEnabled": false,

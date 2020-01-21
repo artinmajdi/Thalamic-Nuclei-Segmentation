@@ -98,12 +98,18 @@ def Run(UserInfoB, InitValues):
             UserI['simulation'].nucleus_Index = [1]
             Flag_Thalmaus_NLayers = check_if_num_Layers_fit(UserI)
             if not Flag_Thalmaus_NLayers: 
-                if 1 in InitValues.Nuclei_Indexes: Run_Main(UserI)
+                if 1 in InitValues.Nuclei_Indexes: 
+                    # UserI['havingBackGround_AsExtraDimension'] = True
+                    # UserInfoB['TypeExperiment'] = 9
+                    Run_Main(UserI)
             
                 BB = smallFuncs.Nuclei_Class(1,'Cascade')            
                 A = [InitValues.Nuclei_Indexes] if not isinstance(InitValues.Nuclei_Indexes, list) else InitValues.Nuclei_Indexes
                 UserI['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(A) # BB.All_Nuclei().Indexes))
-                if UserI['simulation'].nucleus_Index and (not check_if_num_Layers_fit(UserI)): Run_Main(UserI)
+                if UserI['simulation'].nucleus_Index and (not check_if_num_Layers_fit(UserI)): 
+                    # UserI['havingBackGround_AsExtraDimension'] = False
+                    # UserInfoB['TypeExperiment'] = 10
+                    Run_Main(UserI)
 
     def Run_Main(UserInfoB):
 
@@ -1797,7 +1803,11 @@ def EXP_WMn_test_new_Cases(UserInfoB):
     UserInfoB['copy_Thalamus'] = False
     UserInfoB['TypeExperiment'] = 15
     UserInfoB['simulation'].LR_Scheduler = True    
-    
+    UserInfoB['DropoutValue'] = 0.3
+    UserInfoB['simulation'].Learning_Rate = 1e-3
+
+
+    UserInfoB['Experiments'].Tag = 'ET_7T_3T_separate'
 
     applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
     
@@ -1809,7 +1819,7 @@ def EXP_WMn_test_new_Cases(UserInfoB):
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
     UserInfoB['simulation'].slicingDim = [1]
-    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
     Run(UserInfoB, IV)
 
@@ -1844,25 +1854,28 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
 
         _, loss_tag = LossFunction.LossInfo(UserInfoB['lossFunction_Index'] ) 
 
-        Output = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1_CSFn2_Init_Main_wBiasCorrection_CV_' + UserInfoB['CrossVal'].index[0]
+        Output = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + UserInfoB['SubExperiment'].Tag + '_wBiasCorrection_CV_' + UserInfoB['CrossVal'].index[0]
 
 
         os.system("mkdir %s; cd %s; mkdir sd0 sd1 sd2"%(Directory + '/' + Output, Directory + '/' + Output))
-        os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_%s_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s/sd0/vimp* %s/sd0/"%(Directory, loss_tag, UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
-        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_%s_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s/sd1/vimp* %s/sd1/"%(Directory, loss_tag, UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
-        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_%s_US1_CSFn2_Init_Main_wBiasCorrection_CV_%s/sd2/vimp* %s/sd2/"%(Directory, loss_tag, UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
+        os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_%s_US1%s_wBiasCorrection_CV_%s/sd0/vimp* %s/sd0/"%(Directory, loss_tag, UserInfoB['SubExperiment'].Tag , UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
+        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_%s_US1%s_wBiasCorrection_CV_%s/sd1/vimp* %s/sd1/"%(Directory, loss_tag, UserInfoB['SubExperiment'].Tag , UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
+        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_%s_US1%s_wBiasCorrection_CV_%s/sd2/vimp* %s/sd2/"%(Directory, loss_tag, UserInfoB['SubExperiment'].Tag , UserInfoB['CrossVal'].index[0] , Directory +'/'+ Output))
 
         smallFuncs.apply_MajorityVoting(params)
 
     UserInfoB['Model_Method'] = 'Cascade'
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['architectureType'] = 'Res_Unet2'
-    UserInfoB['lossFunction_Index'] = 7 # 4
+    UserInfoB['lossFunction_Index'] = 7 # 4 , 7
     UserInfoB['Experiments'].Index = '6'
     UserInfoB['copy_Thalamus'] = False
-    UserInfoB['TypeExperiment'] = 8
-    UserInfoB['simulation'].LR_Scheduler = False    
-    
+    # UserInfoB['TypeExperiment'] = 10 # 9 , 8
+    UserInfoB['simulation'].LR_Scheduler = True # False   
+    UserInfoB['DropoutValue'] = 0.5
+    UserInfoB['simulation'].Learning_Rate = 1e-3
+     
+    print('TypeExperiment' , UserInfoB['TypeExperiment'])
 
     applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
     
@@ -1880,16 +1893,12 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].slicingDim = [2]
-    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]     
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
     Run(UserInfoB, IV)    
 
     
     merge_results_and_apply_25D(UserInfoB)
-
-   
-# UserInfoB['simulation'].ReadAugments_Mode = False
-
 
 
 if UserInfoB['wmn_csfn'] == 'csfn':

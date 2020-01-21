@@ -266,10 +266,10 @@ def trainingExperiment(Data, params):
         checkpointer = keras.callbacks.ModelCheckpoint(filepath= Dir_Save + '/best_model_weights' + A + '.h5', \
             monitor = 'val_mDice' , verbose=1, save_best_only=True, mode=mode)
 
-        # Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = 'loss', factor=0.5, min_delta=0.005 , patience=4, verbose=1, \
-        #     save_best_only=True, mode='min' , min_lr=0.9e-4 , )
+        Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = monitor, factor=0.5, min_delta=0.001 , patience=15, verbose=1, \
+            save_best_only=True, mode=mode , min_lr=0.9e-4 , )
         
-        def step_decay_schedule(initial_lr=1e-3, decay_factor=0.5, step_size=18):
+        def step_decay_schedule(initial_lr=params.UserInfo['simulation'].Learning_Rate, decay_factor=0.5, step_size=18):
             def schedule(epoch):
                 # if np.floor(epoch/step_size) <= 2: 
                 return initial_lr * (decay_factor ** np.floor(epoch/step_size))
@@ -277,7 +277,7 @@ def trainingExperiment(Data, params):
 
             return keras.callbacks.LearningRateScheduler(schedule, verbose=1)
         
-        Reduce_LR = step_decay_schedule()
+        # Reduce_LR = step_decay_schedule()
 
         # Progbar = keras.callbacks.Progba
         EarlyStopping = keras.callbacks.EarlyStopping(monitor=monitor, min_delta=0, patience=40, verbose=1, mode=mode, \
@@ -332,24 +332,41 @@ def trainingExperiment(Data, params):
                     print(' --- initialized from older Model  ')
                 except: print('initialized from older Model failed')
 
-            elif Initialize.FromThalamus and params.WhichExperiment.Nucleus.Index[0] != 1 and os.path.exists(TP.Model_Thalamus + '/model_weights.h5'):
-                try: 
-                    model.load_weights(TP.Model_Thalamus + '/model_weights.h5')
-                    print(' --- initialized from Thalamus  ')
-                except: print('initialized from Thalamus failed')
+            elif Initialize.FromThalamus:
+                if params.WhichExperiment.Nucleus.Index[0] != 1 and os.path.exists(TP.Model_Thalamus + '/model_weights.h5'):
+                    try: 
+                        # model.load_weights(TP.Model_Thalamus + '/model_weights.h5')
+                        model_thalamus = kerasmodels.load_model(TP.Model_Thalamus + '/model.h5')
+                        for l in tqdm(range(2,len(model_thalamus.layers)-1), 'loading the weights from thalamus'):
+                            model.layers[l].set_weights(model_thalamus.layers[l].get_weights())
+                        print(' --- initialized from Thalamus',TP.Model_Thalamus)
+                    except: print('initialized from Thalamus failed',TP.Model_Thalamus)
                     
+                elif params.WhichExperiment.Nucleus.Index[0] == 1:
+                    if params.UserInfo['wmn_csfn'] == 'csfn' and os.path.exists(TP.Model_7T + '/model_weights.h5'):
+                        try: 
+                            model.load_weights(TP.Model_7T + '/model_weights.h5')
+                            print(' --- initialized from WMn  ', TP.Model_7T)
+                        except: print('initialized from WMn failed', TP.Model_7T)
+                        
+                    elif params.UserInfo['wmn_csfn'] == 'wmn' and os.path.exists(TP.Model_3T + '/model_weights.h5'):
+                        try: 
+                            model.load_weights(TP.Model_3T + '/model_weights.h5')
+                            print(' --- initialized from 3T  ', TP.Model_3T)
+                        except: print('initialized from 3T failed', TP.Model_3T)                    
+
             elif Initialize.From_3T and os.path.exists(TP.Model_3T + '/model_weights.h5'):
                 print('-----' , TP.Model_3T + '/model_weights.h5')
                 try:
                     model.load_weights(TP.Model_3T + '/model_weights.h5')
                     print(' --- initialized from Model_3T' , TP.Model_3T)
-                except: print('initialized from 3T failed')
+                except: print('initialized from 3T failed', TP.Model_3T)
 
             elif Initialize.From_7T and os.path.exists(TP.Model_7T + '/model_weights.h5'):
                 try:
                     model.load_weights(TP.Model_7T + '/model_weights.h5')
                     print(' --- initialized from Model_7T' , TP.Model_7T)
-                except: print('initialized from From_7T failed')  
+                except: print('initialized from From_7T failed', TP.Model_7T)  
 
             elif Initialize.From_CSFn1 and os.path.exists(TP.Model_CSFn1 + '/model_weights.h5'):
                 try:

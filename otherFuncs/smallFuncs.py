@@ -387,6 +387,10 @@ def terminalEntries(UserInfo):
             print('CrossVal' , UserInfo['CrossVal'].index)
         elif entry.lower() in ('-wc','--wmn_csfn'):
             UserInfo['wmn_csfn'] = sys.argv[en+1]
+
+        elif entry.lower() in ('-te','--TypeExperiment'):
+            UserInfo['TypeExperiment'] = int(sys.argv[en+1])
+            
             
     return UserInfo
 
@@ -588,7 +592,10 @@ def search_ExperimentDirectory(whichExperiment):
             if Read.CSFn1 : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn1/')  
             if Read.CSFn2 : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn2/')    
 
-        if Read.ReadAugments.Mode and not (modeData == 'test'):                                                    
+        if Read.ReadAugments.Mode and not (modeData == 'test'):         
+            
+            Input = LoopReadingData(Input, Dir + '/Augments' + sdTag2   )
+                                                    
             if Read.Main  and os.path.exists(Dir + '/Main/Augments' + sdTag2):  Input = LoopReadingData(Input, Dir + '/Main/Augments'  + sdTag2)
             if Read.ET    and os.path.exists(Dir + '/ET/Augments'   + sdTag2):  Input = LoopReadingData(Input, Dir + '/ET/Augments'    + sdTag2)
             if Read.SRI   and os.path.exists(Dir + '/SRI/Augments'  + sdTag2):  Input = LoopReadingData(Input, Dir + '/SRI/Augments'   + sdTag2)

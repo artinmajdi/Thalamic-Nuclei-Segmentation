@@ -1,4 +1,0 @@
-
-for x in a b; do python main.py -cv $x -g 7 -wc csfn -e 100; done
-
-
