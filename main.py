@@ -1762,6 +1762,44 @@ def EXP_CSFn_test_new_Cases(UserInfoB):
 
     smallFuncs.apply_MajorityVoting(paramFunc.Run(UserInfoB, terminal=False))
 
+
+def merge_results_and_apply_25D(UserInfoB):
+
+    # UserInfoB['best_network_MPlanar'] = True
+    # params = paramFunc.Run(UserInfoB, terminal=True)
+    # DT = params.WhichExperiment.Experiment.address + '/results'
+
+    # _, loss_tag = LossFunction.LossInfo(UserInfoB['lossFunction_Index'] ) 
+    # LR = '_wLRScheduler' if UserInfoB['simulation'].LR_Scheduler else ''
+    # # loss_tag = 'MyDice' # 'MyLogDice'
+
+    # crossVal = '_CV_' + UserInfoB['CrossVal'].index[0] if UserInfoB['CrossVal'].Mode else ''
+    # Out_subX = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + LR + '_Main_Ps_ET_Init_3T' + crossVal
+    # os.system("mkdir %s; cd %s; mkdir sd0 sd1 sd2"%(DT + '/' + Out_subX, DT + '/' + Out_subX))
+
+    
+    # os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_%s_US1%s_Main_Ps_ET_Init_3T%s/sd0/vimp* %s/sd0/"%(DT, loss_tag, LR ,crossVal, DT + '/' + Out_subX) )
+    # os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_%s_US1%s_Main_Ps_ET_Init_3T%s/sd1/vimp* %s/sd1/"%(DT, loss_tag, LR ,crossVal, DT + '/' + Out_subX) )
+    # os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_%s_US1%s_Main_Ps_ET_Init_3T%s/sd2/vimp* %s/sd2/"%(DT, loss_tag, LR ,crossVal, DT + '/' + Out_subX) )
+    
+    # smallFuncs.apply_MajorityVoting(params)
+
+    UserInfoB['best_network_MPlanar'] = True
+    params = paramFunc.Run(UserInfoB, terminal=True)
+    DT = params.WhichExperiment.Experiment.address + '/results'
+
+    subEx_name = params.WhichExperiment.SubExperiment.name
+    Output = DT + '/' + subEx_name
+    
+    os.system("mkdir %s; cd %s; mkdir sd0 sd1 sd2"%(Output, Output))
+    
+    for FM in [('_FM40','/sd0'), ('_FM30','/sd1'), ('_FM20','/sd2')]:
+        input = DT + '/' + subEx_name.replace('_FM00',FM[0]) + FM[1]
+        os.system( "cp -r %s/vimp* %s/"%(input , Output + FM[1]) )
+
+    smallFuncs.apply_MajorityVoting(params)
+
+    
 def EXP_WMn_test_new_Cases(UserInfoB):
     
     def predict_Thalamus_For_SD0(UserI):
@@ -1776,26 +1814,27 @@ def EXP_WMn_test_new_Cases(UserInfoB):
         IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
         Run(UserI, IV)
     
-    def merge_results_and_apply_25D(UserInfoB):
+    # def merge_results_and_apply_25D(UserInfoB):
 
-        UserInfoB['best_network_MPlanar'] = True
-        params = paramFunc.Run(UserInfoB, terminal=True)
-        Directory = params.WhichExperiment.Experiment.address + '/results'
+    #     UserInfoB['best_network_MPlanar'] = True
+    #     params = paramFunc.Run(UserInfoB, terminal=True)
+    #     DT = params.WhichExperiment.Experiment.address + '/results'
 
-        _, loss_tag = LossFunction.LossInfo(UserInfoB['lossFunction_Index'] ) 
-        LR = '_wLRScheduler' if UserInfoB['simulation'].LR_Scheduler else ''
-        # loss_tag = 'MyDice' # 'MyLogDice'
+    #     _, loss_tag = LossFunction.LossInfo(UserInfoB['lossFunction_Index'] ) 
+    #     LR = '_wLRScheduler' if UserInfoB['simulation'].LR_Scheduler else ''
+    #     # loss_tag = 'MyDice' # 'MyLogDice'
 
-        crossVal = '_CV_' + UserInfoB['CrossVal'].index[0] if UserInfoB['CrossVal'].Mode else ''
-        Output = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + LR + '_Main_Ps_ET_Init_3T' + crossVal
-        os.system("mkdir %s; cd %s; mkdir sd0 sd1 sd2"%(Directory + '/' + Output, Directory + '/' + Output))
+    #     crossVal = '_CV_' + UserInfoB['CrossVal'].index[0] if UserInfoB['CrossVal'].Mode else ''
+    #     Out_subX = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + LR + '_Main_Ps_ET_Init_3T' + crossVal
+    #     os.system("mkdir %s; cd %s; mkdir sd0 sd1 sd2"%(DT + '/' + Out_subX, DT + '/' + Out_subX))
 
         
-        os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_%s_US1%s_Main_Ps_ET_Init_3T%s/sd0/vimp* %s/sd0/"%(Directory, loss_tag, LR ,crossVal, Directory + '/' + Output) )
-        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_%s_US1%s_Main_Ps_ET_Init_3T%s/sd1/vimp* %s/sd1/"%(Directory, loss_tag, LR ,crossVal, Directory + '/' + Output) )
-        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_%s_US1%s_Main_Ps_ET_Init_3T%s/sd2/vimp* %s/sd2/"%(Directory, loss_tag, LR ,crossVal, Directory + '/' + Output) )
+    #     os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_%s_US1%s_Main_Ps_ET_Init_3T%s/sd0/vimp* %s/sd0/"%(DT, loss_tag, LR ,crossVal, DT + '/' + Out_subX) )
+    #     os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_%s_US1%s_Main_Ps_ET_Init_3T%s/sd1/vimp* %s/sd1/"%(DT, loss_tag, LR ,crossVal, DT + '/' + Out_subX) )
+    #     os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_%s_US1%s_Main_Ps_ET_Init_3T%s/sd2/vimp* %s/sd2/"%(DT, loss_tag, LR ,crossVal, DT + '/' + Out_subX) )
         
-        smallFuncs.apply_MajorityVoting(params)
+    #     smallFuncs.apply_MajorityVoting(params)
+
 
     UserInfoB['Model_Method'] = 'Cascade'
     UserInfoB['simulation'].num_Layers = 3
@@ -1848,25 +1887,32 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
         IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
         Run(UserI, IV)
     
-    def merge_results_and_apply_25D(UserInfoB):
+    # def merge_results_and_apply_25D(UserInfoB):
 
-        UserInfoB['best_network_MPlanar'] = True
-        params = paramFunc.Run(UserInfoB, terminal=True)
-        Directory = params.WhichExperiment.Experiment.address + '/results'
+    #     UserInfoB['best_network_MPlanar'] = True
+    #     params = paramFunc.Run(UserInfoB, terminal=True)
+    #     DT = params.WhichExperiment.Experiment.address + '/results'
 
-        _, loss_tag = LossFunction.LossInfo(UserInfoB['lossFunction_Index'] ) 
+    #     subEx_name = params.WhichExperiment.SubExperiment.name
+    #     # _, loss_tag = LossFunction.LossInfo(UserInfoB['lossFunction_Index'] ) 
 
-        crossVal = '_CV_' + UserInfoB['CrossVal'].index[0] if UserInfoB['CrossVal'].Mode else ''
-        LR = '_wLRScheduler' if UserInfoB['simulation'].LR_Scheduler else ''
-        Output = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + LR + UserInfoB['SubExperiment'].Tag + '_wBiasCorrection' + crossVal
-
+    #     # crossVal = '_CV_' + UserInfoB['CrossVal'].index[0] if UserInfoB['CrossVal'].Mode else ''
+    #     # LR = '_wLRScheduler' if UserInfoB['simulation'].LR_Scheduler else ''
+    #     # Out_subX = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + LR + UserInfoB['SubExperiment'].Tag + '_wBiasCorrection' + crossVal
+    #     # Out_subX = subEx_name.replace('_FM20_','_FM00_')
+    #     Output = DT + '/' + subEx_name
         
-        os.system("mkdir %s; cd %s; mkdir sd0 sd1 sd2"%(Directory + '/' + Output, Directory + '/' + Output))
-        os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_%s_US1%s_wBiasCorrection%s/sd0/vimp* %s/sd0/"%(Directory, loss_tag, LR+UserInfoB['SubExperiment'].Tag , crossVal , Directory +'/'+ Output))
-        os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_%s_US1%s_wBiasCorrection%s/sd1/vimp* %s/sd1/"%(Directory, loss_tag, LR+UserInfoB['SubExperiment'].Tag , crossVal , Directory +'/'+ Output))
-        os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_%s_US1%s_wBiasCorrection%s/sd2/vimp* %s/sd2/"%(Directory, loss_tag, LR+UserInfoB['SubExperiment'].Tag , crossVal , Directory +'/'+ Output))
+    #     os.system("mkdir %s; cd %s; mkdir sd0 sd1 sd2"%(Output, Output))
+        
+    #     for FM in [('_FM40','/sd0'), ('_FM30','/sd1'), ('_FM20','/sd2')]:
+    #         input = DT + '/' + subEx_name.replace('_FM00',FM[0]) + FM[1]
+    #         os.system( "cp -r %s/vimp* %s/"%(input , Output + FM[1]) )
 
-        smallFuncs.apply_MajorityVoting(params)
+    #     # os.system("cp -r %s/sE12_Cascade_FM40_Res_Unet2_NL3_%s_US1%s_wBiasCorrection%s/sd0/vimp* %s/sd0/"%(DT, loss_tag, LR+UserInfoB['SubExperiment'].Tag , crossVal , DT +'/'+ Out_subX))
+    #     # os.system("cp -r %s/sE12_Cascade_FM30_Res_Unet2_NL3_%s_US1%s_wBiasCorrection%s/sd1/vimp* %s/sd1/"%(DT, loss_tag, LR+UserInfoB['SubExperiment'].Tag , crossVal , DT +'/'+ Out_subX))
+    #     # os.system("cp -r %s/sE12_Cascade_FM20_Res_Unet2_NL3_%s_US1%s_wBiasCorrection%s/sd2/vimp* %s/sd2/"%(DT, loss_tag, LR+UserInfoB['SubExperiment'].Tag , crossVal , DT +'/'+ Out_subX))
+
+    #     smallFuncs.apply_MajorityVoting(params)
 
     UserInfoB['Model_Method'] = 'Cascade'
     UserInfoB['simulation'].num_Layers = 3
@@ -1874,36 +1920,41 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
     UserInfoB['lossFunction_Index'] = 7 # 4 , 7
     UserInfoB['Experiments'].Index = '6'
     UserInfoB['copy_Thalamus'] = False
-    # UserInfoB['TypeExperiment'] = 9 # 9 , 8
+    # UserInfoB['TypeExperiment'] = 8 # 9 , 8
     UserInfoB['simulation'].LR_Scheduler = True # False   
     UserInfoB['DropoutValue'] = 0.5
-    UserInfoB['simulation'].Learning_Rate = 1e-3
+    # UserInfoB['simulation'].Learning_Rate = 1e-3
      
-    applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
+    # applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
     
-    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
-    UserInfoB['simulation'].slicingDim = [0]
-    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
-    predict_Thalamus_For_SD0(UserInfoB)
+    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
+    # UserInfoB['simulation'].slicingDim = [0]
+    # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    # predict_Thalamus_For_SD0(UserInfoB)
 
-    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
-    UserInfoB['simulation'].slicingDim = [1]
-    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
-    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-    Run(UserInfoB, IV)
+    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
+    # UserInfoB['simulation'].slicingDim = [1]
+    # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    # Run(UserInfoB, IV)
 
-    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
-    UserInfoB['simulation'].slicingDim = [2]
-    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]     
-    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-    Run(UserInfoB, IV)    
+    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    # UserInfoB['simulation'].slicingDim = [2]
+    # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]     
+    # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    # Run(UserInfoB, IV)    
 
     
     merge_results_and_apply_25D(UserInfoB)
 
 
 if UserInfoB['wmn_csfn'] == 'csfn':
-    Run_Csfn_with_Best_WMn_architecture(UserInfoB)
+    for UserInfoB['CrossVal'].index in [ ['a'] , ['b'] , ['c'] , ['d'] ]:
+        for UserInfoB['simulation'].Learning_Rate in [1e-3, 1e-4]:
+            for UserInfoB['TypeExperiment'] in [9,10]:
+                print('LR',UserInfoB['simulation'].Learning_Rate,'TE',UserInfoB['TypeExperiment'])
+                Run_Csfn_with_Best_WMn_architecture(UserInfoB)
+
 elif UserInfoB['wmn_csfn'] == 'wmn':
     EXP_WMn_test_new_Cases(UserInfoB)
 

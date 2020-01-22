@@ -230,15 +230,18 @@ def func_Exp_subExp_Names(UserInfo):
         A = subExperiment(tag)
 
         if UserInfo['best_network_MPlanar']:
-            _, loss_tag = LossFunction.LossInfo(UserInfo['lossFunction_Index'] )            
-            crossVal = '_CV_' + UserInfo['CrossVal'].index[0] if UserInfo['CrossVal'].Mode else ''
-            LR = '_wLRScheduler' if UserInfo['simulation'].LR_Scheduler else ''
+            # _, loss_tag = LossFunction.LossInfo(UserInfo['lossFunction_Index'] )            
+            # crossVal = '_CV_' + UserInfo['CrossVal'].index[0] if UserInfo['CrossVal'].Mode else ''
+            # LR = '_wLRScheduler' if UserInfo['simulation'].LR_Scheduler else ''
 
             
-            if UserInfo['wmn_csfn'] == 'csfn':
-                A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + LR + lrate + UserInfo['SubExperiment'].Tag + '_wBiasCorrection' + crossVal
-            elif UserInfo['wmn_csfn'] == 'wmn':                                    
-                A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + LR + UserInfo['SubExperiment'].Tag + crossVal
+            aa = A.name.split('_FM')
+            A.name = aa[0] + '_FM00' + aa[1][2:]
+
+            # if UserInfo['wmn_csfn'] == 'csfn':
+            #     A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + LR + lrate + UserInfo['SubExperiment'].Tag + '_wBiasCorrection' + crossVal
+            # elif UserInfo['wmn_csfn'] == 'wmn':                                    
+            #     A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + LR + UserInfo['SubExperiment'].Tag + crossVal
 
         return A
 
