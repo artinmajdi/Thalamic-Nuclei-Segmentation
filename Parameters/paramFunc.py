@@ -221,7 +221,7 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']
        
-        tag = method + FM + ACH + NL + LF + US + FCN + SC + LR + PI + lrate + SE.Tag
+        tag = method + FM + ACH + NL + LF + US + FCN + SC + LR + PI + lrate + SE.Tag + '_WITH_NEW_CASES'
         
         if UserInfo['wmn_csfn'] == 'csfn':
             tag += '_wBiasCorrection'       

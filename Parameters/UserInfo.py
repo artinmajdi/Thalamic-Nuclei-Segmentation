@@ -30,7 +30,7 @@ wmn_csfn = 'csfn' # 'wmn' 'csfn'
 # TypeExperiment == 11 # CSFn2  Transfer Learn from Main with new structure wher it only takes the wweights for part of the network
 # TypeExperiment == 13  # CSFn1 + CSFn2 Init Main
 
-TypeExperiment = 15
+TypeExperiment = 8
 
 
 #! Preprocessing
@@ -90,7 +90,7 @@ DropoutValue = 0.3
 class SubExperimentcs:
     def __init__(self):
         self.Index = 12
-        self.Tag   = '' # '_zeroWeightFor0257' _equal_weights' '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
+        self.Tag   = 'All_cases' # '_zeroWeightFor0257' _equal_weights' '_Main_PlusSRI_InitFrom_Th' # _Main_Init_3T_AllAugs _ET_Init_Main_AllAugs _sE11_Cascade_FM20_DO0.3_Main_PlusSRI_InitFrom_Th_CV_a
         self.Mode_JustThis = False
 
 SubExperiment = SubExperimentcs()

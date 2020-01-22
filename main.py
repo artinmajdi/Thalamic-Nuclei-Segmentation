@@ -1920,40 +1920,40 @@ def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
     UserInfoB['lossFunction_Index'] = 7 # 4 , 7
     UserInfoB['Experiments'].Index = '6'
     UserInfoB['copy_Thalamus'] = False
-    # UserInfoB['TypeExperiment'] = 8 # 9 , 8
+    UserInfoB['TypeExperiment'] = 8 # 9 , 8
     UserInfoB['simulation'].LR_Scheduler = True # False   
     UserInfoB['DropoutValue'] = 0.5
-    # UserInfoB['simulation'].Learning_Rate = 1e-3
+    UserInfoB['simulation'].Learning_Rate = 1e-3
      
-    # applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
+    applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
     
-    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
-    # UserInfoB['simulation'].slicingDim = [0]
-    # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
-    # predict_Thalamus_For_SD0(UserInfoB)
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
+    UserInfoB['simulation'].slicingDim = [0]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    predict_Thalamus_For_SD0(UserInfoB)
 
-    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
-    # UserInfoB['simulation'].slicingDim = [1]
-    # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
-    # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-    # Run(UserInfoB, IV)
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
+    UserInfoB['simulation'].slicingDim = [1]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    Run(UserInfoB, IV)
 
-    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
-    # UserInfoB['simulation'].slicingDim = [2]
-    # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]     
-    # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-    # Run(UserInfoB, IV)    
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    UserInfoB['simulation'].slicingDim = [2]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]     
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    Run(UserInfoB, IV)    
 
     
     merge_results_and_apply_25D(UserInfoB)
 
 
 if UserInfoB['wmn_csfn'] == 'csfn':
-    for UserInfoB['CrossVal'].index in [ ['a'] , ['b'] , ['c'] , ['d'] ]:
-        for UserInfoB['simulation'].Learning_Rate in [1e-3, 1e-4]:
-            for UserInfoB['TypeExperiment'] in [9,10]:
-                print('LR',UserInfoB['simulation'].Learning_Rate,'TE',UserInfoB['TypeExperiment'])
-                Run_Csfn_with_Best_WMn_architecture(UserInfoB)
+    # for UserInfoB['CrossVal'].index in [ ['a'] , ['b'] , ['c'] , ['d'] ]:
+    #     for UserInfoB['simulation'].Learning_Rate in [1e-3, 1e-4]:
+    #         for UserInfoB['TypeExperiment'] in [8,9,10]:
+                # print('CV',UserInfoB['CrossVal'].index[0],'LR',UserInfoB['simulation'].Learning_Rate,'TE',UserInfoB['TypeExperiment'])
+    Run_Csfn_with_Best_WMn_architecture(UserInfoB)
 
 elif UserInfoB['wmn_csfn'] == 'wmn':
     EXP_WMn_test_new_Cases(UserInfoB)
