@@ -267,7 +267,7 @@ def trainingExperiment(Data, params):
             monitor = 'val_mDice' , verbose=1, save_best_only=True, mode=mode)
 
         Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor = monitor, factor=0.5, min_delta=0.001 , patience=15, verbose=1, \
-            save_best_only=True, mode=mode , min_lr=0.9e-4 , )
+            save_best_only=True, mode=mode , min_lr=1e-6 , )
         
         def step_decay_schedule(initial_lr=params.UserInfo['simulation'].Learning_Rate, decay_factor=0.5, step_size=18):
             def schedule(epoch):

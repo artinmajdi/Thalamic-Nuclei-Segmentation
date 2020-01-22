@@ -201,6 +201,8 @@ def func_Exp_subExp_Names(UserInfo):
         GAP = '' # _gap' + str(UserInfo['gapDilation'])
         SC = '_SingleClass' if not UserInfo['simulation'].Multi_Class_Mode else '' 
         LR = '_wLRScheduler' if UserInfo['simulation'].LR_Scheduler else ''
+        lrate = '_lr' + str(UserInfo['simulation'].Learning_Rate)
+
 
         FCN = '_FCNA' + str(UserInfo['simulation'].FCN1_NLayers)+'_FCNB' + str(UserInfo['simulation'].FCN2_NLayers) + '_FM' + str(UserInfo['simulation'].FCN_FeatureMaps) if ('TL' in UserInfo['architectureType']) and ('FCN' in UserInfo['architectureType']) else ''
 
@@ -219,22 +221,24 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']
        
-        tag = method + FM + ACH + NL + LF + US + FCN + SC + LR + PI + SE.Tag
+        tag = method + FM + ACH + NL + LF + US + FCN + SC + LR + PI + lrate + SE.Tag
         
         if UserInfo['wmn_csfn'] == 'csfn':
             tag += '_wBiasCorrection'       
         
-        if UserInfo['CrossVal'].Mode and SE.Index not in [8,9]: tag += '_CV_' + UserInfo['CrossVal'].index[0] # + '_for_paper' # '_for_percision_recall_curve'
+        if UserInfo['CrossVal'].Mode: tag += '_CV_' + UserInfo['CrossVal'].index[0] # + '_for_paper' # '_for_percision_recall_curve'
         A = subExperiment(tag)
 
         if UserInfo['best_network_MPlanar']:
-            _, loss_tag = LossFunction.LossInfo(UserInfo['lossFunction_Index'] ) 
+            _, loss_tag = LossFunction.LossInfo(UserInfo['lossFunction_Index'] )            
             crossVal = '_CV_' + UserInfo['CrossVal'].index[0] if UserInfo['CrossVal'].Mode else ''
+            LR = '_wLRScheduler' if UserInfo['simulation'].LR_Scheduler else ''
 
+            
             if UserInfo['wmn_csfn'] == 'csfn':
-                A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_%s_US1_CSFn2_Init_Main_wBiasCorrection%s'%(loss_tag, crossVal)
-            elif UserInfo['wmn_csfn'] == 'wmn':
-                A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_%s_US1_wLRScheduler_Main_Ps_ET_Init_3T%s'%(loss_tag, crossVal)
+                A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + LR + lrate + UserInfo['SubExperiment'].Tag + '_wBiasCorrection' + crossVal
+            elif UserInfo['wmn_csfn'] == 'wmn':                                    
+                A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + LR + UserInfo['SubExperiment'].Tag + crossVal
 
         return A
 

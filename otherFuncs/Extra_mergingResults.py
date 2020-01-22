@@ -754,9 +754,9 @@ params = paramFunc.Run(UserInfoB, terminal=True)
 
 print(Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List)
 LL = Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List
-for Experiment_Name in [LL[5]]:
+for Experiment_Name in [LL[0]]:
 
-    print(Experiment_Name)
+    print('Experiment_Name', Experiment_Name)
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='results')
     merging_Dice_Values(Info)
     merging_VSI_Values(Info)
