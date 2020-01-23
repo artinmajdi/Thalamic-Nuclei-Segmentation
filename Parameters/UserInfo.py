@@ -81,7 +81,7 @@ CrossVal = CrossValcs()
 
 class Experimentscs:
     def __init__(self):
-        self.Index , self.Tag = '6' , '' # '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1' uncropped
+        self.Index , self.Tag = '1' , '' # '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1' uncropped
 
 Experiments = Experimentscs()
 
@@ -191,7 +191,7 @@ MetricIx = 3
 # if Local_Flag: 
 #     Experiments_Address = '/home/artinl/Documents/research'
 # else: 
-Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
+Experiments_Address = '/array/ssd/msmajdi/exp_test' # '/array/ssd/msmajdi/experiments/keras'
 
 
 if local_flag:
