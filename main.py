@@ -1848,7 +1848,7 @@ def EXP_WMn_test_new_Cases(UserInfoB):
     UserInfoB['simulation'].Learning_Rate = 1e-3
 
 
-    UserInfoB['Experiments'].Tag = 'ET_7T_3T_separate'
+    # UserInfoB['Experiments'].Tag = 'ET_7T_3T_separate'
 
     applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
     

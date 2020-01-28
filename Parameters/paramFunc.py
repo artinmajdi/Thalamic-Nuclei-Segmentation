@@ -201,7 +201,7 @@ def func_Exp_subExp_Names(UserInfo):
         GAP = '' # _gap' + str(UserInfo['gapDilation'])
         SC = '_SingleClass' if not UserInfo['simulation'].Multi_Class_Mode else '' 
         LR = '_wLRScheduler' if UserInfo['simulation'].LR_Scheduler else ''
-        lrate = '_lr' + str(UserInfo['simulation'].Learning_Rate)
+        lrate = '_lr' + str(UserInfo['simulation'].Learning_Rate) if UserInfo['wmn_csfn'] == 'csfn' else ''
 
 
         FCN = '_FCNA' + str(UserInfo['simulation'].FCN1_NLayers)+'_FCNB' + str(UserInfo['simulation'].FCN2_NLayers) + '_FM' + str(UserInfo['simulation'].FCN_FeatureMaps) if ('TL' in UserInfo['architectureType']) and ('FCN' in UserInfo['architectureType']) else ''
@@ -221,9 +221,10 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']
        
-        tag = method + FM + ACH + NL + LF + US + FCN + SC + LR + PI + lrate + SE.Tag + '_WITH_NEW_CASES'
+        tag = method + FM + ACH + NL + LF + US + FCN + SC + LR + PI + lrate + SE.Tag
         
         if UserInfo['wmn_csfn'] == 'csfn':
+            tag += '_WITH_NEW_CASES'
             tag += '_wBiasCorrection'       
         
         if UserInfo['CrossVal'].Mode: tag += '_CV_' + UserInfo['CrossVal'].index[0] # + '_for_paper' # '_for_percision_recall_curve'
