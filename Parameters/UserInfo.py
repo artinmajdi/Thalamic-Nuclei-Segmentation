@@ -107,7 +107,7 @@ InitializeB = InitializeBcs()
 
 class upsamplecs:
     def __init__(self):
-        self.Mode = True
+        self.Mode = False
         self.Scale = 1
 
 upsample = upsamplecs()

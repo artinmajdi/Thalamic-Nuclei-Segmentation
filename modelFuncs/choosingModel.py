@@ -125,6 +125,26 @@ def testingExeriment(model, Data, params):
             if params.WhichExperiment.HardParams.Model.Method.ImClosePrediction: 
                 pred_Binary = closeMask(pred_Binary)
 
+            from skimage import measure
+
+            """ TODO KEEP ONLY THE BIGGEST OBJECTS
+            if params.UserInfo['simulation'].only_keep_bigest_object:
+                objects = measure.regionprops(measure.label(pred_Binary))
+
+                L = len(pred_Binary.shape)
+                if len(objects) > 1:
+                    area = []
+                    for obj in objects: area = np.append(area, obj.area)
+
+                    Ix = np.argsort(area)
+                    bbox = objects[ Ix[-1] ].bbox
+
+                else:
+                    bbox = objects[0].bbox
+
+                BB = [ [bbox[d] , bbox[L + d] ] for d in range(L)]
+            """
+            
             Dice = [ NucleiIndex , smallFuncs.mDice(pred_Binary , binarizing(origMsk1N)) ]
 
             return pred_Binary, Dice
