@@ -1,0 +1,19 @@
+
+
+nohup python main.py -g 0 -cv a >> EXP_g0_cva &
+nohup python main.py -g 1 -cv b >> EXP_g7_cvb &
+nohup python main.py -g 4 -cv c >> EXP_g7_cvc &
+nohup python main.py -g 5 -cv d >> EXP_g7_cvd &
+nohup python main.py -g 6 -cv e >> EXP_g7_cve &
+nohup python main.py -g 7 -cv f >> EXP_g7_cvf &
+
+nohup python main.py -g 6 -cv g >> EXP_g6_cvg &
+nohup python main.py -g 7 -cv h >> EXP_g7_cvh &
+
+
+
+
+
+
+
+

@@ -115,44 +115,27 @@ def testingExeriment(model, Data, params):
                 struc = ndimage.generate_binary_structure(3,2)
                 return ndimage.binary_closing(mask, structure=struc)
             
-            pred1N = np.squeeze(pred1Class)
             
-            pred = cascade_paddingToOrigSize(pred1N)
-            pred = np.transpose(pred , params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
-
-            pred_Binary = binarizing( pred)
+            pred = binarizing(np.squeeze(pred1Class))
+            
+            # pred = cascade_paddingToOrigSize(pred)                        
             
             if params.WhichExperiment.HardParams.Model.Method.ImClosePrediction: 
-                pred_Binary = closeMask(pred_Binary)
+                pred = closeMask(pred)
 
-            from skimage import measure
-
-            """ TODO KEEP ONLY THE BIGGEST OBJECTS
-            if params.UserInfo['simulation'].only_keep_bigest_object:
-                objects = measure.regionprops(measure.label(pred_Binary))
-
-                L = len(pred_Binary.shape)
-                if len(objects) > 1:
-                    area = []
-                    for obj in objects: area = np.append(area, obj.area)
-
-                    Ix = np.argsort(area)
-                    bbox = objects[ Ix[-1] ].bbox
-
-                else:
-                    bbox = objects[0].bbox
-
-                BB = [ [bbox[d] , bbox[L + d] ] for d in range(L)]
-            """
+            pred = smallFuncs.extracting_the_biggest_object(pred)
             
-            Dice = [ NucleiIndex , smallFuncs.mDice(pred_Binary , binarizing(origMsk1N)) ]
+            label_mask = np.transpose( origMsk1N , params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
+            Dice = [ NucleiIndex , smallFuncs.mDice(pred , binarizing(label_mask)) ]
 
-            return pred_Binary, Dice
+            pred = cascade_paddingToOrigSize(pred)
+            pred = np.transpose(pred , params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)                                                              
+
+            return pred, Dice
 
         def savingOutput(pred1N_BtO, NucleiIndex):
             dirSave = smallFuncs.mkDir(ResultDir + '/' + subject.subjectName)
             nucleusName, _ , _ = smallFuncs.NucleiSelection(NucleiIndex)
-
             smallFuncs.saveImage( pred1N_BtO , DataSubj.Affine, DataSubj.Header, dirSave + '/' + nucleusName + '.nii.gz')
             # print(dirSave)
             return dirSave, nucleusName

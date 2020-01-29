@@ -88,9 +88,11 @@ def loadDataset(params):
 
             return np.pad(im, Padding2[:3], 'constant')
 
-        if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
-            BB = subject2.NewCropInfo.OriginalBoundingBox
-            im = im[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]
+        # TODO I'm moving this to the stage before loading the image to increase the speed
+
+        # if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
+        #     BB = subject2.NewCropInfo.OriginalBoundingBox
+        #     im = im[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]
                         
         im = CroppingInput(im, subject2.Padding)
         # im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
@@ -99,11 +101,31 @@ def loadDataset(params):
 
         return im
 
+
+    def read_cropped_inputs(params, subject, dirrectory):
+        inputF = nib.load(dirrectory)
+        if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
+            
+            BB = subject.NewCropInfo.OriginalBoundingBox[params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse]
+            input = inputF.dataobj[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]
+        else:
+            input = inputF.get_data()
+
+        return inputF, input
+
+
     def readingImage(params, subject2, mode):
 
         def readingWithTranpose(Dirr , params):
-            ImageF = nib.load( Dirr)
-            Image = ImageF.get_data()
+            # ImageF = nib.load( Dirr)            
+            ImageF, Image = read_cropped_inputs(params, subject2, Dirr)
+
+            # if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
+            #     BB = subject2.NewCropInfo.OriginalBoundingBox[params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse]
+            #     Image = ImageF.dataobj[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]
+            # else:
+            #     Image = ImageF.get_data()
+
             return ImageF, np.transpose(Image, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
         def func_Multiply_By_Thalmaus(imm):
@@ -124,6 +146,7 @@ def loadDataset(params):
             
             return imm
 
+        """
         def func_Multiply_By_NotAV(imm):
             def AllNuclei__Except_AV(Dirr):                                                    
                 A = smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei()
@@ -143,7 +166,7 @@ def loadDataset(params):
             imm[Mask_AllExceptAV] = 0
 
             return imm
-
+        """
 
         imF, im = readingWithTranpose(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz' , params)
 
@@ -160,6 +183,7 @@ def loadDataset(params):
         # im = 1 - im
         return im, imF
 
+
     def readingNuclei(params, subject, imFshape):
 
         def backgroundDetector(masks):
@@ -173,14 +197,13 @@ def loadDataset(params):
             nameNuclei, _,_ = smallFuncs.NucleiSelection(NucInd)
             inputMsk = subject.Label.address + '/' + nameNuclei + '_PProcessed.nii.gz'
 
-            origMsk1N = nib.load(inputMsk).get_data() if os.path.exists(inputMsk) else np.zeros(imFshape)
-            # if origMsk1N.max() > 1 or origMsk1N.min() < 0: 
-            #     print('dataset','error in label values',nameNuclei, 'min',origMsk1N.min() , 'max', origMsk1N.max() , subject.subjectName)
-            origMsk1N = smallFuncs.fixMaskMinMax(origMsk1N,nameNuclei)
-
-
-
-            return np.expand_dims(origMsk1N ,axis=3)
+            if os.path.exists(inputMsk):
+                _, mask = read_cropped_inputs(params, subject, inputMsk)
+                mask = smallFuncs.fixMaskMinMax(mask,nameNuclei)
+            else:
+                mask = np.zeros(10,10,10)
+        
+            return np.expand_dims(mask ,axis=3)
 
         for cnt, NucInd in enumerate(params.WhichExperiment.Nucleus.Index):
 
@@ -324,7 +347,7 @@ def loadDataset(params):
                 return Image3 , Mask3
                 
             Data = {}
-            g1 = params.h5.create_group(mode)
+            # g1 = params.h5.create_group(mode)
             for nameSubject, subject in tqdm(Subjects.items(), desc='Loading ' + mode):
 
                 if ErrorInPaddingCheck(subject): continue
@@ -371,7 +394,7 @@ def loadDataset(params):
 
         if params.directories.Test.Input.Subjects: 
             DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
-            save_hdf5_subject_List(params.h5 , 'testList' , list(DataAll.Test))
+            # save_hdf5_subject_List(params.h5 , 'testList' , list(DataAll.Test))
 
             DataAll = readValidation(DataAll)
 

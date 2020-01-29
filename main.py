@@ -108,7 +108,8 @@ def Run(UserInfoB, InitValues):
                 UserI['simulation'].nucleus_Index = BB.remove_Thalamus_From_List(A) # BB.All_Nuclei().Indexes))
                 if UserI['simulation'].nucleus_Index and (not check_if_num_Layers_fit(UserI)): 
                     # UserI['havingBackGround_AsExtraDimension'] = False
-                    # UserInfoB['TypeExperiment'] = 10
+                    # UserI['TypeExperiment'] = 10
+                    if UserI['simulation'].TestOnly: UserI['use_train_padding_size'] = True
                     Run_Main(UserI)
 
     def Run_Main(UserInfoB):
@@ -1866,12 +1867,12 @@ def EXP_WMn_test_new_Cases(UserInfoB):
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].slicingDim = [2]
-    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
+    UserInfoB['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]       
     IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
     Run(UserInfoB, IV)    
 
     
-    merge_results_and_apply_25D(UserInfoB)
+    # merge_results_and_apply_25D(UserInfoB)
 
 def Run_Csfn_with_Best_WMn_architecture(UserInfoB):
     
