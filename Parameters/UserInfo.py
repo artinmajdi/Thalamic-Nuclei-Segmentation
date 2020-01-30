@@ -2,13 +2,13 @@
 
 Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
 architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
-gpu = "1"
+gpu = "0"
 
 local_flag = False
 container_flag = False
 use_train_padding_size = False
 
-wmn_csfn = 'wmn' # 'wmn' 'csfn' 
+wmn_csfn = 'csfn' # 'wmn' 'csfn' 
 # TypeExperiment == 1: # 3T      Init Rn
 
 # TypeExperiment == 2:  # Main        Init 3T

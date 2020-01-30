@@ -19,6 +19,7 @@ import mat4py
 import pickle
 import skimage
 import keras
+from time import time
 from keras.utils import multi_gpu_model, multi_gpu_utils
 import h5py
 import keras.layers as KLayers
@@ -150,12 +151,14 @@ def testingExeriment(model, Data, params):
 
                 # TODO "pred1N_BtO" needs to concatenate for different classes
                 Dice = np.zeros((num_classes-1,2))
+                ALL_pred = []
                 for cnt in range(num_classes-1):
 
                     # ! where I added the concatenation for different masks
                     pred1N_BtO, Dice[cnt,:] = postProcessing(pred[...,cnt], DataSubj.OrigMask[...,cnt] , params.WhichExperiment.Nucleus.Index[cnt] )
                     
-                    ALL_pred = np.concatenate( (ALL_pred , pred1N_BtO[...,np.newaxis]) , axis=3) if cnt > 0 else pred1N_BtO[...,np.newaxis]
+                    if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1):
+                        ALL_pred = np.concatenate( (ALL_pred , pred1N_BtO[...,np.newaxis]) , axis=3) if cnt > 0 else pred1N_BtO[...,np.newaxis]
 
                     dirSave, nucleusName = savingOutput(pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
                 
@@ -218,7 +221,10 @@ def testingExeriment(model, Data, params):
         prediction = {}
         ResultDir = params.directories.Test.Result
         for name in tqdm(DataTest,desc='predicting test subjects'):
+            t1 = time()
             prediction[name] = predictingTestSubject(DataTest[name], params.directories.Test.Input.Subjects[name] , ResultDir)
+            print(name, time()-t1)
+            print('---')
 
         return prediction
 

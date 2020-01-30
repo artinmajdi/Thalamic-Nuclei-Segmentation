@@ -803,7 +803,7 @@ def extracting_the_biggest_object(pred_Binary):
 
     objects = measure.regionprops(measure.label(pred_Binary))
 
-    L = len(pred_Binary.shape)
+    # L = len(pred_Binary.shape)
     if len(objects) > 1:
         area = []
         for obj in objects: area = np.append(area, obj.area)
@@ -821,7 +821,7 @@ def extracting_the_biggest_object(pred_Binary):
         return pred_Binary  
 
 def test_extract_biggest_object():
-    
+
     import nibabel as nib
     import smallFuncs
     from skimage import measure
