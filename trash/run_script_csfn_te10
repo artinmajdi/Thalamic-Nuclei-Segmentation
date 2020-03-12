@@ -1,4 +1,0 @@
-
-for x in b c d; do python main.py -cv $x -g 4 -wc csfn -te 10 -lr 1e-3; done
-
-
