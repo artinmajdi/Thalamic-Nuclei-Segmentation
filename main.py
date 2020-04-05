@@ -1845,20 +1845,19 @@ def EXP_WMn_test_new_Cases(UserInfoB):
     UserInfoB['lossFunction_Index'] = 7 # 4
     UserInfoB['Experiments'].Index = '6'
     UserInfoB['copy_Thalamus'] = False
-    UserInfoB['TypeExperiment'] = 15
+    UserInfoB['TypeExperiment'] = 17
     UserInfoB['simulation'].LR_Scheduler = True    
     UserInfoB['DropoutValue'] = 0.3
     UserInfoB['simulation'].Learning_Rate = 1e-3
 
 
-    # UserInfoB['Experiments'].Tag = 'ET_7T_3T_separate'
+    # UserInfoB['Experiments'].Tag = 'ET_7T_3T_separate_w_crossVal'
 
     applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
     
     
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
     UserInfoB['simulation'].slicingDim = [0]
-    
     UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
     predict_Thalamus_For_SD0(UserInfoB)
 

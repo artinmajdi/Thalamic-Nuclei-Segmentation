@@ -8,7 +8,7 @@ local_flag = False
 container_flag = False
 use_train_padding_size = False
 
-wmn_csfn = 'csfn' # 'wmn' 'csfn' 
+wmn_csfn = 'wmn' # 'wmn' 'csfn' 
 # TypeExperiment == 1: # 3T      Init Rn
 
 # TypeExperiment == 2:  # Main        Init 3T
@@ -56,7 +56,7 @@ lossFunction_Index = 7
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
 best_network_MPlanar = False
-testOnly = True
+testOnly = False
 
 fCN1_NLayers = 0
 fCN2_NLayers = 0
@@ -81,7 +81,7 @@ CrossVal = CrossValcs()
 
 class Experimentscs:
     def __init__(self):
-        self.Index , self.Tag = '6' , 'uncropped' # '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1' uncropped
+        self.Index , self.Tag = '6' , '' # '5_CSFn' , '' #'4' , '' #    '1' , '' # , 'cascadeV1' uncropped
 
 Experiments = Experimentscs()
 

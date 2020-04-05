@@ -544,15 +544,16 @@ def search_ExperimentDirectory(whichExperiment):
         def LoopReadingData(Input, Dirr):
             if os.path.exists(Dirr):
                 SubjectsList = next(os.walk(Dirr))[1]
-
                 
                 if whichExperiment.Dataset.check_vimp_SubjectName:  SubjectsList = [s for s in SubjectsList if ('vimp' in s)]
                     
                 # this is to reduce the ammout of data in joint training of Main & ET
                 Read = whichExperiment.Dataset.ReadTrain
-                if Read.ET or Read.Main:  SubjectsList = [s for s in SubjectsList if ('Aug4' not in s) and ('Aug5' not in s)]
-                        
-                    
+                if Read.ET or Read.Main:  SubjectsList = [s for s in SubjectsList if ('Aug4' not in s) and ('Aug5' not in s)]                                     
+
+                # TODO this is temporary, and should be removed later
+                if modeData == 'train':
+                    SubjectsList = [s for s in SubjectsList if '_3T_ET' not in s]
 
                 for s in SubjectsList:
                     Input.Subjects[s] = Search_ImageFolder(Dirr + '/' + s , NucleusName)
