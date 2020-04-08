@@ -215,7 +215,11 @@ class Experiment_Folder_Search():
                     self.name = name  
                     self.multiPlanar = find_Planes(address , name , TgC)
                     
-            List_subExps = [a for a in os.listdir(Exp_address + '/' + mode) if ('subExp' in a) or ('sE' in a)] 
+            List_subExps = [a for a in os.listdir(Exp_address + '/' + mode) if ('subExp' in a) or ('sE' in a)]
+
+            # TODO this is temporary, to only save the subexperiments I need
+            # List_subExps = [a for a in List_subExps if 'Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_7T_Init_Rn_test_ET_3T' in a]
+            
             List_subExps.sort()
             subExps = [subExp(name , Exp_address + '/' + mode , Ix)  for Ix, name in enumerate(List_subExps)]
             TagsList = [ np.append(['Tag' + str(Ix)],  name.split('_'))  for Ix, name in enumerate(List_subExps) ]
@@ -552,8 +556,7 @@ def search_ExperimentDirectory(whichExperiment):
                 if Read.ET or Read.Main:  SubjectsList = [s for s in SubjectsList if ('Aug4' not in s) and ('Aug5' not in s)]                                     
 
                 # TODO this is temporary, and should be removed later
-                if modeData == 'train':
-                    SubjectsList = [s for s in SubjectsList if '_3T_ET' not in s]
+                # if modeData == 'train': SubjectsList = [s for s in SubjectsList if '_3T_ET' not in s]
 
                 for s in SubjectsList:
                     Input.Subjects[s] = Search_ImageFolder(Dirr + '/' + s , NucleusName)
