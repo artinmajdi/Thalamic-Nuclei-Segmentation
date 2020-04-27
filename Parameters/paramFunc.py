@@ -154,7 +154,7 @@ def temp_Experiments_preSet_V2(UserInfoB):
                 15: (12  ,   self.ReadTrainC(Main=1,ET=1)         , self.InitializeB(From_3T=True)   ,  self.Transfer_LearningC()          , '_Main_Ps_ET_Init_3T' ),
                 16: (12  ,   self.ReadTrainC(SRI=1, Main=1, ET=1) , self.InitializeB(From_3T=True)   ,  self.Transfer_LearningC()          , '_SRI_Ps_Main_Ps_ET_Init_3T' ),
                 17: (12  ,   self.ReadTrainC(Main=1,ET=1)         , self.InitializeB()               ,  self.Transfer_LearningC()          , '_Main_Ps_ET_7T_Init_Rn_test_ET_3T' ),
-
+                18: (12  ,   self.ReadTrainC(Main=1,ET=1)         , self.InitializeB()               ,  self.Transfer_LearningC()          , '_Main_Ps_ET_Init_Rn' ),
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 
