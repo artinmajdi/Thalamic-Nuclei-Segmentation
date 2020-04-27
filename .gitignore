@@ -2,4 +2,4 @@
 settings.json
 __pycache__
 *.ini
-EXP_*
+EXP*
