@@ -47,12 +47,13 @@ class measure_Metrics_cls():
         # Precision = np.zeros((num_classes-1,2))
         # Recall    = np.zeros((num_classes-1,2))
 
-
+        Tag_exist = False
         for cnt, (nucleusNm , nucleiIx) in enumerate(zip(a.Names , a.Indexes)):
 
             Dir_prediction = self.dir_in + '/' + nucleusNm + '.nii.gz'
             Dir_Label = self.dir_label + '/Label/' + nucleusNm + '_PProcessed.nii.gz'
             if os.path.exists(Dir_Label) and os.path.exists(Dir_prediction):
+                Tag_exist = True
                 print(nucleusNm)
                 ManualLabel = nib.load(Dir_Label).get_data()                                              
                 prediction = nib.load(Dir_prediction).get_data()   
@@ -65,12 +66,14 @@ class measure_Metrics_cls():
                 # confusionMatrix = metrics.confusionMatrix(predMV, ManualLabel)
                 # Recall[cnt,:]    = [nucleiIx , confusionMatrix.Recall]
                 # Precision[cnt,:] = [nucleiIx , confusionMatrix.Precision]
-                    
-        np.savetxt( self.dir_in + '/VSI_All.txt'       ,VSI , fmt='%1.1f %1.4f')
-        np.savetxt( self.dir_in + '/HD_All.txt'        ,HD , fmt='%1.1f %1.4f')
-        np.savetxt( self.dir_in + '/Dice_All.txt'      ,Dice , fmt='%1.1f %1.4f')
-        # np.savetxt( self.dir_in + '/Recall_All.txt'    ,Recall , fmt='%1.1f %1.4f')
-        # np.savetxt( self.dir_in + '/Precision_All.txt' ,Precision , fmt='%1.1f %1.4f')  
+
+        
+        if Tag_exist:
+            np.savetxt( self.dir_in + '/VSI_All.txt'       ,VSI , fmt='%1.1f %1.4f')
+            np.savetxt( self.dir_in + '/HD_All.txt'        ,HD , fmt='%1.1f %1.4f')
+            np.savetxt( self.dir_in + '/Dice_All.txt'      ,Dice , fmt='%1.1f %1.4f')
+            # np.savetxt( self.dir_in + '/Recall_All.txt'    ,Recall , fmt='%1.1f %1.4f')
+            # np.savetxt( self.dir_in + '/Precision_All.txt' ,Precision , fmt='%1.1f %1.4f')  
         
                   
     def loop_All_subjects(self):
@@ -84,7 +87,16 @@ UI = UserEntry()
 # UI.dir_in = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset3_new_ctrl_ms_csfn/pre_steps/manual_Labels/csfn_step1_registered/vimp2_ctrl_991_08302013_JF_prediction'
 # UI.mode    = 0 # 'all'
 
-if UI.mode == 'all':      
-    measure_Metrics_cls(dir_in = UI.dir_in , dir_label = UI.dir_label).loop_All_subjects()
-else:
-    measure_Metrics_cls(dir_in = UI.dir_in , dir_label = UI.dir_label).measure_metrics()
+# for cv in ['a','b','c','d','e','f','g','h']:
+cv = 'a'
+for x in ['ET' , 'Main']:
+    # UI.dir_label  = f'/array/ssd/msmajdi/experiments/keras/exp6/crossVal/{x}/a' 
+    # UI.dir_in = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM40_Res_Unet2_NL3_LS_MyBCE_US1_wLRScheduler_Main_Ps_ET_Init_Rn_CV_a/sd0'
+    UI.dir_label  = f'/array/ssd/msmajdi/experiments/keras/exp6/crossVal/{x}/{cv}' 
+    UI.dir_in = f'/array/ssd/msmajdi/experiments/keras/exp6/results/New_Results_April_27_2020_Main_Ps_ET_Init_3T/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_{cv}/sd2'
+    UI.mode    = 'all'
+
+    if UI.mode == 'all':      
+        measure_Metrics_cls(dir_in = UI.dir_in , dir_label = UI.dir_label).loop_All_subjects()
+    else:
+        measure_Metrics_cls(dir_in = UI.dir_in , dir_label = UI.dir_label).measure_metrics()
