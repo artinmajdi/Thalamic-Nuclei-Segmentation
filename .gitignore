@@ -4,3 +4,4 @@ __pycache__
 *.ini
 EXP*
 Icon*
+.DS_Store*
