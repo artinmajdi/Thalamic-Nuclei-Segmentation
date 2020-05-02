@@ -9,30 +9,33 @@ import numpy as np
 import nibabel as nib
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
+import pandas as pd
 
 
-# dir = '/media/artin/SSD/RESEARCH/PhD/vimp2_988_08302013_CB/Prediction/'
-# dirM = '/media/artin/SSD/RESEARCH/PhD/vimp2_988_08302013_CB/Label/'
+dir = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd2/vimp2_967_08132013_KW/'
+dirM = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/Main/a/vimp2_967_08132013_KW/Label/'
 
-dir = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CVs_all/sd2/vimp2_988_08302013_CB/'
-dirM = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/Main/c/vimp2_988_08302013_CB/Label/'
-a = smallFuncs.Nuclei_Class(index=1,method='Cascade').All_Nuclei()
+Names = smallFuncs.Nuclei_Class(index=1,method='Cascade').All_Nuclei().Names
 
-ind = 12
-msk = nib.load(dir  + a.Names[ind] + '.nii.gz').get_data()
-mskM = nib.load(dirM  + a.Names[ind] + '_PProcessed.nii.gz').get_data()
+write_flag = False
+PR = {}
+if write_flag: df = pd.DataFrame()
+if write_flag: writer = pd.ExcelWriter(path=dir + 'Precision_Recall.xlsx', engine='xlsxwriter') 
+    
+    
+for ind in range(13):
 
-np.unique(msk)
-plt.plot(np.unique(msk))
-plt.show()
+    nucleus_name = Names[ind].split('-')[1]
+    msk = nib.load(dir  + Names[ind] + '.nii.gz').get_data()
+    mskM = nib.load(dirM  + Names[ind] + '_PProcessed.nii.gz').get_data()
 
-Precision_Recall_Curve(mskM,msk)
+    # plt.plot(np.unique(msk))
+    
+    precision, recall = Precision_Recall_Curve(y_true=mskM,y_pred=msk, Show=True, name=nucleus_name, directory=dir)
 
-ym1 = np.reshape(mskM,[-1,1])
-yt1 = np.reshape(msk,[-1,1])
+    if write_flag:
+        df = pd.DataFrame.from_dict({'precision':precision , 'recall':recall})
+        df.to_excel(writer, sheet_name=nucleus_name)
 
-precision, recall, thresholds = precision_recall_curve(yt1, ym1)
-average_precision = average_precision_score(yt1, ym1)
+if write_flag: writer.save()
 
-print(precision,recall)
-print('---')

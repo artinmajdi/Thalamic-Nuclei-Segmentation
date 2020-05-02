@@ -108,20 +108,25 @@ def ROC_Curve(y_true,y_pred):
     auc(fpr, tpr)
     # plt.plot(fpr, tpr)
 
-def Precision_Recall_Curve(y_true,y_pred):
+def Precision_Recall_Curve(y_true=[],y_pred=[], Show=True, name='', directory=''):
 
-    yp1 = np.reshape(y_pred,[-1,1])
     yt1 = np.reshape(y_true,[-1,1])
+    yp1 = np.reshape(y_pred,[-1,1])
 
     precision, recall, thresholds = precision_recall_curve(yt1, yp1)
     average_precision = average_precision_score(yt1, yp1)
 
-    plt.figure()
-    plt.step(recall, precision, color='b', alpha=0.2, where='post')
-    plt.fill_between(recall, precision, alpha=0.2, color='b')
-    plt.xlabel('Recall')
-    plt.ylabel('Precision')
-    plt.ylim([0.0, 1.05])
-    plt.xlim([0.0, 1.0])
-    plt.title('Average precision score, micro-averaged over all classes: AP={0:0.2f}'.format(average_precision))
-    plt.show()
+    if Show:
+        fig = plt.figure()
+        plt.step(recall, precision, color='b', alpha=0.9, where='post')
+        # plt.fill_between(recall, precision, alpha=0.2, color='b')
+        plt.xlabel('Recall')
+        plt.ylabel('Precision')
+        plt.ylim([0.0, 1.0])
+        plt.xlim([0.0, 1.0])
+        plt.title(f'{name} AP={average_precision:0.2f}')
+        plt.show()
+        
+        fig.savefig(directory + name + '.png')
+    return precision, recall
+

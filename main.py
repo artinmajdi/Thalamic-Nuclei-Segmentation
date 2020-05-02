@@ -1800,13 +1800,14 @@ def EXP_WMn_test_new_Cases(UserInfoB):
     UserInfoB['Model_Method'] = 'Cascade'
     UserInfoB['simulation'].num_Layers = 3
     UserInfoB['architectureType'] = 'Res_Unet2'
-    UserInfoB['lossFunction_Index'] = 3 # 7
+    UserInfoB['lossFunction_Index'] = 7 # 3: BCE   7: Dice
     UserInfoB['Experiments'].Index = '6'
     UserInfoB['copy_Thalamus'] = False
-    UserInfoB['TypeExperiment'] = 15 # 18
+    UserInfoB['TypeExperiment'] = 15 # 15: Init 3T   18: Init Randomly
     UserInfoB['simulation'].LR_Scheduler = True    
     UserInfoB['DropoutValue'] = 0.3
     UserInfoB['simulation'].Learning_Rate = 1e-3
+    UserInfoB['simulation'].TestOnly = True
 
 
     # # UserInfoB['Experiments'].Tag = 'ET_7T_3T_separate_w_crossVal'
@@ -1825,14 +1826,14 @@ def EXP_WMn_test_new_Cases(UserInfoB):
     # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
     # Run(UserInfoB, IV)
 
-    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
-    # UserInfoB['simulation'].slicingDim = [2]
-    # UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] 
-    # UserInfoB['simulation'].Use_Coronal_Thalamus_InSagittal = False
-    # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-    # Run(UserInfoB, IV)    
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    UserInfoB['simulation'].slicingDim = [2]
+    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14] 
+    UserInfoB['simulation'].Use_Coronal_Thalamus_InSagittal = False
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    Run(UserInfoB, IV)    
     
-    merge_results_and_apply_25D(UserInfoB)
+    # merge_results_and_apply_25D(UserInfoB)
 
 def EXP_WMn_test_new_Cases_nonCascade(UserInfoB):
     
@@ -1861,29 +1862,28 @@ def EXP_WMn_test_new_Cases_nonCascade(UserInfoB):
     UserInfoB['simulation'].Learning_Rate = 1e-3
     UserInfoB['simulation'].ReadAugments_Mode = False
 
-
     # # UserInfoB['Experiments'].Tag = 'ET_7T_3T_separate_w_crossVal'
 
-    # applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
+    applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
     
     
-    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
-    # UserInfoB['simulation'].slicingDim = [0]
-    # UserInfoB['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]       
-    # predict_Thalamus_For_SD0(UserInfoB)
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
+    UserInfoB['simulation'].slicingDim = [0]
+    UserInfoB['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]       
+    predict_Thalamus_For_SD0(UserInfoB)
 
-    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
-    # UserInfoB['simulation'].slicingDim = [1]
-    # UserInfoB['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]
-    # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-    # Run(UserInfoB, IV)
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
+    UserInfoB['simulation'].slicingDim = [1]
+    UserInfoB['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    Run(UserInfoB, IV)
 
-    # UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
-    # UserInfoB['simulation'].slicingDim = [2]
-    # UserInfoB['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14] 
-    # UserInfoB['simulation'].Use_Coronal_Thalamus_InSagittal = False
-    # IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
-    # Run(UserInfoB, IV)    
+    UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
+    UserInfoB['simulation'].slicingDim = [2]
+    UserInfoB['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14] 
+    UserInfoB['simulation'].Use_Coronal_Thalamus_InSagittal = False
+    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    Run(UserInfoB, IV)    
     
     merge_results_and_apply_25D(UserInfoB)
 
@@ -1971,8 +1971,8 @@ if UserInfoB['wmn_csfn'] == 'csfn':
     Run_Csfn_with_Best_WMn_architecture(UserInfoB)
 
 elif UserInfoB['wmn_csfn'] == 'wmn':
-    EXP_WMn_test_new_Cases_nonCascade(UserInfoB)
-    # EXP_WMn_test_new_Cases(UserInfoB)
+    # EXP_WMn_test_new_Cases_nonCascade(UserInfoB)
+    EXP_WMn_test_new_Cases(UserInfoB)
 
 
 # UserInfoB['simulation'].ReadAugments_Mode = False 

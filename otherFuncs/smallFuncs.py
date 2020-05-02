@@ -824,6 +824,37 @@ def extracting_the_biggest_object(pred_Binary):
     else:
         return pred_Binary  
 
+def test_precision_recall():
+    import pandas as pd
+
+
+    dir = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd2/vimp2_967_08132013_KW/'
+    dirM = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/Main/a/vimp2_967_08132013_KW/Label/'
+
+    Names = Nuclei_Class(index=1,method='Cascade').All_Nuclei().Names
+
+    write_flag = False
+    PR = {}
+    if write_flag: df = pd.DataFrame()
+    if write_flag: writer = pd.ExcelWriter(path=dir + 'Precision_Recall.xlsx', engine='xlsxwriter') 
+        
+        
+    for ind in range(13):
+
+        nucleus_name = Names[ind].split('-')[1]
+        msk = nib.load(dir  + Names[ind] + '.nii.gz').get_data()
+        mskM = nib.load(dirM  + Names[ind] + '_PProcessed.nii.gz').get_data()
+
+        # plt.plot(np.unique(msk))
+        
+        precision, recall = metrics.Precision_Recall_Curve(y_true=mskM,y_pred=msk, Show=True, name=nucleus_name, directory=dir)
+
+        if write_flag:
+            df = pd.DataFrame.from_dict({'precision':precision , 'recall':recall})
+            df.to_excel(writer, sheet_name=nucleus_name)
+
+    if write_flag: writer.save()
+
 def test_extract_biggest_object():
 
     import nibabel as nib

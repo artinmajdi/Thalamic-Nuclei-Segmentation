@@ -116,20 +116,21 @@ def testingExeriment(model, Data, params):
                 struc = ndimage.generate_binary_structure(3,2)
                 return ndimage.binary_closing(mask, structure=struc)
             
-            
-            pred = binarizing(np.squeeze(pred1Class))
+            pred = np.squeeze(pred1Class)
+            pred2 = binarizing(pred)
             
             # pred = cascade_paddingToOrigSize(pred)                        
             
             if params.WhichExperiment.HardParams.Model.Method.ImClosePrediction: 
-                pred = closeMask(pred)
+                pred2 = closeMask(pred2)
 
-            pred = smallFuncs.extracting_the_biggest_object(pred)
+            pred2 = smallFuncs.extracting_the_biggest_object(pred2)
             
             label_mask = np.transpose( origMsk1N , params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
-            Dice = [ NucleiIndex , smallFuncs.mDice(pred , binarizing(label_mask)) ]
+            Dice = [ NucleiIndex , smallFuncs.mDice(pred2 , binarizing(label_mask)) ]
 
-            pred = cascade_paddingToOrigSize(pred)
+            # This can be changed to from pred2 to pred, for percision-recall curves
+            pred = cascade_paddingToOrigSize(pred2)
             pred = np.transpose(pred , params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)                                                              
 
             return pred, Dice
