@@ -905,3 +905,138 @@ def test_extract_biggest_object():
         
         else:
             image = objects[0].image
+
+def merge_left_right_labels(subj_address):
+    left  = nib.load(subj_address + '/left/2.5D_MV/AllLabels.nii.gz')  if os.path.isfile(subj_address + '/left/2.5D_MV/AllLabels.nii.gz') else []
+    right = nib.load(subj_address + '/right/2.5D_MV/AllLabels.nii.gz') if os.path.isfile(subj_address + '/right/2.5D_MV/AllLabels.nii.gz') else []
+
+    if left and right: saveImage(image= left.get_data() + right.get_data(), affine=left.affine , header=left.header , outDirectory=subj_address + '/left/AllLabels_Left_and_Right.nii.gz')    
+
+class SNR_experiment():
+    
+    def __init__(self):
+        pass          
+    
+    def script_adding_WGN(self, directory='/mnt/sda5/RESEARCH/PhD/Thalmaus_Dataset/SNR_Tests/vimp2_ANON695_03132013/', SD_list=np.arange(1,80,5), run_network=True):
+       
+        def add_WGN(input=[], noise_mean=0,noise_std=1):
+            from numpy.fft import fftshift, fft2
+            gaussian_noise_real = np.random.normal(loc=noise_mean , scale = noise_std, size=input.shape)
+            gaussian_noise_imag = np.random.normal(loc=noise_mean , scale = noise_std, size=input.shape)
+            gaussian_noise = gaussian_noise_real + 1j*gaussian_noise_imag
+
+            # template = nib.load('general/RigidRegistration/cropped_origtemplate.nii.gz').get_data()
+            # psd_template = np.mean(abs(fftshift(fft2(template/template.max())))**2)
+
+            # psd_template, max_template = 325, 12.66            
+            psd_signal = np.mean(abs(fftshift(fft2(input)))**2)
+
+            # psd_noise_image = psd_signal - psd_template * (input.max()**2)
+            psd_noise = np.mean(abs(fftshift(fft2(gaussian_noise)))**2)
+            # psd_noise       = psd_noise_added + psd_noise_image
+            
+            SNR = 10*np.log10(psd_signal/psd_noise)  # SNR = PSD[s]/PSD[n]  if x = s + n
+            # SNR = 10*np.log10(np.mean(input**2)/np.mean(abs(gaussian_noise)**2))  # SNR = E[s^2]/E[n^2]  if x = s + n
+            return abs(input + gaussian_noise) , SNR
+                
+        directory2 = os.path.dirname(directory).replace(' ','\ ')
+        os.system("mkdir {0}/vimp2_orig_SNR_10000 ; mv {0}/* {0}/vimp2_orig_SNR_10000/ ".format(directory2))
+        subject_name = 'vimp2_orig'
+        dir_original_image = directory + subject_name + '_SNR_10000'
+        
+        SNR_List = []
+        np.random.seed(0)
+        for noise_std in SD_list:
+            
+            imF = nib.load(dir_original_image + '/PProcessed.nii.gz')
+            im = imF.get_data()
+
+            noisy_image, SNR = add_WGN(input=im, noise_mean=0,noise_std=noise_std)
+            SNR = int(round(SNR))
+            
+            if SNR not in SNR_List:
+                SNR_List.append(SNR)
+                print('SNR:',int(round(SNR)), 'std:',noise_std)
+                
+                dir_noisy_image = directory + 'vimp2_noisy_SNR_' + str(SNR) 
+                saveImage(noisy_image , imF.affine , imF.header , dir_noisy_image + '/PProcessed.nii.gz')
+                
+                os.system('cp -r %s %s'%(dir_original_image.replace(' ','\ ') + '/Label', dir_noisy_image.replace(' ','\ ') + '/Label'))
+
+                if run_network: 
+                    os.system( "python main.py --test %s"%(dir_noisy_image.replace(' ','\ ') + '/PProcessed.nii.gz') )
+                        
+    def read_all_Dices_and_SNR(self, directory=''):
+        Dices = {}
+        for subj in [s for s in os.listdir(directory) if os.path.isdir(directory + s)]:
+
+            SNR = int(subj.split('_SNR_')[-1]) 
+            
+            Dices[SNR] = pd.read_csv( directory + subj + '/left/2.5D_MV/Dice_All.txt',index_col=0,header=None,delimiter=' ',names=[SNR]).values.reshape([-1]) if os.path.isfile(directory + subj + '/left/2.5D_MV/Dice_All.txt') else np.zeros(13)          
+
+        df = pd.DataFrame(Dices,index=Thalamus_Sub_Functions().All_Nuclei().Names)
+        df = df.transpose()
+        df.columns.name = 'nucleus'
+        df.index.name = 'SNR'
+        df = df.sort_values(['SNR'], ascending=[False])
+        df.to_csv(directory + 'Dice_vs_SNR.csv')
+
+        return df
+
+    def loop_all_subjects_read_Dice_SNR(self, directory='/mnt/sda5/RESEARCH/PhD/Thalmaus_Dataset/SNR_Tests/'):
+                
+        writer = pd.ExcelWriter(directory + 'Dice_vs_SNR.xlsx',engine='xlsxwriter')
+        for subject in [s for s in os.listdir(directory) if os.path.isdir(directory + s) and 'vimp2_' in s]:
+            print(subject)
+            df = self.read_all_Dices_and_SNR(directory=directory + subject + '/')
+            df.to_excel(writer, sheet_name=subject)
+
+        writer.save()
+
+class Thalamus_Sub_Functions():
+    def __init__(self):
+        pass
+
+    def measure_metrics(self, Dir_manual='', Dir_prediction='', metrics=['Dice'], save=False):
+        
+        if not (os.path.isdir(Dir_prediction) and os.path.isdir(Dir_manual)): raise Warning('directory does not exist'.upper())
+        Measurements = {s:[] for s in metrics}
+        for nuclei in Nuclei_Class().All_Nuclei().Names:
+            pred = nib.load(Dir_prediction + nuclei + '.nii.gz').get_data()
+            manual = nib.load(Dir_manual + nuclei + '_PProcessed.nii.gz').get_data()
+            
+            if 'Dice' in metrics: Measurements['Dice'].append([nuclei, mDice(pred, manual)])
+        
+        if save:
+            for mt in metrics: np.savetxt(Dir_prediction + 'All_' + mt + '.txt', Measurements[mt] , fmt='%1.1f %1.4f')
+
+        return Measurements
+                    
+    def nucleus_name(self, index=1):
+        switcher = {
+            1: '1-THALAMUS',
+            2: '2-AV',
+            4: '4-VA',
+            5: '5-VLa',
+            6: '6-VLP',
+            7: '7-VPL',
+            8: '8-Pul',
+            9: '9-LGN',
+            10: '10-MGN',
+            11: '11-CM',
+            12: '12-MD-Pf',
+            13: '13-Hb',
+            14: '14-MTT'}  
+        return switcher.get(index, 'wrong index')
+
+    def All_Nuclei(self):
+        indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14])
+
+        class All_Nuclei:
+            Indexes = indexes[:]
+            Names  = [self.nucleus_name(index) for index in Indexes]
+
+        return All_Nuclei()   
+
+    def run_network(self,directory='mnt/PProcessed.nii.gz', thalamic_side='--left', modality='--wmn', gpu="None"):
+        os.system( 'python main.py --test %s %s %s --gpu %s'%(directory, thalamic_side, modality, gpu) )
