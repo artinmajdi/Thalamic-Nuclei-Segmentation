@@ -282,6 +282,7 @@ def mkDir(Dir):
     return Dir
 
 def saveImage(Image , Affine , Header , outDirectory):
+    """ Inputs:  Image , Affine , Header , outDirectory """
     mkDir(outDirectory.split(os.path.basename(outDirectory))[0])
     out = nib.Nifti1Image((Image).astype('float32'),Affine)
     out.get_header = Header
