@@ -181,7 +181,7 @@ def func_OtherMetrics_justFor_MV(Info , params):
             # Recall[cnt,:]    = [nucleiIx , confusionMatrix.Recall]
             # Precision[cnt,:] = [nucleiIx , confusionMatrix.Precision]
             
-            # np.savetxt( address + 'VSI_' + InfoSave.nucleus.name + '.txt' ,Dice , fmt='%1.1f %1.4f')
+            # np.savetxt( address + 'VSI_' + InfoSave.nucleus.name + '.txt' ,DICE , fmt='%1.1f %1.4f')
         
         np.savetxt( address + 'VSI_All.txt'       ,VSI     , fmt='%1.1f %1.4f')
         np.savetxt( address + 'HD_All.txt'        ,HD      , fmt='%1.1f %1.4f')

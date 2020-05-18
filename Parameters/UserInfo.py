@@ -182,9 +182,9 @@ Template = Templatecs()
 
 
 #! metric function
-#          1: 'Dice'
+#          1: 'DICE'
 #          2: 'Accuracy'
-#          3: 'Dice & Accuracy'
+#          3: 'DICE & Accuracy'
 MetricIx = 3
 
 

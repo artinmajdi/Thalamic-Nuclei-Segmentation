@@ -37,7 +37,7 @@ class savingHistory_AsExcel:
                         self.N_Eps = L = len(history[key])
                         data = np.array(history[key])
 
-                        if   'Dice' in key: self.nucleusInfo[:L,ix+2] = np.round(1e3*data)/1e3
+                        if   'DICE' in key: self.nucleusInfo[:L,ix+2] = np.round(1e3*data)/1e3
                         elif 'loss' in key: self.nucleusInfo[:L,ix+2] = np.round(1e5*data)/1e5
                         elif 'acc'  in key: self.nucleusInfo[:L,ix+2] = np.round(1e5*data)/1e5
                         elif 'lr'   in key: self.nucleusInfo[:L,ix+2] = np.round(1e5*data)/1e5
