@@ -10,25 +10,7 @@ use_train_padding_size = False
 
 wmn_csfn = 'wmn' # 'wmn' 'csfn' 
 # TypeExperiment == 1: # 3T      Init Rn
-
 # TypeExperiment == 2:  # Main        Init 3T
-# TypeExperiment == 14: # Main        Init Rn
-# TypeExperiment == 15: # Main+ET     Init 3T
-# TypeExperiment == 16: # 3T+Main+ET  Init 3T
-
-# TypeExperiment == 3   # Main + 3T  Init 3T
-
-# TypeExperiment == 4: # ET      Init Main
-# TypeExperiment == 5: # ET Transfer Learn from Main
-
-# TypeExperiment == 6  # CSFn1  Init Main
-
-# TypeExperiment == 7  # CSFn2  Init CSFn1
-# TypeExperiment == 8  # CSFn2  Init Main
-# TypeExperiment == 9  # CSFn2  Transfer Learn from CSFn1
-# TypeExperiment == 10 # CSFn2  Transfer Learn from Main  old structure wher it was fully initializing from a network
-# TypeExperiment == 11 # CSFn2  Transfer Learn from Main with new structure wher it only takes the wweights for part of the network
-# TypeExperiment == 13  # CSFn1 + CSFn2 Init Main
 
 TypeExperiment = 8
 
@@ -44,12 +26,7 @@ class preprocesscs:
 preprocess = preprocesscs()
 
 
-
-
-
-
 permutation_Index = 0
-
 multi_Class_Mode = True
 readAugments_Mode = True
 lossFunction_Index = 7

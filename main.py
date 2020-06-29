@@ -1,8 +1,6 @@
 import os
 import sys
-sys.path.append(os.path.dirname(__file__))  # sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-# sys.path.append('/code')
-print('----------+++',os.path.dirname(__file__))
+sys.path.append(os.path.dirname(__file__)) 
 import otherFuncs.smallFuncs as smallFuncs
 from otherFuncs.datasets import preAnalysis
 from otherFuncs import datasets
@@ -12,18 +10,12 @@ import Parameters.paramFunc as paramFunc
 import preprocess.applyPreprocess as applyPreprocess
 import tensorflow as tf
 from keras import backend as K
-# import pandas as pd
-# import xlsxwriter
 import csv
 import numpy as np
-# import json
 import nibabel as nib
-# from shutil import copyfile , copytree
 from tqdm import tqdm
 import modelFuncs.LossFunction as LossFunction
 from preprocess import BashCallingFunctionsA, croppingA
-# import tensorflow.compat.v1 as tf2
-# tf2.disable_v2_behavior()
 
 class InitValues:
     def __init__(self, Nuclei_Indexes=1 , slicingDim=2):
