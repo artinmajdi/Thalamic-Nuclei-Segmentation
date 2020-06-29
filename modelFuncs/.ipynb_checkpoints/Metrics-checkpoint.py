@@ -19,23 +19,23 @@ def MetricInfo(Metric_Index):
 
 def mDice(y_true,y_pred):
 
-    Dice = 0
+    Dice = 0    
     nmCl = max(y_pred.shape[3] - 1,1)  # max is for when I don't add the background to the label concatenate(msk,1-msk)
     for d in range(nmCl):
         Dice = Dice + tf.reduce_sum(tf.multiply(y_true[...,d],y_pred[...,d]))*2/( tf.reduce_sum(y_true[...,d]) + tf.reduce_sum(y_pred[...,d]) + 1e-7)
-
+    
     return tf.divide(Dice,tf.cast(nmCl,tf.float32))
 
 
 def JAC(y_true,y_pred):
-
+   
     Intersection = tf.reduce_sum(tf.multiply(y_true,y_pred))
     Sum = ( tf.reduce_sum(y_true) + tf.reduce_sum(y_pred) + 1e-7)
-    return Intersection(Sum - Intersection)
+    return Intersection(Sum - Intersection) 
 
 
 
-
+    
 class VSI_AllClasses_TF():
     def __init__(self, y_true,y_pred):
         self.true = y_true
@@ -43,11 +43,11 @@ class VSI_AllClasses_TF():
 
     def VSI(self):
         X = tf.reduce_sum(self.true)
-        Y = tf.reduce_sum(self.pred)
+        Y = tf.reduce_sum(self.pred)    
         return 1 - ( tf.abs(X-Y) / (X+Y) )
-
+        
     def apply_to_all_classes(self):
-        nmCl = max(self.pred.shape[3] - 1,1)
+        nmCl = max(self.pred.shape[3] - 1,1)  
         return tf.reduce_sum( [VSI_AllClasses(self.true[...,d], self.pred[...,d]).VSI() for d in range(nmCl)] )
 
 class VSI_AllClasses():
@@ -57,11 +57,11 @@ class VSI_AllClasses():
 
     def VSI(self):
         X = self.true.sum()
-        Y = self.pred.sum()
+        Y = self.pred.sum()   
         return 1 - ( np.abs(X-Y) / (X+Y) )
-
+        
     def apply_to_all_classes(self):
-        nmCl = max(self.pred.shape[3] - 1,1)
+        nmCl = max(self.pred.shape[3] - 1,1)  
         return [VSI_AllClasses(self.true[...,d], self.pred[...,d]).VSI() for d in range(nmCl)].mean()
 
 class HD_AllClasses():
@@ -74,16 +74,16 @@ class HD_AllClasses():
         for i in range(self.true.shape[2]): a[i,:] = [self.true[...,i].sum(), directed_hausdorff(self.true[...,i],self.pred[...,i])[0]]
 
         return np.sum(a[:,0]*a[:,1]) / np.sum(a[:,0])
-
-
+             
+        
     def apply_to_all_classes(self):
-        nmCl = max(self.pred.shape[3] - 1,1)
+        nmCl = max(self.pred.shape[3] - 1,1)  
         return [directed_hausdorff(self.true[...,d], self.pred[...,d]) for d in range(nmCl)].mean()
 
 
 
 def confusionMatrix(y_true,y_pred):
-
+    
     yp1 = np.reshape(y_pred,[-1,1])
     yt1 = np.reshape(y_true,[-1,1])
 
@@ -91,13 +91,13 @@ def confusionMatrix(y_true,y_pred):
 
     class metrics():
         def __init__(self, D):
-
+                
             TN, FP, FN , TP = D[0,0] , D[0,1] , D[1,0] , D[1,1]
             self.Recall = TP / (TP + FN)
             self.Sensitivity = TP / (TP + FN)
             self.Specificity = TN/(TN + FP)
             self.Precision   = TP/(TP + FP)
-
+    
     return metrics(D)
 
 def ROC_Curve(y_true,y_pred):
@@ -126,7 +126,7 @@ def Precision_Recall_Curve(y_true=[],y_pred=[], Show=True, name='', directory=''
         plt.xlim([0.0, 1.0])
         plt.title(f'{name} AP={average_precision:0.2f}')
         plt.show()
-
+        
         fig.savefig(directory + name + '.png')
     return precision, recall
 

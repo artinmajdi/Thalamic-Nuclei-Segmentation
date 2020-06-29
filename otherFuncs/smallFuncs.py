@@ -79,9 +79,9 @@ def NucleiSelection(ind = 1):
 
     return name, FullIndexes, Full_Names
 
-# TODO: repalce all NucleiSelection()  with Nuclei_Class class                       
-class Nuclei_Class():        
-        
+# TODO: repalce all NucleiSelection()  with Nuclei_Class class
+class Nuclei_Class():
+
     def __init__(self, index=1, method = 'HCascade'):
 
         def dic_Name(index):
@@ -103,7 +103,7 @@ class Nuclei_Class():
                 1.2: 'posterior_ImClosed',
                 1.3: 'Medial_ImClosed',
                 1.4: 'Anterior_ImClosed',
-                1.9: 'HierarchicalCascade' }  
+                1.9: 'HierarchicalCascade' }
             return switcher.get(index, 'wrong index')
         self.name = dic_Name(index)
 
@@ -113,7 +113,7 @@ class Nuclei_Class():
         self.parent      = None
         self.grandparent = None
         self.index = index
-        
+
 
         def find_Parent_child(self):
             def parent_child(index):
@@ -123,27 +123,27 @@ class Nuclei_Class():
                         1:   (None, [1.1 , 1.2 , 1.3 , 1.4]),
                         1.1: (1,    [4,5,6,7]),   # Lateral
                         1.2: (1,    [8,9,10]),    # Posterior
-                        1.3: (1,    [11,12,13]),  # Medial                       
+                        1.3: (1,    [11,12,13]),  # Medial
                         1.4: (1,     [2])}       # Anterior
-                        # 1.4: (1,     [None]),       # Anterior                        
-                        # 2:   (1,     None) }              
+                        # 1.4: (1,     [None]),       # Anterior
+                        # 2:   (1,     None) }
                     return switcher_Parent.get(index)
                 else:
-                    return ( None, [2,4,5,6,7,8,9,10,11,12,13,14] ) if index == 1 else (1,None)                               
+                    return ( None, [2,4,5,6,7,8,9,10,11,12,13,14] ) if index == 1 else (1,None)
 
             def func_HCascade(self):
-                                                                                       
-                if parent_child(self.index): 
+
+                if parent_child(self.index):
                     self.parent , self.child = parent_child(self.index)
-                else: 
+                else:
                     for ix in parent_child(1)[1]:
                         HC_parent, HC_child = parent_child(ix)
                         if HC_child and self.index in HC_child: self.grandparent , self.parent , self.child = (HC_parent , ix , None)
 
             if   self.method == 'Cascade':  self.grandparent , self.parent , self.child = (None,) + parent_child(self.index)
-            elif self.method == 'HCascade': func_HCascade(self)         
+            elif self.method == 'HCascade': func_HCascade(self)
         find_Parent_child(self)
-        
+
     def All_Nuclei(self):
         if self.method == 'HCascade': indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14]) + tuple([1.1,1.2,1.3,1.4])
         else:                         indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14])
@@ -152,37 +152,37 @@ class Nuclei_Class():
             Indexes = indexes[:]
             Names  = [self.dic_Name(index) for index in Indexes]
 
-        return All_Nuclei()    
-    
+        return All_Nuclei()
+
     def HCascade_Parents_Identifier(self, Nuclei_List):
-  
+
         def fchild(ix): return Nuclei_Class(ix , self.method).child
         return [ix for ix in fchild(1) if fchild(ix) and bool(set(Nuclei_List) & set(fchild(ix))) ]  if self.method == 'HCascade' else [1]
-        
+
     def remove_Thalamus_From_List(self , Nuclei_List):
         nuLs = Nuclei_List.copy()
         if 1 in nuLs: nuLs.remove(1)
         return nuLs
-            
-class Experiment_Folder_Search():    
+
+class Experiment_Folder_Search():
     def __init__(self, General_Address='' , Experiment_Name = '' , subExperiment_Name='', mode='results'):
-       
+
         class All_Experiments:
             def __init__(self, General_Address):
-                        
+
                 self.address = General_Address
                 self.List = [s for s in os.listdir(General_Address) if 'exp' in s] if General_Address else []
-            
+
         class Experiment:
             def __init__(self, Experiment_Name , AllExp_address):
-                        
+
                 self.name                = Experiment_Name
                 self.address             = AllExp_address + '/' + Experiment_Name
                 self.List_subExperiments = ''
                 self.TagsList            = []
 
         def search_AllsubExp_inExp(Exp_address, mode):
-                        
+
             class subExp():
                 def __init__(self, name , address , TgC):
 
@@ -190,42 +190,42 @@ class Experiment_Folder_Search():
 
                         class SD:
                             def __init__(self, Flag = False , name='' , plane_name='', direction_name='' , TgC=0 , address=''):
-                                self.Flag = Flag                        
-                                if self.Flag: 
-                                    self.tagList = np.append( ['Tag' + str(TgC) + '_' + plane_name], name.split('_') ) 
+                                self.Flag = Flag
+                                if self.Flag:
+                                    self.tagList = np.append( ['Tag' + str(TgC) + '_' + plane_name], name.split('_') )
                                     self.tagIndex = str(TgC)
                                     if mode == 'results':
                                         self.subject_List = [a for a in os.listdir(address) if 'vimp' in a]
                                         self.subject_List.sort()
                                     self.name = plane_name
                                     self.direction = direction_name
-                                    
+
                         multiPlanar = []
                         sdLst =  tuple(['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , 'DT' , '2.5D_Sum' , '1.5D_Sum'])
                         PlNmLs = tuple(['Sagittal' , 'Coronal' , 'Axial', 'MV' , 'DT' , '2.5D_Sum' , '1.5D_Sum'])
                         if mode == 'results':
-                            sdx = os.listdir(address + '/' + name)     
-                            for sd, plane_name in zip(sdLst, PlNmLs): # ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:                                
+                            sdx = os.listdir(address + '/' + name)
+                            for sd, plane_name in zip(sdLst, PlNmLs): # ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:
                                 multiPlanar.append( SD(True, name , sd , plane_name,TgC , address + '/' + name+'/' + sd) if sd in sdx else SD() )
                         else:
-                            for sd, plane_name in zip(sdLst[:3], PlNmLs[:3]): # [:3]: # ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:                                
+                            for sd, plane_name in zip(sdLst[:3], PlNmLs[:3]): # [:3]: # ['sd0' , 'sd1' , 'sd2' , '2.5D_MV' , '2.5D_Sum' , '1.5D_Sum']:
                                 multiPlanar.append( SD(True, name , sd , plane_name,TgC , address + '/' + name+'/' + sd) if sd in sd else SD() )
                         return multiPlanar
 
-                    self.name = name  
+                    self.name = name
                     self.multiPlanar = find_Planes(address , name , TgC)
-                    
+
             List_subExps = [a for a in os.listdir(Exp_address + '/' + mode) if ('subExp' in a) or ('sE' in a)]
 
             # TODO this is temporary, to only save the subexperiments I need
             # List_subExps = [a for a in List_subExps if 'Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_7T_Init_Rn_test_ET_3T' in a]
-            
+
             List_subExps.sort()
             subExps = [subExp(name , Exp_address + '/' + mode , Ix)  for Ix, name in enumerate(List_subExps)]
             TagsList = [ np.append(['Tag' + str(Ix)],  name.split('_'))  for Ix, name in enumerate(List_subExps) ]
 
             return subExps, TagsList
-                
+
         def func_Nuclei_Names():
             NumColumns = 19
             Nuclei_Names = np.append( ['subjects'] , list(np.zeros(NumColumns-1))  )
@@ -240,32 +240,32 @@ class Experiment_Folder_Search():
             for nIx in Nuclei_Class().All_Nuclei().Indexes:
                 Nuclei_Names[nuclei_Index_Integer(nIx)] = Nuclei_Class(index=nIx).name
 
-            return Nuclei_Names        
-        
+            return Nuclei_Names
+
         def search_1subExp(List_subExperiments):
             for a in List_subExperiments:
-                if a.name == subExperiment_Name: 
+                if a.name == subExperiment_Name:
                     return a
 
-        self.All_Experiments = All_Experiments(General_Address)                 
-        self.Experiment      = Experiment(Experiment_Name, self.All_Experiments.address)                                        
+        self.All_Experiments = All_Experiments(General_Address)
+        self.Experiment      = Experiment(Experiment_Name, self.All_Experiments.address)
         self.Nuclei_Names    = func_Nuclei_Names()
 
 
-        if Experiment_Name: 
+        if Experiment_Name:
             self.Experiment.List_subExperiments , self.Experiment.TagsList = search_AllsubExp_inExp(self.Experiment.address, mode)
 
         if subExperiment_Name:
             self.subExperiment = search_1subExp(self.Experiment.List_subExperiments)
 
 def gpuSetting(GPU_Index):
-    
+
     os.environ["CUDA_VISIBLE_DEVICES"] = GPU_Index
     import tensorflow as tf
     from keras import backend as K
     # tf.compat.v1.disable_v2_behavior()
 
-    # K.set_session(tf.compat.v1.Session(   config=tf.compat.v1.ConfigProto( allow_soft_placement=True , gpu_options=tf.compat.v1.GPUOptions(allow_growth=True) )   ))    
+    # K.set_session(tf.compat.v1.Session(   config=tf.compat.v1.ConfigProto( allow_soft_placement=True , gpu_options=tf.compat.v1.GPUOptions(allow_growth=True) )   ))
     K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True )   ))
     return K
 
@@ -292,10 +292,10 @@ def nibShow(*args):
     if len(args) > 1:
         for ax, im in enumerate(args):
             if ax == 0: a = nib.viewers.OrthoSlicer3D(im,title=str(ax))
-            else: 
+            else:
                 b = nib.viewers.OrthoSlicer3D(im,title='2')
                 a.link_to(b)
-    else: 
+    else:
         a = nib.viewers.OrthoSlicer3D(im)
     a.show()
 
@@ -304,7 +304,7 @@ def fixMaskMinMax(Image,name):
         print('Error in label values', 'min',Image.min() , 'max', Image.max() , '    ' , name.split('_PProcessed')[0])
         Image = np.float32(Image)
         Image = ( Image-Image.min() )/( Image.max() - Image.min() )
-        
+
     return Image
 
 def terminalEntries(UserInfo):
@@ -338,7 +338,7 @@ def terminalEntries(UserInfo):
                 _, UserInfo['simulation'].nucleus_Index,_ = NucleiSelection(ind = 1)
 
             elif sys.argv[en+1].lower() == 'allh':
-                _, NucleiIndexes ,_ = NucleiSelection(ind = 1) 
+                _, NucleiIndexes ,_ = NucleiSelection(ind = 1)
                 UserInfo['simulation'].nucleus_Index = tuple(NucleiIndexes) + tuple([1.1,1.2,1.3])
 
             elif sys.argv[en+1][0] == '[':
@@ -374,18 +374,18 @@ def terminalEntries(UserInfo):
 
         elif entry.lower() in ('-m','--Model_Method'):
             if int(sys.argv[en+1]) == 1:
-                UserInfo['Model_Method'] = 'Cascade' 
-            elif int(sys.argv[en+1]) == 2: 
-                UserInfo['Model_Method'] = 'HCascade' 
+                UserInfo['Model_Method'] = 'Cascade'
+            elif int(sys.argv[en+1]) == 2:
+                UserInfo['Model_Method'] = 'HCascade'
             elif int(sys.argv[en+1]) == 3:
-                UserInfo['Model_Method'] = 'mUnet' 
+                UserInfo['Model_Method'] = 'mUnet'
             elif int(sys.argv[en+1]) == 4:
-                UserInfo['Model_Method'] = 'normal' 
-                UserInfo['architectureType'] = 'FCN' 
-                
+                UserInfo['Model_Method'] = 'normal'
+                UserInfo['architectureType'] = 'FCN'
+
             # elif int(sys.argv[en+1]) == 5:
-            #     UserInfo['Model_Method'] = 'FCN_with_SkipConnection' 
-                # UserInfo['architectureType'] = 'FCN_with_SkipConnection' 
+            #     UserInfo['Model_Method'] = 'FCN_with_SkipConnection'
+                # UserInfo['architectureType'] = 'FCN_with_SkipConnection'
 
         elif entry.lower() in ('-cv','--CrossVal_Index'):
             UserInfo['CrossVal'].index = [sys.argv[en+1]]
@@ -395,8 +395,8 @@ def terminalEntries(UserInfo):
 
         elif entry.lower() in ('-te','--TypeExperiment'):
             UserInfo['TypeExperiment'] = int(sys.argv[en+1])
-            
-            
+
+
     return UserInfo
 
 def search_ExperimentDirectory(whichExperiment):
@@ -416,7 +416,7 @@ def search_ExperimentDirectory(whichExperiment):
     crossVal = whichExperiment.SubExperiment.crossVal
 
     def checkInputDirectory(Dir, NucleusName, sag_In_Cor,modeData):
-        
+
         # sdTag2 = '/sd0' if sag_In_Cor else sdTag
         sdTag2 = '/sd'
 
@@ -539,7 +539,7 @@ def search_ExperimentDirectory(whichExperiment):
                 if os.path.exists(Files.Label.address): Files = Look_Inside_Label_SF(Files, NucleusName)
                 if os.path.exists(Files.Temp.address):  Files = Look_Inside_Temp_SF(Files)
 
-            return Files                
+            return Files
         class Input:
             address = os.path.abspath(Dir)
             Subjects = {}
@@ -549,12 +549,12 @@ def search_ExperimentDirectory(whichExperiment):
         def LoopReadingData(Input, Dirr):
             if os.path.exists(Dirr):
                 SubjectsList = next(os.walk(Dirr))[1]
-                
+
                 if whichExperiment.Dataset.check_vimp_SubjectName:  SubjectsList = [s for s in SubjectsList if ('vimp' in s)]
-                    
+
                 # this is to reduce the ammout of data in joint training of Main & ET
                 Read = whichExperiment.Dataset.ReadTrain
-                if Read.ET or Read.Main:  SubjectsList = [s for s in SubjectsList if ('Aug4' not in s) and ('Aug5' not in s)]                                     
+                if Read.ET or Read.Main:  SubjectsList = [s for s in SubjectsList if ('Aug4' not in s) and ('Aug5' not in s)]
 
                 # TODO this is temporary, and should be removed later
                 # if modeData == 'train': SubjectsList = [s for s in SubjectsList if '_3T_ET' not in s]
@@ -565,14 +565,14 @@ def search_ExperimentDirectory(whichExperiment):
 
             return Input
 
-        def load_CrossVal_Data(Input , Dir):            
+        def load_CrossVal_Data(Input , Dir):
             if os.path.exists(Dir):
                 CV_list = crossVal.index if (modeData == 'test') else [s for s in os.listdir(Dir) if not (s in crossVal.index) ]
 
-                for x in CV_list: 
+                for x in CV_list:
                     Input = LoopReadingData(Input, Dir + x)
 
-                    if Read.ReadAugments.Mode and not (modeData == 'test'): 
+                    if Read.ReadAugments.Mode and not (modeData == 'test'):
                         Input = LoopReadingData(Input , Dir + x + '/Augments' + sdTag2)
 
             return Input
@@ -581,26 +581,26 @@ def search_ExperimentDirectory(whichExperiment):
         Input = LoopReadingData(Input, Dir)
 
         # SRI_flag_test = False if (Read.Main or Read.ET) and (modeData == 'test') else True
-        # SRI_flag_test = True        
+        # SRI_flag_test = True
 
         if Read.Main : Input = LoopReadingData(Input, Dir + '/Main')
-        if Read.ET   : Input = LoopReadingData(Input, Dir + '/ET')                   
+        if Read.ET   : Input = LoopReadingData(Input, Dir + '/ET')
         if Read.SRI  : Input = LoopReadingData(Input, Dir + '/SRI')
         if Read.CSFn1 : Input = LoopReadingData(Input, Dir + '/CSFn1')
         if Read.CSFn2 : Input = LoopReadingData(Input, Dir + '/CSFn2')
         # if Read.SRI and SRI_flag_test: Input = LoopReadingData(Input, Dir + '/SRI')
-        
+
         if crossVal.Mode:
             if Read.Main:  Input = load_CrossVal_Data(Input , Dir_CV + '/Main/')
             if Read.ET:    Input = load_CrossVal_Data(Input , Dir_CV + '/ET/')
             if Read.SRI:   Input = load_CrossVal_Data(Input , Dir_CV + '/SRI/')
-            if Read.CSFn1 : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn1/')  
-            if Read.CSFn2 : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn2/')    
+            if Read.CSFn1 : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn1/')
+            if Read.CSFn2 : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn2/')
 
-        if Read.ReadAugments.Mode and not (modeData == 'test'):         
-            
+        if Read.ReadAugments.Mode and not (modeData == 'test'):
+
             Input = LoopReadingData(Input, Dir + '/Augments' + sdTag2   )
-                                                    
+
             if Read.Main  and os.path.exists(Dir + '/Main/Augments' + sdTag2):  Input = LoopReadingData(Input, Dir + '/Main/Augments'  + sdTag2)
             if Read.ET    and os.path.exists(Dir + '/ET/Augments'   + sdTag2):  Input = LoopReadingData(Input, Dir + '/ET/Augments'    + sdTag2)
             if Read.SRI   and os.path.exists(Dir + '/SRI/Augments'  + sdTag2):  Input = LoopReadingData(Input, Dir + '/SRI/Augments'   + sdTag2)
@@ -611,10 +611,10 @@ def search_ExperimentDirectory(whichExperiment):
 
     def add_Sagittal_Cases(whichExperiment , train , test , NucleusName):
         if whichExperiment.Nucleus.Index[0] == 1 and whichExperiment.Dataset.slicingInfo.slicingDim == 2:
-            train.Input_Sagittal = checkInputDirectory(train.address, NucleusName, True, 'train') 
-            test.Input_Sagittal  = checkInputDirectory(test.address , NucleusName, True, 'test') 
+            train.Input_Sagittal = checkInputDirectory(train.address, NucleusName, True, 'train')
+            test.Input_Sagittal  = checkInputDirectory(test.address , NucleusName, True, 'test')
         return train , test
-    
+
     class train:
         address        = Exp_address + '/train'
         Model          = Exp_address + '/models/' + SE.name                   + '/' + NucleusName  + sdTag
@@ -625,7 +625,7 @@ def search_ExperimentDirectory(whichExperiment):
         Model_InitTF   = Exp_address + '/models/' + SE.name.split('_TF_')[0]  + '/' + NucleusName  + sdTag
         model_Tag = func_model_Tag(whichExperiment)
         Input     = checkInputDirectory(address, NucleusName,False,'train')
-    
+
     class test:
         address = Exp_address + '/test'
         Result  = Exp_address + '/results/' + SE.name + sdTag
@@ -710,9 +710,9 @@ def findBoundingBox(PreStageMask):
     return BB
 
 def Saving_UserInfo(DirSave, params):
-                            
+
     # DirSave = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/models/sE11_Cascade_wRot7_6cnts_sd2/4-VA'
-    User_Info = {            
+    User_Info = {
         'num_Layers'     : int(params.WhichExperiment.HardParams.Model.num_Layers),
         'Trained_SRI'    : params.UserInfo['ReadTrain'].SRI,
         'Trained_ET'     : params.UserInfo['ReadTrain'].ET,
@@ -744,11 +744,11 @@ def Saving_UserInfo(DirSave, params):
 def closeMask(mask,cnt):
     struc = ndimage.generate_binary_structure(3,2)
     if cnt > 1: struc = ndimage.iterate_structure(struc, cnt)
-    return ndimage.binary_closing(mask, structure=struc)  
+    return ndimage.binary_closing(mask, structure=struc)
 
 
 def apply_MajorityVoting(params):
-    
+
     def func_manual_label(subject,nucleusNm):
         class manualCs:
             def __init__(self, flag, label):
@@ -757,10 +757,10 @@ def apply_MajorityVoting(params):
 
         dirr = subject.address + '/Label/' + nucleusNm + '_PProcessed.nii.gz'
 
-        if os.path.isfile(dirr): 
+        if os.path.isfile(dirr):
             label = fixMaskMinMax(nib.load(dirr).get_data(),nucleusNm)
             manual = manualCs(flag=True, label=label)
-                 
+
         else: manual = manualCs(flag=False,label='')
 
         return manual
@@ -769,7 +769,7 @@ def apply_MajorityVoting(params):
 
     address = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name + '/'
     a = Nuclei_Class().All_Nuclei()
-    num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes  
+    num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes
 
     for sj in tqdm(params.directories.Test.Input.Subjects):
         subject = params.directories.Test.Input.Subjects[sj]
@@ -780,17 +780,17 @@ def apply_MajorityVoting(params):
             ix , pred3Dims = 0 , ''
             im = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
 
-            manual = func_manual_label(subject, nucleusNm)            
+            manual = func_manual_label(subject, nucleusNm)
             for sdInfo in ['sd0', 'sd1' , 'sd2']:
                 address_nucleus = address + sdInfo + '/' + subject.subjectName + '/' + nucleusNm + '.nii.gz'
                 if os.path.isfile(address_nucleus):
-                    
-                    pred = nib.load(address_nucleus).get_data()[...,np.newaxis]                                                
+
+                    pred = nib.load(address_nucleus).get_data()[...,np.newaxis]
                     pred3Dims = pred if ix == 0 else np.concatenate((pred3Dims,pred),axis=3)
                     ix += 1
-            
-            if ix > 0:  
-                predMV = pred3Dims.sum(axis=3) >= 2 
+
+            if ix > 0:
+                predMV = pred3Dims.sum(axis=3) >= 2
                 saveImage( predMV , im.affine, im.header, address + '2.5D_MV/' + subject.subjectName + '/' + nucleusNm+ '.nii.gz')
 
 
@@ -798,7 +798,7 @@ def apply_MajorityVoting(params):
                     VSI[cnt,:]  = [nucleiIx , metrics.VSI_AllClasses(predMV, manual.Label).VSI()]
                     HD[cnt,:]   = [nucleiIx , metrics.HD_AllClasses(predMV, manual.Label).HD()]
                     Dice[cnt,:] = [nucleiIx , mDice(predMV, manual.Label)]
-                
+
         if Dice[:,1].sum() > 0:
             np.savetxt( address + '2.5D_MV/' + subject.subjectName + '/VSI_All.txt'  ,VSI  , fmt='%1.1f %1.4f')
             np.savetxt( address + '2.5D_MV/' + subject.subjectName + '/HD_All.txt'   ,HD   , fmt='%1.1f %1.4f')
@@ -823,7 +823,7 @@ def extracting_the_biggest_object(pred_Binary):
         return fitlered_pred
 
     else:
-        return pred_Binary  
+        return pred_Binary
 
 def test_precision_recall():
     import pandas as pd
@@ -837,9 +837,9 @@ def test_precision_recall():
     write_flag = False
     PR = {}
     if write_flag: df = pd.DataFrame()
-    if write_flag: writer = pd.ExcelWriter(path=dir + 'Precision_Recall.xlsx', engine='xlsxwriter') 
-        
-        
+    if write_flag: writer = pd.ExcelWriter(path=dir + 'Precision_Recall.xlsx', engine='xlsxwriter')
+
+
     for ind in range(13):
 
         nucleus_name = Names[ind].split('-')[1]
@@ -847,7 +847,7 @@ def test_precision_recall():
         mskM = nib.load(dirM  + Names[ind] + '_PProcessed.nii.gz').get_data()
 
         # plt.plot(np.unique(msk))
-        
+
         precision, recall = metrics.Precision_Recall_Curve(y_true=mskM,y_pred=msk, Show=True, name=nucleus_name, directory=dir)
 
         if write_flag:
@@ -864,14 +864,14 @@ def test_extract_biggest_object():
     import numpy as np
     import matplotlib.pyplot as plt
     import os, sys
-    from tqdm import tqdm 
+    from tqdm import tqdm
 
 
     dir_predictions = '/array/ssd/msmajdi/experiments/keras/exp6_uncropped/results/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CVs_all/sd2/'
     main_directory = '/array/ssd/msmajdi/experiments/keras/exp6_uncropped/crossVal/Main/' # c/vimp2_988_08302013_CB/PProcessed.nii.gz'
 
     for cv in tqdm(['a/', 'b/' , 'c/' , 'd/' , 'e/', 'f/']):
-        
+
         if not os.path.exists(main_directory + cv): continue
 
         subjects = [s for s in os.listdir(main_directory + cv) if 'vimp' in s]
@@ -899,11 +899,11 @@ def test_extract_biggest_object():
                     fitlered_prediction[tuple(cds)] = True
 
                 Dice = np.zeros(2)
-                Dice[0], Dice[1] = 1, smallFuncs.mDice(fitlered_prediction > 0.5 , label > 0.5) 
+                Dice[0], Dice[1] = 1, smallFuncs.mDice(fitlered_prediction > 0.5 , label > 0.5)
                 np.savetxt(dir_predictions + subj + '/Dice_1-THALAMUS_biggest_obj.txt' ,Dice,fmt='%1.4f')
 
                 smallFuncs.saveImage(fitlered_prediction , OP.affine , OP.header , dir_predictions + subj + '/1-THALAMUS_biggest_obj.nii.gz')
-        
+
         else:
             image = objects[0].image
 
@@ -911,15 +911,15 @@ def merge_left_right_labels(subj_address):
     left  = nib.load(subj_address + '/left/2.5D_MV/AllLabels.nii.gz')  if os.path.isfile(subj_address + '/left/2.5D_MV/AllLabels.nii.gz') else []
     right = nib.load(subj_address + '/right/2.5D_MV/AllLabels.nii.gz') if os.path.isfile(subj_address + '/right/2.5D_MV/AllLabels.nii.gz') else []
 
-    if left and right: saveImage(image= left.get_data() + right.get_data(), affine=left.affine , header=left.header , outDirectory=subj_address + '/left/AllLabels_Left_and_Right.nii.gz')    
+    if left and right: saveImage(image= left.get_data() + right.get_data(), affine=left.affine , header=left.header , outDirectory=subj_address + '/left/AllLabels_Left_and_Right.nii.gz')
 
 class SNR_experiment():
-    
+
     def __init__(self):
-        pass          
-    
+        pass
+
     def script_adding_WGN(self, directory='/mnt/sda5/RESEARCH/PhD/Thalmaus_Dataset/SNR_Tests/vimp2_ANON695_03132013/', SD_list=np.arange(1,80,5), run_network=True):
-       
+
         def add_WGN(input=[], noise_mean=0,noise_std=1):
             from numpy.fft import fftshift, fft2
             gaussian_noise_real = np.random.normal(loc=noise_mean , scale = noise_std, size=input.shape)
@@ -929,51 +929,51 @@ class SNR_experiment():
             # template = nib.load('general/RigidRegistration/cropped_origtemplate.nii.gz').get_data()
             # psd_template = np.mean(abs(fftshift(fft2(template/template.max())))**2)
 
-            # psd_template, max_template = 325, 12.66            
+            # psd_template, max_template = 325, 12.66
             psd_signal = np.mean(abs(fftshift(fft2(input)))**2)
 
             # psd_noise_image = psd_signal - psd_template * (input.max()**2)
             psd_noise = np.mean(abs(fftshift(fft2(gaussian_noise)))**2)
             # psd_noise       = psd_noise_added + psd_noise_image
-            
+
             SNR = 10*np.log10(psd_signal/psd_noise)  # SNR = PSD[s]/PSD[n]  if x = s + n
             # SNR = 10*np.log10(np.mean(input**2)/np.mean(abs(gaussian_noise)**2))  # SNR = E[s^2]/E[n^2]  if x = s + n
             return abs(input + gaussian_noise) , SNR
-                
+
         directory2 = os.path.dirname(directory).replace(' ','\ ')
         os.system("mkdir {0}/vimp2_orig_SNR_10000 ; mv {0}/* {0}/vimp2_orig_SNR_10000/ ".format(directory2))
         subject_name = 'vimp2_orig'
         dir_original_image = directory + subject_name + '_SNR_10000'
-        
+
         SNR_List = []
         np.random.seed(0)
         for noise_std in SD_list:
-            
+
             imF = nib.load(dir_original_image + '/PProcessed.nii.gz')
             im = imF.get_data()
 
             noisy_image, SNR = add_WGN(input=im, noise_mean=0,noise_std=noise_std)
             SNR = int(round(SNR))
-            
+
             if SNR not in SNR_List:
                 SNR_List.append(SNR)
                 print('SNR:',int(round(SNR)), 'std:',noise_std)
-                
-                dir_noisy_image = directory + 'vimp2_noisy_SNR_' + str(SNR) 
+
+                dir_noisy_image = directory + 'vimp2_noisy_SNR_' + str(SNR)
                 saveImage(noisy_image , imF.affine , imF.header , dir_noisy_image + '/PProcessed.nii.gz')
-                
+
                 os.system('cp -r %s %s'%(dir_original_image.replace(' ','\ ') + '/Label', dir_noisy_image.replace(' ','\ ') + '/Label'))
 
-                if run_network: 
+                if run_network:
                     os.system( "python main.py --test %s"%(dir_noisy_image.replace(' ','\ ') + '/PProcessed.nii.gz') )
-                        
+
     def read_all_Dices_and_SNR(self, directory=''):
         Dices = {}
         for subj in [s for s in os.listdir(directory) if os.path.isdir(directory + s)]:
 
-            SNR = int(subj.split('_SNR_')[-1]) 
-            
-            Dices[SNR] = pd.read_csv( directory + subj + '/left/2.5D_MV/Dice_All.txt',index_col=0,header=None,delimiter=' ',names=[SNR]).values.reshape([-1]) if os.path.isfile(directory + subj + '/left/2.5D_MV/Dice_All.txt') else np.zeros(13)          
+            SNR = int(subj.split('_SNR_')[-1])
+
+            Dices[SNR] = pd.read_csv( directory + subj + '/left/2.5D_MV/Dice_All.txt',index_col=0,header=None,delimiter=' ',names=[SNR]).values.reshape([-1]) if os.path.isfile(directory + subj + '/left/2.5D_MV/Dice_All.txt') else np.zeros(13)
 
         df = pd.DataFrame(Dices,index=Thalamus_Sub_Functions().All_Nuclei().Names)
         df = df.transpose()
@@ -985,7 +985,7 @@ class SNR_experiment():
         return df
 
     def loop_all_subjects_read_Dice_SNR(self, directory='/mnt/sda5/RESEARCH/PhD/Thalmaus_Dataset/SNR_Tests/'):
-                
+
         writer = pd.ExcelWriter(directory + 'Dice_vs_SNR.xlsx',engine='xlsxwriter')
         for subject in [s for s in os.listdir(directory) if os.path.isdir(directory + s) and 'vimp2_' in s]:
             print(subject)
@@ -998,21 +998,21 @@ class Thalamus_Sub_Functions():
     def __init__(self):
         pass
 
-    def measure_metrics(self, Dir_manual='', Dir_prediction='', metrics=['Dice'], save=False):
-        
+    def measure_metrics(self, Dir_manual='', Dir_prediction='', metrics=['DICE'], save=False):
+
         if not (os.path.isdir(Dir_prediction) and os.path.isdir(Dir_manual)): raise Warning('directory does not exist'.upper())
         Measurements = {s:[] for s in metrics}
         for nuclei in Nuclei_Class().All_Nuclei().Names:
             pred = nib.load(Dir_prediction + nuclei + '.nii.gz').get_data()
             manual = nib.load(Dir_manual + nuclei + '_PProcessed.nii.gz').get_data()
-            
-            if 'Dice' in metrics: Measurements['Dice'].append([nuclei, mDice(pred, manual)])
-        
+
+            if 'DICE' in metrics: Measurements['DICE'].append([nuclei, mDice(pred, manual)])
+
         if save:
             for mt in metrics: np.savetxt(Dir_prediction + 'All_' + mt + '.txt', Measurements[mt] , fmt='%1.1f %1.4f')
 
         return Measurements
-                    
+
     def nucleus_name(self, index=1):
         switcher = {
             1: '1-THALAMUS',
@@ -1027,7 +1027,7 @@ class Thalamus_Sub_Functions():
             11: '11-CM',
             12: '12-MD-Pf',
             13: '13-Hb',
-            14: '14-MTT'}  
+            14: '14-MTT'}
         return switcher.get(index, 'wrong index')
 
     def All_Nuclei(self):
@@ -1037,7 +1037,7 @@ class Thalamus_Sub_Functions():
             Indexes = indexes[:]
             Names  = [self.nucleus_name(index) for index in Indexes]
 
-        return All_Nuclei()   
+        return All_Nuclei()
 
     def run_network(self,directory='mnt/PProcessed.nii.gz', thalamic_side='--left', modality='--wmn', gpu="None"):
         os.system( 'python main.py --test %s %s %s --gpu %s'%(directory, thalamic_side, modality, gpu) )
