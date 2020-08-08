@@ -10,42 +10,7 @@ from skimage import data, img_as_float
 import sys
 from tqdm import tqdm
 import os
-# dir = '/media/artin/dataLocal1/dataThalamus/priors_forCNN_Ver2/vimp2_869_06142013_BL/'
-# name = 'WMnMPRAGE_bias_corr_Deformed.nii.gz'
-# im = nib.load(dir + name)
-# def testParameters():
-#
-#     method = 'wavelet'
-#     init = {}
-#     if 'tv_chambolle' in method:
-#         init['denoising_method'] = 'tv_chambolle'
-#         init['weight'] = 0.2
-#
-#     elif 'bilateral' in method:
-#         init['denoising_method'] = 'bilateral'
-#
-#         if 'sigma_color' in inputs:
-#             init['sigma_color'] = inputs[inputs.index['sigma_color'] + 1]
-#
-#         if 'sigma_spatial' in inputs:
-#             init['sigma_spatial'] = inputs[inputs.index['sigma_spatial'] + 1]
-#
-#     elif 'wavelet' in method:
-#         init['denoising_method'] = 'wavelet'
-#         if 'convert2ycbcr' in inputs:
-#             init['convert2ycbcr'] = 'True'
-#         else:
-#             init['convert2ycbcr'] = 'False'
-#
-#     init['inDir'] = sys.argv[1]
-#     init['outDir'] = sys.argv[2]
 
-# Examples:
-#          python3 denoising.py inputImage OutputImage --tv_chambolle weight 0.1 eps 0.0002 n_iter_max 200
-#          python3 denoising.py inputImage OutputImage --bilateral sigma_color 0.2 sigma_spatial 1 win_size 3
-#          python3 denoising.py inputImage OutputImage --wavelet wavelet 'db1' method BayesShrink mode soft
-#          python3 denoising.py inputImage OutputImage --nl_means patch_size 7 patch_distance 11 h 0.1
-#          python3 denoising.py inputImage OutputImage --tv_bregman max_iter 100 eps 0.001 isotropic True weight 0.1
 
 def inputParameteres():
 

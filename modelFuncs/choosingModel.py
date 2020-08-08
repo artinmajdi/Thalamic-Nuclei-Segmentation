@@ -1,31 +1,19 @@
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from keras import models as kerasmodels
-# from keras import layers
-# from keras.callbacks import ModelCheckpoint
-from keras_tqdm import TQDMCallback # , TQDMNotebookCallback
 import numpy as np
 import otherFuncs.smallFuncs as smallFuncs
 import otherFuncs.datasets as datasets
-import preprocess.croppingA as croppingA
-import modelFuncs.Metrics as Metrics
 from tqdm import tqdm
-from time import time
 import nibabel as nib
 from scipy import ndimage
-from shutil import copyfile
-# import pandas as pd
 import mat4py
 import pickle
-import skimage
 import keras
 from time import time
-from keras.utils import multi_gpu_model, multi_gpu_utils
+from keras.utils import multi_gpu_model
 import h5py
 import keras.layers as KLayers
-from sklearn.utils import class_weight
-# import json
-from keras.preprocessing.image import ImageDataGenerator
 import modelFuncs.LossFunction as LossFunction
 from skimage.transform import AffineTransform , warp
 

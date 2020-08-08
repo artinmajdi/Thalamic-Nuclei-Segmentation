@@ -4,9 +4,6 @@ import modelFuncs.LossFunction as LossFunction
 import modelFuncs.Metrics as Metrics
 import modelFuncs.Optimizers as Optimizers
 import otherFuncs.smallFuncs as smallFuncs
-from otherFuncs import datasets
-import pickle
-from copy import deepcopy
 import numpy as np
 import json
 
@@ -135,7 +132,7 @@ def func_Exp_subExp_Names(UserInfo):
         DO = UserInfo['DropoutValue']
         SE = UserInfo['SubExperiment']
         NL = '_NL' + str(UserInfo['simulation'].num_Layers)
-        ACH =  '_' + UserInfo['architectureType']
+        ACH =  '_' + 'Res_Unet2'
         US = '_US' + str(UserInfo['upsample'].Scale)
         _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
         LF = '_' + a
@@ -555,7 +552,7 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.epochs        = UserInfo['simulation'].epochs
         HardParams.Model.DataGenerator = UserInfo['dataGenerator']                
         HardParams.Model.Initialize    = UserInfo['InitializeB']
-        HardParams.Model.architectureType = UserInfo['architectureType'] 
+        HardParams.Model.architectureType = 'Res_Unet2'
         HardParams.Model.Upsample      = UserInfo['upsample']
 
 
@@ -604,7 +601,7 @@ def func_WhichExperiment(UserInfo):
     def old_adding_TransferLearningParams(WhichExperiment):
         class best_WMn_Model:
 
-            architectureType = 'U-Net4'
+            architectureType = 'Res_Unet2'
             EXP_address = '/array/ssd/msmajdi/experiments/keras/exp6/models/'
 
             Model_Method = WhichExperiment.HardParams.Model.Method.Type

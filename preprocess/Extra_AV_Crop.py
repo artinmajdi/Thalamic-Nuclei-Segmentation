@@ -3,12 +3,8 @@ import sys
 sys.path.append('/array/ssd/msmajdi/code/thalamus/keras') # sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
 import otherFuncs.smallFuncs as smallFuncs
-from shutil import copyfile
 from skimage.measure import regionprops, label
-import Parameters.UserInfo as UserInfo
-from Parameters import paramFunc
-# params = paramFunc.Run(UserInfo.__dict__, terminal=False)
-import nibabel as nib       
+import nibabel as nib
 
 def main(dir_in, dir_template):
     class UserEntry():

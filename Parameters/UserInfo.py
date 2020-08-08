@@ -1,7 +1,7 @@
 
 
-Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
-architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
+Model_Method = 'Cascade'
+architectureType = 'Res_Unet2'
 gpu = "2"
 
 local_flag = False

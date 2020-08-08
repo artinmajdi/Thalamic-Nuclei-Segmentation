@@ -3,7 +3,6 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from keras import models as kerasmodels
 from keras import layers, losses, optimizers
 import numpy as np
-# from skimage.filters import threshold_otsu
 import otherFuncs.smallFuncs as smallFuncs
 import otherFuncs.datasets as datasets
 import nibabel as nib
