@@ -1,21 +1,18 @@
 
-
-Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
-architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
+Model_Method = 'Cascade'
+architectureType = 'Res_Unet2'
 gpu = "2"
 
 local_flag = False
 container_flag = False
 use_train_padding_size = False
 
-wmn_csfn = 'wmn' # 'wmn' 'csfn' 
-# TypeExperiment == 1: # 3T      Init Rn
-# TypeExperiment == 2:  # Main        Init 3T
+wmn_csfn = 'wmn' # 'wmn' 'csfn'
 
 TypeExperiment = 8
 
 
-#! Preprocessing
+# ! Preprocessing
 class preprocesscs:
     def __init__(self):
         self.Mode = False
@@ -25,8 +22,8 @@ class preprocesscs:
 
 preprocess = preprocesscs()
 
-
 permutation_Index = 0
+
 multi_Class_Mode = True
 readAugments_Mode = True
 lossFunction_Index = 7
@@ -42,7 +39,7 @@ class normalizeCs:
     def __init__(self):
             
         self.Mode = True
-        self.Method = '1Std0Mean' #  'MinMax' #  'Both' # 
+        self.Method = '1Std0Mean'  # 'MinMax' #  'Both' #
         self.per_Subject = True
         self.per_Dataset = False
 
@@ -88,19 +85,20 @@ class upsamplecs:
         self.Scale = 1
 
 upsample = upsamplecs()
+Learning_Rate = 1e-3
 
 class simulationcs:
     def __init__(self):
         self.TestOnly      = testOnly
         self.epochs        = 300
         self.GPU_Index     = gpu
-        self.Learning_Rate = 1e-3
+        self.Learning_Rate = Learning_Rate
         self.num_Layers    = 3 
         self.FCN1_NLayers  = fCN1_NLayers
         self.FCN2_NLayers  = fCN2_NLayers
-        self.nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
-        self.slicingDim    = [2 ,1 ,0]
-        self.batch_size    = 10
+        self.nucleus_Index = [1 ,2 ,4 ,5 ,6 ,7 ,8 ,9 ,10 ,11 ,12 ,13 ,14]
+        self.slicingDim    = [2 ,1, 0]
+        self.batch_size = 10
         self.InputImage2Dvs3D = 2
         self.FirstLayer_FeatureMap_Num = 20
         self.FCN_FeatureMaps = 30
@@ -113,17 +111,20 @@ class simulationcs:
         self.save_Best_Epoch_Model = True
         self.Use_Coronal_Thalamus_InSagittal = True
         self.Use_TestCases_For_Validation = True
-        self.ImClosePrediction =  True # False #
+        self.ImClosePrediction = True  # False #
         self.Multi_Class_Mode = multi_Class_Mode
-        self.LR_Scheduler = True
+        self.LR_Scheduler = False
         self.ReadAugments_Mode = readAugments_Mode
-    
+
+
 simulation = simulationcs()
+
 
 class dataGeneratorcs:
     def __init__(self):
         self.Mode = False
         self.NumSubjects_Per_batch = 5
+
 
 dataGenerator = dataGeneratorcs()
 
@@ -131,22 +132,22 @@ dataGenerator = dataGeneratorcs()
 class InputPaddingcs:
     def __init__(self):
         self.Automatic = True
-        self.HardDimensions = [116,144,84]
+        self.HardDimensions = [116, 144, 84]
+
 
 InputPadding = InputPaddingcs()
 
-if Experiments.Index == '8': 
-    InputPadding.HardDimensions = [228,288,168]
-
+if Experiments.Index == '8':
+    InputPadding.HardDimensions = [228, 288, 168]
 
 mode_saveTrue_LoadFalse = True
 havingBackGround_AsExtraDimension = True
 
 gapDilation = 5
 
+code_address = __main__  # '/array/ssd/msmajdi/code/thalamus/keras/'
 
 
-code_address = '/array/ssd/msmajdi/code/thalamus/keras/'
 class Templatecs:
     def __init__(self):
         self.Image = code_address + 'general/RigidRegistration' + '/origtemplate.nii.gz'
@@ -154,21 +155,19 @@ class Templatecs:
         # self.Mask_2AV = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/CropMask_AV.nii.gz' 
         self.Address = code_address + 'general/RigidRegistration/'
 
+
 Template = Templatecs()
 
-
-#! metric function
+# ! metric function
 #          1: 'DICE'
 #          2: 'Accuracy'
 #          3: 'DICE & Accuracy'
 MetricIx = 3
 
-
-# if Local_Flag: 
+# if Local_Flag:
 #     Experiments_Address = '/home/artinl/Documents/research'
 # else: 
-Experiments_Address = '/array/ssd/msmajdi/experiments/keras' #'/array/ssd/msmajdi/exp_test' # 
-
+Experiments_Address = '/array/ssd/msmajdi/experiments/keras'  # '/array/ssd/msmajdi/exp_test' #
 
 if local_flag:
     Experiments_Address = '/media/artin/SSD/RESEARCH/PhD/Experiments'
@@ -182,28 +181,29 @@ if container_flag:
     Template.Mask = '/code/general/RigidRegistration/CropMaskV3.nii.gz'
     Template.Address = '/code/general/RigidRegistration/'
 
-
 AugmentMode = False
 Augment_LinearMode = True
 Augment_Linear_Length = 6
 
+
 class Augment_Rotationcs:
     def __init__(self):
         self.Mode = True
-        self.AngleMax = 7 # '7_6cnts' # '7' # 7_4cnts
+        self.AngleMax = 7  # '7_6cnts' # '7' # 7_4cnts
+
 
 Augment_Rotation = Augment_Rotationcs()
+
 
 class Augment_Shearcs:
     def __init__(self):
         self.Mode = False
         self.ShearMax = 4
 
+
 Augment_Shear = Augment_Shearcs()
-
-
 
 Augment_NonLinearMode = False
 
-SaveReportMethod = 'pickle'
+SaveReportMethod = 'pickle
 
