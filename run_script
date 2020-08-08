@@ -1,9 +1,0 @@
-
-
-
-
-
-for x in h; do python main.py -g 7 -cv $x -wc wmn; done
-
-
-

@@ -726,7 +726,6 @@ def Saving_UserInfo(DirSave, params):
         'slicing_Dim'    : params.UserInfo['simulation'].slicingDim[0],
         'batch'          : int(params.UserInfo['simulation'].batch_size),
         'FeatureMaps'    : int(params.UserInfo['simulation'].FirstLayer_FeatureMap_Num),
-        'Mult_Thalmaus'  : params.UserInfo['simulation'].Multiply_By_Thalmaus,
         'Weighted_Class' : params.UserInfo['simulation'].Weighted_Class_Mode,
         'Dropout'        : params.UserInfo['DropoutValue'],
         'gapDilation'    : int(params.UserInfo['gapDilation']),

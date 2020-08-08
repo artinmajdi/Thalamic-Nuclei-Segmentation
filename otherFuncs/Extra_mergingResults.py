@@ -735,20 +735,6 @@ class merging_Volumes_Values:
 
 
 UserInfoB = UserInfo.__dict__
-# UserInfoB['best_network_MPlanar'] = True
-
-# UserInfoB['Model_Method'] = 'Cascade'
-# UserInfoB['simulation'].num_Layers = 3
-# # UserInfoB['simulation'].slicingDim = [2,1,0]
-# UserInfoB['architectureType'] = 'Res_Unet2'
-# UserInfoB['lossFunction_Index'] = 4
-# UserInfoB['Experiments'].Index = '6'
-# UserInfoB['copy_Thalamus'] = False
-# UserInfoB['TypeExperiment'] = 15
-# UserInfoB['simulation'].LR_Scheduler = True    
-# UserInfoB['tempThalamus'] = True
-# UserInfoB['simulation'].ReadAugments_Mode = False 
-# UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
 
 params = paramFunc.Run(UserInfoB, terminal=True)
 

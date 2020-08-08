@@ -3,48 +3,13 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import modelFuncs.LossFunction as LossFunction
 import modelFuncs.Metrics as Metrics
 import modelFuncs.Optimizers as Optimizers
-# from Parameters import Classes
 import otherFuncs.smallFuncs as smallFuncs
 from otherFuncs import datasets
 import pickle
 from copy import deepcopy
-# import pandas as pd
 import numpy as np
 import json
 
-"""
-def temp_Experiments_preSet(UserInfoB):
-
-    # TypeExperiment == 1: # Main
-    # TypeExperiment == 2: # Transfer Learn ET
-    # TypeExperiment == 3: # SRI
-    # TypeExperiment == 4: # Predict ET from MS&Ctrl
-    # TypeExperiment == 5: # Train ET Initialized from 3T
-    # TypeExperiment == 6: # Train Main+ET
-    # TypeExperiment == 7: # Train Main+ET+SRI
-    # TypeExperiment == 8: # Train Main+SRI
-    # TypeExperiment == 9: # Train ET Initialized from Main+SRI
-    # TypeExperiment == 10: # Main + All Augments
-    # TypeExperiment == 11: # Main + Init from Thalamus
-    # TypeExperiment == 12: # Main + Init from 3T
-    class TypeExperimentFuncs():
-        def main(self, TypeExperiment = 1):
-            switcher = {
-                1:  (11  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
-                2:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC(Mode=True  , FrozenLayers=[0] , Tag = '_TF') ),
-                3:  (8   ,   self.ReadTrainC(SRI=1 , ET=0 , Main=0)  ,  self.Transfer_LearningC() ),
-                4:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC() ),
-                5:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC() ),
-                6:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=1)  ,  self.Transfer_LearningC() ),
-                7:  (11  ,   self.ReadTrainC(SRI=1 , ET=1 , Main=1)  ,  self.Transfer_LearningC() ),
-                8:  (11  ,   self.ReadTrainC(SRI=1 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
-                9:  (11  ,   self.ReadTrainC(SRI=0 , ET=1 , Main=0)  ,  self.Transfer_LearningC() ),
-                10: (11  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
-                11: (11  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
-                12: (11  ,   self.ReadTrainC(SRI=0 , ET=0 , Main=1)  ,  self.Transfer_LearningC() ),
-                }
-            return switcher.get(TypeExperiment , 'wrong Index')    
-"""
 def temp_Experiments_preSet_V2(UserInfoB):
 
     class TypeExperimentFuncs():
@@ -131,35 +96,13 @@ def temp_Experiments_preSet_V2(UserInfoB):
 
         def main(self, TypeExperiment = 1, perm_Index = 0):
             switcher = {
-                1:  (8   ,   self.ReadTrainC(SRI=1)          , self.InitializeB()                    ,  self.Transfer_LearningC()          , '' ),
-
-                2:  (12  ,   self.ReadTrainC(Main=1)         , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC()          , '_Main_Init_3T' ),
-                3:  (12  ,   self.ReadTrainC(SRI=1, Main=1)  , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC()          , '_3T7T_Init_3T'),
-
-                4:  (12  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_ET_Init_Main'),
-                5:  (13  ,   self.ReadTrainC(ET=1)           , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_ET_TL_Main'),
-
-                6:  (12  ,   self.ReadTrainC(CSFn1=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_CSFn1_Init_Main'),
-                # 11: (12  ,   self.ReadTrainC(CSFn1=1)        , self.InitializeB(From_3T=True)        ,  self.Transfer_LearningC()          , '_CSFn1_Init_3T'),
-
-                7:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_CSFn1=True)     ,  self.Transfer_LearningC()          , '_CSFn2_Init_CSFn1'),
                 8:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_CSFn2_Init_Main'),
-                9:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(FromThalamus=True)   ,  self.Transfer_LearningC()          , '_CSFn2_Init_Thalamus'),
-                10: (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB()                    ,  self.Transfer_LearningC()          , '_CSFn2_NoInit'),
-                #10: (13 ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T   =True)   ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_CSFn2_TL_Main'),
-                11: (13  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_CSFn2_TL_Main'),
-                12: (13  ,   self.ReadTrainC(Main=1)         , self.InitializeB()                    ,  self.Transfer_LearningC(Mode=True, permutation_Index=perm_Index) , '_Main_test_TL_Main'),
-                13: (13  ,   self.ReadTrainC(CSFn1=1,CSFn2=1) , self.InitializeB(From_7T   =True)    ,  self.Transfer_LearningC()          , '_CSFn2_CSFn1_Init_Main'),
-                14: (12  ,   self.ReadTrainC(Main=1)         , self.InitializeB()                    ,  self.Transfer_LearningC()          , '_Main_Init_Rn' ),
                 15: (12  ,   self.ReadTrainC(Main=1,ET=1)         , self.InitializeB(From_3T=True)   ,  self.Transfer_LearningC()          , '_Main_Ps_ET_Init_3T' ),
-                16: (12  ,   self.ReadTrainC(SRI=1, Main=1, ET=1) , self.InitializeB(From_3T=True)   ,  self.Transfer_LearningC()          , '_SRI_Ps_Main_Ps_ET_Init_3T' ),
-                17: (12  ,   self.ReadTrainC(Main=1,ET=1)         , self.InitializeB()               ,  self.Transfer_LearningC()          , '_Main_Ps_ET_7T_Init_Rn_test_ET_3T' ),
-                18: (12  ,   self.ReadTrainC(Main=1,ET=1)         , self.InitializeB()               ,  self.Transfer_LearningC()          , '_Main_Ps_ET_Init_Rn' ),
                 }
             return switcher.get(TypeExperiment , 'wrong Index')
 
     a,b,c,d,e = TypeExperimentFuncs().main(TypeExperiment=UserInfoB['TypeExperiment'], perm_Index=UserInfoB['permutation_Index'])
-    b.ReadAugments.Mode = UserInfoB['simulation'].ReadAugments_Mode
+    b.ReadAugments.Mode = True
     
     UserInfoB['SubExperiment'].Index = a
     UserInfoB['ReadTrain']           = b
@@ -167,10 +110,6 @@ def temp_Experiments_preSet_V2(UserInfoB):
     UserInfoB['InitializeB']         = c
     UserInfoB['SubExperiment'].Tag   = e + UserInfoB['tag_temp']  
 
-
-    # if UserInfoB['TypeExperiment'] == 11: UserInfoB['architectureType'] = 'FCN_Unet_TL' 
-    # if UserInfoB['upsample'].Scale == 1: UserInfoB['upsample'].Mode = False
-        
     return UserInfoB
 
 def Run(UserInfoB, terminal=False):
@@ -205,8 +144,6 @@ def func_Exp_subExp_Names(UserInfo):
         lrate = '_lr' + str(UserInfo['simulation'].Learning_Rate) if UserInfo['wmn_csfn'] == 'csfn' else ''
 
 
-        FCN = '_FCNA' + str(UserInfo['simulation'].FCN1_NLayers)+'_FCNB' + str(UserInfo['simulation'].FCN2_NLayers) + '_FM' + str(UserInfo['simulation'].FCN_FeatureMaps) if ('TL' in UserInfo['architectureType']) and ('FCN' in UserInfo['architectureType']) else ''
-
         method = UserInfo['Model_Method']                                                                      
         PI = '' # '_permute' + str(UserInfo['permutation_Index'])
 
@@ -222,7 +159,7 @@ def func_Exp_subExp_Names(UserInfo):
                 self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
                 self.crossVal = UserInfo['CrossVal']
        
-        tag = method + FM + ACH + NL + LF + US + FCN + SC + LR + PI + lrate + SE.Tag
+        tag = method + FM + ACH + NL + LF + US + SC + LR + PI + lrate + SE.Tag
         
         if UserInfo['wmn_csfn'] == 'csfn':
             tag += '_WITH_NEW_CASES'
@@ -289,8 +226,6 @@ def func_WhichExperiment(UserInfo):
                     ReferenceMask = ''
                     havingBackGround_AsExtraDimension = True
                     InputImage2Dvs3D = 2
-                    Multiply_By_Thalmaus = False
-                    Multiply_By_Rest_For_AV = False
                     save_Best_Epoch_Model = False
                     Use_Coronal_Thalamus_InSagittal = False
                     Use_TestCases_For_Validation = False
@@ -313,7 +248,6 @@ def func_WhichExperiment(UserInfo):
 
             class layer_Params:
                 FirstLayer_FeatureMap_Num = 64
-                FCN_FeatureMaps    =  30
                 batchNormalization = True
                 ConvLayer = convLayer()
                 MaxPooling = maxPooling()
@@ -342,10 +276,8 @@ def func_WhichExperiment(UserInfo):
                 metrics = ''
                 optimizer = ''  # adamax Nadam Adadelta Adagrad  optimizers.adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
                 
-                verbose = 1
+                verbose = 2
                 num_Layers = ''
-                FCN1_NLayers = 3
-                FCN2_NLayers = 2
                 InputDimensions = ''
                 Layer_Params = layer_Params()
                 showHistory = True
@@ -602,10 +534,9 @@ def func_WhichExperiment(UserInfo):
 
             Layer_Params = HardParams.Model.Layer_Params
             
-            kernel_size, maxPooling = fixing_NetworkParams_BasedOn_InputDim(UserInfo['simulation'].InputImage2Dvs3D)
+            kernel_size, maxPooling = fixing_NetworkParams_BasedOn_InputDim(2)
 
             Layer_Params.FirstLayer_FeatureMap_Num = UserInfo['simulation'].FirstLayer_FeatureMap_Num
-            Layer_Params.FCN_FeatureMaps           = UserInfo['simulation'].FCN_FeatureMaps
             Layer_Params.ConvLayer.Kernel_size = kernel_size()
             Layer_Params.MaxPooling = maxPooling()
             Layer_Params.Dropout.Value     = UserInfo['DropoutValue']
@@ -620,11 +551,8 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.metrics, _    = Metrics.MetricInfo(3)
         HardParams.Model.optimizer, _  = Optimizers.OptimizerInfo(1, UserInfo['simulation'].Learning_Rate)
         HardParams.Model.num_Layers    = UserInfo['simulation'].num_Layers
-        HardParams.Model.FCN1_NLayers  = UserInfo['simulation'].FCN1_NLayers
-        HardParams.Model.FCN2_NLayers  = UserInfo['simulation'].FCN2_NLayers
         HardParams.Model.batch_size    = UserInfo['simulation'].batch_size
         HardParams.Model.epochs        = UserInfo['simulation'].epochs
-        HardParams.Model.verbose       = UserInfo['simulation'].verbose
         HardParams.Model.DataGenerator = UserInfo['dataGenerator']                
         HardParams.Model.Initialize    = UserInfo['InitializeB']
         HardParams.Model.architectureType = UserInfo['architectureType'] 
@@ -635,9 +563,6 @@ def func_WhichExperiment(UserInfo):
 
         HardParams.Model.Method.Type                  = UserInfo['Model_Method']
         HardParams.Model.Method.save_Best_Epoch_Model = UserInfo['simulation'].save_Best_Epoch_Model   
-        HardParams.Model.Method.InputImage2Dvs3D      = UserInfo['simulation'].InputImage2Dvs3D
-        HardParams.Model.Method.Multiply_By_Thalmaus              = UserInfo['simulation'].Multiply_By_Thalmaus
-        HardParams.Model.Method.Multiply_By_Rest_For_AV           = UserInfo['simulation'].Multiply_By_Rest_For_AV
 
         HardParams.Model.Method.Use_Coronal_Thalamus_InSagittal   = UserInfo['simulation'].Use_Coronal_Thalamus_InSagittal
         HardParams.Model.Method.Use_TestCases_For_Validation      = UserInfo['simulation'].Use_TestCases_For_Validation
@@ -711,10 +636,6 @@ def func_WhichExperiment(UserInfo):
                 elif sdTag == 1: FM , NL = 20, 3
                 elif sdTag == 2: FM , NL = 20, 3
 
-            # elif Model_Method == 'HCascade':
-            #     if sdTag == 0:   FM , NL = 30, 3
-            #     elif sdTag == 1: FM , NL = 40, 3
-            #     elif sdTag == 2: FM , NL = 40, 3
             else:
                 FM , NL = 20, 3
 
@@ -739,15 +660,7 @@ def func_WhichExperiment(UserInfo):
                 EXP_address = '/array/ssd/msmajdi/experiments/keras/exp6/models/'
                 Model_Method = WhichExperiment.HardParams.Model.Method.Type
                                 
-                if WhichExperiment.HardParams.Model.architectureType in ['FCN_Unet_TL', 'U-Net4']: 
-                    self.FM , self.NL, architectureType = params_bestUnet(Model_Method, SD)
-                elif WhichExperiment.HardParams.Model.architectureType in ['Res_Unet' , 'Res_Unet2' , 'ResFCN_ResUnet2_TL' , 'ResFCN_ResUnet2_TL']: 
-                    self.FM , self.NL, architectureType = params_bestResUnet2(Model_Method, SD)
-                else:
-                    self.FM , self.NL, architectureType = 20, 3, 'Res_Unet2'
-                
-                    
-                # if sE12_Cascade_FM15_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a
+                self.FM , self.NL, architectureType = params_bestResUnet2(Model_Method, SD)                    
                 Tag     = 'sE12_' + Model_Method + '_FM' + str(self.FM) + '_' + architectureType + '_NL' + str(self.NL) + '_LS_' + LossFunction + '_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/'
 
                 self.address = EXP_address + Tag  + WhichExperiment.Nucleus.name + '/sd' + str(SD) + '/model.h5'

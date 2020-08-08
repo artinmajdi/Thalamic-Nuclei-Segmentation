@@ -1,1607 +1,0 @@
-2020-04-26 22:32:08.899969: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
-2020-04-26 22:32:09.249268: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 0 with properties: 
-name: Tesla P100-PCIE-16GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
-pciBusID: 0000:09:00.0
-totalMemory: 15.90GiB freeMemory: 15.64GiB
-2020-04-26 22:32:09.249330: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0
-2020-04-26 22:32:09.656000: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
-2020-04-26 22:32:09.656067: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 
-2020-04-26 22:32:09.656079: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N 
-2020-04-26 22:32:09.656192: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15153 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:09:00.0, compute capability: 6.0)
-/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:523: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
-/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:524: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
-/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
-/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:526: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
-/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:527: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
-/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:532: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-  np_resource = np.dtype([("resource", np.ubyte, 1)])
-Using TensorFlow backend.
-/array/ssd/msmajdi/anaconda3/envs/new-env-fb/lib/python3.6/site-packages/sklearn/externals/joblib/__init__.py:15: DeprecationWarning: sklearn.externals.joblib is deprecated in 0.21 and will be removed in 0.23. Please import this functionality directly from joblib, which can be installed with: pip install joblib. If this warning is raised when loading pickled models, you may need to re-serialize those models with scikit-learn 0.21+.
-  warnings.warn(msg, category=DeprecationWarning)
-Loading train:   0%|          | 0/41 [00:00<?, ?it/s]Loading train:   2%|▏         | 1/41 [00:08<05:42,  8.56s/it]Loading train:   5%|▍         | 2/41 [00:12<04:42,  7.25s/it]Loading train:   7%|▋         | 3/41 [00:28<06:12,  9.79s/it]Loading train:  10%|▉         | 4/41 [00:52<08:44, 14.18s/it]Loading train:  12%|█▏        | 5/41 [01:07<08:35, 14.31s/it]Loading train:  15%|█▍        | 6/41 [01:16<07:20, 12.59s/it]Loading train:  17%|█▋        | 7/41 [01:19<05:31,  9.75s/it]Loading train:  20%|█▉        | 8/41 [01:26<04:53,  8.89s/it]Loading train:  22%|██▏       | 9/41 [01:26<03:26,  6.46s/it]Loading train:  24%|██▍       | 10/41 [01:27<02:30,  4.85s/it]Loading train:  27%|██▋       | 11/41 [01:29<01:57,  3.91s/it]Loading train:  29%|██▉       | 12/41 [01:31<01:35,  3.31s/it]Loading train:  32%|███▏      | 13/41 [01:32<01:15,  2.70s/it]Loading train:  34%|███▍      | 14/41 [01:34<01:03,  2.34s/it]Loading train:  37%|███▋      | 15/41 [01:36<01:00,  2.32s/it]Loading train:  39%|███▉      | 16/41 [01:38<00:52,  2.09s/it]Loading train:  41%|████▏     | 17/41 [01:40<00:53,  2.22s/it]Loading train:  44%|████▍     | 18/41 [01:42<00:44,  1.95s/it]Loading train:  46%|████▋     | 19/41 [01:42<00:35,  1.63s/it]Loading train:  49%|████▉     | 20/41 [01:44<00:35,  1.67s/it]Loading train:  51%|█████     | 21/41 [01:46<00:36,  1.81s/it]Loading train:  54%|█████▎    | 22/41 [01:49<00:36,  1.93s/it]Loading train:  56%|█████▌    | 23/41 [01:53<00:46,  2.59s/it]Loading train:  59%|█████▊    | 24/41 [01:53<00:34,  2.05s/it]Loading train:  61%|██████    | 25/41 [01:54<00:27,  1.73s/it]Loading train:  63%|██████▎   | 26/41 [01:55<00:22,  1.52s/it]Loading train:  66%|██████▌   | 27/41 [01:56<00:19,  1.37s/it]Loading train:  68%|██████▊   | 28/41 [01:58<00:18,  1.40s/it]Loading train:  71%|███████   | 29/41 [01:59<00:15,  1.29s/it]Loading train:  73%|███████▎  | 30/41 [02:01<00:15,  1.43s/it]Loading train:  76%|███████▌  | 31/41 [02:03<00:17,  1.71s/it]Loading train:  78%|███████▊  | 32/41 [02:05<00:17,  1.90s/it]Loading train:  80%|████████  | 33/41 [02:08<00:15,  1.99s/it]Loading train:  83%|████████▎ | 34/41 [02:09<00:13,  1.93s/it]Loading train:  85%|████████▌ | 35/41 [02:13<00:15,  2.54s/it]Loading train:  88%|████████▊ | 36/41 [02:16<00:12,  2.58s/it]Loading train:  90%|█████████ | 37/41 [02:18<00:09,  2.34s/it]Loading train:  93%|█████████▎| 38/41 [02:19<00:06,  2.05s/it]Loading train:  95%|█████████▌| 39/41 [02:22<00:04,  2.22s/it]Loading train:  98%|█████████▊| 40/41 [02:29<00:03,  3.83s/it]Loading train: 100%|██████████| 41/41 [02:51<00:00,  9.27s/it]Loading train: 100%|██████████| 41/41 [02:51<00:00,  4.19s/it]
-concatenating: train:   0%|          | 0/41 [00:00<?, ?it/s]concatenating: train:   5%|▍         | 2/41 [00:00<00:03, 11.02it/s]concatenating: train:  10%|▉         | 4/41 [00:00<00:03, 11.12it/s]concatenating: train:  15%|█▍        | 6/41 [00:00<00:03, 11.30it/s]concatenating: train:  20%|█▉        | 8/41 [00:00<00:02, 11.46it/s]concatenating: train:  24%|██▍       | 10/41 [00:00<00:02, 11.56it/s]concatenating: train:  29%|██▉       | 12/41 [00:01<00:02, 11.60it/s]concatenating: train:  34%|███▍      | 14/41 [00:01<00:02, 11.52it/s]concatenating: train:  39%|███▉      | 16/41 [00:01<00:02, 11.42it/s]concatenating: train:  44%|████▍     | 18/41 [00:01<00:02, 11.07it/s]concatenating: train:  49%|████▉     | 20/41 [00:01<00:01, 11.43it/s]concatenating: train:  54%|█████▎    | 22/41 [00:01<00:01, 11.78it/s]concatenating: train:  59%|█████▊    | 24/41 [00:02<00:01, 11.84it/s]concatenating: train:  63%|██████▎   | 26/41 [00:02<00:01, 11.49it/s]concatenating: train:  68%|██████▊   | 28/41 [00:02<00:01, 11.43it/s]concatenating: train:  73%|███████▎  | 30/41 [00:02<00:00, 11.51it/s]concatenating: train:  78%|███████▊  | 32/41 [00:02<00:00, 11.49it/s]concatenating: train:  83%|████████▎ | 34/41 [00:02<00:00, 11.55it/s]concatenating: train:  88%|████████▊ | 36/41 [00:03<00:00, 11.07it/s]concatenating: train:  93%|█████████▎| 38/41 [00:03<00:00, 10.96it/s]concatenating: train:  98%|█████████▊| 40/41 [00:03<00:00, 11.04it/s]concatenating: train: 100%|██████████| 41/41 [00:03<00:00, 11.38it/s]
-Loading test:   0%|          | 0/11 [00:00<?, ?it/s]Loading test:   9%|▉         | 1/11 [00:28<04:47, 28.76s/it]Loading test:  18%|█▊        | 2/11 [00:50<04:00, 26.75s/it]Loading test:  27%|██▋       | 3/11 [01:21<03:43, 27.89s/it]Loading test:  36%|███▋      | 4/11 [01:43<03:03, 26.19s/it]Loading test:  45%|████▌     | 5/11 [01:57<02:15, 22.59s/it]Loading test:  55%|█████▍    | 6/11 [02:12<01:40, 20.14s/it]Loading test:  64%|██████▎   | 7/11 [02:26<01:13, 18.50s/it]Loading test:  73%|███████▎  | 8/11 [02:40<00:51, 17.06s/it]Loading test:  82%|████████▏ | 9/11 [02:56<00:33, 16.85s/it]Loading test:  91%|█████████ | 10/11 [03:12<00:16, 16.43s/it]Loading test: 100%|██████████| 11/11 [03:29<00:00, 16.72s/it]Loading test: 100%|██████████| 11/11 [03:29<00:00, 19.07s/it]
-concatenating: validation:   0%|          | 0/11 [00:00<?, ?it/s]concatenating: validation:  18%|█▊        | 2/11 [00:00<00:00, 11.64it/s]concatenating: validation:  36%|███▋      | 4/11 [00:00<00:00, 11.81it/s]concatenating: validation:  55%|█████▍    | 6/11 [00:00<00:00, 11.82it/s]concatenating: validation:  73%|███████▎  | 8/11 [00:00<00:00, 11.79it/s]concatenating: validation:  91%|█████████ | 10/11 [00:00<00:00, 11.85it/s]concatenating: validation: 100%|██████████| 11/11 [00:00<00:00, 11.95it/s]----------+++ 
-CrossVal ['a']
-CrossVal ['a']
-(0/11) test vimp2_967_08132013_KW
-(1/11) test vimp2_ANON695_03132013
-(2/11) test vimp2_ctrl_991_08302013_JF
-(3/11) test vimp2_A_3T_ET
-(4/11) test vimp2_A_7T_ET
-(5/11) test vimp2_G_3T_ET
-(6/11) test vimp2_G_7T_ET
-(7/11) test vimp2_J_3T_ET
-(8/11) test vimp2_J_7T_ET
-(9/11) test vimp2_M_3T_ET
-(10/11) test vimp2_M_7T_ET
----------------------- check Layers Step ------------------------------
- N: [1]  | GPU: 3  | SD 0  | Dropout 0.3  | LR 0.001  | NL 3  |  normal |  FM 40 |  Upsample 1
-
- #layer 3 #layers changed False
----------------------- check Layers Step ------------------------------
- N: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 3  | SD 0  | Dropout 0.3  | LR 0.001  | NL 3  |  normal |  FM 40 |  Upsample 1
-
- #layer 3 #layers changed False
----------------------------------------------------------------
- Nucleus: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 3  | SD 0  | Dropout 0.3  | LR 0.001  | NL 3  |  normal |  FM 40 |  Upsample 1
-Experiment: exp6
-SubExperiment: sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a
----------------------------------------------------------------
-__________________________________________________________________________________________________
-Layer (type)                    Output Shape         Param #     Connected to                     
-==================================================================================================
-input_1 (InputLayer)            (None, 128, 92, 1)   0                                            
-__________________________________________________________________________________________________
-conv2d_1 (Conv2D)               (None, 128, 92, 40)  400         input_1[0][0]                    
-__________________________________________________________________________________________________
-batch_normalization_1 (BatchNor (None, 128, 92, 40)  160         conv2d_1[0][0]                   
-__________________________________________________________________________________________________
-activation_1 (Activation)       (None, 128, 92, 40)  0           batch_normalization_1[0][0]      
-__________________________________________________________________________________________________
-conv2d_2 (Conv2D)               (None, 128, 92, 40)  14440       activation_1[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_2 (BatchNor (None, 128, 92, 40)  160         conv2d_2[0][0]                   
-__________________________________________________________________________________________________
-activation_2 (Activation)       (None, 128, 92, 40)  0           batch_normalization_2[0][0]      
-__________________________________________________________________________________________________
-max_pooling2d_1 (MaxPooling2D)  (None, 64, 46, 40)   0           activation_2[0][0]               
-__________________________________________________________________________________________________
-dropout_1 (Dropout)             (None, 64, 46, 40)   0           max_pooling2d_1[0][0]            
-__________________________________________________________________________________________________
-conv2d_3 (Conv2D)               (None, 64, 46, 80)   28880       dropout_1[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_3 (BatchNor (None, 64, 46, 80)   320         conv2d_3[0][0]                   
-__________________________________________________________________________________________________
-activation_3 (Activation)       (None, 64, 46, 80)   0           batch_normalization_3[0][0]      
-__________________________________________________________________________________________________
-conv2d_4 (Conv2D)               (None, 64, 46, 80)   57680       activation_3[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_4 (BatchNor (None, 64, 46, 80)   320         conv2d_4[0][0]                   
-__________________________________________________________________________________________________
-activation_4 (Activation)       (None, 64, 46, 80)   0           batch_normalization_4[0][0]      
-__________________________________________________________________________________________________
-concatenate_1 (Concatenate)     (None, 64, 46, 120)  0           dropout_1[0][0]                  
-                                                                 activation_4[0][0]               
-__________________________________________________________________________________________________
-max_pooling2d_2 (MaxPooling2D)  (None, 32, 23, 120)  0           concatenate_1[0][0]              
-__________________________________________________________________________________________________
-dropout_2 (Dropout)             (None, 32, 23, 120)  0           max_pooling2d_2[0][0]            
-__________________________________________________________________________________________________
-conv2d_5 (Conv2D)               (None, 32, 23, 160)  172960      dropout_2[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_5 (BatchNor (None, 32, 23, 160)  640         conv2d_5[0][0]                   
-__________________________________________________________________________________________________
-activation_5 (Activation)       (None, 32, 23, 160)  0           batch_normalization_5[0][0]      
-__________________________________________________________________________________________________
-conv2d_6 (Conv2D)               (None, 32, 23, 160)  230560      activation_5[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_6 (BatchNor (None, 32, 23, 160)  640         conv2d_6[0][0]                   
-__________________________________________________________________________________________________
-activation_6 (Activation)       (None, 32, 23, 160)  0           batch_normalization_6[0][0]      
-__________________________________________________________________________________________________
-concatenate_2 (Concatenate)     (None, 32, 23, 280)  0           dropout_2[0][0]                  
-                                                                 activation_6[0][0]               
-__________________________________________________________________________________________________
-dropout_3 (Dropout)             (None, 32, 23, 280)  0           concatenate_2[0][0]              
-__________________________________________________________________________________________________
-conv2d_transpose_1 (Conv2DTrans (None, 64, 46, 80)   89680       dropout_3[0][0]                  
-__________________________________________________________________________________________________
-concatenate_3 (Concatenate)     (None, 64, 46, 200)  0           conv2d_transpose_1[0][0]         
-                                                                 concatenate_1[0][0]              
-__________________________________________________________________________________________________
-conv2d_7 (Conv2D)               (None, 64, 46, 80)   144080      concatenate_3[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_7 (BatchNor (None, 64, 46, 80)   320         conv2d_7[0][0]                   
-__________________________________________________________________________________________________
-activation_7 (Activation)       (None, 64, 46, 80)   0           batch_normalization_7[0][0]      
-__________________________________________________________________________________________________
-conv2d_8 (Conv2D)               (None, 64, 46, 80)   57680       activation_7[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_8 (BatchNor (None, 64, 46, 80)   320         conv2d_8[0][0]                   
-__________________________________________________________________________________________________
-activation_8 (Activation)       (None, 64, 46, 80)   0           batch_normalization_8[0][0]      
-__________________________________________________________________________________________________
-concatenate_4 (Concatenate)     (None, 64, 46, 280)  0           concatenate_3[0][0]              
-                                                                 activation_8[0][0]               
-__________________________________________________________________________________________________
-dropout_4 (Dropout)             (None, 64, 46, 280)  0           concatenate_4[0][0]              
-__________________________________________________________________________________________________
-conv2d_transpose_2 (Conv2DTrans (None, 128, 92, 40)  44840       dropout_4[0][0]                  
-__________________________________________________________________________________________________
-concatenate_5 (Concatenate)     (None, 128, 92, 80)  0           conv2d_transpose_2[0][0]         
-                                                                 activation_2[0][0]               
-__________________________________________________________________________________________________
-conv2d_9 (Conv2D)               (None, 128, 92, 40)  28840       concatenate_5[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_9 (BatchNor (None, 128, 92, 40)  160         conv2d_9[0][0]                   
-__________________________________________________________________________________________________
-activation_9 (Activation)       (None, 128, 92, 40)  0           batch_normalization_9[0][0]      
-__________________________________________________________________________________________________
-conv2d_10 (Conv2D)              (None, 128, 92, 40)  14440       activation_9[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_10 (BatchNo (None, 128, 92, 40)  160         conv2d_10[0][0]                  
-__________________________________________________________________________________________________
-activation_10 (Activation)      (None, 128, 92, 40)  0           batch_normalization_10[0][0]     
-__________________________________________________________________________________________________
-concatenate_6 (Concatenate)     (None, 128, 92, 120) 0           concatenate_5[0][0]              
-                                                                 activation_10[0][0]              
-__________________________________________________________________________________________________
-dropout_5 (Dropout)             (None, 128, 92, 120) 0           concatenate_6[0][0]              
-__________________________________________________________________________________________________
-conv2d_11 (Conv2D)              (None, 128, 92, 13)  1573        dropout_5[0][0]                  
-==================================================================================================
-Total params: 889,253
-Trainable params: 887,653
-Non-trainable params: 1,600
-__________________________________________________________________________________________________
-------------------------------------------------------------------
-class_weights [6.55074706e-02 3.08831303e-02 7.68491765e-02 1.00912303e-02
- 2.67216464e-02 7.01279323e-03 8.03427082e-02 1.16957612e-01
- 7.80704504e-02 1.36444858e-02 3.13209806e-01 1.80678441e-01
- 3.10497652e-05]
-Train on 4019 samples, validate on 1058 samples
-Epoch 1/300
- - 27s - loss: 0.8553 - acc: 0.9711 - mDice: 0.0744 - val_loss: 0.8616 - val_acc: 0.9829 - val_mDice: 0.0672
-
-Epoch 00001: val_mDice improved from -inf to 0.06724, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 2/300
- - 22s - loss: 0.7395 - acc: 0.9838 - mDice: 0.1995 - val_loss: 0.8411 - val_acc: 0.9829 - val_mDice: 0.0894
-
-Epoch 00002: val_mDice improved from 0.06724 to 0.08941, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 3/300
- - 22s - loss: 0.6838 - acc: 0.9845 - mDice: 0.2598 - val_loss: 0.8202 - val_acc: 0.9846 - val_mDice: 0.1120
-
-Epoch 00003: val_mDice improved from 0.08941 to 0.11198, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 4/300
- - 22s - loss: 0.6581 - acc: 0.9847 - mDice: 0.2876 - val_loss: 0.8136 - val_acc: 0.9838 - val_mDice: 0.1190
-
-Epoch 00004: val_mDice improved from 0.11198 to 0.11895, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 5/300
- - 22s - loss: 0.6386 - acc: 0.9849 - mDice: 0.3087 - val_loss: 0.8096 - val_acc: 0.9846 - val_mDice: 0.1232
-
-Epoch 00005: val_mDice improved from 0.11895 to 0.12321, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 6/300
- - 22s - loss: 0.6286 - acc: 0.9852 - mDice: 0.3196 - val_loss: 0.8053 - val_acc: 0.9840 - val_mDice: 0.1282
-
-Epoch 00006: val_mDice improved from 0.12321 to 0.12815, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 7/300
- - 21s - loss: 0.6246 - acc: 0.9851 - mDice: 0.3239 - val_loss: 0.8076 - val_acc: 0.9847 - val_mDice: 0.1257
-
-Epoch 00007: val_mDice did not improve from 0.12815
-Epoch 8/300
- - 21s - loss: 0.6129 - acc: 0.9853 - mDice: 0.3366 - val_loss: 0.8093 - val_acc: 0.9847 - val_mDice: 0.1235
-
-Epoch 00008: val_mDice did not improve from 0.12815
-Epoch 9/300
- - 21s - loss: 0.6179 - acc: 0.9853 - mDice: 0.3312 - val_loss: 0.8049 - val_acc: 0.9849 - val_mDice: 0.1285
-
-Epoch 00009: val_mDice improved from 0.12815 to 0.12848, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 10/300
- - 23s - loss: 0.6070 - acc: 0.9855 - mDice: 0.3430 - val_loss: 0.8016 - val_acc: 0.9840 - val_mDice: 0.1320
-
-Epoch 00010: val_mDice improved from 0.12848 to 0.13198, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 11/300
- - 23s - loss: 0.5999 - acc: 0.9857 - mDice: 0.3506 - val_loss: 0.8001 - val_acc: 0.9840 - val_mDice: 0.1325
-
-Epoch 00011: val_mDice improved from 0.13198 to 0.13247, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 12/300
- - 23s - loss: 0.6020 - acc: 0.9856 - mDice: 0.3484 - val_loss: 0.8026 - val_acc: 0.9847 - val_mDice: 0.1305
-
-Epoch 00012: val_mDice did not improve from 0.13247
-Epoch 13/300
- - 23s - loss: 0.5986 - acc: 0.9858 - mDice: 0.3520 - val_loss: 0.8038 - val_acc: 0.9836 - val_mDice: 0.1292
-
-Epoch 00013: val_mDice did not improve from 0.13247
-Epoch 14/300
- - 23s - loss: 0.5940 - acc: 0.9861 - mDice: 0.3571 - val_loss: 0.8014 - val_acc: 0.9829 - val_mDice: 0.1323
-
-Epoch 00014: val_mDice did not improve from 0.13247
-Epoch 15/300
- - 23s - loss: 0.5956 - acc: 0.9860 - mDice: 0.3554 - val_loss: 0.8042 - val_acc: 0.9838 - val_mDice: 0.1272
-
-Epoch 00015: val_mDice did not improve from 0.13247
-Epoch 16/300
- - 22s - loss: 0.5836 - acc: 0.9860 - mDice: 0.3684 - val_loss: 0.7982 - val_acc: 0.9828 - val_mDice: 0.1331
-
-Epoch 00016: val_mDice improved from 0.13247 to 0.13306, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 17/300
- - 23s - loss: 0.5846 - acc: 0.9858 - mDice: 0.3673 - val_loss: 0.8022 - val_acc: 0.9841 - val_mDice: 0.1308
-
-Epoch 00017: val_mDice did not improve from 0.13306
-Epoch 18/300
- - 23s - loss: 0.5832 - acc: 0.9863 - mDice: 0.3688 - val_loss: 0.8005 - val_acc: 0.9833 - val_mDice: 0.1332
-
-Epoch 00018: val_mDice improved from 0.13306 to 0.13320, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 19/300
- - 22s - loss: 0.5748 - acc: 0.9864 - mDice: 0.3778 - val_loss: 0.8018 - val_acc: 0.9832 - val_mDice: 0.1303
-
-Epoch 00019: val_mDice did not improve from 0.13320
-Epoch 20/300
- - 23s - loss: 0.5792 - acc: 0.9865 - mDice: 0.3731 - val_loss: 0.8002 - val_acc: 0.9834 - val_mDice: 0.1333
-
-Epoch 00020: val_mDice improved from 0.13320 to 0.13330, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 21/300
- - 23s - loss: 0.5845 - acc: 0.9866 - mDice: 0.3674 - val_loss: 0.8061 - val_acc: 0.9844 - val_mDice: 0.1258
-
-Epoch 00021: val_mDice did not improve from 0.13330
-Epoch 22/300
- - 22s - loss: 0.5738 - acc: 0.9868 - mDice: 0.3789 - val_loss: 0.8062 - val_acc: 0.9841 - val_mDice: 0.1268
-
-Epoch 00022: val_mDice did not improve from 0.13330
-Epoch 23/300
- - 23s - loss: 0.5645 - acc: 0.9870 - mDice: 0.3890 - val_loss: 0.7993 - val_acc: 0.9827 - val_mDice: 0.1339
-
-Epoch 00023: val_mDice improved from 0.13330 to 0.13385, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 24/300
- - 23s - loss: 0.5708 - acc: 0.9870 - mDice: 0.3821 - val_loss: 0.8229 - val_acc: 0.9850 - val_mDice: 0.1088
-
-Epoch 00024: val_mDice did not improve from 0.13385
-Epoch 25/300
- - 23s - loss: 0.5726 - acc: 0.9872 - mDice: 0.3802 - val_loss: 0.7979 - val_acc: 0.9833 - val_mDice: 0.1358
-
-Epoch 00025: val_mDice improved from 0.13385 to 0.13578, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM40_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd0/best_model_weights.h5
-Epoch 26/300
- - 23s - loss: 0.5661 - acc: 0.9873 - mDice: 0.3872 - val_loss: 0.7992 - val_acc: 0.9835 - val_mDice: 0.1337
-
-Epoch 00026: val_mDice did not improve from 0.13578
-Epoch 27/300
- - 23s - loss: 0.5620 - acc: 0.9877 - mDice: 0.3916 - val_loss: 0.8004 - val_acc: 0.9834 - val_mDice: 0.1333
-
-Epoch 00027: val_mDice did not improve from 0.13578
-Epoch 28/300
- - 23s - loss: 0.5545 - acc: 0.9879 - mDice: 0.3998 - val_loss: 0.7998 - val_acc: 0.9832 - val_mDice: 0.1337
-
-Epoch 00028: val_mDice did not improve from 0.13578
-Epoch 29/300
- - 23s - loss: 0.5491 - acc: 0.9881 - mDice: 0.4056 - val_loss: 0.8024 - val_acc: 0.9835 - val_mDice: 0.1310
-
-Epoch 00029: val_mDice did not improve from 0.13578
-Epoch 30/300
- - 22s - loss: 0.5476 - acc: 0.9880 - mDice: 0.4073 - val_loss: 0.8049 - val_acc: 0.9844 - val_mDice: 0.1278
-
-Epoch 00030: val_mDice did not improve from 0.13578
-Epoch 31/300
- - 23s - loss: 0.5458 - acc: 0.9881 - mDice: 0.4092 - val_loss: 0.7989 - val_acc: 0.9822 - val_mDice: 0.1342
-
-Epoch 00031: val_mDice did not improve from 0.13578
-Epoch 32/300
- - 23s - loss: 0.5462 - acc: 0.9881 - mDice: 0.4087 - val_loss: 0.8144 - val_acc: 0.9838 - val_mDice: 0.1173
-
-Epoch 00032: val_mDice did not improve from 0.13578
-Epoch 33/300
- - 22s - loss: 0.5396 - acc: 0.9883 - mDice: 0.4159 - val_loss: 0.8003 - val_acc: 0.9823 - val_mDice: 0.1319
-
-Epoch 00033: val_mDice did not improve from 0.13578
-Epoch 34/300
- - 23s - loss: 0.5395 - acc: 0.9885 - mDice: 0.4160 - val_loss: 0.8081 - val_acc: 0.9843 - val_mDice: 0.1228
-
-Epoch 00034: val_mDice did not improve from 0.13578
-Epoch 35/300
- - 23s - loss: 0.5356 - acc: 0.9886 - mDice: 0.4202 - val_loss: 0.8107 - val_acc: 0.9822 - val_mDice: 0.1221
-
-Epoch 00035: val_mDice did not improve from 0.13578
-Epoch 36/300
- - 22s - loss: 0.5363 - acc: 0.9888 - mDice: 0.4194 - val_loss: 0.8061 - val_acc: 0.9832 - val_mDice: 0.1263
-
-Epoch 00036: val_mDice did not improve from 0.13578
-Epoch 37/300
- - 23s - loss: 0.5331 - acc: 0.9886 - mDice: 0.4229 - val_loss: 0.7907 - val_acc: 0.9826 - val_mDice: 0.1308
-
-Epoch 00037: val_mDice did not improve from 0.13578
-Epoch 38/300
- - 23s - loss: 0.5319 - acc: 0.9891 - mDice: 0.4242 - val_loss: 0.8098 - val_acc: 0.9836 - val_mDice: 0.1197
-
-Epoch 00038: val_mDice did not improve from 0.13578
-Epoch 39/300
- - 22s - loss: 0.5361 - acc: 0.9888 - mDice: 0.4197 - val_loss: 0.8084 - val_acc: 0.9834 - val_mDice: 0.1242
-
-Epoch 00039: val_mDice did not improve from 0.13578
-Epoch 40/300
- - 23s - loss: 0.5255 - acc: 0.9891 - mDice: 0.4311 - val_loss: 0.8077 - val_acc: 0.9847 - val_mDice: 0.1195
-
-Epoch 00040: val_mDice did not improve from 0.13578
-
-Epoch 00040: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
-Epoch 41/300
- - 23s - loss: 0.5222 - acc: 0.9898 - mDice: 0.4347 - val_loss: 0.8077 - val_acc: 0.9840 - val_mDice: 0.1245
-
-Epoch 00041: val_mDice did not improve from 0.13578
-Epoch 42/300
- - 22s - loss: 0.5106 - acc: 0.9902 - mDice: 0.4472 - val_loss: 0.8035 - val_acc: 0.9842 - val_mDice: 0.1242
-
-Epoch 00042: val_mDice did not improve from 0.13578
-Epoch 43/300
- - 22s - loss: 0.5179 - acc: 0.9902 - mDice: 0.4394 - val_loss: 0.8059 - val_acc: 0.9837 - val_mDice: 0.1265
-
-Epoch 00043: val_mDice did not improve from 0.13578
-Epoch 44/300
- - 23s - loss: 0.5084 - acc: 0.9904 - mDice: 0.4496 - val_loss: 0.8101 - val_acc: 0.9846 - val_mDice: 0.1224
-
-Epoch 00044: val_mDice did not improve from 0.13578
-Epoch 45/300
- - 23s - loss: 0.5015 - acc: 0.9907 - mDice: 0.4571 - val_loss: 0.8122 - val_acc: 0.9841 - val_mDice: 0.1197
-
-Epoch 00045: val_mDice did not improve from 0.13578
-Epoch 46/300
- - 22s - loss: 0.4989 - acc: 0.9908 - mDice: 0.4599 - val_loss: 0.8081 - val_acc: 0.9842 - val_mDice: 0.1235
-
-Epoch 00046: val_mDice did not improve from 0.13578
-Epoch 47/300
- - 22s - loss: 0.4974 - acc: 0.9911 - mDice: 0.4616 - val_loss: 0.8080 - val_acc: 0.9837 - val_mDice: 0.1238
-
-Epoch 00047: val_mDice did not improve from 0.13578
-Epoch 48/300
- - 23s - loss: 0.5066 - acc: 0.9910 - mDice: 0.4515 - val_loss: 0.8045 - val_acc: 0.9837 - val_mDice: 0.1256
-
-Epoch 00048: val_mDice did not improve from 0.13578
-Epoch 49/300
- - 23s - loss: 0.5073 - acc: 0.9911 - mDice: 0.4508 - val_loss: 0.8079 - val_acc: 0.9841 - val_mDice: 0.1238
-
-Epoch 00049: val_mDice did not improve from 0.13578
-Epoch 50/300
- - 23s - loss: 0.4956 - acc: 0.9912 - mDice: 0.4635 - val_loss: 0.8132 - val_acc: 0.9846 - val_mDice: 0.1166
-
-Epoch 00050: val_mDice did not improve from 0.13578
-Epoch 51/300
- - 23s - loss: 0.4910 - acc: 0.9914 - mDice: 0.4684 - val_loss: 0.8052 - val_acc: 0.9837 - val_mDice: 0.1251
-
-Epoch 00051: val_mDice did not improve from 0.13578
-Epoch 52/300
- - 23s - loss: 0.4955 - acc: 0.9914 - mDice: 0.4635 - val_loss: 0.8063 - val_acc: 0.9837 - val_mDice: 0.1246
-
-Epoch 00052: val_mDice did not improve from 0.13578
-Epoch 53/300
- - 23s - loss: 0.4883 - acc: 0.9916 - mDice: 0.4714 - val_loss: 0.8056 - val_acc: 0.9835 - val_mDice: 0.1237
-
-Epoch 00053: val_mDice did not improve from 0.13578
-Epoch 54/300
- - 22s - loss: 0.4912 - acc: 0.9915 - mDice: 0.4682 - val_loss: 0.8086 - val_acc: 0.9844 - val_mDice: 0.1196
-
-Epoch 00054: val_mDice did not improve from 0.13578
-Epoch 55/300
- - 23s - loss: 0.4965 - acc: 0.9919 - mDice: 0.4625 - val_loss: 0.8065 - val_acc: 0.9840 - val_mDice: 0.1233
-
-Epoch 00055: val_mDice did not improve from 0.13578
-
-Epoch 00055: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
-Epoch 56/300
- - 23s - loss: 0.4814 - acc: 0.9922 - mDice: 0.4788 - val_loss: 0.8097 - val_acc: 0.9846 - val_mDice: 0.1205
-
-Epoch 00056: val_mDice did not improve from 0.13578
-Epoch 57/300
- - 23s - loss: 0.4867 - acc: 0.9923 - mDice: 0.4731 - val_loss: 0.8118 - val_acc: 0.9848 - val_mDice: 0.1183
-
-Epoch 00057: val_mDice did not improve from 0.13578
-Epoch 58/300
- - 23s - loss: 0.4818 - acc: 0.9924 - mDice: 0.4784 - val_loss: 0.8133 - val_acc: 0.9845 - val_mDice: 0.1177
-
-Epoch 00058: val_mDice did not improve from 0.13578
-Epoch 59/300
- - 23s - loss: 0.4744 - acc: 0.9924 - mDice: 0.4863 - val_loss: 0.8121 - val_acc: 0.9847 - val_mDice: 0.1187
-
-Epoch 00059: val_mDice did not improve from 0.13578
-Epoch 60/300
- - 23s - loss: 0.4831 - acc: 0.9924 - mDice: 0.4770 - val_loss: 0.8075 - val_acc: 0.9847 - val_mDice: 0.1209
-
-Epoch 00060: val_mDice did not improve from 0.13578
-Epoch 61/300
- - 23s - loss: 0.4804 - acc: 0.9925 - mDice: 0.4799 - val_loss: 0.8102 - val_acc: 0.9841 - val_mDice: 0.1209
-
-Epoch 00061: val_mDice did not improve from 0.13578
-Epoch 62/300
- - 23s - loss: 0.4758 - acc: 0.9927 - mDice: 0.4848 - val_loss: 0.8147 - val_acc: 0.9846 - val_mDice: 0.1159
-
-Epoch 00062: val_mDice did not improve from 0.13578
-Epoch 63/300
- - 22s - loss: 0.4793 - acc: 0.9927 - mDice: 0.4811 - val_loss: 0.8049 - val_acc: 0.9845 - val_mDice: 0.1194
-
-Epoch 00063: val_mDice did not improve from 0.13578
-Epoch 64/300
- - 23s - loss: 0.4633 - acc: 0.9928 - mDice: 0.4984 - val_loss: 0.8137 - val_acc: 0.9848 - val_mDice: 0.1167
-
-Epoch 00064: val_mDice did not improve from 0.13578
-Epoch 65/300
- - 23s - loss: 0.4679 - acc: 0.9928 - mDice: 0.4934 - val_loss: 0.8085 - val_acc: 0.9847 - val_mDice: 0.1182
-
-Epoch 00065: val_mDice did not improve from 0.13578
-Restoring model weights from the end of the best epoch
-Epoch 00065: early stopping
-{'val_loss': [0.8615741151717751, 0.8410869692584292, 0.8202050818387412, 0.8135709612716574, 0.8096311242796749, 0.8052723422956376, 0.8075629262031815, 0.8093193882692513, 0.804868336548652, 0.8016241481263606, 0.8000519979878951, 0.8025621681109719, 0.8037786851645868, 0.8014388527221175, 0.804240698963122, 0.7982298776310198, 0.8021808453678859, 0.8004950316506658, 0.8017567728552791, 0.8001593960931486, 0.8061094586587808, 0.8061966489303315, 0.7993082831171825, 0.8228689403975619, 0.7979215969435434, 0.7992350392057674, 0.8004233192631337, 0.7997867910645634, 0.802360839564318, 0.8048860338888006, 0.7989311643043403, 0.8143781976798983, 0.8002782361493895, 0.8080782586662891, 0.8107025044739584, 0.8061076977865907, 0.7907438551996516, 0.8097725532005324, 0.808387772516402, 0.8076650219738821, 0.8076803492688501, 0.8034501502216426, 0.805902091508101, 0.8100901418462367, 0.8122271757382752, 0.8080842333277142, 0.8079850844940301, 0.8044911374554516, 0.8079251270100389, 0.8131961400544936, 0.8052346880471999, 0.8063332131431774, 0.8055696402921118, 0.808577434946774, 0.806453029971943, 0.8096794806040528, 0.8117520223831184, 0.8132913156583313, 0.812090232996499, 0.8074801327600821, 0.810180453474445, 0.8146653919567007, 0.8049014431542395, 0.8136819865843299, 0.8085074101932107], 'val_acc': [0.9828676566735107, 0.982946557336133, 0.9846263835470708, 0.9838401272977457, 0.984603106750207, 0.9840133340011697, 0.9847327333316911, 0.9847086526045051, 0.9848986376210738, 0.9839618069688404, 0.9840427109785026, 0.9846667563982857, 0.9835929128082578, 0.9828902116795344, 0.9838202228392906, 0.9827614691397193, 0.9841053183903541, 0.9833347892040115, 0.983175383961719, 0.9834274941446199, 0.9844038176626699, 0.9841396693696597, 0.982731612733722, 0.9850339615728093, 0.9832847049646432, 0.9834561488804159, 0.9833601499099587, 0.9832446515447476, 0.9834783789340851, 0.9843667326442236, 0.9821528324783412, 0.9837855473583272, 0.9823266019893279, 0.9842682497713201, 0.9821806041865357, 0.9831723349982263, 0.9825912319644863, 0.9835664315575238, 0.9833652878528732, 0.984675910049215, 0.9839524921938242, 0.9841858218432825, 0.9836877056015462, 0.9845568793482501, 0.9841118946192621, 0.9841963337815326, 0.9837260704860795, 0.9836813659884304, 0.9840921541017486, 0.9845623350323711, 0.9837120235078952, 0.9836617832147783, 0.9835323160672683, 0.9843572612520878, 0.9840321945332849, 0.984562658970658, 0.9847697349712393, 0.9845372920676305, 0.9846825696570211, 0.9846718949045711, 0.9841481762707571, 0.9845754176321913, 0.9844590375914691, 0.9847550478910003, 0.9847338555665909], 'val_mDice': [0.06723821961689028, 0.08941173889712842, 0.11197771253546701, 0.11895360257481473, 0.12321304020436015, 0.12815128690159147, 0.1257082655121923, 0.12353803660036249, 0.128480233157921, 0.13198353659807147, 0.1324723136084848, 0.13051990332041255, 0.12921061783159773, 0.132275136669728, 0.12719009822649535, 0.13306152039997501, 0.1307575624351981, 0.13319792986397697, 0.13028629994026633, 0.1332998994781205, 0.12582172612325065, 0.1268152360880746, 0.133853006773365, 0.10876168137974386, 0.1357806131895617, 0.13372596663146485, 0.13327147583282822, 0.13367071514574416, 0.1310095894137235, 0.1277818620061204, 0.13419280679346238, 0.11731602557704836, 0.1319333042704195, 0.12279525231516569, 0.1220919762423332, 0.12628663805036017, 0.13083732788984978, 0.11973202248088667, 0.12417007607806994, 0.11952812328700255, 0.12449141652679153, 0.12424534340701278, 0.126456286124862, 0.12237466780630793, 0.11969608768294525, 0.12349796746583482, 0.12384007066949278, 0.12555280265969176, 0.12381340228548253, 0.11659036029506942, 0.12510718014584202, 0.12461577478417708, 0.1236886808912608, 0.11963925168597044, 0.12334282917171638, 0.12045606500374437, 0.11833942989093076, 0.11774747542387994, 0.11872305620201452, 0.12094584901797714, 0.12089945156597316, 0.11585577410543867, 0.11944648034579879, 0.11666416857406507, 0.11823316482853895], 'loss': [0.8552647838695752, 0.739462958191366, 0.6838086888427668, 0.6580961537645895, 0.638625703023482, 0.6285938455501461, 0.6246230808114732, 0.6128952700749474, 0.6178943399292641, 0.6069630461268296, 0.5999450866753084, 0.6020434546319369, 0.5986468556153297, 0.5940128296991877, 0.5955684693128382, 0.5835700032870608, 0.5845594653207646, 0.5831814706844606, 0.5748486247754387, 0.5791666676049566, 0.5844739201828804, 0.5738094760488295, 0.5645050955785689, 0.5708337028425824, 0.5726268484272687, 0.5661332417436131, 0.5620274440392121, 0.5544678498245822, 0.5491080759739692, 0.5475551154845447, 0.5458127267549334, 0.5462364631969854, 0.539597513160174, 0.5395163174409954, 0.5356427329590321, 0.5363382979185612, 0.5330965197792277, 0.5319182643489359, 0.5361137610224533, 0.5255324023224934, 0.522190046439452, 0.5106369878973466, 0.5178512535853954, 0.5084189649288499, 0.5014785093346411, 0.4989238414309991, 0.4973574551325231, 0.5066098738855673, 0.5072853490765874, 0.4955545750222535, 0.49098468229497183, 0.4955292355587127, 0.48829459923806845, 0.4911736388961662, 0.4964912203331734, 0.48141616015595623, 0.4866653333540193, 0.48176907676611114, 0.474449342809586, 0.4830694733403992, 0.48036803477556145, 0.4758476764742312, 0.47928237354067255, 0.4632759601522898, 0.46792714312231404], 'acc': [0.9711312469568648, 0.9838341540381457, 0.9845472870848315, 0.984733161359143, 0.9849239577105698, 0.9852066480363, 0.9851468296512558, 0.9853015403511454, 0.9853286058133323, 0.9855158540051089, 0.9857103908260713, 0.9855813335559652, 0.9858496741709883, 0.9860944138234099, 0.9860078684279325, 0.9860308355702545, 0.9858298766936316, 0.9862506868650024, 0.9864307076339551, 0.986489953078806, 0.9865594481348131, 0.9867687117670804, 0.9870183335130088, 0.9869850770873673, 0.9872086884133642, 0.9873432366816551, 0.9877022677584352, 0.9878998256405956, 0.9880536876379716, 0.9879855248547811, 0.9880954813203814, 0.9880798041123483, 0.9882674531486978, 0.9884622228563825, 0.9886017178800991, 0.9888173622793154, 0.9886378072096537, 0.9890502272597828, 0.988758517337931, 0.9891386972520149, 0.9898363020058798, 0.9901686435939364, 0.9902049210362839, 0.9903601380864552, 0.9906988164980515, 0.9907689039818117, 0.9910697194437804, 0.9910028864715075, 0.9911428066473394, 0.9912406549165427, 0.9914114855361477, 0.991351098126219, 0.9915618402028327, 0.991497459074074, 0.9918549687864175, 0.992179428279385, 0.9922587908479995, 0.9924244845972395, 0.9924407344191903, 0.9924119142757538, 0.992513480649774, 0.9927307749957284, 0.9926512656771861, 0.9928132642202337, 0.992792980102616], 'mDice': [0.07438629161849988, 0.19950348345823563, 0.25979090381995945, 0.2876445330286461, 0.30873709974232794, 0.3196045211797594, 0.32390626324389454, 0.3366111264190678, 0.3311954869408238, 0.34303760403902106, 0.35064011073964885, 0.34836708145814843, 0.3520466060465483, 0.3570666241504098, 0.35537940506873417, 0.36836187290397887, 0.3672915415555187, 0.368770920905941, 0.37779452689497156, 0.37311111019156673, 0.36735876168732207, 0.37890807290995526, 0.3889777618482372, 0.38212630253042534, 0.38017823850574534, 0.3872072240496012, 0.39164597294768777, 0.39983097910528814, 0.4056331210755187, 0.4073147987664778, 0.4091977906070648, 0.40872950516282597, 0.4159039754378483, 0.4159830574880296, 0.42017283497267205, 0.41941265801641225, 0.4229303526524404, 0.42418977444420025, 0.4196527061587225, 0.43110398725069515, 0.4347023008213756, 0.44720269379334265, 0.4393880357022091, 0.44959833383913694, 0.45710653219762265, 0.45986829612901864, 0.46155744501116874, 0.4515343112998502, 0.4507990756118923, 0.46350246389119965, 0.46844690991988536, 0.4635246973704629, 0.4713537577003073, 0.46823750446089396, 0.4624651590356181, 0.47878306519880603, 0.47309494193742513, 0.47839204202869334, 0.48632143708244874, 0.47698336037486533, 0.47990574349764575, 0.48479627657150687, 0.481077385761361, 0.4984111335850616, 0.4933697420643777], 'lr': [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025]}
-predicting test subjects:   0%|          | 0/11 [00:00<?, ?it/s]predicting test subjects:   9%|▉         | 1/11 [00:02<00:29,  2.96s/it]predicting test subjects:  18%|█▊        | 2/11 [00:03<00:21,  2.38s/it]predicting test subjects:  27%|██▋       | 3/11 [00:04<00:15,  1.97s/it]predicting test subjects:  36%|███▋      | 4/11 [00:06<00:11,  1.71s/it]predicting test subjects:  45%|████▌     | 5/11 [00:06<00:08,  1.44s/it]predicting test subjects:  55%|█████▍    | 6/11 [00:07<00:06,  1.33s/it]predicting test subjects:  64%|██████▎   | 7/11 [00:08<00:04,  1.17s/it]predicting test subjects:  73%|███████▎  | 8/11 [00:09<00:03,  1.09s/it]predicting test subjects:  82%|████████▏ | 9/11 [00:10<00:02,  1.12s/it]predicting test subjects:  91%|█████████ | 10/11 [00:12<00:01,  1.13s/it]predicting test subjects: 100%|██████████| 11/11 [00:12<00:00,  1.07s/it]predicting test subjects: 100%|██████████| 11/11 [00:12<00:00,  1.18s/it]
-Loading train:   0%|          | 0/41 [00:00<?, ?it/s]Loading train:   2%|▏         | 1/41 [00:00<00:29,  1.37it/s]Loading train:   5%|▍         | 2/41 [00:01<00:27,  1.43it/s]Loading train:   7%|▋         | 3/41 [00:01<00:22,  1.72it/s]Loading train:  10%|▉         | 4/41 [00:02<00:18,  1.96it/s]Loading train:  12%|█▏        | 5/41 [00:02<00:19,  1.86it/s]Loading train:  15%|█▍        | 6/41 [00:03<00:19,  1.79it/s]Loading train:  17%|█▋        | 7/41 [00:03<00:16,  2.04it/s]Loading train:  20%|█▉        | 8/41 [00:04<00:17,  1.85it/s]Loading train:  22%|██▏       | 9/41 [00:04<00:18,  1.77it/s]Loading train:  24%|██▍       | 10/41 [00:05<00:18,  1.72it/s]Loading train:  27%|██▋       | 11/41 [00:05<00:14,  2.01it/s]Loading train:  29%|██▉       | 12/41 [00:06<00:15,  1.91it/s]Loading train:  32%|███▏      | 13/41 [00:06<00:15,  1.78it/s]Loading train:  34%|███▍      | 14/41 [00:07<00:15,  1.72it/s]Loading train:  37%|███▋      | 15/41 [00:08<00:14,  1.78it/s]Loading train:  39%|███▉      | 16/41 [00:08<00:14,  1.67it/s]Loading train:  41%|████▏     | 17/41 [00:09<00:14,  1.63it/s]Loading train:  44%|████▍     | 18/41 [00:10<00:14,  1.54it/s]Loading train:  46%|████▋     | 19/41 [00:10<00:13,  1.66it/s]Loading train:  49%|████▉     | 20/41 [00:11<00:12,  1.67it/s]Loading train:  51%|█████     | 21/41 [00:11<00:12,  1.66it/s]Loading train:  54%|█████▎    | 22/41 [00:12<00:11,  1.69it/s]Loading train:  56%|█████▌    | 23/41 [00:13<00:10,  1.71it/s]Loading train:  59%|█████▊    | 24/41 [00:13<00:09,  1.77it/s]Loading train:  61%|██████    | 25/41 [00:14<00:09,  1.78it/s]Loading train:  63%|██████▎   | 26/41 [00:14<00:09,  1.64it/s]Loading train:  66%|██████▌   | 27/41 [00:15<00:08,  1.65it/s]Loading train:  68%|██████▊   | 28/41 [00:16<00:08,  1.62it/s]Loading train:  71%|███████   | 29/41 [00:16<00:07,  1.64it/s]Loading train:  73%|███████▎  | 30/41 [00:17<00:06,  1.61it/s]Loading train:  76%|███████▌  | 31/41 [00:17<00:06,  1.66it/s]Loading train:  78%|███████▊  | 32/41 [00:18<00:05,  1.69it/s]Loading train:  80%|████████  | 33/41 [00:19<00:04,  1.68it/s]Loading train:  83%|████████▎ | 34/41 [00:19<00:04,  1.56it/s]Loading train:  85%|████████▌ | 35/41 [00:20<00:04,  1.44it/s]Loading train:  88%|████████▊ | 36/41 [00:21<00:03,  1.35it/s]Loading train:  90%|█████████ | 37/41 [00:22<00:02,  1.36it/s]Loading train:  93%|█████████▎| 38/41 [00:22<00:02,  1.43it/s]Loading train:  95%|█████████▌| 39/41 [00:23<00:01,  1.47it/s]Loading train:  98%|█████████▊| 40/41 [00:24<00:00,  1.44it/s]Loading train: 100%|██████████| 41/41 [00:24<00:00,  1.40it/s]Loading train: 100%|██████████| 41/41 [00:24<00:00,  1.65it/s]
-concatenating: train:   0%|          | 0/41 [00:00<?, ?it/s]concatenating: train:   5%|▍         | 2/41 [00:00<00:03, 11.39it/s]concatenating: train:  12%|█▏        | 5/41 [00:00<00:02, 12.66it/s]concatenating: train:  17%|█▋        | 7/41 [00:00<00:02, 13.37it/s]concatenating: train:  22%|██▏       | 9/41 [00:00<00:02, 12.71it/s]concatenating: train:  27%|██▋       | 11/41 [00:00<00:02, 13.47it/s]concatenating: train:  32%|███▏      | 13/41 [00:00<00:02, 13.30it/s]concatenating: train:  37%|███▋      | 15/41 [00:01<00:01, 13.06it/s]concatenating: train:  41%|████▏     | 17/41 [00:01<00:01, 12.61it/s]concatenating: train:  46%|████▋     | 19/41 [00:01<00:01, 12.31it/s]concatenating: train:  51%|█████     | 21/41 [00:01<00:01, 12.38it/s]concatenating: train:  56%|█████▌    | 23/41 [00:01<00:01, 12.65it/s]concatenating: train:  61%|██████    | 25/41 [00:01<00:01, 13.05it/s]concatenating: train:  66%|██████▌   | 27/41 [00:02<00:01, 12.67it/s]concatenating: train:  71%|███████   | 29/41 [00:02<00:00, 12.67it/s]concatenating: train:  76%|███████▌  | 31/41 [00:02<00:00, 12.43it/s]concatenating: train:  80%|████████  | 33/41 [00:02<00:00, 12.57it/s]concatenating: train:  85%|████████▌ | 35/41 [00:02<00:00, 11.87it/s]concatenating: train:  90%|█████████ | 37/41 [00:02<00:00, 11.66it/s]concatenating: train:  95%|█████████▌| 39/41 [00:03<00:00, 11.79it/s]concatenating: train: 100%|██████████| 41/41 [00:03<00:00, 11.83it/s]concatenating: train: 100%|██████████| 41/41 [00:03<00:00, 12.64it/s]
-Loading test:   0%|          | 0/11 [00:00<?, ?it/s]Loading test:   9%|▉         | 1/11 [00:55<09:15, 55.55s/it]Loading test:  18%|█▊        | 2/11 [01:51<08:21, 55.68s/it]Loading test:  27%|██▋       | 3/11 [02:43<07:17, 54.63s/it]Loading test:  36%|███▋      | 4/11 [03:16<05:35, 47.98s/it]Loading test:  45%|████▌     | 5/11 [03:53<04:29, 44.89s/it]Loading test:  55%|█████▍    | 6/11 [04:33<03:36, 43.32s/it]Loading test:  64%|██████▎   | 7/11 [05:30<03:10, 47.51s/it]Loading test:  73%|███████▎  | 8/11 [06:17<02:21, 47.21s/it]Loading test:  82%|████████▏ | 9/11 [07:23<01:45, 52.95s/it]Loading test:  91%|█████████ | 10/11 [07:59<00:47, 47.86s/it]Loading test: 100%|██████████| 11/11 [08:35<00:00, 44.19s/it]Loading test: 100%|██████████| 11/11 [08:35<00:00, 46.84s/it]
-concatenating: validation:   0%|          | 0/11 [00:00<?, ?it/s]concatenating: validation:  18%|█▊        | 2/11 [00:00<00:00, 11.63it/s]concatenating: validation:  36%|███▋      | 4/11 [00:00<00:00, 11.78it/s]concatenating: validation:  55%|█████▍    | 6/11 [00:00<00:00, 12.12it/s]concatenating: validation:  73%|███████▎  | 8/11 [00:00<00:00, 12.10it/s]concatenating: validation:  91%|█████████ | 10/11 [00:00<00:00, 11.88it/s]concatenating: validation: 100%|██████████| 11/11 [00:00<00:00, 12.03it/s]
-vimp2_967_08132013_KW 2.960813522338867
----
-vimp2_ANON695_03132013 1.011422872543335
----
-vimp2_ctrl_991_08302013_JF 1.0233798027038574
----
-vimp2_A_3T_ET 1.0894343852996826
----
-vimp2_A_7T_ET 0.8175451755523682
----
-vimp2_G_3T_ET 1.0607895851135254
----
-vimp2_G_7T_ET 0.8192079067230225
----
-vimp2_J_3T_ET 0.8939621448516846
----
-vimp2_J_7T_ET 1.1939778327941895
----
-vimp2_M_3T_ET 1.1583278179168701
----
-vimp2_M_7T_ET 0.9179351329803467
----
----------------------- check Layers Step ------------------------------
- N: [1]  | GPU: 3  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  normal |  FM 30 |  Upsample 1
-
- #layer 3 #layers changed False
----------------------- check Layers Step ------------------------------
- N: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 3  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  normal |  FM 30 |  Upsample 1
-
- #layer 3 #layers changed False
----------------------------------------------------------------
- Nucleus: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 3  | SD 1  | Dropout 0.3  | LR 0.001  | NL 3  |  normal |  FM 30 |  Upsample 1
-Experiment: exp6
-SubExperiment: sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a
----------------------------------------------------------------
-__________________________________________________________________________________________________
-Layer (type)                    Output Shape         Param #     Connected to                     
-==================================================================================================
-input_1 (InputLayer)            (None, 92, 116, 1)   0                                            
-__________________________________________________________________________________________________
-conv2d_1 (Conv2D)               (None, 92, 116, 30)  300         input_1[0][0]                    
-__________________________________________________________________________________________________
-batch_normalization_1 (BatchNor (None, 92, 116, 30)  120         conv2d_1[0][0]                   
-__________________________________________________________________________________________________
-activation_1 (Activation)       (None, 92, 116, 30)  0           batch_normalization_1[0][0]      
-__________________________________________________________________________________________________
-conv2d_2 (Conv2D)               (None, 92, 116, 30)  8130        activation_1[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_2 (BatchNor (None, 92, 116, 30)  120         conv2d_2[0][0]                   
-__________________________________________________________________________________________________
-activation_2 (Activation)       (None, 92, 116, 30)  0           batch_normalization_2[0][0]      
-__________________________________________________________________________________________________
-max_pooling2d_1 (MaxPooling2D)  (None, 46, 58, 30)   0           activation_2[0][0]               
-__________________________________________________________________________________________________
-dropout_1 (Dropout)             (None, 46, 58, 30)   0           max_pooling2d_1[0][0]            
-__________________________________________________________________________________________________
-conv2d_3 (Conv2D)               (None, 46, 58, 60)   16260       dropout_1[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_3 (BatchNor (None, 46, 58, 60)   240         conv2d_3[0][0]                   
-__________________________________________________________________________________________________
-activation_3 (Activation)       (None, 46, 58, 60)   0           batch_normalization_3[0][0]      
-__________________________________________________________________________________________________
-conv2d_4 (Conv2D)               (None, 46, 58, 60)   32460       activation_3[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_4 (BatchNor (None, 46, 58, 60)   240         conv2d_4[0][0]                   
-__________________________________________________________________________________________________
-activation_4 (Activation)       (None, 46, 58, 60)   0           batch_normalization_4[0][0]      
-__________________________________________________________________________________________________
-concatenate_1 (Concatenate)     (None, 46, 58, 90)   0           dropout_1[0][0]                  
-                                                                 activation_4[0][0]               
-__________________________________________________________________________________________________
-max_pooling2d_2 (MaxPooling2D)  (None, 23, 29, 90)   0           concatenate_1[0][0]              
-__________________________________________________________________________________________________
-dropout_2 (Dropout)             (None, 23, 29, 90)   0           max_pooling2d_2[0][0]            
-__________________________________________________________________________________________________
-conv2d_5 (Conv2D)               (None, 23, 29, 120)  97320       dropout_2[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_5 (BatchNor (None, 23, 29, 120)  480         conv2d_5[0][0]                   
-__________________________________________________________________________________________________
-activation_5 (Activation)       (None, 23, 29, 120)  0           batch_normalization_5[0][0]      
-__________________________________________________________________________________________________
-conv2d_6 (Conv2D)               (None, 23, 29, 120)  129720      activation_5[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_6 (BatchNor (None, 23, 29, 120)  480         conv2d_6[0][0]                   
-__________________________________________________________________________________________________
-activation_6 (Activation)       (None, 23, 29, 120)  0           batch_normalization_6[0][0]      
-__________________________________________________________________________________________________
-concatenate_2 (Concatenate)     (None, 23, 29, 210)  0           dropout_2[0][0]                  
-                                                                 activation_6[0][0]               
-__________________________________________________________________________________________________
-dropout_3 (Dropout)             (None, 23, 29, 210)  0           concatenate_2[0][0]              
-__________________________________________________________________________________________________
-conv2d_transpose_1 (Conv2DTrans (None, 46, 58, 60)   50460       dropout_3[0][0]                  
-__________________________________________________________________________________________________
-concatenate_3 (Concatenate)     (None, 46, 58, 150)  0           conv2d_transpose_1[0][0]         
-                                                                 concatenate_1[0][0]              
-__________________________________________________________________________________________________
-conv2d_7 (Conv2D)               (None, 46, 58, 60)   81060       concatenate_3[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_7 (BatchNor (None, 46, 58, 60)   240         conv2d_7[0][0]                   
-__________________________________________________________________________________________________
-activation_7 (Activation)       (None, 46, 58, 60)   0           batch_normalization_7[0][0]      
-__________________________________________________________________________________________________
-conv2d_8 (Conv2D)               (None, 46, 58, 60)   32460       activation_7[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_8 (BatchNor (None, 46, 58, 60)   240         conv2d_8[0][0]                   2020-04-26 23:20:16.097596: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0
-2020-04-26 23:20:16.097706: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
-2020-04-26 23:20:16.097720: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 
-2020-04-26 23:20:16.097727: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N 
-2020-04-26 23:20:16.097849: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15153 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:09:00.0, compute capability: 6.0)
-
-__________________________________________________________________________________________________
-activation_8 (Activation)       (None, 46, 58, 60)   0           batch_normalization_8[0][0]      
-__________________________________________________________________________________________________
-concatenate_4 (Concatenate)     (None, 46, 58, 210)  0           concatenate_3[0][0]              
-                                                                 activation_8[0][0]               
-__________________________________________________________________________________________________
-dropout_4 (Dropout)             (None, 46, 58, 210)  0           concatenate_4[0][0]              
-__________________________________________________________________________________________________
-conv2d_transpose_2 (Conv2DTrans (None, 92, 116, 30)  25230       dropout_4[0][0]                  
-__________________________________________________________________________________________________
-concatenate_5 (Concatenate)     (None, 92, 116, 60)  0           conv2d_transpose_2[0][0]         
-                                                                 activation_2[0][0]               
-__________________________________________________________________________________________________
-conv2d_9 (Conv2D)               (None, 92, 116, 30)  16230       concatenate_5[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_9 (BatchNor (None, 92, 116, 30)  120         conv2d_9[0][0]                   
-__________________________________________________________________________________________________
-activation_9 (Activation)       (None, 92, 116, 30)  0           batch_normalization_9[0][0]      
-__________________________________________________________________________________________________
-conv2d_10 (Conv2D)              (None, 92, 116, 30)  8130        activation_9[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_10 (BatchNo (None, 92, 116, 30)  120         conv2d_10[0][0]                  
-__________________________________________________________________________________________________
-activation_10 (Activation)      (None, 92, 116, 30)  0           batch_normalization_10[0][0]     
-__________________________________________________________________________________________________
-concatenate_6 (Concatenate)     (None, 92, 116, 90)  0           concatenate_5[0][0]              
-                                                                 activation_10[0][0]              
-__________________________________________________________________________________________________
-dropout_5 (Dropout)             (None, 92, 116, 90)  0           concatenate_6[0][0]              
-__________________________________________________________________________________________________
-conv2d_11 (Conv2D)              (None, 92, 116, 13)  1183        dropout_5[0][0]                  
-==================================================================================================
-Total params: 501,343
-Trainable params: 500,143
-Non-trainable params: 1,200
-__________________________________________________________________________________________________
-------------------------------------------------------------------
-class_weights [6.55072799e-02 3.08830404e-02 7.68489529e-02 1.00912010e-02
- 2.67215687e-02 7.01277282e-03 8.03424745e-02 1.16957272e-01
- 7.80702233e-02 1.36444461e-02 3.13208894e-01 1.80677915e-01
- 3.39596122e-05]
-Train on 4060 samples, validate on 1096 samples
-Epoch 1/300
- - 19s - loss: 0.7855 - acc: 0.9572 - mDice: 0.1501 - val_loss: 0.8349 - val_acc: 0.9868 - val_mDice: 0.0957
-
-Epoch 00001: val_mDice improved from -inf to 0.09566, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd1/best_model_weights.h5
-Epoch 2/300
- - 15s - loss: 0.5844 - acc: 0.9874 - mDice: 0.3676 - val_loss: 0.7970 - val_acc: 0.9889 - val_mDice: 0.1372
-
-Epoch 00002: val_mDice improved from 0.09566 to 0.13721, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd1/best_model_weights.h5
-Epoch 3/300
- - 15s - loss: 0.5058 - acc: 0.9893 - mDice: 0.4526 - val_loss: 0.7883 - val_acc: 0.9908 - val_mDice: 0.1462
-
-Epoch 00003: val_mDice improved from 0.13721 to 0.14622, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd1/best_model_weights.h5
-Epoch 4/300
- - 15s - loss: 0.4822 - acc: 0.9908 - mDice: 0.4781 - val_loss: 0.7851 - val_acc: 0.9924 - val_mDice: 0.1497
-
-Epoch 00004: val_mDice improved from 0.14622 to 0.14972, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd1/best_model_weights.h5
-Epoch 5/300
- - 15s - loss: 0.4693 - acc: 0.9918 - mDice: 0.4920 - val_loss: 0.7802 - val_acc: 0.9928 - val_mDice: 0.1550
-
-Epoch 00005: val_mDice improved from 0.14972 to 0.15498, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd1/best_model_weights.h5
-Epoch 6/300
- - 15s - loss: 0.4508 - acc: 0.9926 - mDice: 0.5120 - val_loss: 0.7809 - val_acc: 0.9929 - val_mDice: 0.1541
-
-Epoch 00006: val_mDice did not improve from 0.15498
-Epoch 7/300
- - 15s - loss: 0.4437 - acc: 0.9930 - mDice: 0.5196 - val_loss: 0.7733 - val_acc: 0.9937 - val_mDice: 0.1623
-
-Epoch 00007: val_mDice improved from 0.15498 to 0.16228, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd1/best_model_weights.h5
-Epoch 8/300
- - 15s - loss: 0.4386 - acc: 0.9932 - mDice: 0.5251 - val_loss: 0.7737 - val_acc: 0.9936 - val_mDice: 0.1570
-
-Epoch 00008: val_mDice did not improve from 0.16228
-Epoch 9/300
- - 15s - loss: 0.4418 - acc: 0.9933 - mDice: 0.5216 - val_loss: 0.7822 - val_acc: 0.9928 - val_mDice: 0.1522
-
-Epoch 00009: val_mDice did not improve from 0.16228
-Epoch 10/300
- - 15s - loss: 0.4332 - acc: 0.9935 - mDice: 0.5309 - val_loss: 0.7768 - val_acc: 0.9932 - val_mDice: 0.1553
-
-Epoch 00010: val_mDice did not improve from 0.16228
-Epoch 11/300
- - 15s - loss: 0.4291 - acc: 0.9935 - mDice: 0.5353 - val_loss: 0.7692 - val_acc: 0.9937 - val_mDice: 0.1612
-
-Epoch 00011: val_mDice did not improve from 0.16228
-Epoch 12/300
- - 15s - loss: 0.4230 - acc: 0.9937 - mDice: 0.5420 - val_loss: 0.7561 - val_acc: 0.9938 - val_mDice: 0.1622
-
-Epoch 00012: val_mDice did not improve from 0.16228
-Epoch 13/300
- - 14s - loss: 0.4219 - acc: 0.9937 - mDice: 0.5432 - val_loss: 0.7709 - val_acc: 0.9936 - val_mDice: 0.1642
-
-Epoch 00013: val_mDice improved from 0.16228 to 0.16419, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd1/best_model_weights.h5
-Epoch 14/300
- - 15s - loss: 0.4177 - acc: 0.9938 - mDice: 0.5477 - val_loss: 0.7645 - val_acc: 0.9940 - val_mDice: 0.1652
-
-Epoch 00014: val_mDice improved from 0.16419 to 0.16524, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd1/best_model_weights.h5
-Epoch 15/300
- - 15s - loss: 0.4240 - acc: 0.9939 - mDice: 0.5409 - val_loss: 0.7692 - val_acc: 0.9937 - val_mDice: 0.1598
-
-Epoch 00015: val_mDice did not improve from 0.16524
-Epoch 16/300
- - 15s - loss: 0.4271 - acc: 0.9938 - mDice: 0.5375 - val_loss: 0.7569 - val_acc: 0.9937 - val_mDice: 0.1634
-
-Epoch 00016: val_mDice did not improve from 0.16524
-Epoch 17/300
- - 15s - loss: 0.4166 - acc: 0.9940 - mDice: 0.5489 - val_loss: 0.7662 - val_acc: 0.9937 - val_mDice: 0.1631
-
-Epoch 00017: val_mDice did not improve from 0.16524
-Epoch 18/300
- - 15s - loss: 0.4124 - acc: 0.9940 - mDice: 0.5535 - val_loss: 0.6782 - val_acc: 0.9940 - val_mDice: 0.1666
-
-Epoch 00018: val_mDice improved from 0.16524 to 0.16663, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd1/best_model_weights.h5
-Epoch 19/300
- - 16s - loss: 0.4092 - acc: 0.9941 - mDice: 0.5570 - val_loss: 0.7579 - val_acc: 0.9936 - val_mDice: 0.1630
-
-Epoch 00019: val_mDice did not improve from 0.16663
-Epoch 20/300
- - 15s - loss: 0.4117 - acc: 0.9940 - mDice: 0.5543 - val_loss: 0.7681 - val_acc: 0.9937 - val_mDice: 0.1635
-
-Epoch 00020: val_mDice did not improve from 0.16663
-Epoch 21/300
- - 16s - loss: 0.4094 - acc: 0.9941 - mDice: 0.5567 - val_loss: 0.7600 - val_acc: 0.9940 - val_mDice: 0.1655
-
-Epoch 00021: val_mDice did not improve from 0.16663
-Epoch 22/300
- - 15s - loss: 0.4088 - acc: 0.9942 - mDice: 0.5573 - val_loss: 0.7730 - val_acc: 0.9939 - val_mDice: 0.1611
-
-Epoch 00022: val_mDice did not improve from 0.16663
-Epoch 23/300
- - 15s - loss: 0.4056 - acc: 0.9942 - mDice: 0.5608 - val_loss: 0.7685 - val_acc: 0.9941 - val_mDice: 0.1654
-
-Epoch 00023: val_mDice did not improve from 0.16663
-Epoch 24/300
- - 15s - loss: 0.4021 - acc: 0.9942 - mDice: 0.5646 - val_loss: 0.7707 - val_acc: 0.9940 - val_mDice: 0.1646
-
-Epoch 00024: val_mDice did not improve from 0.16663
-Epoch 25/300
- - 16s - loss: 0.3987 - acc: 0.9943 - mDice: 0.5683 - val_loss: 0.7272 - val_acc: 0.9938 - val_mDice: 0.1649
-
-Epoch 00025: val_mDice did not improve from 0.16663
-Epoch 26/300
- - 15s - loss: 0.3975 - acc: 0.9943 - mDice: 0.5695 - val_loss: 0.7652 - val_acc: 0.9938 - val_mDice: 0.1651
-
-Epoch 00026: val_mDice did not improve from 0.16663
-Epoch 27/300
- - 15s - loss: 0.3890 - acc: 0.9944 - mDice: 0.5788 - val_loss: 0.7560 - val_acc: 0.9937 - val_mDice: 0.1584
-
-Epoch 00027: val_mDice did not improve from 0.16663
-Epoch 28/300
- - 16s - loss: 0.3898 - acc: 0.9944 - mDice: 0.5779 - val_loss: 0.7683 - val_acc: 0.9934 - val_mDice: 0.1640
-
-Epoch 00028: val_mDice did not improve from 0.16663
-Epoch 29/300
- - 15s - loss: 0.3985 - acc: 0.9944 - mDice: 0.5685 - val_loss: 0.6106 - val_acc: 0.9939 - val_mDice: 0.1642
-
-Epoch 00029: val_mDice did not improve from 0.16663
-Epoch 30/300
- - 15s - loss: 0.4045 - acc: 0.9942 - mDice: 0.5620 - val_loss: 0.7419 - val_acc: 0.9938 - val_mDice: 0.1639
-
-Epoch 00030: val_mDice did not improve from 0.16663
-Epoch 31/300
- - 15s - loss: 0.3955 - acc: 0.9944 - mDice: 0.5718 - val_loss: 0.7646 - val_acc: 0.9939 - val_mDice: 0.1645
-
-Epoch 00031: val_mDice did not improve from 0.16663
-Epoch 32/300
- - 15s - loss: 0.3952 - acc: 0.9945 - mDice: 0.5721 - val_loss: 0.7494 - val_acc: 0.9941 - val_mDice: 0.1608
-
-Epoch 00032: val_mDice did not improve from 0.16663
-Epoch 33/300
- - 16s - loss: 0.3927 - acc: 0.9945 - mDice: 0.5748 - val_loss: 0.7579 - val_acc: 0.9938 - val_mDice: 0.1611
-
-Epoch 00033: val_mDice did not improve from 0.16663
-
-Epoch 00033: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
-Epoch 34/300
- - 16s - loss: 0.3916 - acc: 0.9947 - mDice: 0.5760 - val_loss: 0.7420 - val_acc: 0.9941 - val_mDice: 0.1657
-
-Epoch 00034: val_mDice did not improve from 0.16663
-Epoch 35/300
- - 15s - loss: 0.3758 - acc: 0.9948 - mDice: 0.5931 - val_loss: 0.6615 - val_acc: 0.9941 - val_mDice: 0.1654
-
-Epoch 00035: val_mDice did not improve from 0.16663
-Epoch 36/300
- - 15s - loss: 0.3724 - acc: 0.9948 - mDice: 0.5967 - val_loss: 0.7494 - val_acc: 0.9940 - val_mDice: 0.1671
-
-Epoch 00036: val_mDice improved from 0.16663 to 0.16706, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd1/best_model_weights.h5
-Epoch 37/300
- - 16s - loss: 0.3772 - acc: 0.9948 - mDice: 0.5916 - val_loss: 0.7578 - val_acc: 0.9942 - val_mDice: 0.1661
-
-Epoch 00037: val_mDice did not improve from 0.16706
-Epoch 38/300
- - 16s - loss: 0.3767 - acc: 0.9949 - mDice: 0.5921 - val_loss: 0.7513 - val_acc: 0.9942 - val_mDice: 0.1671
-
-Epoch 00038: val_mDice improved from 0.16706 to 0.16711, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd1/best_model_weights.h5
-Epoch 39/300
- - 16s - loss: 0.3765 - acc: 0.9949 - mDice: 0.5923 - val_loss: 0.7450 - val_acc: 0.9941 - val_mDice: 0.1679
-
-Epoch 00039: val_mDice improved from 0.16711 to 0.16790, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd1/best_model_weights.h5
-Epoch 40/300
- - 16s - loss: 0.3796 - acc: 0.9949 - mDice: 0.5890 - val_loss: 0.5844 - val_acc: 0.9940 - val_mDice: 0.1664
-
-Epoch 00040: val_mDice did not improve from 0.16790
-Epoch 41/300
- - 16s - loss: 0.3680 - acc: 0.9949 - mDice: 0.6015 - val_loss: 0.7093 - val_acc: 0.9942 - val_mDice: 0.1659
-
-Epoch 00041: val_mDice did not improve from 0.16790
-Epoch 42/300
- - 15s - loss: 0.3748 - acc: 0.9948 - mDice: 0.5941 - val_loss: 0.7582 - val_acc: 0.9942 - val_mDice: 0.1688
-
-Epoch 00042: val_mDice improved from 0.16790 to 0.16876, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM30_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd1/best_model_weights.h5
-Epoch 43/300
- - 16s - loss: 0.3707 - acc: 0.9949 - mDice: 0.5986 - val_loss: 0.6647 - val_acc: 0.9941 - val_mDice: 0.1665
-
-Epoch 00043: val_mDice did not improve from 0.16876
-Epoch 44/300
- - 16s - loss: 0.3653 - acc: 0.9950 - mDice: 0.6044 - val_loss: 0.7163 - val_acc: 0.9939 - val_mDice: 0.1651
-
-Epoch 00044: val_mDice did not improve from 0.16876
-Epoch 45/300
- - 15s - loss: 0.3692 - acc: 0.9950 - mDice: 0.6002 - val_loss: 0.7590 - val_acc: 0.9939 - val_mDice: 0.1653
-
-Epoch 00045: val_mDice did not improve from 0.16876
-Epoch 46/300
- - 16s - loss: 0.3659 - acc: 0.9949 - mDice: 0.6038 - val_loss: 0.7563 - val_acc: 0.9940 - val_mDice: 0.1656
-
-Epoch 00046: val_mDice did not improve from 0.16876
-Epoch 47/300
- - 16s - loss: 0.3707 - acc: 0.9949 - mDice: 0.5986 - val_loss: 0.6055 - val_acc: 0.9942 - val_mDice: 0.1645
-
-Epoch 00047: val_mDice did not improve from 0.16876
-Epoch 48/300
- - 16s - loss: 0.3698 - acc: 0.9950 - mDice: 0.5996 - val_loss: 0.7523 - val_acc: 0.9942 - val_mDice: 0.1665
-
-Epoch 00048: val_mDice did not improve from 0.16876
-Epoch 49/300
- - 16s - loss: 0.3643 - acc: 0.9950 - mDice: 0.6056 - val_loss: 0.7258 - val_acc: 0.9941 - val_mDice: 0.1659
-
-Epoch 00049: val_mDice did not improve from 0.16876
-Epoch 50/300
- - 16s - loss: 0.3643 - acc: 0.9950 - mDice: 0.6055 - val_loss: 0.6551 - val_acc: 0.9941 - val_mDice: 0.1658
-
-Epoch 00050: val_mDice did not improve from 0.16876
-Epoch 51/300
- - 16s - loss: 0.3700 - acc: 0.9950 - mDice: 0.5993 - val_loss: 0.5689 - val_acc: 0.9941 - val_mDice: 0.1667
-
-Epoch 00051: val_mDice did not improve from 0.16876
-Epoch 52/300
- - 16s - loss: 0.3676 - acc: 0.9950 - mDice: 0.6019 - val_loss: 0.7408 - val_acc: 0.9940 - val_mDice: 0.1658
-
-Epoch 00052: val_mDice did not improve from 0.16876
-Epoch 53/300
- - 15s - loss: 0.3663 - acc: 0.9950 - mDice: 0.6034 - val_loss: 0.6863 - val_acc: 0.9940 - val_mDice: 0.1643
-
-Epoch 00053: val_mDice did not improve from 0.16876
-Epoch 54/300
- - 15s - loss: 0.3633 - acc: 0.9951 - mDice: 0.6066 - val_loss: 0.7383 - val_acc: 0.9941 - val_mDice: 0.1657
-
-Epoch 00054: val_mDice did not improve from 0.16876
-
-Epoch 00054: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
-Epoch 55/300
- - 16s - loss: 0.3561 - acc: 0.9952 - mDice: 0.6145 - val_loss: 0.6048 - val_acc: 0.9941 - val_mDice: 0.1671
-
-Epoch 00055: val_mDice did not improve from 0.16876
-Epoch 56/300
- - 16s - loss: 0.3592 - acc: 0.9952 - mDice: 0.6110 - val_loss: 0.6923 - val_acc: 0.9941 - val_mDice: 0.1650
-
-Epoch 00056: val_mDice did not improve from 0.16876
-Epoch 57/300
- - 16s - loss: 0.3624 - acc: 0.9952 - mDice: 0.6076 - val_loss: 0.6983 - val_acc: 0.9941 - val_mDice: 0.1669
-
-Epoch 00057: val_mDice did not improve from 0.16876
-Epoch 58/300
- - 16s - loss: 0.3591 - acc: 0.9952 - mDice: 0.6112 - val_loss: 0.7268 - val_acc: 0.9941 - val_mDice: 0.1663
-
-Epoch 00058: val_mDice did not improve from 0.16876
-Epoch 59/300
- - 16s - loss: 0.3552 - acc: 0.9952 - mDice: 0.6154 - val_loss: 0.7062 - val_acc: 0.9942 - val_mDice: 0.1651
-
-Epoch 00059: val_mDice did not improve from 0.16876
-Epoch 60/300
- - 16s - loss: 0.3599 - acc: 0.9952 - mDice: 0.6103 - val_loss: 0.5803 - val_acc: 0.9941 - val_mDice: 0.1656
-
-Epoch 00060: val_mDice did not improve from 0.16876
-Epoch 61/300
- - 15s - loss: 0.3584 - acc: 0.9953 - mDice: 0.6119 - val_loss: 0.7154 - val_acc: 0.9941 - val_mDice: 0.1663
-
-Epoch 00061: val_mDice did not improve from 0.16876
-Epoch 62/300
- - 16s - loss: 0.3544 - acc: 0.9952 - mDice: 0.6163 - val_loss: 0.6705 - val_acc: 0.9942 - val_mDice: 0.1657
-
-Epoch 00062: val_mDice did not improve from 0.16876
-Epoch 63/300
- - 15s - loss: 0.3483 - acc: 0.9953 - mDice: 0.6229 - val_loss: 0.6601 - val_acc: 0.9941 - val_mDice: 0.1667
-
-Epoch 00063: val_mDice did not improve from 0.16876
-Epoch 64/300
- - 15s - loss: 0.3453 - acc: 0.9952 - mDice: 0.6261 - val_loss: 0.7213 - val_acc: 0.9941 - val_mDice: 0.1665
-
-Epoch 00064: val_mDice did not improve from 0.16876
-Epoch 65/300
- - 15s - loss: 0.3561 - acc: 0.9953 - mDice: 0.6144 - val_loss: 0.5282 - val_acc: 0.9940 - val_mDice: 0.1643
-
-Epoch 00065: val_mDice did not improve from 0.16876
-Epoch 66/300
- - 16s - loss: 0.3510 - acc: 0.9952 - mDice: 0.6200 - val_loss: 0.6593 - val_acc: 0.9942 - val_mDice: 0.1658
-
-Epoch 00066: val_mDice did not improve from 0.16876
-Epoch 67/300
- - 16s - loss: 0.3514 - acc: 0.9953 - mDice: 0.6195 - val_loss: 0.7198 - val_acc: 0.9941 - val_mDice: 0.1670
-
-Epoch 00067: val_mDice did not improve from 0.16876
-Epoch 68/300
- - 16s - loss: 0.3509 - acc: 0.9953 - mDice: 0.6200 - val_loss: 0.7146 - val_acc: 0.9942 - val_mDice: 0.1652
-
-Epoch 00068: val_mDice did not improve from 0.16876
-Epoch 69/300
- - 16s - loss: 0.3528 - acc: 0.9953 - mDice: 0.6180 - val_loss: 0.6486 - val_acc: 0.9941 - val_mDice: 0.1645
-
-Epoch 00069: val_mDice did not improve from 0.16876
-
-Epoch 00069: ReduceLROnPlateau reducing learning rate to 0.0001250000059371814.
-Epoch 70/300
- - 15s - loss: 0.3548 - acc: 0.9954 - mDice: 0.6158 - val_loss: 0.6757 - val_acc: 0.9942 - val_mDice: 0.1652
-
-Epoch 00070: val_mDice did not improve from 0.16876
-Epoch 71/300
- - 15s - loss: 0.3443 - acc: 0.9954 - mDice: 0.6272 - val_loss: 0.7053 - val_acc: 0.9941 - val_mDice: 0.1646
-
-Epoch 00071: val_mDice did not improve from 0.16876
-Epoch 72/300
- - 15s - loss: 0.3453 - acc: 0.9954 - mDice: 0.6261 - val_loss: 0.6413 - val_acc: 0.9942 - val_mDice: 0.1656
-
-Epoch 00072: val_mDice did not improve from 0.16876
-Epoch 73/300
- - 15s - loss: 0.3519 - acc: 0.9954 - mDice: 0.6190 - val_loss: 0.3598 - val_acc: 0.9941 - val_mDice: 0.1645
-
-Epoch 00073: val_mDice did not improve from 0.16876
-Epoch 74/300
- - 16s - loss: 0.3388 - acc: 0.9954 - mDice: 0.6332 - val_loss: 0.7048 - val_acc: 0.9941 - val_mDice: 0.1649
-
-Epoch 00074: val_mDice did not improve from 0.16876
-Epoch 75/300
- - 16s - loss: 0.3434 - acc: 0.9954 - mDice: 0.6282 - val_loss: 0.6593 - val_acc: 0.9942 - val_mDice: 0.1651
-
-Epoch 00075: val_mDice did not improve from 0.16876
-Epoch 76/300
- - 16s - loss: 0.3544 - acc: 0.9954 - mDice: 0.6163 - val_loss: 0.6843 - val_acc: 0.9942 - val_mDice: 0.1661
-
-Epoch 00076: val_mDice did not improve from 0.16876
-Epoch 77/300
- - 15s - loss: 0.3490 - acc: 0.9954 - mDice: 0.6221 - val_loss: 0.6213 - val_acc: 0.9942 - val_mDice: 0.1646
-
-Epoch 00077: val_mDice did not improve from 0.16876
-Epoch 78/300
- - 15s - loss: 0.3505 - acc: 0.9954 - mDice: 0.6205 - val_loss: 0.6126 - val_acc: 0.9942 - val_mDice: 0.1647
-
-Epoch 00078: val_mDice did not improve from 0.16876
-Epoch 79/300
- - 15s - loss: 0.3435 - acc: 0.9954 - mDice: 0.6281 - val_loss: 0.6307 - val_acc: 0.9941 - val_mDice: 0.1648
-
-Epoch 00079: val_mDice did not improve from 0.16876
-Epoch 80/300
- - 16s - loss: 0.3529 - acc: 0.9954 - mDice: 0.6179 - val_loss: 0.6201 - val_acc: 0.9942 - val_mDice: 0.1654
-
-Epoch 00080: val_mDice did not improve from 0.16876
-Epoch 81/300
- - 16s - loss: 0.3460 - acc: 0.9954 - mDice: 0.6254 - val_loss: 0.6075 - val_acc: 0.9941 - val_mDice: 0.1646
-
-Epoch 00081: val_mDice did not improve from 0.16876
-Epoch 82/300
- - 16s - loss: 0.3457 - acc: 0.9954 - mDice: 0.6257 - val_loss: 0.6508 - val_acc: 0.9941 - val_mDice: 0.1650
-
-Epoch 00082: val_mDice did not improve from 0.16876
-Restoring model weights from the end of the best epoch
-Epoch 00082: early stopping
-{'val_loss': [0.8349272489112659, 0.7969847037626879, 0.7883085332212657, 0.7851202107258957, 0.7801611053682592, 0.7808681083639173, 0.7733409189938629, 0.7737048056221356, 0.7822487826329948, 0.7768296829431597, 0.7691599597243497, 0.7560931225545215, 0.7709299895341379, 0.7645047960707742, 0.7692126140107204, 0.7568943621250834, 0.7661844484888725, 0.6782325867862598, 0.7578787909698312, 0.7680720070744083, 0.7600409591937587, 0.7729560546848896, 0.7684516921421908, 0.7707439147642929, 0.7272073721146062, 0.7651625607353058, 0.7560182414459486, 0.7682938254336371, 0.6105886116406344, 0.7419250763572045, 0.7645551722741475, 0.7493973096465543, 0.7578929347278428, 0.741989514362203, 0.6615294002703507, 0.7494055878398193, 0.757753438486235, 0.751283694249, 0.7449697290350051, 0.5844492577288273, 0.709253334161574, 0.7582304923094972, 0.6646949388902553, 0.7162994415003018, 0.758953917472467, 0.7562727518651607, 0.6054725100415467, 0.752289885532682, 0.725790492809602, 0.6550984518588895, 0.5689056803383966, 0.7408307569957998, 0.6863034247373142, 0.7383122992885374, 0.604830731603786, 0.6923001938819016, 0.6983018165631015, 0.7267575889934589, 0.7061728441911023, 0.580305719027554, 0.7153860109239599, 0.6705466443604796, 0.6600759742360045, 0.7212504313810029, 0.528233971038874, 0.6593281635402763, 0.719765272616905, 0.7145960986831762, 0.6486043071333509, 0.6757257343643773, 0.705255535505984, 0.6413037507203374, 0.3597942435447752, 0.7048308304409041, 0.6592773206151314, 0.6843314324743557, 0.6213244513003495, 0.6125836315272498, 0.6306554918741658, 0.6201444654351603, 0.6075150675690957, 0.650753205438165], 'val_acc': [0.9868348801005495, 0.988865999192217, 0.9907894758847509, 0.9923591734501567, 0.99279203804305, 0.9928574443516069, 0.9937305229641226, 0.9935680834481316, 0.9927770781473522, 0.9931929260492325, 0.9936894011976075, 0.9938007177662675, 0.9936435746885565, 0.994036598035889, 0.9936836724081178, 0.9936670010542348, 0.9936719586814406, 0.9940010317920769, 0.993593817318443, 0.9937152209943229, 0.9939755540694634, 0.9939045935434146, 0.9940503638808744, 0.9940277065021278, 0.9938366257578787, 0.9938280728176563, 0.9937152209943229, 0.9934358182397202, 0.9938665460931123, 0.9938208065981412, 0.9939260555662378, 0.994063703139333, 0.9937512144772676, 0.9941376531428664, 0.9941050832288979, 0.9940361713405943, 0.9941520153606025, 0.9941889495745192, 0.9940710524572943, 0.9939731633576163, 0.9941965616750021, 0.9941911744157763, 0.9941061072758515, 0.9939441795114183, 0.9938996364600468, 0.9940488242754971, 0.9942098133755426, 0.9942081889314373, 0.9940798589347923, 0.9940781506308674, 0.9941013187822634, 0.9939807694758812, 0.994015394553651, 0.9941464605992728, 0.9941450080079753, 0.9941317557635969, 0.9940778929604231, 0.9941488534864718, 0.9941648406921512, 0.9941233779392104, 0.9941458618336351, 0.9941587725477498, 0.9941256000612774, 0.994092684810179, 0.9940234357423156, 0.9941555236595391, 0.9941478267203282, 0.9941617674636145, 0.9940784079750089, 0.994158085680356, 0.9941133740392044, 0.9941946783640089, 0.9941465454380007, 0.9941397066751536, 0.99415312805315, 0.9941692871116373, 0.9941706537765308, 0.9941833099744616, 0.9941329527510344, 0.9941968178227, 0.994145863465149, 0.9940700268875944], 'val_mDice': [0.09565512463082936, 0.13721350179669514, 0.14622390879965685, 0.14972397778161733, 0.1549842477405334, 0.15411636400494566, 0.16227938603065112, 0.15698273226691367, 0.15217499090667377, 0.15533416545788425, 0.16124927846674067, 0.16223463746356726, 0.164191193384098, 0.16523996695933374, 0.15983432263922218, 0.1634494155385348, 0.16314903580087411, 0.16663463493931469, 0.16300168326101827, 0.16352292857248418, 0.16550535947954567, 0.1610737077528135, 0.16536709250046117, 0.1646198721187698, 0.16485339752058534, 0.1650870936781671, 0.15840095171303809, 0.164004469065299, 0.16416793280224246, 0.1639321413775205, 0.16445166688840926, 0.16077390114266973, 0.16109968830500956, 0.16574759855777207, 0.16538429788220144, 0.16706273012393474, 0.1661415575982195, 0.16711280556208719, 0.16789836220847482, 0.16641332414913643, 0.1659172481679267, 0.16875537393648743, 0.16653221086600095, 0.16511963267076923, 0.1653139179679916, 0.16559987631652542, 0.16448656765234348, 0.16650879105485145, 0.16585716080395135, 0.1658107935217532, 0.16670788486291263, 0.16575924753904833, 0.16427251511384278, 0.16569931247651068, 0.16709177461614347, 0.16502279081492005, 0.16688817495696973, 0.16629360461553191, 0.16505560612585915, 0.1656270550518417, 0.16630291712370668, 0.16569827430063977, 0.16665877895156017, 0.16648344336175203, 0.16432822576522735, 0.16582997513548592, 0.1670046483137908, 0.16516062292528685, 0.16452315417119898, 0.16518434668467102, 0.1645912215876771, 0.16558887925485494, 0.16447152640739748, 0.16486169238707657, 0.165071850982468, 0.16610210874870052, 0.16455856790489712, 0.16469437600949058, 0.16482530680246635, 0.16539672109717243, 0.16458610573981652, 0.16495912953041783], 'loss': [0.7854999133518764, 0.5843533585077436, 0.5058186638531427, 0.48220424464183487, 0.46929746932290456, 0.4508287794337484, 0.44369707267566266, 0.4385952229423476, 0.4418290272501889, 0.4332151354607103, 0.42914305429153254, 0.42300743213281256, 0.4218503397526999, 0.4177102590062348, 0.4239772169167185, 0.42713690732647047, 0.4165856598559859, 0.4123606823861893, 0.40916179586660684, 0.41165327049534894, 0.40936844806953016, 0.4088310155228441, 0.40558820236199006, 0.402127953512328, 0.3986833651958428, 0.39754812342339546, 0.3889620789679988, 0.38980745366347835, 0.39854810467641344, 0.40449644595825024, 0.3954799810580432, 0.3951773426215637, 0.3926950686891091, 0.3916166904084201, 0.3758174541401746, 0.37243924770742803, 0.3772129503083346, 0.37672121353043714, 0.3765403274538482, 0.3795528151645449, 0.36803027859021875, 0.3748422876147214, 0.3707105401774933, 0.3653041901332991, 0.36921134855359644, 0.36590641725973544, 0.37066065784305186, 0.3698145012036333, 0.36427509289216525, 0.36428900797085223, 0.3700117971289334, 0.367647354018512, 0.3662524544840376, 0.3633216501309954, 0.35605544406058165, 0.3592081504135296, 0.36239945227876674, 0.3590980435680286, 0.3552321883404783, 0.35993873698664414, 0.35838164590996474, 0.35438258468811146, 0.3482661557755447, 0.34534720525952983, 0.35611553501172605, 0.3509635565242744, 0.3514190580457302, 0.35093749248482325, 0.35280447100917695, 0.3547932096009184, 0.3442850398826482, 0.345265130250912, 0.351858903805317, 0.3387836203933349, 0.34335424193167335, 0.35435480576724254, 0.3489627349626255, 0.3505174154828628, 0.34345990037683194, 0.352914191231939, 0.345978439001027, 0.3456637060700966], 'acc': [0.957205747745087, 0.9873965097765617, 0.9892868910517011, 0.9907501608573744, 0.9917777788462897, 0.9926429172161177, 0.9930376698230875, 0.9932382093568154, 0.9933329524077805, 0.9934724454809292, 0.993543252862733, 0.9937435373884117, 0.9937094962361999, 0.993834218221345, 0.9938996713149724, 0.9937591394180147, 0.9939671553708063, 0.9940423266641025, 0.9940544437305093, 0.9939927752382063, 0.9941143797242583, 0.9941706259556005, 0.9941551170032012, 0.9942286017493074, 0.9942756146926598, 0.9942941712628445, 0.9943924433198469, 0.9943784799775467, 0.9943767976878312, 0.99419555082697, 0.9943986049132981, 0.9945284274998557, 0.9944760144637723, 0.9946997945238216, 0.994797791313068, 0.9948344632909802, 0.9948354571910915, 0.9948530429102517, 0.994855627784588, 0.994879331788406, 0.9948513573907279, 0.9948312550636348, 0.9948998720481478, 0.9949610557755814, 0.9949523783082446, 0.9949095657306352, 0.9949344221887917, 0.9949610082093131, 0.9950141160946174, 0.9950046995884092, 0.9949500234843475, 0.9949555173883298, 0.995022263286149, 0.9951015408403181, 0.9951973435620369, 0.9951981313416524, 0.9952074304002846, 0.9952098990015208, 0.9952375261948027, 0.9952303952184217, 0.9952726305411954, 0.9952437801314105, 0.9952735064064928, 0.9952402959022616, 0.9952652441163369, 0.9952494571068017, 0.9952847451118413, 0.9953103655664791, 0.9953110110877182, 0.9953768347284476, 0.9953595702284075, 0.9954056148164965, 0.9953915136201041, 0.9954127233310286, 0.9954285784601578, 0.9954142701156034, 0.9954294788426367, 0.9954302406369759, 0.9954099752045618, 0.9954458429601979, 0.9954326864827443, 0.9954151239594803], 'mDice': [0.15010875691642545, 0.36758500950530243, 0.4526399212615223, 0.47813639721920337, 0.49203500231461866, 0.5119784545942481, 0.5196379679324005, 0.5251320340840394, 0.5216188249476438, 0.5309416017050079, 0.5353445983560655, 0.5419823313728341, 0.5432358217503637, 0.547717753944579, 0.5409246032387752, 0.5375017989518607, 0.548926257294387, 0.5535037133640843, 0.5569700614498754, 0.5542715202851836, 0.5567419193501543, 0.5573231175202381, 0.5608358006979445, 0.5645813598054383, 0.568310238494368, 0.5695391156403302, 0.5788376726797355, 0.5779243300994629, 0.568454191437349, 0.5620156145411466, 0.5717751257341778, 0.5720997087730857, 0.5747890581785164, 0.5759528345001742, 0.5930633187073792, 0.5967227101986632, 0.5915515012488577, 0.5920823705864364, 0.5922786945412899, 0.5890159437185144, 0.6014975419112027, 0.59411896097249, 0.5985924020923418, 0.6044487837206554, 0.6002142448437038, 0.6037985816084105, 0.5986480602783523, 0.5995648058746101, 0.605561870824674, 0.6055453550345792, 0.5993471881512351, 0.6019109679303439, 0.6034201301377395, 0.6065916898362155, 0.6144595300696166, 0.6110449657211163, 0.6075876506751982, 0.6111632761329853, 0.6153515243508252, 0.6102510340732014, 0.6119380690928163, 0.6162699915725609, 0.622897028152285, 0.6260605180645223, 0.6143941275151492, 0.6199755628451045, 0.6194798636979657, 0.6200007911899994, 0.617978820733249, 0.6158218933407016, 0.6272061758589382, 0.6261430434478915, 0.6189997828642384, 0.6331650277810731, 0.6282124245915507, 0.6162958857534554, 0.6221364261444859, 0.620451447365833, 0.6280977074148619, 0.617854995185078, 0.6253685458687138, 0.6257104784470474], 'lr': [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125]}
-predicting test subjects:   0%|          | 0/11 [00:00<?, ?it/s]predicting test subjects:   9%|▉         | 1/11 [00:01<00:12,  1.29s/it]predicting test subjects:  18%|█▊        | 2/11 [00:02<00:10,  1.18s/it]predicting test subjects:  27%|██▋       | 3/11 [00:03<00:08,  1.07s/it]predicting test subjects:  36%|███▋      | 4/11 [00:03<00:07,  1.01s/it]predicting test subjects:  45%|████▌     | 5/11 [00:04<00:05,  1.06it/s]predicting test subjects:  55%|█████▍    | 6/11 [00:05<00:04,  1.10it/s]predicting test subjects:  64%|██████▎   | 7/11 [00:06<00:03,  1.14it/s]predicting test subjects:  73%|███████▎  | 8/11 [00:07<00:02,  1.14it/s]predicting test subjects:  82%|████████▏ | 9/11 [00:08<00:01,  1.06it/s]predicting test subjects:  91%|█████████ | 10/11 [00:09<00:00,  1.11it/s]predicting test subjects: 100%|██████████| 11/11 [00:09<00:00,  1.12it/s]predicting test subjects: 100%|██████████| 11/11 [00:09<00:00,  1.10it/s]
-Loading train:   0%|          | 0/41 [00:00<?, ?it/s]Loading train:   2%|▏         | 1/41 [00:00<00:24,  1.60it/s]Loading train:   5%|▍         | 2/41 [00:01<00:23,  1.68it/s]Loading train:   7%|▋         | 3/41 [00:01<00:20,  1.85it/s]Loading train:  10%|▉         | 4/41 [00:02<00:19,  1.94it/s]Loading train:  12%|█▏        | 5/41 [00:02<00:18,  1.93it/s]Loading train:  15%|█▍        | 6/41 [00:03<00:18,  1.93it/s]Loading train:  17%|█▋        | 7/41 [00:03<00:16,  2.06it/s]Loading train:  20%|█▉        | 8/41 [00:04<00:16,  1.97it/s]Loading train:  22%|██▏       | 9/41 [00:04<00:15,  2.01it/s]Loading train:  24%|██▍       | 10/41 [00:05<00:16,  1.93it/s]Loading train:  27%|██▋       | 11/41 [00:05<00:14,  2.06it/s]Loading train:  29%|██▉       | 12/41 [00:06<00:14,  1.98it/s]Loading train:  32%|███▏      | 13/41 [00:06<00:14,  1.97it/s]Loading train:  34%|███▍      | 14/41 [00:07<00:14,  1.93it/s]Loading train:  37%|███▋      | 15/41 [00:07<00:13,  1.99it/s]Loading train:  39%|███▉      | 16/41 [00:08<00:13,  1.88it/s]Loading train:  41%|████▏     | 17/41 [00:08<00:12,  1.87it/s]Loading train:  44%|████▍     | 18/41 [00:09<00:13,  1.75it/s]Loading train:  46%|████▋     | 19/41 [00:09<00:11,  1.85it/s]Loading train:  49%|████▉     | 20/41 [00:10<00:11,  1.84it/s]Loading train:  51%|█████     | 21/41 [00:10<00:10,  1.89it/s]Loading train:  54%|█████▎    | 22/41 [00:11<00:09,  1.95it/s]Loading train:  56%|█████▌    | 23/41 [00:11<00:09,  1.95it/s]Loading train:  59%|█████▊    | 24/41 [00:12<00:08,  2.06it/s]Loading train:  61%|██████    | 25/41 [00:12<00:07,  2.04it/s]Loading train:  63%|██████▎   | 26/41 [00:13<00:07,  1.93it/s]Loading train:  66%|██████▌   | 27/41 [00:13<00:07,  1.94it/s]Loading train:  68%|██████▊   | 28/41 [00:14<00:06,  1.88it/s]Loading train:  71%|███████   | 29/41 [00:15<00:06,  1.85it/s]Loading train:  73%|███████▎  | 30/41 [00:15<00:05,  1.87it/s]Loading train:  76%|███████▌  | 31/41 [00:15<00:05,  1.99it/s]Loading train:  78%|███████▊  | 32/41 [00:16<00:04,  1.99it/s]Loading train:  80%|████████  | 33/41 [00:16<00:04,  1.95it/s]Loading train:  83%|████████▎ | 34/41 [00:17<00:03,  1.79it/s]Loading train:  85%|████████▌ | 35/41 [00:18<00:03,  1.50it/s]Loading train:  88%|████████▊ | 36/41 [00:19<00:03,  1.48it/s]Loading train:  90%|█████████ | 37/41 [00:19<00:02,  1.54it/s]Loading train:  93%|█████████▎| 38/41 [00:20<00:01,  1.62it/s]Loading train:  95%|█████████▌| 39/41 [00:20<00:01,  1.70it/s]Loading train:  98%|█████████▊| 40/41 [00:21<00:00,  1.69it/s]Loading train: 100%|██████████| 41/41 [00:22<00:00,  1.69it/s]Loading train: 100%|██████████| 41/41 [00:22<00:00,  1.85it/s]
-concatenating: train:   0%|          | 0/41 [00:00<?, ?it/s]concatenating: train:   5%|▍         | 2/41 [00:00<00:02, 14.20it/s]concatenating: train:  10%|▉         | 4/41 [00:00<00:02, 14.32it/s]concatenating: train:  15%|█▍        | 6/41 [00:00<00:02, 14.41it/s]concatenating: train:  20%|█▉        | 8/41 [00:00<00:02, 14.47it/s]concatenating: train:  24%|██▍       | 10/41 [00:00<00:02, 14.90it/s]concatenating: train:  29%|██▉       | 12/41 [00:00<00:01, 14.73it/s]concatenating: train:  34%|███▍      | 14/41 [00:00<00:01, 14.54it/s]concatenating: train:  39%|███▉      | 16/41 [00:01<00:01, 14.02it/s]concatenating: train:  44%|████▍     | 18/41 [00:01<00:01, 14.14it/s]concatenating: train:  49%|████▉     | 20/41 [00:01<00:01, 14.53it/s]concatenating: train:  54%|█████▎    | 22/41 [00:01<00:01, 14.77it/s]concatenating: train:  59%|█████▊    | 24/41 [00:01<00:01, 14.90it/s]concatenating: train:  63%|██████▎   | 26/41 [00:01<00:01, 14.82it/s]concatenating: train:  68%|██████▊   | 28/41 [00:01<00:00, 14.52it/s]concatenating: train:  73%|███████▎  | 30/41 [00:02<00:00, 14.31it/s]concatenating: train:  78%|███████▊  | 32/41 [00:02<00:00, 14.52it/s]concatenating: train:  83%|████████▎ | 34/41 [00:02<00:00, 13.95it/s]concatenating: train:  88%|████████▊ | 36/41 [00:02<00:00, 13.10it/s]concatenating: train:  93%|█████████▎| 38/41 [00:02<00:00, 13.44it/s]concatenating: train:  98%|█████████▊| 40/41 [00:02<00:00, 13.27it/s]concatenating: train: 100%|██████████| 41/41 [00:02<00:00, 14.10it/s]
-Loading test:   0%|          | 0/11 [00:00<?, ?it/s]Loading test:   9%|▉         | 1/11 [00:06<01:06,  6.69s/it]Loading test:  18%|█▊        | 2/11 [00:07<00:43,  4.85s/it]Loading test:  27%|██▋       | 3/11 [00:10<00:35,  4.42s/it]Loading test:  36%|███▋      | 4/11 [00:19<00:39,  5.69s/it]Loading test:  45%|████▌     | 5/11 [00:29<00:41,  6.96s/it]Loading test:  55%|█████▍    | 6/11 [00:44<00:47,  9.49s/it]Loading test:  64%|██████▎   | 7/11 [00:58<00:43, 10.93s/it]Loading test:  73%|███████▎  | 8/11 [01:25<00:46, 15.50s/it]Loading test:  82%|████████▏ | 9/11 [02:10<00:48, 24.43s/it]Loading test:  91%|█████████ | 10/11 [02:37<00:25, 25.25s/it]Loading test: 100%|██████████| 11/11 [03:06<00:00, 26.32s/it]Loading test: 100%|██████████| 11/11 [03:06<00:00, 16.94s/it]
-concatenating: validation:   0%|          | 0/11 [00:00<?, ?it/s]concatenating: validation:  18%|█▊        | 2/11 [00:00<00:00, 14.17it/s]concatenating: validation:  36%|███▋      | 4/11 [00:00<00:00, 14.17it/s]concatenating: validation:  55%|█████▍    | 6/11 [00:00<00:00, 14.15it/s]concatenating: validation:  73%|███████▎  | 8/11 [00:00<00:00, 14.37it/s]concatenating: validation:  91%|█████████ | 10/11 [00:00<00:00, 14.08it/s]concatenating: validation: 100%|██████████| 11/11 [00:00<00:00, 14.21it/s]
-vimp2_967_08132013_KW 1.2945361137390137
----
-vimp2_ANON695_03132013 0.8960921764373779
----
-vimp2_ctrl_991_08302013_JF 0.8280959129333496
----
-vimp2_A_3T_ET 0.8508641719818115
----
-vimp2_A_7T_ET 0.81003737449646
----
-vimp2_G_3T_ET 0.8166329860687256
----
-vimp2_G_7T_ET 0.7984364032745361
----
-vimp2_J_3T_ET 0.8828086853027344
----
-vimp2_J_7T_ET 1.0915329456329346
----
-vimp2_M_3T_ET 0.8135209083557129
----
-vimp2_M_7T_ET 0.8762936592102051
----
----------------------- check Layers Step ------------------------------
- N: [1]  | GPU: 3  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  normal |  FM 20 |  Upsample 1
-
- #layer 3 #layers changed False
----------------------- check Layers Step ------------------------------
- N: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 3  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  normal |  FM 20 |  Upsample 1
-
- #layer 3 #layers changed False
----------------------------------------------------------------
- Nucleus: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  | GPU: 3  | SD 2  | Dropout 0.3  | LR 0.001  | NL 3  |  normal |  FM 20 |  Upsample 1
-Experiment: exp6
-SubExperiment: sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a
----------------------------------------------------------------
-__________________________________________________________________________________________________
-Layer (type)                    Output Shape         Param #     Connected to                     
-==================================================================================================
-input_1 (InputLayer)            (None, 116, 128, 1)  0                                            
-__________________________________________________________________________________________________
-conv2d_1 (Conv2D)               (None, 116, 128, 20) 200         input_1[0][0]                    
-__________________________________________________________________________________________________
-batch_normalization_1 (BatchNor (None, 116, 128, 20) 80          conv2d_1[0][0]                   
-__________________________________________________________________________________________________
-activation_1 (Activation)       (None, 116, 128, 20) 0           batch_normalization_1[0][0]      
-__________________________________________________________________________________________________
-conv2d_2 (Conv2D)               (None, 116, 128, 20) 3620        activation_1[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_2 (BatchNor (None, 116, 128, 20) 80          conv2d_2[0][0]                   
-__________________________________________________________________________________________________
-activation_2 (Activation)       (None, 116, 128, 20) 0           batch_normalization_2[0][0]      
-__________________________________________________________________________________________________
-max_pooling2d_1 (MaxPooling2D)  (None, 58, 64, 20)   0           activation_2[0][0]               
-__________________________________________________________________________________________________
-dropout_1 (Dropout)             (None, 58, 64, 20)   0           max_pooling2d_1[0][0]            
-__________________________________________________________________________________________________
-conv2d_3 (Conv2D)               (None, 58, 64, 40)   7240        dropout_1[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_3 (BatchNor (None, 58, 64, 40)   160         conv2d_3[0][0]                   
-__________________________________________________________________________________________________
-activation_3 (Activation)       (None, 58, 64, 40)   0           batch_normalization_3[0][0]      
-__________________________________________________________________________________________________
-conv2d_4 (Conv2D)               (None, 58, 64, 40)   14440       activation_3[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_4 (BatchNor (None, 58, 64, 40)   160         conv2d_4[0][0]                   
-__________________________________________________________________________________________________
-activation_4 (Activation)       (None, 58, 64, 40)   0           batch_normalization_4[0][0]      
-__________________________________________________________________________________________________
-concatenate_1 (Concatenate)     (None, 58, 64, 60)   0           dropout_1[0][0]                  
-                                                                 activation_4[0][0]               
-__________________________________________________________________________________________________
-max_pooling2d_2 (MaxPooling2D)  (None, 29, 32, 60)   0           concatenate_1[0][0]              
-__________________________________________________________________________________________________
-dropout_2 (Dropout)             (None, 29, 32, 60)   0           max_pooling2d_2[0][0]            
-__________________________________________________________________________________________________
-conv2d_5 (Conv2D)               (None, 29, 32, 80)   43280       dropout_2[0][0]                  
-__________________________________________________________________________________________________
-batch_normalization_5 (BatchNor (None, 29, 32, 80)   320         conv2d_5[0][0]                   
-__________________________________________________________________________________________________
-activation_5 (Activation)       (None, 29, 32, 80)   0           batch_normalization_5[0][0]      
-__________________________________________________________________________________________________
-conv2d_6 (Conv2D)               (None, 29, 32, 80)   57680       activation_5[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_6 (BatchNor (None, 29, 32, 80)   320         conv2d_6[0][0]                   
-__________________________________________________________________________________________________
-activation_6 (Activation)       (None, 29, 32, 80)   0           batch_normalization_6[0][0]      
-__________________________________________________________________________________________________
-concatenate_2 (Concatenate)     (None, 29, 32, 140)  0           dropout_2[0][0]                  
-                                                                 activation_6[0][0]               
-__________________________________________________________________________________________________
-dropout_3 (Dropout)             (None, 29, 32, 140)  0           concatenate_2[0][0]              
-__________________________________________________________________________________________________
-conv2d_transpose_1 (Conv2DTrans (None, 58, 64, 40)   22440       dropout_3[0][0]                  
-__________________________________________________________________________________________________
-concatenate_3 (Concatenate)     (None, 58, 64, 100)  0           conv2d_transpose_1[0][0]         
-                                                                 concatenate_1[0][0]              
-__________________________________________________________________________________________________
-conv2d_7 (Conv2D)               (None, 58, 64, 40)   36040       concatenate_3[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_7 (BatchNor (None, 58, 64, 40)   160         conv2d_7[0][0]                   
-__________________________________________________________________________________________________
-activation_7 (Activation)       (None, 58, 64, 40)   0           batch_normalization_7[0][0]      
-__________________________________________________________________________________________________
-conv2d_8 (Conv2D)               (None, 58, 64, 40)   14440       activation_7[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_8 (BatchNor (None, 58, 64, 40)   160         conv2d_8[0][0]                   2020-04-26 23:48:52.733225: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0
-2020-04-26 23:48:52.733328: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
-2020-04-26 23:48:52.733341: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 
-2020-04-26 23:48:52.733348: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N 
-2020-04-26 23:48:52.733481: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 15153 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:09:00.0, compute capability: 6.0)
-
-__________________________________________________________________________________________________
-activation_8 (Activation)       (None, 58, 64, 40)   0           batch_normalization_8[0][0]      
-__________________________________________________________________________________________________
-concatenate_4 (Concatenate)     (None, 58, 64, 140)  0           concatenate_3[0][0]              
-                                                                 activation_8[0][0]               
-__________________________________________________________________________________________________
-dropout_4 (Dropout)             (None, 58, 64, 140)  0           concatenate_4[0][0]              
-__________________________________________________________________________________________________
-conv2d_transpose_2 (Conv2DTrans (None, 116, 128, 20) 11220       dropout_4[0][0]                  
-__________________________________________________________________________________________________
-concatenate_5 (Concatenate)     (None, 116, 128, 40) 0           conv2d_transpose_2[0][0]         
-                                                                 activation_2[0][0]               
-__________________________________________________________________________________________________
-conv2d_9 (Conv2D)               (None, 116, 128, 20) 7220        concatenate_5[0][0]              
-__________________________________________________________________________________________________
-batch_normalization_9 (BatchNor (None, 116, 128, 20) 80          conv2d_9[0][0]                   
-__________________________________________________________________________________________________
-activation_9 (Activation)       (None, 116, 128, 20) 0           batch_normalization_9[0][0]      
-__________________________________________________________________________________________________
-conv2d_10 (Conv2D)              (None, 116, 128, 20) 3620        activation_9[0][0]               
-__________________________________________________________________________________________________
-batch_normalization_10 (BatchNo (None, 116, 128, 20) 80          conv2d_10[0][0]                  
-__________________________________________________________________________________________________
-activation_10 (Activation)      (None, 116, 128, 20) 0           batch_normalization_10[0][0]     
-__________________________________________________________________________________________________
-concatenate_6 (Concatenate)     (None, 116, 128, 60) 0           concatenate_5[0][0]              
-                                                                 activation_10[0][0]              
-__________________________________________________________________________________________________
-dropout_5 (Dropout)             (None, 116, 128, 60) 0           concatenate_6[0][0]              
-__________________________________________________________________________________________________
-conv2d_11 (Conv2D)              (None, 116, 128, 13) 793         dropout_5[0][0]                  
-==================================================================================================
-Total params: 223,833
-Trainable params: 223,033
-Non-trainable params: 800
-__________________________________________________________________________________________________
-------------------------------------------------------------------
-class_weights [6.55070881e-02 3.08829500e-02 7.68487279e-02 1.00911714e-02
- 2.67214904e-02 7.01275229e-03 8.03422392e-02 1.16956929e-01
- 7.80699947e-02 1.36444062e-02 3.13207977e-01 1.80677386e-01
- 3.68873537e-05]
-Train on 2690 samples, validate on 698 samples
-Epoch 1/300
- - 15s - loss: 0.8381 - acc: 0.9446 - mDice: 0.0938 - val_loss: 0.8388 - val_acc: 0.9833 - val_mDice: 0.0918
-
-Epoch 00001: val_mDice improved from -inf to 0.09178, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 2/300
- - 10s - loss: 0.6983 - acc: 0.9842 - mDice: 0.2442 - val_loss: 0.7959 - val_acc: 0.9853 - val_mDice: 0.1376
-
-Epoch 00002: val_mDice improved from 0.09178 to 0.13759, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 3/300
- - 10s - loss: 0.6107 - acc: 0.9855 - mDice: 0.3391 - val_loss: 0.7702 - val_acc: 0.9871 - val_mDice: 0.1659
-
-Epoch 00003: val_mDice improved from 0.13759 to 0.16588, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 4/300
- - 10s - loss: 0.5578 - acc: 0.9863 - mDice: 0.3964 - val_loss: 0.7714 - val_acc: 0.9865 - val_mDice: 0.1637
-
-Epoch 00004: val_mDice did not improve from 0.16588
-Epoch 5/300
- - 10s - loss: 0.5205 - acc: 0.9874 - mDice: 0.4368 - val_loss: 0.7492 - val_acc: 0.9877 - val_mDice: 0.1874
-
-Epoch 00005: val_mDice improved from 0.16588 to 0.18737, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 6/300
- - 9s - loss: 0.4872 - acc: 0.9887 - mDice: 0.4728 - val_loss: 0.7283 - val_acc: 0.9883 - val_mDice: 0.1876
-
-Epoch 00006: val_mDice improved from 0.18737 to 0.18760, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 7/300
- - 10s - loss: 0.4587 - acc: 0.9895 - mDice: 0.5036 - val_loss: 0.7197 - val_acc: 0.9918 - val_mDice: 0.2143
-
-Epoch 00007: val_mDice improved from 0.18760 to 0.21426, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 8/300
- - 10s - loss: 0.4414 - acc: 0.9900 - mDice: 0.5223 - val_loss: 0.7301 - val_acc: 0.9906 - val_mDice: 0.2093
-
-Epoch 00008: val_mDice did not improve from 0.21426
-Epoch 9/300
- - 9s - loss: 0.4266 - acc: 0.9904 - mDice: 0.5384 - val_loss: 0.7211 - val_acc: 0.9904 - val_mDice: 0.2152
-
-Epoch 00009: val_mDice improved from 0.21426 to 0.21520, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 10/300
- - 10s - loss: 0.4131 - acc: 0.9908 - mDice: 0.5530 - val_loss: 0.7119 - val_acc: 0.9921 - val_mDice: 0.2209
-
-Epoch 00010: val_mDice improved from 0.21520 to 0.22087, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 11/300
- - 10s - loss: 0.4064 - acc: 0.9912 - mDice: 0.5602 - val_loss: 0.7151 - val_acc: 0.9923 - val_mDice: 0.2233
-
-Epoch 00011: val_mDice improved from 0.22087 to 0.22331, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 12/300
- - 9s - loss: 0.4071 - acc: 0.9920 - mDice: 0.5595 - val_loss: 0.7067 - val_acc: 0.9929 - val_mDice: 0.2272
-
-Epoch 00012: val_mDice improved from 0.22331 to 0.22724, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 13/300
- - 10s - loss: 0.3981 - acc: 0.9925 - mDice: 0.5690 - val_loss: 0.6905 - val_acc: 0.9928 - val_mDice: 0.2283
-
-Epoch 00013: val_mDice improved from 0.22724 to 0.22832, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 14/300
- - 10s - loss: 0.3974 - acc: 0.9925 - mDice: 0.5698 - val_loss: 0.6936 - val_acc: 0.9926 - val_mDice: 0.2265
-
-Epoch 00014: val_mDice did not improve from 0.22832
-Epoch 15/300
- - 9s - loss: 0.3851 - acc: 0.9927 - mDice: 0.5831 - val_loss: 0.7096 - val_acc: 0.9928 - val_mDice: 0.2268
-
-Epoch 00015: val_mDice did not improve from 0.22832
-Epoch 16/300
- - 9s - loss: 0.3819 - acc: 0.9928 - mDice: 0.5866 - val_loss: 0.7061 - val_acc: 0.9930 - val_mDice: 0.2244
-
-Epoch 00016: val_mDice did not improve from 0.22832
-Epoch 17/300
- - 9s - loss: 0.3815 - acc: 0.9929 - mDice: 0.5870 - val_loss: 0.6726 - val_acc: 0.9931 - val_mDice: 0.2269
-
-Epoch 00017: val_mDice did not improve from 0.22832
-Epoch 18/300
- - 10s - loss: 0.3987 - acc: 0.9928 - mDice: 0.5684 - val_loss: 0.7044 - val_acc: 0.9918 - val_mDice: 0.2258
-
-Epoch 00018: val_mDice did not improve from 0.22832
-Epoch 19/300
- - 10s - loss: 0.3747 - acc: 0.9930 - mDice: 0.5943 - val_loss: 0.6924 - val_acc: 0.9931 - val_mDice: 0.2292
-
-Epoch 00019: val_mDice improved from 0.22832 to 0.22922, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 20/300
- - 9s - loss: 0.3847 - acc: 0.9929 - mDice: 0.5835 - val_loss: 0.5776 - val_acc: 0.9930 - val_mDice: 0.2310
-
-Epoch 00020: val_mDice improved from 0.22922 to 0.23104, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 21/300
- - 9s - loss: 0.3683 - acc: 0.9931 - mDice: 0.6013 - val_loss: 0.6730 - val_acc: 0.9931 - val_mDice: 0.2267
-
-Epoch 00021: val_mDice did not improve from 0.23104
-Epoch 22/300
- - 9s - loss: 0.3740 - acc: 0.9931 - mDice: 0.5951 - val_loss: 0.6975 - val_acc: 0.9931 - val_mDice: 0.2329
-
-Epoch 00022: val_mDice improved from 0.23104 to 0.23286, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 23/300
- - 10s - loss: 0.3700 - acc: 0.9932 - mDice: 0.5995 - val_loss: 0.5873 - val_acc: 0.9911 - val_mDice: 0.2167
-
-Epoch 00023: val_mDice did not improve from 0.23286
-Epoch 24/300
- - 10s - loss: 0.3716 - acc: 0.9931 - mDice: 0.5977 - val_loss: 0.6802 - val_acc: 0.9914 - val_mDice: 0.2218
-
-Epoch 00024: val_mDice did not improve from 0.23286
-Epoch 25/300
- - 10s - loss: 0.3732 - acc: 0.9930 - mDice: 0.5960 - val_loss: 0.4881 - val_acc: 0.9931 - val_mDice: 0.2301
-
-Epoch 00025: val_mDice did not improve from 0.23286
-Epoch 26/300
- - 10s - loss: 0.3745 - acc: 0.9931 - mDice: 0.5945 - val_loss: 0.6368 - val_acc: 0.9931 - val_mDice: 0.2331
-
-Epoch 00026: val_mDice improved from 0.23286 to 0.23315, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 27/300
- - 10s - loss: 0.3617 - acc: 0.9934 - mDice: 0.6085 - val_loss: 0.3051 - val_acc: 0.9932 - val_mDice: 0.2291
-
-Epoch 00027: val_mDice did not improve from 0.23315
-Epoch 28/300
- - 10s - loss: 0.3583 - acc: 0.9933 - mDice: 0.6121 - val_loss: 0.7003 - val_acc: 0.9926 - val_mDice: 0.2313
-
-Epoch 00028: val_mDice did not improve from 0.23315
-Epoch 29/300
- - 10s - loss: 0.3580 - acc: 0.9934 - mDice: 0.6125 - val_loss: 0.5716 - val_acc: 0.9928 - val_mDice: 0.2291
-
-Epoch 00029: val_mDice did not improve from 0.23315
-Epoch 30/300
- - 10s - loss: 0.3562 - acc: 0.9934 - mDice: 0.6144 - val_loss: 0.6872 - val_acc: 0.9931 - val_mDice: 0.2335
-
-Epoch 00030: val_mDice improved from 0.23315 to 0.23345, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 31/300
- - 10s - loss: 0.3554 - acc: 0.9934 - mDice: 0.6153 - val_loss: 0.4856 - val_acc: 0.9933 - val_mDice: 0.2294
-
-Epoch 00031: val_mDice did not improve from 0.23345
-Epoch 32/300
- - 10s - loss: 0.3566 - acc: 0.9935 - mDice: 0.6140 - val_loss: 0.6123 - val_acc: 0.9930 - val_mDice: 0.2316
-
-Epoch 00032: val_mDice did not improve from 0.23345
-Epoch 33/300
- - 10s - loss: 0.3577 - acc: 0.9936 - mDice: 0.6128 - val_loss: 0.6597 - val_acc: 0.9932 - val_mDice: 0.2292
-
-Epoch 00033: val_mDice did not improve from 0.23345
-Epoch 34/300
- - 10s - loss: 0.3513 - acc: 0.9936 - mDice: 0.6197 - val_loss: 0.6929 - val_acc: 0.9930 - val_mDice: 0.2305
-
-Epoch 00034: val_mDice did not improve from 0.23345
-Epoch 35/300
- - 10s - loss: 0.3521 - acc: 0.9935 - mDice: 0.6188 - val_loss: 0.4289 - val_acc: 0.9933 - val_mDice: 0.2301
-
-Epoch 00035: val_mDice did not improve from 0.23345
-Epoch 36/300
- - 10s - loss: 0.3557 - acc: 0.9936 - mDice: 0.6150 - val_loss: 0.5242 - val_acc: 0.9932 - val_mDice: 0.2317
-
-Epoch 00036: val_mDice did not improve from 0.23345
-Epoch 37/300
- - 10s - loss: 0.3492 - acc: 0.9937 - mDice: 0.6220 - val_loss: 0.1798 - val_acc: 0.9932 - val_mDice: 0.2312
-
-Epoch 00037: val_mDice did not improve from 0.23345
-
-Epoch 00037: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
-Epoch 38/300
- - 10s - loss: 0.3400 - acc: 0.9939 - mDice: 0.6320 - val_loss: 0.4113 - val_acc: 0.9932 - val_mDice: 0.2320
-
-Epoch 00038: val_mDice did not improve from 0.23345
-Epoch 39/300
- - 10s - loss: 0.3471 - acc: 0.9940 - mDice: 0.6242 - val_loss: 0.5466 - val_acc: 0.9930 - val_mDice: 0.2317
-
-Epoch 00039: val_mDice did not improve from 0.23345
-Epoch 40/300
- - 10s - loss: 0.3443 - acc: 0.9940 - mDice: 0.6272 - val_loss: 0.6397 - val_acc: 0.9933 - val_mDice: 0.2340
-
-Epoch 00040: val_mDice improved from 0.23345 to 0.23397, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 41/300
- - 10s - loss: 0.3265 - acc: 0.9940 - mDice: 0.6465 - val_loss: 0.3695 - val_acc: 0.9933 - val_mDice: 0.2342
-
-Epoch 00041: val_mDice improved from 0.23397 to 0.23420, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 42/300
- - 10s - loss: 0.3484 - acc: 0.9939 - mDice: 0.6228 - val_loss: 0.6230 - val_acc: 0.9933 - val_mDice: 0.2343
-
-Epoch 00042: val_mDice improved from 0.23420 to 0.23430, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 43/300
- - 10s - loss: 0.3354 - acc: 0.9940 - mDice: 0.6369 - val_loss: 0.4781 - val_acc: 0.9931 - val_mDice: 0.2330
-
-Epoch 00043: val_mDice did not improve from 0.23430
-Epoch 44/300
- - 10s - loss: 0.3454 - acc: 0.9939 - mDice: 0.6261 - val_loss: 0.4026 - val_acc: 0.9931 - val_mDice: 0.2329
-
-Epoch 00044: val_mDice did not improve from 0.23430
-Epoch 45/300
- - 10s - loss: 0.3296 - acc: 0.9940 - mDice: 0.6432 - val_loss: 0.6087 - val_acc: 0.9934 - val_mDice: 0.2357
-
-Epoch 00045: val_mDice improved from 0.23430 to 0.23571, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 46/300
- - 10s - loss: 0.3339 - acc: 0.9940 - mDice: 0.6385 - val_loss: 0.5408 - val_acc: 0.9933 - val_mDice: 0.2338
-
-Epoch 00046: val_mDice did not improve from 0.23571
-Epoch 47/300
- - 10s - loss: 0.3294 - acc: 0.9940 - mDice: 0.6434 - val_loss: 0.4094 - val_acc: 0.9932 - val_mDice: 0.2326
-
-Epoch 00047: val_mDice did not improve from 0.23571
-Epoch 48/300
- - 10s - loss: 0.3386 - acc: 0.9940 - mDice: 0.6334 - val_loss: 0.5220 - val_acc: 0.9932 - val_mDice: 0.2291
-
-Epoch 00048: val_mDice did not improve from 0.23571
-Epoch 49/300
- - 10s - loss: 0.3377 - acc: 0.9941 - mDice: 0.6344 - val_loss: 0.4537 - val_acc: 0.9933 - val_mDice: 0.2348
-
-Epoch 00049: val_mDice did not improve from 0.23571
-Epoch 50/300
- - 10s - loss: 0.3338 - acc: 0.9941 - mDice: 0.6386 - val_loss: 0.5732 - val_acc: 0.9935 - val_mDice: 0.2355
-
-Epoch 00050: val_mDice did not improve from 0.23571
-Epoch 51/300
- - 10s - loss: 0.3282 - acc: 0.9941 - mDice: 0.6447 - val_loss: 0.4830 - val_acc: 0.9934 - val_mDice: 0.2359
-
-Epoch 00051: val_mDice improved from 0.23571 to 0.23587, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 52/300
- - 10s - loss: 0.3372 - acc: 0.9941 - mDice: 0.6349 - val_loss: 0.6196 - val_acc: 0.9933 - val_mDice: 0.2353
-
-Epoch 00052: val_mDice did not improve from 0.23587
-Epoch 53/300
- - 10s - loss: 0.3298 - acc: 0.9942 - mDice: 0.6430 - val_loss: 0.1856 - val_acc: 0.9930 - val_mDice: 0.2333
-
-Epoch 00053: val_mDice did not improve from 0.23587
-Epoch 54/300
- - 10s - loss: 0.3451 - acc: 0.9941 - mDice: 0.6264 - val_loss: 0.5140 - val_acc: 0.9933 - val_mDice: 0.2340
-
-Epoch 00054: val_mDice did not improve from 0.23587
-Epoch 55/300
- - 10s - loss: 0.3342 - acc: 0.9942 - mDice: 0.6382 - val_loss: 0.2864 - val_acc: 0.9933 - val_mDice: 0.2329
-
-Epoch 00055: val_mDice did not improve from 0.23587
-Epoch 56/300
- - 10s - loss: 0.3283 - acc: 0.9942 - mDice: 0.6446 - val_loss: 0.3341 - val_acc: 0.9934 - val_mDice: 0.2356
-
-Epoch 00056: val_mDice did not improve from 0.23587
-Epoch 57/300
- - 10s - loss: 0.3290 - acc: 0.9942 - mDice: 0.6438 - val_loss: 0.1204 - val_acc: 0.9934 - val_mDice: 0.2344
-
-Epoch 00057: val_mDice did not improve from 0.23587
-Epoch 58/300
- - 10s - loss: 0.3303 - acc: 0.9942 - mDice: 0.6425 - val_loss: 0.4494 - val_acc: 0.9934 - val_mDice: 0.2340
-
-Epoch 00058: val_mDice did not improve from 0.23587
-Epoch 59/300
- - 10s - loss: 0.3353 - acc: 0.9940 - mDice: 0.6371 - val_loss: 0.4358 - val_acc: 0.9932 - val_mDice: 0.2334
-
-Epoch 00059: val_mDice did not improve from 0.23587
-Epoch 60/300
- - 10s - loss: 0.3292 - acc: 0.9941 - mDice: 0.6436 - val_loss: 0.3830 - val_acc: 0.9933 - val_mDice: 0.2352
-
-Epoch 00060: val_mDice did not improve from 0.23587
-
-Epoch 00060: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
-Epoch 61/300
- - 10s - loss: 0.3224 - acc: 0.9943 - mDice: 0.6510 - val_loss: 0.2672 - val_acc: 0.9935 - val_mDice: 0.2368
-
-Epoch 00061: val_mDice improved from 0.23587 to 0.23681, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 62/300
- - 10s - loss: 0.3133 - acc: 0.9943 - mDice: 0.6608 - val_loss: 0.2806 - val_acc: 0.9934 - val_mDice: 0.2356
-
-Epoch 00062: val_mDice did not improve from 0.23681
-Epoch 63/300
- - 10s - loss: 0.3235 - acc: 0.9943 - mDice: 0.6498 - val_loss: 0.1170 - val_acc: 0.9934 - val_mDice: 0.2351
-
-Epoch 00063: val_mDice did not improve from 0.23681
-Epoch 64/300
- - 10s - loss: 0.3168 - acc: 0.9944 - mDice: 0.6571 - val_loss: 0.3117 - val_acc: 0.9934 - val_mDice: 0.2355
-
-Epoch 00064: val_mDice did not improve from 0.23681
-Epoch 65/300
- - 10s - loss: 0.3221 - acc: 0.9944 - mDice: 0.6513 - val_loss: 0.3126 - val_acc: 0.9935 - val_mDice: 0.2349
-
-Epoch 00065: val_mDice did not improve from 0.23681
-Epoch 66/300
- - 10s - loss: 0.3199 - acc: 0.9944 - mDice: 0.6537 - val_loss: 0.3313 - val_acc: 0.9934 - val_mDice: 0.2350
-
-Epoch 00066: val_mDice did not improve from 0.23681
-Epoch 67/300
- - 10s - loss: 0.3183 - acc: 0.9943 - mDice: 0.6554 - val_loss: 0.4742 - val_acc: 0.9934 - val_mDice: 0.2358
-
-Epoch 00067: val_mDice did not improve from 0.23681
-Epoch 68/300
- - 10s - loss: 0.3146 - acc: 0.9944 - mDice: 0.6594 - val_loss: 0.1789 - val_acc: 0.9935 - val_mDice: 0.2358
-
-Epoch 00068: val_mDice did not improve from 0.23681
-Epoch 69/300
- - 10s - loss: 0.3186 - acc: 0.9944 - mDice: 0.6551 - val_loss: 0.3810 - val_acc: 0.9935 - val_mDice: 0.2347
-
-Epoch 00069: val_mDice did not improve from 0.23681
-Epoch 70/300
- - 10s - loss: 0.3254 - acc: 0.9944 - mDice: 0.6477 - val_loss: 0.1006 - val_acc: 0.9935 - val_mDice: 0.2364
-
-Epoch 00070: val_mDice did not improve from 0.23681
-Epoch 71/300
- - 10s - loss: 0.3205 - acc: 0.9944 - mDice: 0.6530 - val_loss: 0.0394 - val_acc: 0.9934 - val_mDice: 0.2362
-
-Epoch 00071: val_mDice did not improve from 0.23681
-Epoch 72/300
- - 10s - loss: 0.3114 - acc: 0.9944 - mDice: 0.6629 - val_loss: 0.0954 - val_acc: 0.9934 - val_mDice: 0.2368
-
-Epoch 00072: val_mDice improved from 0.23681 to 0.23682, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 73/300
- - 10s - loss: 0.3250 - acc: 0.9944 - mDice: 0.6481 - val_loss: 0.2412 - val_acc: 0.9934 - val_mDice: 0.2353
-
-Epoch 00073: val_mDice did not improve from 0.23682
-Epoch 74/300
- - 10s - loss: 0.3103 - acc: 0.9945 - mDice: 0.6641 - val_loss: 0.2924 - val_acc: 0.9933 - val_mDice: 0.2346
-
-Epoch 00074: val_mDice did not improve from 0.23682
-Epoch 75/300
- - 10s - loss: 0.3248 - acc: 0.9945 - mDice: 0.6484 - val_loss: 0.2746 - val_acc: 0.9934 - val_mDice: 0.2377
-
-Epoch 00075: val_mDice improved from 0.23682 to 0.23765, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 76/300
- - 10s - loss: 0.3200 - acc: 0.9944 - mDice: 0.6535 - val_loss: 0.2829 - val_acc: 0.9935 - val_mDice: 0.2373
-
-Epoch 00076: val_mDice did not improve from 0.23765
-
-Epoch 00076: ReduceLROnPlateau reducing learning rate to 0.0001250000059371814.
-Epoch 77/300
- - 10s - loss: 0.3185 - acc: 0.9945 - mDice: 0.6552 - val_loss: 0.2088 - val_acc: 0.9935 - val_mDice: 0.2362
-
-Epoch 00077: val_mDice did not improve from 0.23765
-Epoch 78/300
- - 10s - loss: 0.3131 - acc: 0.9945 - mDice: 0.6610 - val_loss: 0.3633 - val_acc: 0.9934 - val_mDice: 0.2366
-
-Epoch 00078: val_mDice did not improve from 0.23765
-Epoch 79/300
- - 10s - loss: 0.3154 - acc: 0.9945 - mDice: 0.6585 - val_loss: 0.2911 - val_acc: 0.9935 - val_mDice: 0.2373
-
-Epoch 00079: val_mDice did not improve from 0.23765
-Epoch 80/300
- - 10s - loss: 0.3081 - acc: 0.9945 - mDice: 0.6664 - val_loss: 0.3467 - val_acc: 0.9935 - val_mDice: 0.2379
-
-Epoch 00080: val_mDice improved from 0.23765 to 0.23790, saving model to /array/ssd/msmajdi/experiments/keras/exp6/models/sE12_normal_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/MultiClass_24567891011121314/sd2/best_model_weights.h5
-Epoch 81/300
- - 10s - loss: 0.3213 - acc: 0.9945 - mDice: 0.6522 - val_loss: 0.2596 - val_acc: 0.9935 - val_mDice: 0.2367
-
-Epoch 00081: val_mDice did not improve from 0.23790
-Epoch 82/300
- - 10s - loss: 0.3155 - acc: 0.9945 - mDice: 0.6584 - val_loss: 0.2600 - val_acc: 0.9935 - val_mDice: 0.2372
-
-Epoch 00082: val_mDice did not improve from 0.23790
-Epoch 83/300
- - 10s - loss: 0.3102 - acc: 0.9945 - mDice: 0.6642 - val_loss: 0.2706 - val_acc: 0.9935 - val_mDice: 0.2366
-
-Epoch 00083: val_mDice did not improve from 0.23790
-Epoch 84/300
- - 10s - loss: 0.3203 - acc: 0.9945 - mDice: 0.6533 - val_loss: 0.2607 - val_acc: 0.9934 - val_mDice: 0.2365
-
-Epoch 00084: val_mDice did not improve from 0.23790
-Epoch 85/300
- - 10s - loss: 0.3142 - acc: 0.9945 - mDice: 0.6598 - val_loss: 0.3870 - val_acc: 0.9934 - val_mDice: 0.2348
-
-Epoch 00085: val_mDice did not improve from 0.23790
-Epoch 86/300
- - 10s - loss: 0.3077 - acc: 0.9945 - mDice: 0.6669 - val_loss: 0.2635 - val_acc: 0.9935 - val_mDice: 0.2364
-
-Epoch 00086: val_mDice did not improve from 0.23790
-Epoch 87/300
- - 10s - loss: 0.3082 - acc: 0.9946 - mDice: 0.6664 - val_loss: 0.2415 - val_acc: 0.9934 - val_mDice: 0.2361
-
-Epoch 00087: val_mDice did not improve from 0.23790
-Epoch 88/300
- - 10s - loss: 0.3138 - acc: 0.9946 - mDice: 0.6603 - val_loss: 0.1373 - val_acc: 0.9934 - val_mDice: 0.2358
-
-Epoch 00088: val_mDice did not improve from 0.23790
-Epoch 89/300
- - 10s - loss: 0.3132 - acc: 0.9946 - mDice: 0.6610 - val_loss: 0.2388 - val_acc: 0.9935 - val_mDice: 0.2362
-
-Epoch 00089: val_mDice did not improve from 0.23790
-Epoch 90/300
- - 10s - loss: 0.3176 - acc: 0.9945 - mDice: 0.6561 - val_loss: 0.0608 - val_acc: 0.9934 - val_mDice: 0.2350
-
-Epoch 00090: val_mDice did not improve from 0.23790
-Epoch 91/300
- - 10s - loss: 0.3096 - acc: 0.9946 - mDice: 0.6649 - val_loss: 0.1447 - val_acc: 0.9934 - val_mDice: 0.2346
-
-Epoch 00091: val_mDice did not improve from 0.23790
-Epoch 92/300
- - 10s - loss: 0.3117 - acc: 0.9946 - mDice: 0.6625 - val_loss: 0.1569 - val_acc: 0.9934 - val_mDice: 0.2353
-
-Epoch 00092: val_mDice did not improve from 0.23790
-Epoch 93/300
- - 10s - loss: 0.3104 - acc: 0.9946 - mDice: 0.6640 - val_loss: 0.1422 - val_acc: 0.9934 - val_mDice: 0.2367
-
-Epoch 00093: val_mDice did not improve from 0.23790
-Epoch 94/300
- - 10s - loss: 0.3019 - acc: 0.9946 - mDice: 0.6732 - val_loss: 0.2459 - val_acc: 0.9933 - val_mDice: 0.2342
-
-Epoch 00094: val_mDice did not improve from 0.23790
-Epoch 95/300
- - 10s - loss: 0.3212 - acc: 0.9945 - mDice: 0.6522 - val_loss: 0.3112 - val_acc: 0.9934 - val_mDice: 0.2364
-
-Epoch 00095: val_mDice did not improve from 0.23790
-
-Epoch 00095: ReduceLROnPlateau reducing learning rate to 6.25000029685907e-05.
-Epoch 96/300
- - 10s - loss: 0.3146 - acc: 0.9946 - mDice: 0.6594 - val_loss: 0.0896 - val_acc: 0.9935 - val_mDice: 0.2364
-
-Epoch 00096: val_mDice did not improve from 0.23790
-Epoch 97/300
- - 11s - loss: 0.3116 - acc: 0.9946 - mDice: 0.6626 - val_loss: 0.1029 - val_acc: 0.9934 - val_mDice: 0.2349
-
-Epoch 00097: val_mDice did not improve from 0.23790
-Epoch 98/300
- - 10s - loss: 0.3044 - acc: 0.9946 - mDice: 0.6705 - val_loss: 0.2265 - val_acc: 0.9934 - val_mDice: 0.2364
-
-Epoch 00098: val_mDice did not improve from 0.23790
-Epoch 99/300
- - 10s - loss: 0.3096 - acc: 0.9946 - mDice: 0.6649 - val_loss: 0.2332 - val_acc: 0.9934 - val_mDice: 0.2360
-
-Epoch 00099: val_mDice did not improve from 0.23790
-Epoch 100/300
- - 10s - loss: 0.3146 - acc: 0.9946 - mDice: 0.6594 - val_loss: 0.2191 - val_acc: 0.9934 - val_mDice: 0.2365
-
-Epoch 00100: val_mDice did not improve from 0.23790
-Epoch 101/300
- - 10s - loss: 0.3184 - acc: 0.9946 - mDice: 0.6553 - val_loss: 0.1357 - val_acc: 0.9935 - val_mDice: 0.2359
-
-Epoch 00101: val_mDice did not improve from 0.23790
-Epoch 102/300
- - 10s - loss: 0.3111 - acc: 0.9947 - mDice: 0.6632 - val_loss: 0.3093 - val_acc: 0.9935 - val_mDice: 0.2373
-
-Epoch 00102: val_mDice did not improve from 0.23790
-Epoch 103/300
- - 10s - loss: 0.2970 - acc: 0.9946 - mDice: 0.6785 - val_loss: 0.2496 - val_acc: 0.9935 - val_mDice: 0.2364
-
-Epoch 00103: val_mDice did not improve from 0.23790
-Epoch 104/300
- - 10s - loss: 0.3160 - acc: 0.9946 - mDice: 0.6579 - val_loss: 0.2938 - val_acc: 0.9934 - val_mDice: 0.2363
-
-Epoch 00104: val_mDice did not improve from 0.23790
-Epoch 105/300
- - 10s - loss: 0.3123 - acc: 0.9946 - mDice: 0.6619 - val_loss: 0.3079 - val_acc: 0.9935 - val_mDice: 0.2370
-
-Epoch 00105: val_mDice did not improve from 0.23790
-Epoch 106/300
- - 10s - loss: 0.3054 - acc: 0.9946 - mDice: 0.6693 - val_loss: 0.1796 - val_acc: 0.9935 - val_mDice: 0.2373
-
-Epoch 00106: val_mDice did not improve from 0.23790
-Epoch 107/300
- - 11s - loss: 0.3093 - acc: 0.9946 - mDice: 0.6652 - val_loss: 0.2082 - val_acc: 0.9934 - val_mDice: 0.2363
-
-Epoch 00107: val_mDice did not improve from 0.23790
-Epoch 108/300
- - 10s - loss: 0.3137 - acc: 0.9946 - mDice: 0.6604 - val_loss: 0.1958 - val_acc: 0.9934 - val_mDice: 0.2358
-
-Epoch 00108: val_mDice did not improve from 0.23790
-Epoch 109/300
- - 10s - loss: 0.3116 - acc: 0.9947 - mDice: 0.6626 - val_loss: 0.2169 - val_acc: 0.9934 - val_mDice: 0.2365
-
-Epoch 00109: val_mDice did not improve from 0.23790
-Epoch 110/300
- - 10s - loss: 0.3089 - acc: 0.9946 - mDice: 0.6656 - val_loss: 0.1735 - val_acc: 0.9935 - val_mDice: 0.2363
-
-Epoch 00110: val_mDice did not improve from 0.23790
-
-Epoch 00110: ReduceLROnPlateau reducing learning rate to 3.125000148429535e-05.
-Epoch 111/300
- - 10s - loss: 0.3026 - acc: 0.9947 - mDice: 0.6724 - val_loss: 0.1675 - val_acc: 0.9934 - val_mDice: 0.2369
-
-Epoch 00111: val_mDice did not improve from 0.23790
-Epoch 112/300
- - 10s - loss: 0.3082 - acc: 0.9947 - mDice: 0.6663 - val_loss: 0.1343 - val_acc: 0.9934 - val_mDice: 0.2368
-
-Epoch 00112: val_mDice did not improve from 0.23790
-Epoch 113/300
- - 10s - loss: 0.2971 - acc: 0.9947 - mDice: 0.6783 - val_loss: 0.1749 - val_acc: 0.9934 - val_mDice: 0.2371
-
-Epoch 00113: val_mDice did not improve from 0.23790
-Epoch 114/300
- - 10s - loss: 0.3033 - acc: 0.9946 - mDice: 0.6717 - val_loss: 0.1696 - val_acc: 0.9934 - val_mDice: 0.2365
-
-Epoch 00114: val_mDice did not improve from 0.23790
-Epoch 115/300
- - 10s - loss: 0.3099 - acc: 0.9947 - mDice: 0.6645 - val_loss: 0.1568 - val_acc: 0.9934 - val_mDice: 0.2366
-
-Epoch 00115: val_mDice did not improve from 0.23790
-Epoch 116/300
- - 10s - loss: 0.3134 - acc: 0.9947 - mDice: 0.6607 - val_loss: 0.1693 - val_acc: 0.9934 - val_mDice: 0.2365
-
-Epoch 00116: val_mDice did not improve from 0.23790
-Epoch 117/300
- - 10s - loss: 0.3017 - acc: 0.9947 - mDice: 0.6734 - val_loss: 0.1625 - val_acc: 0.9934 - val_mDice: 0.2369
-
-Epoch 00117: val_mDice did not improve from 0.23790
-Epoch 118/300
- - 10s - loss: 0.3136 - acc: 0.9947 - mDice: 0.6605 - val_loss: 0.1686 - val_acc: 0.9934 - val_mDice: 0.2350
-
-Epoch 00118: val_mDice did not improve from 0.23790
-Epoch 119/300
- - 10s - loss: 0.3025 - acc: 0.9947 - mDice: 0.6726 - val_loss: 0.1551 - val_acc: 0.9934 - val_mDice: 0.2373
-
-Epoch 00119: val_mDice did not improve from 0.23790
-Epoch 120/300
- - 10s - loss: 0.3071 - acc: 0.9947 - mDice: 0.6676 - val_loss: 0.1706 - val_acc: 0.9934 - val_mDice: 0.2371
-
-Epoch 00120: val_mDice did not improve from 0.23790
-Restoring model weights from the end of the best epoch
-Epoch 00120: early stopping
-{'val_loss': [0.8388117743084971, 0.7959290189524435, 0.7702341953287152, 0.7713923017924016, 0.7492045916424781, 0.7283193332417988, 0.7197067842613318, 0.7300666441719307, 0.7210901920979891, 0.7118800768367199, 0.7150697193207235, 0.7066659632760679, 0.6905246147282827, 0.6936471618519813, 0.7095855584629627, 0.7060951242132651, 0.6725614535432832, 0.7043623726996446, 0.6923708289776286, 0.5775741498415654, 0.6729583651425162, 0.6974962187189085, 0.5872817138546176, 0.6802237666609635, 0.48810324644974107, 0.636814333562523, 0.30512845935166566, 0.7002687528515955, 0.5716018903904453, 0.687217763980002, 0.4856455683025043, 0.6123302119509197, 0.6597495075624789, 0.692874387205501, 0.4289021984724739, 0.5241673907270404, 0.1798344891422287, 0.4112918185641226, 0.5465777021936837, 0.6396893525875059, 0.3695336970311181, 0.623024505923334, 0.4780653967044415, 0.4025678832756414, 0.6086940643268192, 0.5407668545970261, 0.4094188496427755, 0.5219579931658114, 0.4536668247940889, 0.5731501840588699, 0.4830395594708899, 0.6196267431479129, 0.1856156128850955, 0.5140174137999471, 0.2863772101807048, 0.3340516725080061, 0.12041474817344722, 0.4493817233168293, 0.43577965357498316, 0.38298062950287304, 0.2671762209406982, 0.28063675011895106, 0.11703322006304105, 0.31167165959856996, 0.3126263856650317, 0.3313454819314801, 0.47420171313094545, 0.17893414795638882, 0.38097363945235496, 0.1005792854004206, 0.0393584751107738, 0.09542655237125804, 0.2411554837492655, 0.2924110810627646, 0.2745954039984284, 0.28293331723692255, 0.20876073395569186, 0.3633479406379355, 0.2910913676530507, 0.34673033258677555, 0.2595752050651819, 0.26000523601357095, 0.2705983990485804, 0.26073576274053073, 0.3870278974317206, 0.2634584537218925, 0.24149712769682907, 0.1372827308980967, 0.23877656892379664, 0.060817850892429366, 0.14467682678754146, 0.15690692853620195, 0.1421796118511677, 0.24593839645492485, 0.3112460525444893, 0.0896239593040657, 0.10285790864403507, 0.22654662059251762, 0.2332471819637199, 0.21907525837960465, 0.1357445349912813, 0.3093277847282268, 0.24962629820553742, 0.2938398205085436, 0.3078897083471703, 0.17957284140405927, 0.20821539938641995, 0.19580512813273765, 0.21693842364161578, 0.17345602110998617, 0.16749415327768163, 0.13431876682460223, 0.17488298355401588, 0.16958365438073703, 0.1567549683730035, 0.1693131035053035, 0.16246814429719952, 0.16856160300018608, 0.15506459758910524, 0.17062469037319067], 'val_acc': [0.983260652055713, 0.985257775701561, 0.9871081387074424, 0.9864796119979596, 0.9877302959177078, 0.9882816354661411, 0.991761405010278, 0.9905663940489805, 0.9903987890328241, 0.9921029763440348, 0.992342943106818, 0.992922453108353, 0.9927873666102018, 0.9926489087777015, 0.9928103348928741, 0.9930277236211608, 0.9930522298402977, 0.9917962380329995, 0.9930532912811783, 0.9930443189888766, 0.993077124599741, 0.9931319309852185, 0.9911202375048552, 0.9913775741541625, 0.9931042387355706, 0.9931273948838855, 0.9931991843234502, 0.9925902434611389, 0.9927997204840696, 0.9931459218519807, 0.993269717625014, 0.9930375626572223, 0.9931709113981799, 0.9929993584709386, 0.9932844847184539, 0.9931965806764314, 0.9931962877768159, 0.9932261071778983, 0.9930436443804328, 0.9933092770057285, 0.9932990502832953, 0.9932909464426232, 0.9930805010576986, 0.9930812764304415, 0.9933550154582136, 0.9933168061483214, 0.9932234992612057, 0.9931908866395923, 0.9933488389482471, 0.9934702215017084, 0.993364181593701, 0.9932598751732135, 0.9930275306319097, 0.9933100464009282, 0.9932701992442068, 0.9934313401451766, 0.9933526987332669, 0.9933976583972701, 0.993228999454859, 0.9933272258600054, 0.9935427803364729, 0.9933632149395765, 0.9933619622173145, 0.993396020550441, 0.9934673275168783, 0.9934038357611713, 0.9933721889397477, 0.9935045676108417, 0.9934665538520048, 0.9934893257296871, 0.9933705485311142, 0.993408661346381, 0.9933779777633427, 0.9933437213173568, 0.993443780266453, 0.9935243507169379, 0.9934612475015372, 0.993401325193039, 0.9934611510069118, 0.9935246393468796, 0.9934605694773545, 0.9934517910282387, 0.9934743682088005, 0.9934269919094861, 0.9933793278341648, 0.9934750445251137, 0.9934194678905017, 0.9934048024152958, 0.9934824746112769, 0.9933625369153938, 0.9933654326080934, 0.9933892667805909, 0.9934221663242766, 0.9932780161628068, 0.9933939933093707, 0.993457098232641, 0.9934086587845766, 0.9934498611357288, 0.9934463864752762, 0.9934136807747762, 0.9934769735636889, 0.9934522735013661, 0.9934671345276272, 0.9934380913532225, 0.9934939574717109, 0.9934720531917233, 0.9934084675031951, 0.9933676528384145, 0.9934353903576433, 0.9934573885704522, 0.9934418520818126, 0.9934314323701284, 0.993417730133308, 0.9934354851443993, 0.9934413713165545, 0.9934078885354422, 0.9934433012090644, 0.9934087569870717, 0.9934489926840993, 0.9934416616543658], 'val_mDice': [0.09178055435816579, 0.13758849834381062, 0.16587505698630878, 0.16366774249137367, 0.18737410568091925, 0.18760124402370987, 0.21426272065527546, 0.20925352721211796, 0.21519902548765651, 0.22087434525394672, 0.22331183364890278, 0.22724048814220038, 0.2283228743754091, 0.22648628163333664, 0.22675438769003992, 0.22440434593123046, 0.2268877704864128, 0.22582891296462732, 0.22921633114272286, 0.23104431575330905, 0.2266522785446061, 0.23285522059168218, 0.2167140231856134, 0.22175539450082724, 0.23012603082027538, 0.23314549859858685, 0.22906421855599332, 0.2313123303425517, 0.22914011683983934, 0.2334502101995926, 0.22943347729613575, 0.2316179602198243, 0.22915424889949465, 0.2304626055391128, 0.2300505736737041, 0.23166021511259416, 0.23117320606329633, 0.23195163053323528, 0.23172263791597933, 0.23397243460960537, 0.23420032121796164, 0.23429751825151798, 0.2329728171813238, 0.2329483166725095, 0.23570772052281183, 0.23383896229476228, 0.23257167002501075, 0.22912732226090965, 0.23480956594761257, 0.2354665292442957, 0.23587275947575922, 0.23527037262176384, 0.23333135108999845, 0.23400505636433347, 0.2329257437772519, 0.23560744897064814, 0.23439545600667042, 0.23400095806465124, 0.23344940631343505, 0.23517651845004586, 0.236811311888839, 0.23557981360105953, 0.2350782812055248, 0.23553086872553883, 0.23485220288244085, 0.23498384828190583, 0.23580791367335915, 0.23581674130351413, 0.23472945281925356, 0.23642285542834998, 0.2362314821903263, 0.23682484483308983, 0.23532142768000233, 0.2345539135511506, 0.23765136565170636, 0.2373412981587214, 0.23620211900903024, 0.23661029143507287, 0.2373013071673135, 0.23790260013673328, 0.2367296132171009, 0.23720257598152877, 0.23664049313198188, 0.2365026953523712, 0.23476188677165624, 0.23640789147832408, 0.23608246866225074, 0.2358131022472735, 0.23619860270779272, 0.23501733027880387, 0.2345691521342579, 0.2352997122524589, 0.2367122031689587, 0.23416148820881383, 0.236370422972063, 0.23638749616567503, 0.23486304894499135, 0.236416192270791, 0.23597009496089144, 0.23651660917684394, 0.2358666886585527, 0.23730135677558473, 0.23642216155300166, 0.236337099659302, 0.23697532774122662, 0.23727960796509057, 0.23630382387730745, 0.23578860305975535, 0.23649540502994312, 0.23626763839608214, 0.23694862837417527, 0.2367773204161265, 0.237061072135595, 0.23654971602653022, 0.23660883634020294, 0.23652906731080617, 0.23690059854959894, 0.23499237399823153, 0.23731694915692153, 0.23711356583897314], 'loss': [0.8381009011020447, 0.6983157899299962, 0.6107096122543165, 0.5578106997403071, 0.520458448885985, 0.48717273799460176, 0.45874601613633254, 0.4414305632663925, 0.42656227126440593, 0.4130996455711946, 0.4063957464850082, 0.4070502348992018, 0.3981483588652983, 0.3974057743983641, 0.3850810917779859, 0.38187066446228096, 0.3814995842241443, 0.398652253430129, 0.3747405841337261, 0.3847017077708333, 0.36829722176918755, 0.3740483703555671, 0.36997545568694856, 0.37158683418784444, 0.3731888494970187, 0.3745469947286698, 0.3616810137454462, 0.3583120192404573, 0.3579803798278468, 0.3562190477289675, 0.35536068068561055, 0.3565774590441729, 0.3576805637006866, 0.351256033080218, 0.35210514035366725, 0.35567454628120126, 0.34920373586695436, 0.3399636675101674, 0.34712981657024655, 0.3443271944292416, 0.32652165078762296, 0.3484133406088698, 0.33540151608920893, 0.34535095051318737, 0.32955638000734677, 0.33394571003195966, 0.3294318662921735, 0.33864693930822676, 0.3376717708700208, 0.3338241366094816, 0.3282392149631862, 0.33723067123872197, 0.32979764265863426, 0.34509582529502286, 0.33416883237521444, 0.3283061189611605, 0.329025419228139, 0.330266808987107, 0.3352536319800026, 0.3292113728682791, 0.3223707462110484, 0.3133475489111195, 0.3235166640086688, 0.3167774201436557, 0.3221330717482975, 0.31987472149962387, 0.31829024291836194, 0.31462341330973187, 0.31856901284487277, 0.32543654496120256, 0.3205028739671282, 0.3113944142170555, 0.3250190294365014, 0.31031411924991464, 0.3247542343618258, 0.3200429910066846, 0.31852717874883274, 0.3131338850383865, 0.3154206824900936, 0.3081106161317861, 0.32125164374542947, 0.31554528217776556, 0.3102110781634164, 0.32026598367106074, 0.31424976325832776, 0.3077166271032454, 0.30816181923598607, 0.3137637606673081, 0.3131648073852284, 0.31764364486290175, 0.30956700333432197, 0.31173409394172047, 0.31036692852202846, 0.301894616681847, 0.32121733711776235, 0.3145771260930703, 0.31162849461943687, 0.3043863202227093, 0.3095545724422072, 0.31458919874797525, 0.31837593074403286, 0.3111467421276419, 0.2969600847994971, 0.3159783736813024, 0.3123471303721786, 0.30543790818590216, 0.3092779539885574, 0.3136919281518149, 0.31162686191748507, 0.30891138132398455, 0.3026454020499297, 0.308248543550977, 0.29714405459099097, 0.3032816960355163, 0.30986953690149527, 0.31344988366041926, 0.3016814068236759, 0.3135523809930206, 0.30245592187549986, 0.30708726393024277], 'acc': [0.9445797459232763, 0.9842346689514955, 0.9854743666808401, 0.9863189359136674, 0.9874090392793421, 0.988708304206678, 0.9894866256465699, 0.9899647523922548, 0.9904116088572931, 0.9908028134182927, 0.9912212528703824, 0.9919565858450964, 0.9925109003999419, 0.992506143772026, 0.992714551744851, 0.9928071108892504, 0.9928662240726797, 0.9928373816288094, 0.9929738580958994, 0.9929217813626541, 0.9931239277456773, 0.9931102574536348, 0.9932056499236578, 0.9930725773470995, 0.9930274346947227, 0.9931057760263464, 0.9933679112714463, 0.9933096267920001, 0.9933824333116468, 0.9934412212176837, 0.9934481309249056, 0.993522015424466, 0.9935659054929882, 0.9935694341322746, 0.9935086947834625, 0.9936214847192445, 0.9936569875944059, 0.9938609382920106, 0.9939660915211674, 0.9939915803728494, 0.9939881512223566, 0.9939334195342648, 0.9939526731639989, 0.9939027264658846, 0.9940096069002683, 0.9940244300657932, 0.9940217759972612, 0.9940018729206355, 0.9940660409767832, 0.9941079782730585, 0.994120621105109, 0.994063112593938, 0.9941614287936554, 0.9941063740439574, 0.9941935758608424, 0.9941888961207025, 0.9941776290702111, 0.9941510642328227, 0.9940480891213541, 0.9940755294158113, 0.9943053915154978, 0.9943150561095171, 0.9943172860765989, 0.9943643795070152, 0.9943517116365823, 0.9943787242843316, 0.9942981578603554, 0.9943924182852848, 0.9944068160198878, 0.9944171081245167, 0.9943851099581523, 0.9944058158140643, 0.9943786261250095, 0.9944543384264836, 0.9944596691645654, 0.9944405657651256, 0.9945183569170728, 0.9945094939944469, 0.9944738169585019, 0.9945251666923438, 0.994530999970702, 0.9945100184710053, 0.9944849807533633, 0.9945222112769088, 0.9945343792660085, 0.9945391112986993, 0.9945577387472954, 0.9945512803956922, 0.9945648011221762, 0.9945419173701545, 0.99455959180917, 0.9945695548695702, 0.994555736341441, 0.9946123217561431, 0.9945391121850138, 0.9945622190666907, 0.9946012029417386, 0.9945934421510945, 0.9946424127954533, 0.9945978728368823, 0.9946145464053384, 0.9946520024959039, 0.9946400594090884, 0.9946328760522892, 0.9946389076434989, 0.994621357510081, 0.9946265654936156, 0.9946036806337009, 0.9946515511402854, 0.9946485711296251, 0.9946579620740671, 0.9946719066804226, 0.9946671261220174, 0.9946457688250063, 0.9946815712744419, 0.994672806511138, 0.9946933125031482, 0.994686377757544, 0.9946526794185425, 0.9946505750865298], 'mDice': [0.09383217352709408, 0.24418866213369547, 0.33906901980699067, 0.39635108532314794, 0.43678030572341736, 0.4728045018015907, 0.5035736947476199, 0.5223118861700966, 0.5384001581753054, 0.5529671547359694, 0.5602113555244354, 0.5594577784321122, 0.5690170869951354, 0.5698126015083719, 0.5831489862673345, 0.586623175492074, 0.5870197733317166, 0.5684373344132005, 0.5943316968511029, 0.5835424111013519, 0.6013089360246872, 0.5950778046117396, 0.5994789192113734, 0.5977417919161595, 0.5960060575194518, 0.5945355176482502, 0.6084610006069162, 0.612111567620008, 0.6124654592579182, 0.6143710509662734, 0.6153018823011214, 0.6139797080848297, 0.6127815730731283, 0.6197393650126723, 0.6188223309621048, 0.6149541608518384, 0.6219600067373545, 0.6319634672877513, 0.6241979418689434, 0.6272338236020844, 0.6465231972334553, 0.6228077473693621, 0.636903772954604, 0.626125114003965, 0.6432352883665092, 0.6384762525558472, 0.6433651103295358, 0.6333847740547365, 0.6344386323330903, 0.6386065202796326, 0.6446565426193649, 0.6349177673514448, 0.6429657316230044, 0.6263963848518617, 0.6382310201161191, 0.6445839801408544, 0.64380326086039, 0.6424592430374436, 0.6370569969420097, 0.6436032970820218, 0.6510056554994176, 0.6607803858290374, 0.6497640275157517, 0.6570649333713666, 0.6512608512626704, 0.6537089651402045, 0.655426119284559, 0.6593972073390139, 0.655121076450472, 0.6476802357842931, 0.6530273863318684, 0.6628936049995813, 0.6481353156684057, 0.664062827548573, 0.6484197380374356, 0.6535233666351736, 0.6551651045070704, 0.6610056599498239, 0.6585299866793324, 0.666447858052626, 0.6522112918055191, 0.658393071209631, 0.6641722265561717, 0.6532781687478594, 0.6597961208412638, 0.6668738534459394, 0.6663902681667122, 0.6603230033554552, 0.6609699235169639, 0.6561196645562534, 0.6648678344200092, 0.6625196909372691, 0.6640008750015032, 0.6731791089126169, 0.6522481204408695, 0.6594409100489768, 0.6626329004875346, 0.6704801582769391, 0.6648788681482294, 0.6594257980695888, 0.6553238315099233, 0.6631547056941738, 0.6785235800486071, 0.6579212421433633, 0.6618541171670403, 0.6693405379371572, 0.665180956730169, 0.6603986851344764, 0.6626347190108441, 0.6655753670904273, 0.6723634851023167, 0.666292711870821, 0.6783224961903902, 0.6716752890428203, 0.6645371224246504, 0.6606589297601282, 0.6734059136153154, 0.660546981435283, 0.6725684188334029, 0.6675518686886613], 'lr': [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.0005, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.00025, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 0.000125, 6.25e-05, 6.25e-05, 6.25e-05, 6.25e-05, 6.25e-05, 6.25e-05, 6.25e-05, 6.25e-05, 6.25e-05, 6.25e-05, 6.25e-05, 6.25e-05, 6.25e-05, 6.25e-05, 6.25e-05, 3.125e-05, 3.125e-05, 3.125e-05, 3.125e-05, 3.125e-05, 3.125e-05, 3.125e-05, 3.125e-05, 3.125e-05, 3.125e-05]}
-predicting test subjects:   0%|          | 0/11 [00:00<?, ?it/s]predicting test subjects:   9%|▉         | 1/11 [00:01<00:12,  1.25s/it]predicting test subjects:  18%|█▊        | 2/11 [00:02<00:10,  1.17s/it]predicting test subjects:  27%|██▋       | 3/11 [00:03<00:08,  1.10s/it]predicting test subjects:  36%|███▋      | 4/11 [00:04<00:07,  1.02s/it]predicting test subjects:  45%|████▌     | 5/11 [00:04<00:05,  1.07it/s]predicting test subjects:  55%|█████▍    | 6/11 [00:05<00:04,  1.08it/s]predicting test subjects:  64%|██████▎   | 7/11 [00:06<00:03,  1.11it/s]predicting test subjects:  73%|███████▎  | 8/11 [00:07<00:02,  1.13it/s]predicting test subjects:  82%|████████▏ | 9/11 [00:08<00:01,  1.07it/s]predicting test subjects:  91%|█████████ | 10/11 [00:09<00:00,  1.12it/s]predicting test subjects: 100%|██████████| 11/11 [00:10<00:00,  1.14it/s]predicting test subjects: 100%|██████████| 11/11 [00:10<00:00,  1.10it/s]
-  0%|          | 0/11 [00:00<?, ?it/s]  9%|▉         | 1/11 [00:01<00:18,  1.85s/it] 18%|█▊        | 2/11 [00:03<00:17,  1.89s/it] 27%|██▋       | 3/11 [00:05<00:15,  1.91s/it] 36%|███▋      | 4/11 [00:07<00:13,  1.90s/it] 45%|████▌     | 5/11 [00:09<00:11,  1.88s/it] 55%|█████▍    | 6/11 [00:11<00:09,  1.93s/it] 64%|██████▎   | 7/11 [00:13<00:07,  1.89s/it] 73%|███████▎  | 8/11 [00:15<00:05,  1.94s/it] 82%|████████▏ | 9/11 [00:18<00:04,  2.14s/it] 91%|█████████ | 10/11 [00:19<00:02,  2.07s/it]100%|██████████| 11/11 [00:22<00:00,  2.08s/it]100%|██████████| 11/11 [00:22<00:00,  2.00s/it]
-
-vimp2_967_08132013_KW 1.245624303817749
----
-vimp2_ANON695_03132013 0.9822084903717041
----
-vimp2_ctrl_991_08302013_JF 0.9390652179718018
----
-vimp2_A_3T_ET 0.8350553512573242
----
-vimp2_A_7T_ET 0.731217622756958
----
-vimp2_G_3T_ET 0.8983621597290039
----
-vimp2_G_7T_ET 0.862529993057251
----
-vimp2_J_3T_ET 0.83933424949646
----
-vimp2_J_7T_ET 1.0599098205566406
----
-vimp2_M_3T_ET 0.7781558036804199
----
-vimp2_M_7T_ET 0.8552055358886719
----
-CrossVal ['a']

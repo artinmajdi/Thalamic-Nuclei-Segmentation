@@ -28,7 +28,6 @@ preprocess = preprocesscs()
 
 permutation_Index = 0
 multi_Class_Mode = True
-readAugments_Mode = True
 lossFunction_Index = 7
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
@@ -96,17 +95,10 @@ class simulationcs:
         self.GPU_Index     = gpu
         self.Learning_Rate = 1e-3
         self.num_Layers    = 3 
-        self.FCN1_NLayers  = fCN1_NLayers
-        self.FCN2_NLayers  = fCN2_NLayers
         self.nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
         self.slicingDim    = [2 ,1 ,0]
         self.batch_size    = 10
-        self.InputImage2Dvs3D = 2
         self.FirstLayer_FeatureMap_Num = 20
-        self.FCN_FeatureMaps = 30
-        self.verbose = 2
-        self.Multiply_By_Thalmaus = False
-        self.Multiply_By_Rest_For_AV = False
 
         self.Weighted_Class_Mode = True
         self.Initialize = InitializeB
@@ -116,7 +108,6 @@ class simulationcs:
         self.ImClosePrediction =  True # False #
         self.Multi_Class_Mode = multi_Class_Mode
         self.LR_Scheduler = True
-        self.ReadAugments_Mode = readAugments_Mode
     
 simulation = simulationcs()
 

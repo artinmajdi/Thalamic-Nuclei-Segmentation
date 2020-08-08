@@ -128,53 +128,9 @@ def loadDataset(params):
 
             return ImageF, np.transpose(Image, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
-        def func_Multiply_By_Thalmaus(imm):
-
-            def dilateMask(mask):
-                struc = ndimage.generate_binary_structure(3,2)
-                struc = ndimage.iterate_structure(struc, params.WhichExperiment.Dataset.gapDilation )
-                return ndimage.binary_dilation(mask, structure=struc)
-
-            sd , Method = params.WhichExperiment.Dataset.slicingInfo.slicingDim  ,  params.WhichExperiment.HardParams.Model.Method
-
-            Dirr = params.directories.Test.Result                
-            if 'train' in mode: Dirr += '/TrainData_Output'
-                            
-            _, Cascade_Mask = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.nii.gz' , params)
-            Cascade_Mask_Dilated = dilateMask(Cascade_Mask)
-            imm[Cascade_Mask_Dilated == 0] = 0
-            
-            return imm
-
-        """
-        def func_Multiply_By_NotAV(imm):
-            def AllNuclei__Except_AV(Dirr):                                                    
-                A = smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei()
-                Mask = []
-                for cnt , nucleusName in zip(A.Indexes , A.Names):                                
-                    if cnt not in [1, 2]:         
-                        _, msk = readingWithTranpose(Dirr + '/' + subject2.subjectName + '/' + nucleusName + '.nii.gz' , params)
-                        msk = smallFuncs.closeMask(msk > 0 , 1)
-                        Mask = msk if Mask == [] else Mask + msk   
-
-                return smallFuncs.closeMask(Mask,2) > 0.5
-
-            Dirr = params.directories.Test.Result                
-            if 'train' in mode: Dirr += '/TrainData_Output'
-                
-            Mask_AllExceptAV = AllNuclei__Except_AV(Dirr)
-            imm[Mask_AllExceptAV] = 0
-
-            return imm
-        """
 
         imF, im = readingWithTranpose(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz' , params)
 
-        if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index and params.WhichExperiment.HardParams.Model.Method.Multiply_By_Thalmaus:
-            im = func_Multiply_By_Thalmaus(im)
-
-        # if 2 in params.WhichExperiment.Nucleus.Index and params.WhichExperiment.HardParams.Model.Method.Multiply_By_Rest_For_AV:
-        #     im = func_Multiply_By_NotAV(im)
 
         im = inputPreparationForUnet(im, subject2, params)
 
