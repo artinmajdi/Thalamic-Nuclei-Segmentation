@@ -139,35 +139,18 @@ if Experiments.Index == '8':
     InputPadding.HardDimensions = [228,288,168]
 
 
-mode_saveTrue_LoadFalse = True
-havingBackGround_AsExtraDimension = True
-
-gapDilation = 5
-
-
-
 code_address = '/array/ssd/msmajdi/code/thalamus/keras/'
 class Templatecs:
     def __init__(self):
         self.Image = code_address + 'general/RigidRegistration' + '/origtemplate.nii.gz'
         self.Mask = code_address + 'general/RigidRegistration' + '/CropMaskV3.nii.gz'  # MyCrop_Template2_Gap20
-        # self.Mask_2AV = '/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration' + '/CropMask_AV.nii.gz' 
         self.Address = code_address + 'general/RigidRegistration/'
 
 Template = Templatecs()
 
 
-#! metric function
-#          1: 'DICE'
-#          2: 'Accuracy'
-#          3: 'DICE & Accuracy'
-MetricIx = 3
 
-
-# if Local_Flag: 
-#     Experiments_Address = '/home/artinl/Documents/research'
-# else: 
-Experiments_Address = '/array/ssd/msmajdi/experiments/keras' #'/array/ssd/msmajdi/exp_test' # 
+Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
 
 
 if local_flag:
@@ -183,27 +166,6 @@ if container_flag:
     Template.Address = '/code/general/RigidRegistration/'
 
 
-AugmentMode = False
-Augment_LinearMode = True
-Augment_Linear_Length = 6
-
-class Augment_Rotationcs:
-    def __init__(self):
-        self.Mode = True
-        self.AngleMax = 7 # '7_6cnts' # '7' # 7_4cnts
-
-Augment_Rotation = Augment_Rotationcs()
-
-class Augment_Shearcs:
-    def __init__(self):
-        self.Mode = False
-        self.ShearMax = 4
-
-Augment_Shear = Augment_Shearcs()
-
-
-
-Augment_NonLinearMode = False
 
 SaveReportMethod = 'pickle'
 

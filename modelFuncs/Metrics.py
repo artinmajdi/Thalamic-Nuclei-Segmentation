@@ -27,15 +27,6 @@ def mDice(y_true,y_pred):
     return tf.divide(Dice,tf.cast(nmCl,tf.float32))
 
 
-def JAC(y_true,y_pred):
-
-    Intersection = tf.reduce_sum(tf.multiply(y_true,y_pred))
-    Sum = ( tf.reduce_sum(y_true) + tf.reduce_sum(y_pred) + 1e-7)
-    return Intersection(Sum - Intersection)
-
-
-
-
 class VSI_AllClasses_TF():
     def __init__(self, y_true,y_pred):
         self.true = y_true

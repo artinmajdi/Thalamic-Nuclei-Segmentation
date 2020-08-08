@@ -1,40 +1,28 @@
 import os
 import sys
-sys.path.append(os.path.dirname(__file__)) 
+
+sys.path.append(os.path.dirname(__file__))
 import otherFuncs.smallFuncs as smallFuncs
-from otherFuncs.datasets import preAnalysis
 from otherFuncs import datasets
 import modelFuncs.choosingModel as choosingModel
 import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 import preprocess.applyPreprocess as applyPreprocess
-import tensorflow as tf
 from keras import backend as K
-import csv
-import numpy as np
-import nibabel as nib
-from tqdm import tqdm
-import modelFuncs.LossFunction as LossFunction
-from preprocess import BashCallingFunctionsA, croppingA
-
-
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
-K = smallFuncs.gpuSetting(str(UserInfoB['simulation'].GPU_Index)) # params.WhichExperiment.HardParams.Machine.GPU_Index)
-
-
+K = smallFuncs.gpuSetting(str(UserInfoB['simulation'].GPU_Index))
 
 
 def running_main(UserInfoB):
 
-    def Run(UserInfoB, InitValues):
-
+    def Run(UserInfoB):
+        params = paramFunc.Run(UserInfoB, terminal=True)
         Data, params = datasets.loadDataset(params)
         choosingModel.check_Run(params, Data)
         K.clear_session()
-        
+
     def merge_results_and_apply_25D(UserInfoB):
-        
         UserInfoB['best_network_MPlanar'] = True
         params = paramFunc.Run(UserInfoB, terminal=True)
         DT = params.WhichExperiment.Experiment.address + '/results'
@@ -44,45 +32,38 @@ def running_main(UserInfoB):
 
         os.system("mkdir {Output}; cd {Output}; mkdir sd0 sd1 sd2")
 
-        for FM in [('_FM40','/sd0'), ('_FM30','/sd1'), ('_FM20','/sd2')]:
-            input = DT + '/' + subEx_name.replace('_FM00',FM[0]) + FM[1]
-            os.system( "cp -r %s/vimp* %s/"%(input , Output + FM[1]) )
+        for FM in [('_FM40', '/sd0'), ('_FM30', '/sd1'), ('_FM20', '/sd2')]:
+            input = DT + '/' + subEx_name.replace('_FM00', FM[0]) + FM[1]
+            os.system("cp -r %s/vimp* %s/" % (input, Output + FM[1]))
 
         smallFuncs.apply_MajorityVoting(params)
-        
-    def predict_Thalamus_For_SD0(UserI):
 
+    def predict_thalamus_for_sd0(UserI):
         UserI['simulation'].slicingDim = [2]
         UserI['simulation'].nucleus_Index = [1]
         UserI['simulation'].Use_Coronal_Thalamus_InSagittal = True
-        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
-        Run(UserI, IV)
+        Run(UserI)
 
         UserI['simulation'].slicingDim = [0]
-        UserI['simulation'].nucleus_Index = [2,4,5,6,7,8,9,10,11,12,13,14]
-        IV = InitValues( UserI['simulation'].nucleus_Index , UserI['simulation'].slicingDim)
-        Run(UserI, IV)
-
+        UserI['simulation'].nucleus_Index = [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        Run(UserI)
 
     applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
 
-
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
     UserInfoB['simulation'].slicingDim = [0]
-    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
-    predict_Thalamus_For_SD0(UserInfoB)
+    UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    predict_thalamus_for_sd0(UserInfoB)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
     UserInfoB['simulation'].slicingDim = [1]
-    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
-    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
+    UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
     Run(UserInfoB, IV)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].slicingDim = [2]
-    UserInfoB['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]
+    UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
     UserInfoB['simulation'].Use_Coronal_Thalamus_InSagittal = False
-    IV = InitValues( UserInfoB['simulation'].nucleus_Index , UserInfoB['simulation'].slicingDim)
     Run(UserInfoB, IV)
 
     merge_results_and_apply_25D(UserInfoB)
@@ -91,6 +72,6 @@ def running_main(UserInfoB):
 if UserInfoB['wmn_csfn'] == 'csfn':
     UserInfoB['TypeExperiment'] = 8
 elif UserInfoB['wmn_csfn'] == 'wmn':
-    UserInfoB['TypeExperiment'] = 15 
+    UserInfoB['TypeExperiment'] = 15
 
 running_main(UserInfoB)

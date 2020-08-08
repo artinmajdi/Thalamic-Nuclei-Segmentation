@@ -200,8 +200,7 @@ def func_Exp_subExp_Names(UserInfo):
         US = '_US' + str(UserInfo['upsample'].Scale)
         _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
         LF = '_' + a
-        GAP = '' # _gap' + str(UserInfo['gapDilation'])
-        SC = '_SingleClass' if not UserInfo['simulation'].Multi_Class_Mode else '' 
+        SC = '_SingleClass' if not UserInfo['simulation'].Multi_Class_Mode else ''
         LR = '_wLRScheduler' if UserInfo['simulation'].LR_Scheduler else ''
         lrate = '_lr' + str(UserInfo['simulation'].Learning_Rate) if UserInfo['wmn_csfn'] == 'csfn' else ''
 
@@ -233,18 +232,11 @@ def func_Exp_subExp_Names(UserInfo):
         A = subExperiment(tag)
 
         if UserInfo['best_network_MPlanar']:
-            # _, loss_tag = LossFunction.LossInfo(UserInfo['lossFunction_Index'] )            
-            # crossVal = '_CV_' + UserInfo['CrossVal'].index[0] if UserInfo['CrossVal'].Mode else ''
-            # LR = '_wLRScheduler' if UserInfo['simulation'].LR_Scheduler else ''
 
-            
             aa = A.name.split('_FM')
             A.name = aa[0] + '_FM00' + aa[1][2:]
 
-            # if UserInfo['wmn_csfn'] == 'csfn':
-            #     A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + LR + lrate + UserInfo['SubExperiment'].Tag + '_wBiasCorrection' + crossVal
-            # elif UserInfo['wmn_csfn'] == 'wmn':                                    
-            #     A.name = 'sE12_Cascade_FM00_Res_Unet2_NL3_' + loss_tag + '_US1' + LR + UserInfo['SubExperiment'].Tag + crossVal
+
 
         return A
 
@@ -545,8 +537,6 @@ def func_WhichExperiment(UserInfo):
         Dataset.ReadTrain = UserInfo['ReadTrain']
         Dataset.ReadTrain.ReadAugments.Tag = Augment_Tag()
 
-        Dataset.gapDilation = UserInfo['gapDilation']
-        Dataset.HDf5.mode_saveTrue_LoadFalse = UserInfo['mode_saveTrue_LoadFalse']
         Dataset.slicingInfo = slicingInfoFunc()
 
         Dataset.InputPadding.Automatic = UserInfo['InputPadding'].Automatic
@@ -590,7 +580,7 @@ def func_WhichExperiment(UserInfo):
         def func_NumClasses():
 
             num_classes = len(UserInfo['simulation'].nucleus_Index) if HardParams.Model.MultiClass.Mode else 1
-            if HardParams.Model.Method.havingBackGround_AsExtraDimension: num_classes += 1 
+            num_classes += 1
                 
             return num_classes
 
@@ -627,7 +617,7 @@ def func_WhichExperiment(UserInfo):
         HardParams.Machine.GPU_Index = str(UserInfo['simulation'].GPU_Index)
 
      
-        HardParams.Model.metrics, _    = Metrics.MetricInfo(UserInfo['MetricIx'])
+        HardParams.Model.metrics, _    = Metrics.MetricInfo(3)
         HardParams.Model.optimizer, _  = Optimizers.OptimizerInfo(1, UserInfo['simulation'].Learning_Rate)
         HardParams.Model.num_Layers    = UserInfo['simulation'].num_Layers
         HardParams.Model.FCN1_NLayers  = UserInfo['simulation'].FCN1_NLayers
@@ -646,7 +636,6 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.Method.Type                  = UserInfo['Model_Method']
         HardParams.Model.Method.save_Best_Epoch_Model = UserInfo['simulation'].save_Best_Epoch_Model   
         HardParams.Model.Method.InputImage2Dvs3D      = UserInfo['simulation'].InputImage2Dvs3D
-        HardParams.Model.Method.havingBackGround_AsExtraDimension = UserInfo['havingBackGround_AsExtraDimension']
         HardParams.Model.Method.Multiply_By_Thalmaus              = UserInfo['simulation'].Multiply_By_Thalmaus
         HardParams.Model.Method.Multiply_By_Rest_For_AV           = UserInfo['simulation'].Multiply_By_Rest_For_AV
 
