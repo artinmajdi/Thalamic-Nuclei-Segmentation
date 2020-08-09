@@ -58,13 +58,13 @@ def running_main(UserInfoB):
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
     UserInfoB['simulation'].slicingDim = [1]
     UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-    Run(UserInfoB, IV)
+    Run(UserInfoB)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].slicingDim = [2]
     UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
     UserInfoB['simulation'].Use_Coronal_Thalamus_InSagittal = False
-    Run(UserInfoB, IV)
+    Run(UserInfoB)
 
     merge_results_and_apply_25D(UserInfoB)
 

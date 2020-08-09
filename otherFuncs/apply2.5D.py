@@ -268,9 +268,7 @@ UserInfoB['Experiments'].Tag = 'BC_CSFn'
 
 
 for x in ['a' , 'b', 'c', 'd']: 
-    UserInfoB['CrossVal'].index = [x]
 
-    # for UserInfoB['permutation_Index'] in range(9):
     params = paramFunc.Run(UserInfoB, terminal=False)
     InfoS = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=params.WhichExperiment.Experiment.name , subExperiment_Name=params.WhichExperiment.SubExperiment.name)
     # func_MajorityVoting(InfoS , params)

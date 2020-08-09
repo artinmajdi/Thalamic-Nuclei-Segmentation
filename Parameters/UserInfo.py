@@ -1,8 +1,8 @@
 
 
-Model_Method = 'Cascade'
-architectureType = 'Res_Unet2'
-gpu = "2"
+Model_Method = 'Cascade' #'mUnet' # 'HCascade' # 'normal' #
+architectureType = 'Res_Unet2' # 'U-Net4' #  'Res_Unet' # 'FCN_Unet_TL' # 'FCN_Unet' # ''FCN_Unet_TL' #  'SegNet_Unet' # 'SegNet' #  'FCN_Unet' # 'FCN'  #'FCN_with_SkipConnection' #  
+gpu = "0"
 
 local_flag = False
 container_flag = False
@@ -13,7 +13,7 @@ wmn_csfn = 'wmn' # 'wmn' 'csfn'
 # TypeExperiment == 2:  # Main        Init 3T
 
 TypeExperiment = 8
-
+subexperiment_name = 'test_experiment'
 
 #! Preprocessing
 class preprocesscs:
@@ -28,6 +28,7 @@ preprocess = preprocesscs()
 
 permutation_Index = 0
 multi_Class_Mode = True
+readAugments_Mode = True
 lossFunction_Index = 7
 
 tag_temp = '' # _NEW' # _temp_fixed_BB
@@ -81,17 +82,11 @@ class InitializeBcs:
 
 InitializeB = InitializeBcs()
 
-class upsamplecs:
-    def __init__(self):
-        self.Mode = False
-        self.Scale = 1
-
-upsample = upsamplecs()
 
 class simulationcs:
     def __init__(self):
         self.TestOnly      = testOnly
-        self.epochs        = 300
+        self.epochs        = 5
         self.GPU_Index     = gpu
         self.Learning_Rate = 1e-3
         self.num_Layers    = 3 
@@ -108,6 +103,7 @@ class simulationcs:
         self.ImClosePrediction =  True # False #
         self.Multi_Class_Mode = multi_Class_Mode
         self.LR_Scheduler = True
+        self.ReadAugments_Mode = True
     
 simulation = simulationcs()
 
@@ -160,3 +156,24 @@ if container_flag:
 
 SaveReportMethod = 'pickle'
 
+AugmentMode = False
+Augment_LinearMode = True
+Augment_Linear_Length = 6
+
+class Augment_Rotationcs:
+    def __init__(self):
+        self.Mode = True
+        self.AngleMax = 7 # '7_6cnts' # '7' # 7_4cnts
+
+Augment_Rotation = Augment_Rotationcs()
+
+class Augment_Shearcs:
+    def __init__(self):
+        self.Mode = False
+        self.ShearMax = 4
+
+Augment_Shear = Augment_Shearcs()
+
+
+
+Augment_NonLinearMode = False

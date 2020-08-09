@@ -728,7 +728,6 @@ def Saving_UserInfo(DirSave, params):
         'FeatureMaps'    : int(params.UserInfo['simulation'].FirstLayer_FeatureMap_Num),
         'Weighted_Class' : params.UserInfo['simulation'].Weighted_Class_Mode,
         'Dropout'        : params.UserInfo['DropoutValue'],
-        'gapDilation'    : int(params.UserInfo['gapDilation']),
         'ImClosePrediction' : params.UserInfo['simulation'].ImClosePrediction,
         'InputPadding_Mode' : params.UserInfo['InputPadding'].Automatic,
         'InputPadding_Dims' : [int(s) for s in params.WhichExperiment.HardParams.Model.InputDimensions],
@@ -737,8 +736,6 @@ def Saving_UserInfo(DirSave, params):
     with open(DirSave + '/UserInfo.json', "w") as j:
         j.write(json.dumps(User_Info))
 
-    # with open(DirSave + '/UserInfo.json', "r") as j:
-    #     data = json.load(j)
 
 def closeMask(mask,cnt):
     struc = ndimage.generate_binary_structure(3,2)

@@ -193,10 +193,6 @@ def testingExeriment(model, Data, params):
             pred = predF[...,:num_classes-1]
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
 
-
-            if params.WhichExperiment.HardParams.Model.Upsample.Mode:
-                scale = params.WhichExperiment.HardParams.Model.Upsample.Scale
-                pred = downsample_Mask(pred , scale)
            
             pred = np.transpose(pred,[1,2,0,3])
             if len(pred.shape) == 3: pred = np.expand_dims(pred,axis=3)
@@ -497,13 +493,11 @@ def save_BoundingBox_Hierarchy(params, PRED):
         def checkBordersOnBoundingBox(Sz , BB , gapS):
             return [   [   np.max([BB[d][0]-gapS,0])  ,   np.min( [BB[d][1]+gapS,Sz[d]])   ]  for d in range(3) ]
 
-        # Thalamus_Mask_Dilated = dilateMask( PreStageMask, params.WhichExperiment.Dataset.gapDilation )
         imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
         if 'train' in mode: dirr += '/TrainData_Output'
 
         for ch in range(PreStageMask.shape[3]):
             BB = smallFuncs.findBoundingBox(PreStageMask[...,ch])
-            # BB = checkBordersOnBoundingBox(imF.shape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
             gapDilation = params.WhichExperiment.Dataset.gapDilation
             BBd = [  [BB[ii][0] - gapDilation , BB[ii][1] + gapDilation] for ii in range(len(BB))]
             BBd = checkBordersOnBoundingBox(imF.shape , BBd , 0)            
@@ -538,13 +532,7 @@ def save_BoundingBox_Hierarchy(params, PRED):
         loop_Subjects_Sagittal(PRED.Sagittal_Train, 'train')        
 
 def architecture(ModelParam):
-
-    if ModelParam.Upsample.Mode:
-        scale , szI = ModelParam.Upsample.Scale   ,  ModelParam.InputDimensions        
-        InDim_new = (scale*szI[0] , scale*szI[1] , szI[2] , 1)
-        input_shape = tuple(InDim_new[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
-    else:
-        input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
+    input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
 
     def UNet4(ModelParam):  #  Conv -> BatchNorm -> Relu ) -> (Conv -> BatchNorm -> Relu)  -> maxpooling  -> Dropout
                     

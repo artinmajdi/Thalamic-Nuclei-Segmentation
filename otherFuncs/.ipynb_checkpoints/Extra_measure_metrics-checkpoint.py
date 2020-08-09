@@ -90,8 +90,6 @@ UI = UserEntry()
 for cv in ['a','b','c','d','e','f','g','h']:
     for sd in ['sd0','sd1','sd2','2.5D_MV']:
         for x in ['ET' , 'Main']:
-            # UI.dir_label  = f'/array/ssd/msmajdi/experiments/keras/exp6/crossVal/{x}/a' 
-            # UI.dir_in = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM40_Res_Unet2_NL3_LS_MyBCE_US1_wLRScheduler_Main_Ps_ET_Init_Rn_CV_a/sd0'
             UI.dir_label  = f'/array/ssd/msmajdi/experiments/keras/exp6/crossVal/{x}/{cv}' 
             UI.dir_in = f'/array/ssd/msmajdi/experiments/keras/exp6/results/New_Results_April_27_2020_Main_Ps_ET_Init_3T/sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CVs_all/{sd}'
             UI.mode    = 'all'

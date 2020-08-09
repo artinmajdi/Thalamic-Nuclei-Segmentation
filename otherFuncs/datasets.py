@@ -277,30 +277,6 @@ def loadDataset(params):
                         np.savetxt(Dirsave + '/paddingError.txt', subject.Padding, fmt='%d')
                         print('WARNING: subject: ',subject.subjectName,' padding error patience activated, Error:', np.min(subject.Padding))
                 return ErrorFlag
-
-            def upsample_Image(Image, Mask , scale):
-                szI = Image.shape
-                szM = Mask.shape
-                
-                Image3 = np.zeros( (szI[0] , scale*szI[1] , scale*szI[2] , szI[3])  )
-                Mask3  = np.zeros( (szM[0] , scale*szM[1] , scale*szM[2] , szM[3])  )
-
-                newShape = (scale*szI[1] , scale*szI[2])
-
-                # for i in range(Image.shape[2]):
-                #     Image2[...,i] = scipy.misc.imresize(Image[...,i] ,size=newShape[:2] , interp='cubic')
-                #     Mask2[...,i]  = scipy.misc.imresize( (Mask[...,i] > 0.5).astype(np.float32) ,size=newShape[:2] , interp='bilinear')
-
-                tform = AffineTransform(scale=(scale, scale))
-                for i in range(Image.shape[0]):
-
-                    for ch in range(Image3.shape[3]):
-                        Image3[i ,: ,: ,ch] = warp( np.squeeze(Image[i ,: ,: ,ch]), tform.inverse, output_shape=newShape, order=3)
-
-                    for ch in range(Mask3.shape[3]):
-                        Mask3[i ,: ,: ,ch]  = warp( (np.squeeze(Mask[i ,: ,: ,ch]) > 0.5).astype(np.float32) ,  tform.inverse, output_shape=newShape, order=0)
-                
-                return Image3 , Mask3
                 
             Data = {}
             # g1 = params.h5.create_group(mode)
@@ -313,10 +289,6 @@ def loadDataset(params):
 
                 msk = msk>Th
                 origMsk = origMsk>Th
-
-                if params.WhichExperiment.HardParams.Model.Upsample.Mode:
-                    scale = params.WhichExperiment.HardParams.Model.Upsample.Scale
-                    im, msk = upsample_Image(im, msk , scale)    
 
 
                 if im[...,0].shape == msk[...,0].shape:
@@ -480,10 +452,7 @@ def preAnalysis(params):
             MinInputSize = func_MinInputSize(params)
 
             kernel_size = HardParams.Model.Layer_Params.ConvLayer.Kernel_size.conv
-            num_Layers  = HardParams.Model.num_Layers
-
-            if params.WhichExperiment.HardParams.Model.Upsample.Mode:
-                MinInputSize = MinInputSize*params.WhichExperiment.HardParams.Model.Upsample.Scale                 
+            num_Layers  = HardParams.Model.num_Layers              
 
 
             params.WhichExperiment.HardParams.Model.num_Layers_changed = False

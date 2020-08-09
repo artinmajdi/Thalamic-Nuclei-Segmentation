@@ -4,117 +4,15 @@ import modelFuncs.LossFunction as LossFunction
 import modelFuncs.Metrics as Metrics
 import modelFuncs.Optimizers as Optimizers
 import otherFuncs.smallFuncs as smallFuncs
+from otherFuncs import datasets
+import pickle
+from copy import deepcopy
 import numpy as np
 import json
 
-def temp_Experiments_preSet_V2(UserInfoB):
-
-    class TypeExperimentFuncs():
-        def __init__(self):            
-            class ReadTrainC:
-                def __init__(self, SRI=0 , ET=0 , Main=0 , CSFn1=0 , CSFn2=0):   
-                    # class readAugments: Mode, Tag, LoadAll = False, '', False  # temp
-                    class readAugments: Mode, Tag, LoadAll = True, '', False
-                    self.SRI  = SRI  > 0.5
-                    self.ET   = ET   > 0.5
-                    self.Main = Main > 0.5
-                    self.CSFn1 = CSFn1 > 0.5
-                    self.CSFn2 = CSFn2 > 0.5
-
-                    self.ReadAugments = readAugments                    
-            self.ReadTrainC = ReadTrainC
-
-            class Transfer_LearningC:
-                def __init__(self, Mode=False , FrozenLayers = [0] , Tag = '_TF' , Stage = 0 , permutation_Index = 0):
-                    
-                    class unet_Freeze():
-
-                        if permutation_Index == 0: # best
-                            Contracting = {0:True, 1:True, 2:False, 3:False, 4:False, 5:False }
-                            Expanding   = {0:True, 1:False, 2:False, 3:False, 4:False, 5:False }
-                            Middle      = False
-
-                        elif permutation_Index == 1:  # full fine tune
-                            Contracting = {0:True, 1:True, 2:True, 3:True, 4:True, 5:True }
-                            Expanding   = {0:True, 1:True, 2:True, 3:True, 4:True, 5:True }
-                            Middle      = True
-
-                        elif permutation_Index == 2: 
-                            Contracting = {0:False, 1:False, 2:False, 3:False, 4:False, 5:False }
-                            Expanding   = {0:True , 1:False, 2:False, 3:False, 4:False, 5:False }
-                            Middle      = False
-
-                        elif permutation_Index == 3:
-                            Contracting = {0:True , 1:False, 2:False, 3:False, 4:False, 5:False }
-                            Expanding   = {0:False, 1:False, 2:False, 3:False, 4:False, 5:False }
-                            Middle      = False
-
-                        elif permutation_Index == 4:
-                            Contracting = {0:True , 1:True , 2:False, 3:False, 4:False, 5:False }
-                            Expanding   = {0:False, 1:False, 2:False, 3:False, 4:False, 5:False }
-                            Middle      = False
-
-                        elif permutation_Index == 5:
-                            Contracting = {0:False , 1:False, 2:False, 3:False, 4:False, 5:False }
-                            Expanding   = {0:True  , 1:True, 2:False, 3:False, 4:False, 5:False }
-                            Middle      = False
-
-                        elif permutation_Index == 6:
-                            Contracting = {0:True , 1:False, 2:False, 3:False, 4:False, 5:False }
-                            Expanding   = {0:True , 1:False, 2:False, 3:False, 4:False, 5:False }
-                            Middle      = False                            
-
-                        elif permutation_Index == 7:
-                            Contracting = {0:False , 1:True, 2:False, 3:False, 4:False, 5:False }
-                            Expanding   = {0:False , 1:True, 2:False, 3:False, 4:False, 5:False }
-                            Middle      = True  
-
-                        elif permutation_Index == 8:
-                            Contracting = {0:False , 1:False, 2:True, 3:True, 4:True, 5:True }
-                            Expanding   = {0:False , 1:False, 2:True, 3:True, 4:True, 5:True }
-                            Middle      = True  
-
-
-                    self.Mode         = Mode
-                    self.FrozenLayers = FrozenLayers
-                    self.Stage        = Stage
-                    self.Tag          = Tag
-                    self.U_Net4       = unet_Freeze()
-            self.Transfer_LearningC = Transfer_LearningC
-
-            class InitializeB:
-                def __init__(self, FromThalamus=False , FromOlderModel=False , From_3T=False , From_7T=False , From_CSFn1=False):
-                    self.FromThalamus   = FromThalamus
-                    self.FromOlderModel = FromOlderModel
-                    self.From_3T        = From_3T
-                    self.From_7T        = From_7T
-                    self.From_CSFn1     = From_CSFn1
-            self.InitializeB = InitializeB
-
-        def main(self, TypeExperiment = 1, perm_Index = 0):
-            switcher = {
-                8:  (12  ,   self.ReadTrainC(CSFn2=1)        , self.InitializeB(From_7T=True)        ,  self.Transfer_LearningC()          , '_CSFn2_Init_Main'),
-                15: (12  ,   self.ReadTrainC(Main=1,ET=1)         , self.InitializeB(From_3T=True)   ,  self.Transfer_LearningC()          , '_Main_Ps_ET_Init_3T' ),
-                }
-            return switcher.get(TypeExperiment , 'wrong Index')
-
-    a,b,c,d,e = TypeExperimentFuncs().main(TypeExperiment=UserInfoB['TypeExperiment'], perm_Index=UserInfoB['permutation_Index'])
-    b.ReadAugments.Mode = True
-    
-    UserInfoB['SubExperiment'].Index = a
-    UserInfoB['ReadTrain']           = b
-    UserInfoB['Transfer_Learning']   = d
-    UserInfoB['InitializeB']         = c
-    UserInfoB['SubExperiment'].Tag   = e + UserInfoB['tag_temp']  
-
-    return UserInfoB
 
 def Run(UserInfoB, terminal=False):
         
-    if terminal: UserInfoB = smallFuncs.terminalEntries(UserInfoB)
-
-    UserInfoB = temp_Experiments_preSet_V2(UserInfoB)
-
     class params:
         WhichExperiment = func_WhichExperiment(UserInfoB)
         preprocess      = func_preprocess(UserInfoB)
@@ -124,67 +22,6 @@ def Run(UserInfoB, terminal=False):
 
     return params
 
-def func_Exp_subExp_Names(UserInfo):
-
-    def func_subExperiment():
-        
-        FM = '_FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
-        DO = UserInfo['DropoutValue']
-        SE = UserInfo['SubExperiment']
-        NL = '_NL' + str(UserInfo['simulation'].num_Layers)
-        ACH =  '_' + 'Res_Unet2'
-        US = '_US' + str(UserInfo['upsample'].Scale)
-        _, a = LossFunction.LossInfo(UserInfo['lossFunction_Index'])
-        LF = '_' + a
-        SC = '_SingleClass' if not UserInfo['simulation'].Multi_Class_Mode else ''
-        LR = '_wLRScheduler' if UserInfo['simulation'].LR_Scheduler else ''
-        lrate = '_lr' + str(UserInfo['simulation'].Learning_Rate) if UserInfo['wmn_csfn'] == 'csfn' else ''
-
-
-        method = UserInfo['Model_Method']                                                                      
-        PI = '' # '_permute' + str(UserInfo['permutation_Index'])
-
-        class subExperiment:
-            def __init__(self, tag):                
-                self.index = SE.Index
-                self.tag = tag
-                self.name_thalamus = ''            
-                self.name = 'sE' + str(SE.Index) +  '_' + self.tag            
-                self.name_Init_from_3T    = 'sE8_'  + method + FM + ACH + NL + '_LS_MyLogDice' + US + SC
-                self.name_Init_from_7T    = 'sE12_' + method + FM + ACH + NL + LF + US + SC + '_wLRScheduler_Main_Ps_ET_Init_3T_CV_a' 
-                self.name_Init_from_CSFn1 = 'sE9_'  + method + FM + ACH + NL + LF + US + SC + '_CSFn1_Init_Main_CV_a'  
-                self.name_Thalmus_network = 'sE8_Predictions_Full_THALAMUS' # sE8_FM20_U-Net4_1-THALMAUS 
-                self.crossVal = UserInfo['CrossVal']
-       
-        tag = method + FM + ACH + NL + LF + US + SC + LR + PI + lrate + SE.Tag
-        
-        if UserInfo['wmn_csfn'] == 'csfn':
-            tag += '_WITH_NEW_CASES'
-            tag += '_wBiasCorrection'       
-        
-        if UserInfo['CrossVal'].Mode: tag += '_CV_' + UserInfo['CrossVal'].index[0] # + '_for_paper' # '_for_percision_recall_curve'
-        A = subExperiment(tag)
-
-        if UserInfo['best_network_MPlanar']:
-
-            aa = A.name.split('_FM')
-            A.name = aa[0] + '_FM00' + aa[1][2:]
-
-
-
-        return A
-
-    def func_Experiment():
-        EX = UserInfo['Experiments']
-        class Experiment:
-            index = EX.Index
-            tag   = EX.Tag
-            name  = 'exp' + str(EX.Index) + '_' + EX.Tag if EX.Tag else 'exp' + str(EX.Index)
-            address = smallFuncs.mkDir(UserInfo['Experiments_Address'] + '/' + name)
-            PreSet_Experiment_Info_Index = UserInfo['TypeExperiment']
-        return Experiment()
-
-    return func_Experiment(), func_subExperiment()  
 
 def func_WhichExperiment(UserInfo):
     
@@ -206,7 +43,6 @@ def func_WhichExperiment(UserInfo):
                     output = 'sigmoid'
 
                 class convLayer:
-                    # strides = (1,1)
                     Kernel_size = kernel_size()
                     padding = 'SAME' # valid
 
@@ -223,20 +59,14 @@ def func_WhichExperiment(UserInfo):
                     ReferenceMask = ''
                     havingBackGround_AsExtraDimension = True
                     InputImage2Dvs3D = 2
-                    save_Best_Epoch_Model = False
-                    Use_Coronal_Thalamus_InSagittal = False
-                    Use_TestCases_For_Validation = False
+                    save_Best_Epoch_Model = True
+                    Use_Coronal_Thalamus_InSagittal = True
+                    Use_TestCases_For_Validation = True
                     ImClosePrediction = False
 
                 return dropout, activation, convLayer, multiclass, maxPooling, method
 
             dropout, activation, convLayer, multiclass, maxPooling, method = ArchtiectureParams()
-
-            class transfer_Learning:
-                Mode = False
-                Stage = 0 # 1
-                FrozenLayers = [0]
-                Tag = '_TF'
             
             class classWeight:
                 Weight = {0:1 , 1:1}
@@ -244,7 +74,7 @@ def func_WhichExperiment(UserInfo):
 
 
             class layer_Params:
-                FirstLayer_FeatureMap_Num = 64
+                FirstLayer_FeatureMap_Num = 20
                 batchNormalization = True
                 ConvLayer = convLayer()
                 MaxPooling = maxPooling()
@@ -253,18 +83,9 @@ def func_WhichExperiment(UserInfo):
                 class_weight = classWeight()
 
             class InitializeB:
-                FromThalamus   = False
-                FromOlderModel = False
-                From_3T        = False  
-                From_7T = False  
+                Modes   = True
+                Address = False
 
-            class dataGenerator:
-                mode = False
-                NumSubjects_Per_batch = 5
-
-            class upsample:
-                Mode = False
-                Scale = 2
             class model:
                 architectureType = 'U-Net'
                 epochs = ''
@@ -284,12 +105,8 @@ def func_WhichExperiment(UserInfo):
                 Initialize = InitializeB()
                 Method = method()
                 paddingErrorPatience = 200
-                Transfer_Learning = transfer_Learning()
-                DataGenerator = dataGenerator()
-                Upsample = upsample()
                 
                 
-
             lossFunction_Index = 1
             model.loss, _ = LossFunction.LossInfo(lossFunction_Index)
 
@@ -316,23 +133,11 @@ def func_WhichExperiment(UserInfo):
         hardParams = HardParamsFuncs()
 
         class experiment:
-            index = ''
-            tag = ''
-            name = ''
-            address = ''
+            exp_address = ''
+            train_address = ''
+            test_address = ''
+            init_address = ''
         
-        class CrossVal:
-            Mode = False
-            index = ['a']
-            # All_Indexes = ['a' , 'b']
-        class subExperiment:
-            index = ''
-            tag = ''
-            name = ''
-            name_thalamus = ''
-            crossVal = CrossVal()
-            name_Init_from_7T = ''
-            name_Init_from_3T = ''
 
         def datasetFunc():
             class validation:
@@ -387,23 +192,17 @@ def func_WhichExperiment(UserInfo):
                 ReadTrain = readTrain()
                 HDf5 = hDF5()
 
-            # Dataset_Index = 4
-            # dataset.name, dataset.address = datasets.DatasetsInfo(Dataset_Index)
             return dataset
 
         dataset = datasetFunc()
 
         class nucleus:
-            Organ = 'THALAMUS'
             name = ''
-            name_Thalamus = ''
-            FullIndexes = ''
             Index = ''
+            FullIndexes = ''
 
         class WhichExperiment:
             Experiment    = experiment()
-            SubExperiment = subExperiment()
-            address = ''
             Nucleus = nucleus()
             HardParams = hardParams()
             Dataset = dataset()
@@ -416,18 +215,12 @@ def func_WhichExperiment(UserInfo):
             if len(NucleusIndex) == 1 or not MultiClassMode:
                 NucleusName , _, _ = smallFuncs.NucleiSelection( NucleusIndex[0] )
             else:
-                if (UserInfo['Model_Method'] == 'HCascade') and (1.1 in UserInfo['simulation'].nucleus_Index):
-                    NucleusName = 'MultiClass_HCascade_Groups'
-                else:
-                    NucleusName = ('MultiClass_' + str(NucleusIndex)).replace(', ','').replace('[','').replace(']','')
+                NucleusName = ('MultiClass_' + str(NucleusIndex)).replace(', ','').replace('[','').replace(']','')
                 
-                    
-
             return NucleusName
 
         nucleus_Index = UserInfo['simulation'].nucleus_Index if isinstance(UserInfo['simulation'].nucleus_Index,list) else [UserInfo['simulation'].nucleus_Index]
         class nucleus:
-            Organ = 'THALAMUS'
             name = Experiment_Nucleus_Name_MClass(nucleus_Index , MultiClassMode )
             name_Thalamus, FullIndexes, _ = smallFuncs.NucleiSelection( 1 )
             Index = nucleus_Index
@@ -482,23 +275,7 @@ def func_WhichExperiment(UserInfo):
             _ , fullIndexes, _ = smallFuncs.NucleiSelection(ind=1)
             referenceLabel = {}
 
-            if ModelIdea == 'HCascade':
-
-                Name, Indexes = {}, {}
-                for i in [1.1, 1.2, 1.3, 1.4]:
-                    Name[i], Indexes[i], _ = smallFuncs.NucleiSelection(ind=i)
-
-                for ixf in tuple(fullIndexes) + tuple([1.1, 1.2, 1.3, 1.4]):
-
-                    if ixf in Indexes[1.1]: referenceLabel[ixf] = Name[1.1]
-                    elif ixf in Indexes[1.2]: referenceLabel[ixf] = Name[1.2]
-                    elif ixf in Indexes[1.3]: referenceLabel[ixf] = Name[1.3]
-                    elif ixf in Indexes[1.4]: referenceLabel[ixf] = Name[1.4]
-                    elif ixf == 1: referenceLabel[ixf] = 'None'
-                    else: referenceLabel[ixf] = '1-THALAMUS'
-
-
-            elif ModelIdea == 'Cascade':
+            if ModelIdea == 'Cascade':
                 for ix in fullIndexes: referenceLabel[ix] = '1-THALAMUS' if ix != 1 else 'None'
 
             else:
@@ -552,8 +329,7 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.epochs        = UserInfo['simulation'].epochs
         HardParams.Model.DataGenerator = UserInfo['dataGenerator']                
         HardParams.Model.Initialize    = UserInfo['InitializeB']
-        HardParams.Model.architectureType = 'Res_Unet2'
-        HardParams.Model.Upsample      = UserInfo['upsample']
+        HardParams.Model.architectureType = UserInfo['architectureType'] 
 
 
         HardParams.Model.loss, _ = LossFunction.LossInfo(UserInfo['lossFunction_Index'] ) 
@@ -601,7 +377,7 @@ def func_WhichExperiment(UserInfo):
     def old_adding_TransferLearningParams(WhichExperiment):
         class best_WMn_Model:
 
-            architectureType = 'Res_Unet2'
+            architectureType = 'U-Net4'
             EXP_address = '/array/ssd/msmajdi/experiments/keras/exp6/models/'
 
             Model_Method = WhichExperiment.HardParams.Model.Method.Type
