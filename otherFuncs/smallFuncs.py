@@ -4,15 +4,13 @@ from shutil import copyfile
 import matplotlib.pyplot as plt
 import os, sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-# import skimage
-# print(skimage.__version__)
+# sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 from skimage import measure
 from copy import deepcopy
 import json
 from scipy import ndimage
 from tqdm import tqdm
-import modelFuncs.Metrics as metrics
+from modelFuncs import Metrics as metrics
 
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
 def NucleiSelection(ind = 1):
@@ -348,9 +346,6 @@ def terminalEntries(UserInfo):
             else:
                 UserInfo['simulation'].nucleus_Index = [float(sys.argv[en+1])] # [int(sys.argv[en+1])]
 
-        elif entry.lower() in ('-l','--loss'):
-            UserInfo['lossFunction_Index'] = int(sys.argv[en+1])
-
         elif entry.lower() in ('-d','--dataset'):
             UserInfo['DatasetIx'] = int(sys.argv[en+1])
 
@@ -401,28 +396,14 @@ def terminalEntries(UserInfo):
 
 def search_ExperimentDirectory(whichExperiment):
 
-    def func_model_Tag(whichExperiment):
-        model_Tag = ''
-        if whichExperiment.HardParams.Model.Transfer_Learning.Mode:                               model_Tag += '_TF'
-        if whichExperiment.Dataset.ReadTrain.ET   and not whichExperiment.Dataset.ReadTrain.Main: model_Tag += '_ET'
-        if whichExperiment.Dataset.ReadTrain.CSFn1 and not whichExperiment.Dataset.ReadTrain.Main: model_Tag += '_CSFn1'
-        if whichExperiment.Dataset.ReadTrain.CSFn2 and not whichExperiment.Dataset.ReadTrain.Main: model_Tag += '_CSFn2'
-        return model_Tag
-
     sdTag = '/sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim)
-    Exp_address = whichExperiment.Experiment.address
-    SE          = whichExperiment.SubExperiment
+    Exp_address = whichExperiment.Experiment.exp_address
+    SEname          = whichExperiment.Experiment.subexperiment_name
     NucleusName = whichExperiment.Nucleus.name
-    crossVal = whichExperiment.SubExperiment.crossVal
 
     def checkInputDirectory(Dir, NucleusName, sag_In_Cor,modeData):
 
-        # sdTag2 = '/sd0' if sag_In_Cor else sdTag
-        sdTag2 = '/sd'
-
-        Read   = whichExperiment.Dataset.ReadTrain
-        DirAug = Dir + '/Augments/' + Read.ReadAugments.Tag
-        Dir_CV = whichExperiment.Experiment.address + '/crossVal'
+        DirAug = Dir + '/Augments/'
 
         def Search_ImageFolder(Dir, NucleusName):
 
@@ -544,68 +525,21 @@ def search_ExperimentDirectory(whichExperiment):
             address = os.path.abspath(Dir)
             Subjects = {}
 
-        # Input = Input_cls()
-
         def LoopReadingData(Input, Dirr):
             if os.path.exists(Dirr):
                 SubjectsList = next(os.walk(Dirr))[1]
 
                 if whichExperiment.Dataset.check_vimp_SubjectName:  SubjectsList = [s for s in SubjectsList if ('vimp' in s)]
-
-                # this is to reduce the ammout of data in joint training of Main & ET
-                Read = whichExperiment.Dataset.ReadTrain
-                if Read.ET or Read.Main:  SubjectsList = [s for s in SubjectsList if ('Aug4' not in s) and ('Aug5' not in s)]
-
-                # TODO this is temporary, and should be removed later
-                # if modeData == 'train': SubjectsList = [s for s in SubjectsList if '_3T_ET' not in s]
-
                 for s in SubjectsList:
                     Input.Subjects[s] = Search_ImageFolder(Dirr + '/' + s , NucleusName)
                     Input.Subjects[s].subjectName = s
 
             return Input
 
-        def load_CrossVal_Data(Input , Dir):
-            if os.path.exists(Dir):
-                CV_list = crossVal.index if (modeData == 'test') else [s for s in os.listdir(Dir) if not (s in crossVal.index) ]
+        Input = LoopReadingData(Input, whichExperiment.Experiment.train_address)
 
-                for x in CV_list:
-                    Input = LoopReadingData(Input, Dir + x)
-
-                    if Read.ReadAugments.Mode and not (modeData == 'test'):
-                        Input = LoopReadingData(Input , Dir + x + '/Augments' + sdTag2)
-
-            return Input
-
-
-        Input = LoopReadingData(Input, Dir)
-
-        # SRI_flag_test = False if (Read.Main or Read.ET) and (modeData == 'test') else True
-        # SRI_flag_test = True
-
-        if Read.Main : Input = LoopReadingData(Input, Dir + '/Main')
-        if Read.ET   : Input = LoopReadingData(Input, Dir + '/ET')
-        if Read.SRI  : Input = LoopReadingData(Input, Dir + '/SRI')
-        if Read.CSFn1 : Input = LoopReadingData(Input, Dir + '/CSFn1')
-        if Read.CSFn2 : Input = LoopReadingData(Input, Dir + '/CSFn2')
-        # if Read.SRI and SRI_flag_test: Input = LoopReadingData(Input, Dir + '/SRI')
-
-        if crossVal.Mode:
-            if Read.Main:  Input = load_CrossVal_Data(Input , Dir_CV + '/Main/')
-            if Read.ET:    Input = load_CrossVal_Data(Input , Dir_CV + '/ET/')
-            if Read.SRI:   Input = load_CrossVal_Data(Input , Dir_CV + '/SRI/')
-            if Read.CSFn1 : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn1/')
-            if Read.CSFn2 : Input = load_CrossVal_Data(Input , Dir_CV + '/CSFn2/')
-
-        if Read.ReadAugments.Mode and not (modeData == 'test'):
-
-            Input = LoopReadingData(Input, Dir + '/Augments' + sdTag2   )
-
-            if Read.Main  and os.path.exists(Dir + '/Main/Augments' + sdTag2):  Input = LoopReadingData(Input, Dir + '/Main/Augments'  + sdTag2)
-            if Read.ET    and os.path.exists(Dir + '/ET/Augments'   + sdTag2):  Input = LoopReadingData(Input, Dir + '/ET/Augments'    + sdTag2)
-            if Read.SRI   and os.path.exists(Dir + '/SRI/Augments'  + sdTag2):  Input = LoopReadingData(Input, Dir + '/SRI/Augments'   + sdTag2)
-            if Read.CSFn1 and os.path.exists(Dir + '/CSFn1/Augments' + sdTag2): Input = LoopReadingData(Input, Dir + '/CSFn1/Augments' + sdTag2)
-            if Read.CSFn2 and os.path.exists(Dir + '/CSFn2/Augments' + sdTag2): Input = LoopReadingData(Input, Dir + '/CSFn2/Augments' + sdTag2)
+        if whichExperiment.Experiment.ReadAugments_Mode and not (modeData == 'test'):
+            Input = LoopReadingData(Input, Dir + '/Augments/')
 
         return Input
 
@@ -616,19 +550,14 @@ def search_ExperimentDirectory(whichExperiment):
         return train , test
 
     class train:
-        address        = Exp_address + '/train'
-        Model          = Exp_address + '/models/' + SE.name                   + '/' + NucleusName  + sdTag
-        Model_Thalamus = Exp_address + '/models/' + SE.name                   + '/' + '1-THALAMUS' + sdTag
-        Model_3T       = Exp_address + '/models/' + SE.name_Init_from_3T      + '/' + NucleusName  + sdTag
-        Model_7T       = Exp_address + '/models/' + SE.name_Init_from_7T      + '/' + NucleusName  + sdTag
-        Model_CSFn1    = Exp_address + '/models/' + SE.name_Init_from_CSFn1   + '/' + NucleusName  + sdTag
-        Model_InitTF   = Exp_address + '/models/' + SE.name.split('_TF_')[0]  + '/' + NucleusName  + sdTag
-        model_Tag = func_model_Tag(whichExperiment)
+        address   = Exp_address + '/train'
+        Model     = Exp_address + '/models/' + SEname                   + '/' + NucleusName  + sdTag
+        model_Tag = ''
         Input     = checkInputDirectory(address, NucleusName,False,'train')
 
     class test:
         address = Exp_address + '/test'
-        Result  = Exp_address + '/results/' + SE.name + sdTag
+        Result  = Exp_address + '/results/' + SEname + sdTag
         Input   = checkInputDirectory(address, NucleusName,False,'test')
 
 
@@ -655,42 +584,6 @@ def mDice(msk1,msk2):
     intersection = msk1*msk2
     return intersection.sum()*2/(msk1.sum()+msk2.sum() + np.finfo(float).eps)
 
-"""
-def Loading_UserInfo(DirLoad, method):
-
-    def loadReport(DirSave, name, method):
-
-        def loadPickle(Dir):
-            f = open(Dir,"wb")
-            data = pickle.load(f)
-            f.close()
-            return data
-
-        if 'pickle' in method:
-            return loadPickle(DirSave + '/' + name + '.pkl')
-        # elif 'mat' in method:
-            # return mat4py.loadmat(DirSave + '/' + name + '.pkl')
-
-    def dict2obj(d):
-        if isinstance(d, list):
-            d = [dict2obj(x) for x in d]
-        if not isinstance(d, dict):
-            return d
-        class C(object):
-            pass
-        o = C()
-        for k in d:
-            o.__dict__[k] = dict2obj(d[k])
-        return o
-
-    UserInfo = loadReport(DirLoad, 'UserInfo', method)
-    UserInfo = dict2obj( UserInfo )
-
-    a = UserInfo['InputDimensions'].replace(',' ,'').split('[')[1].split(']')[0].split(' ')
-    UserInfo['InputDimensions'] = [int(ai) for ai in a]
-    return UserInfo
-"""
-
 def findBoundingBox(PreStageMask):
     objects = measure.regionprops(measure.label(PreStageMask))
 
@@ -714,22 +607,11 @@ def Saving_UserInfo(DirSave, params):
     # DirSave = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/models/sE11_Cascade_wRot7_6cnts_sd2/4-VA'
     User_Info = {
         'num_Layers'     : int(params.WhichExperiment.HardParams.Model.num_Layers),
-        'Trained_SRI'    : params.UserInfo['ReadTrain'].SRI,
-        'Trained_ET'     : params.UserInfo['ReadTrain'].ET,
-        'Trained_Main'   : params.UserInfo['ReadTrain'].Main,
         'Model_Method'   : params.UserInfo['Model_Method'],
-        'FromThalamus'   : params.UserInfo['InitializeB'].FromThalamus,
-        'FromOlderModel' : params.UserInfo['InitializeB'].FromOlderModel,
-        'From_3T'        : params.UserInfo['InitializeB'].From_3T,
-        'Learning_Rate'  : params.UserInfo['simulation'].Learning_Rate,
-        'Normalizae'     : params.UserInfo['normalize'].Method,
-        'slicing_Dim'    : params.UserInfo['simulation'].slicingDim[0],
-        'batch'          : int(params.UserInfo['simulation'].batch_size),
-        'FeatureMaps'    : int(params.UserInfo['simulation'].FirstLayer_FeatureMap_Num),
-        'Weighted_Class' : params.UserInfo['simulation'].Weighted_Class_Mode,
-        'Dropout'        : params.UserInfo['DropoutValue'],
-        'ImClosePrediction' : params.UserInfo['simulation'].ImClosePrediction,
-        'InputPadding_Mode' : params.UserInfo['InputPadding'].Automatic,
+        'Learning_Rate'  : params.UserInfo['simulation']().Learning_Rate,
+        'slicing_Dim'    : params.UserInfo['simulation']().slicingDim[0],
+        'batch'          : int(params.UserInfo['simulation']().batch_size),
+        'InputPadding_Mode' : params.UserInfo['InputPadding']().Automatic,
         'InputPadding_Dims' : [int(s) for s in params.WhichExperiment.HardParams.Model.InputDimensions],
     }
     mkDir(DirSave)

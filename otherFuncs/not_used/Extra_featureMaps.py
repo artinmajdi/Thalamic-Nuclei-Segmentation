@@ -16,27 +16,11 @@ import PIL
 from tqdm import tqdm
 
 UserInfo = UserInfo.__dict__  
-# UserInfo['CrossVal'].index   = ['a']
-# UserInfo['permutation_Index'] = 0
-# UserInfo['TypeExperiment'] = 11
-# UserInfo['Model_Method'] = 'Cascade' 
-# UserInfo['architectureType'] = 'ResFCN_ResUnet2_TL'
-# UserInfo['lossFunction_Index'] = 4
-# UserInfo['Experiments'].Index = '6'
-# UserInfo['copy_Thalamus'] = False
-# UserInfo['simulation'].batch_size = 50
-# UserInfo['simulation'].FirstLayer_FeatureMap_Num = 20    
-# UserInfo['simulation'].slicingDim = [2]
-# UserInfo['simulation'].nucleus_Index = [1,2,4,5,6,7,8,9,10,11,12,13,14]       
-# UserInfo['simulation'].FCN1_NLayers = 0
-# UserInfo['simulation'].FCN2_NLayers = 0  
-# UserInfo['simulation'].FCN_FeatureMaps = 0
 
 UserInfo['CrossVal'].index   = ['a']
 UserInfo['Model_Method'] = 'Cascade'
 UserInfo['simulation'].num_Layers = 3
 UserInfo['architectureType'] = 'Res_Unet2'
-UserInfo['lossFunction_Index'] = 4
 UserInfo['Experiments'].Index = '6'
 UserInfo['copy_Thalamus'] = False
 UserInfo['TypeExperiment'] = 15
@@ -54,7 +38,7 @@ class LoadingData:
 
         def UserInputs(self,args):  
             for ag in args: 
-                if 'GPU' in ag[0]: self.UserInfoB['simulation'].GPU_Index = ag[1]
+                if 'GPU' in ag[0]: self.UserInfoB['simulation']().GPU_Index = ag[1]
         UserInputs(self,args)
 
         def gpuSetting(self):            
@@ -65,7 +49,7 @@ class LoadingData:
             self.K = K
             
         # self.UserInfoB = smallFuncs.terminalEntries(self.UserInfoB)
-        self.UserInfoB['simulation'].TestOnly = True
+        self.UserInfoB['simulation']().TestOnly = True
         self.params = paramFunc.Run(self.UserInfoB, terminal=True)
 
         return gpuSetting(self)
@@ -77,19 +61,13 @@ class LoadingData:
         return self.Data
 
     def LoadModel(self):
-
-        # model = choosingModel.architecture(params)
-        # model.load_weights(dir + '1-THALAMUS/model_weights.h5')
         self.params = paramFunc.Run(self.UserInfoB, terminal=False)
-        A = self.params.directories.Train.model_Tag if self.params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode else ''
-        # model.load_weights(params.directories.Train.Model + '/model_weights' + A + '.h5')        
-        self.model = kerasmodels.load_model(self.params.directories.Train.Model + '/model' + A + '.h5') # + '/model_CSFn.h5')
+        self.model = kerasmodels.load_model(self.params.directories.Train.Model + '/model.h5') # + '/model_CSFn.h5')
 
         class Layers:
             Outputs = [layer.output for layer in self.model.layers[1:]]
             Names   = [layer.name for layer in self.model.layers[1:]]
             Input   = self.model.layers[0].output # keras.layers.Input( tuple(self.params.WhichExperiment.HardParams.Model.InputDimensions[:self.params.WhichExperiment.HardParams.Model.Method.InputImage2Dvs3D]) + (1,) )
-            # Input  = keras.layers.Input( (1,152,196,1) )
             predictions = ''
         self.Layers = Layers()
 
@@ -166,12 +144,12 @@ class Visualize_FeatureMaps(LoadingData):
        
 VFM = Visualize_FeatureMaps()
 VFM.PreMode(UserInfo,('GPU',"5"))  
-Nuclei_Indexes = VFM.UserInfoB['simulation'].nucleus_Index.copy()
+Nuclei_Indexes = VFM.UserInfoB['simulation']().nucleus_Index.copy()
 
 print('ADDRESS',VFM.params.directories.Train.Model)
 for x in [1]: # Nuclei_Indexes:  
-    VFM.UserInfoB['simulation'].nucleus_Index = [x]
-    print('nucleus' , VFM.UserInfoB['simulation'].nucleus_Index )    
+    VFM.UserInfoB['simulation']().nucleus_Index = [x]
+    print('nucleus' , VFM.UserInfoB['simulation']().nucleus_Index )    
     VFM.ReadData()
     VFM.LoadModel()
 

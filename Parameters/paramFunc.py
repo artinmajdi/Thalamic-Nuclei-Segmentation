@@ -22,16 +22,16 @@ def Run(UserInfoB, terminal=False):
 
     return params
 
-
 def func_WhichExperiment(UserInfo):
     
+    USim = UserInfo['simulation']()
     def WhichExperiment_Class():
 
         def HardParamsFuncs():
             def ArchtiectureParams():
                 class dropout:
                     Mode = True
-                    Value = 0.2
+                    Value = 0.3
 
                 class kernel_size:
                     conv = (3,3)
@@ -70,7 +70,7 @@ def func_WhichExperiment(UserInfo):
             
             class classWeight:
                 Weight = {0:1 , 1:1}
-                Mode = False
+                Mode = True
 
 
             class layer_Params:
@@ -84,16 +84,17 @@ def func_WhichExperiment(UserInfo):
 
             class InitializeB:
                 Modes   = True
-                Address = False
+                Address = ''
 
             class model:
                 architectureType = 'U-Net'
                 epochs = ''
                 batch_size = ''
+                Learning_Rate = 1e-3
+                LR_Scheduler = True
                 loss = ''
                 metrics = ''
                 optimizer = ''  # adamax Nadam Adadelta Adagrad  optimizers.adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
-                
                 verbose = 2
                 num_Layers = ''
                 InputDimensions = ''
@@ -137,6 +138,7 @@ def func_WhichExperiment(UserInfo):
             train_address = ''
             test_address = ''
             init_address = ''
+            ReadAugments_Mode = False
         
 
         def datasetFunc():
@@ -165,19 +167,6 @@ def func_WhichExperiment(UserInfo):
                 mode = False
                 mode_saveTrue_LoadFalse = True
 
-            class readAugmentFn:
-                Mode = False
-                Tag = ''
-                LoadAll = False
-
-            class readTrain:
-                Main  = True
-                ET    = True
-                SRI   = True
-                CSFn1 = False
-                CSFn2 = False
-                ReadAugments = readAugmentFn()
-
             class dataset:
                 name = ''
                 address = ''
@@ -189,7 +178,6 @@ def func_WhichExperiment(UserInfo):
                 gapDilation = 5
                 gapOnSlicingDimention = 2
                 InputPadding = inputPadding()
-                ReadTrain = readTrain()
                 HDf5 = hDF5()
 
             return dataset
@@ -206,6 +194,7 @@ def func_WhichExperiment(UserInfo):
             Nucleus = nucleus()
             HardParams = hardParams()
             Dataset = dataset()
+            
 
         return WhichExperiment()
     WhichExperiment = WhichExperiment_Class()
@@ -219,7 +208,7 @@ def func_WhichExperiment(UserInfo):
                 
             return NucleusName
 
-        nucleus_Index = UserInfo['simulation'].nucleus_Index if isinstance(UserInfo['simulation'].nucleus_Index,list) else [UserInfo['simulation'].nucleus_Index]
+        nucleus_Index = USim.nucleus_Index if isinstance(USim.nucleus_Index,list) else [USim.nucleus_Index]
         class nucleus:
             name = Experiment_Nucleus_Name_MClass(nucleus_Index , MultiClassMode )
             name_Thalamus, FullIndexes, _ = smallFuncs.NucleiSelection( 1 )
@@ -227,22 +216,13 @@ def func_WhichExperiment(UserInfo):
 
         return nucleus
 
-    def func_Dataset():
-
-        def Augment_Tag():
-            readAugmentTag = ''
-            if UserInfo['Augment_Rotation'].Mode: 
-                readAugmentTag = 'wRot'   + str(UserInfo['Augment_Rotation'].AngleMax) + 'd'
-            elif UserInfo['Augment_Shear'].Mode:  
-                readAugmentTag = 'wShear' + str(UserInfo['Augment_Shear'].ShearMax)
-            return readAugmentTag
-                
+    def func_Dataset():               
         Dataset = WhichExperiment.Dataset
         def slicingInfoFunc():
             class slicingInfo:
                 slicingOrder = ''
                 slicingOrder_Reverse = ''
-                slicingDim = UserInfo['simulation'].slicingDim[0]
+                slicingDim = USim.slicingDim[0]
 
             if slicingInfo.slicingDim == 0:
                 slicingInfo.slicingOrder         = [1,2,0]
@@ -256,15 +236,10 @@ def func_WhichExperiment(UserInfo):
 
             return slicingInfo
 
-        Dataset.ReadTrain = UserInfo['ReadTrain']
-        Dataset.ReadTrain.ReadAugments.Tag = Augment_Tag()
-
         Dataset.slicingInfo = slicingInfoFunc()
-
-        Dataset.InputPadding.Automatic = UserInfo['InputPadding'].Automatic
-        Dataset.InputPadding.HardDimensions = list( np.array(UserInfo['InputPadding'].HardDimensions)[ Dataset.slicingInfo.slicingOrder ] )
-
-
+        Dataset.check_vimp_SubjectName = UserInfo['simulation']().check_vimp_SubjectName
+        Dataset.InputPadding.Automatic = UserInfo['InputPadding']().Automatic
+        Dataset.InputPadding.HardDimensions = list( np.array(UserInfo['InputPadding']().HardDimensions)[ Dataset.slicingInfo.slicingOrder ] )
         return Dataset
 
     def func_ModelParams():
@@ -285,7 +260,7 @@ def func_WhichExperiment(UserInfo):
 
         def func_NumClasses():
 
-            num_classes = len(UserInfo['simulation'].nucleus_Index) if HardParams.Model.MultiClass.Mode else 1
+            num_classes = len(USim.nucleus_Index) if HardParams.Model.MultiClass.Mode else 1
             num_classes += 1
                 
             return num_classes
@@ -309,46 +284,41 @@ def func_WhichExperiment(UserInfo):
             Layer_Params = HardParams.Model.Layer_Params
             
             kernel_size, maxPooling = fixing_NetworkParams_BasedOn_InputDim(2)
-
-            Layer_Params.FirstLayer_FeatureMap_Num = UserInfo['simulation'].FirstLayer_FeatureMap_Num
             Layer_Params.ConvLayer.Kernel_size = kernel_size()
             Layer_Params.MaxPooling = maxPooling()
-            Layer_Params.Dropout.Value     = UserInfo['DropoutValue']
-            Layer_Params.class_weight.Mode = UserInfo['simulation'].Weighted_Class_Mode
 
             return Layer_Params
 
         HardParams.Template = UserInfo['Template']
-        HardParams.Machine.GPU_Index = str(UserInfo['simulation'].GPU_Index)
-
-     
+        HardParams.Machine.GPU_Index   = str(USim.GPU_Index)
         HardParams.Model.metrics, _    = Metrics.MetricInfo(3)
-        HardParams.Model.optimizer, _  = Optimizers.OptimizerInfo(1, UserInfo['simulation'].Learning_Rate)
-        HardParams.Model.num_Layers    = UserInfo['simulation'].num_Layers
-        HardParams.Model.batch_size    = UserInfo['simulation'].batch_size
-        HardParams.Model.epochs        = UserInfo['simulation'].epochs
+        HardParams.Model.optimizer, _  = Optimizers.OptimizerInfo(1, USim.Learning_Rate)
+        HardParams.Model.num_Layers    = USim.num_Layers
+        HardParams.Model.batch_size    = USim.batch_size
+        HardParams.Model.epochs        = USim.epochs
+        HardParams.Model.Learning_Rate = UserInfo['simulation']().Learning_Rate
+        HardParams.Model.LR_Scheduler  = UserInfo['simulation']().LR_Scheduler
         HardParams.Model.DataGenerator = UserInfo['dataGenerator']                
-        HardParams.Model.Initialize    = UserInfo['InitializeB']
+        HardParams.Model.Initialize    = UserInfo['Initialize']()
         HardParams.Model.architectureType = UserInfo['architectureType'] 
 
 
-        HardParams.Model.loss, _ = LossFunction.LossInfo(UserInfo['lossFunction_Index'] ) 
+        HardParams.Model.loss, _ = LossFunction.LossInfo(USim.lossFunction_Index) 
 
         HardParams.Model.Method.Type = UserInfo['Model_Method']
 
-        HardParams.Model.Method.Use_TestCases_For_Validation      = UserInfo['simulation'].Use_TestCases_For_Validation
+        HardParams.Model.Method.Use_TestCases_For_Validation      = USim.Use_TestCases_For_Validation
 
-        HardParams.Model.MultiClass.Mode = UserInfo['simulation'].Multi_Class_Mode
+        HardParams.Model.MultiClass.Mode = USim.Multi_Class_Mode
         HardParams.Model.MultiClass.num_classes = func_NumClasses()
         HardParams.Model.Layer_Params = func_Layer_Params(UserInfo)
 
-        if UserInfo['simulation'].nucleus_Index == 'all': 
+        if USim.nucleus_Index == 'all': 
             _, nucleus_Index,_ = smallFuncs.NucleiSelection(ind = 1)
         else:
-            nucleus_Index = UserInfo['simulation'].nucleus_Index if isinstance(UserInfo['simulation'].nucleus_Index,list) else [UserInfo['simulation'].nucleus_Index]
+            nucleus_Index = USim.nucleus_Index if isinstance(USim.nucleus_Index,list) else [USim.nucleus_Index]
 
         HardParams.Model.Method.ReferenceMask = ReferenceForCascadeMethod(HardParams.Model.Method.Type)[nucleus_Index[0]]
-        HardParams.Model.Transfer_Learning = UserInfo['Transfer_Learning']
 
         return HardParams
 
@@ -362,35 +332,8 @@ def func_WhichExperiment(UserInfo):
     WhichExperiment.HardParams    = func_ModelParams()
     WhichExperiment.Nucleus       = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.Mode)
     WhichExperiment.Dataset       = func_Dataset()
-    WhichExperiment.TestOnly = UserInfo['simulation'].TestOnly
-    WhichExperiment.HardParams.Model.TestOnly = UserInfo['simulation'].TestOnly
-
-    def old_adding_TransferLearningParams(WhichExperiment):
-        class best_WMn_Model:
-
-            architectureType = 'U-Net4'
-            EXP_address = '/array/ssd/msmajdi/experiments/keras/exp6/models/'
-
-            Model_Method = WhichExperiment.HardParams.Model.Method.Type
-            sdTag = WhichExperiment.Dataset.slicingInfo.slicingDim
-            
-            if Model_Method == 'Cascade':
-                if sdTag == 0:   FM , NL = 10, 3
-                elif sdTag == 1: FM , NL = 20, 3
-                elif sdTag == 2: FM , NL = 20, 3
-
-            elif Model_Method == 'HCascade':
-                if sdTag == 0:   FM , NL = 30, 3
-                elif sdTag == 1: FM , NL = 40, 3
-                elif sdTag == 2: FM , NL = 40, 3
-            else:
-                 FM , NL = 20, 3
-
-                    
-            sdTag   = '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim)        
-            Tag     = 'sE12_' + Model_Method + '_FM' + str(FM) + '_' + architectureType + '_NL' + str(NL) + '_LS_MyBCE_US1_Main_Init_3T_CV_a/'
-            address = EXP_address + Tag  + WhichExperiment.Nucleus.name + sdTag + '/model.h5'
-        return best_WMn_Model()
+    WhichExperiment.TestOnly = USim.TestOnly
+    WhichExperiment.HardParams.Model.TestOnly = USim.TestOnly
 
     def adding_TransferLearningParams(WhichExperiment):
 
@@ -420,7 +363,7 @@ def func_WhichExperiment(UserInfo):
                 
                 SD = WhichExperiment.Dataset.slicingInfo.slicingDim
 
-                LossFunction = 'MyLogDice' # 'MyJoint'
+                LossFunction = 'MyLogDice'
                 EXP_address = '/array/ssd/msmajdi/experiments/keras/exp6/models/'
                 Model_Method = WhichExperiment.HardParams.Model.Method.Type
                                 
@@ -434,14 +377,12 @@ def func_WhichExperiment(UserInfo):
         
     WhichExperiment.HardParams.Model.Best_WMn_Model = adding_TransferLearningParams(WhichExperiment)
     
-
-    dir_input_dimension = experiment.address + '/models/' + subExperiment.name + '/' + WhichExperiment.Nucleus.name + '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim)
-    if UserInfo['use_train_padding_size']  and UserInfo['simulation'].TestOnly and os.path.isfile(dir_input_dimension + '/UserInfo.json'): 
+    WE = WhichExperiment.Experiment
+    dir_input_dimension = WE.exp_address  + '/' + WE.subexperiment_name + '/' + WhichExperiment.Nucleus.name + '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim)
+    if UserInfo['simulation']().use_train_padding_size and USim.TestOnly and os.path.isfile(dir_input_dimension + '/UserInfo.json'): 
         InputDimensions, num_Layers = ReadInputDimensions_NLayers(dir_input_dimension)
 
         WhichExperiment.Dataset.InputPadding.Automatic = False
-
-        # InputDimensions = list( np.array(InputDimensions)[ WhichExperiment.Dataset.slicingInfo.slicingOrder ] )
         WhichExperiment.Dataset.InputPadding.HardDimensions = InputDimensions        
         WhichExperiment.HardParams.Model.InputDimensions = InputDimensions
         WhichExperiment.HardParams.Model.num_Layers = num_Layers
@@ -491,7 +432,7 @@ def func_preprocess(UserInfo):
     preprocess.BiasCorrection.Mode = UserInfo['preprocess'].BiasCorrection
     preprocess.Cropping.Mode       = UserInfo['preprocess'].Cropping
     preprocess.Reslicing.Mode      = UserInfo['preprocess'].Reslicing    
-    preprocess.TestOnly            = UserInfo['simulation'].TestOnly
+    preprocess.TestOnly            = UserInfo['simulation']().TestOnly
     return preprocess
 
 def func_Augment(UserInfo):

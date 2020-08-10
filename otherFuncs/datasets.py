@@ -303,12 +303,7 @@ def loadDataset(params):
 
         def readValidation(DataAll): 
             if params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
-                Read = params.WhichExperiment.Dataset.ReadTrain
                 Val_Indexes = list(DataAll.Test)
-            
-                if Read.CSFn2 and Read.CSFn1:              Val_Indexes = [s for s in Val_Indexes if ('CSFn1' not in s)]
-                # elif (Read.Main or Read.ET) and Read.SRI:  Val_Indexes = [s for s in Val_Indexes if ('SRI' not in s)]
-
                 DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, Val_Indexes, 'validation')                
                 save_hdf5_subject_List(params.h5 , 'valList' , Val_Indexes)
             return DataAll
@@ -383,7 +378,6 @@ def preAnalysis(params):
 
         def newCropedSize(subject, params, mode):
             
-            # '_sd' + str(UserInfo['simulation'].slicingDim[0])
             def readingCascadeCropSizes(subject):
 
                 dirr = params.directories.Test.Result                

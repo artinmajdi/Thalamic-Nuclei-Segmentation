@@ -11,7 +11,7 @@ import preprocess.applyPreprocess as applyPreprocess
 from keras import backend as K
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
-K = smallFuncs.gpuSetting(str(UserInfoB['simulation'].GPU_Index))
+K = smallFuncs.gpuSetting(str(UserInfoB['simulation']().GPU_Index))
 
 
 def running_main(UserInfoB):
@@ -27,7 +27,7 @@ def running_main(UserInfoB):
         params = paramFunc.Run(UserInfoB, terminal=True)
         DT = params.WhichExperiment.Experiment.address + '/results'
 
-        subEx_name = params.WhichExperiment.SubExperiment.name
+        subEx_name = params.WhichExperiment.Experiment.name
         Output = DT + '/' + subEx_name
 
         os.system("mkdir {Output}; cd {Output}; mkdir sd0 sd1 sd2")

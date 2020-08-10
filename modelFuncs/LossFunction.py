@@ -123,22 +123,3 @@ def My_Joint_Loss_GMean(W):  # geometrical mean
             return tf.sqrt(func_Average(loss, NUM_CLASSES))
         
     return func_loss  
-
-# def Loss_Log_Dice(y_true,y_pred):
-#     return -tf.log( Metrics.mDice(y_true,y_pred) )
-
-# def Loss_CCE_And_LogDice(y_true,y_pred):
-#     return losses.categorical_crossentropy(y_true,y_pred) + Loss_Log_Dice(y_true,y_pred)
-
-
-
-# def weightedBinaryCrossEntropy(y_true, y_pred):
-#     weight = y_true*1e6
-#     bce = Keras_Backend.binary_crossentropy(y_true, y_pred)
-#     return Keras_Backend.mean(bce*weight)
-
-# def myCross_entropy(y_true,y_pred):
-#     n_class = 2
-#     y_true = tf.reshape(y_true, [-1, n_class])
-#     y_pred = tf.reshape(y_pred, [-1, n_class])
-#     return -tf.reduce_mean(y_true*tf.log(tf.clip_by_value(y_pred,1e-10,1.0)), name="cross_entropy")

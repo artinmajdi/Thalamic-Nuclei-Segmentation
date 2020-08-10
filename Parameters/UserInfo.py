@@ -1,12 +1,19 @@
 
 
+class experiment:
+    def __init__(self):
+        self.exp_address = '/array/ssd/msmajdi/experiments/keras/exp6/'
+        self.train_address = '/array/ssd/msmajdi/experiments/keras/exp6/train/'
+        self.test_address = '/array/ssd/msmajdi/experiments/keras/exp6/test/'
+        self.init_address = ''
+        self.subexperiment_name = 'test_01'
+        self.ReadAugments_Mode = False
+
+
 Model_Method = 'Cascade'
 architectureType = 'Res_Unet2'
-gpu = "0"
 wmn_csfn = 'wmn' # 'wmn' 'csfn' 
-subexperiment_name = 'test_experiment'
 
-#! Preprocessing
 class preprocesscs:
     def __init__(self):
         self.Mode = False
@@ -15,32 +22,29 @@ class preprocesscs:
         self.Reslicing = False
 
 preprocess = preprocesscs()
-multi_Class_Mode = True
-readAugments_Mode = False
 
-testOnly = False
-
-class experiment:
+class simulation:
     def __init__(self):
-        self.exp_address = ''
-        self.train_address = ''
-        self.test_address = ''
-        self.init_address = ''
-
-
-class simulationcs:
-    def __init__(self):
-        self.TestOnly      = testOnly
+        self.TestOnly      = False
         self.epochs        = 5
-        self.GPU_Index     = gpu
+        self.GPU_Index     = "0"
         self.batch_size    = 10
         self.Use_TestCases_For_Validation = True
-        self.ImClosePrediction =  True # False #
-        self.Multi_Class_Mode = multi_Class_Mode
+        self.ImClosePrediction =  True
+        self.Multi_Class_Mode = True
         self.LR_Scheduler = True
         self.ReadAugments_Mode = True
+        self.Learning_Rate = 1e-3
+        self.num_Layers = 3
+        self.lossFunction_Index = 7
+        self.nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        self.slicingDim = [2,1,0]
+        self.use_train_padding_size = False
+        self.check_vimp_SubjectName = True
     
-simulation = simulationcs()
+class Initialize:
+    Modes   = False
+    Address = ''
 
 class dataGeneratorcs:
     def __init__(self):
@@ -50,12 +54,10 @@ class dataGeneratorcs:
 dataGenerator = dataGeneratorcs()
 
 
-class InputPaddingcs:
+class InputPadding:
     def __init__(self):
         self.Automatic = True
         self.HardDimensions = [116,144,84]
-
-InputPadding = InputPaddingcs()
 
 # if Experiments.Index == '8': 
 #     InputPadding.HardDimensions = [228,288,168]
