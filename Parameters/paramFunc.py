@@ -62,7 +62,7 @@ def func_WhichExperiment(UserInfo):
                     save_Best_Epoch_Model = True
                     Use_Coronal_Thalamus_InSagittal = True
                     Use_TestCases_For_Validation = True
-                    ImClosePrediction = False
+                    ImClosePrediction = True
 
                 return dropout, activation, convLayer, multiclass, maxPooling, method
 
@@ -334,12 +334,9 @@ def func_WhichExperiment(UserInfo):
 
         HardParams.Model.loss, _ = LossFunction.LossInfo(UserInfo['lossFunction_Index'] ) 
 
-        HardParams.Model.Method.Type                  = UserInfo['Model_Method']
-        HardParams.Model.Method.save_Best_Epoch_Model = UserInfo['simulation'].save_Best_Epoch_Model   
+        HardParams.Model.Method.Type = UserInfo['Model_Method']
 
-        HardParams.Model.Method.Use_Coronal_Thalamus_InSagittal   = UserInfo['simulation'].Use_Coronal_Thalamus_InSagittal
         HardParams.Model.Method.Use_TestCases_For_Validation      = UserInfo['simulation'].Use_TestCases_For_Validation
-        HardParams.Model.Method.ImClosePrediction                 = UserInfo['simulation'].ImClosePrediction
 
         HardParams.Model.MultiClass.Mode = UserInfo['simulation'].Multi_Class_Mode
         HardParams.Model.MultiClass.num_classes = func_NumClasses()
@@ -349,9 +346,6 @@ def func_WhichExperiment(UserInfo):
             _, nucleus_Index,_ = smallFuncs.NucleiSelection(ind = 1)
         else:
             nucleus_Index = UserInfo['simulation'].nucleus_Index if isinstance(UserInfo['simulation'].nucleus_Index,list) else [UserInfo['simulation'].nucleus_Index]
-
-        # AAA = ReferenceForCascadeMethod(HardParams.Model.Method.Type)
-        # HardParams.Model.Method.ReferenceMask = AAA[nucleus_Index[0]]
 
         HardParams.Model.Method.ReferenceMask = ReferenceForCascadeMethod(HardParams.Model.Method.Type)[nucleus_Index[0]]
         HardParams.Model.Transfer_Learning = UserInfo['Transfer_Learning']
@@ -363,11 +357,8 @@ def func_WhichExperiment(UserInfo):
             UserInfo_Load = json.load(f)            
         return UserInfo_Load['InputPadding_Dims'], UserInfo_Load['num_Layers']
         
-    experiment, subExperiment = func_Exp_subExp_Names(UserInfo)  
 
-    WhichExperiment.Experiment    = experiment
-    WhichExperiment.SubExperiment = subExperiment
-    WhichExperiment.address       = UserInfo['Experiments_Address']         
+    WhichExperiment.Experiment    = UserInfo['experiment']()
     WhichExperiment.HardParams    = func_ModelParams()
     WhichExperiment.Nucleus       = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.Mode)
     WhichExperiment.Dataset       = func_Dataset()
@@ -461,12 +452,11 @@ def func_preprocess(UserInfo):
 
     def preprocess_Class():
 
-        class normalize:
+        class normalizeCs:
             Mode = True
-            Method = 'MinMax'
+            Method = '1Std0Mean'
             per_Subject = True
             per_Dataset = False
-
 
         class cropping:
             Mode = True
@@ -491,7 +481,7 @@ def func_preprocess(UserInfo):
             # Augment = augment()
             Cropping = cropping()
             Reslicing = reslicing()
-            Normalize = normalize()
+            Normalize = normalizeCs()
             BiasCorrection = biasCorrection()
 
         return preprocess()
@@ -501,7 +491,6 @@ def func_preprocess(UserInfo):
     preprocess.BiasCorrection.Mode = UserInfo['preprocess'].BiasCorrection
     preprocess.Cropping.Mode       = UserInfo['preprocess'].Cropping
     preprocess.Reslicing.Mode      = UserInfo['preprocess'].Reslicing    
-    preprocess.Normalize           = UserInfo['normalize']
     preprocess.TestOnly            = UserInfo['simulation'].TestOnly
     return preprocess
 

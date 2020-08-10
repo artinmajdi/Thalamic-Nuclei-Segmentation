@@ -296,28 +296,14 @@ def trainingExperiment(Data, params):
         # elif 'csv'  in method: pd.DataFrame(data=data,columns=list(data.keys())).to_csv( DirSave + '/' + name + '.csv')
 
     def saveTrainInfo(hist,a, params):
+        saveReport(params.directories.Train.Model , 'hist_history' , hist.history , 'pickle')
 
-        # if hist:
-        # hist.params['trainingTime']     = time() - a
-        # hist.params['InputDimensionsX'] = params.WhichExperiment.HardParams.Model.InputDimensions[0]
-        # hist.params['InputDimensionsY'] = params.WhichExperiment.HardParams.Model.InputDimensions[1]
-        # hist.params['InputDimensionsZ'] = params.WhichExperiment.HardParams.Model.InputDimensions[2]
-        # hist.params['num_Layers']       = params.WhichExperiment.HardParams.Model.num_Layers
-
-        saveReport(params.directories.Train.Model , 'hist_history' , hist.history , params.UserInfo['SaveReportMethod'])
-        # saveReport(params.directories.Train.Model , 'hist_model'   , hist.model   , params.UserInfo['SaveReportMethod'])
-        # saveReport(params.directories.Train.Model , 'hist_params'  , hist.params  , params.UserInfo['SaveReportMethod'])
 
     def modelTrain_Unet(Data, params, modelS):
         ModelParam = params.WhichExperiment.HardParams.Model
                     
         def modelInitialize(model):            
-            TP = params.directories.Train
-            # if params.WhichExperiment.HardParams.Model.Transfer_Learning.Mode:
-            #     model.load_weights(TP.Model + '/model_weights.h5')
-            #     print(' --- initialized from older Model <- -> Transfer Learning ')                                
-            # else:
-                
+            TP = params.directories.Train               
             Initialize = params.WhichExperiment.HardParams.Model.Initialize
                                     
             if Initialize.FromOlderModel and os.path.exists(TP.Model + '/model_weights.h5'):
