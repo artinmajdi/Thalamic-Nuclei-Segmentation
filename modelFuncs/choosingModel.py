@@ -290,6 +290,7 @@ def trainingExperiment(Data, params):
 
             return model  
 
+        # if params.WhichExperiment.HardParams.Model.Initialize:
         model = modelInitialize(modelS)
         
         if len(params.WhichExperiment.HardParams.Machine.GPU_Index) > 1: model = multi_gpu_model(model)

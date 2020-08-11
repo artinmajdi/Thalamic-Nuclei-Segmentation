@@ -11,6 +11,7 @@ import json
 from scipy import ndimage
 from tqdm import tqdm
 from modelFuncs import Metrics as metrics
+from glob import glob
 
 # TODO: use os.path.dirname & os.path.abspath instead of '/' remover
 def NucleiSelection(ind = 1):
@@ -385,13 +386,7 @@ def terminalEntries(UserInfo):
         elif entry.lower() in ('-cv','--CrossVal_Index'):
             UserInfo['CrossVal'].index = [sys.argv[en+1]]
             print('CrossVal' , UserInfo['CrossVal'].index)
-        elif entry.lower() in ('-wc','--wmn_csfn'):
-            UserInfo['wmn_csfn'] = sys.argv[en+1]
-
-        elif entry.lower() in ('-te','--TypeExperiment'):
-            UserInfo['TypeExperiment'] = int(sys.argv[en+1])
-
-
+    
     return UserInfo
 
 def search_ExperimentDirectory(whichExperiment):
@@ -400,6 +395,7 @@ def search_ExperimentDirectory(whichExperiment):
     Exp_address = whichExperiment.Experiment.exp_address
     SEname      = whichExperiment.Experiment.subexperiment_name
     NucleusName = whichExperiment.Nucleus.name
+    
 
     def checkInputDirectory(Dir, NucleusName, sag_In_Cor,modeData):
 
@@ -447,32 +443,35 @@ def search_ExperimentDirectory(whichExperiment):
 
                 return Files
 
-            def Look_Inside_Label_SF(Files, NucleusName):
-                Files.Label.Temp.address = mkDir(Files.Label.address + '/temp')
+            def search_inside_subject_folder_label(Files, NucleusName):
+                
                 A = next(os.walk(Files.Label.address))
-                for s in A[2]:
-                    if NucleusName + '_PProcessed.nii.gz' in s: Files.Label.LabelProcessed = splitNii(s)
-                    if NucleusName + '.nii.gz' in s: Files.Label.LabelOriginal = splitNii(s)
 
-                if Files.Label.LabelOriginal and not Files.Label.LabelProcessed:
-                    Files.Label.LabelProcessed = NucleusName + '_PProcessed'
-                    _, _, FullNames = NucleiSelection(ind=1)
-                    for name in FullNames: copyfile(Files.Label.address + '/' + name + '.nii.gz' , Files.Label.address + '/' + name + '_PProcessed.nii.gz')
+                # Single Class 
+                if 'MultiClass' not in NucleusName:
+                    for s in A[2]:
+                        if NucleusName + '_PProcessed.nii.gz' in s: 
+                            Files.Label.LabelProcessed = NucleusName + '_PProcessed.nii.gz'
+                        elif NucleusName + '.nii.gz' in s: 
+                            Files.Label.LabelOriginal = NucleusName
+                
+                    if not Files.Label.LabelProcessed:
+                        Files.Label.LabelProcessed = NucleusName + '_PProcessed.nii.gz'
+                        copyfile(Files.Label.address + '/' + NucleusName + '.nii.gz' , Files.Label.address + '/' + NucleusName + '_PProcessed.nii.gz')
 
+                    cpd_lst = glob(Files.Label.Temp.address + '/' + NucleusName + '_Cropped.nii.gz')
+                    if cpd_lst: 
+                        Files.Label.Temp.Cropped = NucleusName + '_Cropped'
 
-                for s in A[1]:
-                    if 'temp' in s:
-                        Files.Label.Temp.address = Files.Label.address + '/' + s
-
-                        for d in os.listdir(Files.Label.Temp.address):
-                            if '_Cropped.nii.gz' in d: Files.Label.Temp.Cropped = splitNii(d)
-
-                        # Files.Label.Temp.Cropped = [ d.split('.nii.gz')[0] for d in os.listdir(Files.Label.Temp.address) if '_Cropped.nii.gz' in d]
-                    elif 'Label' in s: Files.Label.address = Dir + '/' + s
+                # Multi Class
+                else:
+                    for nucleus in whichExperiment.Nucleus.FullNames:
+                        if nucleus + '.nii.gz' in A[2]:
+                            copyfile(Files.Label.address + '/' + nucleus + '.nii.gz' , Files.Label.address + '/' + nucleus + '_PProcessed.nii.gz')
 
                 return Files
 
-            def Look_Inside_Temp_SF(Files):
+            def search_inside_subject_folder_temp(Files):
                 A = next(os.walk(Files.Temp.address))
                 for s in A[2]:
                     if 'CropMask.nii.gz' in s: Files.Temp.CropMask = splitNii(s)
@@ -488,35 +487,33 @@ def search_ExperimentDirectory(whichExperiment):
                         elif 'testInverseWarp.nii.gz' in s: Files.Temp.Deformation.testInverseWarp = splitNii(s)
                         elif 'testAffine.txt' in s: Files.Temp.Deformation.testAffine = splitNii(s)
 
-                if not Files.Temp.Deformation.address: Files.Temp.Deformation.address = mkDir(Files.Temp.address + '/deformation')
+                if not Files.Temp.Deformation.address: 
+                    Files.Temp.Deformation.address = mkDir(Files.Temp.address + '/deformation')
 
                 return Files
 
-            def check_IfImageFolder(Files):
-                A = next(os.walk(Files.address))
-                for s in A[2]:
-                    if 'PProcessed.nii.gz' in s: Files.ImageProcessed = splitNii(s)
-                    if '.nii.gz' in s and 'PProcessed.nii.gz' not in s: Files.ImageOriginal = splitNii(s)
-
-                if Files.ImageOriginal or Files.ImageProcessed:
-                    for s in A[1]:
-                        if 'temp' in s: Files.Temp.address = mkDir(Dir + '/' + s)
-                        elif 'Label' in s: Files.Label.address = Dir + '/' + s
-
-                    if Files.ImageOriginal and not Files.ImageProcessed:
+            def search_inside_subject_folder(Files):
+                for s in [subj for subj in os.listdir(Files.address) if '.nii.gz' in subj]:
+                    if 'PProcessed.nii.gz' in s:
                         Files.ImageProcessed = 'PProcessed'
-                        copyfile(Dir + '/' + Files.ImageOriginal + '.nii.gz' , Dir + '/' + Files.ImageProcessed + '.nii.gz')
+                    else:
+                        Files.ImageOriginal  = s.split('.nii.gz')[0]
+                        Files.Temp.address   = mkDir(Files.address + '/temp')
+                        Files.Label.address  = Files.address + '/Label'
+                        Files.Label.Temp.address = mkDir(Files.address  + '/Label/temp')
 
-                if not Files.Temp.address: Files.Temp.address = mkDir(Dir + '/temp')
+                if (not Files.ImageProcessed) and Files.ImageOriginal:
+                    Files.ImageProcessed = 'PProcessed'
+                    copyfile(Dir + '/' + Files.ImageOriginal + '.nii.gz' , Dir + '/PProcessed.nii.gz')
 
                 return Files
 
             Files = Classes_Local(Dir)
-            Files = check_IfImageFolder(Files)
+            Files = search_inside_subject_folder(Files)
 
-            if Files.ImageOriginal or Files.ImageProcessed:
-                if os.path.exists(Files.Label.address): Files = Look_Inside_Label_SF(Files, NucleusName)
-                if os.path.exists(Files.Temp.address):  Files = Look_Inside_Temp_SF(Files)
+            if Files.ImageOriginal:
+                if os.path.exists(Files.Label.address): Files = search_inside_subject_folder_label(Files, NucleusName)
+                if os.path.exists(Files.Temp.address):  Files = search_inside_subject_folder_temp(Files)
 
             return Files
         class Input:
@@ -527,7 +524,9 @@ def search_ExperimentDirectory(whichExperiment):
             if os.path.exists(Dirr):
                 SubjectsList = next(os.walk(Dirr))[1]
 
-                if whichExperiment.Dataset.check_vimp_SubjectName:  SubjectsList = [s for s in SubjectsList if ('vimp' in s)]
+                if whichExperiment.Dataset.check_vimp_SubjectName:  
+                    SubjectsList = [s for s in SubjectsList if ('vimp' in s)]
+
                 for s in SubjectsList:
                     Input.Subjects[s] = Search_ImageFolder(Dirr + '/' + s , NucleusName)
                     Input.Subjects[s].subjectName = s

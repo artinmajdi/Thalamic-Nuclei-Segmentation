@@ -46,7 +46,7 @@ def main(dir_in, dir_template):
             # subject.Temp.address = self.dir_in + '/temp'
             # subject.Temp.Deformation.address = self.dir_in + '/temp/deformation'
 
-            # BashCallingFunctionsA.RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
+            # RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
             
             # croppingA.main(subject , params)
 

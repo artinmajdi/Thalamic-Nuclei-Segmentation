@@ -1,11 +1,9 @@
 import os
 import sys
 from shutil import copyfile
-
 import nibabel as nib
 import numpy as np
 from skimage import measure
-
 import otherFuncs.smallFuncs as smallFuncs
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -14,7 +12,6 @@ def main(subject , params):
 
     if params.preprocess.Mode and params.preprocess.Cropping.Mode:
         print('     Cropping')
-        # if os.path.exists(subject.Label.address):
         func_cropImage(params, subject)
     return True
 
@@ -41,12 +38,12 @@ def func_cropImage(params, subject):
                             
         if os.path.isfile(outDebug): 
             copyfile(outDebug , outP)
-        else: 
+        else:
             if 'ANTs' in params.preprocess.Cropping.Method:
                 os.system("ExtractRegionFromImageByMask 3 %s %s %s 1 0"%( inP , outP , crop ) )
 
             elif 'python' in params.preprocess.Cropping.Method:
-                if os.path.exists(inP):
+                if os.path.isfile(inP):
                     mskC = applyCropping( nib.load(inP))
                     nib.save(mskC , outP)
                 
@@ -64,19 +61,21 @@ def func_cropImage(params, subject):
         return inP, outP, outDebug
 
     inP, outP, outDebug = directoriesImage(subject)          
-    CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  if not os.path.isfile(outDebug) and 'python' in params.preprocess.Cropping.Method else ''
-
+    CropCoordinates = '' if os.path.isfile(outDebug) else cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  
     check_crop(inP, outP, outDebug, CropCoordinates)
 
-    if os.path.exists(subject.Label.address):
-        for ind in params.WhichExperiment.Nucleus.FullIndexes:
-            try: 
-                inP, outP, outDebug = directoriesNuclei(subject, ind)
-                if not os.path.isfile(outDebug) and 'python' in params.preprocess.Cropping.Method and CropCoordinates == '': CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  
-                check_crop(inP, outP, outDebug, CropCoordinates)
-            except:
-                print('nucleus ' + str(ind) + ' failed')
+    for ind in params.WhichExperiment.Nucleus.FullIndexes:
+        # try: 
+        inP, outP, outDebug = directoriesNuclei(subject, ind)
+        if not os.path.isfile(outDebug):
+            if not CropCoordinates:
+                CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  
 
+        check_crop(inP, outP, outDebug, CropCoordinates)
+        # except:
+        #     print('nucleus ' + str(ind) + ' failed')
+
+"""
 def crop_AV(subject , params):
 
     def cropImage_FromCoordinates(CropMask , Gap): 
@@ -116,3 +115,4 @@ def crop_AV(subject , params):
         if not os.path.isfile(outDebug): 
             CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  
             check_crop(inP, outP, outDebug, CropCoordinates)
+"""

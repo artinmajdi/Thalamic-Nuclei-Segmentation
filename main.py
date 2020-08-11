@@ -51,28 +51,19 @@ def running_main(UserInfoB):
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
     UserInfoB['simulation'].slicingDim = [0]
     UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-    UserInfoB['experiment'].init_address = UserInfoB['experiment'].code_address + '/Trained_Models/SRI/FM40'
     predict_thalamus_for_sd0(UserInfoB)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
     UserInfoB['simulation'].slicingDim = [1]
     UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-    UserInfoB['experiment'].init_address = UserInfoB['experiment'].code_address + '/Trained_Models/SRI/FM30'
     predict_multi_thalamus(UserInfoB)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].slicingDim = [2]
     UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-    UserInfoB['experiment'].init_address = UserInfoB['experiment'].code_address + '/Trained_Models/SRI/FM20'
     UserInfoB['simulation'].Use_Coronal_Thalamus_InSagittal = False
     predict_multi_thalamus(UserInfoB)
 
     merge_results_and_apply_25D(UserInfoB)
-
-
-if UserInfoB['wmn_csfn'] == 'csfn':
-    UserInfoB['TypeExperiment'] = 8
-elif UserInfoB['wmn_csfn'] == 'wmn':
-    UserInfoB['TypeExperiment'] = 15
 
 running_main(UserInfoB)

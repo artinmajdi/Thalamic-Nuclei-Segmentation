@@ -4,19 +4,17 @@ class experiment:
     exp_address   = '/array/ssd/msmajdi/experiments/exp6/'
     train_address = '/array/ssd/msmajdi/experiments/data/train/'
     test_address  = '/array/ssd/msmajdi/experiments/data/test/'
-    init_address  = ''
-    subexperiment_name = 'test_01'
+    init_address  = '/array/ssd/msmajdi/code/Trained_Models/WMn/' # 'WMn/'
+    subexperiment_name = 'test_01_csfn'
     ReadAugments_Mode  = False
     code_address  = '/array/ssd/msmajdi/code/'
 
 
 Model_Method = 'Cascade'
 
-wmn_csfn = 'wmn' # 'wmn' 'csfn' 
-
 class preprocesscs:
     def __init__(self):
-        self.Mode = True
+        self.Mode = False
         self.BiasCorrection = True
         self.Cropping = True
         self.Reslicing = True
@@ -27,7 +25,7 @@ class simulation:
     def __init__(self):
         self.TestOnly      = TestOnly
         self.epochs        = 5
-        self.GPU_Index     = "0"
+        self.GPU_Index     = "1"
         self.batch_size    = 10
         self.Use_TestCases_For_Validation = True
         self.ImClosePrediction =  True
@@ -43,11 +41,6 @@ class simulation:
         self.check_vimp_SubjectName = True
         self.architectureType = 'Res_Unet2'
         self.FirstLayer_FeatureMap_Num = 20
-
-class Initialize:
-    Modes   = False
-    Address = ''
-
 
 class InputPadding:
     def __init__(self):

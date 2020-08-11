@@ -2,7 +2,7 @@ import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 import otherFuncs.smallFuncs as smallFuncs
-from preprocess import Extra_AV_Crop, augmentA, BashCallingFunctionsA, normalizeA, croppingA
+from preprocess import augmentA, normalizeA, croppingA
 from nilearn import image as niImage
 import nibabel as nib
 import json
@@ -22,7 +22,8 @@ def main(params, mode):
             ind = ''
             Subjects = dirr.Input.Subjects
 
-        for Info.ind, Info.subjectName in enumerate(Info.Subjects): apply_On_Individual(params, Info)
+        for Info.ind, Info.subjectName in enumerate(Info.Subjects): 
+            apply_On_Individual(params, Info)
 
     if params.preprocess.Mode:
         params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
@@ -36,13 +37,13 @@ def apply_On_Individual(params,Info):
 
     if 1: print( '(' + str(Info.ind) + '/'+str(Info.Length) + ')' , Info.mode, Info.subjectName)   
 
-    BashCallingFunctionsA.BiasCorrection( subject , params)
+    BiasCorrection( subject , params)
+    
+    if ('Aug' not in Info.subjectName): 
+        RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)        
+        croppingA.main(subject , params)
 
     apply_reslice(subject , params)
-    
-    if ('Aug' not in Info.subjectName) and ('CSFn' not in Info.subjectName): 
-        BashCallingFunctionsA.RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)        
-        croppingA.main(subject , params)
     return params
 
 def apply_Augmentation(params):
@@ -114,7 +115,7 @@ def apply_reslice(subject, params):
         if subject.Label.address:
             input_nucleus  = subject.Label.address + '/' + nucleus + '_PProcessed.nii.gz'
             output_nucleus = subject.Label.address + '/' + nucleus + '_PProcessed.nii.gz'
-            outDebug  = smallFuncs.mkDir(subject.Label.address + '/temp/') + nucleus + '_resliced.nii.gz'
+            outDebug  = subject.Label.Temp.address + '/' + nucleus + '_resliced.nii.gz'
 
             apply_reslicing_main(input_nucleus, output_nucleus, outDebug, 'nearest' , ref)    
 
@@ -142,7 +143,7 @@ def BiasCorrection(subject , params):
     outP = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
     outDebug = subject.Temp.address + '/' + subject.ImageOriginal + '_bias_corr.nii.gz'
     if params.preprocess.Mode and params.preprocess.BiasCorrection.Mode:
-        if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
+        if os.path.isfile(outDebug):
             copyfile(outDebug , outP)
         else:
             print('     Bias Correction')            

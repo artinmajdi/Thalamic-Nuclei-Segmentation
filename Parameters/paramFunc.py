@@ -188,6 +188,7 @@ def func_WhichExperiment(UserInfo):
             name = ''
             Index = ''
             FullIndexes = ''
+            FullNames = ''
 
         class WhichExperiment:
             Experiment = experiment()
@@ -203,7 +204,7 @@ def func_WhichExperiment(UserInfo):
         nucleus_Index = USim.nucleus_Index if isinstance(USim.nucleus_Index,list) else [USim.nucleus_Index]
         class nucleus:
             name = '1-THALAMUS' if len(nucleus_Index) == 1 else 'MultiClass_24567891011121314/'
-            name_Thalamus, FullIndexes, _ = smallFuncs.NucleiSelection( 1 )
+            name_Thalamus, FullIndexes, FullNames = smallFuncs.NucleiSelection( 1 )
             Index = nucleus_Index
         return nucleus
 
@@ -289,7 +290,7 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.epochs        = USim.epochs
         HardParams.Model.Learning_Rate = UserInfo['simulation'].Learning_Rate
         HardParams.Model.LR_Scheduler  = UserInfo['simulation'].LR_Scheduler
-        HardParams.Model.Initialize    = UserInfo['Initialize']()
+        # HardParams.Model.Initialize    = UserInfo['Initialize']()
         HardParams.Model.architectureType = UserInfo['simulation'].architectureType
         HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num = UserInfo['simulation'].FirstLayer_FeatureMap_Num
 
@@ -320,6 +321,7 @@ def func_WhichExperiment(UserInfo):
         
 
     WhichExperiment.Experiment    = UserInfo['experiment']()
+    WhichExperiment.Experiment.init_address = UserInfo['experiment']().init_address + '/FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
     WhichExperiment.HardParams    = func_ModelParams()
     WhichExperiment.Nucleus       = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.Mode)
     WhichExperiment.Dataset       = func_Dataset()
@@ -365,7 +367,7 @@ def func_WhichExperiment(UserInfo):
 
         return best_WMn_Model(WhichExperiment)
 
-        
+
     WhichExperiment.HardParams.Model.Best_WMn_Model = adding_TransferLearningParams(WhichExperiment)
     
     WE = WhichExperiment.Experiment

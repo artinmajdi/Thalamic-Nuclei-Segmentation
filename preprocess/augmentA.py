@@ -161,7 +161,7 @@ def NonLinearFunc(Input, Augment, mode):
 
             outputAddress = smallFuncs.mkDir( Input.address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Ref_' + nameSubjectRef )
 
-            BashCallingFunctionsA.Bash_AugmentNonLinear(subject , subjectRef , outputAddress)
+            Bash_AugmentNonLinear(subject , subjectRef , outputAddress)
 
 # TODO fix "LinearFunc" & "NonLinearFunc" function to count for situations when we only want to apply the function on one case
 def main_augment(params , Flag, mode):
