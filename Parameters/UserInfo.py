@@ -1,5 +1,5 @@
 
-TestOnly = True
+TestOnly = False
 class experiment:
     exp_address   = '/array/ssd/msmajdi/experiments/exp6/'
     train_address = '/array/ssd/msmajdi/experiments/data/train/'
@@ -16,10 +16,10 @@ wmn_csfn = 'wmn' # 'wmn' 'csfn'
 
 class preprocesscs:
     def __init__(self):
-        self.Mode = False
+        self.Mode = True
         self.BiasCorrection = False
-        self.Cropping = False
-        self.Reslicing = False
+        self.Cropping = True
+        self.Reslicing = True
 
 preprocess = preprocesscs()
 

@@ -62,12 +62,11 @@ def apply_Augmentation(params):
 
 def apply_reslice(subject, params):
 
-    
     class Reference():
         def __init__(self, nucleus='Image'): 
 
             self.dir_origRefImage = '/array/ssd/msmajdi/experiments/keras/exp3/train/Main/vimp2_819_05172013_DS/'
-            self.dir = '/array/ssd/msmajdi/code/thalamus/keras/general/Reslicing/'
+            self.dir = params.WhichExperiment.Experiment.code_address + '/general/Reslicing/'
             self.nucleus = nucleus if not ('.nii.gz' in nucleus) else nucleus.split('.nii.gz')[0]
         def write(self):
             
@@ -106,7 +105,6 @@ def apply_reslice(subject, params):
             copyfile(outDebug , output_image)
         else:
             im = niImage.resample_img(img=nib.load(input_image), target_affine=ref['affine'][:3,:3] , interpolation='continuous') #  , target_shape=ref['shape'] 
-            # im = niImage.resample_img(img=nib.load(input_image), target_affine=ref['affine'] , interpolation='continuous', target_shape=nib.load(input_image).shape) #  
             nib.save(im, output_image) 
             copyfile(output_image , outDebug)
 
