@@ -274,22 +274,19 @@ def trainingExperiment(Data, params):
 
         savePickle(DirSave + '/' + name + '.pkl', data)
 
-    def saveTrainInfo(hist,a, params):
-        saveReport(params.directories.Train.Model , 'hist_history' , hist.history , 'pickle')
-
-
     def modelTrain_Unet(Data, params, modelS):
         ModelParam = params.WhichExperiment.HardParams.Model
                     
         def modelInitialize(model):            
-            TP = params.directories.Train     
-            init_address = params.WhichExperiment.Experiment.init_address          
+                 
+            init_address = params.WhichExperiment.Experiment.init_address    
+            nuclei_name = params.WhichExperiment.Nucleus.name    
+            slicing_dim = str(params.WhichExperiment.Dataset.slicingInfo.slicingDim) 
                                     
-            if os.path.exists(init_address + '/model_weights.h5'):
-                try: 
-                    model.load_weights(init_address + '/model_weights.h5')
-                    print(' --- initialization succesfull')
-                except: print('initialization failed')
+            try: 
+                model.load_weights(init_address + '/' + nuclei_name + '/sd' + slicing_dim + '/model_weights.h5')
+                print(' --- initialization succesfull')
+            except: print('initialization failed')
 
             return model  
 
@@ -314,7 +311,7 @@ def trainingExperiment(Data, params):
 
                 
             class_weights = func_class_weights(params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode, Data.Train.Mask)
-            _, loss_tag = LossFunction.LossInfo(params.UserInfo['simulation']().lossFunction_Index)
+            _, loss_tag = LossFunction.LossInfo(params.UserInfo['simulation'].lossFunction_Index)
 
             if  'My' in loss_tag: model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss(class_weights) , metrics=ModelParam.metrics)
             else: model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
@@ -346,39 +343,13 @@ def trainingExperiment(Data, params):
 
             return model, hist                         
         model, hist = modelFit(model)
-
         model = saveModel_h5(model, modelS)
-        # model2 = architecture(params.WhichExperiment.HardParams.Model)
-
         return model, hist
 
-    def modelTrain_Cropping(Data, params, model):
-        ModelParam = params.WhichExperiment.HardParams.Model
-        model.compile(optimizer=ModelParam.optimizer, loss=ModelParam.loss , metrics=ModelParam.metrics)
-
-        if params.WhichExperiment.Dataset.Validation.fromKeras:
-            hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_split=params.WhichExperiment.Dataset.Validation.percentage, verbose=1) # , callbacks=[TQDMCallback()])
-        else:
-            hist = model.fit(x=Data.Train.Image, y=Data.Train.Mask, batch_size=ModelParam.batch_size, epochs=ModelParam.epochs, shuffle=True, validation_data=(Data.Validation.Image, Data.Validation.Label), verbose=1) # , callbacks=[TQDMCallback()])
-
-        smallFuncs.mkDir(params.directories.Train.Model)
-        model.save(params.directories.Train.Model + '/model.h5', overwrite=True, include_optimizer=True )
-        model.save_weights(params.directories.Train.Model + '/model_weights.h5', overwrite=True )
-        if ModelParam.showHistory: print(hist.history)
-
-        return model, hist
-
-    a = time()
     smallFuncs.Saving_UserInfo(params.directories.Train.Model, params)
     model = architecture(params.WhichExperiment.HardParams.Model)
-
-    # if 'U-Net' in params.WhichExperiment.HardParams.Model.architectureType:
     model, hist = modelTrain_Unet(Data, params, model)
     saveReport(params.directories.Train.Model , 'hist_history' , hist.history , 'pickle')
-
-    # elif 'FCN_Cropping':
-    #     model, hist = modelTrain_Unet(Data, params, model)
-
     return model
 
 def save_BoundingBox_Hierarchy(params, PRED):

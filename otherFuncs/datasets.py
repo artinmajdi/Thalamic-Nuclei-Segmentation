@@ -5,18 +5,13 @@ from tqdm import tqdm # , trange
 import nibabel as nib
 import shutil
 import os, sys
-# sys.path.append(os.path.dirname(__file__))
-sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import otherFuncs.smallFuncs as smallFuncs
 import preprocess.normalizeA as normalizeA
 from preprocess import applyPreprocess
-# import matplotlib.pyplot as plt
 from scipy import ndimage
-# from shutil import copyfile
 import h5py
 from skimage.transform import AffineTransform , warp
-# import pickle
-# import skimage
 
 def ClassesFunc():
     class ImageLabel:
@@ -199,21 +194,13 @@ def loadDataset(params):
         
         def trainFlag():
             Flag_TestOnly = params.preprocess.TestOnly
-            Flag_TrainDice = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
-            Flag_cascadeMethod = 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and int(params.WhichExperiment.Nucleus.Index[0]) == 1
             Flag_notEmpty = params.directories.Train.Input.Subjects
             measure_train = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
 
-            # flag_testOnly = False if whichExperiment.TestOnly and (modeData == 'train') else True
-            # return (  (not Flag_TestOnly) or Flag_TrainDice ) and Flag_notEmpty
             return (not Flag_TestOnly or measure_train) and Flag_notEmpty
         
         Th = 0.5*params.WhichExperiment.HardParams.Model.LabelMaxValue
-
-        def save_hdf5_subject_List(h , Tag , List):
-            List = [n.encode("ascii", "ignore") for n in List]
-            h.create_dataset(Tag ,(len(List),1) , 'S10', List)  
-            
+           
         def separatingConcatenatingIndexes(Data, sjList, mode):
 
             Sz0 = 0
@@ -247,8 +234,6 @@ def loadDataset(params):
 
             TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage, list(params.directories.Train.Input.Subjects), params.WhichExperiment.Dataset.randomFlag)
 
-            save_hdf5_subject_List(params.h5 , 'trainList' , TrainList )
-
             if params.WhichExperiment.Dataset.Validation.fromKeras or params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
                 DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, list(DataAll.Train_ForTest),'train')                
                 DataAll.Validation = ''            
@@ -256,8 +241,6 @@ def loadDataset(params):
                 DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, TrainList,'train')
                 DataAll.Validation = separatingConcatenatingIndexes(DataAll.Train_ForTest, ValList,'validation')
                 
-                save_hdf5_subject_List(params.h5 , 'valList' , ValList )
-
             if params.preprocess.Normalize.per_Dataset: DataAll = func_normalize(DataAll)
 
             return DataAll
@@ -279,7 +262,6 @@ def loadDataset(params):
                 return ErrorFlag
                 
             Data = {}
-            # g1 = params.h5.create_group(mode)
             for nameSubject, subject in tqdm(Subjects.items(), desc='Loading ' + mode):
 
                 if ErrorInPaddingCheck(subject): continue
@@ -305,7 +287,6 @@ def loadDataset(params):
             if params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
                 Val_Indexes = list(DataAll.Test)
                 DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, Val_Indexes, 'validation')                
-                save_hdf5_subject_List(params.h5 , 'valList' , Val_Indexes)
             return DataAll
             
         DataAll = data()
@@ -314,11 +295,8 @@ def loadDataset(params):
             DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
             DataAll = separateTrainVal_and_concatenateTrain( DataAll )
 
-
         if params.directories.Test.Input.Subjects: 
             DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
-            # save_hdf5_subject_List(params.h5 , 'testList' , list(DataAll.Test))
-
             DataAll = readValidation(DataAll)
 
         if sagittalFlag():
@@ -328,13 +306,8 @@ def loadDataset(params):
         return DataAll
 
     params = preAnalysis(params)
-    
     smallFuncs.mkDir(params.directories.Test.Result)
-    params.h5 = h5py.File(params.directories.Test.Result + '/Data.hdf5','w')
     Data = main_ReadingDataset(params)
-    params.h5.close()
-    # saveHDf5(Data)
-
 
     return Data, params
 
@@ -407,7 +380,6 @@ def preAnalysis(params):
                 Shape = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )
                 Shape = Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
 
-            # Shape = tuple(Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder])
             return Shape, subject
 
         def loopOverAllSubjects(Input, mode):

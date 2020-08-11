@@ -24,7 +24,7 @@ def Run(UserInfoB, terminal=False):
 
 def func_WhichExperiment(UserInfo):
     
-    USim = UserInfo['simulation']()
+    USim = UserInfo['simulation']
     def WhichExperiment_Class():
 
         def HardParamsFuncs():
@@ -87,16 +87,16 @@ def func_WhichExperiment(UserInfo):
                 Address = ''
 
             class model:
-                architectureType = 'U-Net'
-                epochs = ''
-                batch_size = ''
+                architectureType = 'Res_Unet2'
+                epochs = 50
+                batch_size = 50
                 Learning_Rate = 1e-3
                 LR_Scheduler = True
-                loss = ''
+                loss = 7
                 metrics = ''
                 optimizer = ''  # adamax Nadam Adadelta Adagrad  optimizers.adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
                 verbose = 2
-                num_Layers = ''
+                num_Layers = 3
                 InputDimensions = ''
                 Layer_Params = layer_Params()
                 showHistory = True
@@ -190,30 +190,21 @@ def func_WhichExperiment(UserInfo):
             FullIndexes = ''
 
         class WhichExperiment:
-            Experiment    = experiment()
-            Nucleus = nucleus()
+            Experiment = experiment()
+            Nucleus    = nucleus()
             HardParams = hardParams()
-            Dataset = dataset()
+            Dataset    = dataset()
             
 
         return WhichExperiment()
     WhichExperiment = WhichExperiment_Class()
 
     def func_Nucleus(MultiClassMode):
-        def Experiment_Nucleus_Name_MClass(NucleusIndex, MultiClassMode):
-            if len(NucleusIndex) == 1 or not MultiClassMode:
-                NucleusName , _, _ = smallFuncs.NucleiSelection( NucleusIndex[0] )
-            else:
-                NucleusName = ('MultiClass_' + str(NucleusIndex)).replace(', ','').replace('[','').replace(']','')
-                
-            return NucleusName
-
         nucleus_Index = USim.nucleus_Index if isinstance(USim.nucleus_Index,list) else [USim.nucleus_Index]
         class nucleus:
-            name = Experiment_Nucleus_Name_MClass(nucleus_Index , MultiClassMode )
+            name = '1-THALAMUS' if len(nucleus_Index) == 1 else 'MultiClass_24567891011121314/'
             name_Thalamus, FullIndexes, _ = smallFuncs.NucleiSelection( 1 )
             Index = nucleus_Index
-
         return nucleus
 
     def func_Dataset():               
@@ -237,7 +228,7 @@ def func_WhichExperiment(UserInfo):
             return slicingInfo
 
         Dataset.slicingInfo = slicingInfoFunc()
-        Dataset.check_vimp_SubjectName = UserInfo['simulation']().check_vimp_SubjectName
+        Dataset.check_vimp_SubjectName = UserInfo['simulation'].check_vimp_SubjectName
         Dataset.InputPadding.Automatic = UserInfo['InputPadding']().Automatic
         Dataset.InputPadding.HardDimensions = list( np.array(UserInfo['InputPadding']().HardDimensions)[ Dataset.slicingInfo.slicingOrder ] )
         return Dataset
@@ -296,11 +287,11 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.num_Layers    = USim.num_Layers
         HardParams.Model.batch_size    = USim.batch_size
         HardParams.Model.epochs        = USim.epochs
-        HardParams.Model.Learning_Rate = UserInfo['simulation']().Learning_Rate
-        HardParams.Model.LR_Scheduler  = UserInfo['simulation']().LR_Scheduler
-        HardParams.Model.DataGenerator = UserInfo['dataGenerator']                
+        HardParams.Model.Learning_Rate = UserInfo['simulation'].Learning_Rate
+        HardParams.Model.LR_Scheduler  = UserInfo['simulation'].LR_Scheduler
         HardParams.Model.Initialize    = UserInfo['Initialize']()
-        HardParams.Model.architectureType = UserInfo['architectureType'] 
+        HardParams.Model.architectureType = UserInfo['simulation'].architectureType
+        HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num = UserInfo['simulation'].FirstLayer_FeatureMap_Num
 
 
         HardParams.Model.loss, _ = LossFunction.LossInfo(USim.lossFunction_Index) 
@@ -379,7 +370,7 @@ def func_WhichExperiment(UserInfo):
     
     WE = WhichExperiment.Experiment
     dir_input_dimension = WE.exp_address  + '/' + WE.subexperiment_name + '/' + WhichExperiment.Nucleus.name + '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim)
-    if UserInfo['simulation']().use_train_padding_size and USim.TestOnly and os.path.isfile(dir_input_dimension + '/UserInfo.json'): 
+    if UserInfo['simulation'].use_train_padding_size and USim.TestOnly and os.path.isfile(dir_input_dimension + '/UserInfo.json'): 
         InputDimensions, num_Layers = ReadInputDimensions_NLayers(dir_input_dimension)
 
         WhichExperiment.Dataset.InputPadding.Automatic = False
@@ -432,7 +423,7 @@ def func_preprocess(UserInfo):
     preprocess.BiasCorrection.Mode = UserInfo['preprocess'].BiasCorrection
     preprocess.Cropping.Mode       = UserInfo['preprocess'].Cropping
     preprocess.Reslicing.Mode      = UserInfo['preprocess'].Reslicing    
-    preprocess.TestOnly            = UserInfo['simulation']().TestOnly
+    preprocess.TestOnly            = UserInfo['simulation'].TestOnly
     return preprocess
 
 def func_Augment(UserInfo):

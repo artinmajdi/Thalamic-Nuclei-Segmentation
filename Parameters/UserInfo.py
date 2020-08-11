@@ -1,18 +1,17 @@
 
-
+TestOnly = True
 class experiment:
-    def __init__(self):
-        self.exp_address = '/array/ssd/msmajdi/experiments/keras/exp6/'
-        self.train_address = '/array/ssd/msmajdi/experiments/keras/exp6/train/'
-        self.test_address = '/array/ssd/msmajdi/experiments/keras/exp6/test/'
-        self.init_address = ''
-        self.subexperiment_name = 'test_01'
-        self.ReadAugments_Mode = False
-        self.code_address = '/array/ssd/msmajdi/code/thalamus/keras/'
+    exp_address   = '/array/ssd/msmajdi/experiments/exp6/'
+    train_address = '/array/ssd/msmajdi/experiments/data/train/'
+    test_address  = '/array/ssd/msmajdi/experiments/data/test/'
+    init_address  = ''
+    subexperiment_name = 'test_01'
+    ReadAugments_Mode  = False
+    code_address  = '/array/ssd/msmajdi/code/'
 
 
 Model_Method = 'Cascade'
-architectureType = 'Res_Unet2'
+
 wmn_csfn = 'wmn' # 'wmn' 'csfn' 
 
 class preprocesscs:
@@ -26,7 +25,7 @@ preprocess = preprocesscs()
 
 class simulation:
     def __init__(self):
-        self.TestOnly      = False
+        self.TestOnly      = TestOnly
         self.epochs        = 5
         self.GPU_Index     = "0"
         self.batch_size    = 10
@@ -42,7 +41,11 @@ class simulation:
         self.slicingDim = [2,1,0]
         self.use_train_padding_size = False
         self.check_vimp_SubjectName = True
+        self.architectureType = 'Res_Unet2'
+        self.FirstLayer_FeatureMap_Num = 20
     
+# simulation2 = simulation()
+
 class Initialize:
     Modes   = False
     Address = ''

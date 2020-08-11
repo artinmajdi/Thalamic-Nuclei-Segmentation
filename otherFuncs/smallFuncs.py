@@ -398,12 +398,10 @@ def search_ExperimentDirectory(whichExperiment):
 
     sdTag = '/sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim)
     Exp_address = whichExperiment.Experiment.exp_address
-    SEname          = whichExperiment.Experiment.subexperiment_name
+    SEname      = whichExperiment.Experiment.subexperiment_name
     NucleusName = whichExperiment.Nucleus.name
 
     def checkInputDirectory(Dir, NucleusName, sag_In_Cor,modeData):
-
-        DirAug = Dir + '/Augments/'
 
         def Search_ImageFolder(Dir, NucleusName):
 
@@ -536,10 +534,12 @@ def search_ExperimentDirectory(whichExperiment):
 
             return Input
 
-        Input = LoopReadingData(Input, whichExperiment.Experiment.train_address)
+        if not(modeData == 'train' and whichExperiment.TestOnly):
+            Dir = whichExperiment.Experiment.train_address if modeData == 'train' else whichExperiment.Experiment.test_address
+            Input = LoopReadingData(Input, Dir)
 
-        if whichExperiment.Experiment.ReadAugments_Mode and not (modeData == 'test'):
-            Input = LoopReadingData(Input, Dir + '/Augments/')
+            if whichExperiment.Experiment.ReadAugments_Mode and not (modeData == 'test'):
+                Input = LoopReadingData(Input, Dir + '/Augments/')
 
         return Input
 
@@ -549,9 +549,10 @@ def search_ExperimentDirectory(whichExperiment):
             test.Input_Sagittal  = checkInputDirectory(test.address , NucleusName, True, 'test')
         return train , test
 
+    FM = '/FM' + str(whichExperiment.HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num)
     class train:
         address   = Exp_address + '/train'
-        Model     = Exp_address + '/models/' + SEname                   + '/' + NucleusName  + sdTag
+        Model     = Exp_address + '/models/' + SEname                   + '/' + NucleusName  + FM + sdTag
         model_Tag = ''
         Input     = checkInputDirectory(address, NucleusName,False,'train')
 
@@ -559,7 +560,6 @@ def search_ExperimentDirectory(whichExperiment):
         address = Exp_address + '/test'
         Result  = Exp_address + '/results/' + SEname + sdTag
         Input   = checkInputDirectory(address, NucleusName,False,'test')
-
 
     train , test = add_Sagittal_Cases(whichExperiment , train , test , NucleusName)
 
@@ -608,9 +608,9 @@ def Saving_UserInfo(DirSave, params):
     User_Info = {
         'num_Layers'     : int(params.WhichExperiment.HardParams.Model.num_Layers),
         'Model_Method'   : params.UserInfo['Model_Method'],
-        'Learning_Rate'  : params.UserInfo['simulation']().Learning_Rate,
-        'slicing_Dim'    : params.UserInfo['simulation']().slicingDim[0],
-        'batch'          : int(params.UserInfo['simulation']().batch_size),
+        'Learning_Rate'  : params.UserInfo['simulation'].Learning_Rate,
+        'slicing_Dim'    : params.UserInfo['simulation'].slicingDim[0],
+        'batch'          : int(params.UserInfo['simulation'].batch_size),
         'InputPadding_Mode' : params.UserInfo['InputPadding']().Automatic,
         'InputPadding_Dims' : [int(s) for s in params.WhichExperiment.HardParams.Model.InputDimensions],
     }
@@ -643,9 +643,8 @@ def apply_MajorityVoting(params):
 
         return manual
 
+    address = params.WhichExperiment.Experiment.exp_address + '/results/' + params.WhichExperiment.Experiment.subexperiment_name + '/'
 
-
-    address = params.WhichExperiment.Experiment.address + '/results/' + params.WhichExperiment.SubExperiment.name + '/'
     a = Nuclei_Class().All_Nuclei()
     num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes
 
@@ -669,7 +668,7 @@ def apply_MajorityVoting(params):
 
             if ix > 0:
                 predMV = pred3Dims.sum(axis=3) >= 2
-                saveImage( predMV , im.affine, im.header, address + '2.5D_MV/' + subject.subjectName + '/' + nucleusNm+ '.nii.gz')
+                saveImage( predMV , im.affine, im.header, address + '2.5D_MV/' + subject.subjectName + '/' + nucleusNm + '.nii.gz')
 
 
                 if manual.Flag:

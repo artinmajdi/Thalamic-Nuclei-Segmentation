@@ -11,7 +11,8 @@ import preprocess.applyPreprocess as applyPreprocess
 from keras import backend as K
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
-K = smallFuncs.gpuSetting(str(UserInfoB['simulation']().GPU_Index))
+UserInfoB['simulation'] = UserInfoB['simulation']()
+K = smallFuncs.gpuSetting(str(UserInfoB['simulation'].GPU_Index))
 
 
 def running_main(UserInfoB):
@@ -25,17 +26,8 @@ def running_main(UserInfoB):
     def merge_results_and_apply_25D(UserInfoB):
         UserInfoB['best_network_MPlanar'] = True
         params = paramFunc.Run(UserInfoB, terminal=True)
-        DT = params.WhichExperiment.Experiment.address + '/results'
-
-        subEx_name = params.WhichExperiment.Experiment.name
-        Output = DT + '/' + subEx_name
-
-        os.system("mkdir {Output}; cd {Output}; mkdir sd0 sd1 sd2")
-
-        for FM in [('_FM40', '/sd0'), ('_FM30', '/sd1'), ('_FM20', '/sd2')]:
-            input = DT + '/' + subEx_name.replace('_FM00', FM[0]) + FM[1]
-            os.system("cp -r %s/vimp* %s/" % (input, Output + FM[1]))
-
+        Output = params.WhichExperiment.Experiment.exp_address + '/results/' + params.WhichExperiment.Experiment.subexperiment_name
+        os.system("mkdir {Output}/2.5D_MV")
         smallFuncs.apply_MajorityVoting(params)
 
     def predict_thalamus_for_sd0(UserI):
@@ -48,23 +40,32 @@ def running_main(UserInfoB):
         UserI['simulation'].nucleus_Index = [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
         Run(UserI)
 
+    def predict_multi_thalamus(UserI):
+        UserI['simulation'].nucleus_Index = [1]
+        Run(UserI)
+        UserI['simulation'].nucleus_Index = [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        Run(UserI)
+
     applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
     UserInfoB['simulation'].slicingDim = [0]
     UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    UserInfoB['experiment'].init_address = UserInfoB['experiment'].code_address + '/Trained_Models/SRI/FM40'
     predict_thalamus_for_sd0(UserInfoB)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
     UserInfoB['simulation'].slicingDim = [1]
     UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-    Run(UserInfoB)
+    UserInfoB['experiment'].init_address = UserInfoB['experiment'].code_address + '/Trained_Models/SRI/FM30'
+    predict_multi_thalamus(UserInfoB)
 
     UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
     UserInfoB['simulation'].slicingDim = [2]
     UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    UserInfoB['experiment'].init_address = UserInfoB['experiment'].code_address + '/Trained_Models/SRI/FM20'
     UserInfoB['simulation'].Use_Coronal_Thalamus_InSagittal = False
-    Run(UserInfoB)
+    predict_multi_thalamus(UserInfoB)
 
     merge_results_and_apply_25D(UserInfoB)
 

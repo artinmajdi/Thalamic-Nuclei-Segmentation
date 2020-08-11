@@ -38,7 +38,7 @@ class LoadingData:
 
         def UserInputs(self,args):  
             for ag in args: 
-                if 'GPU' in ag[0]: self.UserInfoB['simulation']().GPU_Index = ag[1]
+                if 'GPU' in ag[0]: self.UserInfoB['simulation'].GPU_Index = ag[1]
         UserInputs(self,args)
 
         def gpuSetting(self):            
@@ -49,7 +49,7 @@ class LoadingData:
             self.K = K
             
         # self.UserInfoB = smallFuncs.terminalEntries(self.UserInfoB)
-        self.UserInfoB['simulation']().TestOnly = True
+        self.UserInfoB['simulation'].TestOnly = True
         self.params = paramFunc.Run(self.UserInfoB, terminal=True)
 
         return gpuSetting(self)
@@ -144,12 +144,12 @@ class Visualize_FeatureMaps(LoadingData):
        
 VFM = Visualize_FeatureMaps()
 VFM.PreMode(UserInfo,('GPU',"5"))  
-Nuclei_Indexes = VFM.UserInfoB['simulation']().nucleus_Index.copy()
+Nuclei_Indexes = VFM.UserInfoB['simulation'].nucleus_Index.copy()
 
 print('ADDRESS',VFM.params.directories.Train.Model)
 for x in [1]: # Nuclei_Indexes:  
-    VFM.UserInfoB['simulation']().nucleus_Index = [x]
-    print('nucleus' , VFM.UserInfoB['simulation']().nucleus_Index )    
+    VFM.UserInfoB['simulation'].nucleus_Index = [x]
+    print('nucleus' , VFM.UserInfoB['simulation'].nucleus_Index )    
     VFM.ReadData()
     VFM.LoadModel()
 
