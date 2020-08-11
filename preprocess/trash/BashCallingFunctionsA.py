@@ -35,8 +35,9 @@ def BiasCorrection(subject , params):
             if params.preprocess.Debug.doDebug:
                 copyfile(outP , outDebug)
 
+"""
 def RigidRegistration_2AV(subject , Template , preprocess):
-
+    
     
     processed = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
     FullImage = subject.address + '/' + subject.ImageOriginal + '.nii.gz'
@@ -70,6 +71,7 @@ def RigidRegistration_2AV(subject , Template , preprocess):
 
             print('    Cropping the Full AV Mask')
             cropping_AV_Mask(outP_full, outP_crop, mainCrop)
+"""
 
 def Bash_AugmentNonLinear(subject , subjectRef , outputAddress): # Image , Mask , Reference , output):
 
@@ -95,6 +97,7 @@ def Bash_AugmentNonLinear(subject , subjectRef , outputAddress): # Image , Mask 
         if not os.path.isfile(OutputMask):
             os.system("antsApplyTransforms -d 3 -i %s -o %s -r %s -t %s"%(MaskOrig , OutputMask , MaskOrig , deformationAddr + '/testWarp.nii.gz' ) )
 
+"""
 def cropping_AV_Mask(inP, outP, crop):
     
     def cropImage_FromCoordinates(CropMask , Gap): 
@@ -112,3 +115,4 @@ def cropping_AV_Mask(inP, outP, crop):
     d = cropImage_FromCoordinates(crop , [0,0,0])
     mskC = nib.load(inP).slicer[ d[0,0]:d[0,1], d[1,0]:d[1,1], d[2,0]:d[2,1] ]                    
     nib.save(mskC , outP)
+"""

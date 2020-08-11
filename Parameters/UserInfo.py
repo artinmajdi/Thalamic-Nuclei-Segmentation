@@ -17,7 +17,7 @@ wmn_csfn = 'wmn' # 'wmn' 'csfn'
 class preprocesscs:
     def __init__(self):
         self.Mode = True
-        self.BiasCorrection = False
+        self.BiasCorrection = True
         self.Cropping = True
         self.Reslicing = True
 
@@ -43,8 +43,6 @@ class simulation:
         self.check_vimp_SubjectName = True
         self.architectureType = 'Res_Unet2'
         self.FirstLayer_FeatureMap_Num = 20
-    
-# simulation2 = simulation()
 
 class Initialize:
     Modes   = False

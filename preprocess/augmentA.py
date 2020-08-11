@@ -1,6 +1,5 @@
 from random import shuffle
 import nibabel as nib
-import preprocess.BashCallingFunctionsA as BashCallingFunctionsA
 import otherFuncs.smallFuncs as smallFuncs
 import os
 import skimage
