@@ -439,7 +439,7 @@ def func_Augment(UserInfo):
 
     def Augment_Class():
         class rotation:
-            Mode = False
+            Mode = True
             AngleMax = 6
 
         class shift:
@@ -451,7 +451,7 @@ def func_Augment(UserInfo):
             ShearMax = 0
 
         class linearAug:
-            Mode = True
+            Mode = False
             Length = 8
             Rotation = rotation()
             Shift = shift()
@@ -467,12 +467,6 @@ def func_Augment(UserInfo):
 
         return augment()
     Augment = Augment_Class()
-
-    Augment.Mode            = UserInfo['AugmentMode']
-    Augment.Linear.Rotation = UserInfo['Augment_Rotation']
-    Augment.Linear.Shear    = UserInfo['Augment_Shear']
-    Augment.Linear.Length   = UserInfo['Augment_Linear_Length']
-    Augment.NonLinear.Mode  = UserInfo['Augment_NonLinearMode']
     return Augment
     
 

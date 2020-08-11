@@ -8,6 +8,7 @@ class experiment:
         self.init_address = ''
         self.subexperiment_name = 'test_01'
         self.ReadAugments_Mode = False
+        self.code_address = '/array/ssd/msmajdi/code/thalamus/keras/'
 
 
 Model_Method = 'Cascade'
@@ -46,13 +47,6 @@ class Initialize:
     Modes   = False
     Address = ''
 
-class dataGeneratorcs:
-    def __init__(self):
-        self.Mode = False
-        self.NumSubjects_Per_batch = 5
-
-dataGenerator = dataGeneratorcs()
-
 
 class InputPadding:
     def __init__(self):
@@ -62,8 +56,7 @@ class InputPadding:
 # if Experiments.Index == '8': 
 #     InputPadding.HardDimensions = [228,288,168]
 
-
-code_address = '/array/ssd/msmajdi/code/thalamus/keras/'
+code_address = experiment().code_address
 class Templatecs:
     def __init__(self):
         self.Image   = code_address + 'general/RigidRegistration' + '/origtemplate.nii.gz'
@@ -71,23 +64,3 @@ class Templatecs:
         self.Address = code_address + 'general/RigidRegistration/'
 
 Template = Templatecs()
-Experiments_Address = '/array/ssd/msmajdi/experiments/keras'
-
-AugmentMode = False
-Augment_LinearMode = True
-Augment_NonLinearMode = False
-Augment_Linear_Length = 6
-
-class Augment_Rotationcs:
-    def __init__(self):
-        self.Mode = True
-        self.AngleMax = 7
-
-Augment_Rotation = Augment_Rotationcs()
-
-class Augment_Shearcs:
-    def __init__(self):
-        self.Mode = False
-        self.ShearMax = 4
-
-Augment_Shear = Augment_Shearcs()
