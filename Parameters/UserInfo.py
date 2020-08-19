@@ -12,6 +12,10 @@ class experiment:
 
 Model_Method = 'Cascade'
 
+class thalamic_side:
+    left  = True
+    right = True
+
 class preprocesscs:
     def __init__(self):
         self.Mode = False

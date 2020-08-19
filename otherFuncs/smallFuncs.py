@@ -783,11 +783,15 @@ def test_extract_biggest_object():
         else:
             image = objects[0].image
 
-def merge_left_right_labels(subj_address):
-    left  = nib.load(subj_address + '/left/2.5D_MV/AllLabels.nii.gz')  if os.path.isfile(subj_address + '/left/2.5D_MV/AllLabels.nii.gz') else []
-    right = nib.load(subj_address + '/right/2.5D_MV/AllLabels.nii.gz') if os.path.isfile(subj_address + '/right/2.5D_MV/AllLabels.nii.gz') else []
+# def merge_left_right_labels(subj_address):
+    
+#     dirf = lambda side: subj_address + '/' + side + '/2.5D_MV/AllLabels.nii.gz'
+#     # left_dir = subj_address + '/left/2.5D_MV/AllLabels.nii.gz'
+#     # right_dir = subj_address + '/right/2.5D_MV/AllLabels.nii.gz'
 
-    if left and right: saveImage(image= left.get_data() + right.get_data(), affine=left.affine , header=left.header , outDirectory=subj_address + '/left/AllLabels_Left_and_Right.nii.gz')
+#     if os.path.isfile(dirf('left')) and os.path.isfile(dirf('right')):
+#         left,right = nib.load(dirf('left')), nib.load(dirf('right'))
+#         saveImage(image= left.get_data() + right.get_data(), affine=left.affine , header=left.header , outDirectory=subj_address + '/left/AllLabels_Left_and_Right.nii.gz')
 
 class SNR_experiment():
 
