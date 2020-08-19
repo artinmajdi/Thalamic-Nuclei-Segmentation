@@ -17,6 +17,34 @@ K = smallFuncs.gpuSetting(str(UserInfoB['simulation'].GPU_Index))
 
 def main_test(params, UserEntry):
 
+    def Save_AllNuclei_inOne(Directory, mode='_PProcessed'):
+        mask = []
+        for cnt , name in (1,2,4,5,6,7,8,9,10,11,12,13,14):
+            name = smallFuncs.Nuclei_Class(method='Cascade').nucleus_name_func(cnt)
+            dirr = Directory + '/' + name + mode + '.nii.gz'                                   
+            if cnt == 1:
+                thalamus_mask = nib.load( dirr )  
+
+            else:
+                if os.path.isfile(dirr):
+                    msk = nib.load(dirr).get_data()  
+                    if mask == []: 
+                        mask = cnt*msk 
+                    else:
+                        mask_temp = mask.copy()
+                        mask_temp[msk == 0] = 0
+                        x = np.where(mask_temp > 0)
+                        if x[0].shape[0] > 0: 
+                            fg = np.random.randn(x[0].shape[0])
+                            fg1, fg2 = fg >= 0 , fg < 0
+                            mask[x[0][fg1],x[1][fg1],x[2][fg1]] = 0
+                            msk[x[0][fg2],x[1][fg2],x[2][fg2]] = 0
+
+                        mask += cnt*msk 
+                    
+
+        smallFuncs.saveImage( mask , thalamus_mask.affine , thalamus_mask.header, Directory + '/AllLabels.nii.gz')
+
     def running_main(UserInfoB):
         
         def Run(UserInfoB):
@@ -71,7 +99,7 @@ def main_test(params, UserEntry):
     def run_Left(UserEntry):
         running_main(UserInfoB)
         for subj in params.directories.test.input.Subjects:
-            smallFuncs.Save_AllNuclei_inOne(subj.address + '/left/2.5D_MV' , mode='')
+            Save_AllNuclei_inOne(subj.address + '/left/2.5D_MV' , mode='')
 
     def run_Right(UserEntry):
 
@@ -95,7 +123,7 @@ def main_test(params, UserEntry):
         running_main(UserInfoB)
         unflip_inputs()
         for subj in params.directories.test.input.Subjects:
-            smallFuncs.Save_AllNuclei_inOne(subj.address + '/right/2.5D_MV' , mode='')          
+            Save_AllNuclei_inOne(subj.address + '/right/2.5D_MV' , mode='')          
         
     if UserInfoB['thalamic_side'].left:  
         run_Left(UserEntry)
@@ -103,9 +131,8 @@ def main_test(params, UserEntry):
         run_Right(UserEntry)
 
     if UserInfoB['thalamic_side'].left and UserInfoB['thalamic_side'].right: 
-
         for subj in params.directories.test.input.Subjects:
 
             load_side = lambda side: nib.load(subj.address + '/' + side + '/2.5D_MV/AllLabels.nii.gz')
-            left,right = load_side('left'), load_side('right')
-            smallFuncs.saveImage(image= left.get_data() + right.get_data(), affine=left.affine , header=left.header , outDirectory=subj_address + '/left/AllLabels_Left_and_Right.nii.gz')
+            left,right = load_side('left'),load_side('right')
+            smallFuncs.saveImage(image= left.get_data() + right.get_data(), affine=left.affine , header=left.header , outDirectory=subj.address + '/left/AllLabels_Left_and_Right.nii.gz')

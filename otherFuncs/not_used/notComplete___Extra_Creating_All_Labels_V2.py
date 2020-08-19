@@ -16,7 +16,7 @@ class Nuclei_Class():
         
     def __init__(self, index=1, method = 'HCascade'):
 
-        def dic_Name(index):
+        def nucleus_name_func(index):
             switcher = {
                 1: '1-THALAMUS',
                 2: '2-AV',
@@ -37,9 +37,9 @@ class Nuclei_Class():
                 1.4: 'Anterior_ImClosed',
                 1.9: 'HierarchicalCascade' }  
             return switcher.get(index, 'wrong index')
-        self.name = dic_Name(index)
+        self.name = nucleus_name_func(index)
 
-        self.dic_Name = dic_Name
+        self.nucleus_name_func = nucleus_name_func
         self.method      = method
         self.child       = ()
         self.parent      = None
@@ -80,7 +80,7 @@ class Nuclei_Class():
 
         class All_Nuclei:
             Indexes = indexes[:]
-            Names  = [self.dic_Name(index) for index in Indexes]
+            Names  = [self.nucleus_name_func(index) for index in Indexes]
 
         return All_Nuclei()    
     

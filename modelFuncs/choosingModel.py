@@ -39,10 +39,17 @@ def func_class_weights(weighted_Mode, Mask):
 def check_Run(params, Data):
 
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
-    model      = trainingExperiment(Data, params) if not params.preprocess.TestOnly else loadModel(params)
+    
+    if params.preprocess.TestOnly or params.UserInfo['thalamic_side'].right:
+        model = loadModel(params)
+    else:
+        model = trainingExperiment(Data, params)
+    
     prediction = testingExeriment(model, Data, params)
 
-    if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1):
+    method = params.WhichExperiment.HardParams.Model.Method.Type
+    nucleus_index = int(params.WhichExperiment.Nucleus.Index[0])
+    if ('Cascade' == method) and (nucleus_index == 1):
         save_BoundingBox_Hierarchy(params, prediction)
 
     return True
