@@ -4,11 +4,15 @@ class experiment:
     exp_address   = '/array/ssd/msmajdi/experiments/exp6/'
     train_address = '/array/ssd/msmajdi/experiments/data/train/'
     test_address  = '/array/ssd/msmajdi/experiments/data/test/'
-    init_address  = '/array/ssd/msmajdi/code/Trained_Models/WMn/' # 'WMn/'
     subexperiment_name = 'test_01_csfn'
     ReadAugments_Mode  = False
     code_address  = '/array/ssd/msmajdi/code/'
 
+""" if init_address will be left empty, the default address will be used for initialization """
+class initialize:
+    mode = True
+    modality_default = 'wmn' # 'wmn' 'csfn'
+    init_address  = '' # '/array/ssd/msmajdi/code/Trained_Models/WMn/'
 
 Model_Method = 'Cascade'
 

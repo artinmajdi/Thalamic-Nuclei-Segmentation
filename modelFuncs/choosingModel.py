@@ -285,15 +285,26 @@ def trainingExperiment(Data, params):
         ModelParam = params.WhichExperiment.HardParams.Model
                     
         def modelInitialize(model):            
-                 
-            init_address = params.WhichExperiment.Experiment.init_address    
-            nuclei_name = params.WhichExperiment.Nucleus.name    
-            slicing_dim = str(params.WhichExperiment.Dataset.slicingInfo.slicingDim) 
-                                    
+        
+            FM = '/FM' + str(params.WhichExperiment.HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num)
+            NN = '/' + params.WhichExperiment.Nucleus.name    
+            SD = '/sd' + str(params.WhichExperiment.Dataset.slicingInfo.slicingDim) 
+            initialization = params.WhichExperiment.HardParams.Model.Initialize
+            code_address = smallFuncs.dir_check(params.UserInfo['experiment'].code_address)
+
+            if initialization.init_address:
+                init_address = smallFuncs.dir_check(initialization.init_address) + FM + NN + SD + '/model_weights.h5'
+            else:
+                modDef = lower(initialization.modality_default)
+                net_name = 'SRI' if modDef == 'wmn' else 'WMn'
+
+                init_address = code_address + 'Trained_Models/' + net_name + FM + NN + SD + '/model_weights.h5'
+
             try: 
-                model.load_weights(init_address + '/' + nuclei_name + '/sd' + slicing_dim + '/model_weights.h5')
+                model.load_weights(init_address)
                 print(' --- initialization succesfull')
-            except: print('initialization failed')
+            except: 
+                print('initialization failed')
 
             return model  
 

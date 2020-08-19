@@ -15,7 +15,7 @@ UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 UserInfoB['simulation'] = UserInfoB['simulation']()
 K = smallFuncs.gpuSetting(str(UserInfoB['simulation'].GPU_Index))
 
-def main_test(params, UserEntry):
+def main(UserInfoB):
 
     def Save_AllNuclei_inOne(Directory, mode='_PProcessed'):
         mask = []
@@ -96,12 +96,12 @@ def main_test(params, UserEntry):
 
         merge_results_and_apply_25D(UserInfoB)
 
-    def run_Left(UserEntry):
+    def run_Left(UserInfoB):
         running_main(UserInfoB)
         for subj in params.directories.test.input.Subjects:
             Save_AllNuclei_inOne(subj.address + '/left/2.5D_MV' , mode='')
 
-    def run_Right(UserEntry):
+    def run_Right(UserInfoB):
 
         def flip_inputs():
             subjects = params.directories.test.input.Subjects.copy()
@@ -126,13 +126,17 @@ def main_test(params, UserEntry):
             Save_AllNuclei_inOne(subj.address + '/right/2.5D_MV' , mode='')          
         
     if UserInfoB['thalamic_side'].left:  
-        run_Left(UserEntry)
+        run_Left(UserInfoB)
     if UserInfoB['thalamic_side'].right: 
-        run_Right(UserEntry)
+        run_Right(UserInfoB)
 
     if UserInfoB['thalamic_side'].left and UserInfoB['thalamic_side'].right: 
+        params = paramFunc.Run(UserInfoB, terminal=True)
         for subj in params.directories.test.input.Subjects:
 
             load_side = lambda side: nib.load(subj.address + '/' + side + '/2.5D_MV/AllLabels.nii.gz')
             left,right = load_side('left'),load_side('right')
             smallFuncs.saveImage(image= left.get_data() + right.get_data(), affine=left.affine , header=left.header , outDirectory=subj.address + '/left/AllLabels_Left_and_Right.nii.gz')
+
+
+main(UserInfoB)

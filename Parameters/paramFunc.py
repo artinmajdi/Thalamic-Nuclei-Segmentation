@@ -83,8 +83,9 @@ def func_WhichExperiment(UserInfo):
                 class_weight = classWeight()
 
             class InitializeB:
-                Modes   = True
-                Address = ''
+                mode = True
+                modality_default = 'wmn' # 'wmn' 'csfn'
+                init_address  = '/array/ssd/msmajdi/code/Trained_Models/WMn/'
 
             class model:
                 architectureType = 'Res_Unet2'
@@ -290,7 +291,7 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.epochs        = USim.epochs
         HardParams.Model.Learning_Rate = UserInfo['simulation'].Learning_Rate
         HardParams.Model.LR_Scheduler  = UserInfo['simulation'].LR_Scheduler
-        # HardParams.Model.Initialize    = UserInfo['Initialize']()
+        HardParams.Model.Initialize    = UserInfo['initialize']()
         HardParams.Model.architectureType = UserInfo['simulation'].architectureType
         HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num = UserInfo['simulation'].FirstLayer_FeatureMap_Num
 
@@ -321,7 +322,6 @@ def func_WhichExperiment(UserInfo):
         
 
     WhichExperiment.Experiment    = UserInfo['experiment']()
-    WhichExperiment.Experiment.init_address = UserInfo['experiment']().init_address + '/FM' + str(UserInfo['simulation'].FirstLayer_FeatureMap_Num)
     WhichExperiment.HardParams    = func_ModelParams()
     WhichExperiment.Nucleus       = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.Mode)
     WhichExperiment.Dataset       = func_Dataset()

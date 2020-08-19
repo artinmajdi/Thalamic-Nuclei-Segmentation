@@ -576,7 +576,10 @@ def closeMask(mask,cnt):
     if cnt > 1: struc = ndimage.iterate_structure(struc, cnt)
     return ndimage.binary_closing(mask, structure=struc)
 
-
+def dir_check(directory):
+    if directory[-1] != '/':
+        directory = directory + '/'
+    return directory
 def apply_MajorityVoting(params):
 
     def func_manual_label(subject,nucleusNm):
@@ -735,16 +738,6 @@ def test_extract_biggest_object():
 
         else:
             image = objects[0].image
-
-# def merge_left_right_labels(subj_address):
-    
-#     dirf = lambda side: subj_address + '/' + side + '/2.5D_MV/AllLabels.nii.gz'
-#     # left_dir = subj_address + '/left/2.5D_MV/AllLabels.nii.gz'
-#     # right_dir = subj_address + '/right/2.5D_MV/AllLabels.nii.gz'
-
-#     if os.path.isfile(dirf('left')) and os.path.isfile(dirf('right')):
-#         left,right = nib.load(dirf('left')), nib.load(dirf('right'))
-#         saveImage(image= left.get_data() + right.get_data(), affine=left.affine , header=left.header , outDirectory=subj_address + '/left/AllLabels_Left_and_Right.nii.gz')
 
 class SNR_experiment():
 
