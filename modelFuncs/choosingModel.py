@@ -40,7 +40,7 @@ def check_Run(params, Data):
 
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
     
-    if params.preprocess.TestOnly or params.UserInfo['thalamic_side'].right:
+    if params.preprocess.TestOnly or params.UserInfo['thalamic_side'].active_side == 'right':
         model = loadModel(params)
     else:
         model = trainingExperiment(Data, params)
@@ -60,25 +60,7 @@ def loadModel(params):
     return model
 
 def testingExeriment(model, Data, params):
-       
-    def func_dice_name():
-        if ('HCascade' in params.WhichExperiment.HardParams.Model.Method.Type) and params.WhichExperiment.HardParams.Model.MultiClass.Mode: 
-                                    
-            if 1.2 in params.WhichExperiment.Nucleus.Index:
-                dice_tag = 'All_Groups'                              
-            elif 1 in params.WhichExperiment.Nucleus.Index:
-                dice_tag = '1-THALAMUS'
-            else:
-                BB = smallFuncs.Nuclei_Class(1,'HCascade')
-                parent = BB.HCascade_Parents_Identifier(params.WhichExperiment.Nucleus.Index)
-                dice_tag = 'All_' + smallFuncs.Nuclei_Class(parent[0],'HCascade').name.replace('_ImClosed','')
-                
-        else: 
-            dice_tag = 'All'  
-
-        return dice_tag
-    dice_tag = func_dice_name()
-
+    
     class prediction:
         Test = ''
         Train = ''
@@ -122,11 +104,10 @@ def testingExeriment(model, Data, params):
             return pred, Dice
 
         def savingOutput(pred1N_BtO, NucleiIndex):
-            dirSave = smallFuncs.mkDir(ResultDir + '/' + subject.subjectName)
-            nucleusName, _ , _ = smallFuncs.NucleiSelection(NucleiIndex)
-            smallFuncs.saveImage( pred1N_BtO , DataSubj.Affine, DataSubj.Header, dirSave + '/' + nucleusName + '.nii.gz')
-            # print(dirSave)
-            return dirSave, nucleusName
+            dirSave = smallFuncs.mkDir(ResultDir)
+            nucleus = smallFuncs.Nuclei_Class(index=NucleiIndex).name
+            smallFuncs.saveImage( pred1N_BtO , DataSubj.Affine, DataSubj.Header, dirSave + '/' + nucleus + '.nii.gz')
+            return dirSave, nucleus
 
         def applyPrediction():
 
@@ -136,20 +117,18 @@ def testingExeriment(model, Data, params):
 
             def loopOver_AllClasses_postProcessing(pred):
 
-                # TODO "pred1N_BtO" needs to concatenate for different classes
                 Dice = np.zeros((num_classes-1,2))
                 ALL_pred = []
                 for cnt in range(num_classes-1):
 
-                    # ! where I added the concatenation for different masks
                     pred1N_BtO, Dice[cnt,:] = postProcessing(pred[...,cnt], DataSubj.OrigMask[...,cnt] , params.WhichExperiment.Nucleus.Index[cnt] )
                     
-                    if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1):
+                    if int(params.WhichExperiment.Nucleus.Index[0]) == 1:
                         ALL_pred = np.concatenate( (ALL_pred , pred1N_BtO[...,np.newaxis]) , axis=3) if cnt > 0 else pred1N_BtO[...,np.newaxis]
 
                     dirSave, nucleusName = savingOutput(pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
                 
-                Dir_Dice = dirSave + '/Dice_' + dice_tag + '.txt' if (params.WhichExperiment.HardParams.Model.MultiClass.Mode and num_classes > 2 ) else dirSave + '/Dice_' + nucleusName + '.txt'
+                Dir_Dice = dirSave + '/Dice_All.txt' if (params.WhichExperiment.HardParams.Model.MultiClass.Mode and num_classes > 2 ) else dirSave + '/Dice_' + nucleusName + '.txt'
                 np.savetxt(Dir_Dice ,Dice,fmt='%1.1f %1.4f')
                 return ALL_pred
 
@@ -202,38 +181,41 @@ def testingExeriment(model, Data, params):
 
     def loopOver_Predicting_TestSubjects(DataTest):
         prediction = {}
-        ResultDir = params.directories.Test.Result
+        # ResultDir = params.directories.Test.Result
         for name in tqdm(DataTest,desc='predicting test subjects'):
-            t1 = time()
-            prediction[name] = predictingTestSubject(DataTest[name], params.directories.Test.Input.Subjects[name] , ResultDir)
-            print(name, time()-t1)
-            print('---')
+            subject = params.directories.Test.Input.Subjects[name]
+            ResultDir = subject.address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd' + str(params.WhichExperiment.Dataset.slicingInfo.slicingDim) + '/'
+            prediction[name] = predictingTestSubject(DataTest[name], subject , ResultDir)
 
         return prediction
 
     def loopOver_Predicting_TestSubjects_Sagittal(DataTest):
         prediction = {}
-        ResultDir = params.directories.Test.Result.replace('/sd2','/sd0')
+        # ResultDir = params.directories.Test.Result.replace('/sd2','/sd0')
         for name in tqdm(DataTest,desc='predicting test subjects sagittal'):
-            prediction[name] = predictingTestSubject(DataTest[name], params.directories.Test.Input_Sagittal.Subjects[name] , ResultDir)
+            subject = params.directories.Test.Input.Subjects[name]
+            ResultDir = subject.address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd0/'
+            prediction[name] = predictingTestSubject(DataTest[name], subject , ResultDir)
 
         return prediction
 
     def loopOver_Predicting_TrainSubjects(DataTrain):
         prediction = {}
-        if (params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) or ( 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1)):
+        if params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data or (int(params.WhichExperiment.Nucleus.Index[0]) == 1):
             ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
             for name in tqdm(DataTrain,desc='predicting train subjects'):
-                prediction[name] = predictingTestSubject(DataTrain[name], params.directories.Train.Input.Subjects[name] , ResultDir)
+                subject = params.directories.Train.Input.Subjects[name]
+                prediction[name] = predictingTestSubject(DataTrain[name], subject , ResultDir + '/' + subject.subjectName + '/')
 
         return prediction
 
     def loopOver_Predicting_TrainSubjects_Sagittal(DataTrain):
         prediction = {}
-        if (params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) or ( 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and (int(params.WhichExperiment.Nucleus.Index[0]) == 1)):
+        if (params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data) or (int(params.WhichExperiment.Nucleus.Index[0]) == 1):
             ResultDir = smallFuncs.mkDir(params.directories.Test.Result.replace('/sd2','/sd0') + '/TrainData_Output')
             for name in tqdm(DataTrain,desc='predicting train subjects sagittal'):
-                prediction[name] = predictingTestSubject(DataTrain[name], params.directories.Train.Input_Sagittal.Subjects[name] , ResultDir)
+                subject = params.directories.Train.Input.Subjects[name]
+                prediction[name] = predictingTestSubject(DataTrain[name], subject , ResultDir + '/' + subject.subjectName + '/')
 
         return prediction
 
@@ -295,7 +277,7 @@ def trainingExperiment(Data, params):
             if initialization.init_address:
                 init_address = smallFuncs.dir_check(initialization.init_address) + FM + NN + SD + '/model_weights.h5'
             else:
-                modDef = lower(initialization.modality_default)
+                modDef = initialization.modality_default.lower()
                 net_name = 'SRI' if modDef == 'wmn' else 'WMn'
 
                 init_address = code_address + 'Trained_Models/' + net_name + FM + NN + SD + '/model_weights.h5'
@@ -376,13 +358,12 @@ def save_BoundingBox_Hierarchy(params, PRED):
     params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
     def save_BoundingBox(PreStageMask, subject, mode , dirr):
 
-        # def cropBoundingBoxes(PreStageMask, dirr):
-
         def checkBordersOnBoundingBox(Sz , BB , gapS):
             return [   [   np.max([BB[d][0]-gapS,0])  ,   np.min( [BB[d][1]+gapS,Sz[d]])   ]  for d in range(3) ]
 
         imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-        if 'train' in mode: dirr += '/TrainData_Output'
+        # if 'train' in mode: 
+        #     dirr += '/TrainData_Output'
 
         for ch in range(PreStageMask.shape[3]):
             BB = smallFuncs.findBoundingBox(PreStageMask[...,ch])
@@ -390,27 +371,40 @@ def save_BoundingBox_Hierarchy(params, PRED):
             BBd = [  [BB[ii][0] - gapDilation , BB[ii][1] + gapDilation] for ii in range(len(BB))]
             BBd = checkBordersOnBoundingBox(imF.shape , BBd , 0)            
 
-
-            # ! temp fixed the position of bounding box ; it used to double effect the slicing gap on plane gap
             BB = checkBordersOnBoundingBox(imF.shape , BB , params.WhichExperiment.Dataset.gapOnSlicingDimention)
 
             nucleusName = smallFuncs.Nuclei_Class(index=params.WhichExperiment.Nucleus.Index[ch]).name
-            np.savetxt(dirr + '/' + subject.subjectName + '/BB_' + nucleusName + '.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')
-
-            # cropBoundingBoxes(PreStageMask, dirr)
+            np.savetxt(dirr + '/BB_' + nucleusName + '.txt',np.concatenate((BB,BBd),axis=1),fmt='%d')
 
     nucleus = params.WhichExperiment.Nucleus.name
     def loop_Subjects(PRED, mode):
         if PRED:
-            Subjects = params.directories.Train.Input.Subjects if 'train' in mode else params.directories.Test.Input.Subjects        
-            for sj in tqdm(Subjects ,desc='saving BB ' + ' ' + mode + nucleus):
-                save_BoundingBox(PRED[sj] , Subjects[sj] , mode , params.directories.Test.Result)
+            if 'train' in mode:
+                Subjects = params.directories.Train.Input.Subjects 
+                for name in tqdm(Subjects ,desc='saving BB ' + ' ' + mode + nucleus):
+                    save_BoundingBox(PRED[name] , Subjects[name] , mode , params.directories.Test.Result + '/TrainData_Output/' + name + '/')
+
+            elif 'test' in mode:
+                Subjects = params.directories.Test.Input.Subjects 
+                for name in tqdm(Subjects ,desc='saving BB ' + ' ' + mode + nucleus):
+                    ResultDir = Subjects[name].address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd' + str(params.WhichExperiment.Dataset.slicingInfo.slicingDim) + '/'
+                    save_BoundingBox(PRED[name] , Subjects[name] , mode , ResultDir)
 
     def loop_Subjects_Sagittal(PRED, mode):
         if PRED:
-            Subjects = params.directories.Train.Input_Sagittal.Subjects if 'train' in mode else params.directories.Test.Input_Sagittal.Subjects
-            for sj in tqdm(Subjects ,desc='saving BB ' + ' ' + mode + nucleus + ' Sagittal'):
-                save_BoundingBox(PRED[sj] , Subjects[sj] , mode , params.directories.Test.Result.replace('/sd2','/sd0'))
+
+            if 'train' in mode:
+                Subjects = params.directories.Train.Input.Subjects 
+                for name in tqdm(Subjects ,desc='saving BB ' + ' ' + mode + nucleus):
+                    save_BoundingBox(PRED[name] , Subjects[name] , mode , params.directories.Test.Result.replace('/sd2','/sd0') + '/TrainData_Output/' + name)
+
+            elif 'test' in mode:
+                Subjects = params.directories.Test.Input.Subjects 
+                for name in tqdm(Subjects ,desc='saving BB ' + ' ' + mode + nucleus):
+                    ResultDir = Subjects[name].address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd0/'
+                    save_BoundingBox(PRED[name] , Subjects[name] , mode , ResultDir)
+
+
 
     loop_Subjects(PRED.Test, 'test')
     loop_Subjects(PRED.Train, 'train')

@@ -570,7 +570,6 @@ def Saving_UserInfo(DirSave, params):
     with open(DirSave + '/UserInfo.json', "w") as j:
         j.write(json.dumps(User_Info))
 
-
 def closeMask(mask,cnt):
     struc = ndimage.generate_binary_structure(3,2)
     if cnt > 1: struc = ndimage.iterate_structure(struc, cnt)
@@ -580,6 +579,7 @@ def dir_check(directory):
     if directory[-1] != '/':
         directory = directory + '/'
     return directory
+
 def apply_MajorityVoting(params):
 
     def func_manual_label(subject,nucleusNm):
@@ -598,13 +598,14 @@ def apply_MajorityVoting(params):
 
         return manual
 
-    address = params.WhichExperiment.Experiment.exp_address + '/results/' + params.WhichExperiment.Experiment.subexperiment_name + '/'
+    # address = params.WhichExperiment.Experiment.exp_address + '/results/' + params.WhichExperiment.Experiment.subexperiment_name + '/'
 
     a = Nuclei_Class().All_Nuclei()
     num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes
 
     for sj in tqdm(params.directories.Test.Input.Subjects):
         subject = params.directories.Test.Input.Subjects[sj]
+        address = subject.address + '/' + params.UserInfo['thalamic_side'].active_side + '/'
 
         VSI, Dice, HD= np.zeros((num_classes,2)) , np.zeros((num_classes,2)) , np.zeros((num_classes,2))
         for cnt, (nucleusNm , nucleiIx) in enumerate(zip(a.Names , a.Indexes)):
@@ -614,7 +615,7 @@ def apply_MajorityVoting(params):
 
             manual = func_manual_label(subject, nucleusNm)
             for sdInfo in ['sd0', 'sd1' , 'sd2']:
-                address_nucleus = address + sdInfo + '/' + subject.subjectName + '/' + nucleusNm + '.nii.gz'
+                address_nucleus = address + sdInfo + '/' + nucleusNm + '.nii.gz'
                 if os.path.isfile(address_nucleus):
 
                     pred = nib.load(address_nucleus).get_data()[...,np.newaxis]
@@ -623,8 +624,7 @@ def apply_MajorityVoting(params):
 
             if ix > 0:
                 predMV = pred3Dims.sum(axis=3) >= 2
-                saveImage( predMV , im.affine, im.header, address + '2.5D_MV/' + subject.subjectName + '/' + nucleusNm + '.nii.gz')
-
+                saveImage( predMV , im.affine, im.header, address + '2.5D_MV/' + nucleusNm + '.nii.gz')
 
                 if manual.Flag:
                     VSI[cnt,:]  = [nucleiIx , metrics.VSI_AllClasses(predMV, manual.Label).VSI()]
@@ -632,9 +632,9 @@ def apply_MajorityVoting(params):
                     Dice[cnt,:] = [nucleiIx , mDice(predMV, manual.Label)]
 
         if Dice[:,1].sum() > 0:
-            np.savetxt( address + '2.5D_MV/' + subject.subjectName + '/VSI_All.txt'  ,VSI  , fmt='%1.1f %1.4f')
-            np.savetxt( address + '2.5D_MV/' + subject.subjectName + '/HD_All.txt'   ,HD   , fmt='%1.1f %1.4f')
-            np.savetxt( address + '2.5D_MV/' + subject.subjectName + '/Dice_All.txt' ,Dice , fmt='%1.1f %1.4f')
+            np.savetxt( address + '2.5D_MV/VSI_All.txt'  ,VSI  , fmt='%1.1f %1.4f')
+            np.savetxt( address + '2.5D_MV/HD_All.txt'   ,HD   , fmt='%1.1f %1.4f')
+            np.savetxt( address + '2.5D_MV/Dice_All.txt' ,Dice , fmt='%1.1f %1.4f')
 
 def extracting_the_biggest_object(pred_Binary):
 

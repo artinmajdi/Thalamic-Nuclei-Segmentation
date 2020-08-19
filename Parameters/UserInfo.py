@@ -1,11 +1,10 @@
 
-TestOnly = False
 class experiment:
     exp_address   = '/array/ssd/msmajdi/experiments/exp6/'
     train_address = '/array/ssd/msmajdi/experiments/data/train/'
     test_address  = '/array/ssd/msmajdi/experiments/data/test/'
-    subexperiment_name = 'test_01_csfn'
-    ReadAugments_Mode  = False
+    subexperiment_name = 'test_02_wmn'
+    ReadAugments_Mode  = True
     code_address  = '/array/ssd/msmajdi/code/'
 
 """ if init_address will be left empty, the default address will be used for initialization """
@@ -19,6 +18,7 @@ Model_Method = 'Cascade'
 class thalamic_side:
     left  = True
     right = True
+    # active_side = ''  # can be left empty
 
 class preprocesscs:
     def __init__(self):
@@ -31,7 +31,7 @@ preprocess = preprocesscs()
 
 class simulation:
     def __init__(self):
-        self.TestOnly      = TestOnly
+        self.TestOnly      = False
         self.epochs        = 5
         self.GPU_Index     = "1"
         self.batch_size    = 10

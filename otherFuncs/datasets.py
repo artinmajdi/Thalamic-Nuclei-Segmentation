@@ -353,19 +353,22 @@ def preAnalysis(params):
             
             def readingCascadeCropSizes(subject):
 
-                dirr = params.directories.Test.Result                
-                if 'train' in mode: dirr += '/TrainData_Output'
-                
-                BBf = np.loadtxt(dirr + '/' + subject.subjectName  + '/BB_' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.txt',dtype=int)
-                BB = BBf[:,:2]
+                if 'train' in mode:
+                    dirr = params.directories.Test.Result + '/TrainData_Output/' + subject.subjectName + '/'
+
+                elif 'test' in mode:
+                    dirr = subject.address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd' + str(params.WhichExperiment.Dataset.slicingInfo.slicingDim) + '/'
+
+                BBf = np.loadtxt(dirr + '/BB_' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.txt',dtype=int)
+                BB  = BBf[:,:2]
                 BBd = BBf[:,2:]
 
-                #! because on the slicing direction we don't want the extra dilated effect to be considered
+                # Because on the slicing direction we don't want the extra dilated effect to be considered
                 BBd[params.WhichExperiment.Dataset.slicingInfo.slicingDim] = BB[params.WhichExperiment.Dataset.slicingInfo.slicingDim]
                 BBd = BBd[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
                 return BBd
 
-            if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
+            if 1 not in params.WhichExperiment.Nucleus.Index:
                 BB = readingCascadeCropSizes(subject)
 
                 origSize = np.array( nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape )

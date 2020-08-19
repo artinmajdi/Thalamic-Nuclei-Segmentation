@@ -10,6 +10,7 @@ import Parameters.paramFunc as paramFunc
 import preprocess.applyPreprocess as applyPreprocess
 from keras import backend as K
 import nibabel as nib
+import numpy as np
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 UserInfoB['simulation'] = UserInfoB['simulation']()
@@ -17,10 +18,12 @@ K = smallFuncs.gpuSetting(str(UserInfoB['simulation'].GPU_Index))
 
 def main(UserInfoB):
 
+    params = paramFunc.Run(UserInfoB, terminal=True)
+
     def Save_AllNuclei_inOne(Directory, mode='_PProcessed'):
         mask = []
-        for cnt , name in (1,2,4,5,6,7,8,9,10,11,12,13,14):
-            name = smallFuncs.Nuclei_Class(method='Cascade').nucleus_name_func(cnt)
+        for cnt in (1,2,4,5,6,7,8,9,10,11,12,13,14):
+            name = smallFuncs.Nuclei_Class(index=cnt).name
             dirr = Directory + '/' + name + mode + '.nii.gz'                                   
             if cnt == 1:
                 thalamus_mask = nib.load( dirr )  
@@ -49,6 +52,9 @@ def main(UserInfoB):
         
         def Run(UserInfoB):
             params = paramFunc.Run(UserInfoB, terminal=True)
+
+            
+            print('\n',params.WhichExperiment.Nucleus.name , 'SD: ' + str(UserInfoB['simulation'].slicingDim) , 'GPU: ' + str(UserInfoB['simulation'].GPU_Index),'\n')
             Data, params = datasets.loadDataset(params)
             choosingModel.check_Run(params, Data)
             K.clear_session()
@@ -56,8 +62,8 @@ def main(UserInfoB):
         def merge_results_and_apply_25D(UserInfoB):
             UserInfoB['best_network_MPlanar'] = True
             params = paramFunc.Run(UserInfoB, terminal=True)
-            Output = params.WhichExperiment.Experiment.exp_address + '/results/' + params.WhichExperiment.Experiment.subexperiment_name
-            os.system("mkdir {Output}/2.5D_MV")
+            # Output = params.WhichExperiment.Experiment.exp_address + '/results/' + params.WhichExperiment.Experiment.subexperiment_name
+            # os.system("mkdir {Output}/2.5D_MV")
             smallFuncs.apply_MajorityVoting(params)
 
         def predict_thalamus_for_sd0(UserI):
@@ -97,32 +103,36 @@ def main(UserInfoB):
         merge_results_and_apply_25D(UserInfoB)
 
     def run_Left(UserInfoB):
+        UserInfoB['thalamic_side'].active_side = 'left'
         running_main(UserInfoB)
-        for subj in params.directories.test.input.Subjects:
+
+        params = paramFunc.Run(UserInfoB, terminal=True)
+        for subj in params.directories.Test.Input.Subjects.values():
             Save_AllNuclei_inOne(subj.address + '/left/2.5D_MV' , mode='')
 
     def run_Right(UserInfoB):
 
         def flip_inputs():
-            subjects = params.directories.test.input.Subjects.copy()
-            subjects.update(params.directories.train.input.Subjects)
+            subjects = params.directories.Test.Input.Subjects.copy()
+            subjects.update(params.directories.Train.Input.Subjects)
 
             for subj in subjects.values(): 
                 os.system("cd %s;for n in *nii.gz; do fslswapdim $n -x y z $n; mv $n flipped_$n ; done"%(subj.address))   
             
         def unflip_inputs():
 
-            subjects = params.directories.test.input.Subjects.copy()
-            subjects.update(params.directories.train.input.Subjects)
+            subjects = params.directories.Test.Input.Subjects.copy()
+            subjects.update(params.directories.Train.Input.Subjects)
 
             for subj in subjects.values():           
                 os.system("cd %s;for n in  *.nii.gz right/*/*.nii.gz; do fslswapdim $n -x y z $n; done"%(subj.address)) 
                 os.system("cd %s;for n in *.nii.gz ; do mv $n ${n#*_} ; done"%(subj.address))  # ${a#*_}   
 
+        UserInfoB['thalamic_side'].active_side = 'right'
         flip_inputs()
         running_main(UserInfoB)
         unflip_inputs()
-        for subj in params.directories.test.input.Subjects:
+        for subj in params.directories.Test.Input.Subjects:
             Save_AllNuclei_inOne(subj.address + '/right/2.5D_MV' , mode='')          
         
     if UserInfoB['thalamic_side'].left:  
@@ -131,8 +141,9 @@ def main(UserInfoB):
         run_Right(UserInfoB)
 
     if UserInfoB['thalamic_side'].left and UserInfoB['thalamic_side'].right: 
+        
         params = paramFunc.Run(UserInfoB, terminal=True)
-        for subj in params.directories.test.input.Subjects:
+        for subj in params.directories.Test.Input.Subjects:
 
             load_side = lambda side: nib.load(subj.address + '/' + side + '/2.5D_MV/AllLabels.nii.gz')
             left,right = load_side('left'),load_side('right')
