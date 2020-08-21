@@ -32,7 +32,7 @@ class register_cls():
 
         def warp_nuclei(self):
             smallFuncs.mkDir(self.dir_out + '/Label') 
-            for nucleus in smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names:
+            for nucleus in smallFuncs.Nuclei_Class(method='Cascade').allNames:
                 IN  = self.dir_in  + '/Label/' + nucleus    + '_PProcessed.nii.gz'
                 OUT = self.dir_out + '/Label/' + nucleus    + '_PProcessed.nii.gz'        
                 csfn = self.dir_in + '/' + self.csfn_name + '.nii.gz'    

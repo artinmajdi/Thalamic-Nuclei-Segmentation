@@ -15,7 +15,7 @@ import pandas as pd
 dir = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd2/vimp2_967_08132013_KW/'
 dirM = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/Main/a/vimp2_967_08132013_KW/Label/'
 
-Names = smallFuncs.Nuclei_Class(index=1,method='Cascade').All_Nuclei().Names
+Names = smallFuncs.Nuclei_Class(index=1,method='Cascade').allNames
 
 write_flag = False
 PR = {}

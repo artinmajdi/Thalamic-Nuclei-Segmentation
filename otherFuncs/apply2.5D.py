@@ -50,7 +50,7 @@ def func_MajorityVoting(Info , params):
         # print(subject.subjectName)
         Info.subject = subject()
 
-        a = smallFuncs.Nuclei_Class().All_Nuclei()
+        a = smallFuncs.Nuclei_Class()
         for nucleusNm , nucleiIx in zip(a.Names , a.Indexes):
 
             if 1: # os.path.exists(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz'):
@@ -79,7 +79,7 @@ def func_DecisionTree(Info , params):
     Info.subExperiment.address = Info.Experiment.address + '/results/' + Info.subExperiment.name + '/'
    
     a = smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei()
-    for nucleusNm , nucleiIx in zip(a.Names , a.Indexes):
+    for nucleusNm , nucleiIx in zip(a.allNames , a.Indexes):
         print(Info.subExperiment.name , nucleusNm)
         # nucleusNm, nucleiIx = '1-THALAMUS' , 1
         # a = smallFuncs.Nuclei_Class(index=6)

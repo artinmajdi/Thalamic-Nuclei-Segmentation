@@ -40,7 +40,7 @@ def check_Run(params, Data):
 
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
     
-    if params.preprocess.TestOnly or params.UserInfo['thalamic_side'].active_side == 'right':
+    if params.WhichExperiment.TestOnly or params.UserInfo['thalamic_side'].active_side == 'right':
         model = loadModel(params)
     else:
         model = trainingExperiment(Data, params)

@@ -9,5 +9,5 @@ import Parameters.UserInfo as UserInfo
 params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 params.preprocess.Mode = True
 
-applyPreprocess.main(params, 'experiment')
+applyPreprocess.main(params)
 

@@ -40,24 +40,6 @@ def main(dir_in, dir_template):
             elif not os.path.isfile(LinearAffine): 
                 print('Registration is required', self.dir_in)
 
-
-            # subject.address = self.dir_in
-            # subject.ImageProcessed = 'PProcessed'
-            # subject.Temp.address = self.dir_in + '/temp'
-            # subject.Temp.Deformation.address = self.dir_in + '/temp/deformation'
-
-            # RigidRegistration( subject , params.WhichExperiment.HardParams.Template , params.preprocess)
-            
-            # croppingA.main(subject , params)
-
-            # Images = [s for s in os.listdir(self.dir_in) if 'PProcessed' not in s and '.nii.gz' in s]
-            # FullImage = self.dir_in + '/' + Images[0]
-            # outP = mkDir(self.dir_in + '/temp/') + 'CropMask.nii.gz'
-            # os.system("ANTS 3 -m CC[%s, %s ,1,5] -o %s -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false" %(FullImage , self.dir_template + '/origtemplate.nii.gz', mkDir(self.dir_in + 'temp/deformation/') + 'linear') )
-
-            # os.system("WarpImageMultiTransform 3 %s %s -R %s %s"%(self.dir_template + '/CropMask.nii.gz' , outP , FullImage , LinearAffine) )
-            # os.system("WarpImageMultiTransform 3 %s %s -R %s %s"%(inMask , outMask , Image , LinearAffine) )
-
         def warp_all(self):
             for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s]:
                 print(subj , '\n')
@@ -69,8 +51,6 @@ def main(dir_in, dir_template):
 
 
     UI = UserEntry(dir_in=dir_in, dir_template=dir_template)
-    # UI.dir_in  = '/array/ssd/msmajdi/experiments/keras/exp5_CSFn/train/Main/vimp2_845_05312013_VZ'
-    # UI.mode = 0
 
     if UI.mode == 0: AV_crop_cls(dir_in = UI.dir_in , dir_template = UI.dir_template).apply_Warp()
     else:            AV_crop_cls(dir_in = UI.dir_in , dir_template = UI.dir_template).warp_all()

@@ -82,8 +82,6 @@ def main(UserInfoB):
             UserI['simulation'].nucleus_Index = [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
             Run(UserI)
 
-        applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True), 'experiment')
-
         UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
         UserInfoB['simulation'].slicingDim = [0]
         UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
@@ -135,19 +133,20 @@ def main(UserInfoB):
         for subj in params.directories.Test.Input.Subjects:
             Save_AllNuclei_inOne(subj.address + '/right/2.5D_MV' , mode='')          
         
-    if UserInfoB['thalamic_side'].left:  
-        run_Left(UserInfoB)
-    if UserInfoB['thalamic_side'].right: 
-        run_Right(UserInfoB)
-
-    if UserInfoB['thalamic_side'].left and UserInfoB['thalamic_side'].right: 
-        
+    def merging_left_right_labels(UserInfoB):
         params = paramFunc.Run(UserInfoB, terminal=True)
         for subj in params.directories.Test.Input.Subjects:
 
             load_side = lambda side: nib.load(subj.address + '/' + side + '/2.5D_MV/AllLabels.nii.gz')
             left,right = load_side('left'),load_side('right')
-            smallFuncs.saveImage(image= left.get_data() + right.get_data(), affine=left.affine , header=left.header , outDirectory=subj.address + '/left/AllLabels_Left_and_Right.nii.gz')
+            smallFuncs.saveImage(Image= left.get_data() + right.get_data(), Affine=left.affine , Header=left.header , outDirectory=subj.address + '/left/AllLabels_Left_and_Right.nii.gz')
+
+    applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True))
+
+    TS = UserInfoB['thalamic_side']
+    if TS.left:              run_Left(UserInfoB)
+    if TS.right:             run_Right(UserInfoB)
+    if TS.left and TS.right: merging_left_right_labels(UserInfoB)
 
 
 main(UserInfoB)

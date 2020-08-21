@@ -20,14 +20,22 @@ class thalamic_side:
     right = True
     # active_side = ''  # can be left empty
 
-class preprocesscs:
-    def __init__(self):
-        self.Mode = False
-        self.BiasCorrection = True
-        self.Cropping = True
-        self.Reslicing = True
+class normalize:
+    """ Method: 
+        MinMax
+        1Std0Mean
+        Both       """
+    Mode   = True
+    Method = '1Std0Mean'
+    
+class preprocess:
+    Mode             = True
+    BiasCorrection   = False
+    Cropping         = True
+    Reslicing        = True
+    save_debug_files = True
+    Normalize        = normalize()
 
-preprocess = preprocesscs()
 
 class simulation:
     def __init__(self):

@@ -56,7 +56,7 @@ class Reference():
             print('nucleus %s doesn not exist' % self.nucleus )            
 
     def write_all_nuclei(self):       
-        for self.nucleus in np.append('Image' , smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names): 
+        for self.nucleus in np.append('Image' , smallFuncs.Nuclei_Class(method='Cascade').allNames): 
             Reference(self.nucleus).write()
 
 class reslice_cls():
@@ -95,7 +95,7 @@ class reslice_cls():
             apply_to_Image(image , self)
         
         smallFuncs.mkDir(self.dir_out + '/Label/')
-        for nucleus in smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names:  # [n for n in os.listdir(self.dir_in + '/Label/') if '.nii.gz' in n]: 
+        for nucleus in smallFuncs.Nuclei_Class(method='Cascade').allNames:  # [n for n in os.listdir(self.dir_in + '/Label/') if '.nii.gz' in n]: 
             print('Applying to',nucleus)
             try:
                 apply_to_mask(nucleus , self)

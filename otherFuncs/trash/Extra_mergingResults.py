@@ -16,8 +16,8 @@ import math
 
 NumColumns , n_epochsMax = 19 , 300
 
-All_Nuclei_Names = smallFuncs.Nuclei_Class(method = 'HCascade').All_Nuclei().Names
-All_Nuclei_Indexes = smallFuncs.Nuclei_Class(method = 'HCascade').All_Nuclei().Indexes
+All_Nuclei_Names = smallFuncs.Nuclei_Class(method = 'HCascade').allNames
+All_Nuclei_Indexes = smallFuncs.Nuclei_Class(method = 'HCascade').Indexes
 
 class savingHistory_AsExcel:
     def __init__(self, Info):

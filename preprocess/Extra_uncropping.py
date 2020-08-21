@@ -42,7 +42,7 @@ class uncrop_cls():
         # full_mask    = self.dir_in  + '/Label/' + self.maskCrop + '.nii.gz'
         # uncrop.uncrop_by_mask(input_image=input_image, output_image=output_image , full_mask=full_mask)  
         
-        for label in smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names:
+        for label in smallFuncs.Nuclei_Class(method='Cascade').allNames:
             input_image  = self.dir_in  + '/Label/' + label    + '_PProcessed.nii.gz'
             output_image = self.dir_out + '/Label/' + label    + '.nii.gz'
             # full_mask = self.dir_in  + '/Label/' + self.maskCrop + '.nii.gz' 

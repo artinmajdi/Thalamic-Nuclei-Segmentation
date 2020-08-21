@@ -27,7 +27,7 @@ import nibabel as nib
 
 # dir_in  = dirr + subject + '/left/'
 # dir_out = smallFuncs.mkDir(subject_addr_out + '/Label/')
-for label in smallFuncs.Nuclei_Class(method='Cascade').All_Nuclei().Names:
+for label in smallFuncs.Nuclei_Class(method='Cascade').allNames:
 
     print(label)
     uncrop_by_mask(input_image= dir_in + label + '.nii.gz', output_image=dir_out + label + '.nii.gz' , full_mask=dir_in + 'mask_inp.nii.gz')

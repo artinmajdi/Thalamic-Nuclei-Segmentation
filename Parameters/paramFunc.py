@@ -13,10 +13,23 @@ import json
 
 def Run(UserInfoB, terminal=False):
         
+    """
+    class normalize:           
+        Mode = True
+        Method = '1Std0Mean'  # MinMax  -  1Std0Mean  -  Both
+
+    class Preprocess:
+        Mode             = False
+        BiasCorrection   = False
+        Cropping         = True
+        Reslicing        = True
+        save_debug_files = True
+        Normalize        = normalize()
+    """
+
     class params:
         WhichExperiment = func_WhichExperiment(UserInfoB)
-        preprocess      = func_preprocess(UserInfoB)
-        Augment         = func_Augment(UserInfoB) 
+        preprocess      = UserInfoB['preprocess']()
         directories     = smallFuncs.search_ExperimentDirectory(WhichExperiment)
         UserInfo        = UserInfoB
 
@@ -321,15 +334,15 @@ def func_WhichExperiment(UserInfo):
         return UserInfo_Load['InputPadding_Dims'], UserInfo_Load['num_Layers']
         
 
-    WhichExperiment.Experiment    = UserInfo['experiment']()
-    WhichExperiment.HardParams    = func_ModelParams()
-    WhichExperiment.Nucleus       = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.Mode)
-    WhichExperiment.Dataset       = func_Dataset()
-    WhichExperiment.TestOnly = USim.TestOnly
-    WhichExperiment.HardParams.Model.TestOnly = USim.TestOnly
+    WhichExperiment.Experiment = UserInfo['experiment']()
+    WhichExperiment.HardParams = func_ModelParams()
+    WhichExperiment.Nucleus    = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.Mode)
+    WhichExperiment.Dataset    = func_Dataset()
+    WhichExperiment.TestOnly   = USim.TestOnly
 
     def adding_TransferLearningParams(WhichExperiment):
 
+        """
         def params_bestUnet(Model_Method, sdTag):
             if Model_Method == 'Cascade':
                 if sdTag == 0:   FM , NL = 10, 3
@@ -340,7 +353,8 @@ def func_WhichExperiment(UserInfo):
                 FM , NL = 20, 3
 
             return FM , NL , 'U-Net4'
-
+        """
+        
         def params_bestResUnet2(Model_Method, sdTag):
             if Model_Method == 'Cascade':
                 if sdTag == 0:   FM , NL = 40, 3
@@ -382,85 +396,6 @@ def func_WhichExperiment(UserInfo):
 
     return WhichExperiment
     
-def func_preprocess(UserInfo):
-
-    def preprocess_Class():
-
-        class normalizeCs:
-            Mode = True
-            Method = '1Std0Mean'
-            per_Subject = True
-            per_Dataset = False
-
-        class cropping:
-            Mode = True
-            Method = 'python'
-
-        class biasCorrection:
-            Mode = ''
-
-        class reslicing:
-            Mode = ''
-
-        # TODO fix the justfornow
-        class debug:
-            doDebug = True
-            PProcessExist = False  # rename it to preprocess exist
-            justForNow = True # it checks the intermediate steps and if it existed don't reproduce it
-
-        class preprocess:
-            Mode = ''
-            TestOnly = ''
-            Debug = debug()
-            # Augment = augment()
-            Cropping = cropping()
-            Reslicing = reslicing()
-            Normalize = normalizeCs()
-            BiasCorrection = biasCorrection()
-
-        return preprocess()
-    preprocess = preprocess_Class()
-
-    preprocess.Mode                = UserInfo['preprocess'].Mode
-    preprocess.BiasCorrection.Mode = UserInfo['preprocess'].BiasCorrection
-    preprocess.Cropping.Mode       = UserInfo['preprocess'].Cropping
-    preprocess.Reslicing.Mode      = UserInfo['preprocess'].Reslicing    
-    preprocess.TestOnly            = UserInfo['simulation'].TestOnly
-    return preprocess
-
-def func_Augment(UserInfo):
-
-    def Augment_Class():
-        class rotation:
-            Mode = True
-            AngleMax = 6
-
-        class shift:
-            Mode = False
-            ShiftMax = 10
-
-        class shear:
-            Mode = False
-            ShearMax = 0
-
-        class linearAug:
-            Mode = False
-            Length = 8
-            Rotation = rotation()
-            Shift = shift()
-            Shear = shear()
-
-        class nonlinearAug:
-            Mode = False
-            Length = 2
-        class augment:
-            Mode = False
-            Linear = linearAug()
-            NonLinear = nonlinearAug()
-
-        return augment()
-    Augment = Augment_Class()
-    return Augment
     
 
 

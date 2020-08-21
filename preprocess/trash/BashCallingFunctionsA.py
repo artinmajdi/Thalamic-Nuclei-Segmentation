@@ -13,7 +13,7 @@ def RigidRegistration(subject , Template , preprocess):
     processed = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
     outP = subject.Temp.address + '/CropMask.nii.gz'
     LinearAffine = subject.Temp.Deformation.address + '/linearAffine.txt'
-    if preprocess.Mode and preprocess.Cropping.Mode: # and not os.path.isfile(outP):
+    if preprocess.Mode and preprocess.Cropping: # and not os.path.isfile(outP):
         print('     Rigid Registration')
         if not os.path.isfile(LinearAffine): 
             os.system("ANTS 3 -m CC[%s, %s ,1,5] -o %s -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false" %(processed , Template.Image , subject.Temp.Deformation.address + '/linear') )
@@ -26,13 +26,13 @@ def BiasCorrection(subject , params):
     inP  = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
     outP = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
     outDebug = subject.Temp.address + '/' + subject.ImageOriginal + '_bias_corr.nii.gz'
-    if params.preprocess.Mode and params.preprocess.BiasCorrection.Mode:
-        if os.path.isfile(outDebug) and params.preprocess.Debug.justForNow:
+    if params.preprocess.Mode and params.preprocess.BiasCorrection:
+        if os.path.isfile(outDebug):
             copyfile(outDebug , outP)
         else:
             print('     Bias Correction')            
             os.system( "N4BiasFieldCorrection -d 3 -i %s -o %s -b [200] -s 3 -c [50x50x30x20,1e-6]"%( inP, outP )  )
-            if params.preprocess.Debug.doDebug:
+            if params.preprocess.save_debug_files:
                 copyfile(outP , outDebug)
 
 """
@@ -51,7 +51,7 @@ def RigidRegistration_2AV(subject , Template , preprocess):
     # Template_FullImage = Template.Address + 'origtemplate.nii.gz'
     
     outP_crop = subject.Temp.address + '/CropMask_AV.nii.gz'
-    if preprocess.Cropping.Mode and not os.path.isfile(outP_crop):  
+    if preprocess.Cropping and not os.path.isfile(outP_crop):  
         
         if not os.path.isfile(LinearAffine_FullImage + '/linearAffine.txt' ): 
             print('     Rigid Registration of cropped Image')

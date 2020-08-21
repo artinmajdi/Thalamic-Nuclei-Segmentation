@@ -103,7 +103,9 @@ class Nuclei_Class():
         self.method = method
         self.index = index
         self.parent , self.child = ( None, [2,4,5,6,7,8,9,10,11,12,13,14] ) if self.index == 1 else (1,None)
-
+        self.Indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14])
+        self.Names  = [self.nucleus_name_func(index) for index in self.Indexes]
+    
     def All_Nuclei(self):                      
         class All_Nuclei:
             Indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14])
@@ -182,15 +184,9 @@ class Experiment_Folder_Search():
             NumColumns = 19
             Nuclei_Names = np.append( ['subjects'] , list(np.zeros(NumColumns-1))  )
             Nuclei_Names[3] = ''
-            def nuclei_Index_Integer(nIx):
-                if nIx in range(15): return nIx
-                elif nIx == 1.1:     return 15
-                elif nIx == 1.2:     return 16
-                elif nIx == 1.3:     return 17
-                elif nIx == 1.4:     return 18
 
-            for nIx in Nuclei_Class().All_Nuclei().Indexes:
-                Nuclei_Names[nuclei_Index_Integer(nIx)] = Nuclei_Class(index=nIx).name
+            for nIx, name in enumerate(Nuclei_Class().Indexes, Nuclei_Class().Names):
+                Nuclei_Names[nIx] = name
 
             return Nuclei_Names
 
@@ -419,7 +415,7 @@ def search_ExperimentDirectory(whichExperiment):
                 # Multi Class
                 else:
                     for nucleus in whichExperiment.Nucleus.FullNames:
-                        if nucleus + '.nii.gz' in A[2]:
+                        if (nucleus + '.nii.gz' in A[2]) and (nucleus + '_PProcessed.nii.gz' not in A[2]):
                             copyfile(Files.Label.address + '/' + nucleus + '.nii.gz' , Files.Label.address + '/' + nucleus + '_PProcessed.nii.gz')
 
                 return Files

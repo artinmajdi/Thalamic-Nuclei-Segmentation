@@ -123,15 +123,10 @@ def loadDataset(params):
 
             return ImageF, np.transpose(Image, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
-
         imF, im = readingWithTranpose(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz' , params)
-
-
         im = inputPreparationForUnet(im, subject2, params)
+        im = normalizeA.main_normalize(params.preprocess.Normalize , im)
 
-        if params.preprocess.Normalize.per_Subject: im = normalizeA.main_normalize(params.preprocess.Normalize , im)
-
-        # im = 1 - im
         return im, imF
 
 
@@ -193,7 +188,7 @@ def loadDataset(params):
             return params.WhichExperiment.Nucleus.Index[0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2
         
         def trainFlag():
-            Flag_TestOnly = params.preprocess.TestOnly
+            Flag_TestOnly = params.WhichExperiment.TestOnly
             Flag_notEmpty = params.directories.Train.Input.Subjects
             measure_train = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
 
@@ -220,18 +215,6 @@ def loadDataset(params):
             
         def separateTrainVal_and_concatenateTrain(DataAll):   
 
-            def func_normalize(DataAll):
-                if DataAll.Train:      DataAll.Train.Image = normalizeA.main_normalize(params.preprocess.Normalize , DataAll.Train.Image)
-                if DataAll.Validation: DataAll.Validation.Image = normalizeA.main_normalize(params.preprocess.Normalize , DataAll.Validation.Image)
-                
-                for nameSubject in list(DataAll.Train_ForTest):
-                    DataAll.Train_ForTest[nameSubject].Image = normalizeA.main_normalize(params.preprocess.Normalize , DataAll.Train_ForTest[nameSubject].Image)
-
-                for nameSubject in list(DataAll.Test):
-                    DataAll.Test[nameSubject].Image = normalizeA.main_normalize(params.preprocess.Normalize , DataAll.Test[nameSubject].Image)
-                
-                return DataAll
-
             TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage, list(params.directories.Train.Input.Subjects), params.WhichExperiment.Dataset.randomFlag)
 
             if params.WhichExperiment.Dataset.Validation.fromKeras or params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
@@ -241,8 +224,6 @@ def loadDataset(params):
                 DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, TrainList,'train')
                 DataAll.Validation = separatingConcatenatingIndexes(DataAll.Train_ForTest, ValList,'validation')
                 
-            if params.preprocess.Normalize.per_Dataset: DataAll = func_normalize(DataAll)
-
             return DataAll
 
         def readingAllSubjects(Subjects, mode):

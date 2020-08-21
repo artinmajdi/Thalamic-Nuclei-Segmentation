@@ -57,7 +57,6 @@ def LinearFunc(params, mode):
             smallFuncs.mkDir(self.outDirectory.Image + '/temp/')
 
         def main(self, Image, order):
-            # apply_linear = linearFuncs_Class(im).
             self.Image = Image
             self.order = order
             
@@ -80,7 +79,6 @@ def LinearFunc(params, mode):
                 self.Image = np.roll(self.Image,self.InputThreshs.shift[0],axis=0)
                 self.Image = np.roll(self.Image,self.InputThreshs.shift[1],axis=1)
 
-            # for slicingDim in params.WhichExperiment.Dataset.slicingInfo.slicingDim:
             self.Image = np.transpose(self.Image, self.params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
             if self.params.Augment.Linear.Rotation.Mode: funcRotating(self)  # im = funcRotating(im , InputThreshs.angle, mode)
@@ -152,12 +150,6 @@ def NonLinearFunc(Input, Augment, mode):
 
             nameSubjectRef = SubjectNames[augInd]
             subjectRef = Subjects[nameSubjectRef]
-
-            # Image     = subject.address    + '/' + subject.ImageProcessed + '.nii.gz'
-            # Reference = subjectRef.address + '/' + subjectRef.ImageProcessed + '.nii.gz'
-
-            # Mask      = subject.Label.address    + '/' + subject.Label.LabelProcessed + '.nii.gz'
-            # Reference = subjectRef.Label.address + '/' + subjectRef.Label.LabelProcessed + '.nii.gz'
 
             outputAddress = smallFuncs.mkDir( Input.address + '/' + nameSubject + '_Aug' + str(AugIx) + '_Ref_' + nameSubjectRef )
 
