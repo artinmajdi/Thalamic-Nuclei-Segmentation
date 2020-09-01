@@ -1,8 +1,8 @@
 
 class experiment:
-    exp_address   = '/array/ssd/msmajdi/experiments/exp6/'
-    train_address = '/array/ssd/msmajdi/experiments/data/train/'
-    test_address  = '/array/ssd/msmajdi/experiments/data/test/'
+    exp_address   = '/array/hdd/msmajdi/experiments/exp6/'
+    train_address = '/array/hdd/msmajdi/data/preprocessed/train/'
+    test_address  = '/array/hdd/msmajdi/data/preprocessed/test/'
     subexperiment_name = 'test_02_wmn'
     ReadAugments_Mode  = True
     code_address  = '/array/ssd/msmajdi/code/'
@@ -13,12 +13,10 @@ class initialize:
     modality_default = 'wmn' # 'wmn' 'csfn'
     init_address  = '' # '/array/ssd/msmajdi/code/Trained_Models/WMn/'
 
-Model_Method = 'Cascade'
-
 class thalamic_side:
     left  = True
     right = True
-    # active_side = ''  # can be left empty
+    active_side = ''  # can be left empty. Used during the processing of each side
 
 class normalize:
     """ Method: 

@@ -17,46 +17,70 @@ import keras.layers as KLayers
 import modelFuncs.LossFunction as LossFunction
 from skimage.transform import AffineTransform , warp
 
-def func_class_weights(weighted_Mode, Mask):
+def func_class_weights(Mask):
+    """ Finding the weights for each class, in an unbalanced dataset
+
+        Args:
+            Mask: A 4D volume of all inputs and their labels. Dimension: (n = 2D slices , x , y , c = classes)
+        
+        Returns:
+            class weights (numpy array): 
+    """    
+    
     sz = Mask.shape
     NUM_CLASSES = sz[3]
+    NUM_SAMPLES = np.prod(sz[:3])
+
     class_weights = np.ones(NUM_CLASSES)
 
-    #! equal weights
-    if weighted_Mode:
-        for ix in range(NUM_CLASSES):                                        
-            TRUE_Count = len(np.where(Mask[...,ix] > 0.5)[0])
-            NUM_SAMPLES = np.prod(sz[:3])
-            class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
+    for ix in range(NUM_CLASSES):                                        
+        TRUE_Count = len(np.where(Mask[...,ix] > 0.5)[0])
+        class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES*TRUE_Count)
     
     class_weights = class_weights/np.sum(class_weights)
     print('class_weights' , class_weights)
-    # # ! zero weight for foreground
-    # for i in [0,2,5,7]: class_weights[i] = 0
-    # # class_weights = class_weight.compute_class_weight('balanced',classes,y_train)
     return class_weights
     
 def check_Run(params, Data):
 
+    # Assigning the gpu index
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
     
+    # Skipping the training phase, if the algorithm is set to test from existing trained networks or the right thalamus
     if params.WhichExperiment.TestOnly or params.UserInfo['thalamic_side'].active_side == 'right':
         model = loadModel(params)
+
+    # Training the network, if the algorithm is set to training on the left thalamus
     else:
         model = trainingExperiment(Data, params)
     
+    # predicting the labels on test cases
     prediction = testingExeriment(model, Data, params)
 
-    method = params.WhichExperiment.HardParams.Model.Method.Type
+    # Saving the predicted whole thalamus bounding box as a text file
     nucleus_index = int(params.WhichExperiment.Nucleus.Index[0])
-    if ('Cascade' == method) and (nucleus_index == 1):
+    if nucleus_index == 1:
         save_BoundingBox_Hierarchy(params, prediction)
 
     return True
 
 def loadModel(params):
+    """ Loading the model
+
+        Args:
+            params: Parameters
+
+        Returns:
+            model: neural network model
+    """ 
+
+    # Loading the architecture: 
+    #    To bypass the dependency on the number of index of gpu, weights are loaded separately than the architecture
     model = architecture(params.WhichExperiment.HardParams.Model)
-    model.load_weights(params.directories.Train.Model + '/model_weights.h5')       
+
+    # Loading the weights
+    model.load_weights(params.directories.Train.Model + '/model_weights.h5')
+
     return model
 
 def testingExeriment(model, Data, params):
@@ -71,13 +95,11 @@ def testingExeriment(model, Data, params):
 
             def binarizing(pred1N):
                 # Thresh = max( skimage.filters.threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
-                return pred1N  > 0.5 # Thresh
+                return pred1N  > 0.5
 
             def cascade_paddingToOrigSize(im):
-                if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
+                if 1 not in params.WhichExperiment.Nucleus.Index:
                     im = np.pad(im, subject.NewCropInfo.PadSizeBackToOrig, 'constant')
-                    # Padding2, crd = paddingNegativeFix(im.shape, Padding2)
-                    # im = im[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
                 return im
 
             def closeMask(mask):
@@ -86,9 +108,7 @@ def testingExeriment(model, Data, params):
             
             pred = np.squeeze(pred1Class)
             pred2 = binarizing(pred)
-            
-            # pred = cascade_paddingToOrigSize(pred)                        
-            
+                        
             if params.WhichExperiment.HardParams.Model.Method.ImClosePrediction: 
                 pred2 = closeMask(pred2)
 
@@ -602,12 +622,3 @@ def architecture(ModelParam):
     model.summary()
 
     return model
-
-def func_classWeights(params , Data):
-
-    if params.WhichExperiment.HardParams.Model.Layer_Params.class_weight.Mode:
-        Sz = Data.Train.Mask.shape
-        a = np.sum(Data.Train.Mask[...,0] < 0.5) / (Sz[0]*Sz[1]*Sz[2])
-        return {0:1-a , 1:a}
-    else: return {0:1 , 1:1}
-   

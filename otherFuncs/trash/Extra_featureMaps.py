@@ -18,7 +18,6 @@ from tqdm import tqdm
 UserInfo = UserInfo.__dict__  
 
 UserInfo['CrossVal'].index   = ['a']
-UserInfo['Model_Method'] = 'Cascade'
 UserInfo['simulation'].num_Layers = 3
 UserInfo['architectureType'] = 'Res_Unet2'
 UserInfo['Experiments'].Index = '6'

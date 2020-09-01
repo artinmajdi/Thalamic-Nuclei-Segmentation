@@ -14,26 +14,40 @@ import numpy as np
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 UserInfoB['simulation'] = UserInfoB['simulation']()
-K = smallFuncs.gpuSetting(str(UserInfoB['simulation'].GPU_Index))
+K = smallFuncs.gpuSetting(UserInfoB['simulation'].GPU_Index)
 
 def main(UserInfoB):
 
-    params = paramFunc.Run(UserInfoB, terminal=True)
-
     def Save_AllNuclei_inOne(Directory, mode='_PProcessed'):
-        mask = []
-        for cnt in (1,2,4,5,6,7,8,9,10,11,12,13,14):
-            name = smallFuncs.Nuclei_Class(index=cnt).name
-            dirr = Directory + '/' + name + mode + '.nii.gz'                                   
-            if cnt == 1:
-                thalamus_mask = nib.load( dirr )  
+        """ Saving all of the predicted nuclei into one nifti image
 
-            else:
-                if os.path.isfile(dirr):
+        Args:
+            Directory (str): The path to all predicted nuclei
+            mode (str, optional): Optional tag that can be added to the predicted nuclei names. Defaults to '_PProcessed'.
+        """
+
+        mask = []
+
+        # Looping through all nuclei
+        for cnt in (1,2,4,5,6,7,8,9,10,11,12,13,14):
+
+            name = smallFuncs.Nuclei_Class(index=cnt).name
+            dirr = Directory + '/' + name + mode + '.nii.gz'  
+            if os.path.isfile(dirr):                                 
+                if cnt == 1:
+                    # loading thalamus mask for the purpose of using its affine matrices & header
+                    assert os.path.isfile(dirr), 'Thalamus mask does not exist'
+                    thalamus_mask = nib.load( dirr )  
+
+                else:
+                    # saving the nuclei into one mask
                     msk = nib.load(dirr).get_data()  
                     if mask == []: 
+                        # saving the first nucleus (2-AV)
                         mask = cnt*msk 
                     else:
+                        # saving the remaining nuclei, while randomly assigning a label from the labels 
+                        # that exist in the overlapping area
                         mask_temp = mask.copy()
                         mask_temp[msk == 0] = 0
                         x = np.where(mask_temp > 0)
@@ -45,79 +59,118 @@ def main(UserInfoB):
 
                         mask += cnt*msk 
                     
-
+        # Saving the final multi-label segmentaion mask as a nifti image
         smallFuncs.saveImage( mask , thalamus_mask.affine , thalamus_mask.header, Directory + '/AllLabels.nii.gz')
 
     def running_main(UserInfoB):
+        """ Running the network on left and/or right thalamus
+
+        Args:
+            UserInfoB: User Inputs
+        """        
         
         def Run(UserInfoB):
-            params = paramFunc.Run(UserInfoB, terminal=True)
+            """ Loading the dataset & running the network on the assigned slicing orientation & nuclei
 
-            
+            Args:
+                UserInfoB: User Inputs
+            """            
+
+            params = paramFunc.Run(UserInfoB, terminal=True)
             print('\n',params.WhichExperiment.Nucleus.name , 'SD: ' + str(UserInfoB['simulation'].slicingDim) , 'GPU: ' + str(UserInfoB['simulation'].GPU_Index),'\n')
+            
+            # Loading the dataset
             Data, params = datasets.loadDataset(params)
+
+            # Running the training/testing network
             choosingModel.check_Run(params, Data)
+
+            # clearing the gpu session
             K.clear_session()
 
         def merge_results_and_apply_25D(UserInfoB):
-            UserInfoB['best_network_MPlanar'] = True
+            """ Merging the sagittal, Coronal, and axial networks prediction masks using 2.5D majority voting
+            """
+
             params = paramFunc.Run(UserInfoB, terminal=True)
-            # Output = params.WhichExperiment.Experiment.exp_address + '/results/' + params.WhichExperiment.Experiment.subexperiment_name
-            # os.system("mkdir {Output}/2.5D_MV")
             smallFuncs.apply_MajorityVoting(params)
 
         def predict_thalamus_for_sd0(UserI):
+            """ Due to the existense of both left and right thalamus in the cropped nifti image while lacking the
+                manual labels for the right thalamus, during the sagittal network process, to predict the whole thalamus
+                all 3D volumes will be sampled in the coronal direction instead of sagittal
+            """
+
+            # Predicting the whole thalamus in the coronal orientation
             UserI['simulation'].slicingDim = [2]
             UserI['simulation'].nucleus_Index = [1]
             UserI['simulation'].Use_Coronal_Thalamus_InSagittal = True
             Run(UserI)
 
+            # Predicting the remaining of nuclei in the sagittal orientation
             UserI['simulation'].slicingDim = [0]
             UserI['simulation'].nucleus_Index = [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
             Run(UserI)
 
         def predict_multi_thalamus(UserI):
+            """ Running the two consecutive networks in the cascaded algorithm for axial & coronal orientations
+            """
+
+            # Running the 1st network of cascaded algorithm: Predicting whole thalamus 
             UserI['simulation'].nucleus_Index = [1]
             Run(UserI)
+
+            # Running the 2nd network of cascaded algorithm: Predicting the remaiing of nuclei 
+            # after cropping the input image & its nuclei using predicted whole thalamus bounding box
             UserI['simulation'].nucleus_Index = [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
             Run(UserI)
 
-        UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40
-        UserInfoB['simulation'].slicingDim = [0]
+        # Running the sagittal network
+        UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40 # Number of feature maps in the first layer of Resnet
+        UserInfoB['simulation'].slicingDim = [0] # Sagittal Orientation 
         UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
         predict_thalamus_for_sd0(UserInfoB)
 
-        UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30
-        UserInfoB['simulation'].slicingDim = [1]
+        # Running the axial network
+        UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30 # Number of feature maps in the first layer of Resnet
+        UserInfoB['simulation'].slicingDim = [1] # Axial Orientation 
         UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
         predict_multi_thalamus(UserInfoB)
 
-        UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20
-        UserInfoB['simulation'].slicingDim = [2]
+        # Running the coronal network
+        UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20 # Number of feature maps in the first layer of Resnet
+        UserInfoB['simulation'].slicingDim = [2] # Coronal Orientation 
         UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-        UserInfoB['simulation'].Use_Coronal_Thalamus_InSagittal = False
+        # UserInfoB['simulation'].Use_Coronal_Thalamus_InSagittal = False
         predict_multi_thalamus(UserInfoB)
 
         merge_results_and_apply_25D(UserInfoB)
 
     def run_Left(UserInfoB):
+        """ running the network on left thalamus """ 
+        
         UserInfoB['thalamic_side'].active_side = 'left'
         running_main(UserInfoB)
 
+        # Saving the multi label nifti image consisting of all predicted labels from 2-AV to 14-MTT 
         params = paramFunc.Run(UserInfoB, terminal=True)
         for subj in params.directories.Test.Input.Subjects.values():
             Save_AllNuclei_inOne(subj.address + '/left/2.5D_MV' , mode='')
 
     def run_Right(UserInfoB):
+        """ running the network on right thalamus """ 
 
-        def flip_inputs():
+        def flip_inputs(params):
+            """ Flip L-R the image & its nuclei""" 
+
             subjects = params.directories.Test.Input.Subjects.copy()
             subjects.update(params.directories.Train.Input.Subjects)
 
             for subj in subjects.values(): 
                 os.system("cd %s;for n in *nii.gz; do fslswapdim $n -x y z $n; mv $n flipped_$n ; done"%(subj.address))   
             
-        def unflip_inputs():
+        def unflip_inputs(params):
+            """ reverse Flip L-R the flipped image & its nuclei""" 
 
             subjects = params.directories.Test.Input.Subjects.copy()
             subjects.update(params.directories.Train.Input.Subjects)
@@ -127,9 +180,13 @@ def main(UserInfoB):
                 os.system("cd %s;for n in *.nii.gz ; do mv $n ${n#*_} ; done"%(subj.address))  # ${a#*_}   
 
         UserInfoB['thalamic_side'].active_side = 'right'
-        flip_inputs()
+        params = paramFunc.Run(UserInfoB, terminal=True)
+
+        flip_inputs(params)
         running_main(UserInfoB)
-        unflip_inputs()
+        unflip_inputs(params)
+
+        # Looping through subjects: Saving the multi label nifti image consisting of all predicted labels from 2-AV to 14-MTT 
         for subj in params.directories.Test.Input.Subjects:
             Save_AllNuclei_inOne(subj.address + '/right/2.5D_MV' , mode='')          
         
@@ -143,10 +200,10 @@ def main(UserInfoB):
 
     applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True))
 
-    TS = UserInfoB['thalamic_side']
+
+    TS = UserInfoB['thalamic_side']()
     if TS.left:              run_Left(UserInfoB)
     if TS.right:             run_Right(UserInfoB)
     if TS.left and TS.right: merging_left_right_labels(UserInfoB)
-
 
 main(UserInfoB)

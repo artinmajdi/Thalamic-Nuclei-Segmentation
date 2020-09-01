@@ -253,8 +253,6 @@ def func_AllMetrics_UserDirectory(Dir , params):
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 
 UserInfoB['TypeExperiment'] = 11
-UserInfoB['Model_Method'] = 'Cascade' 
-UserInfoB['architectureType'] = 'ResFCN_ResUnet2_TL' 
 UserInfoB['simulation'].lossFunction_Index = 4
 UserInfoB['Experiments'].Index = '6'
 UserInfoB['copy_Thalamus'] = False

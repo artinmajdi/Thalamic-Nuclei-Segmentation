@@ -82,15 +82,8 @@ def loadDataset(params):
                 im = im[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
 
             return np.pad(im, Padding2[:3], 'constant')
-
-        # TODO I'm moving this to the stage before loading the image to increase the speed
-
-        # if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
-        #     BB = subject2.NewCropInfo.OriginalBoundingBox
-        #     im = im[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]
-                        
+                       
         im = CroppingInput(im, subject2.Padding)
-        # im = np.transpose(im, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
         im = np.transpose(im,[2,0,1])
         im = np.expand_dims(im ,axis=3).astype('float32')
 
@@ -99,7 +92,7 @@ def loadDataset(params):
 
     def read_cropped_inputs(params, subject, dirrectory):
         inputF = nib.load(dirrectory)
-        if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
+        if 1 not in params.WhichExperiment.Nucleus.Index:
             
             BB = subject.NewCropInfo.OriginalBoundingBox[params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse]
             input = inputF.dataobj[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]
@@ -112,15 +105,7 @@ def loadDataset(params):
     def readingImage(params, subject2, mode):
 
         def readingWithTranpose(Dirr , params):
-            # ImageF = nib.load( Dirr)            
             ImageF, Image = read_cropped_inputs(params, subject2, Dirr)
-
-            # if 'Cascade' in params.WhichExperiment.HardParams.Model.Method.Type and 1 not in params.WhichExperiment.Nucleus.Index:
-            #     BB = subject2.NewCropInfo.OriginalBoundingBox[params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse]
-            #     Image = ImageF.dataobj[BB[0][0]:BB[0][1]  ,  BB[1][0]:BB[1][1]  ,  BB[2][0]:BB[2][1]]
-            # else:
-            #     Image = ImageF.get_data()
-
             return ImageF, np.transpose(Image, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
         imF, im = readingWithTranpose(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz' , params)
@@ -388,32 +373,30 @@ def preAnalysis(params):
     def find_correctNumLayers(params):
 
         HardParams = params.WhichExperiment.HardParams
+
+        def func_MinInputSize(params):
+            if params.WhichExperiment.Dataset.InputPadding.Automatic: 
+                inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly else np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
+
+                return np.min(inputSizes, axis=0)
+            else:
+                return params.WhichExperiment.Dataset.InputPadding.HardDimensions
+
+        MinInputSize = func_MinInputSize(params)
+
+        kernel_size = HardParams.Model.Layer_Params.ConvLayer.Kernel_size.conv
+        num_Layers  = HardParams.Model.num_Layers              
+
+
+        params.WhichExperiment.HardParams.Model.num_Layers_changed = False
+        dim = HardParams.Model.Method.InputImage2Dvs3D
         
-        if params.WhichExperiment.HardParams.Model.architectureType != 'FCN':    # 'Cascade' in HardParams.Model.Method.Type and 
-
-            def func_MinInputSize(params):
-                if params.WhichExperiment.Dataset.InputPadding.Automatic: 
-                    inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly else np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)
-
-                    return np.min(inputSizes, axis=0)
-                else:
-                    return params.WhichExperiment.Dataset.InputPadding.HardDimensions
-
-            MinInputSize = func_MinInputSize(params)
-
-            kernel_size = HardParams.Model.Layer_Params.ConvLayer.Kernel_size.conv
-            num_Layers  = HardParams.Model.num_Layers              
-
-
-            params.WhichExperiment.HardParams.Model.num_Layers_changed = False
-            dim = HardParams.Model.Method.InputImage2Dvs3D
-            
-            # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size                
-            if np.min(MinInputSize[:dim] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0: 
-                params.WhichExperiment.HardParams.Model.num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:dim],kernel_size) )) + 1))
-                print('WARNING: INPUT IMAGE SIZE IS TOO SMALL FOR THE NUMBER OF LAYERS')
-                print('# LAYERS  OLD:',num_Layers  ,  ' =>  NEW:',params.WhichExperiment.HardParams.Model.num_Layers)
-                params.WhichExperiment.HardParams.Model.num_Layers_changed = True
+        # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size                
+        if np.min(MinInputSize[:dim] - np.multiply( kernel_size,(2**(num_Layers - 1)))) < 0: 
+            params.WhichExperiment.HardParams.Model.num_Layers = int(np.floor( np.log2(np.min( np.divide(MinInputSize[:dim],kernel_size) )) + 1))
+            print('WARNING: INPUT IMAGE SIZE IS TOO SMALL FOR THE NUMBER OF LAYERS')
+            print('# LAYERS  OLD:',num_Layers  ,  ' =>  NEW:',params.WhichExperiment.HardParams.Model.num_Layers)
+            params.WhichExperiment.HardParams.Model.num_Layers_changed = True
             
         return params
 
@@ -424,7 +407,7 @@ def preAnalysis(params):
             # inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)  
             
             num_Layers = params.WhichExperiment.HardParams.Model.num_Layers
-            L = num_Layers if 'SegNet' in params.WhichExperiment.HardParams.Model.architectureType else num_Layers - 1
+            L = num_Layers - 1
                 
             a = 2**(L) 
             return [  int(a * np.ceil(s / a)) if s % a != 0 else s for s in np.max(inputSizes, axis=0) ]

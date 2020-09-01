@@ -3,8 +3,6 @@ import numpy as np
 from shutil import copyfile
 import matplotlib.pyplot as plt
 import os, sys
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-# sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
 from skimage import measure
 from copy import deepcopy
 import json
@@ -17,63 +15,36 @@ from glob import glob
 def NucleiSelection(ind = 1):
 
     def func_NucleusName(ind):
-        if ind in range(20):
-            if ind == 1:
-                NucleusName = '1-THALAMUS'
-            elif ind == 2:
-                NucleusName = '2-AV'
-            elif ind == 4:
-                NucleusName = '4-VA'
-            elif ind == 5:
-                NucleusName = '5-VLa'
-            elif ind == 6:
-                NucleusName = '6-VLP'
-            elif ind == 7:
-                NucleusName = '7-VPL'
-            elif ind == 8:
-                NucleusName = '8-Pul'
-            elif ind == 9:
-                NucleusName = '9-LGN'
-            elif ind == 10:
-                NucleusName = '10-MGN'
-            elif ind == 11:
-                NucleusName = '11-CM'
-            elif ind == 12:
-                NucleusName = '12-MD-Pf'
-            elif ind == 13:
-                NucleusName = '13-Hb'
-            elif ind == 14:
-                NucleusName = '14-MTT'
-        else:
-            if ind == 1.1:
-                NucleusName = 'lateral_ImClosed'
-            elif ind == 1.2:
-                NucleusName = 'posterior_ImClosed'
-            elif ind == 1.3:
-                NucleusName = 'Medial_ImClosed'
-            elif ind == 1.4:
-                NucleusName = 'Anterior_ImClosed'
-            elif ind == 1.9:
-                NucleusName = 'HierarchicalCascade'
-
+        if ind == 1:
+            NucleusName = '1-THALAMUS'
+        elif ind == 2:
+            NucleusName = '2-AV'
+        elif ind == 4:
+            NucleusName = '4-VA'
+        elif ind == 5:
+            NucleusName = '5-VLa'
+        elif ind == 6:
+            NucleusName = '6-VLP'
+        elif ind == 7:
+            NucleusName = '7-VPL'
+        elif ind == 8:
+            NucleusName = '8-Pul'
+        elif ind == 9:
+            NucleusName = '9-LGN'
+        elif ind == 10:
+            NucleusName = '10-MGN'
+        elif ind == 11:
+            NucleusName = '11-CM'
+        elif ind == 12:
+            NucleusName = '12-MD-Pf'
+        elif ind == 13:
+            NucleusName = '13-Hb'
+        elif ind == 14:
+            NucleusName = '14-MTT'
         return NucleusName
 
-    def func_FullIndexes(ind):
-        if ind in range(20):
-            return [1,2,4,5,6,7,8,9,10,11,12,13,14]
-        elif ind == 1.1: # lateral
-            return [4,5,6,7]
-        elif ind == 1.2: # posterior
-            return [8,9,10]
-        elif ind == 1.3: # 'Medial'
-            return [11,12,13]
-        elif ind == 1.4:
-            return [2]
-        elif ind == 1.9:
-            return [1.1 , 1.2 , 1.3 , 1.4]
-
     name = func_NucleusName(ind)
-    FullIndexes = func_FullIndexes(ind)
+    FullIndexes = [1,2,4,5,6,7,8,9,10,11,12,13,14]
     Full_Names = [func_NucleusName(ix) for ix in FullIndexes]
 
     return name, FullIndexes, Full_Names
@@ -108,15 +79,10 @@ class Nuclei_Class():
     
     def All_Nuclei(self):                      
         class All_Nuclei:
-            Indexes = tuple([1,2,4,5,6,7,8,9,10,11,12,13,14])
+            Indexes = (1,2,4,5,6,7,8,9,10,11,12,13,14)
             Names  = [self.nucleus_name_func(index) for index in Indexes]
 
         return All_Nuclei()
-
-    def remove_Thalamus_From_List(self , Nuclei_List):
-        nuLs = Nuclei_List.copy()
-        if 1 in nuLs: nuLs.remove(1)
-        return nuLs
 
 class Experiment_Folder_Search():
     def __init__(self, General_Address='' , Experiment_Name = '' , subExperiment_Name='', mode='results'):
@@ -171,9 +137,6 @@ class Experiment_Folder_Search():
 
             List_subExps = [a for a in os.listdir(Exp_address + '/' + mode) if ('subExp' in a) or ('sE' in a)]
 
-            # TODO this is temporary, to only save the subexperiments I need
-            # List_subExps = [a for a in List_subExps if 'Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_7T_Init_Rn_test_ET_3T' in a]
-
             List_subExps.sort()
             subExps = [subExp(name , Exp_address + '/' + mode , Ix)  for Ix, name in enumerate(List_subExps)]
             TagsList = [ np.append(['Tag' + str(Ix)],  name.split('_'))  for Ix, name in enumerate(List_subExps) ]
@@ -206,13 +169,21 @@ class Experiment_Folder_Search():
         if subExperiment_Name:
             self.subExperiment = search_1subExp(self.Experiment.List_subExperiments)
 
-def gpuSetting(GPU_Index):
+def gpuSetting(GPU_Index: str):
+    """ Setting up the selected GPU
+
+        Args:
+            GPU_Index (str): GPU card index
+
+        Returns:
+            K: session
+    """    
+    assert isinstance(GPU_Index, str), 'GPU index should be a string'
 
     os.environ["CUDA_VISIBLE_DEVICES"] = GPU_Index
     import tensorflow as tf
     from keras import backend as K
     # tf.compat.v1.disable_v2_behavior()
-
     # K.set_session(tf.compat.v1.Session(   config=tf.compat.v1.ConfigProto( allow_soft_placement=True , gpu_options=tf.compat.v1.GPUOptions(allow_growth=True) )   ))
     K.set_session(tf.Session(   config=tf.ConfigProto( allow_soft_placement=True )   ))
     return K
@@ -226,7 +197,8 @@ def listSubFolders(Dir, params):
     return subFolders
 
 def mkDir(Dir):
-    if not os.path.isdir(Dir): os.makedirs(Dir)
+    if not os.path.isdir(Dir): 
+        os.makedirs(Dir)
     return Dir
 
 def saveImage(Image , Affine , Header , outDirectory):
@@ -263,79 +235,9 @@ def terminalEntries(UserInfo):
         if entry.lower() in ('-g','--gpu'):  # gpu num
             UserInfo['simulation'].GPU_Index = sys.argv[en+1]
 
-        elif entry.lower() in ('-sd','--slicingdim'):
-            if sys.argv[en+1].lower() == 'all':
-                UserInfo['simulation'].slicingDim = [2,1,0]
-
-            elif sys.argv[en+1][0] == '[':
-                B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
-                UserInfo['simulation'].slicingDim = [int(k) for k in B]
-
-            else:
-                UserInfo['simulation'].slicingDim = [int(sys.argv[en+1])]
-
-        elif entry in ('-Aug','--AugmentMode'):
-            a = int(sys.argv[en+1])
-            UserInfo['AugmentMode'] = True if a > 0 else False
-
         elif entry in ('-v','--verbose'):
             UserInfo['verbose'] = int(sys.argv[en+1])
 
-        elif entry.lower() in ('-n','--nuclei'):  # nuclei index
-            if sys.argv[en+1].lower() == 'all':
-                _, UserInfo['simulation'].nucleus_Index,_ = NucleiSelection(ind = 1)
-
-            elif sys.argv[en+1].lower() == 'allh':
-                _, NucleiIndexes ,_ = NucleiSelection(ind = 1)
-                UserInfo['simulation'].nucleus_Index = tuple(NucleiIndexes) + tuple([1.1,1.2,1.3])
-
-            elif sys.argv[en+1][0] == '[':
-                B = sys.argv[en+1].split('[')[1].split(']')[0].split(",")
-                UserInfo['simulation'].nucleus_Index = [int(k) for k in B]
-
-            else:
-                UserInfo['simulation'].nucleus_Index = [float(sys.argv[en+1])] # [int(sys.argv[en+1])]
-
-        elif entry.lower() in ('-d','--dataset'):
-            UserInfo['DatasetIx'] = int(sys.argv[en+1])
-
-        elif entry.lower() in ('-e','--epochs'):
-            UserInfo['simulation'].epochs = int(sys.argv[en+1])
-
-        elif entry.lower() in ('-lr','--Learning_Rate'):
-            UserInfo['simulation'].Learning_Rate = float(sys.argv[en+1])
-
-        elif entry.lower() in ('-do','--DropoutValue'):
-            UserInfo['DropoutValue'] = float(sys.argv[en+1])
-
-        elif entry.lower() in ('-nl','--num_Layers'):
-            UserInfo['simulation'].num_Layers = int(sys.argv[en+1])
-
-        elif entry.lower() in ('-pi','--permutation_Index'):
-            UserInfo['permutation_Index'] = int(sys.argv[en+1])
-
-        elif entry.lower() in ('-fm','--FirstLayer_FeatureMap_Num'):
-            UserInfo['simulation'].FirstLayer_FeatureMap_Num = int(sys.argv[en+1])
-
-        elif entry.lower() in ('-m','--Model_Method'):
-            if int(sys.argv[en+1]) == 1:
-                UserInfo['Model_Method'] = 'Cascade'
-            elif int(sys.argv[en+1]) == 2:
-                UserInfo['Model_Method'] = 'HCascade'
-            elif int(sys.argv[en+1]) == 3:
-                UserInfo['Model_Method'] = 'mUnet'
-            elif int(sys.argv[en+1]) == 4:
-                UserInfo['Model_Method'] = 'normal'
-                UserInfo['architectureType'] = 'FCN'
-
-            # elif int(sys.argv[en+1]) == 5:
-            #     UserInfo['Model_Method'] = 'FCN_with_SkipConnection'
-                # UserInfo['architectureType'] = 'FCN_with_SkipConnection'
-
-        elif entry.lower() in ('-cv','--CrossVal_Index'):
-            UserInfo['CrossVal'].index = [sys.argv[en+1]]
-            print('CrossVal' , UserInfo['CrossVal'].index)
-    
     return UserInfo
 
 def search_ExperimentDirectory(whichExperiment):
@@ -552,10 +454,8 @@ def findBoundingBox(PreStageMask):
 
 def Saving_UserInfo(DirSave, params):
 
-    # DirSave = '/array/ssd/msmajdi/experiments/keras/exp7_cascadeV1/models/sE11_Cascade_wRot7_6cnts_sd2/4-VA'
     User_Info = {
         'num_Layers'     : int(params.WhichExperiment.HardParams.Model.num_Layers),
-        'Model_Method'   : params.UserInfo['Model_Method'],
         'Learning_Rate'  : params.UserInfo['simulation'].Learning_Rate,
         'slicing_Dim'    : params.UserInfo['simulation'].slicingDim[0],
         'batch'          : int(params.UserInfo['simulation'].batch_size),
@@ -656,7 +556,6 @@ def extracting_the_biggest_object(pred_Binary):
 def test_precision_recall():
     import pandas as pd
 
-
     dir = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd2/vimp2_967_08132013_KW/'
     dirM = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/Main/a/vimp2_967_08132013_KW/Label/'
 
@@ -687,7 +586,6 @@ def test_precision_recall():
 def test_extract_biggest_object():
 
     import nibabel as nib
-    import smallFuncs
     from skimage import measure
     import numpy as np
     import matplotlib.pyplot as plt
@@ -707,7 +605,7 @@ def test_extract_biggest_object():
 
             im = nib.load(main_directory + cv + subj + '/PProcessed.nii.gz').get_data()
             label = nib.load(main_directory + cv + subj + '/Label/1-THALAMUS_PProcessed.nii.gz').get_data()
-            label = smallFuncs.fixMaskMinMax(label,subj)
+            label = fixMaskMinMax(label,subj)
             OP = nib.load(dir_predictions + subj + '/1-THALAMUS.nii.gz')
             original_prediction = OP.get_data()
 

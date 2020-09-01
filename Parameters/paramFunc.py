@@ -251,16 +251,13 @@ def func_WhichExperiment(UserInfo):
     def func_ModelParams():
 
         HardParams = WhichExperiment.HardParams
-        def ReferenceForCascadeMethod(ModelIdea):
+        def ReferenceForCascadeMethod():
 
             _ , fullIndexes, _ = smallFuncs.NucleiSelection(ind=1)
             referenceLabel = {}
 
-            if ModelIdea == 'Cascade':
-                for ix in fullIndexes: referenceLabel[ix] = '1-THALAMUS' if ix != 1 else 'None'
-
-            else:
-                for ix in fullIndexes: referenceLabel[ix] = 'None'
+            for ix in fullIndexes: 
+                referenceLabel[ix] = '1-THALAMUS' if ix != 1 else 'None'
 
             return referenceLabel
 
@@ -268,9 +265,7 @@ def func_WhichExperiment(UserInfo):
 
             num_classes = len(USim.nucleus_Index) if HardParams.Model.MultiClass.Mode else 1
             num_classes += 1
-                
             return num_classes
-
 
         def fixing_NetworkParams_BasedOn_InputDim(dim):
             class kernel_size: 
@@ -281,7 +276,6 @@ def func_WhichExperiment(UserInfo):
             class maxPooling: 
                 strides   = tuple([2]*dim)
                 pool_size = tuple([2]*dim)
-
 
             return kernel_size, maxPooling
 
@@ -310,9 +304,6 @@ def func_WhichExperiment(UserInfo):
 
 
         HardParams.Model.loss, _ = LossFunction.LossInfo(USim.lossFunction_Index) 
-
-        HardParams.Model.Method.Type = UserInfo['Model_Method']
-
         HardParams.Model.Method.Use_TestCases_For_Validation      = USim.Use_TestCases_For_Validation
 
         HardParams.Model.MultiClass.Mode = USim.Multi_Class_Mode
@@ -324,7 +315,7 @@ def func_WhichExperiment(UserInfo):
         else:
             nucleus_Index = USim.nucleus_Index if isinstance(USim.nucleus_Index,list) else [USim.nucleus_Index]
 
-        HardParams.Model.Method.ReferenceMask = ReferenceForCascadeMethod(HardParams.Model.Method.Type)[nucleus_Index[0]]
+        HardParams.Model.Method.ReferenceMask = ReferenceForCascadeMethod()[nucleus_Index[0]]
 
         return HardParams
 
@@ -332,7 +323,6 @@ def func_WhichExperiment(UserInfo):
         with open(TrainModel_Address + '/UserInfo.json','rb') as f:   
             UserInfo_Load = json.load(f)            
         return UserInfo_Load['InputPadding_Dims'], UserInfo_Load['num_Layers']
-        
 
     WhichExperiment.Experiment = UserInfo['experiment']()
     WhichExperiment.HardParams = func_ModelParams()
@@ -341,28 +331,12 @@ def func_WhichExperiment(UserInfo):
     WhichExperiment.TestOnly   = USim.TestOnly
 
     def adding_TransferLearningParams(WhichExperiment):
-
-        """
-        def params_bestUnet(Model_Method, sdTag):
-            if Model_Method == 'Cascade':
-                if sdTag == 0:   FM , NL = 10, 3
-                elif sdTag == 1: FM , NL = 20, 3
-                elif sdTag == 2: FM , NL = 20, 3
-
-            else:
-                FM , NL = 20, 3
-
-            return FM , NL , 'U-Net4'
-        """
         
-        def params_bestResUnet2(Model_Method, sdTag):
-            if Model_Method == 'Cascade':
-                if sdTag == 0:   FM , NL = 40, 3
-                elif sdTag == 1: FM , NL = 30, 3
-                elif sdTag == 2: FM , NL = 20, 3
-            else:
-                FM , NL = 20, 3
- 
+        def params_bestResUnet2(slicing_orientation):
+            if slicing_orientation == 0:   FM , NL = 40, 3
+            elif slicing_orientation == 1: FM , NL = 30, 3
+            elif slicing_orientation == 2: FM , NL = 20, 3
+
             return FM , NL, 'Res_Unet2'
         
         class best_WMn_Model:
@@ -372,10 +346,9 @@ def func_WhichExperiment(UserInfo):
 
                 LossFunction = 'MyLogDice'
                 EXP_address = '/array/ssd/msmajdi/experiments/keras/exp6/models/'
-                Model_Method = WhichExperiment.HardParams.Model.Method.Type
                                 
-                self.FM , self.NL, architectureType = params_bestResUnet2(Model_Method, SD)                    
-                Tag     = 'sE12_' + Model_Method + '_FM' + str(self.FM) + '_' + architectureType + '_NL' + str(self.NL) + '_LS_' + LossFunction + '_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/'
+                self.FM , self.NL, architectureType = params_bestResUnet2(SD)                    
+                Tag     = 'sE12_Cascade_FM' + str(self.FM) + '_' + architectureType + '_NL' + str(self.NL) + '_LS_' + LossFunction + '_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/'
 
                 self.address = EXP_address + Tag  + WhichExperiment.Nucleus.name + '/sd' + str(SD) + '/model.h5'
 
