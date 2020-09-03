@@ -2,7 +2,6 @@ import os
 import shutil
 import sys
 from random import shuffle
-
 import nibabel as nib
 import numpy as np
 from tqdm import tqdm
@@ -49,7 +48,7 @@ def ClassesFunc():
 
 ImageLabel, data, trainCase, testCase = ClassesFunc()
 
-
+"""
 def DatasetsInfo(DatasetIx):
     switcher = {
         1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_3T'),
@@ -59,7 +58,7 @@ def DatasetsInfo(DatasetIx):
         5: ('20priors', '/array/ssd/msmajdi/data/preProcessed/7T/20priors'),
     }
     return switcher.get(DatasetIx, 'WARNING: Invalid dataset index')
-
+"""
 
 def paddingNegativeFix(sz, Padding):
     padding = np.array([list(x) for x in Padding])
@@ -68,14 +67,14 @@ def paddingNegativeFix(sz, Padding):
     crd[crd < 0] = 0
     Padding = tuple([tuple(x) for x in padding])
 
-    # sz = im.shape
-    # crd = crd[:3,:]
-    for ix in range(3): crd[ix, 1] = sz[ix] if crd[ix, 1] == 0 else -crd[ix, 1]
+    for ix in range(3): 
+        crd[ix, 1] = sz[ix] if crd[ix, 1] == 0 else -crd[ix, 1]
 
     return padding, crd
 
 
 def loadDataset(params):
+    """    Loading the dataset    """    
     def inputPreparationForUnet(im, subject2, params):
 
         def CroppingInput(im, Padding2):
@@ -156,22 +155,26 @@ def loadDataset(params):
         shutil.move(subject.address, os.path.dirname(subject.address) + '/' + 'ERROR_' + AA[1])
         print('WARNING:', mode, nameSubject, ' image and mask have different shape sizes')
 
-    def saveHDf5(g1, im, msk, origMsk, imF, subject):
-        g = g1.create_group(subject.subjectName)
-        g.create_dataset(name='Image', data=im)
-        g.create_dataset(name='Mask', data=msk)
-        g.create_dataset(name='OrigMask', data=(origMsk).astype('float32'))
-        g.attrs['original_Shape'] = imF.shape
-        g.attrs['Affine'] = imF.get_affine()
-        g.attrs['address'] = subject.address
-
     def main_ReadingDataset(params):
 
         def sagittalFlag():
-            return params.WhichExperiment.Nucleus.Index[
-                       0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2
+            """
+            The flag for whether running the trained coronal network to segment whole thalamus to be 
+            used in the 2nd network of sagittal network.
+
+            Returns:
+                (boolean): Returns True, if the coronal network is running on whole thalamus.
+            """            
+            slicingDim = params.WhichExperiment.Dataset.slicingInfo.slicingDim
+            nucleus_index = params.WhichExperiment.Nucleus.Index[0]
+            return (nucleus_index == 1) and (slicingDim == 2)
 
         def trainFlag():
+            """
+            Returns:
+                (boolean): True if the network is not set on test only and train subject list is not empty
+            """
+
             Flag_TestOnly = params.WhichExperiment.TestOnly
             Flag_notEmpty = params.directories.Train.Input.Subjects
             measure_train = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
@@ -180,13 +183,29 @@ def loadDataset(params):
 
         Th = 0.5 * params.WhichExperiment.HardParams.Model.LabelMaxValue
 
-        def separatingConcatenatingIndexes(Data, sjList, mode):
+        def separatingConcatenatingIndexes(Data=[], sjList=[], mode='train'):
+            """
+            Preparing the training & validation dataset by concatenating all 2D slices in all 3D input volumes
 
+            Args:
+                Data: Input data
+                sjList (list): Subject list
+                mode (boolean): Training or validation 
+
+            Returns:
+                train_data: Concatenated training data
+            """
+
+            # Finding the total number of 2D slices used for training
             Sz0 = 0
-            for nameSubject in sjList: Sz0 += Data[nameSubject].Image.shape[0]
+            for nameSubject in sjList: 
+                Sz0 += Data[nameSubject].Image.shape[0]
+            
+            # In order to expedite the loading process, initially an empty array is built 
             images = np.zeros((tuple([Sz0]) + Data[list(Data)[0]].Image.shape[1:]))
             masks = np.zeros((tuple([Sz0]) + Data[list(Data)[0]].Mask.shape[1:]))
 
+            # Concatenating the training data into one array
             d1 = 0
             for _, nameSubject in enumerate(tqdm(sjList, desc='concatenating: ' + mode)):
                 im, msk = Data[nameSubject].Image, Data[nameSubject].Mask
@@ -198,14 +217,22 @@ def loadDataset(params):
             return trainCase(Image=images, Mask=masks.astype('float32'))
 
         def separateTrainVal_and_concatenateTrain(DataAll):
+            """
+            Separating the training & validation data
+
+            Args:
+                DataAll : loaded input dataset
+
+            Returns:
+                DataAll: Updated input dataset, with validation & training separated 
+            """            
 
             TrainList, ValList = percentageDivide(params.WhichExperiment.Dataset.Validation.percentage,
                                                   list(params.directories.Train.Input.Subjects),
                                                   params.WhichExperiment.Dataset.randomFlag)
 
             if params.WhichExperiment.Dataset.Validation.fromKeras or params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
-                DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, list(DataAll.Train_ForTest),
-                                                               'train')
+                DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, list(DataAll.Train_ForTest),'train')
                 DataAll.Validation = ''
             else:
                 DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, TrainList, 'train')
@@ -259,17 +286,26 @@ def loadDataset(params):
 
         DataAll = data()
 
+        # Loading train subjects
         if trainFlag():
             DataAll.Train_ForTest = readingAllSubjects(params.directories.Train.Input.Subjects, 'train')
+
+            # Separating training & validation data
             DataAll = separateTrainVal_and_concatenateTrain(DataAll)
 
+        # Loading test subjects
         if params.directories.Test.Input.Subjects:
             DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
             DataAll = readValidation(DataAll)
 
+        # These data are used to segment the whole thalamus mask for saagittal network while running the coronal network
+        
+        # Loading train subjects re-oriented for sagittal network
+        if sagittalFlag() and trainFlag():
+            DataAll.Sagittal_Train_ForTest = readingAllSubjects(params.directories.Train.Input_Sagittal.Subjects, 'trainS')
+
+        # Loading test subjects re-oriented for sagittal network
         if sagittalFlag():
-            if trainFlag(): DataAll.Sagittal_Train_ForTest = readingAllSubjects(
-                params.directories.Train.Input_Sagittal.Subjects, 'trainS')
             DataAll.Sagittal_Test = readingAllSubjects(params.directories.Test.Input_Sagittal.Subjects, 'testS')
 
         return DataAll
@@ -282,42 +318,55 @@ def loadDataset(params):
 
 
 def percentageDivide(percentage, subjectsList, randomFlag):
+    """ 
+    Randomly dividing the input subjects into train & validation based on the assigned percentage 
+
+    Args:
+        percentage (float): Percentage of data to be assigned as validation 
+        subjectsList (list): list of subjects
+        randomFlag (boolean): True: randomizing the dataa before data division
+
+    Returns:
+        Train_List (list):   list of train subjects
+        TestVal_List (list): list of validation subjects
+    """    
+
+    # Number of subjects
     L = len(subjectsList)
     indexes = np.array(range(L))
 
-    if randomFlag: shuffle(indexes)
-    per = int(percentage * L)
-    if per == 0 and L > 1: per = 1
+    # Shuffling the list of subjects
+    if randomFlag: 
+        shuffle(indexes)
 
+
+    per = int(percentage * L)
+    if per == 0 and L > 1: 
+        per = 1
+
+    # list of validation subjects
     TestVal_List = [subjectsList[i] for i in indexes[:per]]
+
+    # list of training subjects
     Train_List = [subjectsList[i] for i in indexes[per:]]
 
     return Train_List, TestVal_List
 
 
-def movingFromDatasetToExperiments(params):
-    if len(os.listdir(params.directories.Train.address)) != 0 or len(os.listdir(params.directories.Test.address)) != 0:
-        print('*** DATASET ALREADY EXIST; PLEASE REMOVE \'train\' & \'test\' SUBFOLDERS ***')
-        sys.exit
-
-    else:
-        List = smallFuncs.listSubFolders(params.WhichExperiment.Dataset.address, params)
-
-        TestParams = params.WhichExperiment.Dataset.Test
-        _, TestList = percentageDivide(TestParams.percentage, List,
-                                       params.WhichExperiment.Dataset.randomFlag) if 'percentage' in TestParams.mode else TestParams.subjects
-        for subject in List:
-
-            DirOut, _ = (params.directories.Test.address, 'test') if subject in TestList else (
-                params.directories.Train.address, 'train')
-
-            if not os.path.exists(DirOut + '/' + subject):
-                shutil.copytree(params.WhichExperiment.Dataset.address + '/' + subject, DirOut + '/' + subject)
-
-    return True
-
-
 def preAnalysis(params):
+    """
+    Analysis of all input subjects dimensions to find the 
+      - Update number of layers
+      - Amount of padding required for each subject
+
+    Args:
+        params: User parameters
+
+    Returns:
+        params: Updated user parameters
+    """    
+
+    slicingDim = params.WhichExperiment.Dataset.slicingInfo.slicingDim
     def find_AllInputSizes(params):
 
         def newCropedSize(subject, params, mode):
@@ -329,7 +378,7 @@ def preAnalysis(params):
 
                 elif 'test' in mode:
                     dirr = subject.address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd' + str(
-                        params.WhichExperiment.Dataset.slicingInfo.slicingDim) + '/'
+                        slicingDim) + '/'
 
                 BBf = np.loadtxt(dirr + '/BB_' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.txt',
                                  dtype=int)
@@ -337,23 +386,31 @@ def preAnalysis(params):
                 BBd = BBf[:, 2:]
 
                 # Because on the slicing direction we don't want the extra dilated effect to be considered
-                BBd[params.WhichExperiment.Dataset.slicingInfo.slicingDim] = BB[
-                    params.WhichExperiment.Dataset.slicingInfo.slicingDim]
+                BBd[slicingDim] = BB[slicingDim]
                 BBd = BBd[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
                 return BBd
 
             if 1 not in params.WhichExperiment.Nucleus.Index:
+
+                # Corresponding to the 2nd network in the cascade framework. Segmentation of nuclei
                 BB = readingCascadeCropSizes(subject)
 
                 origSize = np.array(nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape)
+
+                # re-orienting the input slices into axial, sagittal, and coronal depending on the appropriate network
                 origSize = origSize[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
 
                 subject.NewCropInfo.OriginalBoundingBox = BB
+
+                # The amount of cropping required to remove the extra padded pixels
                 subject.NewCropInfo.PadSizeBackToOrig = tuple(
                     [tuple([BB[d][0], origSize[d] - BB[d][1]]) for d in range(3)])
 
                 Shape = np.array([BB[d][1] - BB[d][0] for d in range(3)])
+
             else:
+
+                # corresponding to the 1st network in the cascade framework. Segmentation of whole thalamus
                 Shape = np.array(nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz').shape)
                 Shape = Shape[params.WhichExperiment.Dataset.slicingInfo.slicingOrder]
 
@@ -373,7 +430,7 @@ def preAnalysis(params):
         if params.directories.Test.Input.Subjects: params.directories.Test.Input = loopOverAllSubjects(
             params.directories.Test.Input, 'test')
 
-        if params.WhichExperiment.Nucleus.Index[0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2:
+        if params.WhichExperiment.Nucleus.Index[0] == 1 and slicingDim == 2:
             if params.directories.Train.Input_Sagittal.Subjects: params.directories.Train.Input_Sagittal = loopOverAllSubjects(
                 params.directories.Train.Input_Sagittal, 'train')
             if params.directories.Test.Input_Sagittal.Subjects:  params.directories.Test.Input_Sagittal = loopOverAllSubjects(
@@ -382,10 +439,29 @@ def preAnalysis(params):
         return params
 
     def find_correctNumLayers(params):
+        """
+        Checking the maximum number of layers in the U-Net based on the network input dimention 
+
+        Args:
+            params: User parameters
+
+        Returns:
+            params: Updated parameters that include the updated number of layers in the U-Net
+        """
 
         HardParams = params.WhichExperiment.HardParams
 
-        def func_MinInputSize(params):
+        def func_MinInputSize():
+            """
+            Finding the network input dimention based on all train & test inputs
+
+            Args:
+                params: User parameters
+
+            Returns:
+                MinInputSize: Network input dimension
+            """  
+
             if params.WhichExperiment.Dataset.InputPadding.Automatic:
                 inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly else np.concatenate(
                     (params.directories.Train.Input.inputSizes, params.directories.Test.Input.inputSizes), axis=0)
@@ -394,7 +470,7 @@ def preAnalysis(params):
             else:
                 return params.WhichExperiment.Dataset.InputPadding.HardDimensions
 
-        MinInputSize = func_MinInputSize(params)
+        MinInputSize = func_MinInputSize()
 
         kernel_size = HardParams.Model.Layer_Params.ConvLayer.Kernel_size.conv
         num_Layers = HardParams.Model.num_Layers
@@ -402,7 +478,7 @@ def preAnalysis(params):
         params.WhichExperiment.HardParams.Model.num_Layers_changed = False
         dim = HardParams.Model.Method.InputImage2Dvs3D
 
-        # ! check if the figure map size at the most bottom layer is bigger than convolution kernel size                
+        # Check if the figure map size at the most bottom layer is bigger than convolution kernel size                
         if np.min(MinInputSize[:dim] - np.multiply(kernel_size, (2 ** (num_Layers - 1)))) < 0:
             params.WhichExperiment.HardParams.Model.num_Layers = int(
                 np.floor(np.log2(np.min(np.divide(MinInputSize[:dim], kernel_size))) + 1))
@@ -413,6 +489,12 @@ def preAnalysis(params):
         return params
 
     def find_PaddingValues(params):
+        """
+        Finding the amount of padding needed for each subject based on the calculated network's input dimention
+
+        Args:
+            params : Updated parameters that includes the amount of padding required for each of train & test subjects
+        """        
 
         def findingPaddedInputSize(params):
             inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly else np.concatenate(
@@ -458,7 +540,7 @@ def preAnalysis(params):
         if params.directories.Test.Input.Subjects:  params.directories.Test.Input = findingSubjectsFinalPaddingAmount(
             'Test', params.directories.Test.Input, params)
 
-        if params.WhichExperiment.Nucleus.Index[0] == 1 and params.WhichExperiment.Dataset.slicingInfo.slicingDim == 2:
+        if params.WhichExperiment.Nucleus.Index[0] == 1 and slicingDim == 2:
             if params.directories.Train.Input_Sagittal.Subjects: params.directories.Train.Input_Sagittal = findingSubjectsFinalPaddingAmount(
                 'Train', params.directories.Train.Input_Sagittal, params)
             if params.directories.Test.Input_Sagittal.Subjects:  params.directories.Test.Input_Sagittal = findingSubjectsFinalPaddingAmount(
@@ -469,7 +551,5 @@ def preAnalysis(params):
     params = find_AllInputSizes(params)
     params = find_correctNumLayers(params)
     params = find_PaddingValues(params)
-
-    # saveUserParams(params)
 
     return params
