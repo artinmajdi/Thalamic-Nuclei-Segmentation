@@ -166,8 +166,7 @@ class Experiment_Folder_Search():
         self.Nuclei_Names = func_Nuclei_Names()
 
         if Experiment_Name:
-            self.Experiment.List_subExperiments, self.Experiment.TagsList = search_AllsubExp_inExp(
-                self.Experiment.address, mode)
+            self.Experiment.List_subExperiments, self.Experiment.TagsList = search_AllsubExp_inExp(self.Experiment.address, mode)
 
         if subExperiment_Name:
             self.subExperiment = search_1subExp(self.Experiment.List_subExperiments)
@@ -251,10 +250,14 @@ def terminalEntries(UserInfo):
 
 
 def search_ExperimentDirectory(whichExperiment):
-    sdTag = '/sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim)
-    Exp_address = whichExperiment.Experiment.exp_address
-    SEname = whichExperiment.Experiment.subexperiment_name
-    NucleusName = whichExperiment.Nucleus.name
+    SD = '/sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim)
+    FM    = '/FM' + str(whichExperiment.HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num)
+    NN    = '/'   + whichExperiment.Nucleus.name
+    initialization = whichExperiment.HardParams.Model.Initialize
+    code_address   = dir_check(whichExperiment.Experiment.code_address)
+    Exp_address    = dir_check(whichExperiment.Experiment.exp_address)
+    subexperiment_name = whichExperiment.Experiment.subexperiment_name
+    NucleusName    = whichExperiment.Nucleus.name
 
     def checkInputDirectory(Dir, NucleusName, sag_In_Cor, modeData):
 
@@ -363,10 +366,10 @@ def search_ExperimentDirectory(whichExperiment):
             def search_inside_subject_folder(Files):
                 for s in [subj for subj in os.listdir(Files.address) if '.nii.gz' in subj]:
                     if 'PProcessed.nii.gz' in s:
-                        Files.ImageProcessed = 'PProcessed'
+                        Files.ImageProcessed = s.split('.nii.gz')[0]
                     else:
                         Files.ImageOriginal = s.split('.nii.gz')[0]
-                        Files.Temp.address = mkDir(Files.address + '/temp')
+                        Files.Temp.address  = mkDir(Files.address + '/temp')
                         Files.Label.address = Files.address + '/Label'
                         Files.Label.Temp.address = mkDir(Files.address + '/Label/temp')
 
@@ -402,7 +405,7 @@ def search_ExperimentDirectory(whichExperiment):
 
             return Input
 
-        if not (modeData == 'train' and whichExperiment.TestOnly):
+        if not (modeData == 'train' and whichExperiment.TestOnly.mode):
             Dir = whichExperiment.Experiment.train_address if modeData == 'train' else whichExperiment.Experiment.test_address
             Input = LoopReadingData(Input, Dir)
 
@@ -416,18 +419,30 @@ def search_ExperimentDirectory(whichExperiment):
             train.Input_Sagittal = checkInputDirectory(train.address, NucleusName, True, 'train')
             test.Input_Sagittal = checkInputDirectory(test.address, NucleusName, True, 'test')
         return train, test
+       
+    if whichExperiment.TestOnly.mode:
+        if whichExperiment.TestOnly.model_address:
+            model_address = dir_check(whichExperiment.TestOnly.model_address) + FM + NN + SD
+        else:
+            if initialization.modality_default.lower() == 'wmn':
+                net_name = 'WMn'
+            else:
+                net_name = 'CSFn'
 
-    FM = '/FM' + str(whichExperiment.HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num)
+            model_address = code_address + 'Trained_Models/' + net_name + FM + NN + SD
+
+    else:
+        model_address = Exp_address + 'models/' + subexperiment_name + FM + NN + SD
 
     class train:
-        address = Exp_address + '/train'
-        Model = Exp_address + '/models/' + SEname + '/' + NucleusName + FM + sdTag
+        address = Exp_address + 'train'
+        Model = model_address
         model_Tag = ''
         Input = checkInputDirectory(address, NucleusName, False, 'train')
 
     class test:
-        address = Exp_address + '/test'
-        Result = Exp_address + '/results/' + SEname + sdTag
+        address = Exp_address + 'test'
+        Result = Exp_address + 'results/' + subexperiment_name + SD
         Input = checkInputDirectory(address, NucleusName, False, 'test')
 
     train, test = add_Sagittal_Cases(whichExperiment, train, test, NucleusName)

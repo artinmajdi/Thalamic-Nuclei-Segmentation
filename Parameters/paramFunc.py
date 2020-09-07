@@ -214,7 +214,7 @@ def func_WhichExperiment(UserInfo):
         nucleus_Index = USim.nucleus_Index if isinstance(USim.nucleus_Index, list) else [USim.nucleus_Index]
 
         class nucleus:
-            name = '1-THALAMUS' if len(nucleus_Index) == 1 else 'MultiClass_24567891011121314/'
+            name = '1-THALAMUS' if len(nucleus_Index) == 1 else 'MultiClass_24567891011121314'
             name_Thalamus, FullIndexes, FullNames = smallFuncs.NucleiSelection(1)
             Index = nucleus_Index
 
@@ -364,7 +364,7 @@ def func_WhichExperiment(UserInfo):
     dir_input_dimension = WE.exp_address + '/' + WE.subexperiment_name + '/' + WhichExperiment.Nucleus.name + '/sd' + str(
         WhichExperiment.Dataset.slicingInfo.slicingDim)
 
-    if UserInfo['simulation'].use_train_padding_size and USim.TestOnly and os.path.isfile( dir_input_dimension + '/UserInfo.json' ):
+    if UserInfo['simulation'].use_train_padding_size and USim.TestOnly.mode and os.path.isfile( dir_input_dimension + '/UserInfo.json' ):
         InputDimensions, num_Layers = ReadInputDimensions_NLayers(dir_input_dimension)
 
         WhichExperiment.Dataset.InputPadding.Automatic      = False

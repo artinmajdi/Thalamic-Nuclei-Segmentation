@@ -45,12 +45,12 @@ def check_Run(params, Data):
     # Assigning the gpu index
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
 
-    # Skipping the training phase, if the algorithm is set to test from existing trained networks or the right thalamus
-    if params.WhichExperiment.TestOnly or params.UserInfo['thalamic_side'].active_side == 'right':
+    if params.WhichExperiment.TestOnly.mode or params.UserInfo['thalamic_side'].active_side == 'right':
+        # Skipping the training phase, if the algorithm is set to test from existing trained networks or the right thalamus
         model = loadModel(params)
 
-    # Training the network, if the algorithm is set to training on the left thalamus
     else:
+        # Training the network, if the algorithm is set to training on the left thalamus
         model = trainingExperiment(Data, params)
 
     # predicting the labels on test cases
@@ -318,11 +318,9 @@ def trainingExperiment(Data, params):
                 model.load_weights(init_address)
                 print(' --- initialization succesfull')
             except:
-                print('initialization failed')
+                print(' --- initialization failed')
 
             return model
-
-            # if params.WhichExperiment.HardParams.Model.Initialize:
 
         model = modelInitialize(modelS)
 

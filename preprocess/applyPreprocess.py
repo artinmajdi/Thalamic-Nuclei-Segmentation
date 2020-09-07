@@ -27,7 +27,7 @@ def main(params):
 
     if params.preprocess.Mode:
         # params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
-        if not params.WhichExperiment.TestOnly:
+        if not params.WhichExperiment.TestOnly.mode:
             loop_subjects('train')
 
         loop_subjects('test')

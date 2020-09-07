@@ -186,12 +186,12 @@ def main(UserInfoB):
         unflip_inputs(params)
 
         # Looping through subjects: Saving the multi label nifti image consisting of all predicted labels from 2-AV to 14-MTT 
-        for subj in params.directories.Test.Input.Subjects:
+        for subj in params.directories.Test.Input.Subjects.values():
             Save_AllNuclei_inOne(subj.address + '/right/2.5D_MV' , mode='')          
         
     def merging_left_right_labels(UserInfoB):
         params = paramFunc.Run(UserInfoB, terminal=True)
-        for subj in params.directories.Test.Input.Subjects:
+        for subj in params.directories.Test.Input.Subjects.values():
 
             load_side = lambda side: nib.load(subj.address + '/' + side + '/2.5D_MV/AllLabels.nii.gz')
             left,right = load_side('left'),load_side('right')
@@ -205,4 +205,10 @@ def main(UserInfoB):
     if TS.right:             run_Right(UserInfoB)
     if TS.left and TS.right: merging_left_right_labels(UserInfoB)
 
-main(UserInfoB)
+# main(UserInfoB)
+
+import fsl
+import nibabel as nib
+Dir = '/array/hdd/msmajdi/data/preprocessed/test/vimp2_ctrl_920_07122013_SW/PProcessed.nii.gz'
+im = nib.load(Dir)
+fsl.sw

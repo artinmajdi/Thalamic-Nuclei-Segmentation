@@ -175,7 +175,7 @@ def loadDataset(params):
                 (boolean): True if the network is not set on test only and train subject list is not empty
             """
 
-            Flag_TestOnly = params.WhichExperiment.TestOnly
+            Flag_TestOnly = params.WhichExperiment.TestOnly.mode
             Flag_notEmpty = params.directories.Train.Input.Subjects
             measure_train = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
 
@@ -463,7 +463,7 @@ def preAnalysis(params):
             """  
 
             if params.WhichExperiment.Dataset.InputPadding.Automatic:
-                inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly else np.concatenate(
+                inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly.mode else np.concatenate(
                     (params.directories.Train.Input.inputSizes, params.directories.Test.Input.inputSizes), axis=0)
 
                 return np.min(inputSizes, axis=0)
@@ -497,7 +497,7 @@ def preAnalysis(params):
         """        
 
         def findingPaddedInputSize(params):
-            inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly else np.concatenate(
+            inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly.mode else np.concatenate(
                 (params.directories.Train.Input.inputSizes, params.directories.Test.Input.inputSizes), axis=0)
             # inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)  
 

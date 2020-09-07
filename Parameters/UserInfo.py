@@ -10,13 +10,14 @@ class experiment:
     test_address  = '/array/hdd/msmajdi/data/preprocessed/test/'
 
     # Subexperiment name
-    subexperiment_name = 'test_02_wmn'
+    subexperiment_name = 'test_03_wmn'
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode  = True
 
     # Path to the code
-    code_address  = '/array/ssd/msmajdi/code/'
+    code_address  = '/array/ssd/msmajdi/code/CNN/'
+
 
 """ if init_address will be left empty, the default address will be used for initialization """
 class initialize:
@@ -70,17 +71,28 @@ class preprocess:
     save_debug_files = True
     Normalize        = normalize()
 
+class TestOnly:
+    # If TRUE , it will run the trained model on test cases.
+    mode = True
+
+    """ Address to the main folder holding the trained model.
+        This address only applies if mode==True. otherwise it will use the address specified by experiment & subexperiment 
+        This directory should point to the parent folder holding on trained models: 
+            ACTUAL_TRAINED_MODEL_ADDRESS = model_adress + '/' + FeatureMapNum (e.g. FM20) + '/' + Nucleus_name (e.g. 2-AV) + '/' + Orientation Index (e.g. sd2)
+    """
+    model_address = ''
+    
 
 class simulation:
     def __init__(self):
         # If TRUE, it will ignore the train data and run the already trained network on test data
-        self.TestOnly      = False
+        self.TestOnly      = TestOnly()
 
         # Number of epochs used during training
         self.epochs        = 5
 
         # The GPU card used for training/testing
-        self.GPU_Index     = "1"
+        self.GPU_Index     = "3"
 
         # Batch size used during training
         self.batch_size    = 10
