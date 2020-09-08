@@ -35,7 +35,7 @@ conda env create -f requirements.yml
 
 #### Data Structure
 
-
+#### Citation
 ##### Link: <https://www.sciencedirect.com/science/article/pii/S0730725X20303118#t0005>
 
 Majdi, M.S., Keerthivasan, M.B., Rutt, B.K., Zahr, N.M., Rodriguez, J.J. and Saranathan, M., 2020. 
