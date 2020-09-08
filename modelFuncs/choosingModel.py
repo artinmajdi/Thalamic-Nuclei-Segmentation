@@ -14,7 +14,7 @@ from keras.utils import multi_gpu_model
 import keras.layers as KLayers
 import modelFuncs.LossFunction as LossFunction
 from skimage.transform import AffineTransform, warp
-
+import matplotlib.pyplot as plt
 
 def func_class_weights(Mask):
     """ Finding the weights for each class, in an unbalanced dataset
@@ -83,7 +83,24 @@ def loadModel(params):
 
     return model
 
+def flip_image(image, params):
+    """
+    Flipping L-R the image
 
+    Args:
+        image (numpy array): input image or segmentation mask
+        active_side (str)  : specifying the direction of thalamus (left or right) 
+
+    Returns:
+        image: flipped image
+    """                
+
+    if params.UserInfo['thalamic_side'].active_side == 'right':
+        image = image[:,:,::-1,:]
+        # for ix in range(image.shape[0]):
+        #     image[ix,...] = np.flipud(image[ix,...])
+    return image
+    
 def testingExeriment(model, Data, params):
     class prediction:
         Test = ''
@@ -189,15 +206,32 @@ def testingExeriment(model, Data, params):
                 return Mask3
 
             im = DataSubj.Image.copy()
+
+            # # This function flips L-R the inputs to segment right thalamic nuclei
+            # im = flip_image(im, params)
+
+            # Segmenting the test case using trained network
             predF = model.predict(im)
+
+            # # This function flips R-L the inputs to its original orientation
+            # predF = flip_image(predF, params)
+
             # score = model.evaluate(DataSubj.Image, DataSubj.Mask)
+
+            # Removing the extra background dimention
             pred = predF[..., :num_classes - 1]
-            if len(pred.shape) == 3: pred = np.expand_dims(pred, axis=3)
+            if len(pred.shape) == 3: 
+                pred = np.expand_dims(pred, axis=3)
 
+            # Re-orienting the predicted segmentation masks into its original 3D volume dimentionality
             pred = np.transpose(pred, [1, 2, 0, 3])
-            if len(pred.shape) == 3: pred = np.expand_dims(pred, axis=3)
+            if len(pred.shape) == 3: 
+                pred = np.expand_dims(pred, axis=3)
 
+            # Removing the extra voxels added to the input for the purpose of conforming to NN input dimensioanlity
             pred = unPadding(pred, subject.Padding)
+
+            # Running the post processing on all classes
             return loopOver_AllClasses_postProcessing(pred)
 
         return applyPrediction()

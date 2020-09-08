@@ -160,29 +160,38 @@ def main(UserInfoB):
         """ running the network on right thalamus """ 
 
         def flip_inputs(params):
-            """ Flip L-R the image & its nuclei""" 
+            print('Flip L-R the image & its nuclei')
 
             subjects = params.directories.Test.Input.Subjects.copy()
+            code_address = params.WhichExperiment.Experiment.code_address + '/otherFuncs/flip_inputs.py'
             subjects.update(params.directories.Train.Input.Subjects)
 
             for subj in subjects.values(): 
-                os.system("cd %s;for n in *nii.gz; do fslswapdim $n -x y z $n; mv $n flipped_$n ; done"%(subj.address))   
-            
+                os.system("cd {0};python {1} -i {0}/PProcessed.nii.gz -o {0}/PProcessed.nii.gz;".format(subj.address,code_address))   
+                os.system("cd {0};mv {0}/PProcessed.nii.gz {0}/flipped_PProcessed.nii.gz;".format(subj.address))   
+
         def unflip_inputs(params):
-            """ reverse Flip L-R the flipped image & its nuclei""" 
+            print('Reverse Flip L-R the flipped image & its nuclei')
 
             subjects = params.directories.Test.Input.Subjects.copy()
+            code_address = params.WhichExperiment.Experiment.code_address + '/otherFuncs/flip_inputs.py'
             subjects.update(params.directories.Train.Input.Subjects)
 
             for subj in subjects.values():           
-                os.system("cd %s;for n in  *.nii.gz right/*/*.nii.gz; do fslswapdim $n -x y z $n; done"%(subj.address)) 
-                os.system("cd %s;for n in *.nii.gz ; do mv $n ${n#*_} ; done"%(subj.address))  # ${a#*_}   
+                os.system("cd {0};for n in flipped_PProcessed.nii.gz right/*/*.nii.gz; do python {1} -i {0}/$n -o {0}/$n; done".format(subj.address,code_address)) 
+                os.system("cd {0};mv {0}/flipped_PProcessed.nii.gz {0}/PProcessed.nii.gz;".format(subj.address))   
+                # os.system("cd %s;for n in *.nii.gz ; do mv $n ${n#*_} ; done"%(subj.address))  # ${a#*_}   
 
         UserInfoB['thalamic_side'].active_side = 'right'
         params = paramFunc.Run(UserInfoB, terminal=True)
 
+        # Flipping the data
         flip_inputs(params)
+
+        # Running the trained network on right thalamus
         running_main(UserInfoB)
+        
+        # Flipping the data back to its original orientation
         unflip_inputs(params)
 
         # Looping through subjects: Saving the multi label nifti image consisting of all predicted labels from 2-AV to 14-MTT 
@@ -205,10 +214,5 @@ def main(UserInfoB):
     if TS.right:             run_Right(UserInfoB)
     if TS.left and TS.right: merging_left_right_labels(UserInfoB)
 
-# main(UserInfoB)
+main(UserInfoB)
 
-import fsl
-import nibabel as nib
-Dir = '/array/hdd/msmajdi/data/preprocessed/test/vimp2_ctrl_920_07122013_SW/PProcessed.nii.gz'
-im = nib.load(Dir)
-fsl.sw
