@@ -1,7 +1,10 @@
 Thalamic Nuclei Analysis
 =====================================
+THIS IS A WORKING DOCUMENT
 
 ## Multi planar cascaded algorithm to segment thalamic nuclei.
+
+
 
 #### Purpose: 
 To develop a fast and accurate convolutional neural network based method for segmentation of thalamic nuclei.
