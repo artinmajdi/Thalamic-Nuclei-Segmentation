@@ -95,7 +95,7 @@ def apply_reslice(subject, params):
                 print('nucleus %s doesn not exist' % self.nucleus)
 
         def write_all_nuclei(self):
-            for self.nucleus in np.append('Image', smallFuncs.Nuclei_Class(method='Cascade').allNames):
+            for self.nucleus in np.append('Image', smallFuncs.Nuclei_Class().All_Nuclei().Names):
                 Reference(self.nucleus).write()
 
     def apply_reslicing_main(input_image, output_image, outDebug, interpolation, ref):

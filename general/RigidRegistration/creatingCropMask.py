@@ -3,29 +3,31 @@ import numpy as np
 import nibabel as nib
 import os
 
+
 def imShow(*args):
-    _, axes = plt.subplots(1,len(args))
+    _, axes = plt.subplots(1, len(args))
     for ax, im in enumerate(args):
-        axes[ax].imshow(im,cmap='gray')
+        axes[ax].imshow(im, cmap='gray')
 
     plt.show()
 
     return True
 
-dir = '/array/ssd/msmajdi/code/general/RigidRegistration/'
-# dir = '/media/data1/artin/code/general_Research/RigidRegistration/'
 
-im = nib.load(dir + 'origtemplate.nii.gz')
-# msk = nib.load(dir + 'MyCrop_Template2_Gap20.nii.gz').get_data()
-cord = tuple([range(83,176) , range(160,251) , range(95,151)])
+directory = '/array/ssd/msmajdi/code/general/RigidRegistration/'
+# directory = '/media/data1/artin/code/general_Research/RigidRegistration/'
+
+im = nib.load(directory + 'origtemplate.nii.gz')
+# msk = nib.load(directory + 'MyCrop_Template2_Gap20.nii.gz').get_data()
+cord = tuple([range(83, 176), range(160, 251), range(95, 151)])
 
 tempMsk1 = np.zeros(im.shape) > 0
 tempMsk2 = np.zeros(im.shape) > 0
 tempMsk3 = np.zeros(im.shape) > 0
 
-tempMsk1[cord[0],:,:] = True
-tempMsk2[:,cord[1],:] = True
-tempMsk3[:,:,cord[2]] = True
+tempMsk1[cord[0], :, :] = True
+tempMsk2[:, cord[1], :] = True
+tempMsk3[:, :, cord[2]] = True
 
 cropMask = tempMsk1 * tempMsk2 * tempMsk3
 sumMask = tempMsk1 + tempMsk2 + tempMsk3
@@ -33,9 +35,9 @@ sumMask = tempMsk1 + tempMsk2 + tempMsk3
 ind = 140
 # imShow(im.get_data()[...,ind] , sumMask[...,ind], cropMask[...,ind])
 
-maskF2 = nib.Nifti1Image(cropMask.astype(np.float32),im.affine)
+maskF2 = nib.Nifti1Image(cropMask.astype(np.float32), im.affine)
 maskF2.get_header = im.header
-nib.save(maskF2,dir + 'CropMaskV3.nii.gz' )
+nib.save(maskF2, directory + 'CropMaskV3.nii.gz')
 
 # def funcNormalize(im):
 #     # return (im-im.mean())/im.std()
@@ -59,11 +61,11 @@ nib.save(maskF2,dir + 'CropMaskV3.nii.gz' )
 #
 #     return im , mask
 #
-# dir = '/media/data1/artin/vimp2_0699_04302014'
+# directory = '/media/data1/artin/vimp2_0699_04302014'
 #
-# mask    = nib.load(dir + '/' + 'Manual_Delineation_Sanitized/' + '1-THALAMUS' + '.nii.gz').get_data()
-# imF       = nib.load(dir + '/' + 'WMnMPRAGE_bias_corr.nii.gz' )
-# CropMask = nib.load(dir + '/' + 'MyCrop.nii.gz').get_data()
+# mask    = nib.load(directory + '/' + 'Manual_Delineation_Sanitized/' + '1-THALAMUS' + '.nii.gz').get_data()
+# imF       = nib.load(directory + '/' + 'WMnMPRAGE_bias_corr.nii.gz' )
+# CropMask = nib.load(directory + '/' + 'MyCrop.nii.gz').get_data()
 #
 # Thalamus = nib.load('/media/data1/artin/Results/vimp2_1530_04232015_1-THALAMUS_Logical.nii.gz')
 #

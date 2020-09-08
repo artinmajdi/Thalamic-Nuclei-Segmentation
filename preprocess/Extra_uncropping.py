@@ -9,7 +9,7 @@ import numpy as np
 from shutil import copyfile                              
 
 
-class UserEntry():
+class UserEntry:
     def __init__(self):
         self.dir_in  = ''
         self.dir_out = ''
@@ -22,7 +22,7 @@ class UserEntry():
             elif sys.argv[en].lower() in ('-msk','--mask'): self.dir_mask = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1] 
             elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = sys.argv[en+1]
             
-class uncrop_cls():
+class uncrop_cls:
     def __init__(self, dir_in = '' , dir_out = '' , dir_mask = '' , maskCrop=''):
 
         self.dir_in  = dir_in

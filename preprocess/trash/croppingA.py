@@ -1,10 +1,5 @@
 import os
 import sys
-from shutil import copyfile
-import nibabel as nib
-import numpy as np
-from skimage import measure
-import otherFuncs.smallFuncs as smallFuncs
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 

@@ -8,7 +8,7 @@ import json
 import numpy as np
 
 
-class UserEntry():
+class UserEntry:
     def __init__(self):
         self.dir_in  = ''
         self.dir_out = ''
@@ -22,7 +22,7 @@ class UserEntry():
         print(self.dir_in)
         print(self.dir_out)
         
-class Reference():
+class Reference:
     def __init__(self, nucleus='Image'): 
 
         self.dir_origRefImage = '/array/ssd/msmajdi/experiments/keras/exp3/train/Main/vimp2_819_05172013_DS/'
@@ -59,7 +59,7 @@ class Reference():
         for self.nucleus in np.append('Image' , smallFuncs.Nuclei_Class(method='Cascade').allNames): 
             Reference(self.nucleus).write()
 
-class reslice_cls():
+class reslice_cls:
     def __init__(self, dir_in = '' , dir_out = ''):
 
         self.dir_in  = dir_in

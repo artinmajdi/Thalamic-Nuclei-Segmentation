@@ -97,11 +97,11 @@ def LinearFunc(params, mode):
             for AugIx in range(params.Augment.Linear.Length):
                 linearCls = linearFuncs_Class(params, nameSubject, AugIx , subject)
 
-                print('image',imInd,'/',len(SubjectNames),'augment',AugIx,'/',params.Augment.Linear.Length , nameSubject , \
-                    'sd' , params.WhichExperiment.Dataset.slicingInfo.slicingDim , 'angle' , linearCls.InputThreshs.angle)            
+                print('image',imInd,'/',len(SubjectNames),'augment',AugIx,'/',params.Augment.Linear.Length , nameSubject ,
+                      'sd' , params.WhichExperiment.Dataset.slicingInfo.slicingDim , 'angle' , linearCls.InputThreshs.angle)
 
                 def apply_OnImage():
-                    imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')  # 'Cropped' for cropped image                        
+                    imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
                     Image = linearCls.main( imF.get_data() , 5)
                     smallFuncs.saveImage(Image , imF.affine , imF.header , linearCls.outDirectory.Image + '/' + subject.ImageProcessed + '.nii.gz' )            
                 apply_OnImage()

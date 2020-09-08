@@ -1,7 +1,7 @@
 #!/bin/tcsh
 
-# export dir = '/array/ssd/msmajdi/data/preProcessed/7T/20priors'
-# cd $dir
+# export directory = '/array/ssd/msmajdi/data/preProcessed/7T/20priors'
+# cd $directory
 
 cd /array/ssd/msmajdi/experiments/keras/exp4_NCrp_7T
 rm t*/*/*_PProcessed.nii.gz

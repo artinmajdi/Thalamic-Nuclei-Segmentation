@@ -150,6 +150,8 @@ def func_WhichExperiment(UserInfo):
             test_address = ''
             init_address = ''
             ReadAugments_Mode = False
+            subexperiment_name = ''
+            code_address = ''
 
         def datasetFunc():
             class validation:

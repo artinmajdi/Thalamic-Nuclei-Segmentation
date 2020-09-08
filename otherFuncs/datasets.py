@@ -65,7 +65,7 @@ def paddingNegativeFix(sz, Padding):
     crd = -1 * padding
     padding[padding < 0] = 0
     crd[crd < 0] = 0
-    Padding = tuple([tuple(x) for x in padding])
+    # Padding = tuple([tuple(x) for x in padding])
 
     for ix in range(3): 
         crd[ix, 1] = sz[ix] if crd[ix, 1] == 0 else -crd[ix, 1]
@@ -75,7 +75,7 @@ def paddingNegativeFix(sz, Padding):
 
 def loadDataset(params):
     """    Loading the dataset    """    
-    def inputPreparationForUnet(im, subject2, params):
+    def inputPreparationForUnet(im, subject2):
 
         def CroppingInput(im, Padding2):
             if np.min(Padding2) < 0:
@@ -109,19 +109,19 @@ def loadDataset(params):
             return ImageF, np.transpose(Image, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
         imF, im = readingWithTranpose(subject2.address + '/' + subject2.ImageProcessed + '.nii.gz')
-        im = inputPreparationForUnet(im, subject2, params)
+        im = inputPreparationForUnet(im, subject2)
         im = normalizeA.main_normalize(params.preprocess.Normalize, im)
 
         return im, imF
 
-    def readingNuclei(params, subject, imFshape):
+    def readingNuclei(params, subject):
 
         def backgroundDetector(masks):
             a = np.sum(masks, axis=3)
-            background = np.zeros(masks.shape[:3])
-            background[np.where(a == 0)] = 1
-            background = np.expand_dims(background, axis=3)
-            return background
+            background_mask = np.zeros(masks.shape[:3])
+            background_mask[np.where(a == 0)] = 1
+            background_mask = np.expand_dims(background_mask, axis=3)
+            return background_mask
 
         def readingOriginalMask(NucInd):
             nameNuclei, _, _ = smallFuncs.NucleiSelection(NucInd)
@@ -139,7 +139,7 @@ def loadDataset(params):
             origMsk1N = readingOriginalMask(NucInd)
 
             msk1N = np.transpose(np.squeeze(origMsk1N), params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
-            msk1N = inputPreparationForUnet(msk1N, subject, params)
+            msk1N = inputPreparationForUnet(msk1N, subject)
 
             origMsk = origMsk1N if cnt == 0 else np.concatenate((origMsk, origMsk1N), axis=3).astype('float32')
             msk = msk1N if cnt == 0 else np.concatenate((msk, msk1N), axis=3).astype('float32')
@@ -264,13 +264,13 @@ def loadDataset(params):
                 if ErrorInPaddingCheck(subject): continue
 
                 im, imF = readingImage(params, subject)
-                origMsk, msk = readingNuclei(params, subject, imF.shape)
+                origMsk, msk = readingNuclei(params, subject)
 
                 msk = msk > Th
                 origMsk = origMsk > Th
 
                 if im[..., 0].shape == msk[..., 0].shape:
-                    Data[nameSubject] = testCase(Image=im, Mask=msk, OrigMask=(origMsk).astype('float32'),
+                    Data[nameSubject] = testCase(Image=im, Mask=msk, OrigMask=origMsk.astype('float32'),
                                                  Affine=imF.get_affine(), Header=imF.get_header(),
                                                  original_Shape=imF.shape)
                 else:
@@ -455,9 +455,6 @@ def preAnalysis(params):
             """
             Finding the network input dimention based on all train & test inputs
 
-            Args:
-                params: User parameters
-
             Returns:
                 MinInputSize: Network input dimension
             """  
@@ -507,7 +504,7 @@ def preAnalysis(params):
             a = 2 ** (L)
             return [int(a * np.ceil(s / a)) if s % a != 0 else s for s in np.max(inputSizes, axis=0)]
 
-        def findingSubjectsFinalPaddingAmount(wFolder, Input, params):
+        def findingSubjectsFinalPaddingAmount(Input, params):
 
             def applyingPaddingDimOnSubjects(params, Input):
                 fullpadding = params.WhichExperiment.HardParams.Model.InputDimensions - Input.inputSizes
@@ -536,15 +533,15 @@ def preAnalysis(params):
         params.WhichExperiment.HardParams.Model.InputDimensions = AA
 
         if params.directories.Train.Input.Subjects: params.directories.Train.Input = findingSubjectsFinalPaddingAmount(
-            'Train', params.directories.Train.Input, params)
+            params.directories.Train.Input, params)
         if params.directories.Test.Input.Subjects:  params.directories.Test.Input = findingSubjectsFinalPaddingAmount(
-            'Test', params.directories.Test.Input, params)
+            params.directories.Test.Input, params)
 
         if params.WhichExperiment.Nucleus.Index[0] == 1 and slicingDim == 2:
             if params.directories.Train.Input_Sagittal.Subjects: params.directories.Train.Input_Sagittal = findingSubjectsFinalPaddingAmount(
-                'Train', params.directories.Train.Input_Sagittal, params)
+                params.directories.Train.Input_Sagittal, params)
             if params.directories.Test.Input_Sagittal.Subjects:  params.directories.Test.Input_Sagittal = findingSubjectsFinalPaddingAmount(
-                'Test', params.directories.Test.Input_Sagittal, params)
+                params.directories.Test.Input_Sagittal, params)
 
         return params
 

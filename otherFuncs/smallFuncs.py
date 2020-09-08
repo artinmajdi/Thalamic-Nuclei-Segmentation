@@ -1,14 +1,17 @@
+import json
+import os
+import sys
+from glob import glob
+from shutil import copyfile
+import pandas as pd
+import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy as np
-from shutil import copyfile
-import matplotlib.pyplot as plt
-import os, sys
-from skimage import measure
-import json
 from scipy import ndimage
+from skimage import measure
 from tqdm import tqdm
+
 from modelFuncs import Metrics as metrics
-from glob import glob
 
 
 def NucleiSelection(ind=1):
@@ -48,7 +51,7 @@ def NucleiSelection(ind=1):
     return name, FullIndexes, Full_Names
 
 
-class Nuclei_Class():
+class Nuclei_Class:
 
     def __init__(self, index=1, method='Cascade'):
         def nucleus_name_func(index):
@@ -84,7 +87,7 @@ class Nuclei_Class():
         return All_Nuclei()
 
 
-class Experiment_Folder_Search():
+class Experiment_Folder_Search:
     def __init__(self, General_Address='', Experiment_Name='', subExperiment_Name='', mode='results'):
 
         class All_Experiments:
@@ -101,7 +104,7 @@ class Experiment_Folder_Search():
 
         def search_AllsubExp_inExp(Exp_address, mode):
 
-            class subExp():
+            class subExp:
                 def __init__(self, name, address, TgC):
 
                     def find_Planes(address, name, TgC):
@@ -209,7 +212,7 @@ def mkDir(Dir):
 def saveImage(Image, Affine, Header, outDirectory):
     """ Inputs:  Image , Affine , Header , outDirectory """
     mkDir(outDirectory.split(os.path.basename(outDirectory))[0])
-    out = nib.Nifti1Image((Image).astype('float32'), Affine)
+    out = nib.Nifti1Image(Image.astype('float32'), Affine)
     out.get_header = Header
     nib.save(out, outDirectory)
 
@@ -223,7 +226,7 @@ def nibShow(*args):
                 b = nib.viewers.OrthoSlicer3D(im, title='2')
                 a.link_to(b)
     else:
-        a = nib.viewers.OrthoSlicer3D(im)
+        a = nib.viewers.OrthoSlicer3D(args[0])
     a.show()
 
 
@@ -596,26 +599,26 @@ def extracting_the_biggest_object(pred_Binary):
 def test_precision_recall():
     import pandas as pd
 
-    dir = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd2/vimp2_967_08132013_KW/'
-    dirM = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/Main/a/vimp2_967_08132013_KW/Label/'
+    directory = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd2/vimp2_967_08132013_KW/'
+    directoryM = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/Main/a/vimp2_967_08132013_KW/Label/'
 
     Names = Nuclei_Class(index=1, method='Cascade').All_Nuclei().Names
 
     write_flag = False
     PR = {}
-    if write_flag: df = pd.DataFrame()
-    if write_flag: writer = pd.ExcelWriter(path=dir + 'Precision_Recall.xlsx', engine='xlsxwriter')
+    if write_flag:
+        writer = pd.ExcelWriter(path=directory + 'Precision_Recall.xlsx', engine='xlsxwriter')
 
     for ind in range(13):
 
         nucleus_name = Names[ind].split('-')[1]
-        msk = nib.load(dir + Names[ind] + '.nii.gz').get_data()
-        mskM = nib.load(dirM + Names[ind] + '_PProcessed.nii.gz').get_data()
+        msk = nib.load(directory + Names[ind] + '.nii.gz').get_data()
+        mskM = nib.load(directoryM + Names[ind] + '_PProcessed.nii.gz').get_data()
 
         # plt.plot(np.unique(msk))
 
         precision, recall = metrics.Precision_Recall_Curve(y_true=mskM, y_pred=msk, Show=True, name=nucleus_name,
-                                                           directory=dir)
+                                                           directory=directory)
 
         if write_flag:
             df = pd.DataFrame.from_dict({'precision': precision, 'recall': recall})
@@ -625,11 +628,8 @@ def test_precision_recall():
 
 
 def test_extract_biggest_object():
-    import nibabel as nib
     from skimage import measure
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import os, sys
+    import os
     from tqdm import tqdm
 
     dir_predictions = '/array/ssd/msmajdi/experiments/keras/exp6_uncropped/results/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CVs_all/sd2/'
@@ -642,7 +642,7 @@ def test_extract_biggest_object():
         subjects = [s for s in os.listdir(main_directory + cv) if 'vimp' in s]
         for subj in tqdm(subjects):
 
-            im = nib.load(main_directory + cv + subj + '/PProcessed.nii.gz').get_data()
+            # im = nib.load(main_directory + cv + subj + '/PProcessed.nii.gz').get_data()
             label = nib.load(main_directory + cv + subj + '/Label/1-THALAMUS_PProcessed.nii.gz').get_data()
             label = fixMaskMinMax(label, subj)
             OP = nib.load(dir_predictions + subj + '/1-THALAMUS.nii.gz')
@@ -650,30 +650,27 @@ def test_extract_biggest_object():
 
             objects = measure.regionprops(measure.label(original_prediction))
 
-            L = len(original_prediction.shape)
             if len(objects) > 1:
                 area = []
-                for obj in objects: area = np.append(area, obj.area)
+                for obj in objects:
+                    area = np.append(area, obj.area)
 
                 Ix = np.argsort(area)
                 obj = objects[Ix[-1]]
 
-                fitlered_prediction = np.zeros(original_prediction.shape)
+                filtered_prediction = np.zeros(original_prediction.shape)
                 for cds in obj.coords:
-                    fitlered_prediction[tuple(cds)] = True
+                    filtered_prediction[tuple(cds)] = True
 
                 Dice = np.zeros(2)
-                Dice[0], Dice[1] = 1, smallFuncs.mDice(fitlered_prediction > 0.5, label > 0.5)
+                Dice[0], Dice[1] = 1, mDice(filtered_prediction > 0.5, label > 0.5)
                 np.savetxt(dir_predictions + subj + '/Dice_1-THALAMUS_biggest_obj.txt', Dice, fmt='%1.4f')
 
-                smallFuncs.saveImage(fitlered_prediction, OP.affine, OP.header,
+                saveImage(filtered_prediction, OP.affine, OP.header,
                                      dir_predictions + subj + '/1-THALAMUS_biggest_obj.nii.gz')
 
-        else:
-            image = objects[0].image
 
-
-class SNR_experiment():
+class SNR_experiment:
 
     def __init__(self):
         pass
@@ -681,25 +678,25 @@ class SNR_experiment():
     def script_adding_WGN(self, directory='/mnt/sda5/RESEARCH/PhD/Thalmaus_Dataset/SNR_Tests/vimp2_ANON695_03132013/',
                           SD_list=np.arange(1, 80, 5), run_network=True):
 
-        def add_WGN(input=[], noise_mean=0, noise_std=1):
+        def add_WGN(input_image=[], noise_mean=0, noise_std=1):
             from numpy.fft import fftshift, fft2
-            gaussian_noise_real = np.random.normal(loc=noise_mean, scale=noise_std, size=input.shape)
-            gaussian_noise_imag = np.random.normal(loc=noise_mean, scale=noise_std, size=input.shape)
+            gaussian_noise_real = np.random.normal(loc=noise_mean, scale=noise_std, size=input_image.shape)
+            gaussian_noise_imag = np.random.normal(loc=noise_mean, scale=noise_std, size=input_image.shape)
             gaussian_noise = gaussian_noise_real + 1j * gaussian_noise_imag
 
             # template = nib.load('general/RigidRegistration/cropped_origtemplate.nii.gz').get_data()
             # psd_template = np.mean(abs(fftshift(fft2(template/template.max())))**2)
 
             # psd_template, max_template = 325, 12.66
-            psd_signal = np.mean(abs(fftshift(fft2(input))) ** 2)
+            psd_signal = np.mean(abs(fftshift(fft2(input_image))) ** 2)
 
-            # psd_noise_image = psd_signal - psd_template * (input.max()**2)
+            # psd_noise_image = psd_signal - psd_template * (input_image.max()**2)
             psd_noise = np.mean(abs(fftshift(fft2(gaussian_noise))) ** 2)
             # psd_noise       = psd_noise_added + psd_noise_image
 
             SNR = 10 * np.log10(psd_signal / psd_noise)  # SNR = PSD[s]/PSD[n]  if x = s + n
-            # SNR = 10*np.log10(np.mean(input**2)/np.mean(abs(gaussian_noise)**2))  # SNR = E[s^2]/E[n^2]  if x = s + n
-            return abs(input + gaussian_noise), SNR
+            # SNR = 10*np.log10(np.mean(input_image**2)/np.mean(abs(gaussian_noise)**2))  # SNR = E[s^2]/E[n^2]  if x = s + n
+            return abs(input_image + gaussian_noise), SNR
 
         directory2 = os.path.dirname(directory).replace(' ', '\ ')
         os.system("mkdir {0}/vimp2_orig_SNR_10000 ; mv {0}/* {0}/vimp2_orig_SNR_10000/ ".format(directory2))
@@ -713,7 +710,7 @@ class SNR_experiment():
             imF = nib.load(dir_original_image + '/PProcessed.nii.gz')
             im = imF.get_data()
 
-            noisy_image, SNR = add_WGN(input=im, noise_mean=0, noise_std=noise_std)
+            noisy_image, SNR = add_WGN(input_image=im, noise_mean=0, noise_std=noise_std)
             SNR = int(round(SNR))
 
             if SNR not in SNR_List:
@@ -730,6 +727,7 @@ class SNR_experiment():
                     os.system("python main.py --test %s" % (dir_noisy_image.replace(' ', '\ ') + '/PProcessed.nii.gz'))
 
     def read_all_Dices_and_SNR(self, directory=''):
+
         Dices = {}
         for subj in [s for s in os.listdir(directory) if os.path.isdir(directory + s)]:
             SNR = int(subj.split('_SNR_')[-1])
@@ -758,7 +756,7 @@ class SNR_experiment():
         writer.save()
 
 
-class Thalamus_Sub_Functions():
+class Thalamus_Sub_Functions:
     def __init__(self):
         pass
 

@@ -36,7 +36,7 @@ def JAC(y_true,y_pred):
 
 
     
-class VSI_AllClasses_TF():
+class VSI_AllClasses_TF:
     def __init__(self, y_true,y_pred):
         self.true = y_true
         self.pred = y_pred
@@ -50,7 +50,7 @@ class VSI_AllClasses_TF():
         nmCl = max(self.pred.shape[3] - 1,1)  
         return tf.reduce_sum( [VSI_AllClasses(self.true[...,d], self.pred[...,d]).VSI() for d in range(nmCl)] )
 
-class VSI_AllClasses():
+class VSI_AllClasses:
     def __init__(self, y_true,y_pred):
         self.true = y_true
         self.pred = y_pred
@@ -64,7 +64,7 @@ class VSI_AllClasses():
         nmCl = max(self.pred.shape[3] - 1,1)  
         return [VSI_AllClasses(self.true[...,d], self.pred[...,d]).VSI() for d in range(nmCl)].mean()
 
-class HD_AllClasses():
+class HD_AllClasses:
     def __init__(self, y_true,y_pred):
         self.true = y_true
         self.pred = y_pred
@@ -89,7 +89,7 @@ def confusionMatrix(y_true,y_pred):
 
     D = confusion_matrix(yt1, yp1 > 0.5)
 
-    class metrics():
+    class metrics:
         def __init__(self, D):
                 
             TN, FP, FN , TP = D[0,0] , D[0,1] , D[1,0] , D[1,1]
