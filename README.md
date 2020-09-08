@@ -38,4 +38,5 @@ conda env create -f requirements.yml
 
 ##### Link: <https://www.sciencedirect.com/science/article/pii/S0730725X20303118#t0005>
 
-Majdi, Mohammad S., Mahesh B. Keerthivasan, Brian K. Rutt, Natalie M. Zahr, Jeffrey J. Rodriguez, and Manojkumar Saranathan. "[Automated thalamic nuclei segmentation using multi-planar cascaded convolutional neural networks.]" *Magnetic Resonance Imaging (2020)*.
+Majdi, M.S., Keerthivasan, M.B., Rutt, B.K., Zahr, N.M., Rodriguez, J.J. and Saranathan, M., 2020. 
+<span style="color: green">  Automated thalamic nuclei segmentation using multi-planar cascaded convolutional neural networks. *Magnetic Resonance Imaging*.
