@@ -55,7 +55,7 @@ class VSI_AllClasses:
 
     def apply_to_all_classes(self):
         nmCl = max(self.pred.shape[3] - 1, 1)
-        return np.mean([VSI_AllClasses(self.true[..., d], self.pred[..., d]).VSI() for d in range(nmCl)]
+        return np.mean([VSI_AllClasses(self.true[..., d], self.pred[..., d]).VSI() for d in range(nmCl)])
 
 
 class HD_AllClasses:
@@ -65,8 +65,8 @@ class HD_AllClasses:
 
     def HD(self):
         a = np.zeros((self.true.shape[2], 2))
-        for i in range(self.true.shape[2]): a[i, :] = [self.true[..., i].sum(),
-                                                       directed_hausdorff(self.true[..., i], self.pred[..., i])[0]]
+        for i in range(self.true.shape[2]): 
+            a[i, :] = [self.true[..., i].sum(), directed_hausdorff( self.true[..., i], self.pred[..., i])[0]]
 
         return np.sum(a[:, 0] * a[:, 1]) / np.sum(a[:, 0])
 

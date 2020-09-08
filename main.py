@@ -42,7 +42,7 @@ def main(UserInfoB):
                 else:
                     # saving the nuclei into one mask
                     msk = nib.load(dirr).get_data()
-                    if not mask:
+                    if mask == []:
                         # saving the first nucleus (2-AV)
                         mask = cnt * msk
                     else:
