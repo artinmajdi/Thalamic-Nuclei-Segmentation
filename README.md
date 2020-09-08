@@ -1,9 +1,7 @@
-Multi planar cascaded algorithm to segment thalamic nuclei.
+Thalamic Nuclei Analysis
 =====================================
 
-
-### Citations
-Majdi, Mohammad S., Mahesh B. Keerthivasan, Brian K. Rutt, Natalie M. Zahr, Jeffrey J. Rodriguez, and Manojkumar Saranathan. "[Automated thalamic nuclei segmentation using multi-planar cascaded convolutional neural networks.]" *Magnetic Resonance Imaging (2020)*.
+## Multi planar cascaded algorithm to segment thalamic nuclei.
 
 
 ### Installation and Requirements
@@ -38,6 +36,6 @@ conda env create -f requirements.yml
 #### Data Structure
 
 
-[//]: # (reference links)
+##### Link: <https://www.sciencedirect.com/science/article/pii/S0730725X20303118#t0005>
 
-   [paper]: <https://www.sciencedirect.com/science/article/pii/S0730725X20303118#t0005>
+Majdi, Mohammad S., Mahesh B. Keerthivasan, Brian K. Rutt, Natalie M. Zahr, Jeffrey J. Rodriguez, and Manojkumar Saranathan. "[Automated thalamic nuclei segmentation using multi-planar cascaded convolutional neural networks.]" *Magnetic Resonance Imaging (2020)*.
