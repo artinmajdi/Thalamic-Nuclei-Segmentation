@@ -20,13 +20,11 @@ conda env create -f requirements.yml
 
 * All data should be in the *.nii.gz format.
 
-* In case of training or automatic measurement of Dice & VSI on test cases, the input ground-truth labels, ROI masks and other **images of each subject need to be co-registered** (per-subject, no need for inter-subject registration). 
+* Input ground-truth labels and the image for each subject should be co-registered** (per-subject, no need for inter-subject registration). 
 
-* Image & labels within each subject should **have the same dimensions** (per subject, no need for whole database). This is, the number of voxels per dimension must be the same for all images of a subject. 
+* Algorithm automatically resamples & normalizes all images into the same voxel size and dynamic range
 
-* Algorithm automatically resamples all images into the same voxel size
-
-* Make sure that the **ground-truth labels** for training and evaluation represent the background with zero or FALSE. The system also assumes that the task’s classes are indexed as one or TRUE
+* Make sure that the **ground-truth labels** for training and evaluation represent the background with zero/FALSE and foreground with one/TRUE.
 
 ### Prosecution Example
 #### Training 
