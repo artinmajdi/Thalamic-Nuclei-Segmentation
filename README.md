@@ -80,6 +80,38 @@ All user inputs can be modified inside the UserInfo.py python code inside the Pa
 
 
 ### Data Structure
+The address to train & test directories should be the parent directory that includes all train/test subjects(folders) (User should not point to the actual subject's folder).
+
+##### Train & Test Directory Structure
+
+    <Train-Directory>
+         <subject 1>  (folder)
+         <subejct 2>  (folder)
+            ....
+        
+    <Test-Directory> 
+         <subject m>   (folder)
+         <subejct m+1> (folder)
+            ....
+
+##### Each Subject's folder structure "subject x"
+Each subject should have its own folder consist of one *.nii.gz file representing the image and a sub-folder called Labels that includes all nifti labels named according to below
+
+    image.nii.gz
+    Labels (folder)
+        1-THALAMUS.nii.gz 
+        2-AV.nii.gz             
+        4-VA.nii.gz  
+        5-VLa.nii.gz   
+        6-VLP.nii.gz       
+        7-VPL.nii.gz  
+        8-Pul.nii.gz  
+        9-LGN.nii.gz       
+        10-MGN.nii.gz      
+        11-CM.nii.gz  
+        12-MD-Pf.nii.gz    
+        13-Hb.nii.gz    
+        14-MTT.nii.gz 
 
 ### Citation
 #### Link: <https://www.sciencedirect.com/science/article/pii/S0730725X20303118#t0005>
