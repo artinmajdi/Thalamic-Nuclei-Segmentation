@@ -2,14 +2,14 @@ class experiment:
     # Address to the experiment directory
     exp_address = '/array/hdd/msmajdi/experiments/exp6/'
 
+    # Subexperiment name
+    subexperiment_name = 'test_03_wmn'
+
     # Path to the training data
     train_address = '/array/hdd/msmajdi/data/preprocessed/train/'
 
     # Path to the testing data
-    test_address = '/array/hdd/msmajdi/data/preprocessed/test/'
-
-    # Subexperiment name
-    subexperiment_name = 'test_03_wmn'
+    test_address = '/array/ssd/msmajdi/code/CNN/Example_Cases/CSFn/'
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = True
@@ -17,27 +17,36 @@ class experiment:
     # Path to the code
     code_address = '/array/ssd/msmajdi/code/CNN/'
 
+    # modality of the input data. wmn / csfn
+    image_modality = 'csfn'
+
+
+class TestOnly:
+    # If TRUE , it will run the trained model on test cases.
+    mode = True
+
+    """ Address to the main folder holding the trained model.
+        This address only applies if mode==True. otherwise it will use the address specified by experiment & subexperiment 
+        This directory should point to the parent folder holding on trained models: 
+            ACTUAL_TRAINED_MODEL_ADDRESS = model_adress + '/' + FeatureMapNum (e.g. FM20) + '/' + Nucleus_name (e.g. 2-AV) + '/' + Orientation Index (e.g. sd2)
+    """
+    model_address = ''
+
 
 """ if init_address will be left empty, the default address will be used for initialization """
-
-
 class initialize:
     # If TRUE, network weights will be initialized
     mode = True
 
-    # modality of the input data. wmn / csfn
-    modality_default = 'wmn'
-
     # Path to the initialization network. If left empty, the algorithm will use the default path to sample initialization networks
     init_address = ''  # '/array/ssd/msmajdi/code/Trained_Models/WMn/'
 
-
 # This class specifies while thalamic sides will be analysed
 class thalamic_side:
-    # Left Thalamus
+    # Running the network on left thalamus
     left = True
 
-    # Right Thalamus
+    # Running the network on right thalamus
     right = True
 
     # This can be left empty. It is used during the training & testing process
@@ -70,22 +79,10 @@ class preprocess:
     """
     Mode = True
     BiasCorrection = False
-    Cropping = True
+    Cropping = False
     Reslicing = True
     save_debug_files = True
     Normalize = normalize()
-
-
-class TestOnly:
-    # If TRUE , it will run the trained model on test cases.
-    mode = True
-
-    """ Address to the main folder holding the trained model.
-        This address only applies if mode==True. otherwise it will use the address specified by experiment & subexperiment 
-        This directory should point to the parent folder holding on trained models: 
-            ACTUAL_TRAINED_MODEL_ADDRESS = model_adress + '/' + FeatureMapNum (e.g. FM20) + '/' + Nucleus_name (e.g. 2-AV) + '/' + Orientation Index (e.g. sd2)
-    """
-    model_address = ''
 
 
 class simulation:

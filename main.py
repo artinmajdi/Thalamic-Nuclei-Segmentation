@@ -1,5 +1,6 @@
 import os
 import sys
+import subprocess
 
 sys.path.append(os.path.dirname(__file__))
 import otherFuncs.smallFuncs as smallFuncs
@@ -169,9 +170,11 @@ def main(UserInfoB):
             subjects.update(params.directories.Train.Input.Subjects)
 
             for subj in subjects.values():
-                os.system("cd {0};python {1} -i {0}/PProcessed.nii.gz -o {0}/PProcessed.nii.gz;".format(subj.address,
-                                                                                                        code_address))
-                os.system("cd {0};mv {0}/PProcessed.nii.gz {0}/flipped_PProcessed.nii.gz;".format(subj.address))
+                command = "cd {0};python {1} -i {0}/PProcessed.nii.gz -o {0}/PProcessed.nii.gz;".format(subj.address, code_address)
+                subprocess.call(command, shell=True)
+
+                command = "cd {0};mv {0}/PProcessed.nii.gz {0}/flipped_PProcessed.nii.gz;".format(subj.address)
+                subprocess.call(command, shell=True)
 
         def unflip_inputs(params):
             print('Reverse Flip L-R the flipped image & its nuclei')
@@ -181,11 +184,11 @@ def main(UserInfoB):
             subjects.update(params.directories.Train.Input.Subjects)
 
             for subj in subjects.values():
-                os.system(
-                    "cd {0};for n in flipped_PProcessed.nii.gz right/*/*.nii.gz; do python {1} -i {0}/$n -o {0}/$n; done".format(
-                        subj.address, code_address))
-                os.system("cd {0};mv {0}/flipped_PProcessed.nii.gz {0}/PProcessed.nii.gz;".format(subj.address))
-                # os.system("cd %s;for n in *.nii.gz ; do mv $n ${n#*_} ; done"%(subj.address))  # ${a#*_}   
+                command = "cd {0};for n in flipped_PProcessed.nii.gz right/*/*.nii.gz; do python {1} -i {0}/$n -o {0}/$n; done".format(subj.address, code_address)
+                subprocess.call(command, shell=True)
+
+                command = "cd {0};mv {0}/flipped_PProcessed.nii.gz {0}/PProcessed.nii.gz;".format(subj.address)
+                subprocess.call(command, shell=True)
 
         UserInfoB['thalamic_side'].active_side = 'right'
         params = paramFunc.Run(UserInfoB, terminal=True)

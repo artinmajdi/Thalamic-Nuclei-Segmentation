@@ -240,6 +240,15 @@ def fixMaskMinMax(Image, name):
 
 
 def terminalEntries(UserInfo):
+
+    def check_main_directory(Directory):
+
+        if Directory[0] != '/':
+            return os.getcwd() + '/' + Directory
+
+        return Directory
+
+
     for en in range(len(sys.argv)):
         entry = sys.argv[en]
 
@@ -249,6 +258,18 @@ def terminalEntries(UserInfo):
         elif entry in ('-v', '--verbose'):
             UserInfo['verbose'] = int(sys.argv[en + 1])
 
+        elif entry in ('--train'):
+            UserInfo['experiment'].train_address = check_main_directory(sys.argv[en + 1]) 
+
+        elif entry in ('--test'):
+            UserInfo['experiment'].test_address =  check_main_directory(sys.argv[en + 1]) 
+
+        elif entry in ('-m', '--modality'):
+            UserInfo['experiment'].image_modality = sys.argv[en + 1]
+
+    # Path to the testing data
+    test_address = '/array/hdd/msmajdi/data/preprocessed/test/'
+
     return UserInfo
 
 
@@ -256,7 +277,6 @@ def search_ExperimentDirectory(whichExperiment):
     SD = '/sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim)
     FM    = '/FM' + str(whichExperiment.HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num)
     NN    = '/'   + whichExperiment.Nucleus.name
-    initialization = whichExperiment.HardParams.Model.Initialize
     code_address   = dir_check(whichExperiment.Experiment.code_address)
     Exp_address    = dir_check(whichExperiment.Experiment.exp_address)
     subexperiment_name = whichExperiment.Experiment.subexperiment_name
@@ -427,7 +447,7 @@ def search_ExperimentDirectory(whichExperiment):
         if whichExperiment.TestOnly.model_address:
             model_address = dir_check(whichExperiment.TestOnly.model_address) + FM + NN + SD
         else:
-            if initialization.modality_default.lower() == 'wmn':
+            if whichExperiment.Experiment.image_modality.lower() == 'wmn':
                 net_name = 'WMn'
             else:
                 net_name = 'CSFn'

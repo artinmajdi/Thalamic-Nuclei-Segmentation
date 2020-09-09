@@ -42,9 +42,56 @@ conda env create -f requirements.yml
 * Make sure that the **ground-truth labels** for training and evaluation represent the background with zero/FALSE and foreground with one/TRUE.
 
 ### Prosecution Example
-#### Training 
 
-#### Testing
+### User Inputs
+All user inputs can be modified inside the UserInfo.py python code inside the Parameters Folder
+
+class experiment:
+    exp_address        # Address to the experiment directory
+    subexperiment_name # Subexperiment name
+    train_address      # Path to the training data
+    test_address       # Path to the testing data
+    ReadAugments_Mode  # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
+    code_address       # Path to the code
+    image_modality     # modality of the input data. wmn / csfn
+
+
+class TestOnly:
+    mode          # If TRUE , it will run the trained model on test cases.
+    model_address # Address to the main folder holding the trained model.
+
+class initialize:
+    mode         # If TRUE, network weights will be initialized
+    init_address # Path to the initialization network. If left empty, the algorithm will use the default path to sample initialization networks
+
+class thalamic_side:    
+    left # Running the network on left thalamus
+    right # Running the network on right thalamus
+
+class preprocess:
+    """ Pre-processing flags
+      - Mode             (boolean):   TRUE/FALSE
+      - BiasCorrection   (boolean):   Bias Field Correction
+      - Cropping         (boolean):   Cropping the input data using the cropped template
+      - Reslicing        (boolean):   Re-slicing the input data into the same resolution
+      - save_debug_files (boolean):   TRUE/FALSE
+      - Normalize        (normalize): Data normalization
+    """
+
+
+### Terminal Commands
+Terminal Assignments:
+GPU index:          ('-g', '--gpu')
+Image Modality:     ('-m', '--modality')
+Train Directory:    ('--train')
+Test  Directory:    ('--test')
+
+##### Training: 
+Example: <python main.py -g 3 --train "directory-to-train-cases-parent-folder" --test "directory-to-test-cases-parent-folder" --modality wmn>
+
+##### Testing
+Example: <python main.py -g 3 --test "directory-to-test-cases-parent-folder" --modality csfn>
+
 
 ### Data Structure
 

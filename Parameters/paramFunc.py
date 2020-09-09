@@ -95,7 +95,6 @@ def func_WhichExperiment(UserInfo):
 
             class InitializeB:
                 mode = True
-                modality_default = 'wmn'  # 'wmn' 'csfn'
                 init_address = '/array/ssd/msmajdi/code/Trained_Models/WMn/'
 
             class model:
@@ -145,14 +144,27 @@ def func_WhichExperiment(UserInfo):
         hardParams = HardParamsFuncs()
 
         class experiment:
+            # Address to the experiment directory
             exp_address = ''
+
+            # Subexperiment name
+            subexperiment_name = 'test_03'
+
+            # Path to the training data
             train_address = ''
+
+            # Path to the testing data
             test_address = ''
-            init_address = ''
+
+            # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
             ReadAugments_Mode = False
-            subexperiment_name = ''
+
+            # Path to the code
             code_address = ''
 
+            # modality of the input data. wmn / csfn
+            image_modality = 'wmn'
+            
         def datasetFunc():
             class validation:
                 percentage = 0.1

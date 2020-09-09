@@ -329,7 +329,7 @@ def trainingExperiment(Data, params):
             if initialization.init_address:
                 init_address = smallFuncs.dir_check(initialization.init_address) + FM + NN + SD + '/model_weights.h5'
             else:
-                modDef = initialization.modality_default.lower()
+                modDef = params.WhichExperiment.Experiment.image_modality.lower()
                 net_name = 'SRI' if modDef == 'wmn' else 'WMn'
 
                 init_address = code_address + 'Trained_Models/' + net_name + FM + NN + SD + '/model_weights.h5'
