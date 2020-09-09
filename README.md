@@ -66,17 +66,17 @@ All user inputs can be modified inside the UserInfo.py python code inside the Pa
 
 
 ### Terminal Commands
-Terminal Assignments:
+##### Terminal Assignments:
 GPU index:          ('-g', '--gpu')
 Image Modality:     ('-m', '--modality')
 Train Directory:    ('--train')
 Test  Directory:    ('--test')
 
 ##### Training: 
-Example: <python main.py -g 3 --train "directory-to-train-cases-parent-folder" --test "directory-to-test-cases-parent-folder" --modality wmn>
+Example: python main.py -g 3 --train <directory-to-train-cases-parent-folder> --test <directory-to-test-cases-parent-folder> --modality wmn
 
 ##### Testing
-Example: <python main.py -g 3 --test "directory-to-test-cases-parent-folder" --modality csfn>
+Example: python main.py -g 3 --test "directory-to-test-cases-parent-folder" --modality csfn
 
 
 ### Data Structure
