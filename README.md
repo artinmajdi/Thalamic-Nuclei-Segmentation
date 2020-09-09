@@ -1,9 +1,6 @@
-Thalamic Nuclei Analysis
+Thalamic Nuclei Segmentation
 =====================================
-THIS IS A WORKING DOCUMENT
-
-## Multi planar cascaded algorithm to segment thalamic nuclei.
-
+Multi-planar cascaded algorithm to segment thalamic nuclei.
 
 ### Installation and Requirements
 
