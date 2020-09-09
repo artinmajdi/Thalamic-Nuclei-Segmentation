@@ -117,7 +117,8 @@ Each subject should have its own folder consist of one *.nii.gz file representin
 #### Link: <https://www.sciencedirect.com/science/article/pii/S0730725X20303118#t0005>
     
     Majdi, M.S., Keerthivasan, M.B., Rutt, B.K., Zahr, N.M., Rodriguez, J.J. and Saranathan, M., 2020. 
-    <span style="color: green">  Automated thalamic nuclei segmentation using multi-planar cascaded convolutional neural networks. *Magnetic Resonance Imaging*.
+    Automated thalamic nuclei segmentation using multi-planar cascaded convolutional neural networks. 
+    Magnetic Resonance Imaging.
 
 ### Abstract
 
