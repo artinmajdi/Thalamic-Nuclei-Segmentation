@@ -5,20 +5,6 @@ THIS IS A WORKING DOCUMENT
 ## Multi planar cascaded algorithm to segment thalamic nuclei.
 
 
-
-#### Purpose: 
-To develop a fast and accurate convolutional neural network based method for segmentation of thalamic nuclei.
-
-#### Methods: 
-A cascaded multi-planar scheme with a modified residual U-Net architecture was used to segment thalamic nuclei on conventional and white-matter-nulled (WMn) magnetization prepared rapid gradient echo (MPRAGE) data. A single network was optimized to work with images from healthy controls and patients with multiple sclerosis (MS) and essential tremor (ET), acquired at both 3T and 7T field strengths. WMn-MPRAGE images were manually delineated by a trained neuroradiologist using the Morel histological atlas as a guide to generate reference ground truth labels. Dice similarity coefficient and volume similarity index (VSI) were used to evaluate performance. Clinical utility was demonstrated by applying this method to study the effect of MS on thalamic nuclei atrophy. 
-
-#### Results: 
-Segmentation of each thalamus into twelve nuclei was achieved in under a minute. For 7T WMn-MPRAGE, the proposed method outperforms current state-of-the-art on patients with ET with statistically significant improvements in Dice for five nuclei (increase in the range of 0.05-0.18) and VSI for four nuclei (increase in the range of 0.05-0.19), while performing comparably for healthy and MS subjects. Dice and VSI achieved using 7T WMn-MPRAGE data are comparable to those using 3T WMn-MPRAGE data. For conventional MPRAGE, the proposed method shows a statistically significant Dice improvement in the range of 0.14-0.63 over FreeSurfer for all nuclei and disease types. Effect of noise on network performance shows robustness to images with SNR as low as half the baseline SNR.  Atrophy of four thalamic nuclei and whole thalamus was observed for MS patients compared to healthy control subjects, after controlling for the effect of parallel imaging, intracranial volume, gender, and age (p<0.004).
-
-#### Conclusion: 
-The proposed segmentation method is fast, accurate, performs well across disease types and field strengths, and shows great potential for improving our understanding of thalamic nuclei involvement in neurological diseases. 
-
-
 ### Installation and Requirements
 
 Downloading the software
@@ -46,7 +32,7 @@ conda env create -f requirements.yml
 ### User Inputs
 All user inputs can be modified inside the UserInfo.py python code inside the Parameters Folder
 
-class experiment:
+##### class experiment:
     exp_address        # Address to the experiment directory
     subexperiment_name # Subexperiment name
     train_address      # Path to the training data
@@ -56,19 +42,19 @@ class experiment:
     image_modality     # modality of the input data. wmn / csfn
 
 
-class TestOnly:
+##### class TestOnly:
     mode          # If TRUE , it will run the trained model on test cases.
     model_address # Address to the main folder holding the trained model.
 
-class initialize:
+##### class initialize:
     mode         # If TRUE, network weights will be initialized
     init_address # Path to the initialization network. If left empty, the algorithm will use the default path to sample initialization networks
 
-class thalamic_side:    
+##### class thalamic_side:    
     left # Running the network on left thalamus
     right # Running the network on right thalamus
 
-class preprocess:
+##### class preprocess:
     """ Pre-processing flags
       - Mode             (boolean):   TRUE/FALSE
       - BiasCorrection   (boolean):   Bias Field Correction
@@ -100,3 +86,17 @@ Example: <python main.py -g 3 --test "directory-to-test-cases-parent-folder" --m
 
 Majdi, M.S., Keerthivasan, M.B., Rutt, B.K., Zahr, N.M., Rodriguez, J.J. and Saranathan, M., 2020. 
 <span style="color: green">  Automated thalamic nuclei segmentation using multi-planar cascaded convolutional neural networks. *Magnetic Resonance Imaging*.
+
+### Abstract
+
+#### Purpose: 
+To develop a fast and accurate convolutional neural network based method for segmentation of thalamic nuclei.
+
+#### Methods: 
+A cascaded multi-planar scheme with a modified residual U-Net architecture was used to segment thalamic nuclei on conventional and white-matter-nulled (WMn) magnetization prepared rapid gradient echo (MPRAGE) data. A single network was optimized to work with images from healthy controls and patients with multiple sclerosis (MS) and essential tremor (ET), acquired at both 3T and 7T field strengths. WMn-MPRAGE images were manually delineated by a trained neuroradiologist using the Morel histological atlas as a guide to generate reference ground truth labels. Dice similarity coefficient and volume similarity index (VSI) were used to evaluate performance. Clinical utility was demonstrated by applying this method to study the effect of MS on thalamic nuclei atrophy. 
+
+#### Results: 
+Segmentation of each thalamus into twelve nuclei was achieved in under a minute. For 7T WMn-MPRAGE, the proposed method outperforms current state-of-the-art on patients with ET with statistically significant improvements in Dice for five nuclei (increase in the range of 0.05-0.18) and VSI for four nuclei (increase in the range of 0.05-0.19), while performing comparably for healthy and MS subjects. Dice and VSI achieved using 7T WMn-MPRAGE data are comparable to those using 3T WMn-MPRAGE data. For conventional MPRAGE, the proposed method shows a statistically significant Dice improvement in the range of 0.14-0.63 over FreeSurfer for all nuclei and disease types. Effect of noise on network performance shows robustness to images with SNR as low as half the baseline SNR.  Atrophy of four thalamic nuclei and whole thalamus was observed for MS patients compared to healthy control subjects, after controlling for the effect of parallel imaging, intracranial volume, gender, and age (p<0.004).
+
+#### Conclusion: 
+The proposed segmentation method is fast, accurate, performs well across disease types and field strengths, and shows great potential for improving our understanding of thalamic nuclei involvement in neurological diseases. 
