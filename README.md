@@ -67,25 +67,25 @@ All user inputs can be modified inside the UserInfo.py python code inside the Pa
 
 ### Terminal Commands
 ##### Terminal Assignments:
-GPU index:          ('-g', '--gpu')
-Image Modality:     ('-m', '--modality')
-Train Directory:    ('--train')
-Test  Directory:    ('--test')
+    - GPU index:          ('-g', '--gpu')
+    - Image Modality:     ('-m', '--modality')
+    - Train Directory:    ('--train')
+    - Test  Directory:    ('--test')
 
 ##### Training: 
-Example: python main.py -g 3 --train <directory-to-train-cases-parent-folder> --test <directory-to-test-cases-parent-folder> --modality wmn
+    Example: python main.py -g 3 --train <directory-to-train-cases-parent-folder> --test <directory-to-test-cases-parent-folder> --modality wmn
 
 ##### Testing
-Example: python main.py -g 3 --test "directory-to-test-cases-parent-folder" --modality csfn
+    Example: python main.py -g 3 --test "directory-to-test-cases-parent-folder" --modality csfn
 
 
 ### Data Structure
 
 ### Citation
 #### Link: <https://www.sciencedirect.com/science/article/pii/S0730725X20303118#t0005>
-
-Majdi, M.S., Keerthivasan, M.B., Rutt, B.K., Zahr, N.M., Rodriguez, J.J. and Saranathan, M., 2020. 
-<span style="color: green">  Automated thalamic nuclei segmentation using multi-planar cascaded convolutional neural networks. *Magnetic Resonance Imaging*.
+    
+    Majdi, M.S., Keerthivasan, M.B., Rutt, B.K., Zahr, N.M., Rodriguez, J.J. and Saranathan, M., 2020. 
+    <span style="color: green">  Automated thalamic nuclei segmentation using multi-planar cascaded convolutional neural networks. *Magnetic Resonance Imaging*.
 
 ### Abstract
 
