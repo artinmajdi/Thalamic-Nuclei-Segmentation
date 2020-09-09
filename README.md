@@ -91,7 +91,7 @@ The address to train & test directories should be the parent directory that incl
          <subejct m+1> (folder)
             ....
 
-##### Each Subject's folder structure "subject x"
+##### Subject (folder)'s structure "subject x"
 Each subject should have its own folder consist of one *.nii.gz file representing the image and a sub-folder called Labels that includes all nifti labels named according to below
 
     image.nii.gz
