@@ -30,7 +30,7 @@ conda env create -f requirements.yml
 ### Prosecution Example
 
 ### User Inputs
-All user inputs can be modified inside the UserInfo.py python code inside the Parameters Folder
+All user inputs can be modified inside the \**UserInfo.py*\* python code inside the *\*Parameters*\* sub-folder
 
 ##### class experiment:
     exp_address        # Address to the experiment directory
