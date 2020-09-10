@@ -39,11 +39,14 @@ def func_class_weights(Mask):
         class_weights[ix] = NUM_SAMPLES / (NUM_CLASSES * TRUE_Count)
 
     class_weights = class_weights / np.sum(class_weights)
+
     print('class_weights', class_weights)
+    
     return class_weights
 
 
 def check_Run(params, Data):
+
     # Assigning the gpu index
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
 
@@ -86,25 +89,6 @@ def loadModel(params):
     return model
 
 
-def flip_image(image, params):
-    """
-    Flipping L-R the image
-
-    Args:
-        image (numpy array): input image or segmentation mask
-        params: User parameters
-
-    Returns:
-        image: flipped image
-    """
-
-    if params.UserInfo['thalamic_side'].active_side == 'right':
-        image = image[:, :, ::-1, :]
-        # for ix in range(image.shape[0]):
-        #     image[ix,...] = np.flipud(image[ix,...])
-    return image
-
-
 def testingExeriment(model, Data, params):
     class prediction:
         Test = ''
@@ -112,34 +96,61 @@ def testingExeriment(model, Data, params):
 
     def predictingTestSubject(DataSubj, subject, ResultDir):
 
+        # params.directories.Test.Input.Subjects
         def postProcessing(pred1Class, origMsk1N, NucleiIndex):
+            """ Post Processing
+
+            Args:
+                pred1Class (numpy array): Prediction mask for 1 nucleus
+                origMsk1N  (numpy array): Manual label mask for 1 nucleus
+                NucleiIndex        (int): Nucleus index
+            """            
 
             def binarizing(pred1N):
+                """ Binarizing the input mask """
+
                 # Thresh = max( skimage.filters.threshold_otsu(pred1N) ,0.2)  if len(np.unique(pred1N)) != 1 else 0
                 return pred1N > 0.5
 
             def cascade_paddingToOrigSize(im):
+                """ Removing the added padding prior to savin the inputs """
+
                 if 1 not in params.WhichExperiment.Nucleus.Index:
                     im = np.pad(im, subject.NewCropInfo.PadSizeBackToOrig, 'constant')
                 return im
 
             def closeMask(mask):
+                """ Applying morphology filters onto the prediction masks """
+
                 struc = ndimage.generate_binary_structure(3, 2)
                 return ndimage.binary_closing(mask, structure=struc)
 
+            # Removig the extra dimension
             pred = np.squeeze(pred1Class)
+
+            # Binarizing the predicted segmentation mask
             pred2 = binarizing(pred)
 
+            # Applying morphology filters onto the prediction mask
             if params.WhichExperiment.HardParams.Model.Method.ImClosePrediction:
                 pred2 = closeMask(pred2)
 
+            # Extracting the most dominant object (biggest object) inside the prediction mask
             pred2 = smallFuncs.extracting_the_biggest_object(pred2)
 
-            label_mask = np.transpose(origMsk1N, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
-            Dice = [NucleiIndex, smallFuncs.mDice(pred2, binarizing(label_mask))]
+            if subject.Label.address:
+                # Re-orienting the manual label mask into the network's orientation
+                label_mask = np.transpose(origMsk1N, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
-            # This can be changed to from pred2 to pred, for percision-recall curves
+                # Measuring Dice value
+                Dice = [NucleiIndex, smallFuncs.mDice(pred2, binarizing(label_mask))]
+            else: 
+                Dice = [0, 0.0]
+
+            # Removing the extra paddings added to the input prior to feeding to the network
             pred = cascade_paddingToOrigSize(pred2)
+
+            # Re-orienting the prediction mask into its original orientation (Axial -> Sagittal -> Coronal)
             pred = np.transpose(pred, params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
 
             return pred, Dice
@@ -152,7 +163,10 @@ def testingExeriment(model, Data, params):
 
         def applyPrediction():
 
+            # Number of classes
             num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes
+
+            # If the background is added as an extra input, the overall number of classes will be the number of nuclei + 1
             if not params.WhichExperiment.HardParams.Model.Method.havingBackGround_AsExtraDimension:
                 num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes + 1
 
@@ -162,17 +176,33 @@ def testingExeriment(model, Data, params):
                 ALL_pred = []
                 for cnt in range(num_classes - 1):
 
-                    pred1N_BtO, Dice[cnt, :] = postProcessing(pred[..., cnt], DataSubj.OrigMask[..., cnt],
-                                                              params.WhichExperiment.Nucleus.Index[cnt])
+                    nucleus_index = params.WhichExperiment.Nucleus.Index[cnt]
 
+                    # Manual Label for nucleus [cnt: index]
+                    manual_label = np.array([])
+                    if subject.Label.address: manual_label = DataSubj.OrigMask[..., cnt]
+
+                    pred1N_BtO, Dice[cnt, :] = postProcessing(pred[..., cnt], manual_label, nucleus_index)
+
+                    # If the first cascade network (on whole thalamus) is running, this concatenates the prediciton 
+                    # masks for the following step of saving the predicted whole thelamus encompassing boundingbox
                     if int(params.WhichExperiment.Nucleus.Index[0]) == 1:
-                        ALL_pred = np.concatenate((ALL_pred, pred1N_BtO[..., np.newaxis]), axis=3) if cnt > 0 else \
-                            pred1N_BtO[..., np.newaxis]
+                        # if cnt > 0:
+                        #     ALL_pred = np.concatenate((ALL_pred, pred1N_BtO[..., np.newaxis]), axis=3) 
+                        # else:
+                        ALL_pred = pred1N_BtO[..., np.newaxis]
 
                     dirSave, nucleusName = savingOutput(pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
 
-                Dir_Dice = dirSave + '/Dice_All.txt' if (
-                        params.WhichExperiment.HardParams.Model.MultiClass.Mode and num_classes > 2) else dirSave + '/Dice_' + nucleusName + '.txt'
+                # Saving all nuclei Dices into one text file
+                if num_classes > 2 and params.WhichExperiment.HardParams.Model.MultiClass.Mode: 
+                    Dir_Dice = dirSave + '/Dice_All.txt' 
+
+                # Saving the Dice value for the predicted nucleus
+                else:
+                     Dir_Dice = dirSave + '/Dice_' + nucleusName + '.txt'
+
+                # Saving the Dice values
                 np.savetxt(Dir_Dice, Dice, fmt='%1.1f %1.4f')
                 return ALL_pred
 
@@ -195,14 +225,8 @@ def testingExeriment(model, Data, params):
 
             im = DataSubj.Image.copy()
 
-            # # This function flips L-R the inputs to segment right thalamic nuclei
-            # im = flip_image(im, params)
-
             # Segmenting the test case using trained network
             predF = model.predict(im)
-
-            # # This function flips R-L the inputs to its original orientation
-            # predF = flip_image(predF, params)
 
             # score = model.evaluate(DataSubj.Image, DataSubj.Mask)
 
@@ -320,18 +344,35 @@ def trainingExperiment(Data, params):
 
         def modelInitialize(model):
 
+            # Number of featuremaps in the first layer of ResUnet
             FM = '/FM' + str(params.WhichExperiment.HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num)
+
+            # Nucleus name
             NN = '/' + params.WhichExperiment.Nucleus.name
+
+            # Image orientation
             SD = '/sd' + str(params.WhichExperiment.Dataset.slicingInfo.slicingDim)
+            
             initialization = params.WhichExperiment.HardParams.Model.Initialize
+
+            # Address to the code
             code_address = smallFuncs.dir_check(params.UserInfo['experiment'].code_address)
 
             if initialization.init_address:
                 init_address = smallFuncs.dir_check(initialization.init_address) + FM + NN + SD + '/model_weights.h5'
             else:
+                # The modality of the input image that is defined by the user
                 modDef = params.WhichExperiment.Experiment.image_modality.lower()
-                net_name = 'SRI' if modDef == 'wmn' else 'WMn'
 
+                # If the input modality is set to WMn, the network trained on SRI dataset will be used for initialization
+                if modDef == 'wmn':
+                    net_name = 'sri' 
+
+                # If the input modality is set to CSFn, the network trained on WMn dataset will be used for initialization 
+                elif modDef == 'csfn':
+                    net_name = 'wmn'
+
+                # The address to initialization network based on the number of featuremaps, nucleus name and image orientation
                 init_address = code_address + 'Trained_Models/' + net_name + FM + NN + SD + '/model_weights.h5'
 
             try:

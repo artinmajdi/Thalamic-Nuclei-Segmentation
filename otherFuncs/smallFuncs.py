@@ -283,6 +283,14 @@ def search_ExperimentDirectory(whichExperiment):
     NucleusName    = whichExperiment.Nucleus.name
 
     def checkInputDirectory(Dir, NucleusName, sag_In_Cor, modeData):
+        """ Check input directory for each subject
+
+        Args:
+            Dir (str):            Input directory
+            NucleusName (str):    Nucleus name
+            sag_In_Cor (boolean): If TRUE, it will copy the predicted whole thalamus in the coronal network, inside the sagital network results
+            modeData (boolean):   Specified if this is ran on test or train dataset 
+        """        
 
         def Search_ImageFolder(Dir, NucleusName):
 
@@ -329,30 +337,53 @@ def search_ExperimentDirectory(whichExperiment):
                 return Files
 
             def search_inside_subject_folder_label(Files, NucleusName):
+                """ Searching inside the Label folder
+
+                Args:
+                    Files      (File): List of all files inside the subject folder
+                    NucleusName (str): Name of the searched nucleus
+
+                Returns:
+                    Files      (File): Updated list of files inside the subject folder
+                """        
 
                 A = next(os.walk(Files.Label.address))
 
-                # Single Class 
+                # Single Class Mode. This will run on the first network of cascade algorithm (whole thalamus)
                 if 'MultiClass' not in NucleusName:
-                    for s in A[2]:
-                        if NucleusName + '_PProcessed.nii.gz' in s:
-                            Files.Label.LabelProcessed = NucleusName + '_PProcessed.nii.gz'
-                        elif NucleusName + '.nii.gz' in s:
-                            Files.Label.LabelOriginal = NucleusName
 
+                    # Checking to see if the nucleus nifti file and its pre-processed nifti file exist
+                    for s in A[2]:
+
+                        if NucleusName + '_PProcessed.nii.gz' in s:
+                            Files.Label.LabelProcessed = s
+
+                        elif NucleusName + '.nii.gz' in s:
+                            Files.Label.LabelOriginal = s
+
+                    # If the nifti pre-processed file for the searched nucleus didn't exist, this will duplicate 
+                    # the original nucleus nifti file and name the second indstance as nucleu name plus PProcessed
                     if not Files.Label.LabelProcessed:
+
                         Files.Label.LabelProcessed = NucleusName + '_PProcessed.nii.gz'
+
                         copyfile(Files.Label.address + '/' + NucleusName + '.nii.gz',
                                  Files.Label.address + '/' + NucleusName + '_PProcessed.nii.gz')
 
+                    # Checking the temp folder inside the Label-temp folder
                     cpd_lst = glob(Files.Label.Temp.address + '/' + NucleusName + '_Cropped.nii.gz')
-                    if cpd_lst:
-                        Files.Label.Temp.Cropped = NucleusName + '_Cropped'
 
-                # Multi Class
+                    if cpd_lst:  Files.Label.Temp.Cropped = NucleusName + '_Cropped'
+
+                # Multi Class mode. This will run on the second network of cascade algorithm
                 else:
+                    # Looping through all nuclei
                     for nucleus in whichExperiment.Nucleus.FullNames:
+
+                        # If the original nucleus nifti file exists, but the pre-processed one doesn't, this will dupicate 
+                        # the original nucleu nifti file and rename the second instance as the name of nucleus plus PProcessed
                         if (nucleus + '.nii.gz' in A[2]) and (nucleus + '_PProcessed.nii.gz' not in A[2]):
+
                             copyfile(Files.Label.address + '/' + nucleus + '.nii.gz',
                                      Files.Label.address + '/' + nucleus + '_PProcessed.nii.gz')
 
@@ -387,16 +418,32 @@ def search_ExperimentDirectory(whichExperiment):
                 return Files
 
             def search_inside_subject_folder(Files):
-                for s in [subj for subj in os.listdir(Files.address) if '.nii.gz' in subj]:
-                    if 'PProcessed.nii.gz' in s:
-                        Files.ImageProcessed = s.split('.nii.gz')[0]
-                    else:
-                        Files.ImageOriginal = s.split('.nii.gz')[0]
-                        Files.Temp.address  = mkDir(Files.address + '/temp')
-                        Files.Label.address = Files.address + '/Label'
-                        Files.Label.Temp.address = mkDir(Files.address + '/Label/temp')
 
-                if (not Files.ImageProcessed) and Files.ImageOriginal:
+                # List of nifti files inside the searched folder
+                files_folders_list = os.listdir(Files.address)
+                nifti_files_list = [n for n in files_folders_list if '.nii.gz' in n]
+
+                # Searching through all nifri images found inside the subject folder
+                for s in nifti_files_list:
+
+                    # Setting the ImageProcessed flag if it finds a nifti image inside the designated folder with PProcessed as part of its name
+                    if 'PProcessed.nii.gz' in s:
+                        Files.ImageProcessed     = s.split('.nii.gz')[0]
+
+                    # Setting the addresses to ImageOriginal, temp subfolder address, Label subaddress and Label-temp subfolder
+                    else:
+                        Files.ImageOriginal      = s.split('.nii.gz')[0]
+                        Files.Temp.address       = mkDir(Files.address + '/temp')
+
+
+                # If the Label subfolder exist, this will create a folder named temp inside the Label subfolder
+                if 'Label' in files_folders_list:
+                    Files.Label.address      = Files.address + '/Label'
+                    Files.Label.Temp.address = mkDir(Files.address + '/Label/temp')
+
+
+                # If a nifti image exist inside the searched folder, but a PProcessed file doesn't, this will duplicate the original image and name it as PProcessed.nii.gz 
+                if Files.ImageOriginal and (not Files.ImageProcessed):
                     Files.ImageProcessed = 'PProcessed'
                     copyfile(Dir + '/' + Files.ImageOriginal + '.nii.gz', Dir + '/PProcessed.nii.gz')
 
@@ -405,9 +452,15 @@ def search_ExperimentDirectory(whichExperiment):
             Files = Classes_Local(Dir)
             Files = search_inside_subject_folder(Files)
 
+            # Checking to make sure an nifti image exist inside the folder
             if Files.ImageOriginal:
-                if os.path.exists(Files.Label.address): Files = search_inside_subject_folder_label(Files, NucleusName)
-                if os.path.exists(Files.Temp.address):  Files = search_inside_subject_folder_temp(Files)
+                # Searching inside the Label subfolder
+                if os.path.exists(Files.Label.address): 
+                    Files = search_inside_subject_folder_label(Files, NucleusName)
+
+                # Searching inside the temp subfolder inside the subject directory
+                if os.path.exists(Files.Temp.address):  
+                    Files = search_inside_subject_folder_temp(Files)
 
             return Files
 
@@ -428,10 +481,19 @@ def search_ExperimentDirectory(whichExperiment):
 
             return Input
 
+        # This if statement skips the train dataset if the TestOnly flag is set to TRUE
         if not (modeData == 'train' and whichExperiment.TestOnly.mode):
-            Dir = whichExperiment.Experiment.train_address if modeData == 'train' else whichExperiment.Experiment.test_address
+
+            # Setting the adress to the full dataset
+            if modeData == 'train':
+                Dir = whichExperiment.Experiment.train_address 
+            else:
+                Dir = whichExperiment.Experiment.test_address
+            
+            # Finding all subjects inside the specified dataset
             Input = LoopReadingData(Input, Dir)
 
+            # Loading the augmented data saved inside a subfolder called 'Augments' inside the train folder
             if whichExperiment.Experiment.ReadAugments_Mode and not (modeData == 'test'):
                 Input = LoopReadingData(Input, Dir + '/Augments/')
 
@@ -443,18 +505,23 @@ def search_ExperimentDirectory(whichExperiment):
             test.Input_Sagittal = checkInputDirectory(test.address, NucleusName, True, 'test')
         return train, test
        
+    # Setting the address to the trained model based on the number of featuremaps, nucleus name, and orientation
     if whichExperiment.TestOnly.mode:
+
+        # if an address to a trained model is provided, that will be used to segment the test cases
         if whichExperiment.TestOnly.model_address:
             model_address = dir_check(whichExperiment.TestOnly.model_address) + FM + NN + SD
-        else:
-            if whichExperiment.Experiment.image_modality.lower() == 'wmn':
-                net_name = 'WMn'
-            else:
-                net_name = 'CSFn'
 
+        # if an address to a trained model isn't provided, the default trained models will be used to segment the test cases
+        else:
+            # Setting the image modality: WMn / CSFn
+            net_name =  whichExperiment.Experiment.image_modality.lower() 
+
+            # The address to default trained models based on the user entered input image modality
             model_address = code_address + 'Trained_Models/' + net_name + FM + NN + SD
 
     else:
+        # In case of training a network, the newly trained network will be used to segment the test cases
         model_address = Exp_address + 'models/' + subexperiment_name + FM + NN + SD
 
     class train:

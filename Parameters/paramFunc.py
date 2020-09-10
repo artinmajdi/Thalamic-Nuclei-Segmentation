@@ -95,7 +95,7 @@ def func_WhichExperiment(UserInfo):
 
             class InitializeB:
                 mode = True
-                init_address = '/array/ssd/msmajdi/code/Trained_Models/WMn/'
+                init_address = '/array/ssd/msmajdi/code/Trained_Models/wmn/'
 
             class model:
                 architectureType = 'Res_Unet2'

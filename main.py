@@ -18,6 +18,7 @@ UserInfoB['simulation'] = UserInfoB['simulation']()
 K = smallFuncs.gpuSetting(UserInfoB['simulation'].GPU_Index)
 
 
+
 def main(UserInfoB):
     def Save_AllNuclei_inOne(Directory, mode='_PProcessed'):
         """ Saving all of the predicted nuclei into one nifti image
@@ -217,8 +218,14 @@ def main(UserInfoB):
     applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True))
 
     TS = UserInfoB['thalamic_side']()
-    if TS.left:              run_Left(UserInfoB)
-    if TS.right:             run_Right(UserInfoB)
+
+    # Running the network on left thalamus
+    if TS.left:  run_Left(UserInfoB)
+
+    # Running the network on right thalamus
+    if TS.right: run_Right(UserInfoB)
+
+    # Merging the left & right predictions into one nifti file
     if TS.left and TS.right: merging_left_right_labels(UserInfoB)
 
 

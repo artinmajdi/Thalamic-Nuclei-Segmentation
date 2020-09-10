@@ -131,7 +131,7 @@ def loadDataset(params):
                 _, mask = read_cropped_inputs(params, subject, inputMsk)
                 mask = smallFuncs.fixMaskMinMax(mask, nameNuclei)
             else:
-                mask = np.zeros(10, 10, 10)
+                mask = np.zeros((2, 2, 2))
 
             return np.expand_dims(mask, axis=3)
 
@@ -203,7 +203,10 @@ def loadDataset(params):
             
             # In order to expedite the loading process, initially an empty array is built 
             images = np.zeros((tuple([Sz0]) + Data[list(Data)[0]].Image.shape[1:]))
+
+            # Check to see if a Label folde exist inside the subject folder
             masks = np.zeros((tuple([Sz0]) + Data[list(Data)[0]].Mask.shape[1:]))
+                
 
             # Concatenating the training data into one array
             d1 = 0
@@ -211,7 +214,11 @@ def loadDataset(params):
                 im, msk = Data[nameSubject].Image, Data[nameSubject].Mask
 
                 images[d1:d1 + im.shape[0], ...] = im
-                masks[d1:d1 + im.shape[0], ...] = msk
+
+                # Check to see if a Label folde exist inside the subject folder
+                if msk.any(): 
+                    masks[d1:d1 + im.shape[0], ...] = msk
+
                 d1 += im.shape[0]
 
             return trainCase(Image=images, Mask=masks.astype('float32'))
@@ -243,38 +250,68 @@ def loadDataset(params):
         def readingAllSubjects(Subjects, mode):
 
             def ErrorInPaddingCheck(subject):
+                """ This function checks the amoung of paddign required to make the input image fit the designated 
+                network's input dimention. If it exceeds a certain threshold assigned by  paddingErrorPatience, it 
+                will remove that subject from the list of inputs and move it into a separate folder called "ERROR_"
+
+                Args:
+                    subject (str): Subject directory info
+
+                Returns:
+                    ErrorFlag (boolearn): If TRUE , the required amount of padding for the input data has been exceeded the allowed therehold
+                """                
                 ErrorFlag = False
+
+                # Activates if the original size of input data is bigger than the network's input dimention
                 if np.min(subject.Padding) < 0:
+
+                    # Checking to make sure the amount of cropping required does not exceed the threshold "paddingErrorPatience" set by the user 
                     if np.min(subject.Padding) < -params.WhichExperiment.HardParams.Model.paddingErrorPatience:
+
                         AA = subject.address.split(os.path.dirname(subject.address) + '/')
+
+                        # Moving the input data into a folder called ERROR_
                         shutil.move(subject.address, os.path.dirname(subject.address) + '/' + 'ERROR_' + AA[1])
-                        print('WARNING: subject: ', subject.subjectName,
-                              ' size is out of the training network input dimensions')
+                        print('WARNING: subject: ', subject.subjectName, ' size is out of the training network input dimensions')
                         ErrorFlag = True
+
+                    # Activates if the amount of cropping (negative padding) has been within the allowed threhold 
                     else:
-                        Dirsave = smallFuncs.mkDir(params.directories.Test.Result + '/' + subject.subjectName, )
+
+                        # Saving the amount of padding inside a text file
+                        Dirsave = smallFuncs.mkDir(params.directories.Test.Result + '/' + subject.subjectName, )                        
                         np.savetxt(Dirsave + '/paddingError.txt', subject.Padding, fmt='%d')
-                        print('WARNING: subject: ', subject.subjectName, ' padding error patience activated, Error:',
-                              np.min(subject.Padding))
+
+                        print('WARNING: subject: ', subject.subjectName, ' padding error patience activated, Error:', np.min(subject.Padding))
                 return ErrorFlag
 
             Data = {}
             for nameSubject, subject in tqdm(Subjects.items(), desc='Loading ' + mode):
 
+                # Checking the amount of padding required to be within the allowed threhold
                 if ErrorInPaddingCheck(subject): continue
 
                 im, imF = readingImage(params, subject)
-                origMsk, msk = readingNuclei(params, subject)
 
-                msk = msk > Th
-                origMsk = origMsk > Th
+                # Checking if the Label subfolder exist inside the subject folder 
+                if subject.Label.address:
 
-                if im[..., 0].shape == msk[..., 0].shape:
-                    Data[nameSubject] = testCase(Image=im, Mask=msk, OrigMask=origMsk.astype('float32'),
-                                                 Affine=imF.get_affine(), Header=imF.get_header(),
-                                                 original_Shape=imF.shape)
+                    # Loading the nucleus
+                    origMsk, msk = readingNuclei(params, subject)
+
+                    msk = msk > Th
+                    origMsk = (origMsk > Th).astype('float32')
+
+                    if im[..., 0].shape != msk[..., 0].shape:
+                        Error_MisMatch_In_Dim_ImageMask(subject, mode, nameSubject)
+                        continue
+
                 else:
-                    Error_MisMatch_In_Dim_ImageMask(subject, mode, nameSubject)
+                    msk, origMsk = np.array([]), np.array([])
+                
+                Data[nameSubject] = testCase(Image=im, Mask=msk, OrigMask=origMsk,
+                                                    Affine=imF.get_affine(), Header=imF.get_header(),
+                                                    original_Shape=imF.shape)                      
 
             return Data
 

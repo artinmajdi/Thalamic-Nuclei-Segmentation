@@ -3,13 +3,13 @@ class experiment:
     exp_address = '/array/hdd/msmajdi/experiments/exp6/'
 
     # Subexperiment name
-    subexperiment_name = 'test_03_wmn'
+    subexperiment_name = 'test_04'
 
     # Path to the training data
-    train_address = '/array/hdd/msmajdi/data/preprocessed/train/'
+    train_address = '' # '/array/hdd/msmajdi/data/preprocessed/train/'
 
     # Path to the testing data
-    test_address = '/array/ssd/msmajdi/code/CNN/Example_Cases/CSFn/'
+    test_address = '/array/ssd/msmajdi/Manoj_Sep_9/WMn/' # '/array/ssd/msmajdi/code/CNN/Example_Cases/CSFn/' # 
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = True
@@ -18,7 +18,7 @@ class experiment:
     code_address = '/array/ssd/msmajdi/code/CNN/'
 
     # modality of the input data. wmn / csfn
-    image_modality = 'csfn'
+    image_modality = 'wmn'
 
 
 class TestOnly:
@@ -39,7 +39,7 @@ class initialize:
     mode = True
 
     # Path to the initialization network. If left empty, the algorithm will use the default path to sample initialization networks
-    init_address = ''  # '/array/ssd/msmajdi/code/Trained_Models/WMn/'
+    init_address = ''  # '/array/ssd/msmajdi/code/Trained_Models/wmn/'
 
 # This class specifies while thalamic sides will be analysed
 class thalamic_side:
@@ -79,7 +79,7 @@ class preprocess:
     """
     Mode = True
     BiasCorrection = False
-    Cropping = False
+    Cropping = True
     Reslicing = True
     save_debug_files = True
     Normalize = normalize()
@@ -135,7 +135,7 @@ class simulation:
         self.use_train_padding_size = False
 
         # If TRUE, it will only load the subject folders that include "vimp" in their name
-        self.check_vimp_SubjectName = True
+        self.check_vimp_SubjectName = False
 
         # Architecture type
         self.architectureType = 'Res_Unet2'
