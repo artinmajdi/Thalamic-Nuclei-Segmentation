@@ -20,7 +20,7 @@ K = smallFuncs.gpuSetting(UserInfoB['simulation'].GPU_Index)
 
 
 def main(UserInfoB):
-    def Save_AllNuclei_inOne(Directory, mode='_PProcessed'):
+    def fuse_nuclei(Directory, mode='_PProcessed'):
         """ Saving all of the predicted nuclei into one nifti image
 
         Args:
@@ -61,7 +61,7 @@ def main(UserInfoB):
 
                         mask += cnt * msk
 
-                        # Saving the final multi-label segmentaion mask as a nifti image
+        # Saving the final multi-label segmentaion mask as a nifti image
         smallFuncs.saveImage(mask, thalamus_mask.affine, thalamus_mask.header, Directory + '/AllLabels.nii.gz')
 
     def running_main(UserInfoB):
@@ -158,7 +158,7 @@ def main(UserInfoB):
         # Saving the multi label nifti image consisting of all predicted labels from 2-AV to 14-MTT 
         params = paramFunc.Run(UserInfoB, terminal=True)
         for subj in params.directories.Test.Input.Subjects.values():
-            Save_AllNuclei_inOne(subj.address + '/left/2.5D_MV', mode='')
+            fuse_nuclei(subj.address + '/left/2.5D_MV', mode='')
 
     def run_Right(UserInfoB):
         """ running the network on right thalamus """
@@ -220,9 +220,9 @@ def main(UserInfoB):
 
         # Looping through subjects: Saving the multi label nifti image consisting of all predicted labels from 2-AV to 14-MTT 
         for subj in params.directories.Test.Input.Subjects.values():
-            Save_AllNuclei_inOne(subj.address + '/right/2.5D_MV', mode='')
+            fuse_nuclei(subj.address + '/right/2.5D_MV', mode='')
 
-    def merging_left_right_labels(UserInfoB):
+    def fuse_left_right_nuclei_together(UserInfoB):
         params = paramFunc.Run(UserInfoB, terminal=True)
         for subj in params.directories.Test.Input.Subjects.values():
 
@@ -247,8 +247,11 @@ def main(UserInfoB):
     if TS.right: run_Right(UserInfoB)
 
     # Merging the left & right predictions into one nifti file
-    if TS.left and TS.right: merging_left_right_labels(UserInfoB)
+    if TS.left and TS.right: fuse_left_right_nuclei_together(UserInfoB)
 
 
 if __name__ == '__main__':
     main(UserInfoB)
+
+
+
