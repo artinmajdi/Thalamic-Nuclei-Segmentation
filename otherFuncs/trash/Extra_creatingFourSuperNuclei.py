@@ -225,7 +225,7 @@ def applyMain(Dir,mode):
         # saveAV_BB()
         creatingFullMaskWithAll4Supernuclei()
 
-    Subjects = [sub for sub in os.listdir(Dir) if 'vimp' in sub]
+    Subjects = [sub for sub in os.listdir(Dir) if 'case' in sub]
 
     for nameSubject in Subjects:
         print(nameSubject , Dir)        
@@ -246,7 +246,7 @@ class Input_cls():
                            
         directories(self)
 
-        self.subjList = [s for s  in os.listdir(self.dir_in) if ('vimp' in s) and ('jpg' not in s)]
+        self.subjList = [s for s  in os.listdir(self.dir_in) if ('case' in s) and ('jpg' not in s)]
 
 
 # Dir = '/array/ssd/msmajdi/experiments/keras/exp4/results/sE11_Cascade_FM20_DO0.3_ET_Init_Main_AllAugs_CV_a/sd2'

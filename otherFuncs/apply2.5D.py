@@ -46,7 +46,7 @@ def func_MajorityVoting(Info, params):
     print('subExperiment:', Info.subExperiment.name)
     Info.subExperiment.address = Info.Experiment.address + '/results/' + Info.subExperiment.name + '/'
 
-    # subjects = [s for s in os.listdir() if 'vimp' in s]
+    # subjects = [s for s in os.listdir() if 'case' in s]
     subjects = [s for s in params.directories.Test.Input.Subjects if 'ERROR' not in s]
     for sj in tqdm(subjects):
         subject = params.directories.Test.Input.Subjects[sj]
@@ -199,7 +199,7 @@ def func_OtherMetrics_justFor_MV(Info, params):
 
 def func_AllMetrics_UserDirectory(Dir, params):
     Dir_ManualLabels = '/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/Dataset2_with_Manual_Labels/full_Image/freesurfer/ManualLabels2_uncropped'
-    subjects = [s for s in os.listdir(Dir) if 'vimp' in s]
+    subjects = [s for s in os.listdir(Dir) if 'case' in s]
 
     for subjectName in tqdm(subjects):
         # subject = params.directories.Test.Input.Subjects[sj]

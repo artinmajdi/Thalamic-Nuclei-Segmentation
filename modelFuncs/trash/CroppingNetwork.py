@@ -172,8 +172,8 @@ def readingData(params):
                 address = subject.Address + '/' + subName
                 return subject(Name = subName, Padding = '', Address = address, Shape = shape, origShape = origshape)
 
-            TrainList = [s for s in os.listdir(params.Input.Train.Address) if 'vimp' in s]
-            TestList  = [s for s in os.listdir(params.Input.Test.Address) if 'vimp' in s]
+            TrainList = [s for s in os.listdir(params.Input.Train.Address) if 'case' in s]
+            TestList  = [s for s in os.listdir(params.Input.Test.Address) if 'case' in s]
 
             params.Input.Train.Subjects = [ searchInd(sub, params.Input.Train) for sub in TrainList ]
             params.Input.Test.Subjects = [ searchInd(sub, params.Input.Test) for sub in TestList ]  

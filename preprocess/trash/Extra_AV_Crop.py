@@ -41,7 +41,7 @@ def main(dir_in, dir_template):
                 print('Registration is required', self.dir_in)
 
         def warp_all(self):
-            for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s]:
+            for subj in [s for s in os.listdir(self.dir_in) if 'case' in s]:
                 print(subj , '\n')
                 dir_in       = self.dir_in + '/' + subj
                 dir_template = self.dir_template 
@@ -60,7 +60,7 @@ def save_Crop_AV():
     dir_template='/array/ssd/msmajdi/code/thalamus/keras/general/RigidRegistration'
     dir = dir_template + '/AV_Masks/'
 
-    subjects = [s for s in os.listdir(dir) if 'vimp2' in s]
+    subjects = [s for s in os.listdir(dir) if 'case' in s]
 
     bbox_list = np.zeros((len(subjects),6))
     for ix, subj in enumerate(subjects):
@@ -164,7 +164,7 @@ def check_if_AV_inside_Crop(pprocessed_flag):
     dir = UE.dir_in #  '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/ET/d/'
     
     if UE.mode == 'all': 
-        for subject in [s for s in os.listdir(dir) if 'vimp' in s]:
+        for subject in [s for s in os.listdir(dir) if 'case' in s]:
             apply_subject(dir + subject + '/' , subject)
     else:
         apply_subject(dir, '')

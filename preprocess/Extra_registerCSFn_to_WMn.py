@@ -56,7 +56,7 @@ class register_cls():
         # warp_AV_Mask(self)
 
     def register_All(self):
-        for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s]:
+        for subj in [s for s in os.listdir(self.dir_in) if 'case' in s]:
             print(subj , '\n')
             dir_in  = self.dir_in + '/' + subj
             dir_out = self.dir_out + '/' + subj

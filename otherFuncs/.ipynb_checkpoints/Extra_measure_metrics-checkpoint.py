@@ -77,7 +77,7 @@ class measure_Metrics_cls():
         
                   
     def loop_All_subjects(self):
-        for subj in [s for s in os.listdir(self.dir_in) if 'vimp' in s]:
+        for subj in [s for s in os.listdir(self.dir_in) if 'case' in s]:
             print(subj , '\n')
             temp = measure_Metrics_cls(dir_in= self.dir_in + '/' + subj , dir_label= self.dir_label + '/' + subj).measure_metrics()
 

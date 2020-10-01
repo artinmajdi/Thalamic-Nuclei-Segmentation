@@ -91,13 +91,13 @@ class simulation:
         self.TestOnly = TestOnly()
 
         # Number of epochs used during training
-        self.epochs = 5
+        self.epochs = 30
 
         # The GPU card used for training/testing
         self.GPU_Index = "3"
 
         # Batch size used during training
-        self.batch_size = 10
+        self.batch_size = 30
 
         # If TRUE, it will use test cases for validation during training
         self.Use_TestCases_For_Validation = True
@@ -134,8 +134,8 @@ class simulation:
         # If TRUE, it will use the network input dimentions obtained from training data for testing data
         self.use_train_padding_size = False
 
-        # If TRUE, it will only load the subject folders that include "vimp" in their name
-        self.check_vimp_SubjectName = False
+        # If TRUE, it will only load the subject folders that include "case" in their name
+        self.check_case_SubjectName = False
 
         # Architecture type
         self.architectureType = 'Res_Unet2'
@@ -166,8 +166,8 @@ class Templatecs:
             Mask    (Str): path to the cropping mask
             Address (Str): path to the main folder
         """
-        self.Image = code_address + 'general/RigidRegistration' + '/origtemplate.nii.gz'
-        self.Mask = code_address + 'general/RigidRegistration' + '/CropMaskV3.nii.gz'
+        self.Image   = code_address + 'general/RigidRegistration' + '/origtemplate.nii.gz'
+        self.Mask    = code_address + 'general/RigidRegistration' + '/CropMaskV3.nii.gz'
         self.Address = code_address + 'general/RigidRegistration/'
 
 

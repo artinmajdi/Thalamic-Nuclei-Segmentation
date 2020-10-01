@@ -117,7 +117,7 @@ class Experiment_Folder_Search:
                                     self.tagList = np.append(['Tag' + str(TgC) + '_' + plane_name], name.split('_'))
                                     self.tagIndex = str(TgC)
                                     if mode == 'results':
-                                        self.subject_List = [a for a in os.listdir(address) if 'vimp' in a]
+                                        self.subject_List = [a for a in os.listdir(address) if 'case' in a]
                                         self.subject_List.sort()
                                     self.name = plane_name
                                     self.direction = direction_name
@@ -197,7 +197,7 @@ def gpuSetting(GPU_Index: str):
 
 def listSubFolders(Dir, params):
     subFolders = [s for s in next(os.walk(Dir))[1] if 'ERROR' not in s]
-    if params.WhichExperiment.Dataset.check_vimp_SubjectName:  subFolders = [s for s in subFolders if 'vimp' in s]
+    if params.WhichExperiment.Dataset.check_case_SubjectName:  subFolders = [s for s in subFolders if 'case' in s]
 
     subFolders.sort()
     return subFolders
@@ -472,8 +472,8 @@ def search_ExperimentDirectory(whichExperiment):
             if os.path.exists(Dirr):
                 SubjectsList = next(os.walk(Dirr))[1]
 
-                if whichExperiment.Dataset.check_vimp_SubjectName:
-                    SubjectsList = [s for s in SubjectsList if ('vimp' in s)]
+                if whichExperiment.Dataset.check_case_SubjectName:
+                    SubjectsList = [s for s in SubjectsList if ('case' in s)]
 
                 for s in SubjectsList:
                     Input.Subjects[s] = Search_ImageFolder(Dirr + '/' + s, NucleusName)
@@ -726,7 +726,7 @@ def test_extract_biggest_object():
 
         if not os.path.exists(main_directory + cv): continue
 
-        subjects = [s for s in os.listdir(main_directory + cv) if 'vimp' in s]
+        subjects = [s for s in os.listdir(main_directory + cv) if 'case' in s]
         for subj in tqdm(subjects):
 
             # im = nib.load(main_directory + cv + subj + '/PProcessed.nii.gz').get_data()
@@ -835,7 +835,7 @@ class SNR_experiment:
     def loop_all_subjects_read_Dice_SNR(self, directory='/mnt/sda5/RESEARCH/PhD/Thalmaus_Dataset/SNR_Tests/'):
 
         writer = pd.ExcelWriter(directory + 'Dice_vs_SNR.xlsx', engine='xlsxwriter')
-        for subject in [s for s in os.listdir(directory) if os.path.isdir(directory + s) and 'vimp2_' in s]:
+        for subject in [s for s in os.listdir(directory) if os.path.isdir(directory + s) and 'case_' in s]:
             print(subject)
             df = self.read_all_Dices_and_SNR(directory=directory + subject + '/')
             df.to_excel(writer, sheet_name=subject)

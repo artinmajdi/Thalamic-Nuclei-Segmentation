@@ -196,7 +196,7 @@ def func_WhichExperiment(UserInfo):
                 address = ''
                 Validation = validation()
                 Test = testDs()
-                check_vimp_SubjectName = True
+                check_case_SubjectName = True
                 randomFlag = True
                 slicingInfo = slicingDirection()
                 gapDilation = 5
@@ -256,7 +256,7 @@ def func_WhichExperiment(UserInfo):
             return slicingInfo
 
         Dataset.slicingInfo = slicingInfoFunc()
-        Dataset.check_vimp_SubjectName = UserInfo['simulation'].check_vimp_SubjectName
+        Dataset.check_case_SubjectName = UserInfo['simulation'].check_case_SubjectName
         Dataset.InputPadding.Automatic = UserInfo['InputPadding']().Automatic
         Dataset.InputPadding.HardDimensions = list(
             np.array(UserInfo['InputPadding']().HardDimensions)[Dataset.slicingInfo.slicingOrder])

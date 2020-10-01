@@ -25,7 +25,7 @@ class Input_cls():
                            
         directories(self)
 
-        self.subjList = [s for s  in os.listdir(self.dir_in) if ('vimp' in s) and ('jpg' not in s)]
+        self.subjList = [s for s  in os.listdir(self.dir_in) if ('case' in s) and ('jpg' not in s)]
 
         
     def middleSlice(self):

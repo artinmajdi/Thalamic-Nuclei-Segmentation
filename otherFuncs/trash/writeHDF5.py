@@ -40,7 +40,7 @@ def saving_OriginalDataset_AsHDF5(Input):
                     print('more than one preprocessed image in the folder')
                 return k
 
-            subjects = [s for s in os.listdir(h.attrs['address']) if 'vimp' in s]
+            subjects = [s for s in os.listdir(h.attrs['address']) if 'case' in s]
             for subj in tqdm(subjects[:3]):
                 j = h.create_group(subj)
                 j.attrs['address'] = h.attrs['address']  + '/' + subj

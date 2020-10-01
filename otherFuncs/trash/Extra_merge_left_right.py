@@ -6,7 +6,7 @@ dir_f = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM00_Res
 dir = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_Best_w20priors/2.5D_MV/temp/'
 
 
-for v in [s for s in os.listdir(dir_f) if 'vimp' in s]:
+for v in [s for s in os.listdir(dir_f) if 'case' in s]:
 
     print('subject:',v)
     msk1 = nibabel.load(dir   + v.split('_flipped')[0] + '/AllLabels.nii.gz')
