@@ -181,16 +181,31 @@ def main(UserInfoB):
             print('Reverse Flip L-R the flipped image & its nuclei')
 
             subjects = params.directories.Test.Input.Subjects.copy()
-            code_address = params.WhichExperiment.Experiment.code_address + '/otherFuncs/flip_inputs.py'
+
+            # Stacking train & test subjects
             subjects.update(params.directories.Train.Input.Subjects)
 
+            # Address to the flipping python code
+            code_address = params.WhichExperiment.Experiment.code_address + '/otherFuncs/flip_inputs.py'
+
+            # Flipping back the nifti images back to their original space for both train & test data
             for subj in subjects.values():
-                command = "cd {0};for n in flipped_PProcessed.nii.gz right/*/*.nii.gz; do python {1} -i {0}/$n -o {0}/$n; done".format(subj.address, code_address)
+
+                # Flipping back the nifti image to its original space
+                command = "cd {0};python {1} -i {0}/flipped_PProcessed.nii.gz -o {0}/flipped_PProcessed.nii.gz;".format(subj.address, code_address)
                 subprocess.call(command, shell=True)
 
+                # re-naming the nifti image to its original name
                 command = "cd {0};mv {0}/flipped_PProcessed.nii.gz {0}/PProcessed.nii.gz;".format(subj.address)
                 subprocess.call(command, shell=True)
 
+            # Flipping back the right thalamic nuclei predictions to their original space for only test data
+            for subj in params.directories.Test.Input.Subjects.values():
+                command = "cd {0};for n in right/*/*.nii.gz; do python {1} -i {0}/$n -o {0}/$n; done".format(subj.address, code_address)
+                subprocess.call(command, shell=True)
+
+        # Setting the active side to right thalamus. This is important to let the software know it shouldn't 
+        # run training on these data and only use it for testing purposes. Also not to measure Dice (in case of the existense of manual label)
         UserInfoB['thalamic_side'].active_side = 'right'
         params = paramFunc.Run(UserInfoB, terminal=True)
 
@@ -210,8 +225,14 @@ def main(UserInfoB):
     def merging_left_right_labels(UserInfoB):
         params = paramFunc.Run(UserInfoB, terminal=True)
         for subj in params.directories.Test.Input.Subjects.values():
+
+            # Function to load left or right fused thalamic nuclei prediction
             load_side = lambda side: nib.load(subj.address + '/' + side + '/2.5D_MV/AllLabels.nii.gz')
+
+            # Loading the left and right fused thalamic nuclei predictions 
             left, right = load_side('left'), load_side('right')
+
+            # Saving the final fused nifti image that contains all left and right nuclei
             smallFuncs.saveImage(Image=left.get_data() + right.get_data(), Affine=left.affine, Header=left.header,
                                  outDirectory=subj.address + '/left/AllLabels_Left_and_Right.nii.gz')
 

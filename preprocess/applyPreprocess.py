@@ -39,9 +39,6 @@ def apply_On_Individual(params, Info):
     if 'Aug' not in Info.subjectName:
         subject = Info.Subjects[Info.subjectName]
 
-        if params.preprocess.BiasCorrection:
-            print('     Bias Correction')
-            BiasCorrection(subject, params)
 
         if params.preprocess.Cropping:
             print('     Rigid Registration')
@@ -50,6 +47,10 @@ def apply_On_Individual(params, Info):
             print('     Cropping')
             func_cropImage(params, subject)
 
+        if params.preprocess.BiasCorrection:
+            print('     Bias Correction')
+            BiasCorrection(subject, params)
+            
         if params.preprocess.Reslicing:
             print('     ReSlicing')
             apply_reslice(subject, params)

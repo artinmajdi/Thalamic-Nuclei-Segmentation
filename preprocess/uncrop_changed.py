@@ -18,7 +18,8 @@ def uncrop_by_mask(input_image, output_image, full_mask, padding=0, canvas=None,
     """
     if log_file is None:
         # Need to discover the bounding box
-        cmd = r"ExtractRegionFromImageByMask 3 %s %s %s 1 %s" % (full_mask, output_image, full_mask, padding)
+        # cmd = 'ExtractRegionFromImageByMask 3 %s %s %s 1 %s' % (full_mask, output_image, full_mask, padding)
+        cmd = 'ExtractRegionFromImageByMask 3 %s %s %s 1' % (full_mask, output_image, full_mask)
         s = os.popen(cmd).read()
     else:
         # The log file of ExtractRegionFromImageByMask is given
@@ -33,20 +34,19 @@ def uncrop_by_mask(input_image, output_image, full_mask, padding=0, canvas=None,
     cmd = 'PasteImageIntoImage 3 %s %s %s %s -1 1' % (canvas, input_image, output_image, crop_index)
     os.system(cmd)
 
-if __name__ == '__main__':
-    if len(sys.argv[1:]) < 3:
-        print ('%s input_image output_image full_mask <padding> <canvas_image>' % sys.argv[0])
-        sys.exit(0)
-    input_image = sys.argv[1]
-    output_image = sys.argv[2]
-    full_mask = sys.argv[3]
-    try:
-        padding = sys.argv[4]
-    except IndexError:
-        padding = 0
-    try:
-        canvas = sys.argv[5]
-    except IndexError:
-        canvas = None
-
-    uncrop_by_mask(input_image, output_image, full_mask, padding, canvas)
+# if __name__ == '__main__':
+#     if len(sys.argv[1:]) < 3:
+#         print('%s input_image output_image full_mask <padding> <canvas_image>' % sys.argv[0])
+#         sys.exit(0)
+#     input_image = sys.argv[1]
+#     output_image = sys.argv[2]
+#     full_mask = sys.argv[3]
+#     try:
+#         padding = sys.argv[4]
+#     except IndexError:
+#         padding = 0
+#     try:
+#         canvas = sys.argv[5]
+#     except IndexError:
+#         canvas = None
+# uncrop_by_mask(input_image, output_image, full_mask, padding, canvas)

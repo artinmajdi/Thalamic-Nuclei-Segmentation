@@ -3,16 +3,16 @@ class experiment:
     exp_address = '/array/hdd/msmajdi/experiments/exp6/'
 
     # Subexperiment name
-    subexperiment_name = 'test_04'
+    subexperiment_name = 'GE_Siemens'
 
     # Path to the training data
-    train_address = '' # '/array/hdd/msmajdi/data/preprocessed/train/'
+    train_address = '/array/hdd/msmajdi/data/preprocessed/data_experiment/train' 
 
     # Path to the testing data
-    test_address = '/array/ssd/msmajdi/Manoj_Sep_9/WMn/' # '/array/ssd/msmajdi/code/CNN/Example_Cases/CSFn/' # 
+    test_address = '/array/hdd/msmajdi/data/preprocessed/data_experiment/test' 
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
-    ReadAugments_Mode = True
+    ReadAugments_Mode = False
 
     # Path to the code
     code_address = '/array/ssd/msmajdi/code/CNN/'
@@ -23,7 +23,7 @@ class experiment:
 
 class TestOnly:
     # If TRUE , it will run the trained model on test cases.
-    mode = True
+    mode = False
 
     """ Address to the main folder holding the trained model.
         This address only applies if mode==True. otherwise it will use the address specified by experiment & subexperiment 
@@ -77,8 +77,8 @@ class preprocess:
       - save_debug_files (boolean):   TRUE/FALSE
       - Normalize        (normalize): Data normalization
     """
-    Mode = True
-    BiasCorrection = False
+    Mode = False
+    BiasCorrection = True
     Cropping = True
     Reslicing = True
     save_debug_files = True
