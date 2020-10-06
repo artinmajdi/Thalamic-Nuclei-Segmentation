@@ -9,8 +9,7 @@ Multi-planar cascaded algorithm to segment thalamic nuclei.
     Automated thalamic nuclei segmentation using multi-planar cascaded convolutional neural networks. 
     Magnetic Resonance Imaging.
     
-#### Contact Info
-mohammadsmajdi@email.arizona.edu
+#### Contact Info: <mohammadsmajdi@email.arizona.edu>
 
 ### Installation and Requirements
 
