@@ -2,6 +2,9 @@ Thalamic Nuclei Segmentation
 =====================================
 Multi-planar cascaded algorithm to segment thalamic nuclei.
 
+### Contact Info
+mohammadsmajdi@email.arizona.edu
+
 ### Installation and Requirements
 
 Downloading the software
