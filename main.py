@@ -12,6 +12,9 @@ import preprocess.applyPreprocess as applyPreprocess
 from keras import backend as K
 import nibabel as nib
 import numpy as np
+from nilearn import image as niImage
+import shutil
+from preprocess import uncrop
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 UserInfoB['simulation'] = UserInfoB['simulation']()
@@ -149,16 +152,42 @@ def main(UserInfoB):
 
         merge_results_and_apply_25D(UserInfoB)
 
+    def uncrop_output(subj='', thalamus_side='left'):
+
+        input_address       = subj.address + f'/{thalamus_side}/2.5D_MV/AllLabels.nii.gz'
+        crop_mask_address   = subj.address + '/temp/CropMask.nii.gz'
+        cropped_input_image = subj.address + '/temp/' + subj.ImageOriginal + '_Cropped.nii.gz'
+
+        # Checking to see if the CropMask exist. This file will be created if the cropping step of preprocessing is performed
+        if os.path.isfile(crop_mask_address) and os.path.isfile(cropped_input_image):
+
+            target_affine  = nib.load(cropped_input_image).affine
+            target_shape   = nib.load(cropped_input_image).shape
+            output_original_space_address = subj.address + f'/{thalamus_side}/2.5D_MV/AllLabels_original_space.nii.gz'
+
+            im = niImage.resample_img(img=nib.load(input_address), target_affine=target_affine, target_shape=target_shape, interpolation='nearest')
+            nib.save(im, output_original_space_address)
+
+            output_full_size_address = subj.address + f'/{thalamus_side}/2.5D_MV/AllLabels_full_size.nii.gz'
+            uncrop.uncrop_by_mask(input_image=output_original_space_address, output_image=output_full_size_address , full_mask=crop_mask_address)  
+
     def run_Left(UserInfoB):
         """ running the network on left thalamus """
 
         UserInfoB['thalamic_side'].active_side = 'left'
         running_main(UserInfoB)
 
-        # Saving the multi label nifti image consisting of all predicted labels from 2-AV to 14-MTT 
+        # Updating the parameters for left thalamus
         params = paramFunc.Run(UserInfoB, terminal=True)
+
+        # Looping through subjects
         for subj in params.directories.Test.Input.Subjects.values():
+
+            #  Saving the multi label nifti image consisting of all predicted labels from 2-AV to 14-MTT 
             fuse_nuclei(subj.address + '/left/2.5D_MV', mode='')
+
+            # Uncropping the cropped fused output
+            uncrop_output(subj=subj, thalamus_side='left')
 
     def run_Right(UserInfoB):
         """ running the network on right thalamus """
@@ -218,23 +247,44 @@ def main(UserInfoB):
         # Flipping the data back to its original orientation
         unflip_inputs(params)
 
-        # Looping through subjects: Saving the multi label nifti image consisting of all predicted labels from 2-AV to 14-MTT 
+        # Looping through subjects
         for subj in params.directories.Test.Input.Subjects.values():
+
+            #  Saving the multi label nifti image consisting of all predicted labels from 2-AV to 14-MTT 
             fuse_nuclei(subj.address + '/right/2.5D_MV', mode='')
 
+            # Uncropping the cropped fused output
+            uncrop_output(subj=subj, thalamus_side='right') 
+
     def fuse_left_right_nuclei_together(UserInfoB):
-        params = paramFunc.Run(UserInfoB, terminal=True)
-        for subj in params.directories.Test.Input.Subjects.values():
+
+        def fuse_func(output_name):
 
             # Function to load left or right fused thalamic nuclei prediction
-            load_side = lambda side: nib.load(subj.address + '/' + side + '/2.5D_MV/AllLabels.nii.gz')
+            load_side = lambda thalamus_side: nib.load(subj.address + '/' + thalamus_side + '/2.5D_MV/' + output_name + '.nii.gz')
 
             # Loading the left and right fused thalamic nuclei predictions 
             left, right = load_side('left'), load_side('right')
 
             # Saving the final fused nifti image that contains all left and right nuclei
             smallFuncs.saveImage(Image=left.get_data() + right.get_data(), Affine=left.affine, Header=left.header,
-                                 outDirectory=subj.address + '/left/AllLabels_Left_and_Right.nii.gz')
+                                outDirectory=subj.address + '/left/' + output_name + '_Left_and_Right.nii.gz')
+
+        params = paramFunc.Run(UserInfoB, terminal=True)
+        for subj in params.directories.Test.Input.Subjects.values():
+            fuse_func('AllLabels')
+
+    def moving_files_into_original_directory(UserInfoB):
+        old_test_address = UserInfoB['experiment'].old_test_address   
+        new_test_address = UserInfoB['experiment'].test_address + '/case_1'
+        test_address     = UserInfoB['experiment'].test_address
+
+        command = f"mv {new_test_address}/* {old_test_address}/"
+        subprocess.call(command, shell=True)
+
+        command = f"rm -r {test_address}"
+        subprocess.call(command, shell=True)
+
 
     applyPreprocess.main(paramFunc.Run(UserInfoB, terminal=True))
 
@@ -248,6 +298,10 @@ def main(UserInfoB):
 
     # Merging the left & right predictions into one nifti file
     if TS.left and TS.right: fuse_left_right_nuclei_together(UserInfoB)
+
+    # This portion will run if the input path to test files was a single nifti file.
+    if UserInfoB['experiment'].test_path_is_nifti_file:
+        moving_files_into_original_directory(UserInfoB)
 
 
 if __name__ == '__main__':

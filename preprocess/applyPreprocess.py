@@ -118,7 +118,7 @@ def apply_reslice(subject, params):
         else:
             
             # Re-sampling the input image
-            im = niImage.resample_img(img=nib.load(input_image), target_affine=ref['affine'][:3, :3], interpolation='continuous')
+            im = niImage.resample_img(img=nib.load(input_image), target_affine=ref['affine'][:3, :3], interpolation=interpolation)
             
             # Saving the resampled image
             nib.save(im, output_image)

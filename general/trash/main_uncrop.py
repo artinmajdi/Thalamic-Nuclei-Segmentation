@@ -1,7 +1,5 @@
 import os, sys
-sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-sys.path.append('/array/ssd/msmajdi/code/general')
-# sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from otherFuncs import smallFuncs
 import uncrop
 from uncrop import uncrop_by_mask

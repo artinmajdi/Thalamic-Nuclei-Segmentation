@@ -2,7 +2,7 @@ import json
 import os
 import sys
 from glob import glob
-from shutil import copyfile
+import shutil
 import pandas as pd
 import matplotlib.pyplot as plt
 import nibabel as nib
@@ -10,6 +10,7 @@ import numpy as np
 from scipy import ndimage
 from skimage import measure
 from tqdm import tqdm
+from uuid import uuid4 as unique_name_generator
 
 from modelFuncs import Metrics as metrics
 
@@ -248,6 +249,24 @@ def terminalEntries(UserInfo):
 
         return Directory
 
+    def check_test_folder(experiment_class):
+        """ This function checks the test directory. If it points to an individual nifti file;
+            it creates a folder with a unique name and move the nifti file into that folder """
+    
+        experiment_class.test_path_is_nifti_file = False
+        if '.nii' in experiment_class.test_address:
+            experiment_class.test_path_is_nifti_file = True
+            old_test_file_address = experiment_class.test_address
+            file_main_directory   = os.path.dirname(old_test_file_address)
+            file_name             = os.path.basename(old_test_file_address)
+            unique_folder_name    = str(unique_name_generator())
+            new_test_address      = mkDir( file_main_directory + '/' + unique_folder_name +'/case_1')
+            shutil.move( old_test_file_address, new_test_address + '/' + file_name )
+
+            experiment_class.test_address     = file_main_directory + '/' + unique_folder_name
+            experiment_class.old_test_address = file_main_directory
+
+        return experiment_class
 
     for en in range(len(sys.argv)):
         entry = sys.argv[en]
@@ -264,11 +283,21 @@ def terminalEntries(UserInfo):
         elif entry in ('--test'):
             UserInfo['experiment'].test_address =  check_main_directory(sys.argv[en + 1]) 
 
+        elif entry in ('--model'):
+            UserInfo['simulation'].TestOnly.model_address = check_main_directory(sys.argv[en + 1]) 
+
         elif entry in ('-m', '--modality'):
             UserInfo['experiment'].image_modality = sys.argv[en + 1]
 
     # Path to the testing data
-    test_address = '/array/hdd/msmajdi/data/preprocessed/test/'
+    # test_address = '/array/hdd/msmajdi/data/preprocessed/test/'
+
+    # Checks the path to test files to see if it points to a single nifti file or a parent folder consist of multiple test cases
+    UserInfo['experiment'] = check_test_folder(UserInfo['experiment'])
+
+    if not UserInfo['experiment'].train_address:
+        UserInfo['simulation'].TestOnly.mode = True
+
 
     return UserInfo
 
@@ -367,7 +396,7 @@ def search_ExperimentDirectory(whichExperiment):
 
                         Files.Label.LabelProcessed = NucleusName + '_PProcessed.nii.gz'
 
-                        copyfile(Files.Label.address + '/' + NucleusName + '.nii.gz',
+                        shutil.copyfile(Files.Label.address + '/' + NucleusName + '.nii.gz',
                                  Files.Label.address + '/' + NucleusName + '_PProcessed.nii.gz')
 
                     # Checking the temp folder inside the Label-temp folder
@@ -384,7 +413,7 @@ def search_ExperimentDirectory(whichExperiment):
                         # the original nucleu nifti file and rename the second instance as the name of nucleus plus PProcessed
                         if (nucleus + '.nii.gz' in A[2]) and (nucleus + '_PProcessed.nii.gz' not in A[2]):
 
-                            copyfile(Files.Label.address + '/' + nucleus + '.nii.gz',
+                            shutil.copyfile(Files.Label.address + '/' + nucleus + '.nii.gz',
                                      Files.Label.address + '/' + nucleus + '_PProcessed.nii.gz')
 
                 return Files
@@ -445,7 +474,7 @@ def search_ExperimentDirectory(whichExperiment):
                 # If a nifti image exist inside the searched folder, but a PProcessed file doesn't, this will duplicate the original image and name it as PProcessed.nii.gz 
                 if Files.ImageOriginal and (not Files.ImageProcessed):
                     Files.ImageProcessed = 'PProcessed'
-                    copyfile(Dir + '/' + Files.ImageOriginal + '.nii.gz', Dir + '/PProcessed.nii.gz')
+                    shutil.copyfile(Dir + '/' + Files.ImageOriginal + '.nii.gz', Dir + '/PProcessed.nii.gz')
 
                 return Files
 

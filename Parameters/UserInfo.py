@@ -3,13 +3,13 @@ class experiment:
     exp_address = '/array/hdd/msmajdi/experiments/exp6/'
 
     # Subexperiment name
-    subexperiment_name = 'GE_Siemens'
+    subexperiment_name = 'GE_Siemens_test_only2'
 
     # Path to the training data
-    train_address = '/array/hdd/msmajdi/data/preprocessed/data_experiment/train' 
+    train_address = '' # '/array/hdd/msmajdi/data/preprocessed/data_experiment/train' 
 
     # Path to the testing data
-    test_address = '/array/hdd/msmajdi/data/preprocessed/data_experiment/test' 
+    test_address = '/array/hdd/msmajdi/data/preprocessed/test_case/f06ec52b-15f6-47c3-97aa-783b3ed0f9c2' 
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
@@ -20,17 +20,23 @@ class experiment:
     # modality of the input data. wmn / csfn
     image_modality = 'wmn'
 
+    # This flags will be automaticly set.
+    #     True:  It points to a nifti file
+    #     False: It points to a parent folder consist of multiple test cases
+    test_path_is_nifti_file = False
+    old_test_address        = ''
+
 
 class TestOnly:
     # If TRUE , it will run the trained model on test cases.
-    mode = False
+    mode = True
 
     """ Address to the main folder holding the trained model.
         This address only applies if mode==True. otherwise it will use the address specified by experiment & subexperiment 
         This directory should point to the parent folder holding on trained models: 
             ACTUAL_TRAINED_MODEL_ADDRESS = model_adress + '/' + FeatureMapNum (e.g. FM20) + '/' + Nucleus_name (e.g. 2-AV) + '/' + Orientation Index (e.g. sd2)
     """
-    model_address = ''
+    model_address = '/array/hdd/msmajdi/experiments/exp6/models/GE_Siemens_test_only2'
 
 
 """ if init_address will be left empty, the default address will be used for initialization """
@@ -77,8 +83,8 @@ class preprocess:
       - save_debug_files (boolean):   TRUE/FALSE
       - Normalize        (normalize): Data normalization
     """
-    Mode = False
-    BiasCorrection = True
+    Mode = True
+    BiasCorrection = False
     Cropping = True
     Reslicing = True
     save_debug_files = True
@@ -86,62 +92,61 @@ class preprocess:
 
 
 class simulation:
-    def __init__(self):
-        # If TRUE, it will ignore the train data and run the already trained network on test data
-        self.TestOnly = TestOnly()
+    # If TRUE, it will ignore the train data and run the already trained network on test data
+    TestOnly = TestOnly()
 
-        # Number of epochs used during training
-        self.epochs = 30
+    # Number of epochs used during training
+    epochs = 30
 
-        # The GPU card used for training/testing
-        self.GPU_Index = "3"
+    # The GPU card used for training/testing
+    GPU_Index = "6"
 
-        # Batch size used during training
-        self.batch_size = 30
+    # Batch size used during training
+    batch_size = 30
 
-        # If TRUE, it will use test cases for validation during training
-        self.Use_TestCases_For_Validation = True
+    # If TRUE, it will use test cases for validation during training
+    Use_TestCases_For_Validation = True
 
-        # If TRUE, it will perform morphological closing onto the predicted segments
-        self.ImClosePrediction = True
+    # If TRUE, it will perform morphological closing onto the predicted segments
+    ImClosePrediction = True
 
-        # If TRUE, it will Use a learning rate scheduler 
-        self.LR_Scheduler = True
+    # If TRUE, it will Use a learning rate scheduler 
+    LR_Scheduler = True
 
-        # Initial Learning rate
-        self.Learning_Rate = 1e-3
+    # Initial Learning rate
+    Learning_Rate = 1e-3
 
-        # Number of layers
-        self.num_Layers = 3
+    # Number of layers
+    num_Layers = 3
 
-        """ Loss function index
-                1: binary_crossentropy
-                2: categorical_crossentropy
-                3: multi class binary_crossentropy 
-                4: Logarithm of Dice
-                5: Logarithm of Dice + binary_crossentropy
-                6: Gmean: Square root of (Logarithm of Dice + binary_crossentropy),
-                7: Dice (default) 
-        """
-        self.lossFunction_Index = 7
+    """ Loss function index
+            1: binary_crossentropy
+            2: categorical_crossentropy
+            3: multi class binary_crossentropy 
+            4: Logarithm of Dice
+            5: Logarithm of Dice + binary_crossentropy
+            6: Gmean: Square root of (Logarithm of Dice + binary_crossentropy),
+            7: Dice (default) 
+    """
+    lossFunction_Index = 7
 
-        # nuclei indeces
-        self.nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    # nuclei indeces
+    nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
-        # slicing orientation. should be left as is
-        self.slicingDim = [2, 1, 0]
+    # slicing orientation. should be left as is
+    slicingDim = [2, 1, 0]
 
-        # If TRUE, it will use the network input dimentions obtained from training data for testing data
-        self.use_train_padding_size = False
+    # If TRUE, it will use the network input dimentions obtained from training data for testing data
+    use_train_padding_size = False
 
-        # If TRUE, it will only load the subject folders that include "case" in their name
-        self.check_case_SubjectName = False
+    # If TRUE, it will only load the subject folders that include "case" in their name
+    check_case_SubjectName = False
 
-        # Architecture type
-        self.architectureType = 'Res_Unet2'
+    # Architecture type
+    architectureType = 'Res_Unet2'
 
-        # Number of feature maps for the first layer of Resnet
-        self.FirstLayer_FeatureMap_Num = 20
+    # Number of feature maps for the first layer of Resnet
+    FirstLayer_FeatureMap_Num = 20
 
 
 class InputPadding:

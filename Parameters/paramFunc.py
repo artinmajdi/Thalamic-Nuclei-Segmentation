@@ -9,7 +9,6 @@ import modelFuncs.Metrics as Metrics
 import modelFuncs.Optimizers as Optimizers
 import otherFuncs.smallFuncs as smallFuncs
 
-
 def Run(UserInfoB, terminal=False):
     """
     class normalize:           
@@ -164,6 +163,12 @@ def func_WhichExperiment(UserInfo):
 
             # modality of the input data. wmn / csfn
             image_modality = 'wmn'
+            
+            """ This flags will be automaticly set.
+                    True:  It points to a nifti file
+                    False: It points to a parent folder consist of multiple test cases """
+            test_path_is_nifti_file = False 
+            old_test_address        = ''
             
         def datasetFunc():
             class validation:
@@ -336,43 +341,13 @@ def func_WhichExperiment(UserInfo):
         with open(TrainModel_Address + '/UserInfo.json', 'rb') as f:
             UserInfo_Load = json.load(f)
         return UserInfo_Load['InputPadding_Dims'], UserInfo_Load['num_Layers']
+          
 
     WhichExperiment.Experiment = UserInfo['experiment']()
     WhichExperiment.HardParams = func_ModelParams()
     WhichExperiment.Nucleus    = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.Mode)
     WhichExperiment.Dataset    = func_Dataset()
     WhichExperiment.TestOnly   = USim.TestOnly
-
-    """
-    def adding_TransferLearningParams(WhichExperiment):
-
-        def params_bestResUnet2(slicing_orientation):
-            if slicing_orientation == 0:
-                FM, NL = 40, 3
-            elif slicing_orientation == 1:
-                FM, NL = 30, 3
-            elif slicing_orientation == 2:
-                FM, NL = 20, 3
-
-            return FM, NL, 'Res_Unet2'
-
-        class best_WMn_Model:
-            def __init__(self, WhichExperiment):
-                SD = WhichExperiment.Dataset.slicingInfo.slicingDim
-
-                loss_function = 'MyLogDice'
-                EXP_address = '/array/ssd/msmajdi/experiments/keras/exp6/models/'
-
-                self.FM, self.NL, architectureType = params_bestResUnet2(SD)
-                Tag = 'sE12_Cascade_FM' + str(self.FM) + '_' + architectureType + '_NL' + str(
-                    self.NL) + '_LS_' + loss_function + '_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/'
-
-                self.address = EXP_address + Tag + WhichExperiment.Nucleus.name + '/sd' + str(SD) + '/model.h5'
-
-        return best_WMn_Model(WhichExperiment)
-
-    WhichExperiment.HardParams.Model.Best_WMn_Model = adding_TransferLearningParams(WhichExperiment)
-    """
 
     WE = WhichExperiment.Experiment
     dir_input_dimension = WE.exp_address + '/' + WE.subexperiment_name + '/' + WhichExperiment.Nucleus.name + '/sd' + str(
