@@ -161,6 +161,7 @@ def main(UserInfoB):
         # Checking to see if the CropMask exist. This file will be created if the cropping step of preprocessing is performed
         if os.path.isfile(crop_mask_address) and os.path.isfile(cropped_input_image):
 
+            # re-orienting the outputs to their original space
             target_affine  = nib.load(cropped_input_image).affine
             target_shape   = nib.load(cropped_input_image).shape
             output_original_space_address = subj.address + f'/{thalamus_side}/2.5D_MV/AllLabels_original_space.nii.gz'
@@ -168,6 +169,8 @@ def main(UserInfoB):
             im = niImage.resample_img(img=nib.load(input_address), target_affine=target_affine, target_shape=target_shape, interpolation='nearest')
             nib.save(im, output_original_space_address)
 
+
+            # uncropping the re-oriented outputs
             output_full_size_address = subj.address + f'/{thalamus_side}/2.5D_MV/AllLabels_full_size.nii.gz'
             uncrop.uncrop_by_mask(input_image=output_original_space_address, output_image=output_full_size_address , full_mask=crop_mask_address)  
 
