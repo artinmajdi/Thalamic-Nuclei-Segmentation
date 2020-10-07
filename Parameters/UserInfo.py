@@ -9,7 +9,7 @@ class experiment:
     train_address = '' # '/array/hdd/msmajdi/data/preprocessed/data_experiment/train' 
 
     # Path to the testing data
-    test_address = '/array/hdd/msmajdi/data/preprocessed/test_case/f06ec52b-15f6-47c3-97aa-783b3ed0f9c2' 
+    test_address = '' 
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
@@ -84,7 +84,7 @@ class preprocess:
       - Normalize        (normalize): Data normalization
     """
     Mode = True
-    BiasCorrection = False
+    BiasCorrection = True
     Cropping = True
     Reslicing = True
     save_debug_files = True
