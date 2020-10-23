@@ -3,13 +3,13 @@ class experiment:
     exp_address = '/array/hdd/msmajdi/experiments/exp6/'
 
     # Subexperiment name
-    subexperiment_name = 'GE_Siemens_test_only2'
+    subexperiment_name = 'GE_Siemens_CSFn'
 
     # Path to the training data
-    train_address = '' # '/array/hdd/msmajdi/data/preprocessed/data_experiment/train' 
+    train_address = '/array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
 
     # Path to the testing data
-    test_address = '' 
+    test_address = '/array/hdd/msmajdi/experiments/data_experiment/CSFn/test'
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
@@ -18,7 +18,7 @@ class experiment:
     code_address = '/array/ssd/msmajdi/code/CNN/'
 
     # modality of the input data. wmn / csfn
-    image_modality = 'wmn'
+    image_modality = 'csfn'
 
     # This flags will be automaticly set.
     #     True:  It points to a nifti file
@@ -29,14 +29,14 @@ class experiment:
 
 class TestOnly:
     # If TRUE , it will run the trained model on test cases.
-    mode = True
+    mode = False
 
     """ Address to the main folder holding the trained model.
         This address only applies if mode==True. otherwise it will use the address specified by experiment & subexperiment 
         This directory should point to the parent folder holding on trained models: 
             ACTUAL_TRAINED_MODEL_ADDRESS = model_adress + '/' + FeatureMapNum (e.g. FM20) + '/' + Nucleus_name (e.g. 2-AV) + '/' + Orientation Index (e.g. sd2)
     """
-    model_address = '/array/hdd/msmajdi/experiments/exp6/models/GE_Siemens_test_only2'
+    model_address = '' # '/array/hdd/msmajdi/experiments/exp6/models/GE_Siemens_test_only2'
 
 
 """ if init_address will be left empty, the default address will be used for initialization """
@@ -83,7 +83,7 @@ class preprocess:
       - save_debug_files (boolean):   TRUE/FALSE
       - Normalize        (normalize): Data normalization
     """
-    Mode = True
+    Mode = False
     BiasCorrection = True
     Cropping = True
     Reslicing = True
@@ -96,13 +96,13 @@ class simulation:
     TestOnly = TestOnly()
 
     # Number of epochs used during training
-    epochs = 30
+    epochs = 150
 
     # The GPU card used for training/testing
-    GPU_Index = "6"
+    GPU_Index = "3"
 
     # Batch size used during training
-    batch_size = 30
+    batch_size = 50
 
     # If TRUE, it will use test cases for validation during training
     Use_TestCases_For_Validation = True
@@ -140,7 +140,7 @@ class simulation:
     use_train_padding_size = False
 
     # If TRUE, it will only load the subject folders that include "case" in their name
-    check_case_SubjectName = False
+    check_case_SubjectName = True
 
     # Architecture type
     architectureType = 'Res_Unet2'
