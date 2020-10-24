@@ -296,7 +296,7 @@ def terminalEntries(UserInfo):
         UserInfo['simulation'].TestOnly.mode = True
 
     # Settig up the address to the main code
-    UserInfo['experiment'].code_address = pathlib.Path(__file__).parent.parent
+    UserInfo['experiment'].code_address = str(pathlib.Path(__file__).parent.parent)
 
     return UserInfo
 
