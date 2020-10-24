@@ -11,7 +11,7 @@ from scipy import ndimage
 from skimage import measure
 from tqdm import tqdm
 from uuid import uuid4 as unique_name_generator
-
+import pathlib
 from modelFuncs import Metrics as metrics
 
 
@@ -188,10 +188,10 @@ def gpuSetting(GPU_Index: str):
     assert isinstance(GPU_Index, str), 'GPU index should be a string'
 
     os.environ["CUDA_VISIBLE_DEVICES"] = GPU_Index
-    import tensorflow as tf
+    import tensorflow.compat.v1 as tf1
     from tensorflow.compat.v1.keras import backend as K
     # tf.compat.v1.disable_v2_behavior()
-    K.set_session(tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(allow_soft_placement=True)))
+    K.set_session(tf1.Session(config=tf1.ConfigProto(allow_soft_placement=True)))
     # K.set_session(tf.Session(config=tf.ConfigProto(allow_soft_placement=True)))
 
     return K
@@ -250,7 +250,7 @@ def terminalEntries(UserInfo):
 
         return Directory
 
-    def check_test_folder(experiment_class):
+    def standardize_nifti_file_subejct(experiment_class):
         """ This function checks the test directory. If it points to an individual nifti file;
             it creates a folder with a unique name and move the nifti file into that folder """
     
@@ -287,15 +287,16 @@ def terminalEntries(UserInfo):
         elif entry in ('--modality'):
             UserInfo['experiment'].image_modality = sys.argv[en + 1]
 
-    # Path to the testing data
-    # test_address = '/array/hdd/msmajdi/data/preprocessed/test/'
 
     # Checks the path to test files to see if it points to a single nifti file or a parent folder consist of multiple test cases
-    UserInfo['experiment'] = check_test_folder(UserInfo['experiment'])
+    UserInfo['experiment'] = standardize_nifti_file_subejct(UserInfo['experiment'])
 
+    # setting test-only to TRUE if no address to traininig data was provided
     if not UserInfo['experiment'].train_address:
         UserInfo['simulation'].TestOnly.mode = True
 
+    # Settig up the address to the main code
+    UserInfo['experiment'].code_address = pathlib.Path(__file__).parent.parent
 
     return UserInfo
 

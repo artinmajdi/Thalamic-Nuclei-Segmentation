@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 sys.path.append(os.path.dirname(__file__))
+print(os.path.dirname(__file__))
 import otherFuncs.smallFuncs as smallFuncs
 from otherFuncs import datasets
 import modelFuncs.choosingModel as choosingModel
@@ -235,8 +236,8 @@ def main(UserInfoB):
                 command = "cd {0};for n in right/*/*.nii.gz; do python {1} -i {0}/$n -o {0}/$n; done".format(subj.address, code_address)
                 subprocess.call(command, shell=True)
 
-        # Setting the active side to right thalamus. This is important to let the software know it shouldn't 
-        # run training on these data and only use it for testing purposes. Also not to measure Dice (in case of the existense of manual label)
+        # Setting the active side to right thalamus. This is important to let the software know it shouldn't run training on 
+        # these data and only use it for testing purposes. Also not to measure Dice (in case of the existense of manual label)
         UserInfoB['thalamic_side'].active_side = 'right'
         params = paramFunc.Run(UserInfoB, terminal=True)
 
