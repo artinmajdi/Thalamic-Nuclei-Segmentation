@@ -348,7 +348,9 @@ def loadDataset(params):
         return DataAll
 
     params = preAnalysis(params)
-    smallFuncs.mkDir(params.directories.Test.Result)
+    if not params.WhichExperiment.TestOnly.mode:
+        smallFuncs.mkDir(params.directories.Test.Result)
+
     Data = main_ReadingDataset(params)
 
     return Data, params
