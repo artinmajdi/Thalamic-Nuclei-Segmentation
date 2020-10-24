@@ -9,7 +9,7 @@ class experiment:
     train_address = '' # '/array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
 
     # Path to the testing data
-    test_address = '/array/ssd/msmajdi/code/CNN/Example_Cases/WMn' # /array/hdd/msmajdi/experiments/data_experiment/CSFn/test'
+    test_address = '' # /array/hdd/msmajdi/experiments/data_experiment/CSFn/test'
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
