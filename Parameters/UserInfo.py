@@ -6,10 +6,10 @@ class experiment:
     subexperiment_name = 'csfn_test_tf2' # GE_Siemens_CSFn
 
     # Path to the training data
-    train_address = '/array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
+    train_address = '' # '/array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
 
     # Path to the testing data
-    test_address = '/array/hdd/msmajdi/experiments/data_experiment/CSFn/test'
+    test_address = '/array/ssd/msmajdi/code/CNN/Example_Cases/WMn' # /array/hdd/msmajdi/experiments/data_experiment/CSFn/test'
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
@@ -96,10 +96,10 @@ class simulation:
     TestOnly = TestOnly()
 
     # Number of epochs used during training
-    epochs = 2
+    epochs = 3
 
     # The GPU card used for training/testing
-    GPU_Index = "2"
+    GPU_Index = "0"
 
     # Batch size used during training
     batch_size = 50

@@ -34,7 +34,7 @@ def saveImageDice(InfoSave, ManualLabel):
     smallFuncs.saveImage(InfoSave.Image, ManualLabel.affine, ManualLabel.header,
                          InfoSave.address + '/' + InfoSave.nucleus.name + '.nii.gz')
 
-    Label = smallFuncs.fixMaskMinMax(ManualLabel.get_data(), 'ML') > 0.5
+    Label = smallFuncs.fixMaskMinMax(ManualLabel.get_fdata(), 'ML') > 0.5
 
     Dice = np.zeros((1, 2))
     Dice[0, 0], Dice[0, 1] = InfoSave.nucleus.index, smallFuncs.mDice(InfoSave.Image, Label)
@@ -66,7 +66,7 @@ def func_MajorityVoting(Info, params):
                     if sdInfo.Flag and 'sd' in sdInfo.name:
                         address = Info.subExperiment.address + sdInfo.name + '/' + subject.subjectName + '/' + nucleusNm + '.nii.gz'
                         if os.path.isfile(address):
-                            pred = nib.load(address).get_data()[..., np.newaxis]
+                            pred = nib.load(address).get_fdata()[..., np.newaxis]
                             pred3Dims = pred if ix == 0 else np.concatenate((pred3Dims, pred), axis=3)
                             ix += 1
 
@@ -102,12 +102,12 @@ def func_DecisionTree(Info, params):
                     subject = params.directories.Train.Input.Subjects[subj]
                     # print(cnt, len(params.directories.Train.Input.Subjects) , subject.subjectName)
                     ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
-                    Y = ManualLabel.get_data().reshape(-1)
+                    Y = ManualLabel.get_fdata().reshape(-1)
                     X = np.zeros((np.prod(ManualLabel.shape), 3))
 
                     for ix, sd in enumerate(['sd0', 'sd1', 'sd2']):
                         address = Info.subExperiment.address + sd + '/TrainData_Output/' + subject.subjectName + '/' + nucleusNm + '.nii.gz'
-                        X[:, ix] = nib.load(address).get_data().reshape(-1)
+                        X[:, ix] = nib.load(address).get_fdata().reshape(-1)
 
                     # if cnt == 0:
                     #     TrainData = X.copy()
@@ -131,12 +131,12 @@ def func_DecisionTree(Info, params):
                 print(subject)
                 print(cnt, len(params.directories.Test.Input.Subjects), subject.subjectName)
                 ManualLabel = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
-                Yt = ManualLabel.get_data().reshape(-1)
+                Yt = ManualLabel.get_fdata().reshape(-1)
                 Xt = np.zeros((np.prod(ManualLabel.shape), 3))
 
                 for ix, sd in enumerate(['sd0', 'sd1', 'sd2']):
                     address = Info.subExperiment.address + sd + '/' + subject.subjectName + '/' + nucleusNm + '.nii.gz'
-                    Xt[:, ix] = nib.load(address).get_data().reshape(-1)
+                    Xt[:, ix] = nib.load(address).get_fdata().reshape(-1)
 
                 out = clf.predict(Xt)
 
@@ -174,9 +174,9 @@ def func_OtherMetrics_justFor_MV(Info, params):
             if not os.path.exists(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz') or not os.path.isfile(
                 address + nucleusNm + '.nii.gz'): continue
             Ref = nib.load(subject.Label.address + '/' + nucleusNm + '_PProcessed.nii.gz')
-            ManualLabel = Ref.get_data()
+            ManualLabel = Ref.get_fdata()
 
-            predMV = nib.load(address + nucleusNm + '.nii.gz').get_data()
+            predMV = nib.load(address + nucleusNm + '.nii.gz').get_fdata()
             VSI[cnt, :] = [nucleiIx, metrics.VSI_AllClasses(predMV, ManualLabel).VSI()]
             HD[cnt, :] = [nucleiIx, metrics.HD_AllClasses(predMV, ManualLabel).HD()]
             Dice[cnt, :] = [nucleiIx, smallFuncs.mDice(predMV, ManualLabel)]
@@ -230,8 +230,8 @@ def func_AllMetrics_UserDirectory(Dir, params):
             #     continue
 
             print(subjectName, nucleusNm)
-            ManualLabel = nib.load(manual_dir).get_data()
-            prediction = nib.load(address + 'Prediction/' + nucleusNm + '.nii.gz').get_data()
+            ManualLabel = nib.load(manual_dir).get_fdata()
+            prediction = nib.load(address + 'Prediction/' + nucleusNm + '.nii.gz').get_fdata()
             prediction = prediction > prediction.max() / 2
 
             VSI[cnt, :] = [nucleiIx, metrics.VSI_AllClasses(prediction, ManualLabel).VSI()]

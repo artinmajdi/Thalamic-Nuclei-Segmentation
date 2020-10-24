@@ -17,7 +17,7 @@ def show_middle_Slice():
         return True
 
     def findMiddleSlice(dir_msk):
-        obj = measure.regionprops(measure.label(nib.load(dir_msk).get_data()))
+        obj = measure.regionprops(measure.label(nib.load(dir_msk).get_fdata()))
         return int((obj[0].bbox[-1] + obj[0].bbox[2])/2)
 
 
@@ -29,8 +29,8 @@ def show_middle_Slice():
     sc = findMiddleSlice(dir_msk)
 
 
-    imm = np.squeeze(nib.load(dir_im).slicer[:,:,sc:sc+1].get_data())
-    mskk = np.squeeze(nib.load(dir_msk).slicer[:,:,sc:sc+1].get_data())
+    imm = np.squeeze(nib.load(dir_im).slicer[:,:,sc:sc+1].get_fdata())
+    mskk = np.squeeze(nib.load(dir_msk).slicer[:,:,sc:sc+1].get_fdata())
 
     imm2 = imm/imm.max() + mskk*0.5
 
@@ -52,7 +52,7 @@ def showNibabel():
     a = {}
     for ix , dir in enumerate(inputs):
         
-        a[ix] = nib.viewers.OrthoSlicer3D(nib.load(dir).get_data())
+        a[ix] = nib.viewers.OrthoSlicer3D(nib.load(dir).get_fdata())
 
         if Link and ix > 0: a[0].link_to(a[ix])
 

@@ -13,8 +13,8 @@ def mainloadingImage(params , Input):
     im = nib.load(Input.address + '/' + Input.Files.ImageProcessed + '.nii.gz')
 
     class InputImages:
-        Image   = main_normalize( params , im.get_data() )
-        Label   = nib.load(Input.Files.label.address + '/' + Input.Files.label.LabelProcessed + '.nii.gz').get_data()
+        Image   = main_normalize( params , im.get_fdata() )
+        Label   = nib.load(Input.Files.label.address + '/' + Input.Files.label.LabelProcessed + '.nii.gz').get_fdata()
         Header  = im.header
         Affine  = im.affine
         address = Input.address

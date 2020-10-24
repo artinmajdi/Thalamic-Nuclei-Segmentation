@@ -50,6 +50,6 @@ def crop_AV(subject , params):
 
         inP, outP, outDebug = directoriesNuclei(subject, 2)
         if not os.path.isfile(outDebug): 
-            CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data() , [0,0,0])  
+            CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_fdata() , [0,0,0])  
             check_crop(inP, outP, outDebug, CropCoordinates)
 """

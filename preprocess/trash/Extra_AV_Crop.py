@@ -64,7 +64,7 @@ def save_Crop_AV():
 
     bbox_list = np.zeros((len(subjects),6))
     for ix, subj in enumerate(subjects):
-        msk = nib.load(dir + subj).get_data()
+        msk = nib.load(dir + subj).get_fdata()
 
         obj = regionprops(label(msk))
         # print(obj[0].bbox , subj)
@@ -103,8 +103,8 @@ def check_if_AV_inside_Crop():
     for _, subject in Subjects.items():
         
         # subject = Subjects[list(Subjects)[0]]    
-        cropAV = nib.load(subject.Temp.address + '/CropMask_AV.nii.gz').get_data()
-        mskAV  = nib.load(subject.Label.address + '/2-AV_PProcessed.nii.gz').get_data()
+        cropAV = nib.load(subject.Temp.address + '/CropMask_AV.nii.gz').get_fdata()
+        mskAV  = nib.load(subject.Label.address + '/2-AV_PProcessed.nii.gz').get_fdata()
 
         
         if np.sum(cropAV) > 0:
@@ -112,7 +112,7 @@ def check_if_AV_inside_Crop():
 
             mskAV_Crp = nib.load(subject.Label.address + '/2-AV_PProcessed.nii.gz').slicer[ d[0,0]:d[0,1], d[1,0]:d[1,1], d[2,0]:d[2,1] ]            
             
-            a = np.sum(mskAV_Crp.get_data()) / np.sum(mskAV)
+            a = np.sum(mskAV_Crp.get_fdata()) / np.sum(mskAV)
             flag = 'Correct' if np.abs(1-a) < 0.001 else 'Clipped ' + str(a)
             print(subject.subjectName  , '------- <' , flag , '>---')
         else:
@@ -146,15 +146,15 @@ def check_if_AV_inside_Crop(pprocessed_flag):
 
     def apply_subject(Dir_subj,subject):
         AV_name = '2-AV_PProcessed.nii.gz' if pprocessed_flag else '2-AV.nii.gz'
-        cropAV = nib.load(Dir_subj + 'temp/CropMask_AV.nii.gz').get_data()
-        mskAV  = nib.load(Dir_subj + 'Label/' + AV_name).get_data()
+        cropAV = nib.load(Dir_subj + 'temp/CropMask_AV.nii.gz').get_fdata()
+        mskAV  = nib.load(Dir_subj + 'Label/' + AV_name).get_fdata()
         
         if np.sum(cropAV) > 0:
             d = cropImage_FromCoordinates(cropAV , [0,0,0])  
 
             mskAV_Crp = nib.load(Dir_subj + 'Label/' + AV_name).slicer[ d[0,0]:d[0,1], d[1,0]:d[1,1], d[2,0]:d[2,1] ]            
             
-            a = np.sum(mskAV_Crp.get_data()) / np.sum(mskAV)
+            a = np.sum(mskAV_Crp.get_fdata()) / np.sum(mskAV)
             flag = 'Correct' if np.abs(1-a) < 0.001 else 'Clipped ' + str(a)
             print(subject  , '------- <' , flag , '>---')
         else:

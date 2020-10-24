@@ -30,7 +30,7 @@ class Input_cls():
         
     def middleSlice(self):
         msk = nib.load(self.dir_in + '/' + self.subj + '/Label/1-THALAMUS.nii.gz')
-        objects = skimage.measure.regionprops(skimage.measure.label(msk.get_data()))
+        objects = skimage.measure.regionprops(skimage.measure.label(msk.get_fdata()))
         Ix = np.argsort( [obj.area for obj in objects] )
         bbox = objects[ Ix[-1] ].bbox
         return int((bbox[2] + bbox[5])/2) 
@@ -45,7 +45,7 @@ class Input_cls():
         m = self.middleSlice()
 
         im = nib.load(self.dir_in + '/' + self.subj + '/WMnMPRAGE_bias_corr.nii.gz')
-        imm = im.slicer[:,:,m:m+1].get_data()
+        imm = im.slicer[:,:,m:m+1].get_fdata()
         
         self.save_image(imm)
 
@@ -66,16 +66,16 @@ for subj in input.subjList:
 
 
 # a = msk.slicer[:,:,100:101]
-# a.get_data()
+# a.get_fdata()
 # b = a[:]
 # np.array(a)
-# objects = skimage.measure.regionprops(skimage.measure.label(msk.get_data()))
+# objects = skimage.measure.regionprops(skimage.measure.label(msk.get_fdata()))
 
 # Ix = np.argsort( [obj.area for obj in objects] )
 # bbox = objects[ Ix[-1] ].bbox
 
 # im = nib.load(Imdir_in)
-# imm = im.get_data()[...,int((bbox[2] + bbox[5])/2) ]
+# imm = im.get_fdata()[...,int((bbox[2] + bbox[5])/2) ]
 
 # plt.imshow(imm,cmap='gray')
 

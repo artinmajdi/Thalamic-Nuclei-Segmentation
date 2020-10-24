@@ -18,7 +18,7 @@ directory = '/array/ssd/msmajdi/code/general/RigidRegistration/'
 # directory = '/media/data1/artin/code/general_Research/RigidRegistration/'
 
 im = nib.load(directory + 'origtemplate.nii.gz')
-# msk = nib.load(directory + 'MyCrop_Template2_Gap20.nii.gz').get_data()
+# msk = nib.load(directory + 'MyCrop_Template2_Gap20.nii.gz').get_fdata()
 cord = tuple([range(83, 176), range(160, 251), range(95, 151)])
 
 tempMsk1 = np.zeros(im.shape) > 0
@@ -33,7 +33,7 @@ cropMask = tempMsk1 * tempMsk2 * tempMsk3
 sumMask = tempMsk1 + tempMsk2 + tempMsk3
 
 ind = 140
-# imShow(im.get_data()[...,ind] , sumMask[...,ind], cropMask[...,ind])
+# imShow(im.get_fdata()[...,ind] , sumMask[...,ind], cropMask[...,ind])
 
 maskF2 = nib.Nifti1Image(cropMask.astype(np.float32), im.affine)
 maskF2.get_header = im.header
@@ -63,16 +63,16 @@ nib.save(maskF2, directory + 'CropMaskV3.nii.gz')
 #
 # directory = '/media/data1/artin/vimp2_0699_04302014'
 #
-# mask    = nib.load(directory + '/' + 'Manual_Delineation_Sanitized/' + '1-THALAMUS' + '.nii.gz').get_data()
+# mask    = nib.load(directory + '/' + 'Manual_Delineation_Sanitized/' + '1-THALAMUS' + '.nii.gz').get_fdata()
 # imF       = nib.load(directory + '/' + 'WMnMPRAGE_bias_corr.nii.gz' )
-# CropMask = nib.load(directory + '/' + 'MyCrop.nii.gz').get_data()
+# CropMask = nib.load(directory + '/' + 'MyCrop.nii.gz').get_fdata()
 #
 # Thalamus = nib.load('/media/data1/artin/Results/vimp2_1530_04232015_1-THALAMUS_Logical.nii.gz')
 #
-# ss = np.sum(Thalamus.get_data(),axis=2)
+# ss = np.sum(Thalamus.get_fdata(),axis=2)
 # c1 = np.where(np.sum(ss,axis=1) > 1)[0]
 # c2 = np.where(np.sum(ss,axis=0) > 1)[0]
-# ss = np.sum(Thalamus.get_data(),axis=1)
+# ss = np.sum(Thalamus.get_fdata(),axis=1)
 # c3 = np.where(np.sum(ss,axis=0) > 1)[0]
 #
 # d1 = [  c1[0] , c1[ c1.shape[0]-1 ]  ]
@@ -87,7 +87,7 @@ nib.save(maskF2, directory + 'CropMaskV3.nii.gz')
 # maskF2 = nib.Nifti1Image(mask,Thalamus.affine)
 # maskF2.get_header = Thalamus.header
 # nib.save(maskF2,'/media/data1/artin/Results/mask_from_Thalamus.nii.gz' )
-# im = funcNormalize( imF.get_data() )
+# im = funcNormalize( imF.get_fdata() )
 #
 # im , mask = cropDimensions(im , mask , CropMask)
 #

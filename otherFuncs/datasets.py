@@ -98,7 +98,7 @@ def loadDataset(params):
                 params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse]
             input_im = inputF.dataobj[BB[0][0]:BB[0][1], BB[1][0]:BB[1][1], BB[2][0]:BB[2][1]]
         else:
-            input_im = inputF.get_data()
+            input_im = inputF.get_fdata()
 
         return inputF, input_im
 
@@ -497,8 +497,10 @@ def preAnalysis(params):
             """  
 
             if params.WhichExperiment.Dataset.InputPadding.Automatic:
-                inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly.mode else np.concatenate(
-                    (params.directories.Train.Input.inputSizes, params.directories.Test.Input.inputSizes), axis=0)
+                if params.WhichExperiment.TestOnly.mode:
+                    inputSizes = params.directories.Test.Input.inputSizes 
+                else:
+                    inputSizes = np.concatenate((params.directories.Train.Input.inputSizes, params.directories.Test.Input.inputSizes), axis=0)
 
                 return np.min(inputSizes, axis=0)
             else:

@@ -26,8 +26,8 @@ if write_flag: writer = pd.ExcelWriter(path=dir + 'Precision_Recall.xlsx', engin
 for ind in range(13):
 
     nucleus_name = Names[ind].split('-')[1]
-    msk = nib.load(dir  + Names[ind] + '.nii.gz').get_data()
-    mskM = nib.load(dirM  + Names[ind] + '_PProcessed.nii.gz').get_data()
+    msk = nib.load(dir  + Names[ind] + '.nii.gz').get_fdata()
+    mskM = nib.load(dirM  + Names[ind] + '_PProcessed.nii.gz').get_fdata()
 
     # plt.plot(np.unique(msk))
     

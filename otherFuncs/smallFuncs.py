@@ -275,9 +275,6 @@ def terminalEntries(UserInfo):
         if entry.lower() in ('-g', '--gpu'):  # gpu num
             UserInfo['simulation'].GPU_Index = sys.argv[en + 1]
 
-        elif entry in ('-v', '--verbose'):
-            UserInfo['verbose'] = int(sys.argv[en + 1])
-
         elif entry in ('--train'):
             UserInfo['experiment'].train_address = check_main_directory(sys.argv[en + 1]) 
 
@@ -287,8 +284,8 @@ def terminalEntries(UserInfo):
         elif entry in ('--model'):
             UserInfo['simulation'].TestOnly.model_address = check_main_directory(sys.argv[en + 1]) 
 
-        elif entry in ('-m', '--modality'):
-            UserInfo['experiment'].image_modality = sys.argv[en + 1].lower()
+        elif entry in ('--modality'):
+            UserInfo['experiment'].image_modality = sys.argv[en + 1]
 
     # Path to the testing data
     # test_address = '/array/hdd/msmajdi/data/preprocessed/test/'
@@ -592,6 +589,9 @@ def mDice(msk1, msk2):
 
 
 def findBoundingBox(PreStageMask):
+    if not PreStageMask.max():
+        PreStageMask = np.ones(PreStageMask.shape)
+
     objects = measure.regionprops(measure.label(PreStageMask))
 
     L = len(PreStageMask.shape)
@@ -646,7 +646,7 @@ def apply_MajorityVoting(params):
         dirr = subject.address + '/Label/' + nucleusNm + '_PProcessed.nii.gz'
 
         if os.path.isfile(dirr):
-            label = fixMaskMinMax(nib.load(dirr).get_data(), nucleusNm)
+            label = fixMaskMinMax(nib.load(dirr).get_fdata(), nucleusNm)
             manual = manualCs(flag=True, label=label)
 
         else:
@@ -673,7 +673,7 @@ def apply_MajorityVoting(params):
             for sdInfo in ['sd0', 'sd1', 'sd2']:
                 address_nucleus = address + sdInfo + '/' + nucleusNm + '.nii.gz'
                 if os.path.isfile(address_nucleus):
-                    pred = nib.load(address_nucleus).get_data()[..., np.newaxis]
+                    pred = nib.load(address_nucleus).get_fdata()[..., np.newaxis]
                     pred3Dims = pred if ix == 0 else np.concatenate((pred3Dims, pred), axis=3)
                     ix += 1
 
@@ -729,8 +729,8 @@ def test_precision_recall():
     for ind in range(13):
 
         nucleus_name = Names[ind].split('-')[1]
-        msk = nib.load(directory + Names[ind] + '.nii.gz').get_data()
-        mskM = nib.load(directoryM + Names[ind] + '_PProcessed.nii.gz').get_data()
+        msk = nib.load(directory + Names[ind] + '.nii.gz').get_fdata()
+        mskM = nib.load(directoryM + Names[ind] + '_PProcessed.nii.gz').get_fdata()
 
         # plt.plot(np.unique(msk))
 
@@ -759,11 +759,11 @@ def test_extract_biggest_object():
         subjects = [s for s in os.listdir(main_directory + cv) if 'case' in s]
         for subj in tqdm(subjects):
 
-            # im = nib.load(main_directory + cv + subj + '/PProcessed.nii.gz').get_data()
-            label = nib.load(main_directory + cv + subj + '/Label/1-THALAMUS_PProcessed.nii.gz').get_data()
+            # im = nib.load(main_directory + cv + subj + '/PProcessed.nii.gz').get_fdata()
+            label = nib.load(main_directory + cv + subj + '/Label/1-THALAMUS_PProcessed.nii.gz').get_fdata()
             label = fixMaskMinMax(label, subj)
             OP = nib.load(dir_predictions + subj + '/1-THALAMUS.nii.gz')
-            original_prediction = OP.get_data()
+            original_prediction = OP.get_fdata()
 
             objects = measure.regionprops(measure.label(original_prediction))
 
@@ -801,7 +801,7 @@ class SNR_experiment:
             gaussian_noise_imag = np.random.normal(loc=noise_mean, scale=noise_std, size=input_image.shape)
             gaussian_noise = gaussian_noise_real + 1j * gaussian_noise_imag
 
-            # template = nib.load('general/RigidRegistration/cropped_origtemplate.nii.gz').get_data()
+            # template = nib.load('general/RigidRegistration/cropped_origtemplate.nii.gz').get_fdata()
             # psd_template = np.mean(abs(fftshift(fft2(template/template.max())))**2)
 
             # psd_template, max_template = 325, 12.66
@@ -825,7 +825,7 @@ class SNR_experiment:
         for noise_std in SD_list:
 
             imF = nib.load(dir_original_image + '/PProcessed.nii.gz')
-            im = imF.get_data()
+            im = imF.get_fdata()
 
             noisy_image, SNR = add_WGN(input_image=im, noise_mean=0, noise_std=noise_std)
             SNR = int(round(SNR))
@@ -883,8 +883,8 @@ class Thalamus_Sub_Functions:
             'directory does not exist'.upper())
         Measurements = {s: [] for s in metrics}
         for nuclei in Nuclei_Class().All_Nuclei().Names:
-            pred = nib.load(Dir_prediction + nuclei + '.nii.gz').get_data()
-            manual = nib.load(Dir_manual + nuclei + '_PProcessed.nii.gz').get_data()
+            pred = nib.load(Dir_prediction + nuclei + '.nii.gz').get_fdata()
+            manual = nib.load(Dir_manual + nuclei + '_PProcessed.nii.gz').get_fdata()
 
             if 'DICE' in metrics: Measurements['DICE'].append([nuclei, mDice(pred, manual)])
 

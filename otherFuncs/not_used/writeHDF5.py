@@ -23,7 +23,7 @@ def saving_OriginalDataset_AsHDF5(Input):
                     allFiles = next(os.walk(kl.attrs['address']))[2]
                     Masks = [s for s in allFiles if '_PProcessed' in s]
                     for msk in Masks:
-                        kl.create_dataset(name=msk.split('_PProcessed')[0],data=nib.load( kl.attrs['address'] + '/' + msk).get_data() )
+                        kl.create_dataset(name=msk.split('_PProcessed')[0],data=nib.load( kl.attrs['address'] + '/' + msk).get_fdata() )
                     return kl
 
                 allFiles = next(os.walk(k.attrs['address']))[2]
@@ -31,7 +31,7 @@ def saving_OriginalDataset_AsHDF5(Input):
                 if len(Image) == 1:
                     imF = nib.load( k.attrs['address'] + '/' + Image[0])
                     dim = params.WhichExperiment.HardParams.Model.Method.InputImage2Dvs3D
-                    k.create_dataset(name='imData',data=imF.get_data() ,chunks=tuple(imF.shape[:dim]) + (1,) ) # compression='gzip',
+                    k.create_dataset(name='imData',data=imF.get_fdata() ,chunks=tuple(imF.shape[:dim]) + (1,) ) # compression='gzip',
                     k.attrs['name'] = Image[0]
 
                     k.create_group('Label').attrs['address'] = k.attrs['address'] + '/Label'
