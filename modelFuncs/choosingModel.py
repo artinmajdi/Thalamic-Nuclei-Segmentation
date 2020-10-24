@@ -269,9 +269,13 @@ def testingExeriment(model, Data, params):
         return prediction
 
     def loopOver_Predicting_TrainSubjects(DataTrain):
+        
+        TestOnly = params.WhichExperiment.TestOnly.mode
+        Measure_Dice_on_Train_Data = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
+        thalamus_network = (int(params.WhichExperiment.Nucleus.Index[0]) == 1)
+    
         prediction = {}
-        if params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data or (
-                int(params.WhichExperiment.Nucleus.Index[0]) == 1):
+        if (not TestOnly) and (Measure_Dice_on_Train_Data or thalamus_network):
             ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
             for name in tqdm(DataTrain, desc='predicting train subjects'):
                 subject = params.directories.Train.Input.Subjects[name]
