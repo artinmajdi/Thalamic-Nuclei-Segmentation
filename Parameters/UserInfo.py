@@ -3,7 +3,7 @@ class experiment:
     exp_address = '/array/hdd/msmajdi/experiments/exp6/'
 
     # Subexperiment name
-    subexperiment_name = 'GE_Siemens_CSFn'
+    subexperiment_name = 'csfn_test_tf2' # GE_Siemens_CSFn
 
     # Path to the training data
     train_address = '/array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
@@ -96,10 +96,10 @@ class simulation:
     TestOnly = TestOnly()
 
     # Number of epochs used during training
-    epochs = 150
+    epochs = 2
 
     # The GPU card used for training/testing
-    GPU_Index = "3"
+    GPU_Index = "2"
 
     # Batch size used during training
     batch_size = 50

@@ -189,10 +189,11 @@ def gpuSetting(GPU_Index: str):
 
     os.environ["CUDA_VISIBLE_DEVICES"] = GPU_Index
     import tensorflow as tf
-    from keras import backend as K
+    from tensorflow.compat.v1.keras import backend as K
     # tf.compat.v1.disable_v2_behavior()
-    # K.set_session(tf.compat.v1.Session(   config=tf.compat.v1.ConfigProto( allow_soft_placement=True , gpu_options=tf.compat.v1.GPUOptions(allow_growth=True) )   ))
-    K.set_session(tf.Session(config=tf.ConfigProto(allow_soft_placement=True)))
+    K.set_session(tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(allow_soft_placement=True)))
+    # K.set_session(tf.Session(config=tf.ConfigProto(allow_soft_placement=True)))
+
     return K
 
 

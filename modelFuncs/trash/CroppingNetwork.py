@@ -96,8 +96,8 @@ def trainModel(trainData, params):
     hist = model.fit(x=trainData.Images, y=trainData.Masks, batch_size=params.Modelparam.batch_size, epochs=params.Modelparam.epochs, shuffle=True, validation_split=0.1, verbose=0) 
 
     smallFuncs.mkDir(params.Address + '/models')
-    model.save(params.Address + '/models/model.h5', overwrite=True, include_optimizer=True )
-    model.save_weights(params.Address + '/models/model_weights.h5', overwrite=True )
+    model.save(params.Address + '/models/model.h5', overwrite=True, include_optimizer=True)
+    model.save_weights(params.Address + '/models/model_weights.h5', overwrite=True)
 
     return model
 
@@ -120,7 +120,7 @@ def testModel(model, testData, params):
 def mDice(y_true,y_pred):
 
     import tensorflow as tf
-    return tf.reduce_sum(tf.multiply(y_true,y_pred))*2/( tf.reduce_sum(y_true) + tf.reduce_sum(y_pred) + 1e-5)
+    return tf.reduce_sum(input_tensor=tf.multiply(y_true,y_pred))*2/( tf.reduce_sum(input_tensor=y_true) + tf.reduce_sum(input_tensor=y_pred) + 1e-5)
 
 def readingData(params):
                              

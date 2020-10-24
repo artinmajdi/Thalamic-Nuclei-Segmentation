@@ -21,15 +21,15 @@ def LossInfo(loss_Index):
 
 
 def func_Loss_Dice(x, y):
-    return 1 - (tf.reduce_sum(tf.multiply(x, y)) + 1e-7) * 2 / (tf.reduce_sum(x) + tf.reduce_sum(y) + 1e-7)
+    return 1 - (tf.reduce_sum(input_tensor=tf.multiply(x, y)) + 1e-7) * 2 / (tf.reduce_sum(input_tensor=x) + tf.reduce_sum(input_tensor=y) + 1e-7)
 
 
 def func_Loss_LogDice(x, y):
-    return -tf.math.log((tf.reduce_sum(tf.multiply(x, y)) + 1e-7) * 2 / (tf.reduce_sum(x) + tf.reduce_sum(y) + 1e-7))
+    return -tf.math.log((tf.reduce_sum(input_tensor=tf.multiply(x, y)) + 1e-7) * 2 / (tf.reduce_sum(input_tensor=x) + tf.reduce_sum(input_tensor=y) + 1e-7))
 
 
 def func_Average(loss, NUM_CLASSES):
-    return tf.divide(tf.reduce_sum(loss), tf.cast(NUM_CLASSES, tf.float32))
+    return tf.divide(tf.reduce_sum(input_tensor=loss), tf.cast(NUM_CLASSES, tf.float32))
 
 
 def My_BCE_Loss(W):

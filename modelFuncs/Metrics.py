@@ -22,8 +22,8 @@ def mDice(y_true, y_pred):
     Dice = 0
     nmCl = max(y_pred.shape[3] - 1, 1)  # max is for when I don't add the background to the label concatenate(msk,1-msk)
     for d in range(nmCl):
-        Dice = Dice + tf.reduce_sum(tf.multiply(y_true[..., d], y_pred[..., d])) * 2 / (
-                    tf.reduce_sum(y_true[..., d]) + tf.reduce_sum(y_pred[..., d]) + 1e-7)
+        Dice = Dice + tf.reduce_sum(input_tensor=tf.multiply(y_true[..., d], y_pred[..., d])) * 2 / (
+                    tf.reduce_sum(input_tensor=y_true[..., d]) + tf.reduce_sum(input_tensor=y_pred[..., d]) + 1e-7)
 
     return tf.divide(Dice, tf.cast(nmCl, tf.float32))
 
@@ -34,13 +34,13 @@ class VSI_AllClasses_TF:
         self.pred = y_pred
 
     def VSI(self):
-        X = tf.reduce_sum(self.true)
-        Y = tf.reduce_sum(self.pred)
+        X = tf.reduce_sum(input_tensor=self.true)
+        Y = tf.reduce_sum(input_tensor=self.pred)
         return 1 - (tf.abs(X - Y) / (X + Y))
 
     def apply_to_all_classes(self):
         nmCl = max(self.pred.shape[3] - 1, 1)
-        return tf.reduce_sum([VSI_AllClasses(self.true[..., d], self.pred[..., d]).VSI() for d in range(nmCl)])
+        return tf.reduce_sum(input_tensor=[VSI_AllClasses(self.true[..., d], self.pred[..., d]).VSI() for d in range(nmCl)])
 
 
 class VSI_AllClasses:

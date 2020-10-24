@@ -1,7 +1,6 @@
 import os
 import sys
 import subprocess
-
 sys.path.append(os.path.dirname(__file__))
 import otherFuncs.smallFuncs as smallFuncs
 from otherFuncs import datasets
@@ -9,7 +8,7 @@ import modelFuncs.choosingModel as choosingModel
 import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 import preprocess.applyPreprocess as applyPreprocess
-from keras import backend as K
+# from keras import backend as K
 import nibabel as nib
 import numpy as np
 from nilearn import image as niImage
