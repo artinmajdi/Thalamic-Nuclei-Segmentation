@@ -10,7 +10,6 @@ import Parameters.UserInfo as UserInfo
 import Parameters.paramFunc as paramFunc
 from tqdm import tqdm
 from otherFuncs.smallFuncs import Experiment_Folder_Search
-import matplotlib.pylab as plt
 from sklearn import tree
 import modelFuncs.Metrics as metrics
 

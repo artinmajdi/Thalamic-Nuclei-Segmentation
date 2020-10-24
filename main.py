@@ -13,8 +13,8 @@ from keras import backend as K
 import nibabel as nib
 import numpy as np
 from nilearn import image as niImage
-import shutil
 from preprocess import uncrop
+
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 UserInfoB['simulation'] = UserInfoB['simulation']()

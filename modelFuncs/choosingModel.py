@@ -15,7 +15,6 @@ from keras.utils import multi_gpu_model
 import keras.layers as KLayers
 import modelFuncs.LossFunction as LossFunction
 from skimage.transform import AffineTransform, warp
-import matplotlib.pyplot as plt
 
 
 def func_class_weights(Mask):
