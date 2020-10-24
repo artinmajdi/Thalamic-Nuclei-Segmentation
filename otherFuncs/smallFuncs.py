@@ -287,7 +287,7 @@ def terminalEntries(UserInfo):
             UserInfo['simulation'].TestOnly.model_address = check_main_directory(sys.argv[en + 1]) 
 
         elif entry in ('-m', '--modality'):
-            UserInfo['experiment'].image_modality = sys.argv[en + 1]
+            UserInfo['experiment'].image_modality = sys.argv[en + 1].lower()
 
     # Path to the testing data
     # test_address = '/array/hdd/msmajdi/data/preprocessed/test/'

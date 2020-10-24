@@ -200,7 +200,7 @@ def main(UserInfoB):
 
             subjects = params.directories.Test.Input.Subjects.copy()
             code_address = params.WhichExperiment.Experiment.code_address + '/otherFuncs/flip_inputs.py'
-            subjects.update(params.directories.Train.Input.Subjects)
+            # subjects.update(params.directories.Train.Input.Subjects)
 
             for subj in subjects.values():
                 command = "cd {0};python {1} -i {0}/PProcessed.nii.gz -o {0}/PProcessed.nii.gz;".format(subj.address, code_address)
@@ -215,7 +215,7 @@ def main(UserInfoB):
             subjects = params.directories.Test.Input.Subjects.copy()
 
             # Stacking train & test subjects
-            subjects.update(params.directories.Train.Input.Subjects)
+            # subjects.update(params.directories.Train.Input.Subjects)
 
             # Address to the flipping python code
             code_address = params.WhichExperiment.Experiment.code_address + '/otherFuncs/flip_inputs.py'
