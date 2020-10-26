@@ -188,13 +188,11 @@ def gpuSetting(GPU_Index: str):
     assert isinstance(GPU_Index, str), 'GPU index should be a string'
 
     os.environ["CUDA_VISIBLE_DEVICES"] = GPU_Index
-    import tensorflow.compat.v1 as tf1
-    from tensorflow.compat.v1.keras import backend as K
-    # tf.compat.v1.disable_v2_behavior()
-    K.set_session(tf1.Session(config=tf1.ConfigProto(allow_soft_placement=True)))
-    # K.set_session(tf.Session(config=tf.ConfigProto(allow_soft_placement=True)))
-
-    return K
+    # import tensorflow.compat.v1 as tf1
+    # from tensorflow.compat.v1.keras import backend as K
+    # # tf.compat.v1.disable_v2_behavior()
+    # K.set_session(tf1.Session(config=tf1.ConfigProto(allow_soft_placement=True)))
+    return [] # K
 
 
 def listSubFolders(Dir, params):
@@ -243,14 +241,7 @@ def fixMaskMinMax(Image, name):
 
 def terminalEntries(UserInfo):
 
-    def check_main_directory(Directory):
-
-        if Directory[0] != '/':
-            return os.getcwd() + '/' + Directory
-
-        return Directory
-
-    def standardize_nifti_file_subejct(experiment_class):
+    def single_nifti_test_case_directory_correction(experiment_class):
         """ This function checks the test directory. If it points to an individual nifti file;
             it creates a folder with a unique name and move the nifti file into that folder """
     
@@ -276,20 +267,20 @@ def terminalEntries(UserInfo):
             UserInfo['simulation'].GPU_Index = sys.argv[en + 1]
 
         elif entry in ('--train'):
-            UserInfo['experiment'].train_address = check_main_directory(sys.argv[en + 1]) 
+            UserInfo['experiment'].train_address = os.path.abspath(sys.argv[en + 1]) 
 
         elif entry in ('--test'):
-            UserInfo['experiment'].test_address =  check_main_directory(sys.argv[en + 1]) 
+            UserInfo['experiment'].test_address =  os.path.abspath(sys.argv[en + 1]) 
 
         elif entry in ('--model'):
-            UserInfo['simulation'].TestOnly.model_address = check_main_directory(sys.argv[en + 1]) 
+            UserInfo['simulation'].TestOnly.model_address = os.path.abspath(sys.argv[en + 1]) 
 
         elif entry in ('--modality'):
-            UserInfo['experiment'].image_modality = sys.argv[en + 1]
+            UserInfo['experiment'].image_modality = sys.argv[en + 1].lower()
 
 
     # Checks the path to test files to see if it points to a single nifti file or a parent folder consist of multiple test cases
-    UserInfo['experiment'] = standardize_nifti_file_subejct(UserInfo['experiment'])
+    UserInfo['experiment'] = single_nifti_test_case_directory_correction(UserInfo['experiment'])
 
     # setting test-only to TRUE if no address to traininig data was provided
     if not UserInfo['experiment'].train_address:
@@ -297,6 +288,11 @@ def terminalEntries(UserInfo):
 
     # Settig up the address to the main code
     UserInfo['experiment'].code_address = str(pathlib.Path(__file__).parent.parent)
+
+
+    # Setting the GPU
+    if UserInfo['simulation'].GPU_Index:
+        os.environ["CUDA_VISIBLE_DEVICES"] = UserInfo['simulation'].GPU_Index
 
     return UserInfo
 
@@ -509,7 +505,7 @@ def search_ExperimentDirectory(whichExperiment):
 
             return Input
 
-        # This if statement skips the train dataset if the TestOnly flag is set to TRUE
+        # This "if" statement skips the train dataset if the TestOnly flag is set to TRUE
         if not (modeData == 'train' and whichExperiment.TestOnly.mode):
 
             # Setting the adress to the full dataset
@@ -632,9 +628,7 @@ def closeMask(mask, cnt):
 
 
 def dir_check(directory):
-    if directory[-1] != '/':
-        directory = directory + '/'
-    return directory
+    return os.path.abspath(directory) + '/'
 
 
 def apply_MajorityVoting(params):
@@ -922,3 +916,14 @@ class Thalamus_Sub_Functions:
 
     def run_network(self, directory='mnt/PProcessed.nii.gz', thalamic_side='--left', modality='--wmn', gpu="None"):
         os.system('python main.py --test %s %s %s --gpu %s' % (directory, thalamic_side, modality, gpu))
+
+
+def orientation_name_correction(orientation):
+    names = {
+        'sd0': 'Sagittal',
+        'sd1': 'Coronal',
+        'sd2': 'Axial',
+        '2.5D_MV': 'Majority Voting',
+    }
+
+    return names[orientation]

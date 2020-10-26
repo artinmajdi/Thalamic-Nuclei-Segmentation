@@ -18,8 +18,6 @@ from preprocess import uncrop
 
 UserInfoB = smallFuncs.terminalEntries(UserInfo.__dict__)
 UserInfoB['simulation'] = UserInfoB['simulation']()
-K = smallFuncs.gpuSetting(UserInfoB['simulation'].GPU_Index)
-
 
 
 def main(UserInfoB):
@@ -31,7 +29,7 @@ def main(UserInfoB):
             mode (str, optional): Optional tag that can be added to the predicted nuclei names. Defaults to '_PProcessed'.
         """
 
-        mask = []
+        mask = np.array([])
 
         # Looping through all nuclei
         for cnt in (1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14):
@@ -47,7 +45,7 @@ def main(UserInfoB):
                 else:
                     # saving the nuclei into one mask
                     msk = nib.load(dirr).get_fdata()
-                    if mask == []:
+                    if not mask.any():
                         # saving the first nucleus (2-AV)
                         mask = cnt * msk
                     else:
@@ -82,8 +80,8 @@ def main(UserInfoB):
             """
 
             params = paramFunc.Run(UserInfoB, terminal=True)
-            print('\n', params.WhichExperiment.Nucleus.name, 'SD: ' + str(UserInfoB['simulation'].slicingDim),
-                  'GPU: ' + str(UserInfoB['simulation'].GPU_Index), '\n')
+            orientation = smallFuncs.orientation_name_correction( 'sd' + str(UserInfoB['simulation'].slicingDim[0]) )
+            print('\n', params.WhichExperiment.Nucleus.name, 'ORIENTATION: ' + orientation, 'GPU: ' + str(UserInfoB['simulation'].GPU_Index), '\n')
 
             # Loading the dataset
             Data, params = datasets.loadDataset(params)
@@ -92,7 +90,7 @@ def main(UserInfoB):
             choosingModel.check_Run(params, Data)
 
             # clearing the gpu session
-            K.clear_session()
+            # K.clear_session()
 
         def merge_results_and_apply_25D(UserInfoB):
             """ Merging the sagittal, Coronal, and axial networks prediction masks using 2.5D majority voting
@@ -203,6 +201,9 @@ def main(UserInfoB):
             # subjects.update(params.directories.Train.Input.Subjects)
 
             for subj in subjects.values():
+
+                print('SUBJECT:',subj.subjectName)
+
                 command = "cd {0};python {1} -i {0}/PProcessed.nii.gz -o {0}/PProcessed.nii.gz;".format(subj.address, code_address)
                 subprocess.call(command, shell=True)
 
@@ -223,6 +224,8 @@ def main(UserInfoB):
             # Flipping back the nifti images back to their original space for both train & test data
             for subj in subjects.values():
 
+                print('SUBJECT:',subj.subjectName)
+
                 # Flipping back the nifti image to its original space
                 command = "cd {0};python {1} -i {0}/flipped_PProcessed.nii.gz -o {0}/flipped_PProcessed.nii.gz;".format(subj.address, code_address)
                 subprocess.call(command, shell=True)
@@ -233,6 +236,8 @@ def main(UserInfoB):
 
             # Flipping back the right thalamic nuclei predictions to their original space for only test data
             for subj in params.directories.Test.Input.Subjects.values():
+
+                print('SUBJECT:',subj.subjectName)
                 command = "cd {0};for n in right/*/*.nii.gz; do python {1} -i {0}/$n -o {0}/$n; done".format(subj.address, code_address)
                 subprocess.call(command, shell=True)
 
