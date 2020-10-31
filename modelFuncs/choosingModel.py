@@ -12,9 +12,8 @@ from scipy import ndimage
 import pickle
 import keras
 from keras.utils import multi_gpu_model
-import keras.layers as KLayers
+import keras.layers as keras_layers
 import modelFuncs.LossFunction as LossFunction
-from skimage.transform import AffineTransform, warp
 
 
 def func_class_weights(Mask):
@@ -40,12 +39,11 @@ def func_class_weights(Mask):
     class_weights = class_weights / np.sum(class_weights)
 
     print('class_weights', class_weights)
-    
+
     return class_weights
 
 
 def check_Run(params, Data):
-
     # Assigning the gpu index
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
 
@@ -103,7 +101,7 @@ def testingExeriment(model, Data, params):
                 pred1Class (numpy array): Prediction mask for 1 nucleus
                 origMsk1N  (numpy array): Manual label mask for 1 nucleus
                 NucleiIndex        (int): Nucleus index
-            """            
+            """
 
             def binarizing(pred1N):
                 """ Binarizing the input mask """
@@ -143,7 +141,7 @@ def testingExeriment(model, Data, params):
 
                 # Measuring Dice value
                 Dice = [NucleiIndex, smallFuncs.mDice(pred2, binarizing(label_mask))]
-            else: 
+            else:
                 Dice = [0, 0.0]
 
             # Removing the extra paddings added to the input prior to feeding to the network
@@ -194,12 +192,12 @@ def testingExeriment(model, Data, params):
                     dirSave, nucleusName = savingOutput(pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
 
                 # Saving all nuclei Dices into one text file
-                if num_classes > 2 and params.WhichExperiment.HardParams.Model.MultiClass.Mode: 
-                    Dir_Dice = dirSave + '/Dice_All.txt' 
+                if num_classes > 2 and params.WhichExperiment.HardParams.Model.MultiClass.Mode:
+                    Dir_Dice = dirSave + '/Dice_All.txt'
 
-                # Saving the Dice value for the predicted nucleus
+                    # Saving the Dice value for the predicted nucleus
                 else:
-                     Dir_Dice = dirSave + '/Dice_' + nucleusName + '.txt'
+                    Dir_Dice = dirSave + '/Dice_' + nucleusName + '.txt'
 
                 # Saving the Dice values
                 np.savetxt(Dir_Dice, Dice, fmt='%1.1f %1.4f')
@@ -269,14 +267,14 @@ def testingExeriment(model, Data, params):
         return prediction
 
     def loopOver_Predicting_TrainSubjects(DataTrain):
-        
+
         TestOnly = params.WhichExperiment.TestOnly.mode
         Measure_Dice_on_Train_Data = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
         thalamus_network = (int(params.WhichExperiment.Nucleus.Index[0]) == 1)
-    
+
         prediction = {}
         if (not TestOnly) and (Measure_Dice_on_Train_Data or thalamus_network):
-            
+
             ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
             for name in tqdm(DataTrain, desc='predicting train subjects'):
                 subject = params.directories.Train.Input.Subjects[name]
@@ -290,7 +288,7 @@ def testingExeriment(model, Data, params):
         TestOnly = params.WhichExperiment.TestOnly.mode
         Measure_Dice_on_Train_Data = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
         thalamus_network = (int(params.WhichExperiment.Nucleus.Index[0]) == 1)
-        
+
         prediction = {}
         if (not TestOnly) and (Measure_Dice_on_Train_Data or thalamus_network):
 
@@ -322,7 +320,7 @@ def trainingExperiment(Data, params):
                                                        monitor='val_mDice', verbose=1, save_best_only=True, mode=mode)
 
         Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor=monitor, factor=0.5, min_delta=0.001, patience=15,
-                                                      verbose=1,save_best_only=True, mode=mode, min_lr=1e-6, )
+                                                      verbose=1, save_best_only=True, mode=mode, min_lr=1e-6, )
 
         def step_decay_schedule(initial_lr=params.WhichExperiment.HardParams.Model.Learning_Rate, decay_factor=0.5,
                                 step_size=18):
@@ -361,7 +359,7 @@ def trainingExperiment(Data, params):
 
             # Image orientation
             SD = '/sd' + str(params.WhichExperiment.Dataset.slicingInfo.slicingDim)
-            
+
             initialization = params.WhichExperiment.HardParams.Model.Initialize
 
             # Address to the code
@@ -375,9 +373,9 @@ def trainingExperiment(Data, params):
 
                 # If the input modality is set to WMn, the network trained on SRI dataset will be used for initialization
                 if modDef == 'wmn':
-                    net_name = 'sri' 
+                    net_name = 'sri'
 
-                # If the input modality is set to CSFn, the network trained on WMn dataset will be used for initialization 
+                    # If the input modality is set to CSFn, the network trained on WMn dataset will be used for initialization
                 elif modDef == 'csfn':
                     net_name = 'wmn'
 
@@ -511,7 +509,7 @@ def save_BoundingBox_Hierarchy(params, PRED):
                 Subjects = params.directories.Train.Input.Subjects
                 for name in tqdm(Subjects, desc='saving BB ' + ' ' + mode + nucleus):
                     save_BoundingBox(PRED[name], Subjects[name], params.directories.Test.Result.replace('/sd2',
-                                                                                                              '/sd0') + '/TrainData_Output/' + name)
+                                                                                                        '/sd0') + '/TrainData_Output/' + name)
 
             elif 'test' in mode:
                 Subjects = params.directories.Test.Input.Subjects
@@ -543,9 +541,10 @@ def architecture(ModelParam):
         pool_size = ModelParam.Layer_Params.MaxPooling.pool_size
 
         def Layer(featureMaps, trainable, input_layer):
-            conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(input_layer)
-            conv = KLayers.BatchNormalization()(conv)
-            return KLayers.Activation(AC.layers)(conv)
+            conv = keras_layers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(
+                input_layer)
+            conv = keras_layers.BatchNormalization()(conv)
+            return keras_layers.Activation(AC.layers)(conv)
 
         def Unet_sublayer_Contracting(inputs):
             def main_USC(WBp, nL):
@@ -556,11 +555,11 @@ def architecture(ModelParam):
                 conv = Layer(featureMaps, trainable, conv)
 
                 # ! Residual Part
-                conv = KLayers.merge.concatenate([WBp, conv], axis=3)
+                conv = keras_layers.merge.concatenate([WBp, conv], axis=3)
 
-                pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)
+                pool = keras_layers.MaxPooling2D(pool_size=pool_size)(conv)
 
-                if trainable: pool = KLayers.Dropout(DT.Value)(pool)
+                if trainable: pool = keras_layers.Dropout(DT.Value)(pool)
 
                 return pool, conv
 
@@ -575,17 +574,17 @@ def architecture(ModelParam):
                 trainable = True
                 featureMaps = FM * (2 ** nL)
 
-                WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2, 2),
-                                              padding=padding, activation=AC.layers, trainable=trainable)(WBp)
-                UP = KLayers.merge.concatenate([WBp, contracting_Info[nL + 1]], axis=3)
+                WBp = keras_layers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2, 2),
+                                                   padding=padding, activation=AC.layers, trainable=trainable)(WBp)
+                UP = keras_layers.merge.concatenate([WBp, contracting_Info[nL + 1]], axis=3)
 
                 conv = Layer(featureMaps, trainable, UP)
                 conv = Layer(featureMaps, trainable, conv)
 
                 # ! Residual Part
-                conv = KLayers.merge.concatenate([UP, conv], axis=3)
+                conv = keras_layers.merge.concatenate([UP, conv], axis=3)
 
-                if DT.Mode and trainable: conv = KLayers.Dropout(DT.Value)(conv)
+                if DT.Mode and trainable: conv = keras_layers.Dropout(DT.Value)(conv)
                 return conv
 
             for nL in reversed(range(NLayers - 1)):
@@ -601,12 +600,12 @@ def architecture(ModelParam):
             WB = Layer(featureMaps, trainable, WB)
 
             # ! Residual Part
-            WB = KLayers.merge.concatenate([input_layer, WB], axis=3)
+            WB = keras_layers.merge.concatenate([input_layer, WB], axis=3)
 
-            if DT.Mode and trainable: WB = KLayers.Dropout(DT.Value)(WB)
+            if DT.Mode and trainable: WB = keras_layers.Dropout(DT.Value)(WB)
             return WB
 
-        inputs = KLayers.Input(input_shape)
+        inputs = keras_layers.Input(input_shape)
 
         WB, Conv_Out = Unet_sublayer_Contracting(inputs)
 
@@ -614,7 +613,7 @@ def architecture(ModelParam):
 
         WB = Unet_sublayer_Expanding(WB, Conv_Out)
 
-        final = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
+        final = keras_layers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
@@ -631,9 +630,10 @@ def architecture(ModelParam):
         pool_size = ModelParam.Layer_Params.MaxPooling.pool_size
 
         def Layer(featureMaps, trainable, input_layer):
-            conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(input_layer)
-            conv = KLayers.BatchNormalization()(conv)
-            return KLayers.Activation(AC.layers)(conv)
+            conv = keras_layers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(
+                input_layer)
+            conv = keras_layers.BatchNormalization()(conv)
+            return keras_layers.Activation(AC.layers)(conv)
 
         def Unet_sublayer_Contracting(inputs):
             def main_USC(WBp, nL):
@@ -644,11 +644,11 @@ def architecture(ModelParam):
                 conv = Layer(featureMaps, trainable, conv)
 
                 # ! Residual Part
-                if nL > 0: conv = KLayers.merge.concatenate([WBp, conv], axis=3)
+                if nL > 0: conv = keras_layers.merge.concatenate([WBp, conv], axis=3)
 
-                pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)
+                pool = keras_layers.MaxPooling2D(pool_size=pool_size)(conv)
 
-                if trainable: pool = KLayers.Dropout(DT.Value)(pool)
+                if trainable: pool = keras_layers.Dropout(DT.Value)(pool)
 
                 return pool, conv
 
@@ -663,17 +663,17 @@ def architecture(ModelParam):
                 trainable = True
                 featureMaps = FM * (2 ** nL)
 
-                WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2, 2),
-                                              padding=padding, activation=AC.layers, trainable=trainable)(WBp)
-                UP = KLayers.merge.concatenate([WBp, contracting_Info[nL + 1]], axis=3)
+                WBp = keras_layers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2, 2),
+                                                   padding=padding, activation=AC.layers, trainable=trainable)(WBp)
+                UP = keras_layers.merge.concatenate([WBp, contracting_Info[nL + 1]], axis=3)
 
                 conv = Layer(featureMaps, trainable, UP)
                 conv = Layer(featureMaps, trainable, conv)
 
                 # ! Residual Part
-                conv = KLayers.merge.concatenate([UP, conv], axis=3)
+                conv = keras_layers.merge.concatenate([UP, conv], axis=3)
 
-                if DT.Mode and trainable: conv = KLayers.Dropout(DT.Value)(conv)
+                if DT.Mode and trainable: conv = keras_layers.Dropout(DT.Value)(conv)
                 return conv
 
             for nL in reversed(range(NLayers - 1)):
@@ -689,12 +689,12 @@ def architecture(ModelParam):
             WB = Layer(featureMaps, trainable, WB)
 
             # ! Residual Part
-            WB = KLayers.merge.concatenate([input_layer, WB], axis=3)
+            WB = keras_layers.merge.concatenate([input_layer, WB], axis=3)
 
-            if DT.Mode and trainable: WB = KLayers.Dropout(DT.Value)(WB)
+            if DT.Mode and trainable: WB = keras_layers.Dropout(DT.Value)(WB)
             return WB
 
-        inputs = KLayers.Input(input_shape)
+        inputs = keras_layers.Input(input_shape)
 
         WB, Conv_Out = Unet_sublayer_Contracting(inputs)
 
@@ -702,7 +702,7 @@ def architecture(ModelParam):
 
         WB = Unet_sublayer_Expanding(WB, Conv_Out)
 
-        final = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
+        final = keras_layers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
