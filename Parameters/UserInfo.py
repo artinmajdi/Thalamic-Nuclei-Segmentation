@@ -6,10 +6,10 @@ class experiment:
     subexperiment_name = 'csfn_test' # GE_Siemens_CSFn
 
     # Path to the training data
-    train_address = '' # '/array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
+    train_address = '' 
 
     # Path to the testing data
-    test_address = '' # /array/hdd/msmajdi/experiments/data_experiment/CSFn/test'
+    test_address = '' # '/array/hdd/msmajdi/experiments/sample_example' 
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
