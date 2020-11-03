@@ -5,10 +5,8 @@ from random import shuffle
 import nibabel as nib
 import numpy as np
 from tqdm import tqdm
-
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-import otherFuncs.smallFuncs as smallFuncs
-import preprocess.normalizeA as normalizeA
+from otherFuncs import smallFuncs
+from preprocess import normalizeA
 
 
 def ClassesFunc():
@@ -48,17 +46,6 @@ def ClassesFunc():
 
 ImageLabel, data, trainCase, testCase = ClassesFunc()
 
-"""
-def DatasetsInfo(DatasetIx):
-    switcher = {
-        1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_3T'),
-        2: ('SRI_ReSliced', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_ReSliced'),
-        3: ('croppingData', '/array/ssd/msmajdi/data/preProcessed/croppingData'),
-        4: ('All_7T', '/array/ssd/msmajdi/data/preProcessed/7T/All_DBD'),
-        5: ('20priors', '/array/ssd/msmajdi/data/preProcessed/7T/20priors'),
-    }
-    return switcher.get(DatasetIx, 'WARNING: Invalid dataset index')
-"""
 
 def paddingNegativeFix(sz, Padding):
     padding = np.array([list(x) for x in Padding])

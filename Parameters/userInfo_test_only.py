@@ -4,7 +4,7 @@ class experiment:
     test_address = ''
 
     # Path to the code
-    code_address = '/array/ssd/msmajdi/code/CNN/'
+    code_address = ''
 
     # modality of the input data. wmn / csfn
     image_modality = 'wmn'

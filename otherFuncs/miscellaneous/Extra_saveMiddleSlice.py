@@ -1,16 +1,12 @@
 # import numpy as np
 import os, sys
-# sys.path.append(os.path.dirname(__file__))
-# sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
+
 import nibabel as nib
 import numpy as np
 import matplotlib.pyplot as plt
 import imageio
 import skimage
-# import otherFuncs.smallFuncs as smallFuncs
-# import Parameters.UserInfo as UserInfo
-# import Parameters.paramFunc as paramFunc
-# params = paramFunc.Run(UserInfo.__dict__, terminal=True)
+
 
 class Input_cls():
     def __init__(self, dir_in='' , dir_out=''):

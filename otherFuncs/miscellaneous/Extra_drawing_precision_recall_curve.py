@@ -1,19 +1,21 @@
 import os
 import sys
-# sys.path.append(os.path.dirname(__file__))  # 
-sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-sys.path.append('/media/artin/SSD/RESEARCH/PhD/code')
-from otherFuncs import smallFuncs
-from modelFuncs.Metrics import Precision_Recall_Curve
+import pathlib
 import numpy as np
 import nibabel as nib
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
 import pandas as pd
 
+sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
 
-dir = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd2/vimp2_967_08132013_KW/'
-dirM = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/Main/a/vimp2_967_08132013_KW/Label/'
+from otherFuncs import smallFuncs
+from modelFuncs.Metrics import Precision_Recall_Curve
+
+
+
+dir = 'path-to-case-predictions/'
+dirM = 'path-to-case-manual-labels/'
 
 Names = smallFuncs.Nuclei_Class(index=1,method='Cascade').allNames
 

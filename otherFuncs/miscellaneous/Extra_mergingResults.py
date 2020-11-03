@@ -1,5 +1,4 @@
 import os, sys
-# sys.path.append('/code') # /array/ssd/msmajdi/code/thalamus/keras')
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import numpy as np
 import pandas as pd
@@ -11,8 +10,7 @@ import pickle
 import xlsxwriter
 from tqdm import tqdm
 import math
-# import shutil
-# params = paramFunc.Run(UserInfo.__dict__, terminal=True)
+
 
 NumColumns , n_epochsMax = 19 , 300
 
@@ -753,7 +751,4 @@ for Experiment_Name in ['exp6']: # LL: # [LL[3]]:
     Info = Experiment_Folder_Search(General_Address=params.WhichExperiment.address , Experiment_Name=Experiment_Name, mode='models')    
     savingHistory_AsExcel(Info)
 
-os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_Merg')
-
-
-# shutil.make_archive(base_name='All',format='zip',root_dir='/array/ssd/msmajdi/experiments/keras/exp*/results/All_*',)
+os.system('bash /bashCodes/zip_Bash_Merg')

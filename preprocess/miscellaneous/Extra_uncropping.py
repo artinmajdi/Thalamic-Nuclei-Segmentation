@@ -1,12 +1,12 @@
 import os, sys
-sys.path.append('/array/ssd/msmajdi/code/CNN')
-# sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from otherFuncs import smallFuncs
-from preprocess import uncrop
-# from nilearn import image as niImage
 import nibabel as nib
 import numpy as np
-from shutil import copyfile                              
+from shutil import copyfile
+import pathlib
+sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
+from otherFuncs import smallFuncs
+from preprocess import uncrop
+                        
 
 
 class UserEntry:
@@ -17,13 +17,12 @@ class UserEntry:
         self.mode    = 0
 
         for en in range(len(sys.argv)):
-            if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = os.getcwd() + '/' + sys.argv[en+1] if '/array' not in sys.argv[en+1] else sys.argv[en+1] 
-            elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.getcwd() + '/' + sys.argv[en+1] if '/array' not in sys.argv[en+1] else sys.argv[en+1] 
-            elif sys.argv[en].lower() in ('-msk','--mask'): self.dir_mask = os.getcwd() + '/' + sys.argv[en+1] if '/array' not in sys.argv[en+1] else sys.argv[en+1] 
+            if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = os.path.abspath(sys.argv[en+1])
+            elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.path.abspath(sys.argv[en+1]) 
+            elif sys.argv[en].lower() in ('-msk','--mask'): self.dir_mask = os.path.abspath(sys.argv[en+1]) 
             elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = sys.argv[en+1]
-        # print('dir_in', self.dir_in)
-        # print('mode', self.mode)
-        # print('dir_out', self.dir_out)
+
+
             
 class uncrop_cls:
     def __init__(self, dir_in = '' , dir_out = '' , dir_mask = '' , maskCrop=''):
@@ -36,14 +35,7 @@ class uncrop_cls:
     def apply_uncrop(self):
 
         smallFuncs.mkDir(self.dir_out + '/Label')   
-
-        # image = [n for n in os.listdir(self.dir_in) if '.nii.gz' in n]
-        # copyfile(self.dir_in + '/' + image[0] , self.dir_out + '/' + image[0])
-
-        # input_image  = self.dir_in  + '/crop_t1.nii.gz'
-        # output_image = self.dir_out + '/crop_t1.nii.gz'
-        # full_mask    = self.dir_in  + '/Label/' + self.maskCrop + '.nii.gz'
-        # uncrop.uncrop_by_mask(input_image=input_image, output_image=output_image , full_mask=full_mask)  
+ 
         
         for label in smallFuncs.Nuclei_Class().All_Nuclei().Names:
             input_image  = self.dir_in  + '/Label/' + label    + '.nii.gz'
@@ -66,9 +58,8 @@ class uncrop_cls:
 
 
 UI = UserEntry()
-UI.dir_in  = '/array/hdd/msmajdi/data/new_data_simenes_scanner/UCLA_montiwmnsegs'
-UI.dir_out = '/array/hdd/msmajdi/data/new_data_simenes_scanner/UCLA_montiwmnsegs_uncropped'
-UI.mode    = 'all'
+
+
 if UI.mode == '0': 
     uncrop_cls(dir_in = UI.dir_in , dir_out = UI.dir_out, dir_mask = '' , maskCrop='mask_inp').apply_uncrop()
 elif UI.mode == 'all':            

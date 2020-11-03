@@ -1,9 +1,11 @@
 import os, sys
-sys.path.append('/array/ssd/msmajdi/code/thalamus/')
-import otherFuncs.smallFuncs as smallFuncs
-import preprocess.applyPreprocess as applyPreprocess
-import Parameters.paramFunc as paramFunc
-import Parameters.UserInfo as UserInfo
+import pathlib
+sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
+
+from otherFuncs import smallFuncs
+from modelFuncs import choosingModel
+from Parameters import UserInfo, paramFunc
+from preprocess import applyPreprocess
 
 params = paramFunc.Run(UserInfo.__dict__, terminal=True)
 

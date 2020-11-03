@@ -62,7 +62,7 @@ def apply_reslice(subject, params):
     class Reference:
         def __init__(self, nucleus='Image'):
 
-            self.dir_origRefImage = '/array/ssd/msmajdi/experiments/keras/exp3/train/Main/vimp2_819_05172013_DS/'
+            self.dir_origRefImage = 'path-to-reference-image'
             self.dir = params.WhichExperiment.Experiment.code_address + '/general/Reslicing/'
             self.nucleus = nucleus if not ('.nii.gz' in nucleus) else nucleus.split('.nii.gz')[0]
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export dir=/array/ssd/msmajdi/experiments/keras/FreeSurfer_Results
+export dir=/FreeSurfer_dataset
 
 cd $dir
 

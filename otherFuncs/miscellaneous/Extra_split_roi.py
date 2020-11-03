@@ -4,8 +4,7 @@ import numpy as np
 import os 
 
 
-# directory = '/array/ssd/msmajdi/experiments/keras/exp9_test_Manoj/results/sE12_Cascade_FM00_Res_Unet2_NL3_LS_MyLogDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/2.5D_MV/vimp2_test_denoised_pre_surgery/'
-dir = '/array/ssd/msmajdi/data/MS15T/vimp2_pre/Predictions_Left/'
+dir = 'path-to-case-predictions_Left/'
 
 def get_bounding_box(A):
     B = np.argwhere(A)

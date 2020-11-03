@@ -1,11 +1,11 @@
 import os, sys
-sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from otherFuncs import smallFuncs
 from nilearn import image as niImage
 import nibabel as nib
 import json
 import numpy as np
+import pathlib
+sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
+from otherFuncs import smallFuncs
 
 
 class UserEntry:
@@ -15,8 +15,10 @@ class UserEntry:
         self.mode    = 0
 
         for en in range(len(sys.argv)):
-            if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1] 
-            elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.getcwd() + '/' + sys.argv[en+1] if '/array/ssd' not in sys.argv[en+1] else sys.argv[en+1]
+            if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = os.path.abspath(sys.argv[en+1])
+            
+            elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.path.abspath(sys.argv[en+1])
+            
             elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = sys.argv[en+1]
             
         print(self.dir_in)
@@ -25,8 +27,8 @@ class UserEntry:
 class Reference:
     def __init__(self, nucleus='Image'): 
 
-        self.dir_origRefImage = '/array/ssd/msmajdi/experiments/keras/exp3/train/Main/vimp2_819_05172013_DS/'
-        self.dir = '/array/ssd/msmajdi/code/thalamus/keras/general/Reslicing/'
+        self.dir_origRefImage = 'path-to-reference-case3_DS/'
+        self.dir = '/general/Reslicing/'
         self.nucleus = nucleus if not ('.nii.gz' in nucleus) else nucleus.split('.nii.gz')[0]
     def write(self):
         
@@ -113,9 +115,6 @@ class reslice_cls:
 
 
 UI = UserEntry()
-UI.dir_in  = '/array/ssd/msmajdi/experiments/keras/exp10_test_Manoj_cropped/test/step1'
-UI.dir_out = '/array/ssd/msmajdi/experiments/keras/exp10_test_Manoj_cropped/test/step2'
-UI.mode = 'all'
 
 if UI.mode == 'all': reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).reslice_all()
 else: reslice_cls(dir_in = UI.dir_in , dir_out = UI.dir_out).apply_reslice()

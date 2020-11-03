@@ -1,6 +1,7 @@
 import os, sys
-sys.path.append('/array/ssd/msmajdi/code/CNN')
-# sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+import pathlib
+sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
+
 from otherFuncs import smallFuncs
 from preprocess import uncrop
 from nilearn import image as niImage
@@ -16,8 +17,10 @@ class UserEntry():
         self.mode    = 0
 
         for en in range(len(sys.argv)):
-            if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = os.getcwd() + '/' + sys.argv[en+1] if '/array' not in sys.argv[en+1] else sys.argv[en+1]
-            elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = sys.argv[en+1]
+            if sys.argv[en].lower() in ('-i','--input'):    
+                self.dir_in  = os.path.abspath(sys.argv[en+1])
+            elif sys.argv[en].lower() in ('-m','--mode'):   
+                self.mode    = sys.argv[en+1]
             
 class register_cls():
     def __init__(self, dir_in = '' , wmn_name='' , csfn_name=''):
@@ -60,8 +63,6 @@ class register_cls():
 
 
 UI = UserEntry()
-# UI.dir_in  = '/array/hdd/msmajdi/data/preprocessed/Siemens/UA_adcc/CSFn/step0_uncropped'
-# UI.mode = 'all'
 
 
 if UI.mode == 'all': register_cls(dir_in = UI.dir_in , wmn_name='wmn' , csfn_name='csfn').register_All()

@@ -1,7 +1,7 @@
 import os
 import sys
-
-sys.path.append(os.path.dirname(__file__))
+import pathlib
+sys.path.append(str(pathlib.Path(__file__).parent))
 from Parameters import UserInfo
 from otherFuncs.smallFuncs import terminalEntries
 from full_multi_planar_framework import simulate

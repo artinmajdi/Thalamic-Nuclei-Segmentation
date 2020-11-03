@@ -714,8 +714,8 @@ def extracting_the_biggest_object(pred_Binary):
 def test_precision_recall():
     import pandas as pd
 
-    directory = '/array/ssd/msmajdi/experiments/keras/exp6/results/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CV_a/sd2/vimp2_967_08132013_KW/'
-    directoryM = '/array/ssd/msmajdi/experiments/keras/exp6/crossVal/Main/a/vimp2_967_08132013_KW/Label/'
+    directory = 'path-to-case_predictions/'
+    directoryM = 'path-to-case_manual_labels/'
 
     Names = Nuclei_Class(index=1, method='Cascade').All_Nuclei().Names
 
@@ -747,8 +747,8 @@ def test_extract_biggest_object():
     import os
     from tqdm import tqdm
 
-    dir_predictions = '/array/ssd/msmajdi/experiments/keras/exp6_uncropped/results/sE12_Cascade_FM20_Res_Unet2_NL3_LS_MyDice_US1_wLRScheduler_Main_Ps_ET_Init_3T_CVs_all/sd2/'
-    main_directory = '/array/ssd/msmajdi/experiments/keras/exp6_uncropped/crossVal/Main/'  # c/vimp2_988_08302013_CB/PProcessed.nii.gz'
+    dir_predictions = 'path-to-all-cases-predictions/'
+    main_directory = 'path-to-all-cases/'
 
     for cv in tqdm(['a/', 'b/', 'c/', 'd/', 'e/', 'f/']):
 

@@ -52,7 +52,49 @@ def func_WhichExperiment(UserInfo):
         return nucleus
 
     def func_Dataset():
-        Dataset = WhichExperiment.Dataset
+
+        def datasetFunc():
+            class validation:
+                percentage = 0.1
+                fromKeras = False
+
+            class testDs:
+                mode = 'percentage'  # 'names'
+                percentage = 0.3
+                subjects = ''
+
+            if 'names' in testDs.mode:
+                testDs.subjects = list([''])
+
+            class slicingDirection:
+                slicingOrder = [0, 1, 2]
+                slicingOrder_Reverse = [0, 1, 2]
+                slicingDim = 2
+
+            class inputPadding:
+                Automatic = True
+                HardDimensions = ''
+
+            class hDF5:
+                mode = False
+                mode_saveTrue_LoadFalse = True
+
+            class dataset:
+                name = ''
+                address = ''
+                Validation = validation()
+                Test = testDs()
+                check_case_SubjectName = True
+                randomFlag = True
+                slicingInfo = slicingDirection()
+                gapDilation = 5
+                gapOnSlicingDimention = 2
+                InputPadding = inputPadding()
+                HDf5 = hDF5()
+
+            return dataset
+
+        Dataset = datasetFunc()
 
         def slicingInfoFunc():
             class slicingInfo:
@@ -137,7 +179,7 @@ def func_WhichExperiment(UserInfo):
 
             class InitializeB:
                 mode = True
-                init_address = '/array/ssd/msmajdi/code/Trained_Models/wmn/'
+                init_address = ''
 
             class model:
                 architectureType = 'Res_Unet2'
@@ -238,7 +280,7 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.Learning_Rate = USim.Learning_Rate
         HardParams.Model.LR_Scheduler = USim.LR_Scheduler
         HardParams.Model.Initialize = UserInfo['initialize']()
-        HardParams.Model.Initialize.init_address = pathlib.Path(UserInfo['initialize'].init_address)
+        HardParams.Model.Initialize.init_address = str(pathlib.Path(UserInfo['initialize'].init_address))
 
         HardParams.Model.architectureType = USim.architectureType
         HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num = USim.FirstLayer_FeatureMap_Num

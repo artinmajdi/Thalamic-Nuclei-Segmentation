@@ -1,19 +1,20 @@
 import numpy as np
 import nibabel as nib
 import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-# sys.path.append('/array/ssd/msmajdi/code/thalamus/keras')
-import Parameters.UserInfo as UserInfo
-import Parameters.paramFunc as paramFunc
-import otherFuncs.smallFuncs as smallFuncs
-import modelFuncs.choosingModel as choosingModel
-import otherFuncs.datasets as datasets
 import keras.models as kerasmodels
 import keras
 import matplotlib.pyplot as plt
 import skimage
 import PIL
 from tqdm import tqdm
+import pathlib
+sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
+from Parameters import UserInfo
+from Parameters import paramFunc
+from otherFuncs import smallFuncs
+from modelFuncs import choosingModel
+from otherFuncs import datasets
+
 
 UserInfo = UserInfo.__dict__  
 
@@ -164,8 +165,7 @@ for x in [1]: # Nuclei_Indexes:
 
 print('---')
 
-os.system('bash /array/ssd/msmajdi/code/thalamus/keras/bashCodes/zip_Bash_FeatMps')
+os.system('bash /bashCodes/zip_Bash_FeatMps')
 
-# keras.utils.plot_model(model,to_file=params.directories.Train.Model+'/Architecture.png',show_layer_names=True,show_shapes=True)
 VFM.K.clear_session()
 

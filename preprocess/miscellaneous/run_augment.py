@@ -1,5 +1,4 @@
 import os, sys
-# sys.path.append('/array/ssd/msmajdi/code/thalamus/keras_run/')
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import preprocess.augmentA as augmentA
 import otherFuncs.smallFuncs as smallFuncs
