@@ -4,7 +4,6 @@ import numpy as np
 import json
 import pathlib
 
-
 sys.path.append(str(pathlib.Path(__file__).parent.parent))
 
 from modelFuncs import LossFunction, Metrics, Optimizers
@@ -30,7 +29,6 @@ def Run(UserInfoB, terminal=True):
     if terminal:
         UserInfoB = smallFuncs.terminalEntries(UserInfoB)
 
-        
     class Params:
         WhichExperiment = func_WhichExperiment(UserInfoB)
         preprocess = UserInfoB['preprocess']()
@@ -43,7 +41,7 @@ def Run(UserInfoB, terminal=True):
 def func_WhichExperiment(UserInfo):
     USim = UserInfo['simulation']
 
-    def func_Nucleus(MultiClassMode):
+    def func_Nucleus():
         nucleus_Index = USim.nucleus_Index if isinstance(USim.nucleus_Index, list) else [USim.nucleus_Index]
 
         class nucleus:
@@ -83,7 +81,114 @@ def func_WhichExperiment(UserInfo):
 
     def func_ModelParams():
 
-        HardParams = WhichExperiment.HardParams
+        def HardParamsFuncs():
+            def ArchtiectureParams():
+                class dropout:
+                    Mode = True
+                    Value = 0.3
+
+                class kernel_size:
+                    conv = (3, 3)
+                    convTranspose = (2, 2)
+                    output = (1, 1)
+
+                class activation:
+                    layers = 'relu'
+                    output = 'sigmoid'
+
+                class convLayer:
+                    Kernel_size = kernel_size()
+                    padding = 'SAME'  # valid
+
+                class multiclass:
+                    num_classes = ''
+                    Mode = True
+
+                class maxPooling:
+                    strides = (2, 2)
+                    pool_size = (2, 2)
+
+                class method:
+                    Type = ''
+                    ReferenceMask = ''
+                    havingBackGround_AsExtraDimension = True
+                    InputImage2Dvs3D = 2
+                    save_Best_Epoch_Model = True
+                    Use_Coronal_Thalamus_InSagittal = True
+                    Use_TestCases_For_Validation = True
+                    ImClosePrediction = True
+
+                return dropout, activation, convLayer, multiclass, maxPooling, method
+
+            dropout, activation, convLayer, multiclass, maxPooling, method = ArchtiectureParams()
+
+            class classWeight:
+                Weight = {0: 1, 1: 1}
+                Mode = True
+
+            class layer_Params:
+                FirstLayer_FeatureMap_Num = 20
+                batchNormalization = True
+                ConvLayer = convLayer()
+                MaxPooling = maxPooling()
+                Dropout = dropout()
+                Activitation = activation()
+                class_weight = classWeight()
+
+            class InitializeB:
+                mode = True
+                init_address = '/array/ssd/msmajdi/code/Trained_Models/wmn/'
+
+            class model:
+                architectureType = 'Res_Unet2'
+                epochs = 50
+                batch_size = 50
+                Learning_Rate = 1e-3
+                LR_Scheduler = True
+                loss = 7
+                metrics = ''
+                # e.g. optimizers.adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
+                #      - adamax
+                #      - Nadam
+                #      - Adadelta
+                #      - Adagrad
+                optimizer = ''
+                verbose = 2
+                num_Layers = 3
+                InputDimensions = ''
+                Layer_Params = layer_Params()
+                showHistory = True
+                LabelMaxValue = 1
+                Measure_Dice_on_Train_Data = False
+                MultiClass = multiclass()
+                Initialize = InitializeB()
+                Method = method()
+                paddingErrorPatience = 200
+
+            lossFunction_Index = 1
+            model.loss, _ = LossFunction.LossInfo(lossFunction_Index)
+
+            class machine:
+                WhichMachine = 'server'
+                GPU_Index = ''
+
+            class image:
+                # SlicingDirection = 'axial'.lower()
+                SaveMode = 'nifti'.lower()
+
+            class template:
+                Image = ''
+                Mask = ''
+
+            class hardParams:
+                Model = model
+                Template = template()
+                Machine = machine()
+                Image = image()
+
+            return hardParams
+
+        HardParams = HardParamsFuncs()
 
         def ReferenceForCascadeMethod():
 
@@ -113,7 +218,7 @@ def func_WhichExperiment(UserInfo):
 
             return kernel_size, maxPooling
 
-        def func_Layer_Params(UserInfo):
+        def func_Layer_Params():
 
             Layer_Params = HardParams.Model.Layer_Params
 
@@ -130,19 +235,19 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.num_Layers = USim.num_Layers
         HardParams.Model.batch_size = USim.batch_size
         HardParams.Model.epochs = USim.epochs
-        HardParams.Model.Learning_Rate = UserInfo['simulation'].Learning_Rate
-        HardParams.Model.LR_Scheduler = UserInfo['simulation'].LR_Scheduler
+        HardParams.Model.Learning_Rate = USim.Learning_Rate
+        HardParams.Model.LR_Scheduler = USim.LR_Scheduler
         HardParams.Model.Initialize = UserInfo['initialize']()
         HardParams.Model.Initialize.init_address = pathlib.Path(UserInfo['initialize'].init_address)
 
-        HardParams.Model.architectureType = UserInfo['simulation'].architectureType
-        HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num = UserInfo['simulation'].FirstLayer_FeatureMap_Num
+        HardParams.Model.architectureType = USim.architectureType
+        HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num = USim.FirstLayer_FeatureMap_Num
 
         HardParams.Model.loss, _ = LossFunction.LossInfo(USim.lossFunction_Index)
         HardParams.Model.Method.Use_TestCases_For_Validation = USim.Use_TestCases_For_Validation
 
         HardParams.Model.MultiClass.num_classes = func_NumClasses()
-        HardParams.Model.Layer_Params = func_Layer_Params(UserInfo)
+        HardParams.Model.Layer_Params = func_Layer_Params()
 
         if USim.nucleus_Index == 'all':
             _, nucleus_Index, _ = smallFuncs.NucleiSelection(ind=1)
@@ -161,13 +266,13 @@ def func_WhichExperiment(UserInfo):
     class WhichExperiment:
         Experiment = UserInfo['experiment']()
         HardParams = func_ModelParams()
-        Nucleus = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.Mode)
+        Nucleus = func_Nucleus()
         Dataset = func_Dataset()
         TestOnly = USim.TestOnly
 
     WE = WhichExperiment.Experiment
-    dir_input_dimension = WE.exp_address + '/' + WE.subexperiment_name + '/' + WhichExperiment.Nucleus.name + '/sd' + str(
-        WhichExperiment.Dataset.slicingInfo.slicingDim)
+    dir_input_dimension = WE.exp_address + '/' + WE.subexperiment_name + '/' + WhichExperiment.Nucleus.name + \
+                          '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim)
 
     if UserInfo['simulation'].use_train_padding_size and USim.TestOnly.mode and os.path.isfile(
             dir_input_dimension + '/UserInfo.json'):
