@@ -3,13 +3,13 @@ class experiment:
     exp_address = '/array/hdd/msmajdi/experiments/exp6/'
 
     # Subexperiment name
-    subexperiment_name = 'csfn_test'
+    subexperiment_name = 'csfn_UCLA_included'
 
     # Path to the training data
-    train_address = ''
+    train_address = '/array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
 
     # Path to the testing data
-    test_address = ''
+    test_address = '/array/hdd/msmajdi/experiments/data_experiment/CSFn/test'
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
@@ -87,7 +87,7 @@ class preprocess:
       - save_debug_files (boolean):   TRUE/FALSE
       - Normalize        (normalize): Data normalization
     """
-    Mode = True
+    Mode = False
     BiasCorrection = True
     Cropping = True
     Reslicing = True
