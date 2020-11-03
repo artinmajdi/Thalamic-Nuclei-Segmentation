@@ -9,7 +9,7 @@ class experiment:
     train_address = ''
 
     # Path to the testing data
-    test_address = '/array/hdd/msmajdi/data/preprocessed/Siemens/UCLA/CSFn/step1_preprocessed'
+    test_address = ''
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
@@ -32,11 +32,11 @@ class TestOnly:
     mode = False
 
     """ Address to the main folder holding the trained model.
-        This address only applies if mode==True. otherwise it will use the address specified by experiment & subexperiment 
-        This directory should point to the parent folder holding on trained models: 
+        This address only applies if mode==True. otherwise it will use the address specified by experiment & subexperiment
+        This directory should point to the parent folder holding on trained models:
             ACTUAL_TRAINED_MODEL_ADDRESS = model_adress + '/' + FeatureMapNum (e.g. FM20) + '/' + Nucleus_name (e.g. 2-AV) + '/' + Orientation Index (e.g. sd2)
     """
-    model_address = ''  # '/array/hdd/msmajdi/experiments/exp6/models/GE_Siemens_test_only2'
+    model_address = ''
 
 
 """ if init_address will be left empty, the default address will be used for initialization """
@@ -64,14 +64,14 @@ class thalamic_side:
 
 
 class normalize:
-    """ Network initialization 
+    """ Network initialization
 
         Mode (boolean): If TRUE, input data will be normalized using the specified method
 
         Method (str):
           - MinMax: Data will be normalized into 0 minimum & 1 maximum
           - 1Std0Mean: Data will be normalized into 0 minimum & 1 standard deviation
-          - Both: Data will be normalized using both above methods       
+          - Both: Data will be normalized using both above methods
     """
 
     Mode = True
@@ -114,7 +114,7 @@ class simulation:
     # If TRUE, it will perform morphological closing onto the predicted segments
     ImClosePrediction = True
 
-    # If TRUE, it will Use a learning rate scheduler 
+    # If TRUE, it will Use a learning rate scheduler
     LR_Scheduler = True
 
     # Initial Learning rate
@@ -126,11 +126,11 @@ class simulation:
     """ Loss function index
             1: binary_crossentropy
             2: categorical_crossentropy
-            3: multi class binary_crossentropy 
+            3: multi class binary_crossentropy
             4: Logarithm of Dice
             5: Logarithm of Dice + binary_crossentropy
             6: Gmean: Square root of (Logarithm of Dice + binary_crossentropy),
-            7: Dice (default) 
+            7: Dice (default)
     """
     lossFunction_Index = 7
 

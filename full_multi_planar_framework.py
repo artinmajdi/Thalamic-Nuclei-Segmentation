@@ -4,8 +4,9 @@ import subprocess
 import nibabel as nib
 import numpy as np
 from nilearn import image as nilearn_image
+import pathlib
 
-sys.path.append(os.path.dirname(__file__))
+sys.path.append(str(pathlib.Path(__file__).parent))
 from otherFuncs import datasets, smallFuncs
 from modelFuncs import choosingModel
 from Parameters import UserInfo, paramFunc
