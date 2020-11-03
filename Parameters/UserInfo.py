@@ -45,7 +45,7 @@ class initialize:
     mode = True
 
     # Path to the initialization network. If left empty, the algorithm will use the default path to sample initialization networks
-    init_address = ''  # '/array/ssd/msmajdi/code/Trained_Models/wmn/'
+    init_address = ''
 
 # This class specifies while thalamic sides will be analysed
 class thalamic_side:
@@ -83,7 +83,7 @@ class preprocess:
       - save_debug_files (boolean):   TRUE/FALSE
       - Normalize        (normalize): Data normalization
     """
-    Mode = False
+    Mode = True
     BiasCorrection = True
     Cropping = True
     Reslicing = True
