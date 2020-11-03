@@ -304,5 +304,4 @@ def simulate(User_Entry):
 
 if __name__ == '__main__':
     UserEntry = smallFuncs.terminalEntries(UserInfo.__dict__)
-    UserEntry['simulation'] = UserEntry['simulation']()
     simulate(UserEntry)

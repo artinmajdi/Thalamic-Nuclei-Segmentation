@@ -1,14 +1,15 @@
 import os
 import sys
-
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-
-import otherFuncs.smallFuncs as smallFuncs
+import pathlib
 from nilearn import image as niImage
 import nibabel as nib
 import json
 from shutil import copyfile
 import numpy as np
+
+sys.path.append(str(pathlib.Path(__file__).parent.parent))
+from otherFuncs import smallFuncs
+from Parameters import paramFunc, UserInfo
 
 
 def main(params):
@@ -39,7 +40,6 @@ def apply_On_Individual(params, Info):
     if 'Aug' not in Info.subjectName:
         subject = Info.Subjects[Info.subjectName]
 
-
         if params.preprocess.Cropping:
             print('     Rigid Registration')
             RigidRegistration(subject, params.WhichExperiment.HardParams.Template)
@@ -50,7 +50,7 @@ def apply_On_Individual(params, Info):
         if params.preprocess.BiasCorrection:
             print('     Bias Correction')
             BiasCorrection(subject, params)
-            
+
         if params.preprocess.Reslicing:
             print('     ReSlicing')
             apply_reslice(subject, params)
@@ -108,7 +108,7 @@ def apply_reslice(subject, params):
             outDebug      (str): Path to the debug file (re-slicied image)
             interpolation (str): Mode of interpolation
             ref     (Reference): Reference Affine matrix that includes the resolution & amount of shift
-        """  
+        """
 
         # Checks to see if an already re-sliced file exists inside the debug folder (temp)      
         if os.path.isfile(outDebug):
@@ -116,10 +116,11 @@ def apply_reslice(subject, params):
 
         # If there wasn't an existng re-sliced nifti file, it will apply the re-slicing onto the input image
         else:
-            
+
             # Re-sampling the input image
-            im = niImage.resample_img(img=nib.load(input_image), target_affine=ref['affine'][:3, :3], interpolation=interpolation)
-            
+            im = niImage.resample_img(img=nib.load(input_image), target_affine=ref['affine'][:3, :3],
+                                      interpolation=interpolation)
+
             # Saving the resampled image
             nib.save(im, output_image)
 
@@ -152,7 +153,6 @@ def apply_reslice(subject, params):
 
             # Checking if the nucleus nifti file exist inside the subject folder
             if os.path.isfile(input_nucleus):
-
                 # Mapping the input nifti file into the references resolution.
                 apply_reslicing_main(input_nucleus, output_nucleus, outDebug, 'nearest', ref)
 
@@ -172,7 +172,7 @@ def RigidRegistration(subject, Template):
     if not os.path.isfile(LinearAffine):
         os.system(
             "ANTS 3 -m CC[%s, %s ,1,5] -o %s -i 0 --use-Histogram-Matching --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000 --rigid-affine false" % (
-            processed, Template.Image, subject.Temp.Deformation.address + '/linear'))
+                processed, Template.Image, subject.Temp.Deformation.address + '/linear'))
 
     if not os.path.isfile(outP):
         os.system("WarpImageMultiTransform 3 %s %s -R %s %s" % (Template.Mask, outP, processed, LinearAffine))
@@ -192,7 +192,6 @@ def BiasCorrection(subject, params):
 
 
 def func_cropImage(params, subject):
-
     def cropImage_FromCoordinates(CropMask, Gap):
         """ Finding the coordinates for the boundingbox encompassing the cropped mask
 
@@ -202,7 +201,7 @@ def func_cropImage(params, subject):
 
         Returns:
             d        (numpy array): Boundingbox coordinates
-        """        
+        """
         # Finding the boundingbox that encompassed the TRUE area of the cropped mask
         BBCord = smallFuncs.findBoundingBox(CropMask > 0.5)
 
@@ -224,7 +223,8 @@ def func_cropImage(params, subject):
             outP                    (str): Address to the output image
             outDebug                (str): Address to the cropped nifti image inside the temp folder
             CropCoordinates (numpy array): Boundingbox coordinates encompassing the cropped mask
-        """        
+        """
+
         def applyCropping(image):
             d = CropCoordinates
             return image.slicer[d[0, 0]:d[0, 1], d[1, 0]:d[1, 1], d[2, 0]:d[2, 1]]
@@ -245,7 +245,7 @@ def func_cropImage(params, subject):
             nib.save(mskC, outP)
 
             # Saving the newly cropped image into the debug subfolder (temp folder)
-            if params.preprocess.save_debug_files: 
+            if params.preprocess.save_debug_files:
                 copyfile(outP, outDebug)
 
     def directoriesImage(subject):
@@ -266,7 +266,7 @@ def func_cropImage(params, subject):
     # boundingbox coordinates frmo the cropped mask
     CropCoordinates = np.array([])
     if not os.path.isfile(outDebug):
-        CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_fdata(),[0, 0, 0])
+        CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_fdata(), [0, 0, 0])
 
     # Cropping the input image using the boundingbox coordinates
     check_crop(inP, outP, outDebug, CropCoordinates)
@@ -285,3 +285,8 @@ def func_cropImage(params, subject):
 
         # Cropping the nucleus mask using the broundingbox coordinates
         check_crop(inP, outP, outDebug, CropCoordinates)
+
+
+if __name__ == "__main__":
+    user_parameters = paramFunc.Run(UserInfo.__dict__, terminal=True)
+    main(user_parameters)

@@ -360,32 +360,34 @@ def trainingExperiment(Data, params):
             # Image orientation
             SD = '/sd' + str(params.WhichExperiment.Dataset.slicingInfo.slicingDim)
 
-            initialization = params.WhichExperiment.HardParams.Model.Initialize
+            init_parent_address: str = params.WhichExperiment.HardParams.Model.Initialize.init_address
 
-            # Address to the code
-            code_address = smallFuncs.dir_check(params.UserInfo['experiment'].code_address)
+            if not init_parent_address:
+                """ If the input modality is set to WMn, the network trained on SRI dataset will be used for initialization
+                    If the input modality is set to CSFn, the network trained on WMn dataset will be used """
 
-            if initialization.init_address:
-                init_address = smallFuncs.dir_check(initialization.init_address) + FM + NN + SD + '/model_weights.h5'
-            else:
+                init_source = {'wmn': 'sri',
+                               'csfn': 'wmn'}
+
                 # The modality of the input image that is defined by the user
-                modDef = params.WhichExperiment.Experiment.image_modality.lower()
+                modality = params.WhichExperiment.Experiment.image_modality.lower()
 
-                # If the input modality is set to WMn, the network trained on SRI dataset will be used for initialization
-                if modDef == 'wmn':
-                    net_name = 'sri'
+                # Path to code directory
+                code_address = params.WhichExperiment.Experiment.code_address
 
-                    # If the input modality is set to CSFn, the network trained on WMn dataset will be used for initialization
-                elif modDef == 'csfn':
-                    net_name = 'wmn'
+                # The address to initialization network based on the number of
+                #     - feature maps
+                #     - nucleus name
+                #     - image orientation
+                init_parent_address = code_address + '/Trained_Models/' + init_source[
+                    modality]
 
-                # The address to initialization network based on the number of featuremaps, nucleus name and image orientation
-                init_address = code_address + 'Trained_Models/' + net_name + FM + NN + SD + '/model_weights.h5'
+            init_address = init_parent_address + '/' + FM + NN + SD + '/model_weights.h5'
 
             try:
                 model.load_weights(init_address)
-                print(' --- initialization succesfull')
-            except:
+                print(' --- initialization successful')
+            except ValueError:
                 print(' --- initialization failed')
 
             return model

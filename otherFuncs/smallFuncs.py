@@ -294,6 +294,9 @@ def terminalEntries(UserInfo):
     if UserInfo['simulation'].GPU_Index:
         os.environ["CUDA_VISIBLE_DEVICES"] = UserInfo['simulation'].GPU_Index
 
+
+    UserInfo['simulation'] = UserInfo['simulation']()
+
     return UserInfo
 
 

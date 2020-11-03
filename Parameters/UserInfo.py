@@ -3,13 +3,13 @@ class experiment:
     exp_address = '/array/hdd/msmajdi/experiments/exp6/'
 
     # Subexperiment name
-    subexperiment_name = 'csfn_test' # GE_Siemens_CSFn
+    subexperiment_name = 'csfn_test'
 
     # Path to the training data
-    train_address = '' 
+    train_address = ''
 
     # Path to the testing data
-    test_address = '' # '/array/hdd/msmajdi/experiments/sample_example' 
+    test_address = '/array/hdd/msmajdi/data/preprocessed/Siemens/UCLA/CSFn/step1_preprocessed'
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
@@ -24,7 +24,7 @@ class experiment:
     #     True:  It points to a nifti file
     #     False: It points to a parent folder consist of multiple test cases
     test_path_is_nifti_file = False
-    old_test_address        = ''
+    old_test_address = ''
 
 
 class TestOnly:
@@ -36,19 +36,23 @@ class TestOnly:
         This directory should point to the parent folder holding on trained models: 
             ACTUAL_TRAINED_MODEL_ADDRESS = model_adress + '/' + FeatureMapNum (e.g. FM20) + '/' + Nucleus_name (e.g. 2-AV) + '/' + Orientation Index (e.g. sd2)
     """
-    model_address = '' # '/array/hdd/msmajdi/experiments/exp6/models/GE_Siemens_test_only2'
+    model_address = ''  # '/array/hdd/msmajdi/experiments/exp6/models/GE_Siemens_test_only2'
 
 
 """ if init_address will be left empty, the default address will be used for initialization """
+
+
 class initialize:
     # If TRUE, network weights will be initialized
     mode = True
 
-    # Path to the initialization network. If left empty, the algorithm will use the default path to sample initialization networks
+    # Path to the initialization network. If left empty, the algorithm will use the default path to pretrained models
     init_address = ''
 
-# This class specifies while thalamic sides will be analysed
+
 class thalamic_side:
+    """ This class specifies while thalamic sides will be analysed """
+
     # Running the network on left thalamus
     left = True
 
@@ -171,8 +175,8 @@ class Templatecs:
             Mask    (Str): path to the cropping mask
             Address (Str): path to the main folder
         """
-        self.Image   = code_address + 'general/RigidRegistration' + '/origtemplate.nii.gz'
-        self.Mask    = code_address + 'general/RigidRegistration' + '/CropMaskV3.nii.gz'
+        self.Image = code_address + 'general/RigidRegistration' + '/origtemplate.nii.gz'
+        self.Mask = code_address + 'general/RigidRegistration' + '/CropMaskV3.nii.gz'
         self.Address = code_address + 'general/RigidRegistration/'
 
 
