@@ -47,7 +47,7 @@ def check_Run(params, Data):
     # Assigning the gpu index
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
 
-    if params.WhichExperiment.TestOnly.mode or params.UserInfo['thalamic_side']._active_side == 'right':
+    if params.WhichExperiment.TestOnly._mode or params.UserInfo['thalamic_side']._active_side == 'right':
         # Skipping the training phase, if the algorithm is set to test from existing trained networks or the right thalamus
         model = loadModel(params)
 
@@ -268,7 +268,7 @@ def testingExeriment(model, Data, params):
 
     def loopOver_Predicting_TrainSubjects(DataTrain):
 
-        TestOnly = params.WhichExperiment.TestOnly.mode
+        TestOnly = params.WhichExperiment.TestOnly._mode
         Measure_Dice_on_Train_Data = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
         thalamus_network = (int(params.WhichExperiment.Nucleus.Index[0]) == 1)
 
@@ -285,7 +285,7 @@ def testingExeriment(model, Data, params):
 
     def loopOver_Predicting_TrainSubjects_Sagittal(DataTrain):
 
-        TestOnly = params.WhichExperiment.TestOnly.mode
+        TestOnly = params.WhichExperiment.TestOnly._mode
         Measure_Dice_on_Train_Data = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
         thalamus_network = (int(params.WhichExperiment.Nucleus.Index[0]) == 1)
 
@@ -472,7 +472,7 @@ def save_BoundingBox_Hierarchy(params, PRED):
             return [[np.max([BB[d][0] - gapS, 0]), np.min([BB[d][1] + gapS, Sz[d]])] for d in range(3)]
 
         imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-        # if 'train' in mode: 
+        # if 'train' in _mode:
         #     directory += '/TrainData_Output'
 
         for ch in range(PreStageMask.shape[3]):

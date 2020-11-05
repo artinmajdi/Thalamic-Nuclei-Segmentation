@@ -20,7 +20,7 @@ class UserEntry:
             if sys.argv[en].lower() in ('-i','--input'):    self.dir_in  = os.path.abspath(sys.argv[en+1])
             elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.path.abspath(sys.argv[en+1]) 
             elif sys.argv[en].lower() in ('-msk','--mask'): self.dir_mask = os.path.abspath(sys.argv[en+1]) 
-            elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = sys.argv[en+1]
+            elif sys.argv[en].lower() in ('-m','--_mode'):   self.mode    = sys.argv[en+1]
 
 
             

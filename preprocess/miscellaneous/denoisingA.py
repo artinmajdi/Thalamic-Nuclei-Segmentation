@@ -68,7 +68,7 @@ def inputParameteres():
 
         # An optional argument to choose the type of denoising performed. It noted that choosing soft
         # thresholding given additive noise finds the best approximation of the original image. {‘soft’, ‘hard’}
-        string = 'mode'
+        string = '_mode'
         init[string] = inputs[inputs.index(string) + 1] if string in inputs else 'soft'
 
     elif '--nl_means' in inputs:
@@ -120,7 +120,7 @@ def inputParameteres():
         init['denoising_method'] = 'wavelet'
         init['wavelet'] = 'db1'
         init['method'] = 'BayesShrink'
-        init['mode'] = 'soft'
+        init['_mode'] = 'soft'
 
     init['inDir'] = sys.argv[1]
     init['outDir'] = sys.argv[2]
@@ -157,7 +157,7 @@ def denoisingFunc(init, noisy):
 
 
     elif init['denoising_method'] == 'wavelet':
-        denosied = denoise_wavelet(noisy, wavelet=init['wavelet'], mode=init['mode'], method=init['method'])
+        denosied = denoise_wavelet(noisy, wavelet=init['wavelet'], mode=init['_mode'], method=init['method'])
 
 
     elif init['denoising_method'] == 'nl_means':

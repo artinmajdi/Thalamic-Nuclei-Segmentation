@@ -81,9 +81,9 @@ def LinearFunc(params, mode):
 
             self.Image = np.transpose(self.Image, self.params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
-            if self.params.Augment.Linear.Rotation.Mode: funcRotating(self)  # im = funcRotating(im , InputThreshs.angle, mode)
+            if self.params.Augment.Linear.Rotation.Mode: funcRotating(self)  # im = funcRotating(im , InputThreshs.angle, _mode)
             if self.params.Augment.Linear.Shift.Mode:    funcShifting(self)  # im = funcShifting(im , InputThreshs.shift)
-            if self.params.Augment.Linear.Shear.Mode:    funcShearing(self)  # im = funcShearing(im , InputThreshs.Shear, mode)
+            if self.params.Augment.Linear.Shear.Mode:    funcShearing(self)  # im = funcShearing(im , InputThreshs.Shear, _mode)
 
             self.Image = np.transpose(self.Image, self.params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse)
 

@@ -27,7 +27,7 @@ class UserEntry():
             elif sys.argv[en].lower() in ('-l','--label'):        
                 self.dir_label = os.path.abspath(sys.argv[en+1])
 
-            elif sys.argv[en].lower() in ('-m','--mode'):   
+            elif sys.argv[en].lower() in ('-m','--mode'):
                 self.mode      = sys.argv[en+1]
             
 class measure_Metrics_cls():

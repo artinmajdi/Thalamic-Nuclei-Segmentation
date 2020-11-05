@@ -1,12 +1,12 @@
-
 """          Below parameters are set for testing a pre-trained network        """
-class experiment:
 
+
+class experiment:
     # Path to the training data
-    train_address = '' # /array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
+    train_address = ''  # /array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
 
     # Path to the testing data
-    test_address = '/array/ssd/msmajdi/code/thalamus/Example_Cases/WMn' # /array/hdd/msmajdi/experiments/data_experiment/CSFn/test'
+    test_address = '/array/ssd/msmajdi/code/thalamus/Example_Cases/WMn'  # /array/hdd/msmajdi/experiments/data_experiment/CSFn/test'
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
@@ -17,11 +17,9 @@ class experiment:
     # Path to the code
     _code_address = str()
 
-    # Determinig if the path to test cases is pointing to a nifti file or the grandparent directory
+    # Determining if the path to test cases is pointing to a nifti file or the grandparent directory
     _test_path_is_nifti_file = bool()
     _old_test_address = str()
-
-
 
     """         Below two variables are only required for training a new network.
                         It will hold the whole thalamus estimated bounding box for train cases       """
@@ -35,22 +33,18 @@ class experiment:
 
 class TestOnly:
     # If TRUE , it will run the trained model on test cases.
-    mode = False
+    _mode = bool()
 
     """ Address to the main folder holding the trained model.
-        This address only applies if mode==True. otherwise it will use the address specified by experiment & subexperiment
+        This address only applies if _mode==True. otherwise it will use the address specified by experiment & subexperiment
         This directory should point to the parent folder holding on trained models:
             ACTUAL_TRAINED_MODEL_ADDRESS = model_adress + '/' + FeatureMapNum (e.g. FM20) + '/' + Nucleus_name (e.g. 2-AV) + '/' + Orientation Index (e.g. sd2)
     """
     model_address = ''
 
 
-
-
-
-
-
 """          Below parameters are set for training a new network         """
+
 
 class initialize:
     # If TRUE, network weights will be initialized
@@ -174,6 +168,8 @@ class InputPadding:
 
 
 _code_address = experiment()._code_address
+
+
 class Template:
     """ The path to template nifti image and its corresponding cropping mask
 
@@ -182,6 +178,6 @@ class Template:
         Mask    (Str): path to the cropping mask
         Address (Str): path to the main folder
     """
-    Image   = _code_address + 'general/RigidRegistration' + '/origtemplate.nii.gz'
-    Mask    = _code_address + 'general/RigidRegistration' + '/CropMaskV3.nii.gz'
+    Image = _code_address + 'general/RigidRegistration' + '/origtemplate.nii.gz'
+    Mask = _code_address + 'general/RigidRegistration' + '/CropMaskV3.nii.gz'
     Address = _code_address + 'general/RigidRegistration/'

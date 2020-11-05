@@ -316,7 +316,7 @@ def func_WhichExperiment(UserInfo):
     dir_input_dimension = WE.exp_address + '/' + WE.subexperiment_name + '/' + WhichExperiment.Nucleus.name + \
                           '/sd' + str(WhichExperiment.Dataset.slicingInfo.slicingDim)
 
-    if UserInfo['simulation'].use_train_padding_size and USim.TestOnly.mode and os.path.isfile(
+    if UserInfo['simulation'].use_train_padding_size and USim.TestOnly._mode and os.path.isfile(
             dir_input_dimension + '/UserInfo.json'):
         InputDimensions, num_Layers = ReadInputDimensions_NLayers(dir_input_dimension)
 

@@ -19,7 +19,7 @@ class UserEntry:
             
             elif sys.argv[en].lower() in ('-o','--output'): self.dir_out = os.path.abspath(sys.argv[en+1])
             
-            elif sys.argv[en].lower() in ('-m','--mode'):   self.mode    = sys.argv[en+1]
+            elif sys.argv[en].lower() in ('-m','--_mode'):   self.mode    = sys.argv[en+1]
             
         print(self.dir_in)
         print(self.dir_out)

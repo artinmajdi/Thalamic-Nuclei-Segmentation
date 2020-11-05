@@ -16,7 +16,7 @@ class TestOnly:
     mode = True
 
     """ Address to the main folder holding the trained model.
-        This address only applies if mode==True. otherwise it will use the address specified by experiment & subexperiment 
+        This address only applies if _mode==True. otherwise it will use the address specified by experiment & subexperiment 
         This directory should point to the parent folder holding on trained models: 
             ACTUAL_TRAINED_MODEL_ADDRESS = model_adress + '/' + FeatureMapNum (e.g. FM20) + '/' + Nucleus_name (e.g. 2-AV) + '/' + Orientation Index (e.g. sd2)
     """

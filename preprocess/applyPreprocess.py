@@ -28,14 +28,14 @@ def main(params):
 
     if params.preprocess.Mode:
         # params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
-        if not params.WhichExperiment.TestOnly.mode:
+        if not params.WhichExperiment.TestOnly._mode:
             loop_subjects('train')
 
         loop_subjects('test')
 
 
 def apply_On_Individual(params, Info):
-    print('(' + str(Info.ind) + '/' + str(Info.Length) + ')', Info.mode, Info.subjectName)
+    print('(' + str(Info.ind) + '/' + str(Info.Length) + ')', Info._mode, Info.subjectName)
     # This if statement skips the augmented data, assuming that, the augmented data was made frmo the already preprocessed input
     if 'Aug' not in Info.subjectName:
         subject = Info.Subjects[Info.subjectName]
