@@ -23,8 +23,8 @@ class experiment:
     # This flags will be automaticly set.
     #     True:  It points to a nifti file
     #     False: It points to a parent folder consist of multiple test cases
-    test_path_is_nifti_file = False
-    old_test_address = ''
+    _test_path_is_nifti_file = False
+    _old_test_address = ''
 
 
 class TestOnly:

@@ -256,9 +256,9 @@ def simulate(User_Entry):
             # Uncropping the cropped fused output
             uncrop_output(subj=subj, thalamus_side='right')
 
-    def fuse_left_right_nuclei_together(UserInfoB):
+    def fuse_left_right_nuclei_together(parameters):
 
-        def fuse_func(output_name):
+        def fuse_func(output_name, subj):
             # Function to load left or right fused thalamic nuclei prediction
             load_side = lambda thalamus_side: nib.load(
                 subj.address + '/' + thalamus_side + '/2.5D_MV/' + output_name + '.nii.gz')
@@ -270,20 +270,42 @@ def simulate(User_Entry):
             smallFuncs.saveImage(Image=left.get_fdata() + right.get_fdata(), Affine=left.affine, Header=left.header,
                                  outDirectory=subj.address + '/left/' + output_name + '_Left_and_Right.nii.gz')
 
-        params = paramFunc.Run(UserInfoB, terminal=True)
-        for subj in params.directories.Test.Input.Subjects.values():
-            fuse_func('AllLabels')
+        for subj in parameters.directories.Test.Input.Subjects.values():
+            fuse_func('AllLabels', subj)
 
-    def moving_files_into_original_directory(UserInfoB):
-        old_test_address = UserInfoB['experiment'].old_test_address
-        new_test_address = UserInfoB['experiment'].test_address + '/case_1'
-        test_address = UserInfoB['experiment'].test_address
+    def moving_files_into_original_directory(parameters):
+        _old_test_address = parameters.WhichExperiment.Experiment._old_test_address
+        new_test_address = parameters.WhichExperiment.Experiment.test_address + '/case_1'
 
-        command = f"mv {new_test_address}/* {old_test_address}/"
+        test_address = parameters.WhichExperiment.Experiment.test_address
+
+        command = f"mv {new_test_address}/* {_old_test_address}/"
         subprocess.call(command, shell=True)
 
         command = f"rm -r {test_address}"
         subprocess.call(command, shell=True)
+
+    def cleaning_up_test_directories(parameters):
+
+        print('Cleaning up test directories')
+
+        for subj in parameters.directories.Test.Input.Subjects.values():
+
+            for orientation in ['left', 'right']:
+                predictions_directory = subj.address + '/' + orientation
+
+                command = f"mkdir {predictions_directory}/sub_networks"
+                subprocess.call(command, shell=True)
+
+                command = f"mv {predictions_directory}/sd[0-2] {predictions_directory}/sub_networks/"
+                subprocess.call(command, shell=True)
+
+                command = f"mv {predictions_directory}/2.5D_MV/* {predictions_directory}/"
+                subprocess.call(command, shell=True)
+
+                command = f"rm -r {predictions_directory}/2.5D_MV"
+                subprocess.call(command, shell=True)
+
 
     applyPreprocess.main(paramFunc.Run(User_Entry, terminal=True))
 
@@ -295,12 +317,20 @@ def simulate(User_Entry):
     # Running the network on right thalamus
     if TS.right: run_Right(User_Entry)
 
+    params = paramFunc.Run(User_Entry, terminal=True)
+
     # Merging the left & right predictions into one nifti file
-    if TS.left and TS.right: fuse_left_right_nuclei_together(User_Entry)
+    if TS.left and TS.right: fuse_left_right_nuclei_together(params)
+
+    # moving predictions sd[0-2] inside "left" & "right" directories to a sub-folder called "sub_networks"
+    cleaning_up_test_directories(params)
+
 
     # This portion will run if the input path to test files was a single nifti file.
-    if User_Entry['experiment'].test_path_is_nifti_file:
-        moving_files_into_original_directory(User_Entry)
+    if User_Entry['experiment']._test_path_is_nifti_file:
+        moving_files_into_original_directory(params)
+
+    
 
 
 if __name__ == '__main__':

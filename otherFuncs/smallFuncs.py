@@ -245,9 +245,9 @@ def terminalEntries(UserInfo):
         """ This function checks the test directory. If it points to an individual nifti file;
             it creates a folder with a unique name and move the nifti file into that folder """
     
-        experiment_class.test_path_is_nifti_file = False
+        experiment_class._test_path_is_nifti_file = False
         if '.nii' in experiment_class.test_address:
-            experiment_class.test_path_is_nifti_file = True
+            experiment_class._test_path_is_nifti_file = True
             old_test_file_address = experiment_class.test_address
             file_main_directory   = os.path.dirname(old_test_file_address)
             file_name             = os.path.basename(old_test_file_address)
@@ -256,7 +256,7 @@ def terminalEntries(UserInfo):
             shutil.move( old_test_file_address, new_test_address + '/' + file_name )
 
             experiment_class.test_address     = file_main_directory + '/' + unique_folder_name
-            experiment_class.old_test_address = file_main_directory
+            experiment_class._old_test_address = file_main_directory
 
         return experiment_class
 
