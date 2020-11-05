@@ -4,7 +4,7 @@ class experiment:
     test_address = ''
 
     # Path to the code
-    code_address = ''
+    _code_address = ''
 
     # modality of the input data. wmn / csfn
     image_modality = 'wmn'
@@ -33,7 +33,7 @@ class thalamic_side:
     right = True
 
     # This can be left empty. It is used during the training & testing process
-    active_side = ''
+    _active_side = ''
 
 
 
@@ -64,7 +64,7 @@ class simulation:
 
 
 
-code_address = experiment().code_address
+_code_address = experiment()._code_address
 
 
 

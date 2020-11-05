@@ -287,7 +287,7 @@ def terminalEntries(UserInfo):
         UserInfo['simulation'].TestOnly.mode = True
 
     # Settig up the address to the main code
-    UserInfo['experiment'].code_address = str(pathlib.Path(__file__).parent.parent)
+    UserInfo['experiment']._code_address = str(pathlib.Path(__file__).parent.parent)
 
 
     # Setting the GPU
@@ -304,7 +304,7 @@ def search_ExperimentDirectory(whichExperiment):
     SD = '/sd' + str(whichExperiment.Dataset.slicingInfo.slicingDim)
     FM    = '/FM' + str(whichExperiment.HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num)
     NN    = '/'   + whichExperiment.Nucleus.name
-    code_address   = dir_check(whichExperiment.Experiment.code_address)
+    _code_address   = dir_check(whichExperiment.Experiment._code_address)
     Exp_address    = dir_check(whichExperiment.Experiment.exp_address)
     subexperiment_name = whichExperiment.Experiment.subexperiment_name
     NucleusName    = whichExperiment.Nucleus.name
@@ -545,7 +545,7 @@ def search_ExperimentDirectory(whichExperiment):
             net_name =  whichExperiment.Experiment.image_modality.lower() 
 
             # The address to default trained models based on the user entered input image modality
-            model_address = code_address + 'Trained_Models/' + net_name + FM + NN + SD
+            model_address = _code_address + 'Trained_Models/' + net_name + FM + NN + SD
 
     else:
         # In case of training a network, the newly trained network will be used to segment the test cases
@@ -659,7 +659,7 @@ def apply_MajorityVoting(params):
 
     for sj in tqdm(params.directories.Test.Input.Subjects):
         subject = params.directories.Test.Input.Subjects[sj]
-        address = subject.address + '/' + params.UserInfo['thalamic_side'].active_side + '/'
+        address = subject.address + '/' + params.UserInfo['thalamic_side']._active_side + '/'
 
         VSI, Dice, HD = np.zeros((num_classes, 2)), np.zeros((num_classes, 2)), np.zeros((num_classes, 2))
         for cnt, (nucleusNm, nucleiIx) in enumerate(zip(a.Names, a.Indexes)):

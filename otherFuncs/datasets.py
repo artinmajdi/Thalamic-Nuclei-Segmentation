@@ -403,7 +403,7 @@ def preAnalysis(params):
                     dirr = params.directories.Test.Result + '/TrainData_Output/' + subject.subjectName + '/'
 
                 elif 'test' in mode:
-                    dirr = subject.address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd' + str(
+                    dirr = subject.address + '/' + params.UserInfo['thalamic_side']._active_side + '/sd' + str(
                         slicingDim) + '/'
 
                 BBf = np.loadtxt(dirr + '/BB_' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.txt',

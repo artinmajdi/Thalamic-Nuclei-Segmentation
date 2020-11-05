@@ -63,7 +63,7 @@ def apply_reslice(subject, params):
         def __init__(self, nucleus='Image'):
 
             self.dir_origRefImage = 'path-to-reference-image'
-            self.dir = params.WhichExperiment.Experiment.code_address + '/general/Reslicing/'
+            self.dir = params.WhichExperiment.Experiment._code_address + '/general/Reslicing/'
             self.nucleus = nucleus if not ('.nii.gz' in nucleus) else nucleus.split('.nii.gz')[0]
 
         def write(self):

@@ -169,7 +169,7 @@ def simulate(User_Entry):
     def run_Left(UserInfoB):
         """ running the network on left thalamus """
 
-        UserInfoB['thalamic_side'].active_side = 'left'
+        UserInfoB['thalamic_side']._active_side = 'left'
         running_main(UserInfoB)
 
         # Updating the parameters for left thalamus
@@ -190,14 +190,14 @@ def simulate(User_Entry):
             print('Flip L-R the image & its nuclei')
 
             subjects = params.directories.Test.Input.Subjects.copy()
-            code_address = params.WhichExperiment.Experiment.code_address + '/otherFuncs/flip_inputs.py'
+            _code_address = params.WhichExperiment.Experiment._code_address + '/otherFuncs/flip_inputs.py'
             # subjects.update(params.directories.Train.Input.Subjects)
 
             for subj in subjects.values():
                 print('SUBJECT:', subj.subjectName)
 
                 command = "cd {0};python {1} -i {0}/PProcessed.nii.gz -o {0}/PProcessed.nii.gz;".format(subj.address,
-                                                                                                        code_address)
+                                                                                                        _code_address)
                 subprocess.call(command, shell=True)
 
                 command = "cd {0};mv {0}/PProcessed.nii.gz {0}/flipped_PProcessed.nii.gz;".format(subj.address)
@@ -212,7 +212,7 @@ def simulate(User_Entry):
             # subjects.update(params.directories.Train.Input.Subjects)
 
             # Address to the flipping python code
-            code_address = params.WhichExperiment.Experiment.code_address + '/otherFuncs/flip_inputs.py'
+            _code_address = params.WhichExperiment.Experiment._code_address + '/otherFuncs/flip_inputs.py'
 
             # Flipping back the nifti images back to their original space for both train & test data
             for subj in subjects.values():
@@ -220,7 +220,7 @@ def simulate(User_Entry):
 
                 # Flipping back the nifti image to its original space
                 command = "cd {0};python {1} -i {0}/flipped_PProcessed.nii.gz -o {0}/flipped_PProcessed.nii.gz;".format(
-                    subj.address, code_address)
+                    subj.address, _code_address)
                 subprocess.call(command, shell=True)
 
                 # re-naming the nifti image to its original name
@@ -231,12 +231,12 @@ def simulate(User_Entry):
             for subj in params.directories.Test.Input.Subjects.values():
                 print('SUBJECT:', subj.subjectName)
                 command = "cd {0};for n in right/*/*.nii.gz; do python {1} -i {0}/$n -o {0}/$n; done".format(
-                    subj.address, code_address)
+                    subj.address, _code_address)
                 subprocess.call(command, shell=True)
 
         # Setting the active side to right thalamus. This is important to let the software know it shouldn't run training on
         # these data and only use it for testing purposes. Also not to measure Dice (in case of the existense of manual label)
-        UserInfoB['thalamic_side'].active_side = 'right'
+        UserInfoB['thalamic_side']._active_side = 'right'
         params = paramFunc.Run(UserInfoB, terminal=True)
 
         # Flipping the data

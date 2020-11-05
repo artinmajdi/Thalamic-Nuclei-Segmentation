@@ -47,7 +47,7 @@ def check_Run(params, Data):
     # Assigning the gpu index
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
 
-    if params.WhichExperiment.TestOnly.mode or params.UserInfo['thalamic_side'].active_side == 'right':
+    if params.WhichExperiment.TestOnly.mode or params.UserInfo['thalamic_side']._active_side == 'right':
         # Skipping the training phase, if the algorithm is set to test from existing trained networks or the right thalamus
         model = loadModel(params)
 
@@ -250,7 +250,7 @@ def testingExeriment(model, Data, params):
         # ResultDir = params.directories.Test.Result
         for name in tqdm(DataTest, desc='predicting test subjects'):
             subject = params.directories.Test.Input.Subjects[name]
-            ResultDir = subject.address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd' + str(
+            ResultDir = subject.address + '/' + params.UserInfo['thalamic_side']._active_side + '/sd' + str(
                 params.WhichExperiment.Dataset.slicingInfo.slicingDim) + '/'
             prediction[name] = predictingTestSubject(DataTest[name], subject, ResultDir)
 
@@ -261,7 +261,7 @@ def testingExeriment(model, Data, params):
         # ResultDir = params.directories.Test.Result.replace('/sd2','/sd0')
         for name in tqdm(DataTest, desc='predicting test subjects sagittal'):
             subject = params.directories.Test.Input.Subjects[name]
-            ResultDir = subject.address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd0/'
+            ResultDir = subject.address + '/' + params.UserInfo['thalamic_side']._active_side + '/sd0/'
             prediction[name] = predictingTestSubject(DataTest[name], subject, ResultDir)
 
         return prediction
@@ -373,13 +373,13 @@ def trainingExperiment(Data, params):
                 modality = params.WhichExperiment.Experiment.image_modality.lower()
 
                 # Path to code directory
-                code_address = params.WhichExperiment.Experiment.code_address
+                _code_address = params.WhichExperiment.Experiment._code_address
 
                 # The address to initialization network based on the number of
                 #     - feature maps
                 #     - nucleus name
                 #     - image orientation
-                init_parent_address = code_address + '/Trained_Models/' + init_source[
+                init_parent_address = _code_address + '/Trained_Models/' + init_source[
                     modality]
 
             init_address = init_parent_address + '/' + FM + NN + SD + '/model_weights.h5'
@@ -500,7 +500,7 @@ def save_BoundingBox_Hierarchy(params, PRED):
                 Subjects = params.directories.Test.Input.Subjects
                 for name in tqdm(Subjects, desc='saving BB ' + ' ' + mode + nucleus):
                     ResultDir = Subjects[name].address + '/' + params.UserInfo[
-                        'thalamic_side'].active_side + '/sd' + str(
+                        'thalamic_side']._active_side + '/sd' + str(
                         params.WhichExperiment.Dataset.slicingInfo.slicingDim) + '/'
                     save_BoundingBox(PRED[name], Subjects[name], ResultDir)
 
@@ -516,7 +516,7 @@ def save_BoundingBox_Hierarchy(params, PRED):
             elif 'test' in mode:
                 Subjects = params.directories.Test.Input.Subjects
                 for name in tqdm(Subjects, desc='saving BB ' + ' ' + mode + nucleus):
-                    ResultDir = Subjects[name].address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd0/'
+                    ResultDir = Subjects[name].address + '/' + params.UserInfo['thalamic_side']._active_side + '/sd0/'
                     save_BoundingBox(PRED[name], Subjects[name], ResultDir)
 
     loop_Subjects(PRED.Test, 'test')

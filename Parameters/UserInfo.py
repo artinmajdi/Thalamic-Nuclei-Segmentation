@@ -1,30 +1,36 @@
-class experiment:
-    # Address to the experiment directory
-    exp_address = '/array/hdd/msmajdi/experiments/exp6/'
 
-    # Subexperiment name
-    subexperiment_name = 'csfn_UCLA_included'
+"""          Below parameters are set for testing a pre-trained network        """
+class experiment:
 
     # Path to the training data
-    train_address = '/array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
+    train_address = '' # /array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
 
     # Path to the testing data
-    test_address = '/array/hdd/msmajdi/experiments/data_experiment/CSFn/test'
+    test_address = '/array/ssd/msmajdi/code/thalamus/Example_Cases/WMn' # /array/hdd/msmajdi/experiments/data_experiment/CSFn/test'
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
 
-    # Path to the code
-    code_address = ''
-
     # modality of the input data. wmn / csfn
-    image_modality = 'csfn'
+    image_modality = 'wmn'
 
-    # This flags will be automaticly set.
-    #     True:  It points to a nifti file
-    #     False: It points to a parent folder consist of multiple test cases
-    _test_path_is_nifti_file = False
-    _old_test_address = ''
+    # Path to the code
+    _code_address = str()
+
+    # Determinig if the path to test cases is pointing to a nifti file or the grandparent directory
+    _test_path_is_nifti_file = bool()
+    _old_test_address = str()
+
+
+
+    """         Below two variables are only required for training a new network.
+                        It will hold the whole thalamus estimated bounding box for train cases       """
+
+    # Address to the experiment directory. 
+    exp_address = '/array/hdd/msmajdi/experiments/exp6/'
+
+    # Subexperiment name
+    subexperiment_name = 'csfn_UCLA_included'
 
 
 class TestOnly:
@@ -39,8 +45,12 @@ class TestOnly:
     model_address = ''
 
 
-""" if init_address will be left empty, the default address will be used for initialization """
 
+
+
+
+
+"""          Below parameters are set for training a new network         """
 
 class initialize:
     # If TRUE, network weights will be initialized
@@ -59,8 +69,8 @@ class thalamic_side:
     # Running the network on right thalamus
     right = True
 
-    # This can be left empty. It is used during the training & testing process
-    active_side = ''
+    # Specifing which thalamic side is the code running on currently
+    _active_side = str()
 
 
 class normalize:
@@ -163,21 +173,15 @@ class InputPadding:
         self.HardDimensions = [116, 144, 84]
 
 
-code_address = experiment().code_address
+_code_address = experiment()._code_address
+class Template:
+    """ The path to template nifti image and its corresponding cropping mask
 
-
-class Templatecs:
-    def __init__(self):
-        """ The path to template nifti image and its corresponding cropping mask
-
-        Args:
-            Image   (str): path to original template
-            Mask    (Str): path to the cropping mask
-            Address (Str): path to the main folder
-        """
-        self.Image = code_address + 'general/RigidRegistration' + '/origtemplate.nii.gz'
-        self.Mask = code_address + 'general/RigidRegistration' + '/CropMaskV3.nii.gz'
-        self.Address = code_address + 'general/RigidRegistration/'
-
-
-Template = Templatecs()
+    Args:
+        Image   (str): path to original template
+        Mask    (Str): path to the cropping mask
+        Address (Str): path to the main folder
+    """
+    Image   = _code_address + 'general/RigidRegistration' + '/origtemplate.nii.gz'
+    Mask    = _code_address + 'general/RigidRegistration' + '/CropMaskV3.nii.gz'
+    Address = _code_address + 'general/RigidRegistration/'
