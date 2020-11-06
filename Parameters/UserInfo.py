@@ -3,10 +3,10 @@
 
 class experiment:
     # Path to the training data
-    train_address = ''  # /array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
+    train_address = ''
 
     # Path to the testing data
-    test_address = '/array/ssd/msmajdi/code/thalamus/Example_Cases/WMn'  # /array/hdd/msmajdi/experiments/data_experiment/CSFn/test'
+    test_address = '' # '/array/ssd/msmajdi/code/thalamus/Example_Cases/WMn'
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
@@ -28,7 +28,7 @@ class experiment:
     exp_address = '/array/hdd/msmajdi/experiments/exp6/'
 
     # Subexperiment name
-    subexperiment_name = 'GE_Siemens_test_only2'
+    subexperiment_name = '' # 'GE_Siemens_test_only2'
 
 
 class TestOnly:
@@ -40,7 +40,8 @@ class TestOnly:
         This directory should point to the parent folder holding on trained models:
             ACTUAL_TRAINED_MODEL_ADDRESS = model_adress + '/' + FeatureMapNum (e.g. FM20) + '/' + Nucleus_name (e.g. 2-AV) + '/' + Orientation Index (e.g. sd2)
     """
-    model_address = '/array/hdd/msmajdi/experiments/exp6/models/GE_Siemens'
+    model_address = '' # /array/hdd/msmajdi/experiments/exp6/models/GE_Siemens'
+
 
 
 """          Below parameters are set for training a new network         """
