@@ -3,16 +3,16 @@
 
 class experiment:
     # Path to the training data
-    train_address = ''
+    train_address = '' # '/array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
 
     # Path to the testing data
-    test_address = '' # '/array/ssd/msmajdi/code/thalamus/Example_Cases/WMn'
+    test_address = '' # '/array/hdd/msmajdi/experiments/data_experiment/CSFn/test' # '/array/ssd/msmajdi/code/thalamus/Example_Cases/WMn'
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
 
     # modality of the input data. wmn / csfn
-    image_modality = str() # 'wmn'
+    image_modality = 'csfn'
 
     # Path to the code
     _code_address = str()
@@ -28,7 +28,7 @@ class experiment:
     exp_address = '/array/hdd/msmajdi/experiments/exp6/'
 
     # Subexperiment name
-    subexperiment_name = '' # 'GE_Siemens_test_only2'
+    subexperiment_name = 'GE_Siemens_CSFn_UCLA' # 'GE_Siemens_test_only2'
 
 
 class TestOnly:
@@ -105,10 +105,10 @@ class simulation:
     TestOnly = TestOnly()
 
     # Number of epochs used during training
-    epochs = 150
+    epochs = 5
 
     # The GPU card used for training/testing
-    GPU_Index = "0"
+    GPU_Index = "1"
 
     # Batch size used during training
     batch_size = 50

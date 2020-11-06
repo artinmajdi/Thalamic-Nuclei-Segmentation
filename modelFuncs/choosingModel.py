@@ -1,19 +1,15 @@
 import os
-import sys
-
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from keras import models as kerasmodels
 import numpy as np
-import otherFuncs.smallFuncs as smallFuncs
-import otherFuncs.datasets as datasets
-from tqdm import tqdm
 import nibabel as nib
-from scipy import ndimage
 import pickle
 import keras
-from keras.utils import multi_gpu_model
 import keras.layers as keras_layers
-import modelFuncs.LossFunction as LossFunction
+from keras import models as kerasmodels
+from tqdm import tqdm
+from scipy import ndimage
+from keras.utils import multi_gpu_model
+from modelFuncs import LossFunction
+from otherFuncs import smallFuncs, datasets
 
 
 def func_class_weights(Mask):
@@ -152,11 +148,11 @@ def testingExeriment(model, Data, params):
 
             return pred, Dice
 
-        def savingOutput(pred1N_BtO, NucleiIndex):
-            dirSave = smallFuncs.mkDir(ResultDir)
+        def savingOutput(dirSave, pred1N_BtO, NucleiIndex):
+            smallFuncs.mkDir(dirSave)
             nucleus = smallFuncs.Nuclei_Class(index=NucleiIndex).name
             smallFuncs.saveImage(pred1N_BtO, DataSubj.Affine, DataSubj.Header, dirSave + '/' + nucleus + '.nii.gz')
-            return dirSave, nucleus
+            return nucleus
 
         def applyPrediction():
 
@@ -189,15 +185,15 @@ def testingExeriment(model, Data, params):
                         # else:
                         ALL_pred = pred1N_BtO[..., np.newaxis]
 
-                    dirSave, nucleusName = savingOutput(pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
+                    nucleusName = savingOutput(ResultDir, pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
 
-                # Saving all nuclei Dices into one text file
                 if num_classes > 2 and params.WhichExperiment.HardParams.Model.MultiClass.Mode:
-                    Dir_Dice = dirSave + '/Dice_All.txt'
+                    # Saving all nuclei Dices into one text file
+                    Dir_Dice = ResultDir + '/Dice_All.txt'
 
-                    # Saving the Dice value for the predicted nucleus
                 else:
-                    Dir_Dice = dirSave + '/Dice_' + nucleusName + '.txt'
+                    # Saving the Dice value for the predicted nucleus
+                    Dir_Dice = ResultDir + '/Dice_' + nucleusName + '.txt'
 
                 # Saving the Dice values
                 np.savetxt(Dir_Dice, Dice, fmt='%1.1f %1.4f')
@@ -246,22 +242,28 @@ def testingExeriment(model, Data, params):
         return applyPrediction()
 
     def loopOver_Predicting_TestSubjects(DataTest):
+
         prediction = {}
         # ResultDir = params.directories.Test.Result
         for name in tqdm(DataTest, desc='predicting test subjects'):
             subject = params.directories.Test.Input.Subjects[name]
-            ResultDir = subject.address + '/' + params.UserInfo['thalamic_side']._active_side + '/sd' + str(
-                params.WhichExperiment.Dataset.slicingInfo.slicingDim) + '/'
+
+            _active_side = params.UserInfo['thalamic_side']._active_side 
+            slicingDim = params.WhichExperiment.Dataset.slicingInfo.slicingDim
+
+            ResultDir = subject.address + '/' + _active_side + '/sd' + str(slicingDim) + '/'
             prediction[name] = predictingTestSubject(DataTest[name], subject, ResultDir)
 
         return prediction
 
     def loopOver_Predicting_TestSubjects_Sagittal(DataTest):
+
         prediction = {}
         # ResultDir = params.directories.Test.Result.replace('/sd2','/sd0')
         for name in tqdm(DataTest, desc='predicting test subjects sagittal'):
             subject = params.directories.Test.Input.Subjects[name]
-            ResultDir = subject.address + '/' + params.UserInfo['thalamic_side']._active_side + '/sd0/'
+            _active_side = params.UserInfo['thalamic_side']._active_side 
+            ResultDir = subject.address + '/' + _active_side + '/sd0/'
             prediction[name] = predictingTestSubject(DataTest[name], subject, ResultDir)
 
         return prediction
@@ -387,7 +389,7 @@ def trainingExperiment(Data, params):
             try:
                 model.load_weights(init_address)
                 print(' --- initialization successful')
-            except ValueError:
+            except:
                 print(' --- initialization failed')
 
             return model
@@ -458,6 +460,8 @@ def trainingExperiment(Data, params):
 
     smallFuncs.Saving_UserInfo(params.directories.Train.Model, params)
     model = architecture(params.WhichExperiment.HardParams.Model)
+    model.summary()
+
     model, hist = modelTrain_Unet(Data, params, model)
     saveReport(params.directories.Train.Model, 'hist_history', hist.history)
     return model
@@ -528,6 +532,7 @@ def save_BoundingBox_Hierarchy(params, PRED):
 
 
 def architecture(ModelParam):
+
     input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
 
     def Res_Unet(ModelParam):  # Conv -> BatchNorm -> Relu ) -> (Conv -> BatchNorm -> Relu)  -> maxpooling  -> Dropout
@@ -566,7 +571,10 @@ def architecture(ModelParam):
                 return pool, conv
 
             for nL in range(NLayers - 1):
-                if nL == 0: WB, Conv_Out = inputs, {}
+
+                if nL == 0: 
+                    WB, Conv_Out = inputs, {}
+                
                 WB, Conv_Out[nL + 1] = main_USC(WB, nL)
 
             return WB, Conv_Out
@@ -583,7 +591,7 @@ def architecture(ModelParam):
                 conv = Layer(featureMaps, trainable, UP)
                 conv = Layer(featureMaps, trainable, conv)
 
-                # ! Residual Part
+                # Residual Part
                 conv = keras_layers.merge.concatenate([UP, conv], axis=3)
 
                 if DT.Mode and trainable: conv = keras_layers.Dropout(DT.Value)(conv)
@@ -708,10 +716,8 @@ def architecture(ModelParam):
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
-    if ModelParam.architectureType == 'Res_Unet':
-        model = Res_Unet(ModelParam)
-    elif ModelParam.architectureType == 'Res_Unet2':
-        model = Res_Unet2(ModelParam)
+    if   ModelParam.architectureType == 'Res_Unet':        model = Res_Unet(ModelParam)
+    elif ModelParam.architectureType == 'Res_Unet2':       model = Res_Unet2(ModelParam)
 
     # model.summary()
 

@@ -1,11 +1,6 @@
 import os
-import sys
 import numpy as np
 import json
-import pathlib
-
-sys.path.append(str(pathlib.Path(__file__).parent.parent))
-
 from modelFuncs import LossFunction, Metrics, Optimizers
 from otherFuncs import smallFuncs
 
@@ -280,7 +275,6 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.Learning_Rate = USim.Learning_Rate
         HardParams.Model.LR_Scheduler = USim.LR_Scheduler
         HardParams.Model.Initialize = UserInfo['initialize']()
-        HardParams.Model.Initialize.init_address = str(pathlib.Path(UserInfo['initialize'].init_address))
 
         HardParams.Model.architectureType = USim.architectureType
         HardParams.Model.Layer_Params.FirstLayer_FeatureMap_Num = USim.FirstLayer_FeatureMap_Num
@@ -308,9 +302,9 @@ def func_WhichExperiment(UserInfo):
     class WhichExperiment:
         Experiment = UserInfo['experiment']()
         HardParams = func_ModelParams()
-        Nucleus = func_Nucleus()
-        Dataset = func_Dataset()
-        TestOnly = USim.TestOnly
+        Nucleus    = func_Nucleus()
+        Dataset    = func_Dataset()
+        TestOnly   = USim.TestOnly
 
     WE = WhichExperiment.Experiment
     dir_input_dimension = WE.exp_address + '/' + WE.subexperiment_name + '/' + WhichExperiment.Nucleus.name + \
