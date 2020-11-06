@@ -12,7 +12,7 @@ class experiment:
     ReadAugments_Mode = False
 
     # modality of the input data. wmn / csfn
-    image_modality = 'wmn'
+    image_modality = str() # 'wmn'
 
     # Path to the code
     _code_address = str()

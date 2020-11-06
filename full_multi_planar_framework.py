@@ -323,7 +323,7 @@ def simulate(User_Entry):
     if TS.left and TS.right: fuse_left_right_nuclei_together(params)
 
     # moving predictions sd[0-2] inside "left" & "right" directories to a sub-folder called "sub_networks"
-    # cleaning_up_test_directories(params)
+    cleaning_up_test_directories(params)
 
 
     # This portion will run if the input path to test files was a single nifti file.
