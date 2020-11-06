@@ -3,19 +3,19 @@ class experiment:
     exp_address = '/array/hdd/msmajdi/experiments/exp6/'
 
     # Subexperiment name
-    subexperiment_name = 'GE_Siemens_test_only2'
+    subexperiment_name = '' # 'GE_Siemens_test_only2'
 
     # Path to the training data
     train_address = '' # '/array/hdd/msmajdi/data/preprocessed/data_experiment/train' 
 
     # Path to the testing data
-    test_address = '/array/hdd/msmajdi/data/preprocessed/test_case/f06ec52b-15f6-47c3-97aa-783b3ed0f9c2' 
+    test_address = '/array/ssd/msmajdi/code/thalamus/Example_Cases/WMn' 
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
 
     # Path to the code
-    code_address = '/array/ssd/msmajdi/code/CNN/'
+    code_address = '/array/ssd/msmajdi/code/thalamus/'
 
     # modality of the input data. wmn / csfn
     image_modality = 'wmn'
@@ -36,7 +36,7 @@ class TestOnly:
         This directory should point to the parent folder holding on trained models: 
             ACTUAL_TRAINED_MODEL_ADDRESS = model_adress + '/' + FeatureMapNum (e.g. FM20) + '/' + Nucleus_name (e.g. 2-AV) + '/' + Orientation Index (e.g. sd2)
     """
-    model_address = '/array/hdd/msmajdi/experiments/exp6/models/GE_Siemens_test_only2'
+    model_address = '' # /array/hdd/msmajdi/experiments/exp6/models/GE_Siemens'
 
 
 """ if init_address will be left empty, the default address will be used for initialization """
@@ -83,7 +83,7 @@ class preprocess:
       - save_debug_files (boolean):   TRUE/FALSE
       - Normalize        (normalize): Data normalization
     """
-    Mode = True
+    Mode = False
     BiasCorrection = False
     Cropping = True
     Reslicing = True
@@ -99,7 +99,7 @@ class simulation:
     epochs = 30
 
     # The GPU card used for training/testing
-    GPU_Index = "6"
+    GPU_Index = "0"
 
     # Batch size used during training
     batch_size = 30

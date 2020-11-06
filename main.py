@@ -92,7 +92,7 @@ def main(UserInfoB):
             choosingModel.check_Run(params, Data)
 
             # clearing the gpu session
-            K.clear_session()
+            # K.clear_session()
 
         def merge_results_and_apply_25D(UserInfoB):
             """ Merging the sagittal, Coronal, and axial networks prediction masks using 2.5D majority voting
