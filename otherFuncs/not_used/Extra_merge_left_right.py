@@ -12,5 +12,5 @@ for v in [s for s in os.listdir(dir_f) if 'case' in s]:
     msk1 = nibabel.load(dir   + v.split('_flipped')[0] + '/AllLabels.nii.gz')
     msk2 = nibabel.load(dir_f + v + '/AllLabels_back2normal.nii.gz')
 
-    msk3 = nibabel.Nifti1Image( msk1.get_data() + msk2.get_data() ,header=msk1.header , affine=msk1.affine)
+    msk3 = nibabel.Nifti1Image( msk1.get_fdata() + msk2.get_fdata() ,header=msk1.header , affine=msk1.affine)
     nibabel.save(msk3,dir + v.split('_flipped')[0] + '/AllLabels_Left_and_Right.nii.gz')

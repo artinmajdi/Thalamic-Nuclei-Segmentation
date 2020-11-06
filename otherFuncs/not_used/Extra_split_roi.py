@@ -53,7 +53,7 @@ def split_roi(roi, axis, split_axis):
 
 
 input_nii = nibabel.load(dir + '6-VLP.nii.gz')
-data = input_nii.get_data()
+data = input_nii.get_fdata()
 hdr = input_nii.get_header()
 affine = input_nii.get_affine()
 

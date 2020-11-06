@@ -31,5 +31,5 @@ if __name__ == "__main__":
     dir_input, dir_output = terminalEntries()
     print(f"    Flipping: {dir_input.split('/')[-1]}   ----------- ")
     imageF = nib.load(dir_input)
-    image = imageF.get_data()[::-1,:,:]
+    image = imageF.get_fdata()[::-1,:,:]
     saveImage(image, imageF.affine, imageF.header, dir_output)

@@ -46,7 +46,7 @@ def main(UserInfoB):
 
                 else:
                     # saving the nuclei into one mask
-                    msk = nib.load(dirr).get_data()
+                    msk = nib.load(dirr).get_fdata()
                     if mask == []:
                         # saving the first nucleus (2-AV)
                         mask = cnt * msk
@@ -270,7 +270,7 @@ def main(UserInfoB):
             left, right = load_side('left'), load_side('right')
 
             # Saving the final fused nifti image that contains all left and right nuclei
-            smallFuncs.saveImage(Image=left.get_data() + right.get_data(), Affine=left.affine, Header=left.header,
+            smallFuncs.saveImage(Image=left.get_fdata() + right.get_fdata(), Affine=left.affine, Header=left.header,
                                 outDirectory=subj.address + '/left/' + output_name + '_Left_and_Right.nii.gz')
 
         params = paramFunc.Run(UserInfoB, terminal=True)

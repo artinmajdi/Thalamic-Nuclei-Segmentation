@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 
 
 a = nib.load('/array/ssd/msmajdi/data/preProcessed/CSFn_WMn/pre-steps/CSFn_Dataset1/cropped_Image/step1_registered_labels_croppedInput/vimp2_case1/crop_t1.nii.gz')
-nib.viewers.OrthoSlicer3D(a.get_data()).show()
+nib.viewers.OrthoSlicer3D(a.get_fdata()).show()
 
 
-original = np.squeeze(a.slicer[:,:,50:51].get_data())
+original = np.squeeze(a.slicer[:,:,50:51].get_fdata())
 plt.imshow(original, cmap='gray')
 
 # Wavelet transform of image, and plot approximation and details

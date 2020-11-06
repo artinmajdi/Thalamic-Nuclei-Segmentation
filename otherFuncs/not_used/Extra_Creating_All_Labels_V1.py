@@ -24,7 +24,7 @@ def Save_AllNuclei_inOne(Directory,mode):
     Mask = []
     for cnt , name in zip(A.Indexes , A.Names):                                
         if cnt != 1:
-            msk = nib.load( Directory + '/' + name + mode + '.nii.gz' ).get_data()  
+            msk = nib.load( Directory + '/' + name + mode + '.nii.gz' ).get_fdata()  
             Mask = cnt*msk if Mask == [] else Mask + cnt*msk 
         else:
             im = nib.load( Directory + '/' + name + mode + '.nii.gz' )  
@@ -63,7 +63,7 @@ def applyMain(Dir,mode):
             print('    saving 4 Super Nuclei')
             for superNuclei in HierarchicalNames:
                 for cnt, subNuclei in enumerate(Names[superNuclei].FullNames):
-                    msk = nib.load(Directory + subNuclei + mode + '.nii.gz').get_data()
+                    msk = nib.load(Directory + subNuclei + mode + '.nii.gz').get_fdata()
                     Mask = msk if cnt == 0 else Mask + msk
 
                 smallFuncs.saveImage( Mask > 0 , im.affine , im.header, Directory + 'Hierarchical/' + superNuclei + mode + '.nii.gz')
@@ -73,7 +73,7 @@ def applyMain(Dir,mode):
             print('    saving 4 Super Nuclei')
             for superNuclei in HierarchicalNames:
                 for cnt, subNuclei in enumerate(Names[superNuclei].FullNames):
-                    msk = nib.load(Directory + subNuclei + mode + '.nii.gz').get_data()
+                    msk = nib.load(Directory + subNuclei + mode + '.nii.gz').get_fdata()
                     Mask = msk if cnt == 0 else Mask + (cnt+1)*msk
 
                 smallFuncs.saveImage( Mask , im.affine , im.header, Directory + superNuclei + mode + '_DifferentLabels.nii.gz')
@@ -82,10 +82,10 @@ def applyMain(Dir,mode):
         def creatingFullMaskWithAll4Supernuclei():
             print('    creating Full Mask With All 4 Super Nuclei')
             for cnt, superNuclei in enumerate(HierarchicalNames):
-                msk = nib.load(Directory + 'Hierarchical/' + superNuclei + mode + '.nii.gz').get_data()
+                msk = nib.load(Directory + 'Hierarchical/' + superNuclei + mode + '.nii.gz').get_fdata()
                 Mask = msk if cnt == 0 else Mask + (cnt+1)*msk
 
-                msk = nib.load(Directory + superNuclei + '_ImClosed' + mode + '.nii.gz').get_data()
+                msk = nib.load(Directory + superNuclei + '_ImClosed' + mode + '.nii.gz').get_fdata()
                 MaskClosed = msk if cnt == 0 else MaskClosed + (cnt+1)*msk
 
             smallFuncs.saveImage(Mask , im.affine , im.header, Directory + 'Hierarchical/All_4MainNuclei' + mode + '.nii.gz')
@@ -100,18 +100,18 @@ def applyMain(Dir,mode):
                                     
             print('    creating Full Mask With All 4 Super Nuclei')
             for cnt, superNuclei in enumerate([HierarchicalNames[0],HierarchicalNames[2]]):
-                msk = nib.load(Directory + superNuclei + '_ImClosed' + mode + '.nii.gz').get_data()
+                msk = nib.load(Directory + superNuclei + '_ImClosed' + mode + '.nii.gz').get_fdata()
                 Mask_Lateral_Medial = msk if cnt == 0 else Mask_Lateral_Medial + msk
 
             BBf = np.loadtxt('/array/ssd/msmajdi/experiments/keras/exp1/results/sE11_HCascade_FM20_7T_Main/sd2/vimp2_915_07112013_LC_MS/BB_1-THALAMUS.txt',dtype=int)
             crd = BBf[:,:2]
 
-            # mskTh = nib.load(Directory + '1-THALAMUS_PProcessed.nii.gz').get_data()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
-            # mskAV = nib.load(Directory + '2-AV_PProcessed.nii.gz').get_data()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
-            # mskAll = nib.load(Directory + 'AllLabels2.nii.gz').get_data()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
+            # mskTh = nib.load(Directory + '1-THALAMUS_PProcessed.nii.gz').get_fdata()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
+            # mskAV = nib.load(Directory + '2-AV_PProcessed.nii.gz').get_fdata()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
+            # mskAll = nib.load(Directory + 'AllLabels2.nii.gz').get_fdata()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
             
             # def remove_posterior(im, Directory):
-            mskPosterior = nib.load(Directory + 'posterior_ImClosed_PProcessed.nii.gz').get_data()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
+            mskPosterior = nib.load(Directory + 'posterior_ImClosed_PProcessed.nii.gz').get_fdata()[crd[0,0]:crd[0,1] , crd[1,0]:crd[1,1] , crd[2,0]:crd[2,1]]
             objects = measure.regionprops(measure.label(mskPosterior))
             Ix = np.argsort( [obj.area for obj in objects] )
             bbox = objects[ Ix[-1] ].bbox
@@ -159,7 +159,7 @@ def applyMain(Dir,mode):
             print('    ImClosing All Nuclei')
             _, _, AllNames = smallFuncs.NucleiSelection(ind=1)
             for name in AllNames:
-                msk = nib.load(Directory + name + mode + '.nii.gz').get_data()            
+                msk = nib.load(Directory + name + mode + '.nii.gz').get_fdata()            
                 smallFuncs.saveImage( closeMask(msk > 0 , 1) , im.affine , im.header, Directory + 'ImClosed/' + name + '_ImClosed' + mode + '.nii.gz')
 
         def edgeDetect(msk,SD):    
@@ -173,12 +173,12 @@ def applyMain(Dir,mode):
             Mask = []
             for cnt , name in zip(A.Indexes , A.Names):                                
                 if cnt not in [1, 2]:                    
-                    msk = nib.load( Directory + name + mode + '.nii.gz' ).get_data()  
+                    msk = nib.load( Directory + name + mode + '.nii.gz' ).get_fdata()  
                     msk = closeMask(msk > 0 , 1)
                     Mask = msk if Mask == [] else Mask + msk   
 
-            # mskTh = nib.load( Directory + '1-THALAMUS_PProcessed.nii.gz' ).get_data() 
-            # mskAV = nib.load( Directory + '2-AV_PProcessed.nii.gz' ).get_data()        
+            # mskTh = nib.load( Directory + '1-THALAMUS_PProcessed.nii.gz' ).get_fdata() 
+            # mskAV = nib.load( Directory + '2-AV_PProcessed.nii.gz' ).get_fdata()        
             # Mask_AllExcept_AV = closeMask(Mask,2) 
             # mskFull = np.zeros(mskTh.shape)
             # # mskFull = mskTh.copy()
@@ -194,7 +194,7 @@ def applyMain(Dir,mode):
             Mask = []
             for cnt , name in zip(A.Indexes , A.Names):                                
                 if cnt != 1:
-                    msk = nib.load( Directory + 'ImClosed/' + name + '_ImClosed' + mode + '.nii.gz' ).get_data()  
+                    msk = nib.load( Directory + 'ImClosed/' + name + '_ImClosed' + mode + '.nii.gz' ).get_fdata()  
                     Mask = cnt*msk if Mask == [] else Mask + cnt*msk   
 
             smallFuncs.saveImage( Mask , im.affine , im.header, Directory + 'AllLabels.nii.gz')

@@ -19,7 +19,7 @@ import nibabel as nib
 # ref = nib.load(dir_ref + 'WMnMPRAGE_bias_corr.nii.gz')
 # im = nib.load(dirr + subject + '/orig.nii.gz')
 
-# im2 = niImage.resample_img(img=im , target_affine=ref.affine  , target_shape=ref.get_data().shape , interpolation='continuous')
+# im2 = niImage.resample_img(img=im , target_affine=ref.affine  , target_shape=ref.get_fdata().shape , interpolation='continuous')
 # nib.save(im2, subject_addr_out + '/WMnMPRAGE_bias_corr.nii.gz')
 
 
@@ -32,5 +32,5 @@ for label in smallFuncs.Nuclei_Class(method='Cascade').allNames:
 
     # ref = nib.load(dir_ref + 'Label/' + label + '.nii.gz')
     # msk = nib.load(dir_out + label + '.nii.gz')
-    # msk2 = niImage.resample_img(img=msk , target_affine=ref.affine  , target_shape=ref.get_data().shape , interpolation='nearest')
+    # msk2 = niImage.resample_img(img=msk , target_affine=ref.affine  , target_shape=ref.get_fdata().shape , interpolation='nearest')
     # nib.save(msk2, dir_out + label + '.nii.gz')

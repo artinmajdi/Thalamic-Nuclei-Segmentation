@@ -188,7 +188,7 @@ def readingData(params):
     def ReadingInput(Subjects, mode):
 
         def prepareInputImage(subj, image):
-            im = zoom(imF.get_data(),0.5)
+            im = zoom(imF.get_fdata(),0.5)
             im = np.pad(im, subj.Padding[:3], 'constant')[np.newaxis,...,np.newaxis]
 
 
@@ -197,9 +197,9 @@ def readingData(params):
         for ind, subj in tqdm(enumerate(Subjects),desc=mode):
 
             imF = nib.load(subj.Address + '/WMnMPRAGE_bias_corr.nii.gz')
-            im = np.pad(imF.get_data(), subj.Padding[:3], 'constant')[np.newaxis,...,np.newaxis]
+            im = np.pad(imF.get_fdata(), subj.Padding[:3], 'constant')[np.newaxis,...,np.newaxis]
 
-            msk = nib.load(subj.Address + '/temp/CropMask.nii.gz').get_data()
+            msk = nib.load(subj.Address + '/temp/CropMask.nii.gz').get_fdata()
             msk = np.pad(msk, subj.Padding[:3], 'constant')[np.newaxis,...,np.newaxis]
             msk = np.concatenate((msk, 1-msk),axis=4).astype('float32')
 

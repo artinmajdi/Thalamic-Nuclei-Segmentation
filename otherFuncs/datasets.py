@@ -98,7 +98,7 @@ def loadDataset(params):
                 params.WhichExperiment.Dataset.slicingInfo.slicingOrder_Reverse]
             input_im = inputF.dataobj[BB[0][0]:BB[0][1], BB[1][0]:BB[1][1], BB[2][0]:BB[2][1]]
         else:
-            input_im = inputF.get_data()
+            input_im = inputF.get_fdata()
 
         return inputF, input_im
 

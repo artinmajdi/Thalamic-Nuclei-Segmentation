@@ -266,7 +266,7 @@ def func_cropImage(params, subject):
     # boundingbox coordinates frmo the cropped mask
     CropCoordinates = np.array([])
     if not os.path.isfile(outDebug):
-        CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data(),[0, 0, 0])
+        CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_fdata(),[0, 0, 0])
 
     # Cropping the input image using the boundingbox coordinates
     check_crop(inP, outP, outDebug, CropCoordinates)
@@ -281,7 +281,7 @@ def func_cropImage(params, subject):
         # estimate the boundingbox coordinates. This applies for rare cases where there was a cropped 
         # input image, but not cropped nucleus mask
         if not os.path.isfile(outDebug) and CropCoordinates.any():
-            CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_data(), [0, 0, 0])
+            CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_fdata(), [0, 0, 0])
 
         # Cropping the nucleus mask using the broundingbox coordinates
         check_crop(inP, outP, outDebug, CropCoordinates)

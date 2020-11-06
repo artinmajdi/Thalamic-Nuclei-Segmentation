@@ -148,6 +148,8 @@ class simulation:
     # Number of feature maps for the first layer of Resnet
     FirstLayer_FeatureMap_Num = 20
 
+    verbose = 0
+
 
 class InputPadding:
     def __init__(self):

@@ -102,7 +102,7 @@ def LinearFunc(params, mode):
 
                 def apply_OnImage():
                     imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-                    Image = linearCls.main( imF.get_data() , 5)
+                    Image = linearCls.main( imF.get_fdata() , 5)
                     smallFuncs.saveImage(Image , imF.affine , imF.header , linearCls.outDirectory.Image + '/' + subject.ImageProcessed + '.nii.gz' )            
                 apply_OnImage()
 
@@ -112,7 +112,7 @@ def LinearFunc(params, mode):
 
                         # print(NucleusName)
                         MaskF = nib.load(subject.Label.address + '/' + NucleusName)
-                        Mask = MaskF.get_data()
+                        Mask = MaskF.get_fdata()
 
                         if 'Labels' not in NucleusName: Mask = smallFuncs.fixMaskMinMax(Mask,NucleusName)
 
@@ -127,7 +127,7 @@ def LinearFunc(params, mode):
                         # print(cropName)
                         MaskF = nib.load(subject.Temp.address + '/' + cropName)
 
-                        Mask = linearCls.main( MaskF.get_data() , 1) 
+                        Mask = linearCls.main( MaskF.get_fdata() , 1) 
                         smallFuncs.saveImage(Mask  , MaskF.affine , MaskF.header ,  linearCls.outDirectory.Temp  + '/' + cropName  )
                 loopOver_Extra_Crops()                    
 

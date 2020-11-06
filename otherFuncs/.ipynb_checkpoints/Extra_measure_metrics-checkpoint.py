@@ -55,8 +55,8 @@ class measure_Metrics_cls():
             if os.path.exists(Dir_Label) and os.path.exists(Dir_prediction):
                 Tag_exist = True
                 print(nucleusNm)
-                ManualLabel = nib.load(Dir_Label).get_data()                                              
-                prediction = nib.load(Dir_prediction).get_data()   
+                ManualLabel = nib.load(Dir_Label).get_fdata()                                              
+                prediction = nib.load(Dir_prediction).get_fdata()   
                 prediction = prediction > prediction.max()/2  
 
                 VSI[cnt,:]  = [nucleiIx , metrics.VSI_AllClasses(prediction, ManualLabel).VSI()]

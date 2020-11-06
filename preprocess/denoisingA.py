@@ -193,7 +193,7 @@ mode = 'online'  # 'forTest'
 init = testParameters() if mode == 'forTest' else inputParameteres()
 
 im = nib.load(init['inDir'])
-noisy, params = normalizationFunc(im.get_data())
+noisy, params = normalizationFunc(im.get_fdata())
 denosied = denoisingFunc(init, noisy)
 denosied_dn = denormalizationFunc(denosied, params)
 writeFunc(denosied_dn, init['outDir'], im.affine, im.header)

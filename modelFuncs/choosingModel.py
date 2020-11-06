@@ -702,6 +702,6 @@ def architecture(ModelParam):
     elif ModelParam.architectureType == 'Res_Unet2':
         model = Res_Unet2(ModelParam)
 
-    model.summary()
+    # model.summary()
 
     return model

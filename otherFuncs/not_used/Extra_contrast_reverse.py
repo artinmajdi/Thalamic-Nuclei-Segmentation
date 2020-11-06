@@ -27,7 +27,7 @@ for ix, en in enumerate(sys.argv):
 # dir_out = '/array/ssd/msmajdi/experiments/keras/exp4/test/Main/vimp2_case17_CSFn/PProcessed2.nii.gz'
 
 imF = nib.load(dir_in)
-im = imF.get_data()
+im = imF.get_fdata()
 im2 = 1 - im / im.max()
 
 

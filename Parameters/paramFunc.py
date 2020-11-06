@@ -348,6 +348,7 @@ def func_WhichExperiment(UserInfo):
     WhichExperiment.Nucleus    = func_Nucleus(WhichExperiment.HardParams.Model.MultiClass.Mode)
     WhichExperiment.Dataset    = func_Dataset()
     WhichExperiment.TestOnly   = USim.TestOnly
+    WhichExperiment.HardParams.Model.verbose = UserInfo['simulation'].verbose
 
     WE = WhichExperiment.Experiment
     dir_input_dimension = WE.exp_address + '/' + WE.subexperiment_name + '/' + WhichExperiment.Nucleus.name + '/sd' + str(
