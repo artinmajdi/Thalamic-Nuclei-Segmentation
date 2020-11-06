@@ -1,0 +1,1 @@
+{"num_Layers": 3, "Learning_Rate": 0.001, "slicing_Dim": 1, "batch": 30, "InputPadding_Mode": true, "InputPadding_Dims": [52, 48, 76]}
