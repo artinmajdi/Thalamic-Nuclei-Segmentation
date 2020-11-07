@@ -4,7 +4,7 @@ import os
 import otherFuncs.smallFuncs as smallFuncs
 import sys
 
-params = paramFunc.Run(UserInfo.__dict__, terminal=True)
+params = paramFunc.Run(UserInfo.__dict__)
 K = smallFuncs.gpuSetting(params.WhichExperiment.HardParams.Machine.GPU_Index)
 
 wait = input('press a key')

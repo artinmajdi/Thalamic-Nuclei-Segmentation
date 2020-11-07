@@ -255,7 +255,7 @@ def terminalEntries(UserInfo):
             new_test_address      = mkDir( file_main_directory + '/' + unique_folder_name +'/case_1')
             shutil.move( old_test_file_address, new_test_address + '/' + file_name )
 
-            experiment_class.test_address     = file_main_directory + '/' + unique_folder_name
+            experiment_class.test_address      = file_main_directory + '/' + unique_folder_name
             experiment_class._old_test_address = file_main_directory
 
         return experiment_class
@@ -278,10 +278,15 @@ def terminalEntries(UserInfo):
         elif entry in ('--modality'):
             UserInfo['experiment'].image_modality = sys.argv[en + 1].lower()
 
+        elif entry in ('--no-preprocess'):
+            UserInfo['preprocess'].Mode = False
+
+        elif entry in ('--preprocess'):
+            UserInfo['preprocess'].Mode = True
 
     # Checks the path to test files to see if it points to a single nifti file or a parent folder consist of multiple test cases
     UserInfo['experiment'] = single_nifti_test_case_directory_correction(UserInfo['experiment'])
-
+    
     # setting test-only to TRUE if no address to traininig data was provided
     UserInfo['simulation'].TestOnly._mode = False if UserInfo['experiment'].train_address else True
 
@@ -293,9 +298,6 @@ def terminalEntries(UserInfo):
     # Setting the GPU
     if UserInfo['simulation'].GPU_Index:
         os.environ["CUDA_VISIBLE_DEVICES"] = UserInfo['simulation'].GPU_Index
-
-
-    # UserInfo['simulation'] = UserInfo['simulation']()
 
     return UserInfo
 
@@ -684,7 +686,7 @@ def apply_MajorityVoting(params):
                     HD[cnt, :] = [nucleiIx, metrics.HD_AllClasses(predMV, manual.Label).HD()]
                     Dice[cnt, :] = [nucleiIx, mDice(predMV, manual.Label)]
 
-        if Dice[:, 1].sum() > 0:
+        if subject.Label.address:
             np.savetxt(address + '2.5D_MV/VSI_All.txt', VSI, fmt='%1.1f %1.4f')
             np.savetxt(address + '2.5D_MV/HD_All.txt', HD, fmt='%1.1f %1.4f')
             np.savetxt(address + '2.5D_MV/Dice_All.txt', Dice, fmt='%1.1f %1.4f')

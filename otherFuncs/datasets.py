@@ -131,9 +131,8 @@ def loadDataset(params):
             origMsk = origMsk1N if cnt == 0 else np.concatenate((origMsk, origMsk1N), axis=3).astype('float32')
             msk = msk1N if cnt == 0 else np.concatenate((msk, msk1N), axis=3).astype('float32')
 
-        if params.WhichExperiment.HardParams.Model.Method.havingBackGround_AsExtraDimension:
-            background = backgroundDetector(msk)
-            msk = np.concatenate((msk, background), axis=3).astype('float32')
+        background = backgroundDetector(msk)
+        msk = np.concatenate((msk, background), axis=3).astype('float32')
 
         return origMsk, msk
 

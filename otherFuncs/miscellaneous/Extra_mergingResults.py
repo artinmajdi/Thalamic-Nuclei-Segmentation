@@ -734,7 +734,7 @@ class merging_Volumes_Values:
 
 UserInfoB = UserInfo.__dict__
 
-params = paramFunc.Run(UserInfoB, terminal=True)
+params = paramFunc.Run(UserInfoB)
 
 print(Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List)
 LL = Experiment_Folder_Search(General_Address=params.WhichExperiment.address).All_Experiments.List

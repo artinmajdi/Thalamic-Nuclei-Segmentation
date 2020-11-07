@@ -60,7 +60,7 @@ def Bash_AugmentNonLinear(subject , subjectRef , outputAddress): # Image , Mask 
             os.system("antsApplyTransforms -d 3 -i %s -o %s -r %s -t %s"%(MaskOrig , OutputMask , MaskOrig , deformationAddr + '/testWarp.nii.gz' ) )
 
 
-params = paramFunc.Run(UserInfo.__dict__, terminal=True)
+params = paramFunc.Run(UserInfo.__dict__)
 params.Augment = Augment_Class()
 
 

@@ -66,13 +66,9 @@ def simulate(User_Entry):
         """
 
         def Run(UserInfoB):
-            """ Loading the dataset & running the network on the assigned slicing orientation & nuclei
+            """ Loading the dataset & running the network on the assigned slicing orientation & nuclei """
 
-            Args:
-                UserInfoB: User Inputs
-            """
-
-            params = paramFunc.Run(UserInfoB, terminal=True)
+            params = paramFunc.Run(UserInfoB)
             orientation = smallFuncs.orientation_name_correction('sd' + str(UserInfoB['simulation'].slicingDim[0]))
             print('\n', params.WhichExperiment.Nucleus.name, 'ORIENTATION: ' + orientation,
                   'GPU: ' + str(UserInfoB['simulation'].GPU_Index), '\n')
@@ -83,14 +79,12 @@ def simulate(User_Entry):
             # Running the training/testing network
             choosingModel.check_Run(params, Data)
 
-            # clearing the gpu session
-            # K.clear_session()
 
         def merge_results_and_apply_25D(UserInfoB):
             """ Merging the sagittal, Coronal, and axial networks prediction masks using 2.5D majority voting
             """
 
-            params = paramFunc.Run(UserInfoB, terminal=True)
+            params = paramFunc.Run(UserInfoB)
             smallFuncs.apply_MajorityVoting(params)
 
         def predict_thalamus_for_sd0(UserI):
@@ -126,20 +120,16 @@ def simulate(User_Entry):
         # Running the sagittal network
         UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 40  # Number of feature maps in the first layer of Resnet
         UserInfoB['simulation'].slicingDim = [0]  # Sagittal Orientation
-        UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
         predict_thalamus_for_sd0(UserInfoB)
 
         # Running the axial network
         UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 30  # Number of feature maps in the first layer of Resnet
         UserInfoB['simulation'].slicingDim = [1]  # Axial Orientation
-        UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
         predict_multi_thalamus(UserInfoB)
 
         # Running the coronal network
         UserInfoB['simulation'].FirstLayer_FeatureMap_Num = 20  # Number of feature maps in the first layer of Resnet
         UserInfoB['simulation'].slicingDim = [2]  # Coronal Orientation
-        UserInfoB['simulation'].nucleus_Index = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-        # UserInfoB['simulation'].Use_Coronal_Thalamus_InSagittal = False
         predict_multi_thalamus(UserInfoB)
 
         merge_results_and_apply_25D(UserInfoB)
@@ -173,7 +163,7 @@ def simulate(User_Entry):
         running_main(UserInfoB)
 
         # Updating the parameters for left thalamus
-        params = paramFunc.Run(UserInfoB, terminal=True)
+        params = paramFunc.Run(UserInfoB)
 
         # Looping through subjects
         for subj in params.directories.Test.Input.Subjects.values():
@@ -237,7 +227,7 @@ def simulate(User_Entry):
         # Setting the active side to right thalamus. This is important to let the software know it shouldn't run training on
         # these data and only use it for testing purposes. Also not to measure Dice (in case of the existense of manual label)
         UserInfoB['thalamic_side']._active_side = 'right'
-        params = paramFunc.Run(UserInfoB, terminal=True)
+        params = paramFunc.Run(UserInfoB)
 
         # Flipping the data
         flip_inputs(params)
@@ -307,7 +297,7 @@ def simulate(User_Entry):
                 subprocess.call(command, shell=True)
 
 
-    applyPreprocess.main(paramFunc.Run(User_Entry, terminal=True))
+    applyPreprocess.main(paramFunc.Run(User_Entry))
 
     TS = User_Entry['thalamic_side']()
 
@@ -317,7 +307,7 @@ def simulate(User_Entry):
     # Running the network on right thalamus
     if TS.right: run_Right(User_Entry)
 
-    params = paramFunc.Run(User_Entry, terminal=True)
+    params = paramFunc.Run(User_Entry)
 
     # Merging the left & right predictions into one nifti file
     if TS.left and TS.right: fuse_left_right_nuclei_together(params)

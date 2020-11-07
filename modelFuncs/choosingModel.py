@@ -90,13 +90,13 @@ def testingExeriment(model, Data, params):
     def predictingTestSubject(DataSubj, subject, ResultDir):
 
         # params.directories.Test.Input.Subjects
-        def postProcessing(pred1Class, origMsk1N, NucleiIndex):
+        def postProcessing(pred1Class=[], manual_mask=[], NucleiIndex=1):
             """ Post Processing
 
             Args:
-                pred1Class (numpy array): Prediction mask for 1 nucleus
-                origMsk1N  (numpy array): Manual label mask for 1 nucleus
-                NucleiIndex        (int): Nucleus index
+                pred1Class   (numpy array): Prediction mask for 1 nucleus
+                manual_mask  (numpy array): Manual label mask for 1 nucleus
+                NucleiIndex          (int): Nucleus index
             """
 
             def binarizing(pred1N):
@@ -133,7 +133,7 @@ def testingExeriment(model, Data, params):
 
             if subject.Label.address:
                 # Re-orienting the manual label mask into the network's orientation
-                label_mask = np.transpose(origMsk1N, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
+                label_mask = np.transpose(manual_mask, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
                 # Measuring Dice value
                 Dice = [NucleiIndex, smallFuncs.mDice(pred2, binarizing(label_mask))]
@@ -148,55 +148,47 @@ def testingExeriment(model, Data, params):
 
             return pred, Dice
 
-        def savingOutput(dirSave, pred1N_BtO, NucleiIndex):
-            smallFuncs.mkDir(dirSave)
-            nucleus = smallFuncs.Nuclei_Class(index=NucleiIndex).name
-            smallFuncs.saveImage(pred1N_BtO, DataSubj.Affine, DataSubj.Header, dirSave + '/' + nucleus + '.nii.gz')
-            return nucleus
-
         def applyPrediction():
 
             # Number of classes
             num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes
-
-            # If the background is added as an extra input, the overall number of classes will be the number of nuclei + 1
-            if not params.WhichExperiment.HardParams.Model.Method.havingBackGround_AsExtraDimension:
-                num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes + 1
-
+            
+            def savingOutput(dirSave, pred1N_BtO, NucleiIndex):
+                smallFuncs.mkDir(dirSave)
+                nucleus_name = smallFuncs.Nuclei_Class(index=NucleiIndex).name
+                smallFuncs.saveImage(pred1N_BtO, DataSubj.Affine, DataSubj.Header, dirSave + '/' + nucleus_name + '.nii.gz')
+                
             def loopOver_AllClasses_postProcessing(pred):
 
-                Dice = np.zeros((num_classes - 1, 2))
-                ALL_pred = []
-                for cnt in range(num_classes - 1):
+                nuclei_indexes = params.WhichExperiment.Nucleus.Index
 
-                    nucleus_index = params.WhichExperiment.Nucleus.Index[cnt]
+                Dice = np.zeros((num_classes - 1, 2))
+
+                for cnt, nucleus_index  in enumerate(nuclei_indexes):
+    
+                    # nucleus_index = params.WhichExperiment.Nucleus.Index[cnt]
 
                     # Manual Label for nucleus [cnt: index]
                     manual_label = np.array([])
-                    if subject.Label.address: manual_label = DataSubj.OrigMask[..., cnt]
+                    if subject.Label.address: 
+                        manual_label = DataSubj.OrigMask[..., cnt]
 
-                    pred1N_BtO, Dice[cnt, :] = postProcessing(pred[..., cnt], manual_label, nucleus_index)
+                    prediction_single_nucleus, Dice[cnt, :] = postProcessing(pred[..., cnt], manual_label, nucleus_index)
 
                     # If the first cascade network (on whole thalamus) is running, this concatenates the prediciton 
                     # masks for the following step of saving the predicted whole thelamus encompassing boundingbox
-                    if int(params.WhichExperiment.Nucleus.Index[0]) == 1:
-                        # if cnt > 0:
-                        #     ALL_pred = np.concatenate((ALL_pred, pred1N_BtO[..., np.newaxis]), axis=3) 
-                        # else:
-                        ALL_pred = pred1N_BtO[..., np.newaxis]
+                    if int(nuclei_indexes[0]) == 1:
+                        ALL_pred = prediction_single_nucleus[..., np.newaxis]
 
-                    nucleusName = savingOutput(ResultDir, pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
+                    savingOutput(ResultDir, prediction_single_nucleus, nucleus_index)
 
-                if num_classes > 2 and params.WhichExperiment.HardParams.Model.MultiClass.Mode:
-                    # Saving all nuclei Dices into one text file
-                    Dir_Dice = ResultDir + '/Dice_All.txt'
-
-                else:
-                    # Saving the Dice value for the predicted nucleus
-                    Dir_Dice = ResultDir + '/Dice_' + nucleusName + '.txt'
-
+                
                 # Saving the Dice values
-                np.savetxt(Dir_Dice, Dice, fmt='%1.1f %1.4f')
+                if subject.Label.address:
+                    output_dice_name = '/Dice_All.txt' if num_classes > 2 else '/Dice_' + smallFuncs.Nuclei_Class(index=nuclei_indexes[0]).name + '.txt'
+                    np.savetxt(ResultDir + output_dice_name, Dice, fmt='%1.1f %1.4f')
+
+                ALL_pred = [] if (len(nuclei_indexes) > 1) else prediction_single_nucleus[..., np.newaxis]
                 return ALL_pred
 
             def unPadding(im, pad):

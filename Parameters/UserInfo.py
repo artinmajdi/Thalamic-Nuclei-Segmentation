@@ -3,10 +3,10 @@
 
 class experiment:
     # Path to the training data
-    train_address = '' # '/array/hdd/msmajdi/experiments/data_experiment/CSFn/train'
+    train_address = '/array/hdd/msmajdi/data/preprocessed/Siemens/UCLA/CSFn/step2_separated/train'
 
     # Path to the testing data
-    test_address = '' # '/array/hdd/msmajdi/experiments/data_experiment/CSFn/test' # '/array/ssd/msmajdi/code/thalamus/Example_Cases/WMn'
+    test_address = '/array/hdd/msmajdi/data/preprocessed/Siemens/UCLA/CSFn/step2_separated/test' 
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
@@ -105,7 +105,7 @@ class simulation:
     TestOnly = TestOnly()
 
     # Number of epochs used during training
-    epochs = 5
+    epochs = 150
 
     # The GPU card used for training/testing
     GPU_Index = "1"

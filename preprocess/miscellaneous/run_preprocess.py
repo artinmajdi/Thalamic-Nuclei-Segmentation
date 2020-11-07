@@ -7,7 +7,7 @@ from modelFuncs import choosingModel
 from Parameters import UserInfo, paramFunc
 from preprocess import applyPreprocess
 
-params = paramFunc.Run(UserInfo.__dict__, terminal=True)
+params = paramFunc.Run(UserInfo.__dict__)
 
 applyPreprocess.main(params)
 

@@ -11,7 +11,6 @@ sys.path.append(str(pathlib.Path(__file__).parent.parent))
 from otherFuncs import smallFuncs
 from Parameters import paramFunc, UserInfo
 
-
 def main(params):
     def loop_subjects(Mode):
 
@@ -35,7 +34,7 @@ def main(params):
 
 
 def apply_On_Individual(params, Info):
-    print('(' + str(Info.ind) + '/' + str(Info.Length) + ')', Info._mode, Info.subjectName)
+    print('(' + str(Info.ind) + '/' + str(Info.Length) + ')', Info.mode, Info.subjectName)
     # This if statement skips the augmented data, assuming that, the augmented data was made frmo the already preprocessed input
     if 'Aug' not in Info.subjectName:
         subject = Info.Subjects[Info.subjectName]
@@ -288,5 +287,7 @@ def func_cropImage(params, subject):
 
 
 if __name__ == "__main__":
-    user_parameters = paramFunc.Run(UserInfo.__dict__, terminal=True)
+    UserEntry = smallFuncs.terminalEntries(UserInfo.__dict__)
+    UserEntry['preprocess'].Mode = True
+    user_parameters = paramFunc.Run(UserEntry)
     main(user_parameters)

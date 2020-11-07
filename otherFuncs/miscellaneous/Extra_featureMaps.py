@@ -50,18 +50,18 @@ class LoadingData:
             
         # self.UserInfoB = smallFuncs.terminalEntries(self.UserInfoB)
         self.UserInfoB['simulation'].TestOnly = True
-        self.params = paramFunc.Run(self.UserInfoB, terminal=True)
+        self.params = paramFunc.Run(self.UserInfoB)
 
         return gpuSetting(self)
         
     def ReadData(self):
-        self.params = paramFunc.Run(self.UserInfoB, terminal=False)
+        self.params = paramFunc.Run(self.UserInfoB)
         self.Data, self.params = datasets.loadDataset(self.params)
         self.params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data = False
         return self.Data
 
     def LoadModel(self):
-        self.params = paramFunc.Run(self.UserInfoB, terminal=False)
+        self.params = paramFunc.Run(self.UserInfoB)
         self.model = kerasmodels.load_model(self.params.directories.Train.Model + '/model.h5') # + '/model_CSFn.h5')
 
         class Layers:

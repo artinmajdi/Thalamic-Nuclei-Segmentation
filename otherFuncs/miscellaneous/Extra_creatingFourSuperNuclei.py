@@ -15,7 +15,7 @@ from Parameters import paramFunc
 from otherFuncs import smallFuncs
 
 
-params = paramFunc.Run(UserInfo.__dict__, terminal=True)
+params = paramFunc.Run(UserInfo.__dict__)
 
 def sliceDim(SD):
     if   SD == 0: return ([1,2,0] , [2,0,1])

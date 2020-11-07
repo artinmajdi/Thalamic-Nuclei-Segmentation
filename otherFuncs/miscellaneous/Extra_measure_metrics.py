@@ -13,7 +13,7 @@ import modelFuncs.Metrics as metrics
 
            
 
-params = paramFunc.Run(UserInfo.__dict__, terminal=False)
+params = paramFunc.Run(UserInfo.__dict__)
 
 class UserEntry():
     def __init__(self):

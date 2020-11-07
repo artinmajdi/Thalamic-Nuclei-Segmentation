@@ -5,7 +5,7 @@ from modelFuncs import LossFunction, Metrics, Optimizers
 from otherFuncs import smallFuncs
 
 
-def Run(UserInfoB, terminal=True):
+def Run(UserInfoB):
     """
     class normalize:           
         Mode = True
@@ -20,10 +20,6 @@ def Run(UserInfoB, terminal=True):
         Normalize        = normalize()
     """
 
-    # Updating the user info with terminal entries
-    if terminal:
-        UserInfoB = smallFuncs.terminalEntries(UserInfoB)
-
     class Params:
         WhichExperiment = func_WhichExperiment(UserInfoB)
         preprocess = UserInfoB['preprocess']()
@@ -36,15 +32,16 @@ def Run(UserInfoB, terminal=True):
 def func_WhichExperiment(UserInfo):
     USim = UserInfo['simulation']
 
-    def func_Nucleus():
-        nucleus_Index = USim.nucleus_Index if isinstance(USim.nucleus_Index, list) else [USim.nucleus_Index]
+    # def func_Nucleus():
+    #     # nucleus_Index = USim.nucleus_Index # if isinstance(USim.nucleus_Index, list) else [USim.nucleus_Index]
 
-        class nucleus:
-            name = '1-THALAMUS' if len(nucleus_Index) == 1 else 'MultiClass_24567891011121314'
-            name_Thalamus, FullIndexes, FullNames = smallFuncs.NucleiSelection(1)
-            Index = nucleus_Index
+    #     class nucleus:
+    #         Index = UserInfo['simulation'].nucleus_Index 
+    #         name = '1-THALAMUS' if len(Index) == 1 else 'MultiClass_24567891011121314'
+    #         name_Thalamus, FullIndexes, FullNames = smallFuncs.NucleiSelection(1)
+            
 
-        return nucleus
+    #     return nucleus
 
     def func_Dataset():
 
@@ -148,7 +145,6 @@ def func_WhichExperiment(UserInfo):
                 class method:
                     Type = ''
                     ReferenceMask = ''
-                    havingBackGround_AsExtraDimension = True
                     InputImage2Dvs3D = 2
                     save_Best_Epoch_Model = True
                     Use_Coronal_Thalamus_InSagittal = True
@@ -237,11 +233,8 @@ def func_WhichExperiment(UserInfo):
 
             return referenceLabel
 
-        def func_NumClasses():
-
-            num_classes = len(USim.nucleus_Index) if HardParams.Model.MultiClass.Mode else 1
-            num_classes += 1
-            return num_classes
+        # def func_NumClasses():
+        #     return len(USim.nucleus_Index) + 1
 
         def fixing_NetworkParams_BasedOn_InputDim(dim):
             class kernel_size:
@@ -282,13 +275,13 @@ def func_WhichExperiment(UserInfo):
         HardParams.Model.loss, _ = LossFunction.LossInfo(USim.lossFunction_Index)
         HardParams.Model.Method.Use_TestCases_For_Validation = USim.Use_TestCases_For_Validation
 
-        HardParams.Model.MultiClass.num_classes = func_NumClasses()
+        HardParams.Model.MultiClass.num_classes = len(USim.nucleus_Index) + 1
         HardParams.Model.Layer_Params = func_Layer_Params()
 
-        if USim.nucleus_Index == 'all':
-            _, nucleus_Index, _ = smallFuncs.NucleiSelection(ind=1)
-        else:
-            nucleus_Index = USim.nucleus_Index if isinstance(USim.nucleus_Index, list) else [USim.nucleus_Index]
+        # if USim.nucleus_Index == 'all':
+        #     _, nucleus_Index, _ = smallFuncs.NucleiSelection(ind=1)
+        # else:
+        nucleus_Index = USim.nucleus_Index if isinstance(USim.nucleus_Index, list) else [USim.nucleus_Index]
 
         HardParams.Model.Method.ReferenceMask = ReferenceForCascadeMethod()[nucleus_Index[0]]
 
@@ -299,10 +292,15 @@ def func_WhichExperiment(UserInfo):
             UserInfo_Load = json.load(f)
         return UserInfo_Load['InputPadding_Dims'], UserInfo_Load['num_Layers']
 
+    class nucleus:
+        Index = USim.nucleus_Index 
+        name = '1-THALAMUS' if len(Index) == 1 else 'MultiClass_24567891011121314'
+        name_Thalamus, FullIndexes, FullNames = smallFuncs.NucleiSelection(1)
+
     class WhichExperiment:
         Experiment = UserInfo['experiment']()
         HardParams = func_ModelParams()
-        Nucleus    = func_Nucleus()
+        Nucleus    = nucleus()
         Dataset    = func_Dataset()
         TestOnly   = USim.TestOnly
 
