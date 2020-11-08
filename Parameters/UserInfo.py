@@ -3,10 +3,10 @@
 
 class experiment:
     # Path to the training data
-    train_address = '/array/hdd/msmajdi/data/preprocessed/Siemens/UCLA/CSFn/step2_separated/train'
+    train_address = '' # '/array/hdd/msmajdi/data/preprocessed/Siemens/UCLA/CSFn/step2_separated/train/'
 
     # Path to the testing data
-    test_address = '/array/hdd/msmajdi/data/preprocessed/Siemens/UCLA/CSFn/step2_separated/test' 
+    test_address = '/array/hdd/msmajdi/experiments/data_experiment/CSFn/train/failed_train' # '/array/hdd/msmajdi/data/preprocessed/Siemens/UCLA/CSFn/step2_separated/test' 
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False

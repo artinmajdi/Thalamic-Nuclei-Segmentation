@@ -26,7 +26,6 @@ def main(params):
             apply_On_Individual(params, Info)
 
     if params.preprocess.Mode:
-        # params.directories = smallFuncs.search_ExperimentDirectory(params.WhichExperiment)
         if not params.WhichExperiment.TestOnly._mode:
             loop_subjects('train')
 
@@ -38,6 +37,9 @@ def apply_On_Individual(params, Info):
     # This if statement skips the augmented data, assuming that, the augmented data was made frmo the already preprocessed input
     if 'Aug' not in Info.subjectName:
         subject = Info.Subjects[Info.subjectName]
+
+        # Duplicating the original nifti image with name "*_PProcessed.nii.gz"
+        duplicating_original_files_as_PProcessed(subject, params)
 
         if params.preprocess.Cropping:
             print('     Rigid Registration')
@@ -95,10 +97,13 @@ def apply_reslice(subject, params):
                 print('nucleus %s doesn not exist' % self.nucleus)
 
         def write_all_nuclei(self):
-            for self.nucleus in np.append('Image', smallFuncs.Nuclei_Class().All_Nuclei().Names):
+            for self.nucleus in np.append('Image', params.WhichExperiment.Nucleus.FullNames):
                 Reference(self.nucleus).write()
 
-    def apply_reslicing_main(input_image, output_image, outDebug, interpolation, ref):
+    # Reading the reference transformations that the target nifti file will be warped into
+    target_affine = Reference(nucleus='Image').read()['affine'][:3, :3]
+
+    def apply_reslicing_main(input_image, output_image, outDebug, interpolation):
         """ Applyingthe re-slicing or mapping of the input image into the reference resolution 
 
         Args:
@@ -109,16 +114,18 @@ def apply_reslice(subject, params):
             ref     (Reference): Reference Affine matrix that includes the resolution & amount of shift
         """
 
+        # Checking if the input file exist. Mostly relevant for preprocessing cases without manual labels
+        if not os.path.isfile(input_image):
+            pass
+
         # Checks to see if an already re-sliced file exists inside the debug folder (temp)      
-        if os.path.isfile(outDebug):
+        elif os.path.isfile(outDebug):
             copyfile(outDebug, output_image)
 
         # If there wasn't an existng re-sliced nifti file, it will apply the re-slicing onto the input image
         else:
-
             # Re-sampling the input image
-            im = niImage.resample_img(img=nib.load(input_image), target_affine=ref['affine'][:3, :3],
-                                      interpolation=interpolation)
+            im = niImage.resample_img(img=nib.load(input_image), target_affine=target_affine, interpolation=interpolation)
 
             # Saving the resampled image
             nib.save(im, output_image)
@@ -127,40 +134,32 @@ def apply_reslice(subject, params):
             copyfile(output_image, outDebug)
 
     def apply_to_Image(subject):
-        # Reading the reference transformations that the target nifti file will be warped into
-        ref = Reference(nucleus='Image').read()
 
         # Path to the input nifti file
-        input_image = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
-
-        # Path to the output nifti file
-        output_image = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
-
-        # Path to the debug nifti file that will be or already is saved inside the temp subfolder
+        inP  = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
+        outP = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
         outDebug = smallFuncs.mkDir(subject.Temp.address + '/') + subject.ImageOriginal + '_resliced.nii.gz'
 
         # Re-scliing the input nifti image
-        apply_reslicing_main(input_image, output_image, outDebug, 'continuous', ref)
+        apply_reslicing_main(inP, outP, outDebug, 'continuous')
 
     def apply_to_mask(subject):
-        ref = Reference(nucleus=nucleus).read()
 
-        if subject.Label.address:
-            input_nucleus = subject.Label.address + '/' + nucleus + '_PProcessed.nii.gz'
-            output_nucleus = subject.Label.address + '/' + nucleus + '_PProcessed.nii.gz'
-            outDebug = subject.Label.Temp.address + '/' + nucleus + '_resliced.nii.gz'
+        for nucleus_name in params.WhichExperiment.Nucleus.FullNames:
+            
+            # Path to the input nifti file
+            inP  = subject.Label.address + '/' + nucleus_name + '_PProcessed.nii.gz'
+            outP = subject.Label.address + '/' + nucleus_name + '_PProcessed.nii.gz'
+            outDebug = subject.Label.Temp.address + '/' + nucleus_name + '_resliced.nii.gz'
 
-            # Checking if the nucleus nifti file exist inside the subject folder
-            if os.path.isfile(input_nucleus):
-                # Mapping the input nifti file into the references resolution.
-                apply_reslicing_main(input_nucleus, output_nucleus, outDebug, 'nearest', ref)
+            # Mapping the input nifti file into the references resolution.
+            apply_reslicing_main(inP, outP, outDebug, 'nearest')
 
     # Applying the re-slicing on the input image
     apply_to_Image(subject)
 
     # Applying the re-slicing on thalamic nuclei
-    for nucleus in smallFuncs.Nuclei_Class().Names:
-        apply_to_mask(subject)
+    apply_to_mask(subject)
 
 
 def RigidRegistration(subject, Template):
@@ -191,7 +190,7 @@ def BiasCorrection(subject, params):
 
 
 def func_cropImage(params, subject):
-    def cropImage_FromCoordinates(CropMask, Gap):
+    def finding_boundingbox_encompassing_crop_mask(CropMask, Gap):
         """ Finding the coordinates for the boundingbox encompassing the cropped mask
 
         Args:
@@ -212,21 +211,18 @@ def func_cropImage(params, subject):
 
         return d
 
+    # The cropping mask & it's boundingbox coordinates
     crop = subject.Temp.address + '/CropMask.nii.gz'
+    crop_cord = finding_boundingbox_encompassing_crop_mask(nib.load(crop).get_fdata(), [0, 0, 0])
 
-    def check_crop(inP, outP, outDebug, CropCoordinates):
+    def check_crop(inP, outP, outDebug):
         """ Cropping the input using the cropped mask
 
         Args:
             inP                     (str): Address to the input image
             outP                    (str): Address to the output image
             outDebug                (str): Address to the cropped nifti image inside the temp folder
-            CropCoordinates (numpy array): Boundingbox coordinates encompassing the cropped mask
         """
-
-        def applyCropping(image):
-            d = CropCoordinates
-            return image.slicer[d[0, 0]:d[0, 1], d[1, 0]:d[1, 1], d[2, 0]:d[2, 1]]
 
         # If an already cropped nifti image exists inside the temp folder, this will copy that into the 
         # main image directory and replace the original image
@@ -238,7 +234,9 @@ def func_cropImage(params, subject):
         elif os.path.isfile(inP):
 
             # Cropping the input image
-            mskC = applyCropping(nib.load(inP))
+            mskC = nib.load(inP).slicer[crop_cord[0, 0]:crop_cord[0, 1], 
+                                        crop_cord[1, 0]:crop_cord[1, 1], 
+                                        crop_cord[2, 0]:crop_cord[2, 1]]
 
             # Saving the input image
             nib.save(mskC, outP)
@@ -246,44 +244,33 @@ def func_cropImage(params, subject):
             # Saving the newly cropped image into the debug subfolder (temp folder)
             if params.preprocess.save_debug_files:
                 copyfile(outP, outDebug)
-
-    def directoriesImage(subject):
-        inP = outP = subject.address + '/' + subject.ImageProcessed + '.nii.gz'
-        outDebug = subject.Temp.address + '/' + subject.ImageOriginal + '_Cropped.nii.gz'
-        return inP, outP, outDebug
-
-    def directoriesNuclei(subject, ind):
-        NucleusName, _, _ = smallFuncs.NucleiSelection(ind)
-        inP = outP = subject.Label.address + '/' + NucleusName + '_PProcessed.nii.gz'
-        outDebug = subject.Label.Temp.address + '/' + NucleusName + '_Cropped.nii.gz'
-        return inP, outP, outDebug
+        else:
+            raise Exception('*_PProcessed.nii.gz does not exist. This should have been created automatically')
 
     # Setting the input & output image address and the path to cropped image inside the debug folder
-    inP, outP, outDebug = directoriesImage(subject)
-
-    # If an already cropped nifti image doesn't exist inside the temp folder this will estimate the 
-    # boundingbox coordinates frmo the cropped mask
-    CropCoordinates = np.array([])
-    if not os.path.isfile(outDebug):
-        CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_fdata(), [0, 0, 0])
+    inP = outP = subject.address    + '/' + subject.ImageProcessed + '.nii.gz'
+    outDebug = subject.Temp.address + '/' + subject.ImageOriginal  + '_Cropped.nii.gz'
 
     # Cropping the input image using the boundingbox coordinates
-    check_crop(inP, outP, outDebug, CropCoordinates)
+    check_crop(inP, outP, outDebug)
 
     # Looping through all thalamic nuclei
-    for ind in params.WhichExperiment.Nucleus.FullIndexes:
+    for nucleus_name in params.WhichExperiment.Nucleus.FullNames:
 
         # Finding the directory to each nucleus
-        inP, outP, outDebug = directoriesNuclei(subject, ind)
-
-        # If an already cropped nucleus mask & the cropped mask coordinates doesn't exist, this will 
-        # estimate the boundingbox coordinates. This applies for rare cases where there was a cropped 
-        # input image, but not cropped nucleus mask
-        if not os.path.isfile(outDebug) and CropCoordinates.any():
-            CropCoordinates = cropImage_FromCoordinates(nib.load(crop).get_fdata(), [0, 0, 0])
+        inP = outP = subject.Label.address    + '/' + nucleus_name + '_PProcessed.nii.gz'
+        outDebug = subject.Label.Temp.address + '/' + nucleus_name + '_Cropped.nii.gz'
 
         # Cropping the nucleus mask using the broundingbox coordinates
-        check_crop(inP, outP, outDebug, CropCoordinates)
+        check_crop(inP, outP, outDebug)
+
+
+def duplicating_original_files_as_PProcessed(subject, params):
+    copyfile(subject.address + '/' + subject.ImageOriginal + '.nii.gz', subject.address + '/PProcessed.nii.gz')
+
+    for nucleus_name in params.WhichExperiment.Nucleus.FullNames:
+        copyfile(subject.Label.address + '/' + nucleus_name + '.nii.gz', subject.Label.address + '/' + nucleus_name + '_PProcessed.nii.gz')
+
 
 
 if __name__ == "__main__":
