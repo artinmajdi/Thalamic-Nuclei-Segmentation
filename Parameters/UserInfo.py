@@ -8,11 +8,11 @@ class experiment:
     # Path to the testing data
     test_address = '/array/hdd/msmajdi/experiments/data_experiment/CSFn/train/failed_train' # '/array/hdd/msmajdi/data/preprocessed/Siemens/UCLA/CSFn/step2_separated/test' 
 
-    # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
-    ReadAugments_Mode = False
-
     # modality of the input data. wmn / csfn
     image_modality = 'csfn'
+
+    # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
+    ReadAugments_Mode = False
 
     # Path to the code
     _code_address = str()
@@ -149,7 +149,7 @@ class simulation:
     use_train_padding_size = False
 
     # If TRUE, it will only load the subject folders that include "case" in their name
-    check_case_SubjectName = True
+    check_case_SubjectName = False
 
     # Architecture type
     architectureType = 'Res_Unet2'
