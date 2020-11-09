@@ -29,7 +29,19 @@ def saveImage(Image, Affine, Header, outDirectory):
 
 if __name__ == "__main__":
     dir_input, dir_output = terminalEntries()
-    print(f"    Flipping: {dir_input.split('/')[-1]}   ----------- ")
+    orientation, nucleus = dir_input.split('/')[-2:]
+    if orientation == 'sd0':        orientation = 'Sagittal'
+    elif  orientation == 'sd1':     orientation = 'Coronal'
+    elif  orientation == 'sd2':     orientation = 'Axial'
+    elif  orientation == '2.5D_MV': orientation = 'Majority Voting'
+
+    try:
+        nucleus = nucleus.split('.nii.gz')[0].split('-',1)[1]
+    except:
+        ''
+
+
+    print(f"    Flipping: {orientation}  {nucleus}")
     imageF = nib.load(dir_input)
     image = imageF.get_fdata()[::-1,:,:]
     saveImage(image, imageF.affine, imageF.header, dir_output)

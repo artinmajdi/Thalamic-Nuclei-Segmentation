@@ -1,21 +1,15 @@
 import os
-import sys
-
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from keras import models as kerasmodels
 import numpy as np
-import otherFuncs.smallFuncs as smallFuncs
-import otherFuncs.datasets as datasets
-from tqdm import tqdm
 import nibabel as nib
-from scipy import ndimage
 import pickle
 import keras
+import keras.layers as keras_layers
+from keras import models as kerasmodels
+from tqdm import tqdm
+from scipy import ndimage
 from keras.utils import multi_gpu_model
-import keras.layers as KLayers
-import modelFuncs.LossFunction as LossFunction
-from skimage.transform import AffineTransform, warp
-import matplotlib.pyplot as plt
+from modelFuncs import LossFunction
+from otherFuncs import smallFuncs, datasets
 
 
 def func_class_weights(Mask):
@@ -41,16 +35,15 @@ def func_class_weights(Mask):
     class_weights = class_weights / np.sum(class_weights)
 
     print('class_weights', class_weights)
-    
+
     return class_weights
 
 
 def check_Run(params, Data):
-
     # Assigning the gpu index
     os.environ["CUDA_VISIBLE_DEVICES"] = params.WhichExperiment.HardParams.Machine.GPU_Index
 
-    if params.WhichExperiment.TestOnly.mode or params.UserInfo['thalamic_side'].active_side == 'right':
+    if params.WhichExperiment.TestOnly._mode or params.UserInfo['thalamic_side']._active_side == 'right':
         # Skipping the training phase, if the algorithm is set to test from existing trained networks or the right thalamus
         model = loadModel(params)
 
@@ -97,14 +90,14 @@ def testingExeriment(model, Data, params):
     def predictingTestSubject(DataSubj, subject, ResultDir):
 
         # params.directories.Test.Input.Subjects
-        def postProcessing(pred1Class, origMsk1N, NucleiIndex):
+        def postProcessing(pred1Class=[], manual_mask=[], NucleiIndex=1):
             """ Post Processing
 
             Args:
-                pred1Class (numpy array): Prediction mask for 1 nucleus
-                origMsk1N  (numpy array): Manual label mask for 1 nucleus
-                NucleiIndex        (int): Nucleus index
-            """            
+                pred1Class   (numpy array): Prediction mask for 1 nucleus
+                manual_mask  (numpy array): Manual label mask for 1 nucleus
+                NucleiIndex          (int): Nucleus index
+            """
 
             def binarizing(pred1N):
                 """ Binarizing the input mask """
@@ -140,11 +133,11 @@ def testingExeriment(model, Data, params):
 
             if subject.Label.address:
                 # Re-orienting the manual label mask into the network's orientation
-                label_mask = np.transpose(origMsk1N, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
+                label_mask = np.transpose(manual_mask, params.WhichExperiment.Dataset.slicingInfo.slicingOrder)
 
                 # Measuring Dice value
                 Dice = [NucleiIndex, smallFuncs.mDice(pred2, binarizing(label_mask))]
-            else: 
+            else:
                 Dice = [0, 0.0]
 
             # Removing the extra paddings added to the input prior to feeding to the network
@@ -155,55 +148,47 @@ def testingExeriment(model, Data, params):
 
             return pred, Dice
 
-        def savingOutput(pred1N_BtO, NucleiIndex):
-            dirSave = smallFuncs.mkDir(ResultDir)
-            nucleus = smallFuncs.Nuclei_Class(index=NucleiIndex).name
-            smallFuncs.saveImage(pred1N_BtO, DataSubj.Affine, DataSubj.Header, dirSave + '/' + nucleus + '.nii.gz')
-            return dirSave, nucleus
-
         def applyPrediction():
 
             # Number of classes
             num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes
-
-            # If the background is added as an extra input, the overall number of classes will be the number of nuclei + 1
-            if not params.WhichExperiment.HardParams.Model.Method.havingBackGround_AsExtraDimension:
-                num_classes = params.WhichExperiment.HardParams.Model.MultiClass.num_classes + 1
-
+            
+            def savingOutput(dirSave, pred1N_BtO, NucleiIndex):
+                smallFuncs.mkDir(dirSave)
+                nucleus_name = smallFuncs.Nuclei_Class(index=NucleiIndex).name
+                smallFuncs.saveImage(pred1N_BtO, DataSubj.Affine, DataSubj.Header, dirSave + '/' + nucleus_name + '.nii.gz')
+                
             def loopOver_AllClasses_postProcessing(pred):
 
-                Dice = np.zeros((num_classes - 1, 2))
-                ALL_pred = []
-                for cnt in range(num_classes - 1):
+                nuclei_indexes = params.WhichExperiment.Nucleus.Index
 
-                    nucleus_index = params.WhichExperiment.Nucleus.Index[cnt]
+                Dice = np.zeros((num_classes - 1, 2))
+
+                for cnt, nucleus_index  in enumerate(nuclei_indexes):
+    
+                    # nucleus_index = params.WhichExperiment.Nucleus.Index[cnt]
 
                     # Manual Label for nucleus [cnt: index]
                     manual_label = np.array([])
-                    if subject.Label.address: manual_label = DataSubj.OrigMask[..., cnt]
+                    if subject.Label.address: 
+                        manual_label = DataSubj.OrigMask[..., cnt]
 
-                    pred1N_BtO, Dice[cnt, :] = postProcessing(pred[..., cnt], manual_label, nucleus_index)
+                    prediction_single_nucleus, Dice[cnt, :] = postProcessing(pred[..., cnt], manual_label, nucleus_index)
 
                     # If the first cascade network (on whole thalamus) is running, this concatenates the prediciton 
                     # masks for the following step of saving the predicted whole thelamus encompassing boundingbox
-                    if int(params.WhichExperiment.Nucleus.Index[0]) == 1:
-                        # if cnt > 0:
-                        #     ALL_pred = np.concatenate((ALL_pred, pred1N_BtO[..., np.newaxis]), axis=3) 
-                        # else:
-                        ALL_pred = pred1N_BtO[..., np.newaxis]
+                    if int(nuclei_indexes[0]) == 1:
+                        ALL_pred = prediction_single_nucleus[..., np.newaxis]
 
-                    dirSave, nucleusName = savingOutput(pred1N_BtO, params.WhichExperiment.Nucleus.Index[cnt])
+                    savingOutput(ResultDir, prediction_single_nucleus, nucleus_index)
 
-                # Saving all nuclei Dices into one text file
-                if num_classes > 2 and params.WhichExperiment.HardParams.Model.MultiClass.Mode: 
-                    Dir_Dice = dirSave + '/Dice_All.txt' 
-
-                # Saving the Dice value for the predicted nucleus
-                else:
-                     Dir_Dice = dirSave + '/Dice_' + nucleusName + '.txt'
-
+                
                 # Saving the Dice values
-                np.savetxt(Dir_Dice, Dice, fmt='%1.1f %1.4f')
+                if subject.Label.address:
+                    output_dice_name = '/Dice_All.txt' if num_classes > 2 else '/Dice_' + smallFuncs.Nuclei_Class(index=nuclei_indexes[0]).name + '.txt'
+                    np.savetxt(ResultDir + output_dice_name, Dice, fmt='%1.1f %1.4f')
+
+                ALL_pred = [] if (len(nuclei_indexes) > 1) else prediction_single_nucleus[..., np.newaxis]
                 return ALL_pred
 
             def unPadding(im, pad):
@@ -249,30 +234,41 @@ def testingExeriment(model, Data, params):
         return applyPrediction()
 
     def loopOver_Predicting_TestSubjects(DataTest):
+
         prediction = {}
         # ResultDir = params.directories.Test.Result
         for name in tqdm(DataTest, desc='predicting test subjects'):
             subject = params.directories.Test.Input.Subjects[name]
-            ResultDir = subject.address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd' + str(
-                params.WhichExperiment.Dataset.slicingInfo.slicingDim) + '/'
+
+            _active_side = params.UserInfo['thalamic_side']._active_side 
+            slicingDim = params.WhichExperiment.Dataset.slicingInfo.slicingDim
+
+            ResultDir = subject.address + '/' + _active_side + '/sd' + str(slicingDim) + '/'
             prediction[name] = predictingTestSubject(DataTest[name], subject, ResultDir)
 
         return prediction
 
     def loopOver_Predicting_TestSubjects_Sagittal(DataTest):
+
         prediction = {}
         # ResultDir = params.directories.Test.Result.replace('/sd2','/sd0')
         for name in tqdm(DataTest, desc='predicting test subjects sagittal'):
             subject = params.directories.Test.Input.Subjects[name]
-            ResultDir = subject.address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd0/'
+            _active_side = params.UserInfo['thalamic_side']._active_side 
+            ResultDir = subject.address + '/' + _active_side + '/sd0/'
             prediction[name] = predictingTestSubject(DataTest[name], subject, ResultDir)
 
         return prediction
 
     def loopOver_Predicting_TrainSubjects(DataTrain):
+
+        TestOnly = params.WhichExperiment.TestOnly._mode
+        Measure_Dice_on_Train_Data = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
+        thalamus_network = (int(params.WhichExperiment.Nucleus.Index[0]) == 1)
+
         prediction = {}
-        if params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data or (
-                int(params.WhichExperiment.Nucleus.Index[0]) == 1):
+        if (not TestOnly) and (Measure_Dice_on_Train_Data or thalamus_network):
+
             ResultDir = smallFuncs.mkDir(params.directories.Test.Result + '/TrainData_Output')
             for name in tqdm(DataTrain, desc='predicting train subjects'):
                 subject = params.directories.Train.Input.Subjects[name]
@@ -282,9 +278,14 @@ def testingExeriment(model, Data, params):
         return prediction
 
     def loopOver_Predicting_TrainSubjects_Sagittal(DataTrain):
+
+        TestOnly = params.WhichExperiment.TestOnly._mode
+        Measure_Dice_on_Train_Data = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
+        thalamus_network = (int(params.WhichExperiment.Nucleus.Index[0]) == 1)
+
         prediction = {}
-        if params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data or (
-                int(params.WhichExperiment.Nucleus.Index[0]) == 1):
+        if (not TestOnly) and (Measure_Dice_on_Train_Data or thalamus_network):
+
             ResultDir = smallFuncs.mkDir(params.directories.Test.Result.replace('/sd2', '/sd0') + '/TrainData_Output')
             for name in tqdm(DataTrain, desc='predicting train subjects sagittal'):
                 subject = params.directories.Train.Input.Subjects[name]
@@ -313,7 +314,7 @@ def trainingExperiment(Data, params):
                                                        monitor='val_mDice', verbose=1, save_best_only=True, mode=mode)
 
         Reduce_LR = keras.callbacks.ReduceLROnPlateau(monitor=monitor, factor=0.5, min_delta=0.001, patience=15,
-                                                      verbose=1,save_best_only=True, mode=mode, min_lr=1e-6, )
+                                                      verbose=1, save_best_only=True, mode=mode, min_lr=1e-6, )
 
         def step_decay_schedule(initial_lr=params.WhichExperiment.HardParams.Model.Learning_Rate, decay_factor=0.5,
                                 step_size=18):
@@ -352,32 +353,34 @@ def trainingExperiment(Data, params):
 
             # Image orientation
             SD = '/sd' + str(params.WhichExperiment.Dataset.slicingInfo.slicingDim)
-            
-            initialization = params.WhichExperiment.HardParams.Model.Initialize
 
-            # Address to the code
-            code_address = smallFuncs.dir_check(params.UserInfo['experiment'].code_address)
+            init_parent_address: str = params.WhichExperiment.HardParams.Model.Initialize.init_address
 
-            if initialization.init_address:
-                init_address = smallFuncs.dir_check(initialization.init_address) + FM + NN + SD + '/model_weights.h5'
-            else:
+            if not init_parent_address:
+                """ If the input modality is set to WMn, the network trained on SRI dataset will be used for initialization
+                    If the input modality is set to CSFn, the network trained on WMn dataset will be used """
+
+                init_source = {'wmn': 'sri',
+                               'csfn': 'wmn'}
+
                 # The modality of the input image that is defined by the user
-                modDef = params.WhichExperiment.Experiment.image_modality.lower()
+                modality = params.WhichExperiment.Experiment.image_modality.lower()
 
-                # If the input modality is set to WMn, the network trained on SRI dataset will be used for initialization
-                if modDef == 'wmn':
-                    net_name = 'sri' 
+                # Path to code directory
+                _code_address = params.WhichExperiment.Experiment._code_address
 
-                # If the input modality is set to CSFn, the network trained on WMn dataset will be used for initialization 
-                elif modDef == 'csfn':
-                    net_name = 'wmn'
+                # The address to initialization network based on the number of
+                #     - feature maps
+                #     - nucleus name
+                #     - image orientation
+                init_parent_address = _code_address + '/Trained_Models/' + init_source[
+                    modality]
 
-                # The address to initialization network based on the number of featuremaps, nucleus name and image orientation
-                init_address = code_address + 'Trained_Models/' + net_name + FM + NN + SD + '/model_weights.h5'
+            init_address = init_parent_address + '/' + FM + NN + SD + '/model_weights.h5'
 
             try:
                 model.load_weights(init_address)
-                print(' --- initialization succesfull')
+                print(' --- initialization successful')
             except:
                 print(' --- initialization failed')
 
@@ -449,6 +452,8 @@ def trainingExperiment(Data, params):
 
     smallFuncs.Saving_UserInfo(params.directories.Train.Model, params)
     model = architecture(params.WhichExperiment.HardParams.Model)
+    model.summary()
+
     model, hist = modelTrain_Unet(Data, params, model)
     saveReport(params.directories.Train.Model, 'hist_history', hist.history)
     return model
@@ -463,7 +468,7 @@ def save_BoundingBox_Hierarchy(params, PRED):
             return [[np.max([BB[d][0] - gapS, 0]), np.min([BB[d][1] + gapS, Sz[d]])] for d in range(3)]
 
         imF = nib.load(subject.address + '/' + subject.ImageProcessed + '.nii.gz')
-        # if 'train' in mode: 
+        # if 'train' in _mode:
         #     directory += '/TrainData_Output'
 
         for ch in range(PreStageMask.shape[3]):
@@ -491,7 +496,7 @@ def save_BoundingBox_Hierarchy(params, PRED):
                 Subjects = params.directories.Test.Input.Subjects
                 for name in tqdm(Subjects, desc='saving BB ' + ' ' + mode + nucleus):
                     ResultDir = Subjects[name].address + '/' + params.UserInfo[
-                        'thalamic_side'].active_side + '/sd' + str(
+                        'thalamic_side']._active_side + '/sd' + str(
                         params.WhichExperiment.Dataset.slicingInfo.slicingDim) + '/'
                     save_BoundingBox(PRED[name], Subjects[name], ResultDir)
 
@@ -502,12 +507,12 @@ def save_BoundingBox_Hierarchy(params, PRED):
                 Subjects = params.directories.Train.Input.Subjects
                 for name in tqdm(Subjects, desc='saving BB ' + ' ' + mode + nucleus):
                     save_BoundingBox(PRED[name], Subjects[name], params.directories.Test.Result.replace('/sd2',
-                                                                                                              '/sd0') + '/TrainData_Output/' + name)
+                                                                                                        '/sd0') + '/TrainData_Output/' + name)
 
             elif 'test' in mode:
                 Subjects = params.directories.Test.Input.Subjects
                 for name in tqdm(Subjects, desc='saving BB ' + ' ' + mode + nucleus):
-                    ResultDir = Subjects[name].address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd0/'
+                    ResultDir = Subjects[name].address + '/' + params.UserInfo['thalamic_side']._active_side + '/sd0/'
                     save_BoundingBox(PRED[name], Subjects[name], ResultDir)
 
     loop_Subjects(PRED.Test, 'test')
@@ -519,6 +524,7 @@ def save_BoundingBox_Hierarchy(params, PRED):
 
 
 def architecture(ModelParam):
+
     input_shape = tuple(ModelParam.InputDimensions[:ModelParam.Method.InputImage2Dvs3D]) + (1,)
 
     def Res_Unet(ModelParam):  # Conv -> BatchNorm -> Relu ) -> (Conv -> BatchNorm -> Relu)  -> maxpooling  -> Dropout
@@ -534,9 +540,10 @@ def architecture(ModelParam):
         pool_size = ModelParam.Layer_Params.MaxPooling.pool_size
 
         def Layer(featureMaps, trainable, input_layer):
-            conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(input_layer)
-            conv = KLayers.BatchNormalization()(conv)
-            return KLayers.Activation(AC.layers)(conv)
+            conv = keras_layers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(
+                input_layer)
+            conv = keras_layers.BatchNormalization()(conv)
+            return keras_layers.Activation(AC.layers)(conv)
 
         def Unet_sublayer_Contracting(inputs):
             def main_USC(WBp, nL):
@@ -547,16 +554,19 @@ def architecture(ModelParam):
                 conv = Layer(featureMaps, trainable, conv)
 
                 # ! Residual Part
-                conv = KLayers.merge.concatenate([WBp, conv], axis=3)
+                conv = keras_layers.merge.concatenate([WBp, conv], axis=3)
 
-                pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)
+                pool = keras_layers.MaxPooling2D(pool_size=pool_size)(conv)
 
-                if trainable: pool = KLayers.Dropout(DT.Value)(pool)
+                if trainable: pool = keras_layers.Dropout(DT.Value)(pool)
 
                 return pool, conv
 
             for nL in range(NLayers - 1):
-                if nL == 0: WB, Conv_Out = inputs, {}
+
+                if nL == 0: 
+                    WB, Conv_Out = inputs, {}
+                
                 WB, Conv_Out[nL + 1] = main_USC(WB, nL)
 
             return WB, Conv_Out
@@ -566,17 +576,17 @@ def architecture(ModelParam):
                 trainable = True
                 featureMaps = FM * (2 ** nL)
 
-                WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2, 2),
-                                              padding=padding, activation=AC.layers, trainable=trainable)(WBp)
-                UP = KLayers.merge.concatenate([WBp, contracting_Info[nL + 1]], axis=3)
+                WBp = keras_layers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2, 2),
+                                                   padding=padding, activation=AC.layers, trainable=trainable)(WBp)
+                UP = keras_layers.merge.concatenate([WBp, contracting_Info[nL + 1]], axis=3)
 
                 conv = Layer(featureMaps, trainable, UP)
                 conv = Layer(featureMaps, trainable, conv)
 
-                # ! Residual Part
-                conv = KLayers.merge.concatenate([UP, conv], axis=3)
+                # Residual Part
+                conv = keras_layers.merge.concatenate([UP, conv], axis=3)
 
-                if DT.Mode and trainable: conv = KLayers.Dropout(DT.Value)(conv)
+                if DT.Mode and trainable: conv = keras_layers.Dropout(DT.Value)(conv)
                 return conv
 
             for nL in reversed(range(NLayers - 1)):
@@ -592,12 +602,12 @@ def architecture(ModelParam):
             WB = Layer(featureMaps, trainable, WB)
 
             # ! Residual Part
-            WB = KLayers.merge.concatenate([input_layer, WB], axis=3)
+            WB = keras_layers.merge.concatenate([input_layer, WB], axis=3)
 
-            if DT.Mode and trainable: WB = KLayers.Dropout(DT.Value)(WB)
+            if DT.Mode and trainable: WB = keras_layers.Dropout(DT.Value)(WB)
             return WB
 
-        inputs = KLayers.Input(input_shape)
+        inputs = keras_layers.Input(input_shape)
 
         WB, Conv_Out = Unet_sublayer_Contracting(inputs)
 
@@ -605,7 +615,7 @@ def architecture(ModelParam):
 
         WB = Unet_sublayer_Expanding(WB, Conv_Out)
 
-        final = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
+        final = keras_layers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
@@ -622,9 +632,10 @@ def architecture(ModelParam):
         pool_size = ModelParam.Layer_Params.MaxPooling.pool_size
 
         def Layer(featureMaps, trainable, input_layer):
-            conv = KLayers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(input_layer)
-            conv = KLayers.BatchNormalization()(conv)
-            return KLayers.Activation(AC.layers)(conv)
+            conv = keras_layers.Conv2D(featureMaps, kernel_size=KN.conv, padding=padding, trainable=trainable)(
+                input_layer)
+            conv = keras_layers.BatchNormalization()(conv)
+            return keras_layers.Activation(AC.layers)(conv)
 
         def Unet_sublayer_Contracting(inputs):
             def main_USC(WBp, nL):
@@ -635,11 +646,11 @@ def architecture(ModelParam):
                 conv = Layer(featureMaps, trainable, conv)
 
                 # ! Residual Part
-                if nL > 0: conv = KLayers.merge.concatenate([WBp, conv], axis=3)
+                if nL > 0: conv = keras_layers.merge.concatenate([WBp, conv], axis=3)
 
-                pool = KLayers.MaxPooling2D(pool_size=pool_size)(conv)
+                pool = keras_layers.MaxPooling2D(pool_size=pool_size)(conv)
 
-                if trainable: pool = KLayers.Dropout(DT.Value)(pool)
+                if trainable: pool = keras_layers.Dropout(DT.Value)(pool)
 
                 return pool, conv
 
@@ -654,17 +665,17 @@ def architecture(ModelParam):
                 trainable = True
                 featureMaps = FM * (2 ** nL)
 
-                WBp = KLayers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2, 2),
-                                              padding=padding, activation=AC.layers, trainable=trainable)(WBp)
-                UP = KLayers.merge.concatenate([WBp, contracting_Info[nL + 1]], axis=3)
+                WBp = keras_layers.Conv2DTranspose(featureMaps, kernel_size=KN.convTranspose, strides=(2, 2),
+                                                   padding=padding, activation=AC.layers, trainable=trainable)(WBp)
+                UP = keras_layers.merge.concatenate([WBp, contracting_Info[nL + 1]], axis=3)
 
                 conv = Layer(featureMaps, trainable, UP)
                 conv = Layer(featureMaps, trainable, conv)
 
                 # ! Residual Part
-                conv = KLayers.merge.concatenate([UP, conv], axis=3)
+                conv = keras_layers.merge.concatenate([UP, conv], axis=3)
 
-                if DT.Mode and trainable: conv = KLayers.Dropout(DT.Value)(conv)
+                if DT.Mode and trainable: conv = keras_layers.Dropout(DT.Value)(conv)
                 return conv
 
             for nL in reversed(range(NLayers - 1)):
@@ -680,12 +691,12 @@ def architecture(ModelParam):
             WB = Layer(featureMaps, trainable, WB)
 
             # ! Residual Part
-            WB = KLayers.merge.concatenate([input_layer, WB], axis=3)
+            WB = keras_layers.merge.concatenate([input_layer, WB], axis=3)
 
-            if DT.Mode and trainable: WB = KLayers.Dropout(DT.Value)(WB)
+            if DT.Mode and trainable: WB = keras_layers.Dropout(DT.Value)(WB)
             return WB
 
-        inputs = KLayers.Input(input_shape)
+        inputs = keras_layers.Input(input_shape)
 
         WB, Conv_Out = Unet_sublayer_Contracting(inputs)
 
@@ -693,14 +704,12 @@ def architecture(ModelParam):
 
         WB = Unet_sublayer_Expanding(WB, Conv_Out)
 
-        final = KLayers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
+        final = keras_layers.Conv2D(num_classes, kernel_size=KN.output, padding=padding, activation=AC.output)(WB)
 
         return kerasmodels.Model(inputs=[inputs], outputs=[final])
 
-    if ModelParam.architectureType == 'Res_Unet':
-        model = Res_Unet(ModelParam)
-    elif ModelParam.architectureType == 'Res_Unet2':
-        model = Res_Unet2(ModelParam)
+    if   ModelParam.architectureType == 'Res_Unet':        model = Res_Unet(ModelParam)
+    elif ModelParam.architectureType == 'Res_Unet2':       model = Res_Unet2(ModelParam)
 
     # model.summary()
 

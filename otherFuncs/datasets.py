@@ -5,10 +5,8 @@ from random import shuffle
 import nibabel as nib
 import numpy as np
 from tqdm import tqdm
-
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-import otherFuncs.smallFuncs as smallFuncs
-import preprocess.normalizeA as normalizeA
+from otherFuncs import smallFuncs
+from preprocess import normalizeA
 
 
 def ClassesFunc():
@@ -48,17 +46,6 @@ def ClassesFunc():
 
 ImageLabel, data, trainCase, testCase = ClassesFunc()
 
-"""
-def DatasetsInfo(DatasetIx):
-    switcher = {
-        1: ('SRI_3T', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_3T'),
-        2: ('SRI_ReSliced', '/array/ssd/msmajdi/data/preProcessed/3T/SRI_ReSliced'),
-        3: ('croppingData', '/array/ssd/msmajdi/data/preProcessed/croppingData'),
-        4: ('All_7T', '/array/ssd/msmajdi/data/preProcessed/7T/All_DBD'),
-        5: ('20priors', '/array/ssd/msmajdi/data/preProcessed/7T/20priors'),
-    }
-    return switcher.get(DatasetIx, 'WARNING: Invalid dataset index')
-"""
 
 def paddingNegativeFix(sz, Padding):
     padding = np.array([list(x) for x in Padding])
@@ -144,9 +131,8 @@ def loadDataset(params):
             origMsk = origMsk1N if cnt == 0 else np.concatenate((origMsk, origMsk1N), axis=3).astype('float32')
             msk = msk1N if cnt == 0 else np.concatenate((msk, msk1N), axis=3).astype('float32')
 
-        if params.WhichExperiment.HardParams.Model.Method.havingBackGround_AsExtraDimension:
-            background = backgroundDetector(msk)
-            msk = np.concatenate((msk, background), axis=3).astype('float32')
+        background = backgroundDetector(msk)
+        msk = np.concatenate((msk, background), axis=3).astype('float32')
 
         return origMsk, msk
 
@@ -175,7 +161,7 @@ def loadDataset(params):
                 (boolean): True if the network is not set on test only and train subject list is not empty
             """
 
-            Flag_TestOnly = params.WhichExperiment.TestOnly.mode
+            Flag_TestOnly = params.WhichExperiment.TestOnly._mode
             Flag_notEmpty = params.directories.Train.Input.Subjects
             measure_train = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
 
@@ -348,7 +334,9 @@ def loadDataset(params):
         return DataAll
 
     params = preAnalysis(params)
-    smallFuncs.mkDir(params.directories.Test.Result)
+    if not params.WhichExperiment.TestOnly._mode:
+        smallFuncs.mkDir(params.directories.Test.Result)
+
     Data = main_ReadingDataset(params)
 
     return Data, params
@@ -414,7 +402,7 @@ def preAnalysis(params):
                     dirr = params.directories.Test.Result + '/TrainData_Output/' + subject.subjectName + '/'
 
                 elif 'test' in mode:
-                    dirr = subject.address + '/' + params.UserInfo['thalamic_side'].active_side + '/sd' + str(
+                    dirr = subject.address + '/' + params.UserInfo['thalamic_side']._active_side + '/sd' + str(
                         slicingDim) + '/'
 
                 BBf = np.loadtxt(dirr + '/BB_' + params.WhichExperiment.HardParams.Model.Method.ReferenceMask + '.txt',
@@ -497,8 +485,10 @@ def preAnalysis(params):
             """  
 
             if params.WhichExperiment.Dataset.InputPadding.Automatic:
-                inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly.mode else np.concatenate(
-                    (params.directories.Train.Input.inputSizes, params.directories.Test.Input.inputSizes), axis=0)
+                if params.WhichExperiment.TestOnly._mode:
+                    inputSizes = params.directories.Test.Input.inputSizes 
+                else:
+                    inputSizes = np.concatenate((params.directories.Train.Input.inputSizes, params.directories.Test.Input.inputSizes), axis=0)
 
                 return np.min(inputSizes, axis=0)
             else:
@@ -531,7 +521,7 @@ def preAnalysis(params):
         """        
 
         def findingPaddedInputSize(params):
-            inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly.mode else np.concatenate(
+            inputSizes = params.directories.Test.Input.inputSizes if params.WhichExperiment.TestOnly._mode else np.concatenate(
                 (params.directories.Train.Input.inputSizes, params.directories.Test.Input.inputSizes), axis=0)
             # inputSizes = np.concatenate((params.directories.Train.Input.inputSizes , params.directories.Test.Input.inputSizes),axis=0)  
 
