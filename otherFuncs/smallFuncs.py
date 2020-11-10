@@ -295,9 +295,9 @@ def terminalEntries(UserInfo):
     UserInfo['experiment']._code_address = str(pathlib.Path(__file__).parent.parent)
 
     # fixing the last "/" in directory pathes entered by user
-    UserInfo['experiment'].train_address          = os.path.abspath(UserInfo['experiment'].train_address)
-    UserInfo['experiment'].test_address           = os.path.abspath(UserInfo['experiment'].test_address)
-    UserInfo['simulation'].TestOnly.model_address = os.path.abspath(UserInfo['simulation'].TestOnly.model_address)
+    if UserInfo['experiment'].train_address:          UserInfo['experiment'].train_address          = os.path.abspath(UserInfo['experiment'].train_address)
+    if UserInfo['experiment'].test_address:           UserInfo['experiment'].test_address           = os.path.abspath(UserInfo['experiment'].test_address)
+    if UserInfo['simulation'].TestOnly.model_address: UserInfo['simulation'].TestOnly.model_address = os.path.abspath(UserInfo['simulation'].TestOnly.model_address)
 
     # Setting the GPU
     if UserInfo['simulation'].GPU_Index:
