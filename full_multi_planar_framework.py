@@ -153,7 +153,8 @@ def simulate(User_Entry):
 
             # uncropping the re-oriented outputs
             output_full_size_address = subj.address + f'/{thalamus_side}/2.5D_MV/AllLabels_full_size.nii.gz'
-            uncrop.uncrop_by_mask(input_image=output_original_space_address, output_image=output_full_size_address,
+            uncrop.uncrop_by_mask(input_image=output_original_space_address, 
+                                  output_image=output_full_size_address,
                                   full_mask=crop_mask_address)
 
     def run_Left(UserInfoB):
@@ -284,16 +285,16 @@ def simulate(User_Entry):
             for orientation in ['left', 'right']:
                 predictions_directory = subj.address + '/' + orientation
 
-                command = f"mkdir {predictions_directory}/sub_networks"
+                # creating "sub_networks" subfolder and removing any reminiscent of older simulations
+                command = f"mkdir {predictions_directory}/sub_networks ; rm -r {predictions_directory}/sub_networks/*"
                 subprocess.call(command, shell=True)
 
+                # move sagittal/axial/coronal simulation results into the subfolder "sub_networks"
                 command = f"mv {predictions_directory}/sd[0-2] {predictions_directory}/sub_networks/"
                 subprocess.call(command, shell=True)
 
-                command = f"mv {predictions_directory}/2.5D_MV/* {predictions_directory}/"
-                subprocess.call(command, shell=True)
-
-                command = f"rm -r {predictions_directory}/2.5D_MV"
+                # move majority voting simulations results into it's parent directory (left, right)
+                command = f"mv {predictions_directory}/2.5D_MV/* {predictions_directory}/ ; rm -r {predictions_directory}/2.5D_MV"
                 subprocess.call(command, shell=True)
 
 
