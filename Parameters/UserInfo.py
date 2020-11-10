@@ -1,21 +1,21 @@
 class experiment:
     # Address to the experiment directory
-    exp_address = '/array/hdd/msmajdi/experiments/exp6/'
+    exp_address = 'path-to-experiment-directory'
 
     # Subexperiment name
-    subexperiment_name = '' # 'GE_Siemens_test_only2'
+    subexperiment_name = 'sub-experiment-name'
 
     # Path to the training data
-    train_address = '' # '/array/hdd/msmajdi/data/preprocessed/data_experiment/train' 
+    train_address = ''
 
     # Path to the testing data
-    test_address = '/array/ssd/msmajdi/code/thalamus/Example_Cases/WMn' 
+    test_address = '' 
 
     # Reading augmented data. If TRUE, it'll read the data stored inside the subfolder called 'Augments'
     ReadAugments_Mode = False
 
     # Path to the code
-    code_address = '/array/ssd/msmajdi/code/thalamus/'
+    code_address = 'path-to-code-directory'
 
     # modality of the input data. wmn / csfn
     image_modality = 'wmn'
