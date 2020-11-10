@@ -3,10 +3,10 @@
 
 class experiment:
     # Path to the training data
-    train_address = '' # '/array/hdd/msmajdi/data/preprocessed/Siemens/UCLA/CSFn/step2_separated/train/'
+    train_address = ''
 
     # Path to the testing data
-    test_address = '/array/hdd/msmajdi/experiments/data_experiment/CSFn/train/failed_train' # '/array/hdd/msmajdi/data/preprocessed/Siemens/UCLA/CSFn/step2_separated/test' 
+    test_address = ''
 
     # modality of the input data. wmn / csfn
     image_modality = 'csfn'
@@ -25,10 +25,10 @@ class experiment:
                         It will hold the whole thalamus estimated bounding box for train cases       """
 
     # Address to the experiment directory. 
-    exp_address = '/array/hdd/msmajdi/experiments/exp6/'
+    exp_address = 'path-to-experiment-address'
 
     # Subexperiment name
-    subexperiment_name = 'GE_Siemens_CSFn_UCLA' # 'GE_Siemens_test_only2'
+    subexperiment_name = ''
 
 
 class TestOnly:
@@ -40,7 +40,7 @@ class TestOnly:
         This directory should point to the parent folder holding on trained models:
             ACTUAL_TRAINED_MODEL_ADDRESS = model_adress + '/' + FeatureMapNum (e.g. FM20) + '/' + Nucleus_name (e.g. 2-AV) + '/' + Orientation Index (e.g. sd2)
     """
-    model_address = '' # /array/hdd/msmajdi/experiments/exp6/models/GE_Siemens'
+    model_address = ''
 
 
 
