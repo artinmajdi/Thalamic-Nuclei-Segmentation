@@ -28,7 +28,7 @@ class experiment:
     exp_address = 'path-to-experiment-address'
 
     # Subexperiment name
-    subexperiment_name = ''
+    subexperiment_name = 'sub-experiment-name'
 
 
 class TestOnly:
