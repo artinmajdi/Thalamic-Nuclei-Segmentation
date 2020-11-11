@@ -6,7 +6,7 @@ class experiment:
     train_address = ''
 
     # Path to the testing data
-    test_address = ''
+    test_address = '' 
 
     # modality of the input data. wmn / csfn
     image_modality = 'csfn'
@@ -25,10 +25,10 @@ class experiment:
                         It will hold the whole thalamus estimated bounding box for train cases       """
 
     # Address to the experiment directory. 
-    exp_address = 'path-to-experiment-address'
+    exp_address = '/array/hdd/msmajdi/experiments/exp6/'
 
     # Subexperiment name
-    subexperiment_name = 'sub-experiment-name'
+    subexperiment_name = 'GE_Siemens_CSFn_UCLA' # 'GE_Siemens_test_only2'
 
 
 class TestOnly:
