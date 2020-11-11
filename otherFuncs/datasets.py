@@ -161,43 +161,44 @@ def loadDataset(params):
                 (boolean): True if the network is not set on test only and train subject list is not empty
             """
 
-            Flag_TestOnly = params.WhichExperiment.TestOnly._mode
-            Flag_notEmpty = params.directories.Train.Input.Subjects
+            test_only = params.WhichExperiment.TestOnly._mode
+            train_subjects_exist = params.directories.Train.Input.Subjects
             measure_train = params.WhichExperiment.HardParams.Model.Measure_Dice_on_Train_Data
 
-            return (not Flag_TestOnly or measure_train) and Flag_notEmpty
+            return ((not test_only) or measure_train) and train_subjects_exist
 
         Th = 0.5 * params.WhichExperiment.HardParams.Model.LabelMaxValue
 
-        def separatingConcatenatingIndexes(Data=[], sjList=[], mode='train'):
+        def separatingConcatenatingIndexes(Data=[], subjects_list=[], mode='train'):
             """
             Preparing the training & validation dataset by concatenating all 2D slices in all 3D input volumes
 
             Args:
                 Data: Input data
-                sjList (list): Subject list
-                mode (boolean): Training or validation 
+                subjects_list (list): Subject list
+                mode       (boolean): Training or validation 
 
             Returns:
                 train_data: Concatenated training data
             """
 
-            # Finding the total number of 2D slices used for training
-            Sz0 = 0
-            for nameSubject in sjList: 
-                Sz0 += Data[nameSubject].Image.shape[0]
-            
+            # Finding the total number of 2D slices used for training           
+            n_2d_slices = np.sum([Data[subj_name].Image.shape[0] for subj_name in subjects_list])
+
             # In order to expedite the loading process, initially an empty array is built 
-            images = np.zeros((tuple([Sz0]) + Data[list(Data)[0]].Image.shape[1:]))
+            height = tuple([n_2d_slices])
+            image_dimention = Data[subjects_list[0]].Image.shape[1:]
+            images = np.zeros(height + image_dimention)
 
             # Check to see if a Label folde exist inside the subject folder
-            masks = np.zeros((tuple([Sz0]) + Data[list(Data)[0]].Mask.shape[1:]))
+            mask_dimention = Data[subjects_list[0]].Mask.shape[1:]
+            masks = np.zeros(height + mask_dimention)
                 
 
             # Concatenating the training data into one array
             d1 = 0
-            for _, nameSubject in enumerate(tqdm(sjList, desc='concatenating: ' + mode)):
-                im, msk = Data[nameSubject].Image, Data[nameSubject].Mask
+            for subj_name in tqdm(subjects_list, desc='concatenating: ' + mode):
+                im, msk = Data[subj_name].Image, Data[subj_name].Mask
 
                 images[d1:d1 + im.shape[0], ...] = im
 
@@ -224,7 +225,7 @@ def loadDataset(params):
                                                   list(params.directories.Train.Input.Subjects),
                                                   params.WhichExperiment.Dataset.randomFlag)
 
-            if params.WhichExperiment.Dataset.Validation.fromKeras or params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
+            if params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation or params.WhichExperiment.Dataset.Validation.fromKeras:
                 DataAll.Train = separatingConcatenatingIndexes(DataAll.Train_ForTest, list(DataAll.Train_ForTest),'train')
                 DataAll.Validation = ''
             else:
@@ -301,12 +302,6 @@ def loadDataset(params):
 
             return Data
 
-        def readValidation(DataAll):
-            if params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
-                Val_Indexes = list(DataAll.Test)
-                DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, Val_Indexes, 'validation')
-            return DataAll
-
         DataAll = data()
 
         # Loading train subjects
@@ -319,7 +314,10 @@ def loadDataset(params):
         # Loading test subjects
         if params.directories.Test.Input.Subjects:
             DataAll.Test = readingAllSubjects(params.directories.Test.Input.Subjects, 'test')
-            DataAll = readValidation(DataAll)
+        
+            # Loading validation subjects
+            if (not params.WhichExperiment.TestOnly._mode) and params.WhichExperiment.HardParams.Model.Method.Use_TestCases_For_Validation:
+                DataAll.Validation = separatingConcatenatingIndexes(DataAll.Test, list(DataAll.Test), 'validation')
 
         # These data are used to segment the whole thalamus mask for saagittal network while running the coronal network
         
