@@ -281,7 +281,8 @@ def simulate(User_Entry):
 
                 # removing any reminiscent of older simulations in "sub_networks"
                 if os.path.exists(f'{predictions_directory}/sub_networks'):
-                    pathlib.Path(f'{predictions_directory}/sub_networks').rmdir()
+                    command = f'rm -r {predictions_directory}/sub_networks'
+                    subprocess.call(command, shell=True)
 
                 # creating "sub_networks" subfolder 
                 pathlib.Path(f'{predictions_directory}/sub_networks').mkdir()
