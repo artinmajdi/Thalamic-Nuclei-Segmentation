@@ -181,14 +181,12 @@ def simulate(User_Entry):
             print('Flip L-R the image & its nuclei')
 
             subjects = params.directories.Test.Input.Subjects.copy()
-            _code_address = params.WhichExperiment.Experiment._code_address + '/otherFuncs/flip_inputs.py'
-            # subjects.update(params.directories.Train.Input.Subjects)
+            _flip_code_address = params.WhichExperiment.Experiment._code_address + '/otherFuncs/flip_inputs.py'
 
             for subj in subjects.values():
                 print('SUBJECT:', subj.subjectName)
 
-                command = "cd {0};python {1} -i {0}/PProcessed.nii.gz -o {0}/PProcessed.nii.gz;".format(subj.address,
-                                                                                                        _code_address)
+                command = "cd {0};python {1} -i {0}/PProcessed.nii.gz -o {0}/PProcessed.nii.gz;".format(subj.address, _flip_code_address)
                 subprocess.call(command, shell=True)
 
                 command = "cd {0};mv {0}/PProcessed.nii.gz {0}/flipped_PProcessed.nii.gz;".format(subj.address)
@@ -199,19 +197,15 @@ def simulate(User_Entry):
 
             subjects = params.directories.Test.Input.Subjects.copy()
 
-            # Stacking train & test subjects
-            # subjects.update(params.directories.Train.Input.Subjects)
-
             # Address to the flipping python code
-            _code_address = params.WhichExperiment.Experiment._code_address + '/otherFuncs/flip_inputs.py'
+            _flip_code_address = params.WhichExperiment.Experiment._code_address + '/otherFuncs/flip_inputs.py'
 
             # Flipping back the nifti images back to their original space for both train & test data
             for subj in subjects.values():
                 print('SUBJECT:', subj.subjectName)
 
                 # Flipping back the nifti image to its original space
-                command = "cd {0};python {1} -i {0}/flipped_PProcessed.nii.gz -o {0}/flipped_PProcessed.nii.gz;".format(
-                    subj.address, _code_address)
+                command = "cd {0};python {1} -i {0}/flipped_PProcessed.nii.gz -o {0}/flipped_PProcessed.nii.gz;".format(subj.address, _flip_code_address)
                 subprocess.call(command, shell=True)
 
                 # re-naming the nifti image to its original name
@@ -222,7 +216,7 @@ def simulate(User_Entry):
             for subj in params.directories.Test.Input.Subjects.values():
                 print('SUBJECT:', subj.subjectName)
                 command = "cd {0};for n in right/*/*.nii.gz; do python {1} -i {0}/$n -o {0}/$n; done".format(
-                    subj.address, _code_address)
+                    subj.address, _flip_code_address)
                 subprocess.call(command, shell=True)
 
         # Setting the active side to right thalamus. This is important to let the software know it shouldn't run training on
@@ -285,9 +279,12 @@ def simulate(User_Entry):
             for orientation in ['left', 'right']:
                 predictions_directory = subj.address + '/' + orientation
 
-                # creating "sub_networks" subfolder and removing any reminiscent of older simulations
-                command = f"mkdir {predictions_directory}/sub_networks ; rm -r {predictions_directory}/sub_networks/*"
-                subprocess.call(command, shell=True)
+                # removing any reminiscent of older simulations in "sub_networks"
+                if os.path.exists(f'{predictions_directory}/sub_networks'):
+                    pathlib.Path(f'{predictions_directory}/sub_networks').rmdir()
+
+                # creating "sub_networks" subfolder 
+                pathlib.Path(f'{predictions_directory}/sub_networks').mkdir()
 
                 # move sagittal/axial/coronal simulation results into the subfolder "sub_networks"
                 command = f"mv {predictions_directory}/sd[0-2] {predictions_directory}/sub_networks/"
