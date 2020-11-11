@@ -159,7 +159,8 @@ def apply_reslice(subject, params):
     apply_to_Image(subject)
 
     # Applying the re-slicing on thalamic nuclei
-    apply_to_mask(subject)
+    if subject.Label.address:
+        apply_to_mask(subject)
 
 
 def RigidRegistration(subject, Template):
@@ -255,21 +256,23 @@ def func_cropImage(params, subject):
     check_crop(inP, outP, outDebug)
 
     # Looping through all thalamic nuclei
-    for nucleus_name in params.WhichExperiment.Nucleus.FullNames:
+    if subject.Label.address:
+        for nucleus_name in params.WhichExperiment.Nucleus.FullNames:
 
-        # Finding the directory to each nucleus
-        inP = outP = subject.Label.address    + '/' + nucleus_name + '_PProcessed.nii.gz'
-        outDebug = subject.Label.Temp.address + '/' + nucleus_name + '_Cropped.nii.gz'
+            # Finding the directory to each nucleus
+            inP = outP = subject.Label.address    + '/' + nucleus_name + '_PProcessed.nii.gz'
+            outDebug = subject.Label.Temp.address + '/' + nucleus_name + '_Cropped.nii.gz'
 
-        # Cropping the nucleus mask using the broundingbox coordinates
-        check_crop(inP, outP, outDebug)
+            # Cropping the nucleus mask using the broundingbox coordinates
+            check_crop(inP, outP, outDebug)
 
 
 def duplicating_original_files_as_PProcessed(subject, params):
     copyfile(subject.address + '/' + subject.ImageOriginal + '.nii.gz', subject.address + '/PProcessed.nii.gz')
 
-    for nucleus_name in params.WhichExperiment.Nucleus.FullNames:
-        copyfile(subject.Label.address + '/' + nucleus_name + '.nii.gz', subject.Label.address + '/' + nucleus_name + '_PProcessed.nii.gz')
+    if subject.Label.address:
+        for nucleus_name in params.WhichExperiment.Nucleus.FullNames:
+            copyfile(subject.Label.address + '/' + nucleus_name + '.nii.gz', subject.Label.address + '/' + nucleus_name + '_PProcessed.nii.gz')
 
 
 
