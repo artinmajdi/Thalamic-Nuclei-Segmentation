@@ -6,7 +6,7 @@ class experiment:
     train_address = ''
 
     # Path to the testing data
-    test_address = ''
+    test_address = '/array/hdd/manojsar/code/thalamus/Example_Cases/CSFn'
 
     # modality of the input data. wmn / csfn
     image_modality = 'csfn'
