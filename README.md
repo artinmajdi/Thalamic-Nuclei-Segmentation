@@ -133,3 +133,6 @@ Segmentation of each thalamus into twelve nuclei was achieved in under a minute.
 
 #### Conclusion: 
 The proposed segmentation method is fast, accurate, performs well across disease types and field strengths, and shows great potential for improving our understanding of thalamic nuclei involvement in neurological diseases. 
+
+
+Note: More fine tuning might be needed for CSFn Siemens MPRAGE data.
